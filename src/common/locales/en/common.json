@@ -1,0 +1,15 @@
+{
+    "login": "Log In",
+    "loginToRENTGLOBAL": "Log in to RENTGLOBAL",
+    "signup": "Sign Up",
+    "email": "Email",
+    "password": "Password",
+    "rememberMe": "Remember me",
+    "confirm": "Confirm",
+    "forgotPassword": "Forgot Password?",
+    "next": "Next",
+    "en": "EN",
+    "changeLocation": "Change Location ({{location}})",
+    "placeToRent": "I have a place to RENT",
+    "loginOrRegister": "Login / Register"
+}
