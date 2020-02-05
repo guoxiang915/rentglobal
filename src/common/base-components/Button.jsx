@@ -26,7 +26,10 @@ const styleSheet = theme => ({
     color: theme.colors.primary.darkGrey,
     "&:hover": {
       background: `${theme.colors.primary.mainColor}`,
-      color: "white"
+      color: `white !important`,
+      "& *": {
+        color: `white !important`
+      }
     }
   },
 

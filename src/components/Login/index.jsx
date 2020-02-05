@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { withStyles } from "@material-ui/core/styles";
 import { Card, Collapse, Typography, InputAdornment } from "@material-ui/core";
-import { Link } from "react-router-dom";
+import { Link as RouterLink } from "react-router-dom";
 import "./Login.css";
 import { withTranslation } from "react-i18next";
 import withMuiRoot from "../../withMuiRoot";
@@ -10,8 +10,12 @@ import {
   TextField,
   Button,
   Box,
+  Column,
   Checkbox,
-  Spinner
+  Spinner,
+  Link,
+  Divider,
+  HorizontalDivider
 } from "../../common/base-components";
 import { MailOutline, LockOpen } from "@material-ui/icons";
 
@@ -53,12 +57,12 @@ const styleSheet = theme => ({
     width: 200
   },
 
-  errorDiv: {
-    display: "flex",
-    alignItems: "center",
-    justifyContent: "center",
-    color: "red",
-    fontSize: 12
+  socialWrapper: {
+    marginTop: 20
+  },
+
+  socialButton: {
+    width: "100%"
   }
 });
 
@@ -69,6 +73,9 @@ class Login extends Component {
       email: "",
       emailError: null,
       password: "",
+      passwordError: null,
+      createPassword: "",
+      createPasswordError: null,
       isRemember: false,
       error: null
     };
@@ -121,6 +128,22 @@ class Login extends Component {
     this.setState({ isRemember: !this.state.isRemember });
   };
 
+  handleLogin = () => {
+    console.log("login");
+  };
+
+  handleLoginFacebook = () => {};
+
+  handleLoginGoogle = () => {};
+
+  handleSignup = () => {
+    console.log("sign up");
+  };
+
+  handleSignupFacebook = () => {};
+
+  handleSignupGoogle = () => {};
+
   render() {
     const { classes, t } = this.props;
     const { isLoggedIn, error, isLoading, loginMode } = this.props.auth;
@@ -168,13 +191,11 @@ class Login extends Component {
                     <Box paddingTopHalf>
                       <TextField
                         id="password"
-                        placeholder="Password"
+                        placeholder={t("password")}
                         value={this.state.password}
                         onChange={this.handleChange("password")}
                         type="password"
                         variant="outlined"
-                        error={true}
-                        helperText="Password should contain at least 6 characters"
                         startAdornment={<LockOpen color="secondary" />}
                         fullWidth
                       />
@@ -194,18 +215,113 @@ class Login extends Component {
                         variant="contained"
                         size="medium"
                         className={classes.loginButton}
+                        onClick={this.handleLogin}
                       >
                         {t("login")}
                       </Button>
                     </Box>
                   </>
                 )}
-                {/* <div className={classes.errorDiv}>
-                  {error && <p>{error}</p>}
-                  {!error && this.state.error && <p>{this.state.error}</p>}
-                </div> */}
+                {loginMode === "register" && (
+                  <>
+                    <Box paddingTopHalf>
+                      <TextField
+                        id="createPassword"
+                        placeholder={t("createPassword")}
+                        value={this.state.createPassword}
+                        onChange={this.handleChange("createPassword")}
+                        type="password"
+                        variant="outlined"
+                        startAdornment={<LockOpen color="secondary" />}
+                        fullWidth
+                      />
+                    </Box>
+                    <Box paddingTopHalf justifyChildrenEnd fullWidth>
+                      <Button
+                        type="submit"
+                        variant="contained"
+                        size="medium"
+                        className={classes.loginButton}
+                        onClick={this.handleSignup}
+                      >
+                        {t("signup")}
+                      </Button>
+                    </Box>
+                  </>
+                )}
+
+                <Column classes={{ box: classes.socialWrapper }}>
+                  <HorizontalDivider text={t("or")} light />
+
+                  {loginMode === "login" && (
+                    <>
+                      <Box paddingTop justifyChildrenEnd fullWidth>
+                        <Button
+                          type="submit"
+                          variant="secondary"
+                          size="medium"
+                          className={classes.socialButton}
+                          onClick={this.handleLoginFacebook}
+                        >
+                          {t("loginWith")}&nbsp;
+                          <Typography color="primary">
+                            {t("facebook")}
+                          </Typography>
+                        </Button>
+                      </Box>
+                      <Box paddingTopHalf justifyChildrenEnd fullWidth>
+                        <Button
+                          type="submit"
+                          variant="secondary"
+                          size="medium"
+                          className={classes.socialButton}
+                          onClick={this.handleLoginGoogle}
+                        >
+                          {t("loginWith")}&nbsp;
+                          <Typography color="primary">{t("google")}</Typography>
+                        </Button>
+                      </Box>
+                    </>
+                  )}
+
+                  {loginMode === "register" && (
+                    <>
+                      <Box paddingTop justifyChildrenEnd fullWidth>
+                        <Button
+                          type="submit"
+                          variant="secondary"
+                          size="medium"
+                          className={classes.socialButton}
+                          onClick={this.handleSignupFacebook}
+                        >
+                          {t("signupWith")}&nbsp;
+                          <Typography color="primary">
+                            {t("facebook")}
+                          </Typography>
+                        </Button>
+                      </Box>
+                      <Box paddingTopHalf justifyChildrenEnd fullWidth>
+                        <Button
+                          type="submit"
+                          variant="secondary"
+                          size="medium"
+                          className={classes.socialButton}
+                          onClick={this.handleSignupGoogle}
+                        >
+                          {t("signupWith")}&nbsp;
+                          <Typography color="primary">{t("google")}</Typography>
+                        </Button>
+                      </Box>
+                    </>
+                  )}
+                </Column>
               </Collapse>
-              {isLoading && <Spinner />}
+
+              {isLoading && (
+                <Column paddingTop fullWidth>
+                  <Spinner />
+                </Column>
+              )}
             </form>
             {/* <div className="forgotContainer">
               <a className="link-forgot-password" tabIndex="1" href="">

@@ -1,16 +1,25 @@
 {
-    "login": "Log In",
+    "login": "Log in",
     "loginToRENTGLOBAL": "Log in to RENTGLOBAL",
-    "signup": "Sign Up",
+    "signup": "Sign up",
     "email": "Email",
     "invalidEmail": "Invalid email address",
     "password": "Password",
+    "createPassword": "Create a password",
     "rememberMe": "Remember me",
     "confirm": "Confirm",
     "forgotPassword": "Forgot Password?",
     "next": "Next",
     "en": "EN",
+    "fr": "FR",
     "changeLocation": "Change Location ({{location}})",
     "placeToRent": "I have a place to RENT",
-    "loginOrRegister": "Login / Register"
+    "loginOrRegister": "Login / Register",
+    "or": "or",
+    "facebook": "Facebook",
+    "google": "Google",
+    "loginWith": "Login with ",
+    "dontHaveAccount": "Don't have an account?",
+    "signupWith": "Sign up with ",
+    "alreadyHaveAccount": "Already have an account?"
 }

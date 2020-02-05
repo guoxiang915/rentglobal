@@ -5,3 +5,5 @@ export { default as Link } from "./Link";
 export { default as Select } from "./Select";
 export { default as TextField } from "./TextField";
 export { default as Spinner } from "./Spinner";
+export { default as Divider } from "./Divider";
+export { default as HorizontalDivider } from "./HorizontalDivider";

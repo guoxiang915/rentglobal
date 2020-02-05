@@ -9,10 +9,10 @@ export const resultExist = payload => {
 };
 
 export const isExist = (dispatch, payload) => {
-  // axios.get(`${API}/users/exist`, payload)
+  // mock api
   new Promise((resolve, reject) => {
-    setTimeout(() => resolve({ message: payload }), 3000);
-    // setTimeout(() => reject({ message: "Exist" }), 3000);
+    // setTimeout(() => resolve({ message: payload }), 30);
+    setTimeout(() => reject({ message: "Exist" }), 3000);
   }).then(
     resp => {
       dispatch(resultExist(resp));
@@ -21,6 +21,15 @@ export const isExist = (dispatch, payload) => {
       dispatch(resultExist(null));
     }
   );
+
+  /* axios.get(`${API}/users/exist`, payload).then(
+    resp => {
+      dispatch(resultExist(resp));
+    },
+    error => {
+      dispatch(resultExist(null));
+    }
+  ); */
 
   return {
     type: "REQUEST_IS_EXIST"

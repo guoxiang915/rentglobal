@@ -184,11 +184,7 @@ class Appwrapper extends Component {
     } = this.state;
     const open = Boolean(anchorEl);
     const { showAppBar, showSearchBar, appBarTitle } = this.props.appState;
-
-    // if (isLoading) {
-    //   return null;
-    // }
-
+    
     const homeLinks = (
       <div>
         <IconButton
