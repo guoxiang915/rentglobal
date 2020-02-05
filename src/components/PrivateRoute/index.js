@@ -1,24 +1,9 @@
 import React from "react";
 import { Route, Redirect, withRouter } from "react-router-dom";
 import Auth from "../../utils/auth";
-import Spinner from "../Spinner";
 import AppWrapper from "../../containers/AppWrapper";
 
 const authObj = new Auth();
-
-{
-  /*const PrivateRoute = ({ component: Component, auth, ...rest }) => (
-    <Route {...rest} render = {
-        props => auth.isLoggedIn === true ? (
-                <Component {...props}/>
-            ) : (
-                <Redirect to="/login"/>
-            )
-
-    } />
-);
-*/
-}
 
 class PrivateRoute extends React.Component {
   constructor(props) {
@@ -30,6 +15,7 @@ class PrivateRoute extends React.Component {
   }
 
   componentWillMount() {
+    // check authenticated user
     this.authenticate().then(() => {
       console.log("Authenticated");
     });
@@ -44,21 +30,10 @@ class PrivateRoute extends React.Component {
     const { component: Component, isSimplePage, ...rest } = this.props;
     const { isLoggedIn, isLoading, loaded } = this.props.auth;
 
-    if (!isLoading) return <Spinner />;
-
     return (
       <Route
         {...rest}
         render={props => {
-          // return isLoggedIn ? (
-          //   <Component {...props} />
-          // ) : (
-          //   <Redirect
-          //     to={{
-          //       pathname: "/login"
-          //     }}
-          //   />
-          // );
           return (
             <>
               {!isSimplePage && <AppWrapper />}

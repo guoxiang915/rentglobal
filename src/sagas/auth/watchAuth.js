@@ -32,19 +32,19 @@ const sendRequest = async token => {
 
 function* authenticate(action) {
   try {
-    const response = yield call(sendRequest, action.token);
+    let response = yield call(sendRequest, action.token);
+    response = JSON.parse(response);
     if (response.success) {
       yield put({
         type: "AUTH_SUCCESS",
         resp: response
       });
     } else if (!response.success && response.message) {
-      console.log("AUTH_FAILED: " + JSON.stringify(response));
       yield put({
         type: "AUTH_FAILED",
         resp: response
       });
-      action.history.push("/login");
+      // action.history.push("/login");
     }
   } catch (error) {
     alert(error.message);
@@ -54,5 +54,5 @@ function* authenticate(action) {
 }
 
 export default function* watchAuth() {
-  // yield takeLatest("REQUEST_AUTHENTICATION", authenticate);
+  yield takeLatest("REQUEST_AUTHENTICATION", authenticate);
 }

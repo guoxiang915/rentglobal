@@ -5,7 +5,7 @@ import { TextField as MUITextField, withStyles } from "@material-ui/core";
 
 const styleSheet = theme => ({
   root: {
-    borderRadius: 99999
+    borderRadius: 99999,
   },
 
   label: {
@@ -19,7 +19,8 @@ const styleSheet = theme => ({
 
   errorMessage: {
     ...theme.typography.errorMessage,
-    color: `${theme.colors.primary.errorRed} !important`
+    color: `${theme.colors.primary.errorRed} !important`,
+    textAlign: "right"
   },
 
   inputError: {
@@ -28,7 +29,7 @@ const styleSheet = theme => ({
 
   input: {
     ...theme.typography.primaryBody,
-    padding: theme.spacing(2)
+    padding: `14px 16px`
   },
 
   readOnly: {

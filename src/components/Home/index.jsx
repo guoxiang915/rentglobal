@@ -8,7 +8,7 @@ const styleSheet = theme => ({
 
   landingBoard: {
     width: "100%",
-    background: "url('assets/img/Image 1.png') 0% 0% no-repeat padding-box",
+    background: "url('assets/img/img_header.jpg') 0% 0% no-repeat padding-box",
   }
 });
 
