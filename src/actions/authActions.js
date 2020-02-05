@@ -1,3 +1,32 @@
+import axios from "axios";
+import { API } from "../utils/constants";
+
+export const resultExist = payload => {
+  return {
+    type: "RESPONSE_IS_EXIST",
+    loginMode: payload && payload.message ? "login" : "register"
+  };
+};
+
+export const isExist = (dispatch, payload) => {
+  // axios.get(`${API}/users/exist`, payload)
+  new Promise((resolve, reject) => {
+    setTimeout(() => resolve({ message: payload }), 3000);
+    // setTimeout(() => reject({ message: "Exist" }), 3000);
+  }).then(
+    resp => {
+      dispatch(resultExist(resp));
+    },
+    error => {
+      dispatch(resultExist(null));
+    }
+  );
+
+  return {
+    type: "REQUEST_IS_EXIST"
+  };
+};
+
 export const login = (payload, history) => {
   return {
     type: "REQUEST_LOGIN",

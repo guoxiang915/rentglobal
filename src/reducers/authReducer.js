@@ -4,11 +4,26 @@ const INITIAL_STATE = {
   isLoading: false,
   error: null,
   loaded: false,
-  successMsg: null
+  successMsg: null,
+  loginMode: null
 };
 
 const authReducer = (currentState = INITIAL_STATE, action) => {
   switch (action.type) {
+    case "REQUEST_IS_EXIST":
+      return {
+        ...currentState,
+        isLoading: true,
+        successMsg: null
+      };
+      
+    case "RESPONSE_IS_EXIST":
+      return {
+        ...currentState,
+        isLoading: false,
+        loginMode: action.loginMode
+      };
+
     case "REQUEST_LOGIN":
       return {
         ...currentState,

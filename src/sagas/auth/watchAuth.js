@@ -54,5 +54,5 @@ function* authenticate(action) {
 }
 
 export default function* watchAuth() {
-  yield takeLatest("REQUEST_AUTHENTICATION", authenticate);
+  // yield takeLatest("REQUEST_AUTHENTICATION", authenticate);
 }
