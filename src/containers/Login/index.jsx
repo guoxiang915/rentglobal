@@ -1,19 +1,19 @@
-import { connect } from 'react-redux';
-import Login from '../../components/Login';
-import * as authActions from '../../actions/authActions';
+import { connect } from "react-redux";
+import Login from "../../components/Login";
+import * as authActions from "../../actions/authActions";
 
-const  mapStateToProps = (state) => {
-    return {
-       auth:state.authState,
-    };
-}
+const mapStateToProps = state => {
+  return {
+    auth: state.authState
+  };
+};
 
-const mapDispatchToprops = (dispatch) => {
-    return {
-       mappedLogin: (credentials,history) => dispatch(authActions.login(credentials,history)),
-    }
-}
+const mapDispatchToprops = dispatch => {
+  return {
+    getRegisteredUser: email => dispatch(authActions.isExist(dispatch, email)),
+    mappedLogin: (credentials, history) =>
+      dispatch(authActions.login(credentials, history))
+  };
+};
 
-export default connect(
-    mapStateToProps, mapDispatchToprops
-)(Login);
+export default connect(mapStateToProps, mapDispatchToprops)(Login);

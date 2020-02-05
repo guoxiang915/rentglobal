@@ -3,6 +3,7 @@
     "loginToRENTGLOBAL": "Log in to RENTGLOBAL",
     "signup": "Sign Up",
     "email": "Email",
+    "invalidEmail": "Invalid email address",
     "password": "Password",
     "rememberMe": "Remember me",
     "confirm": "Confirm",
