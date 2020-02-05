@@ -6,7 +6,7 @@ import clsx from "clsx";
 const styleSheet = theme => ({
   root: {
     background: `${theme.colors.primary.mainColor}`,
-    padding: "3px 30px",
+    padding: "5px 30px",
     textTransform: "none",
     fontWeight: 500,
     color: `${theme.colors.primary.white}`,

@@ -16,7 +16,10 @@ import {
 const styleSheet = theme => ({
   root: {
     color: theme.colors.primary.darkGrey,
-    padding: "0px !important",
+    padding: 5,
+    margin: 0,
+    border: "none",
+    borderRadius: 99999,
     "&:hover": {
       color: theme.colors.primary.mainColor
     }
@@ -25,7 +28,6 @@ const styleSheet = theme => ({
   outlined: {
     background: "none",
     border: `1px solid ${theme.colors.primary.borderGrey}`,
-    borderRadius: 99999,
     "&:hover": {
       border: `1px solid ${theme.colors.primary.mainColor}`
     }
@@ -35,18 +37,18 @@ const styleSheet = theme => ({
     color: theme.colors.primary.white,
     background: `${theme.colors.primary.mainColor}`,
     border: "none",
-    borderRadius: 99999,
     "&:hover": {
-      background: `${theme.colors.primary.darkColor}`
+      background: `${theme.colors.primary.darkColor}`,
+      color: theme.colors.primary.white
     }
   },
 
   checkedOutlined: {
-    border: `1px solid ${theme.colors.primary.mainColor}`
+    border: `1px solid ${theme.colors.primary.mainColor} !important`
   },
 
   checkedContained: {
-    border: `1px solid ${theme.colors.primary.darkColor}`
+    background: `${theme.colors.primary.darkColor}`
   },
 
   rounded: {
@@ -68,6 +70,12 @@ const styleSheet = theme => ({
 
   primaryIcon: {
     color: theme.colors.primary.mainColor
+  },
+
+  controlStyle: {
+    padding: 0,
+    margin: 0,
+    position: "absolute"
   },
 
   secondaryIcon: {
@@ -98,7 +106,11 @@ const Selection = withStyles(styleSheet, { name: "Selection" })(
         control: Control,
         icon: Icon,
         checkedIcon: CheckedIcon,
-        variant
+        variant,
+        label,
+        isChecked,
+        onChange,
+        ...props
       } = this.props;
 
       return (
@@ -127,19 +139,23 @@ const Selection = withStyles(styleSheet, { name: "Selection" })(
                   }}
                 />
               }
-              checked={this.props.isChecked}
-              onChange={this.props.onChange}
+              checked={isChecked}
+              onChange={onChange}
+              className={classes.controlStyle}
             />
           }
-          label={this.props.label}
+          label={label}
           classes={{
             root: clsx(
               classes.root,
               variant === "outlined" && classes.outlined,
-              variant === "contained" && classes.contained
+              variant === "outlined" && isChecked && classes.checkedOutlined,
+              variant === "contained" && classes.contained,
+              variant === "contained" && isChecked && classes.checkedContained
             ),
             label: classes.label
           }}
+          {...props}
         />
       );
     }
