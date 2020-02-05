@@ -21,5 +21,9 @@
     "loginWith": "Login with ",
     "dontHaveAccount": "Don't have an account?",
     "signupWith": "Sign up with ",
-    "alreadyHaveAccount": "Already have an account?"
+    "alreadyHaveAccount": "Already have an account?",
+    "allRightsReserved": "© 2020 RENTGLOBAL, Inc. All rights reserved.",
+    "terms": "Terms",
+    "privacy": "Privacy",
+    "siteMap": "Site Map"
 }

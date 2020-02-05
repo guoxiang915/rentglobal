@@ -20,11 +20,6 @@ import {
 import { MailOutline, LockOpen } from "@material-ui/icons";
 
 const styleSheet = theme => ({
-  container: {
-    textAlign: "center",
-    alignItems: "center"
-  },
-
   backgroundWrapper: {
     width: "100%",
     height: theme.spacing(5),
@@ -33,16 +28,29 @@ const styleSheet = theme => ({
   },
 
   loginWrapper: {
+    textAlign: "center",
+    alignItems: "center",
+    padding: "20px 0px",
     backgroundColor: "white"
   },
 
   loginCard: {
-    width: 450,
+    width: "100%",
+    maxWidth: 450,
+    borderRadius: 8,
+    border: `1px solid ${theme.colors.primary.borderGrey}`,
     padding: "10px 40px 20px 40px",
-    marginTop: theme.spacing(5),
-    marginBottom: theme.spacing(6),
+    marginTop: theme.spacing(2),
+    marginBottom: theme.spacing(4),
     marginLeft: "auto",
-    marginRight: "auto"
+    marginRight: "auto",
+    [theme.breakpoints.down("sm")]: {
+      border: "none"
+    }
+  },
+
+  loginForm: {
+    width: "100%"
   },
 
   loginTitle: {
@@ -151,9 +159,14 @@ class Login extends Component {
     return (
       <div>
         <div className={classes.backgroundWrapper}></div>
-        <div className={classes.container}>
-          <Card className={classes.loginCard}>
-            <form onSubmit={this.handleSubmit} noValidate autoComplete="off">
+        <div className={classes.loginWrapper}>
+          <Column classes={{ box: classes.loginCard }}>
+            <form
+              onSubmit={this.handleSubmit}
+              noValidate
+              autoComplete="off"
+              className={classes.loginForm}
+            >
               <Typography className={classes.loginTitle}>
                 {t("loginToRENTGLOBAL")}
               </Typography>
@@ -251,6 +264,16 @@ class Login extends Component {
                 )}
 
                 <Column classes={{ box: classes.socialWrapper }}>
+                  {loginMode === "login" && (
+                    <>
+                      <Divider light />
+                      <Box paddingTop paddingBottom>
+                        <Link variant="primary" to="/reset-password">
+                          {t("forgotPassword")}
+                        </Link>
+                      </Box>
+                    </>
+                  )}
                   <HorizontalDivider text={t("or")} light />
 
                   {loginMode === "login" && (
@@ -328,7 +351,7 @@ class Login extends Component {
                 Forgot password?
               </a>
             </div> */}
-          </Card>
+          </Column>
           {/* <div className="signUpContainer">
             <div className="signUpLink">
               <Button

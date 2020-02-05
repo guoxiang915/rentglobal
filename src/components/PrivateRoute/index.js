@@ -1,11 +1,19 @@
 import React from "react";
 import { Route, Redirect, withRouter } from "react-router-dom";
+import PropTypes from "prop-types";
 import Auth from "../../utils/auth";
 import AppWrapper from "../../containers/AppWrapper";
+import AppFooter from "../Layout/AppFooter";
 
 const authObj = new Auth();
 
 class PrivateRoute extends React.Component {
+  static propTypes = {
+    component: PropTypes.any,
+    noHeader: PropTypes.bool,
+    noFooter: PropTypes.bool
+  };
+
   constructor(props) {
     super(props);
     this.state = {
@@ -27,7 +35,7 @@ class PrivateRoute extends React.Component {
   };
 
   render() {
-    const { component: Component, isSimplePage, ...rest } = this.props;
+    const { component: Component, noHeader, noFooter, ...rest } = this.props;
     const { isLoggedIn, isLoading, loaded } = this.props.auth;
 
     return (
@@ -36,8 +44,9 @@ class PrivateRoute extends React.Component {
         render={props => {
           return (
             <>
-              {!isSimplePage && <AppWrapper />}
+              {!noHeader && <AppWrapper />}
               <Component {...props} />
+              {!noFooter && <AppFooter />}
             </>
           );
         }}

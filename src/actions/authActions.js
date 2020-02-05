@@ -11,8 +11,8 @@ export const resultExist = payload => {
 export const isExist = (dispatch, payload) => {
   // mock api
   new Promise((resolve, reject) => {
-    // setTimeout(() => resolve({ message: payload }), 30);
-    setTimeout(() => reject({ message: "Exist" }), 3000);
+    setTimeout(() => resolve({ message: payload }), 30);
+    // setTimeout(() => reject({ message: "Exist" }), 3000);
   }).then(
     resp => {
       dispatch(resultExist(resp));
