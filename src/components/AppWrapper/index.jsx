@@ -22,7 +22,7 @@ import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
 import Logo from "../../assets/logo.svg";
 
 import "./style.css";
-import { Grid } from "@material-ui/core";
+import { Grid, Hidden } from "@material-ui/core";
 import { withTranslation } from "react-i18next";
 import {
   Button,
@@ -41,16 +41,23 @@ const styleSheet = theme => ({
     flexGrow: 1,
     // marginTop: 70,
     boxShadow: "0px 34px 34px #00000026",
+    height: "100%",
+    background: "rgba(255, 255, 255, .8)",
+    backdropFilter: "blur(10px)"
   },
+
   flex: {
     flexGrow: 1
   },
+
   sideDrawer: {
     width: 300
   },
+
   list: {
     width: 250
   },
+
   textField: {
     marginLeft: theme.spacing(),
     marginRight: theme.spacing(),
@@ -65,10 +72,12 @@ const styleSheet = theme => ({
   },
 
   headerWrapper: {
-    padding: theme.spacing(4) - 4,
-    paddingBottom: theme.spacing(4) - 8,
+    height: "100%",
+    paddingLeft: theme.spacing(4) - 2,
+    paddingRight: theme.spacing(4) - 2,
     [theme.breakpoints.down("sm")]: {
-      padding: theme.spacing(2)
+      paddingLeft: theme.spacing(2),
+      paddingRight: theme.spacing(2)
     }
   },
 
@@ -79,6 +88,13 @@ const styleSheet = theme => ({
 
   logo: {
     height: 44
+  },
+
+  headerMenu: {
+    zIndex: 1500,
+    minWidth: 200,
+    position: "relative",
+    top: 30
   }
 });
 
@@ -184,7 +200,7 @@ class Appwrapper extends Component {
     } = this.state;
     const open = Boolean(anchorEl);
     const { showAppBar, showSearchBar, appBarTitle } = this.props.appState;
-    
+
     const homeLinks = (
       <div>
         <IconButton
@@ -249,6 +265,7 @@ class Appwrapper extends Component {
 
     const location = "Montreal";
 
+    console.log('loggedin', isLoggedIn);
     return (
       <div className={classes.root}>
         <Grid
@@ -261,67 +278,100 @@ class Appwrapper extends Component {
           <Grid item>
             <div className={classes.logoWrapper}>
               <Link to="/">
-              <img src={Logo} className={classes.logo} />
+                <img src={Logo} className={classes.logo} />
               </Link>
-              <Button
-                aria-controls="location-menu"
-                aria-haspopup="true"
-                onClick={this.handleMenu("locationEl")}
-                color="secondary"
-                transparent
-              >
-                {t("changeLocation", { location })}
-                <ExpandMoreIcon />
-              </Button>
-              <Menu
-                id="location-menu"
-                anchorEl={locationEl}
-                keepMounted
-                open={Boolean(locationEl)}
-                onClose={this.handleClose("locationEl")}
-              >
-                <MenuItem onClick={this.handleSelectLocation("Montreal")}>
-                  Montreal
-                </MenuItem>
-                <MenuItem onClick={this.handleSelectLocation("Toronto")}>
-                  Toronto
-                </MenuItem>
-              </Menu>
+              <Hidden smDown>
+                <Button
+                  aria-controls="location-menu"
+                  aria-haspopup="true"
+                  onClick={this.handleMenu("locationEl")}
+                  color="secondary"
+                  transparent
+                >
+                  {t("changeLocation", { location })}
+                  <ExpandMoreIcon />
+                </Button>
+                <Menu
+                  id="location-menu"
+                  anchorEl={locationEl}
+                  keepMounted
+                  open={Boolean(locationEl)}
+                  onClose={this.handleClose("locationEl")}
+                  className={classes.headerMenu}
+                >
+                  <MenuItem onClick={this.handleSelectLocation("Montreal")}>
+                    Montreal
+                  </MenuItem>
+                  <MenuItem onClick={this.handleSelectLocation("Toronto")}>
+                    Toronto
+                  </MenuItem>
+                </Menu>
+              </Hidden>
             </div>
           </Grid>
           <Grid item>
             <Row>
-              <Column>
-                <Button
-                  aria-controls="language-menu"
-                  aria-haspopup="true"
-                  onClick={this.handleMenu("languageEl")}
-                  color="secondary"
-                  transparent
+              <Hidden smDown>
+                <Column>
+                  <Button
+                    aria-controls="language-menu"
+                    aria-haspopup="true"
+                    onClick={this.handleMenu("languageEl")}
+                    color="secondary"
+                    transparent
+                  >
+                    {t("en")}
+                  </Button>
+                  <Menu
+                    id="language-menu"
+                    anchorEl={languageEl}
+                    keepMounted
+                    open={Boolean(languageEl)}
+                    onClose={this.handleClose("languageEl")}
+                    className={classes.headerMenu}
+                  >
+                    <MenuItem onClick={this.handleSelectLanguage("English")}>
+                      English
+                    </MenuItem>
+                    <MenuItem onClick={this.handleSelectLanguage("French")}>
+                      French
+                    </MenuItem>
+                  </Menu>
+                </Column>
+                <Column paddingLeft>
+                  <Button variant="secondary">{t("placeToRent")}</Button>
+                </Column>
+                <Column paddingLeft>
+                  <Link variant="body2" to="/login">
+                    {t("loginOrRegister")}
+                  </Link>
+                </Column>
+              </Hidden>
+              <Hidden smUp>
+                <IconButton
+                  onClick={() => this.toggleDrawer(true)}
+                  className={classes.menuButton}
+                  color="inherit"
+                  aria-label="Menu"
                 >
-                  {t("en")}
-                </Button>
-                <Menu
-                  id="language-menu"
-                  anchorEl={languageEl}
-                  keepMounted
-                  open={Boolean(languageEl)}
-                  onClose={this.handleClose("languageEl")}
+                  <MenuIcon />
+                </IconButton>
+                <SwipeableDrawer
+                  open={drawerOpen}
+                  onClose={() => this.toggleDrawer(false)}
+                  onOpen={() => this.toggleDrawer(true)}
+                  disableSwipeToOpen={isLoggedIn ? false : true}
+                  className={classes.sideDrawer}
                 >
-                  <MenuItem onClick={this.handleSelectLanguage("English")}>
-                    English
-                  </MenuItem>
-                  <MenuItem onClick={this.handleSelectLanguage("French")}>
-                    French
-                  </MenuItem>
-                </Menu>
-              </Column>
-              <Column paddingLeft>
-                <Button variant="secondary">{t("placeToRent")}</Button>
-              </Column>
-              <Column paddingLeft>
-                <Link variant="body2" to="/login">{t("loginOrRegister")}</Link>
-              </Column>
+                  <div>
+                    {user && <DrawerUser user={user} />}
+                    <SideMenu
+                      isLoggedIn={isLoggedIn}
+                      navigate={this.navigate}
+                    />
+                  </div>
+                </SwipeableDrawer>
+              </Hidden>
             </Row>
           </Grid>
         </Grid>

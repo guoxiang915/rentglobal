@@ -19,7 +19,7 @@ const styleSheet = theme => ({
 class Link extends Component {
   static propTypes = {
     classes: PropTypes.object.isRequired,
-    styles: PropTypes.object
+    styles: PropTypes.any
   };
 
   render() {

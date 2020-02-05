@@ -8,11 +8,11 @@ import withMuiRoot from "../../withMuiRoot";
 
 const styleSheet = theme => ({
   footerWrapper: {
+    height: "100%",
     borderTop: `0.5px solid ${theme.colors.primary.borderGrey}`,
-    paddingTop: theme.spacing(4),
-    paddingBottom: theme.spacing(5),
+    paddingTop: theme.spacing(2),
     paddingLeft: theme.spacing(2),
-    paddingRight: theme.spacing(2),
+    paddingRight: theme.spacing(2)
   },
 
   container: {
@@ -20,7 +20,17 @@ const styleSheet = theme => ({
     maxWidth: 1000
   },
 
-  navWrapper: {},
+  navWrapper: {
+    [theme.breakpoints.down("sm")]: {
+      flexDirection: "column",
+      alignItems: "flex-start"
+    }
+  },
+
+  navLink: {
+    color: theme.colors.primary.grey,
+    marginRight: theme.spacing(2)
+  },
 
   logoWrapper: {},
 
@@ -31,14 +41,22 @@ class AppFooter extends Component {
   render() {
     const { classes, t } = this.props;
     return (
-      <Column classes={{box: classes.footerWrapper}}>
+      <Column classes={{ box: classes.footerWrapper }}>
         <Row classes={{ box: classes.container }} fullWidth>
           <Box classes={{ box: classes.navWrapper }}>
-            <Typography variant="caption">
+            <Typography variant="caption" className={classes.navLink}>
               {t("allRightsReserved")}
-              <Link to="/terms">{t("terms")}</Link>
-              <Link to="/terms">{t("privacy")}</Link>
-              <Link to="/terms">{t("siteMap")}</Link>
+            </Typography>
+            <Typography variant="caption">
+              <Link to="/terms" styles={classes.navLink}>
+                {t("terms")}
+              </Link>
+              <Link to="/privacy" styles={classes.navLink}>
+                {t("privacy")}
+              </Link>
+              <Link to="/sitemap" styles={classes.navLink}>
+                {t("siteMap")}
+              </Link>
             </Typography>
           </Box>
           <Stretch />
