@@ -7,7 +7,7 @@ import Typography from "@material-ui/core/Typography";
 import IconButton from "@material-ui/core/IconButton";
 import MenuIcon from "@material-ui/icons/Menu";
 import SwipeableDrawer from "@material-ui/core/SwipeableDrawer";
-import SideMenu from "../SideMenu";
+import SideMenu from "../Layout/SideMenu";
 import DrawerUser from "../DrawerUser";
 import Auth from "../../utils/auth";
 import MenuItem from "@material-ui/core/MenuItem";
@@ -43,7 +43,10 @@ const styleSheet = theme => ({
     boxShadow: "0px 34px 34px #00000026",
     height: "100%",
     background: "rgba(255, 255, 255, .8)",
-    backdropFilter: "blur(10px)"
+    backdropFilter: "blur(10px)",
+    [theme.breakpoints.down("sm")]: {
+      boxShadow: "0px 14px 14px #00000026"
+    }
   },
 
   flex: {
@@ -264,8 +267,7 @@ class Appwrapper extends Component {
     );
 
     const location = "Montreal";
-
-    console.log('loggedin', isLoggedIn);
+    
     return (
       <div className={classes.root}>
         <Grid

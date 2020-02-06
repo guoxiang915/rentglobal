@@ -8,7 +8,8 @@ const styleSheet = theme => ({
 
   landingBoard: {
     width: "100%",
-    background: "url('assets/img/img_header.jpg') 0% 0% no-repeat padding-box",
+    background: `url(${require("../../assets/img/img_header.jpg")}) 0% 0% no-repeat padding-box`,
+    backgroundSize: "contain"
   }
 });
 
@@ -17,8 +18,7 @@ class Home extends Component {
     const { classes } = this.props;
     return (
       <div className={classes.root}>
-        <div className={classes.landingBoard}>
-        </div>
+        <div className={classes.landingBoard}></div>
       </div>
     );
   }

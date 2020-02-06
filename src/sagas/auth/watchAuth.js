@@ -8,7 +8,7 @@ const sendRequest = async token => {
     return await new Promise(resolve =>
       setTimeout(
         resolve(
-          JSON.stringify({ success: true, token: "auth-token", message: "" })
+          JSON.stringify({ success: false, token: "auth-token", message: "Authentication failed" })
         ),
         3000
       )
