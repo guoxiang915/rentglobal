@@ -7,6 +7,7 @@ import { createBrowserHistory } from "history";
 import { BrowserRouter as Router } from "react-router-dom";
 import routes from "./routes";
 import { I18nextProvider } from "react-i18next";
+import theme from "./common/config/theme";
 import i18n from "./i18n";
 
 import "./common/styles/global.css";
@@ -18,11 +19,13 @@ class App extends Component {
   render() {
     return (
       <Router>
-        <I18nextProvider i18n={i18n} initialLanguage="en">
-          <Provider store={store}>
-            <Main history={history} />
-          </Provider>
-        </I18nextProvider>
+        <MuiThemeProvider theme={theme}>
+          <I18nextProvider i18n={i18n} initialLanguage="en">
+            <Provider store={store}>
+              <Main history={history} />
+            </Provider>
+          </I18nextProvider>
+        </MuiThemeProvider>
       </Router>
     );
   }

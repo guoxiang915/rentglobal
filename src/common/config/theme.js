@@ -5,13 +5,16 @@ const colors = {
   primary: {
     black: "#000000",
     white: "#ffffff",
-    mainColor: "#dad800",
+    mainColor: "#d7df23",
     darkColor: "#a3b100",
     darkGrey: "#525252",
     grey: "#b9b9b9",
     lightGrey: "#fafafa",
     borderGrey: "#e8e8e8",
-    errorRed: "#fd6d9f"
+    errorRed: "#fd6d9f",
+    lightPink: "#8468e2",
+    pink: "#8468e2",
+    darkPink: "#63529b"
   }
 };
 
@@ -26,6 +29,11 @@ const palette = {
     light: colors.primary.lightGrey,
     main: colors.primary.grey,
     dark: colors.primary.darkGrey
+  },
+  third: {
+    light: colors.primary.lightPink,
+    main: colors.primary.pink,
+    dark: colors.primary.darkPink
   }
 };
 

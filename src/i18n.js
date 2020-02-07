@@ -3,6 +3,7 @@ import LanguageDetector from "i18next-browser-languagedetector";
 
 // english
 import enCommon from "./common/locales/en/common.json";
+import enHome from "./common/locales/en/common.json";
 
 const moment = require("moment");
 
@@ -10,7 +11,8 @@ i18n.use(LanguageDetector).init({
   // init resources
   resources: {
     en: {
-      common: enCommon
+      common: enCommon,
+      home: enHome
     }
   },
   fallbackLng: "en",
