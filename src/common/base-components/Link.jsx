@@ -13,6 +13,20 @@ const styleSheet = theme => ({
       color: theme.colors.primary.mainColor
     },
     transition: "all .2s"
+  },
+
+  primary: {
+    color: theme.colors.primary.mainColor,
+    "&:hover": {
+      color: theme.colors.primary.darkColor
+    }
+  },
+
+  secondary: {
+    color: theme.colors.primary.darkGrey,
+    "&:hover": {
+      color: theme.colors.primary.lightGrey
+    }
   }
 });
 
@@ -23,11 +37,23 @@ class Link extends Component {
   };
 
   render() {
-    const { classes, children, underline, styles, ...props } = this.props;
+    const {
+      classes,
+      children,
+      underline,
+      variant,
+      styles,
+      ...props
+    } = this.props;
 
     return (
       <RouterLink
-        className={clsx(classes.root, styles)}
+        className={clsx(
+          classes.root,
+          variant === "primary" && classes.primary,
+          variant === "secondary" && classes.secondary,
+          styles
+        )}
         underline={underline ? underline : "none"}
         {...props}
       >

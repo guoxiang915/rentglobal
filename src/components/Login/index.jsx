@@ -95,7 +95,6 @@ class AuthWrapper extends Component {
   }
 
   componentWillReceiveProps(newProps) {
-    console.log(newProps);
     if (this.props.auth.loginMode !== newProps.auth.loginMode) {
       let newRoute = "/auth";
       if (newProps.auth.loginMode === "login") {
@@ -141,13 +140,14 @@ class AuthWrapper extends Component {
   render() {
     const { classes, t } = this.props;
     const { isLoggedIn, error, isLoading, loginMode } = this.props.auth;
+    const route = this.props.match.pathname;
 
     return (
       <div>
         <div className={classes.backgroundWrapper}></div>
         <div className={classes.loginWrapper}>
           <Column classes={{ box: classes.loginCard }}>
-            {!loginMode && (
+            {(route === "/auth" || !loginMode) && (
               <form
                 onSubmit={this.handleSubmit}
                 noValidate
@@ -216,7 +216,12 @@ class AuthWrapper extends Component {
               />
               <Route
                 path="/auth/forgot-password"
-                render={() => <ForgotPasswordForm email={this.state.email} />}
+                render={() => (
+                  <ForgotPasswordForm
+                    email={this.state.email}
+                    mappedResetPassword={() => {}}
+                  />
+                )}
               />
             </Collapse>
 

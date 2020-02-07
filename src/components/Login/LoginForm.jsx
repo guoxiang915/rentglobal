@@ -16,42 +16,11 @@ import {
 import { MailOutline, LockOpen } from "@material-ui/icons";
 
 const styleSheet = theme => ({
-  backgroundWrapper: {
-    width: "100%",
-    height: theme.spacing(6),
-    background: `transparent url(${require("../../assets/img/img_header@2x.jpg")}) 0% 0% no-repeat padding-box`,
-    [theme.breakpoints.down("sm")]: {
-      background: "white"
-    }
-  },
-
-  loginWrapper: {
-    textAlign: "center",
-    alignItems: "center",
-    padding: "20px 0px",
-    backgroundColor: "white"
-  },
-
-  loginCard: {
-    width: "100%",
-    maxWidth: 450,
-    borderRadius: 8,
-    border: `1px solid ${theme.colors.primary.borderGrey}`,
-    padding: "10px 40px 20px 40px",
-    marginTop: theme.spacing(2),
-    marginBottom: theme.spacing(4),
-    marginLeft: "auto",
-    marginRight: "auto",
-    [theme.breakpoints.down("sm")]: {
-      border: "none"
-    }
-  },
-
-  loginForm: {
+  formWrapper: {
     width: "100%"
   },
 
-  loginTitle: {
+  formTitle: {
     color: theme.colors.primary.darkGrey,
     lineHeight: "26px",
     fontSize: "20px",
@@ -59,16 +28,20 @@ const styleSheet = theme => ({
     textAlign: "center"
   },
 
-  loginButton: {
+  fixedWidthButton: {
     width: 200
   },
 
-  socialWrapper: {
+  moreWrapper: {
     marginTop: 20
   },
 
-  socialButton: {
+  fullWidth: {
     width: "100%"
+  },
+
+  switchText: {
+    fontSize: "14px"
   }
 });
 
@@ -80,8 +53,6 @@ class LoginForm extends Component {
       emailError: null,
       password: "",
       passwordError: null,
-      createPassword: "",
-      createPasswordError: null,
       isRemember: false,
       error: null
     };
@@ -134,14 +105,6 @@ class LoginForm extends Component {
 
   handleLoginGoogle = () => {};
 
-  handleSignup = () => {
-    console.log("sign up");
-  };
-
-  handleSignupFacebook = () => {};
-
-  handleSignupGoogle = () => {};
-
   render() {
     const { classes, t } = this.props;
 
@@ -150,11 +113,9 @@ class LoginForm extends Component {
         onSubmit={this.handleSubmit}
         noValidate
         autoComplete="off"
-        className={classes.loginForm}
+        className={classes.formWrapper}
       >
-        <Typography className={classes.loginTitle}>
-          {t("loginToRENTGLOBAL")}
-        </Typography>
+        <Typography className={classes.formTitle}>{t("loginToRENTGLOBAL")}</Typography>
         <Box paddingTop>
           <TextField
             id="email"
@@ -184,7 +145,7 @@ class LoginForm extends Component {
           <Checkbox
             variant="outlined"
             label={t("rememberMe")}
-            className={classes.loginButton}
+            className={classes.fixedWidthButton}
             isChecked={this.state.isRemember}
             onChange={this.handleToggleRememberUser}
           />
@@ -194,18 +155,20 @@ class LoginForm extends Component {
             type="submit"
             variant="contained"
             size="medium"
-            className={classes.loginButton}
+            className={classes.fixedWidthButton}
             onClick={this.handleLogin}
           >
             {t("login")}
           </Button>
         </Box>
-        <Column classes={{ box: classes.socialWrapper }}>
+        <Column classes={{ box: classes.moreWrapper }}>
           <Divider light />
           <Box paddingTop paddingBottom>
-            <Link variant="primary" to="/forgot-password">
-              {t("forgotPassword")}
-            </Link>
+            <Typography>
+              <Link variant="primary" to="/auth/forgot-password">
+                {t("forgotPassword")}
+              </Link>
+            </Typography>
           </Box>
 
           <HorizontalDivider text={t("or")} light />
@@ -214,7 +177,7 @@ class LoginForm extends Component {
               type="submit"
               variant="secondary"
               size="medium"
-              className={classes.socialButton}
+              className={classes.fullWidth}
               onClick={this.handleLoginFacebook}
             >
               {t("loginWith")}&nbsp;
@@ -226,7 +189,7 @@ class LoginForm extends Component {
               type="submit"
               variant="secondary"
               size="medium"
-              className={classes.socialButton}
+              className={classes.fullWidth}
               onClick={this.handleLoginGoogle}
             >
               {t("loginWith")}&nbsp;
@@ -235,9 +198,9 @@ class LoginForm extends Component {
           </Box>
         </Column>
 
-        <Column paddingTopDouble classes={{ box: classes.switcherWrapper }}>
+        <Column paddingTopDouble>
           <Box paddingTop>
-            <Typography color="secondary" size="small">
+            <Typography color="secondary" className={classes.switchText}>
               {t("dontHaveAccount")}
               <Link to="/auth/register">&nbsp;{t("register")}</Link>
             </Typography>

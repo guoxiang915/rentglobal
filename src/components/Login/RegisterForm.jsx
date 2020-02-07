@@ -1,61 +1,24 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { withStyles } from "@material-ui/core/styles";
-import { Card, Collapse, Typography, InputAdornment } from "@material-ui/core";
-import { Link as RouterLink } from "react-router-dom";
-import "./Login.css";
+import { Typography } from "@material-ui/core";
 import { withTranslation } from "react-i18next";
-import withMuiRoot from "../../withMuiRoot";
 import {
   TextField,
   Button,
   Box,
   Column,
-  Checkbox,
-  Spinner,
   Link,
-  Divider,
   HorizontalDivider
 } from "../../common/base-components";
 import { MailOutline, LockOpen } from "@material-ui/icons";
 
 const styleSheet = theme => ({
-  backgroundWrapper: {
-    width: "100%",
-    height: theme.spacing(6),
-    background: `transparent url(${require("../../assets/img/img_header@2x.jpg")}) 0% 0% no-repeat padding-box`,
-    [theme.breakpoints.down("sm")]: {
-      background: "white"
-    }
-  },
-
-  loginWrapper: {
-    textAlign: "center",
-    alignItems: "center",
-    padding: "20px 0px",
-    backgroundColor: "white"
-  },
-
-  loginCard: {
-    width: "100%",
-    maxWidth: 450,
-    borderRadius: 8,
-    border: `1px solid ${theme.colors.primary.borderGrey}`,
-    padding: "10px 40px 20px 40px",
-    marginTop: theme.spacing(2),
-    marginBottom: theme.spacing(4),
-    marginLeft: "auto",
-    marginRight: "auto",
-    [theme.breakpoints.down("sm")]: {
-      border: "none"
-    }
-  },
-
-  loginForm: {
+  formWrapper: {
     width: "100%"
   },
 
-  loginTitle: {
+  formTitle: {
     color: theme.colors.primary.darkGrey,
     lineHeight: "26px",
     fontSize: "20px",
@@ -63,16 +26,20 @@ const styleSheet = theme => ({
     textAlign: "center"
   },
 
-  loginButton: {
+  submitButton: {
     width: 200
   },
 
-  socialWrapper: {
+  moreWrapper: {
     marginTop: 20
   },
 
-  socialButton: {
+  fullWidth: {
     width: "100%"
+  },
+
+  switchText: {
+    fontSize: "14px"
   }
 });
 
@@ -84,8 +51,6 @@ class RegisterForm extends Component {
       emailError: null,
       password: "",
       passwordError: null,
-      createPassword: "",
-      createPasswordError: null,
       isRemember: false,
       error: null
     };
@@ -171,9 +136,9 @@ class RegisterForm extends Component {
         onSubmit={this.handleSubmit}
         noValidate
         autoComplete="off"
-        className={classes.loginForm}
+        className={classes.formWrapper}
       >
-        <Typography className={classes.loginTitle}>
+        <Typography className={classes.formTitle}>
           {t("signupToRENTGLOBAL")}
         </Typography>
         <Box paddingTop>
@@ -206,19 +171,20 @@ class RegisterForm extends Component {
             type="submit"
             variant="contained"
             size="medium"
-            className={classes.loginButton}
+            className={classes.submitButton}
             onClick={this.handleSignup}
           >
             {t("signup")}
           </Button>
         </Box>
-        <Column classes={{ box: classes.socialWrapper }}>
+        <Column classes={{ box: classes.moreWrapper }}>
+          <HorizontalDivider text={t("or")} light />
           <Box paddingTop justifyChildrenEnd fullWidth>
             <Button
               type="submit"
               variant="secondary"
               size="medium"
-              className={classes.socialButton}
+              className={classes.fullWidth}
               onClick={this.handleSignupFacebook}
             >
               {t("signupWith")}&nbsp;
@@ -230,7 +196,7 @@ class RegisterForm extends Component {
               type="submit"
               variant="secondary"
               size="medium"
-              className={classes.socialButton}
+              className={classes.fullWidth}
               onClick={this.handleSignupGoogle}
             >
               {t("signupWith")}&nbsp;
@@ -239,9 +205,9 @@ class RegisterForm extends Component {
           </Box>
         </Column>
 
-        <Column paddingTopDouble classes={{ box: classes.switcherWrapper }}>
+        <Column paddingTopDouble>
           <Box paddingTop>
-            <Typography>
+            <Typography color="secondary" className={classes.switchText}>
               {t("alreadyHaveAccount")}
               <Link to="/auth/login">&nbsp;{t("login")}</Link>
             </Typography>
