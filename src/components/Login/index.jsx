@@ -2,7 +2,8 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { withStyles } from "@material-ui/core/styles";
 import { Card, Collapse, Typography, InputAdornment } from "@material-ui/core";
-import { Link as RouterLink } from "react-router-dom";
+import { MailOutline, LockOpen } from "@material-ui/icons";
+import { Link as RouterLink, Route } from "react-router-dom";
 import "./Login.css";
 import { withTranslation } from "react-i18next";
 import withMuiRoot from "../../withMuiRoot";
@@ -17,7 +18,9 @@ import {
   Divider,
   HorizontalDivider
 } from "../../common/base-components";
-import { MailOutline, LockOpen } from "@material-ui/icons";
+import LoginForm from "./LoginForm";
+import RegisterForm from "./RegisterForm";
+import ForgotPasswordForm from "./ForgotPasswordForm";
 
 const styleSheet = theme => ({
   backgroundWrapper: {
@@ -51,7 +54,7 @@ const styleSheet = theme => ({
     }
   },
 
-  loginForm: {
+  fullWidth: {
     width: "100%"
   },
 
@@ -76,7 +79,7 @@ const styleSheet = theme => ({
   }
 });
 
-class Login extends Component {
+class AuthWrapper extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -89,7 +92,22 @@ class Login extends Component {
       isRemember: false,
       error: null
     };
-    this.handleSubmit = this.handleSubmit.bind(this);
+  }
+
+  componentWillReceiveProps(newProps) {
+    console.log(newProps);
+    if (this.props.auth.loginMode !== newProps.auth.loginMode) {
+      let newRoute = "/auth";
+      if (newProps.auth.loginMode === "login") {
+        newRoute += "/login";
+      } else if (newProps.auth.loginMode === "register") {
+        newRoute += "/register";
+      }
+
+      if (newRoute !== this.props.match.path) {
+        this.props.history.push(newRoute);
+      }
+    }
   }
 
   emailValidation = () => {
@@ -120,40 +138,6 @@ class Login extends Component {
     }
   };
 
-  handleSubmit = e => {
-    e.preventDefault();
-    if (this.state.error) {
-      return;
-    }
-    const payload = {
-      email: this.state.email,
-      password: this.state.password
-    };
-    if (payload.email !== "" && payload.password !== "") {
-      this.props.mappedLogin(payload, this.props.history);
-    }
-  };
-
-  handleToggleRememberUser = () => {
-    this.setState({ isRemember: !this.state.isRemember });
-  };
-
-  handleLogin = () => {
-    console.log("login");
-  };
-
-  handleLoginFacebook = () => {};
-
-  handleLoginGoogle = () => {};
-
-  handleSignup = () => {
-    console.log("sign up");
-  };
-
-  handleSignupFacebook = () => {};
-
-  handleSignupGoogle = () => {};
-
   render() {
     const { classes, t } = this.props;
     const { isLoggedIn, error, isLoading, loginMode } = this.props.auth;
@@ -163,253 +147,94 @@ class Login extends Component {
         <div className={classes.backgroundWrapper}></div>
         <div className={classes.loginWrapper}>
           <Column classes={{ box: classes.loginCard }}>
-            <form
-              onSubmit={this.handleSubmit}
-              noValidate
-              autoComplete="off"
-              className={classes.loginForm}
-            >
-              <Typography className={classes.loginTitle}>
-                {loginMode === "login"
-                  ? t("loginToRENTGLOBAL")
-                  : loginMode === "register"
-                  ? t("signupToRENTGLOBAL")
-                  : t("loginOrRegister")}
-              </Typography>
-              <Box paddingTop>
-                <TextField
-                  id="email"
-                  placeholder="Email"
-                  value={this.state.email}
-                  onChange={this.handleChange("email")}
-                  variant="outlined"
-                  startAdornment={<MailOutline color="secondary" />}
-                  error={!!this.state.emailError}
-                  helperText={this.state.emailError}
-                  fullWidth
-                />
-              </Box>
-              {!loginMode && !isLoading && (
-                <Box paddingTopHalf justifyChildrenEnd fullWidth paddingBottom>
-                  <Button
-                    type="submit"
-                    variant="contained"
-                    size="medium"
-                    className={classes.loginButton}
-                    onClick={this.handleGetLoginMode}
-                    disabled={!this.state.email}
-                    aria-expanded={!!loginMode}
-                  >
-                    {t("next")}
-                  </Button>
-                </Box>
-              )}
-              <Collapse in={!!loginMode} unmountOnExit>
-                {loginMode === "login" && (
-                  <>
-                    <Box paddingTopHalf>
-                      <TextField
-                        id="password"
-                        placeholder={t("password")}
-                        value={this.state.password}
-                        onChange={this.handleChange("password")}
-                        type="password"
-                        variant="outlined"
-                        startAdornment={<LockOpen color="secondary" />}
-                        fullWidth
-                      />
-                    </Box>
-                    <Box paddingTopHalf justifyChildrenEnd fullWidth>
-                      <Checkbox
-                        variant="outlined"
-                        label={t("rememberMe")}
-                        className={classes.loginButton}
-                        isChecked={this.state.isRemember}
-                        onChange={this.handleToggleRememberUser}
-                      />
-                    </Box>
-                    <Box paddingTopHalf justifyChildrenEnd fullWidth>
-                      <Button
-                        type="submit"
-                        variant="contained"
-                        size="medium"
-                        className={classes.loginButton}
-                        onClick={this.handleLogin}
-                      >
-                        {t("login")}
-                      </Button>
-                    </Box>
-                  </>
-                )}
-                {loginMode === "register" && (
-                  <>
-                    <Box paddingTopHalf>
-                      <TextField
-                        id="createPassword"
-                        placeholder={t("createPassword")}
-                        value={this.state.createPassword}
-                        onChange={this.handleChange("createPassword")}
-                        type="password"
-                        variant="outlined"
-                        startAdornment={<LockOpen color="secondary" />}
-                        fullWidth
-                      />
-                    </Box>
-                    <Box paddingTopHalf justifyChildrenEnd fullWidth>
-                      <Button
-                        type="submit"
-                        variant="contained"
-                        size="medium"
-                        className={classes.loginButton}
-                        onClick={this.handleSignup}
-                      >
-                        {t("signup")}
-                      </Button>
-                    </Box>
-                  </>
-                )}
-
-                <Column classes={{ box: classes.socialWrapper }}>
-                  {loginMode === "login" && (
-                    <>
-                      <Divider light />
-                      <Box paddingTop paddingBottom>
-                        <Link variant="primary" to="/reset-password">
-                          {t("forgotPassword")}
-                        </Link>
-                      </Box>
-                    </>
-                  )}
-                  <HorizontalDivider text={t("or")} light />
-
-                  {loginMode === "login" && (
-                    <>
-                      <Box paddingTop justifyChildrenEnd fullWidth>
-                        <Button
-                          type="submit"
-                          variant="secondary"
-                          size="medium"
-                          className={classes.socialButton}
-                          onClick={this.handleLoginFacebook}
-                        >
-                          {t("loginWith")}&nbsp;
-                          <Typography color="primary">
-                            {t("facebook")}
-                          </Typography>
-                        </Button>
-                      </Box>
-                      <Box paddingTopHalf justifyChildrenEnd fullWidth>
-                        <Button
-                          type="submit"
-                          variant="secondary"
-                          size="medium"
-                          className={classes.socialButton}
-                          onClick={this.handleLoginGoogle}
-                        >
-                          {t("loginWith")}&nbsp;
-                          <Typography color="primary">{t("google")}</Typography>
-                        </Button>
-                      </Box>
-                    </>
-                  )}
-
-                  {loginMode === "register" && (
-                    <>
-                      <Box paddingTop justifyChildrenEnd fullWidth>
-                        <Button
-                          type="submit"
-                          variant="secondary"
-                          size="medium"
-                          className={classes.socialButton}
-                          onClick={this.handleSignupFacebook}
-                        >
-                          {t("signupWith")}&nbsp;
-                          <Typography color="primary">
-                            {t("facebook")}
-                          </Typography>
-                        </Button>
-                      </Box>
-                      <Box paddingTopHalf justifyChildrenEnd fullWidth>
-                        <Button
-                          type="submit"
-                          variant="secondary"
-                          size="medium"
-                          className={classes.socialButton}
-                          onClick={this.handleSignupGoogle}
-                        >
-                          {t("signupWith")}&nbsp;
-                          <Typography color="primary">{t("google")}</Typography>
-                        </Button>
-                      </Box>
-                    </>
-                  )}
-                </Column>
-
-                <Column
-                  paddingTopDouble
-                  classes={{ box: classes.switcherWrapper }}
-                >
-                  <Box paddingTop>
-                    {loginMode === "login" && (
-                      <Typography color="secondary" size="small">
-                        {t("dontHaveAccount")}
-                        <Link
-                          onClick={() => this.props.switchLoginMode("register")}
-                        >
-                          &nbsp;{t("register")}
-                        </Link>
-                      </Typography>
-                    )}
-                    {loginMode === "register" && (
-                      <Typography>
-                        {t("alreadyHaveAccount")}
-                        <Link
-                          onClick={() => this.props.switchLoginMode("login")}
-                        >
-                          &nbsp;{t("login")}
-                        </Link>
-                      </Typography>
-                    )}
-                  </Box>
-                </Column>
-              </Collapse>
-
-              {isLoading && (
-                <Column paddingTop fullWidth>
-                  <Spinner />
-                </Column>
-              )}
-            </form>
-            {/* <div className="forgotContainer">
-              <a className="link-forgot-password" tabIndex="1" href="">
-                Forgot password?
-              </a>
-            </div> */}
-          </Column>
-          {/* <div className="signUpContainer">
-            <div className="signUpLink">
-              <Button
-                variant="contained"
-                size="medium"
-                color="primary"
-                className={classes.button}
-                component={Link}
-                to="/register"
+            {!loginMode && (
+              <form
+                onSubmit={this.handleSubmit}
+                noValidate
+                autoComplete="off"
+                className={classes.fullWidth}
               >
-                Create New Account
-              </Button>
-            </div>
-          </div> */}
+                <Typography className={classes.loginTitle}>
+                  {t("loginOrRegister")}
+                </Typography>
+                <Box paddingTop>
+                  <TextField
+                    id="email"
+                    placeholder="Email"
+                    value={this.state.email}
+                    onChange={this.handleChange("email")}
+                    variant="outlined"
+                    startAdornment={<MailOutline color="secondary" />}
+                    error={!!this.state.emailError}
+                    helperText={this.state.emailError}
+                    fullWidth
+                  />
+                </Box>
+                {!isLoading && (
+                  <Box
+                    paddingTopHalf
+                    justifyChildrenEnd
+                    fullWidth
+                    paddingBottom
+                  >
+                    <Button
+                      type="submit"
+                      variant="contained"
+                      size="medium"
+                      className={classes.loginButton}
+                      onClick={this.handleGetLoginMode}
+                      disabled={!this.state.email}
+                    >
+                      {t("next")}
+                    </Button>
+                  </Box>
+                )}
+              </form>
+            )}
+            <Collapse
+              in={!!loginMode}
+              unmountOnExit
+              className={classes.fullWidth}
+            >
+              <Route
+                path="/auth/login"
+                render={() => (
+                  <LoginForm
+                    email={this.state.email}
+                    mappedLogin={this.props.mappedLogin}
+                  />
+                )}
+              />
+              <Route
+                path="/auth/register"
+                render={() => (
+                  <RegisterForm
+                    email={this.state.email}
+                    mappedRegister={this.props.mappedRegister}
+                  />
+                )}
+              />
+              <Route
+                path="/auth/forgot-password"
+                render={() => <ForgotPasswordForm email={this.state.email} />}
+              />
+            </Collapse>
+
+            {isLoading && (
+              <Column paddingTop fullWidth>
+                <Spinner />
+              </Column>
+            )}
+          </Column>
         </div>
       </div>
     );
   }
 }
 
-Login.propTypes = {
-  classes: PropTypes.object.isRequired
+AuthWrapper.propTypes = {
+  classes: PropTypes.object.isRequired,
+  t: PropTypes.func.isRequired
 };
 
-export default withMuiRoot(
-  withStyles(styleSheet)(withTranslation("common")(Login))
-);
+export default withStyles(styleSheet)(withTranslation("common")(AuthWrapper));

@@ -1,5 +1,5 @@
 import { connect } from "react-redux";
-import Login from "../../components/Login";
+import AuthWrapper from "../../components/Login";
 import * as authActions from "../../actions/authActions";
 
 const mapStateToProps = state => {
@@ -11,10 +11,9 @@ const mapStateToProps = state => {
 const mapDispatchToprops = dispatch => {
   return {
     getRegisteredUser: email => dispatch(authActions.isExist(dispatch, email)),
-    switchLoginMode: loginMode => dispatch(authActions.switchLoginMode(loginMode)),
     mappedLogin: (credentials, history) =>
       dispatch(authActions.login(credentials, history))
   };
 };
 
-export default connect(mapStateToProps, mapDispatchToprops)(Login);
+export default connect(mapStateToProps, mapDispatchToprops)(AuthWrapper);

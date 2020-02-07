@@ -24,12 +24,6 @@ const authReducer = (currentState = INITIAL_STATE, action) => {
         loginMode: action.loginMode
       };
 
-    case "SWITCH_LOGIN_MODE":
-      return {
-        ...currentState,
-        loginMode: action.loginMode
-      };
-
     case "REQUEST_LOGIN":
       return {
         ...currentState,

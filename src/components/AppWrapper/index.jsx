@@ -136,7 +136,7 @@ class Appwrapper extends Component {
     });
 
     this.props.history.listen(location => {
-      console.log(location.pathname);
+      // console.log(location.pathname);
       this.setState({
         routePath: location.pathname
       });
@@ -159,12 +159,12 @@ class Appwrapper extends Component {
         this.props.history.push("/");
         break;
       case "login":
-        this.props.history.push("/login");
+        this.props.history.push("/auth");
         break;
       case "logout":
         authObj.removeToken();
         this.props.mappedlogout();
-        this.props.history.push("/login");
+        this.props.history.push("/auth");
         break;
     }
   };
@@ -362,7 +362,7 @@ class Appwrapper extends Component {
                   <Button variant="secondary">{t("placeToRent")}</Button>
                 </Column>
                 <Column paddingLeft>
-                  <Link variant="body2" to="/login">
+                  <Link variant="body2" to="/auth">
                     {t("loginOrRegister")}
                   </Link>
                 </Column>

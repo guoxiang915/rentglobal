@@ -38,14 +38,6 @@ export const isExist = (dispatch, payload) => {
   };
 };
 
-// switch loginMode between "login" / "register"
-export const switchLoginMode = payload => {
-  return {
-    type: "SWITCH_LOGIN_MODE",
-    loginMode: payload
-  };
-};
-
 export const login = (payload, history) => {
   return {
     type: "REQUEST_LOGIN",
