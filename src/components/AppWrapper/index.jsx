@@ -1,29 +1,26 @@
 import React, { Component } from "react";
 import { withStyles } from "@material-ui/core/styles";
-import withMuiRoot from "../../withMuiRoot";
-import AppBar from "@material-ui/core/AppBar";
-import Toolbar from "@material-ui/core/Toolbar";
-import Typography from "@material-ui/core/Typography";
-import IconButton from "@material-ui/core/IconButton";
-import MenuIcon from "@material-ui/icons/Menu";
-import SwipeableDrawer from "@material-ui/core/SwipeableDrawer";
-import SideMenu from "../Layout/SideMenu";
-import DrawerUser from "../DrawerUser";
-import Auth from "../../utils/auth";
-import MenuItem from "@material-ui/core/MenuItem";
-import Menu from "@material-ui/core/Menu";
-import AccountCircle from "@material-ui/icons/AccountCircle";
-import SearchIcon from "@material-ui/icons/Search";
-import NotiFicationIcon from "@material-ui/icons/Notifications";
-import ArrowBackIcon from "@material-ui/icons/ArrowBack";
-import { Link as RouterLink } from "react-router-dom";
-import SaveIcon from "@material-ui/icons/Save";
-import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
-import Logo from "../../assets/logo.svg";
-
-import "./style.css";
-import { Grid, Hidden } from "@material-ui/core";
 import { withTranslation } from "react-i18next";
+import withMuiRoot from "../../withMuiRoot";
+import {
+  AppBar,
+  Toolbar,
+  Typography,
+  SwipeableDrawer,
+  MenuItem,
+  Grid,
+  Hidden,
+  Menu
+} from "@material-ui/core";
+import {
+  Menu as MenuIcon,
+  AccountCircle,
+  Search as SearchIcon,
+  Notifications as NotiFicationIcon,
+  ArrowBack as ArrowBackIcon,
+  Save as SaveIcon,
+  ExpandMore as ExpandMoreIcon
+} from "@material-ui/icons";
 import {
   Button,
   Link,
@@ -31,8 +28,16 @@ import {
   Box,
   Row,
   Stretch,
-  Column
+  Column,
+  IconButton
 } from "../../common/base-components";
+import { SideMenu } from "../Layout";
+import DrawerUser from "../DrawerUser";
+import Auth from "../../utils/auth";
+import { Link as RouterLink } from "react-router-dom";
+
+import "./style.css";
+import Logo from "../../assets/logo.svg";
 
 const authObj = new Auth();
 
@@ -86,11 +91,17 @@ const styleSheet = theme => ({
 
   logoWrapper: {
     display: "flex",
-    marginRight: theme.spacing(2)
+    marginRight: theme.spacing(2),
+    height: 38
+  },
+
+  logoNavigator: {
+    width: "fit-content",
+    cursor: "pointer"
   },
 
   logo: {
-    height: 44
+    height: "100%"
   },
 
   headerMenu: {
@@ -98,6 +109,10 @@ const styleSheet = theme => ({
     minWidth: 200,
     position: "relative",
     top: 30
+  },
+
+  menuButton: {
+    padding: 5
   }
 });
 
@@ -267,7 +282,7 @@ class Appwrapper extends Component {
     );
 
     const location = "Montreal";
-    
+
     return (
       <div className={classes.root}>
         <Grid
@@ -279,9 +294,12 @@ class Appwrapper extends Component {
         >
           <Grid item>
             <div className={classes.logoWrapper}>
-              <Link to="/">
+              <div
+                onClick={() => this.navigate("home")}
+                className={classes.logoNavigator}
+              >
                 <img src={Logo} className={classes.logo} />
-              </Link>
+              </div>
               <Hidden smDown>
                 <Button
                   aria-controls="location-menu"
@@ -355,6 +373,7 @@ class Appwrapper extends Component {
                   className={classes.menuButton}
                   color="inherit"
                   aria-label="Menu"
+                  variant="outline"
                 >
                   <MenuIcon />
                 </IconButton>

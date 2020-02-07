@@ -1,7 +1,9 @@
 {
     "login": "Log in",
     "loginToRENTGLOBAL": "Log in to RENTGLOBAL",
+    "signupToRENTGLOBAL": "Register in RENTGLOBAL",
     "signup": "Sign up",
+    "register": "Register",
     "email": "Email",
     "invalidEmail": "Invalid email address",
     "password": "Password",
@@ -25,5 +27,9 @@
     "allRightsReserved": "© 2020 RENTGLOBAL, Inc. All rights reserved.",
     "terms": "Terms",
     "privacy": "Privacy",
-    "siteMap": "Site Map"
+    "siteMap": "Site Map",
+    "dashboardLandingTitle": "You can chat with {{name}}, just say hi! or Search simply for your dream.",
+    "dashboardLandingSubtitle": "In both ways you get incredible recommends.",
+    "chatWithTessi": "Chat with TESSI",
+    "advancedSearch": "Advanced Search"
 }

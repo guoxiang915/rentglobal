@@ -22,9 +22,11 @@ import { MailOutline, LockOpen } from "@material-ui/icons";
 const styleSheet = theme => ({
   backgroundWrapper: {
     width: "100%",
-    height: theme.spacing(5),
-    background:
-      "transparent url('assets/img/img_header.jpg') 0% 0% no-repeat padding-box"
+    height: theme.spacing(6),
+    background: `transparent url(${require("../../assets/img/img_header@2x.jpg")}) 0% 0% no-repeat padding-box`,
+    [theme.breakpoints.down("sm")]: {
+      background: "white"
+    }
   },
 
   loginWrapper: {
@@ -168,7 +170,11 @@ class Login extends Component {
               className={classes.loginForm}
             >
               <Typography className={classes.loginTitle}>
-                {t("loginToRENTGLOBAL")}
+                {loginMode === "login"
+                  ? t("loginToRENTGLOBAL")
+                  : loginMode === "register"
+                  ? t("signupToRENTGLOBAL")
+                  : t("loginOrRegister")}
               </Typography>
               <Box paddingTop>
                 <TextField
@@ -337,6 +343,34 @@ class Login extends Component {
                       </Box>
                     </>
                   )}
+                </Column>
+
+                <Column
+                  paddingTopDouble
+                  classes={{ box: classes.switcherWrapper }}
+                >
+                  <Box paddingTop>
+                    {loginMode === "login" && (
+                      <Typography color="secondary" size="small">
+                        {t("dontHaveAccount")}
+                        <Link
+                          onClick={() => this.props.switchLoginMode("register")}
+                        >
+                          &nbsp;{t("register")}
+                        </Link>
+                      </Typography>
+                    )}
+                    {loginMode === "register" && (
+                      <Typography>
+                        {t("alreadyHaveAccount")}
+                        <Link
+                          onClick={() => this.props.switchLoginMode("login")}
+                        >
+                          &nbsp;{t("login")}
+                        </Link>
+                      </Typography>
+                    )}
+                  </Box>
                 </Column>
               </Collapse>
 

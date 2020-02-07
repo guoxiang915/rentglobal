@@ -3,7 +3,7 @@ import { Route, Redirect, withRouter } from "react-router-dom";
 import PropTypes from "prop-types";
 import Auth from "../../utils/auth";
 import AppWrapper from "../../containers/AppWrapper";
-import AppFooter from "../Layout/AppFooter";
+import { AppFooter } from "../Layout";
 // import classes from "*.module.css";
 import { withStyles } from "@material-ui/core";
 
@@ -15,21 +15,21 @@ const styleSheet = theme => ({
     top: 0,
     zIndex: 1100,
     height: 100,
-    [theme.breakpoints.down('sm')]: {
+    [theme.breakpoints.down("sm")]: {
       height: 66
     }
   },
 
   contentWrapper: {
     minHeight: "calc(100vh - 250px)",
-    [theme.breakpoints.down('sm')]: {
-      minHeight: "calc(100vh - 166px)",
+    [theme.breakpoints.down("sm")]: {
+      minHeight: "calc(100vh - 166px)"
     }
   },
 
   footerWrapper: {
     height: 150,
-    [theme.breakpoints.down('sm')]: {
+    [theme.breakpoints.down("sm")]: {
       height: 100
     }
   }

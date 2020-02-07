@@ -1,6 +1,7 @@
 import axios from "axios";
 import { API } from "../utils/constants";
 
+// get registered user response
 export const resultExist = payload => {
   return {
     type: "RESPONSE_IS_EXIST",
@@ -8,6 +9,7 @@ export const resultExist = payload => {
   };
 };
 
+// get registered user request
 export const isExist = (dispatch, payload) => {
   // mock api
   new Promise((resolve, reject) => {
@@ -33,6 +35,14 @@ export const isExist = (dispatch, payload) => {
 
   return {
     type: "REQUEST_IS_EXIST"
+  };
+};
+
+// switch loginMode between "login" / "register"
+export const switchLoginMode = payload => {
+  return {
+    type: "SWITCH_LOGIN_MODE",
+    loginMode: payload
   };
 };
 
