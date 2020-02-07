@@ -1,4 +1,4 @@
-import React, { PureComponent } from "react";
+import React from "react";
 import clsx from "clsx";
 import { IconButton as MUIIconButton, withStyles } from "@material-ui/core";
 
@@ -19,7 +19,7 @@ const styleSheet = theme => ({
   small: {
     padding: 3,
     fontSize: "1.125rem"
-  },
+  }
   // ...theme.backgroundColors,
   // ...theme.textColors
 });

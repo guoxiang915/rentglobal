@@ -104,6 +104,10 @@ const styleSheet = theme => ({
     height: "100%"
   },
 
+  shadowButton: {
+    boxShadow: "0px 6px 12px #D7DF234D"
+  },
+
   headerMenu: {
     zIndex: 1500,
     minWidth: 200,
@@ -359,7 +363,9 @@ class Appwrapper extends Component {
                   </Menu>
                 </Column>
                 <Column paddingLeft>
-                  <Button variant="secondary">{t("placeToRent")}</Button>
+                  <Button variant="secondary" className={classes.shadowButton}>
+                    {t("placeToRent")}
+                  </Button>
                 </Column>
                 <Column paddingLeft>
                   <Link variant="body2" to="/auth">

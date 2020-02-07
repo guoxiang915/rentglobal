@@ -94,7 +94,7 @@ class AuthWrapper extends Component {
     };
   }
 
-  componentWillReceiveProps(newProps) {
+  UNSAFE_componentWillReceiveProps(newProps) {
     if (this.props.auth.loginMode !== newProps.auth.loginMode) {
       let newRoute = "/auth";
       if (newProps.auth.loginMode === "login") {

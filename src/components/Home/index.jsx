@@ -57,11 +57,33 @@ const styleSheet = theme => ({
   searchWrapper: {
     maxWidth: 580,
     width: "100%",
-    boxShadow: "box-shadow: 0px 24px 24px #0000001A;",
+    boxShadow: "0px 24px 24px #0000001A;",
     padding: `${theme.spacing(4)}px ${theme.spacing(4.5)}px`,
+    borderRadius: 8,
     [theme.breakpoints.down("sm")]: {
       boxShadow: "0px 14px 14px #0000001A",
       padding: `${theme.spacing(2)}px ${theme.spacing(1.5)}px`
+    }
+  },
+
+  landingTitle: {
+    fontSize: "32px",
+    [theme.breakpoints.down("sm")]: {
+      fontSize: "20px"
+    }
+  },
+
+  landingSubtitle: {
+    fontSize: "16px",
+    [theme.breakpoints.down("sm")]: {
+      fontSize: "14px"
+    }
+  },
+
+  searchBox: {
+    marginTop: 14,
+    [theme.breakpoints.down("sm")]: {
+      marginTop: 8
     }
   },
 
@@ -89,26 +111,31 @@ class Home extends Component {
             className={classes.landingBoard}
           >
             <Grid item width="100%">
-              {/* <Box classes={{ box: classes.searchWrapper }} padding> */}
               <Card className={classes.searchWrapper}>
                 <Column alignChildrenStart>
-                  <Typography variant="h6">
+                  <Typography variant="h6" className={classes.landingTitle}>
                     {t("dashboardLandingTitle", { name: "TESSI" })}
                   </Typography>
-                  <Box paddingTopHalf>
-                    <Typography variant="caption">
-                      {t("dashboardLandingSubtitle")}
-                    </Typography>
-                  </Box>
-                  <Box paddingTop fullWidth>
-                    <TextField fullWidth variant="outlined" />
-                  </Box>
+                  {/* <Box> */}
+                  <Typography
+                    variant="caption"
+                    className={classes.landingSubtitle}
+                  >
+                    {t("dashboardLandingSubtitle")}
+                  </Typography>
+                  {/* </Box> */}
+                  {/* <Box fullWidth> */}
+                  <TextField
+                    fullWidth
+                    variant="outlined"
+                    placeholder={t("sayHiOrSearch")}
+                    className={classes.searchBox}
+                  />
+                  {/* </Box> */}
                 </Column>
               </Card>
-              {/* </Box> */}
             </Grid>
             <Grid item>
-              {/* <Row classes={{ box: classes.actionButtonsWrapper }} padding> */}
               <Grid
                 container
                 spacing={5}
@@ -123,7 +150,6 @@ class Home extends Component {
                   <Button>{t("advancedSearch")}</Button>
                 </Grid>
               </Grid>
-              {/* </Row> */}
             </Grid>
           </Grid>
         </div>
