@@ -240,7 +240,7 @@ const styleSheet = theme => {
       fontSize: 20
     },
     fontSizeXL: {
-      fontSize: 24
+      fontSize: 32
     },
     fontWeightMedium: {
       fontWeight: 500
@@ -249,10 +249,19 @@ const styleSheet = theme => {
       color: theme.colors.primary.darkGrey
     },
     textMediumGrey: {
-      color: theme.colors.primary.mediumGrey
+      color: theme.colors.primary.grey
+    },
+    textPrimary: {
+      color: theme.colors.primary.mainColor
+    },
+    textPrimaryDark: {
+      color: theme.colors.primary.darkColor
     },
     textSecondary: {
-      color: theme.colors.primary.secondaryBlue
+      color: theme.colors.primary.grey
+    },
+    textSecondaryDark: {
+      color: theme.colors.primary.darkGrey
     },
     textWhite: {
       color: theme.colors.primary.white

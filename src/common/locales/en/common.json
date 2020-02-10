@@ -30,9 +30,18 @@
     "terms": "Terms",
     "privacy": "Privacy",
     "siteMap": "Site Map",
-    "dashboardLandingTitle": "You can chat with {{name}}, just say hi! or Search simply for your dream.",
+    "dashboardLandingTitle": "You can chat with <0>{{name}}</0>, just say hi!<1></1> or Search simply for your dream.",
     "dashboardLandingSubtitle": "In both ways you get incredible recommends.",
     "sayHiOrSearch": "Say Hi or Search",
     "chatWithTessi": "Chat with TESSI",
-    "advancedSearch": "Advanced Search"
+    "advancedSearch": "Advanced Search",
+    "howHelpFind": "How <0>{{name}}</0> can help you to find your best fit office",
+    "howHelpFind1_title": "Lorem ipsum dolor sit",
+    "howHelpFind1_content": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
+    "howHelpFind2_title": "Lorem ipsum dolor sit",
+    "howHelpFind2_content": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
+    "howHelpFind3_title": "Lorem ipsum dolor sit",
+    "howHelpFind3_content": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
+    "latestRecommendOffice": "Latest recommend office around you",
+    "allLatest": "All latest ({{count}})"
 }

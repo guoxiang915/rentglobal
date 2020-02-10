@@ -17,7 +17,7 @@ const styleSheet = theme => ({
 
   container: {
     justifyContent: "center",
-    maxWidth: 1000
+    maxWidth: 1024
   },
 
   navWrapper: {
