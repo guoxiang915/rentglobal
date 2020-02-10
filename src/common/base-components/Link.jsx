@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { Link as RouterLink } from "react-router-dom";
-import { Link as MUILink, withStyles } from "@material-ui/core";
+import { withStyles } from "@material-ui/core";
 import clsx from "clsx";
 
 const styleSheet = theme => ({

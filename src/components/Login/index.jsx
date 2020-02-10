@@ -137,7 +137,7 @@ class AuthWrapper extends Component {
 
   render() {
     const { classes, t } = this.props;
-    const { isLoggedIn, error, isLoading, loginMode } = this.props.auth;
+    const { isLoading, loginMode } = this.props.auth;
     const route = this.props.match.pathname;
 
     return (

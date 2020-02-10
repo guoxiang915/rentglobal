@@ -61,7 +61,7 @@ class AppFooter extends Component {
           </Box>
           <Stretch />
           <Box classes={{ box: classes.logoWrapper }}>
-            <img src={MiniLogo} className={classes.miniLogo} />
+            <img src={MiniLogo} className={classes.miniLogo} alt="RENTGLOBAL"/>
           </Box>
         </Row>
       </Column>

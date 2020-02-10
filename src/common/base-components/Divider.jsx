@@ -1,6 +1,6 @@
-import React, { PureComponent } from "react";
+import React from "react";
 import clsx from "clsx";
-import { Divider as MUIDivider, withStyles } from "@material-ui/core";
+import { withStyles } from "@material-ui/core";
 
 const styleSheet = theme => {
   let unit = 1;

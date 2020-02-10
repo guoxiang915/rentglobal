@@ -11,11 +11,10 @@ import {
 } from "@material-ui/core";
 import {
   Menu as MenuIcon,
-  AccountCircle,
-  Search as SearchIcon,
-  Notifications as NotiFicationIcon,
-  ArrowBack as ArrowBackIcon,
-  Save as SaveIcon,
+  // AccountCircle,
+  // Search as SearchIcon,
+  // Notifications as NotiFicationIcon,
+  // Save as SaveIcon,
   ExpandMore as ExpandMoreIcon
 } from "@material-ui/icons";
 import {
@@ -28,7 +27,7 @@ import {
 import { SideMenu } from "../Layout";
 import DrawerUser from "../DrawerUser";
 import Auth from "../../utils/auth";
-import { Link as RouterLink } from "react-router-dom";
+// import { Link as RouterLink } from "react-router-dom";
 
 import "./style.css";
 import Logo from "../../assets/logo.svg";
@@ -164,6 +163,9 @@ class Appwrapper extends Component {
         this.props.mappedlogout();
         this.props.history.push("/auth");
         break;
+      default:
+        this.props.history.push("/");
+        break;
     }
   };
 
@@ -206,78 +208,77 @@ class Appwrapper extends Component {
 
   render() {
     const { classes, t } = this.props;
-    const { isLoggedIn, user, isLoading, error } = this.props.auth;
+    const { isLoggedIn, user } = this.props.auth;
     const {
-      anchorEl,
-      routePath,
+      // anchorEl,
       drawerOpen,
       locationEl,
       languageEl
     } = this.state;
-    const open = Boolean(anchorEl);
-    const { showAppBar, showSearchBar, appBarTitle } = this.props.appState;
 
-    const homeLinks = (
-      <div>
-        <IconButton
-          aria-owns={open ? "menu-appbar" : null}
-          aria-haspopup="true"
-          onClick={this.handleSearch}
-          color="inherit"
-        >
-          <SearchIcon />
-        </IconButton>
-        <IconButton
-          aria-owns={open ? "menu-appbar" : null}
-          aria-haspopup="true"
-          onClick={this.handleMenu("anchorEl")}
-          color="inherit"
-        >
-          <NotiFicationIcon />
-        </IconButton>
-        <IconButton
-          aria-owns={open ? "menu-appbar" : null}
-          aria-haspopup="true"
-          onClick={this.handleMenu("anchorEl")}
-          color="inherit"
-        >
-          <AccountCircle />
-        </IconButton>
+    // const open = Boolean(anchorEl);
 
-        <Menu
-          id="menu-appbar"
-          anchorEl={anchorEl}
-          anchorOrigin={{
-            vertical: "top",
-            horizontal: "right"
-          }}
-          transformOrigin={{
-            vertical: "top",
-            horizontal: "right"
-          }}
-          open={open}
-          onClose={this.handleClose("anchorEl")}
-        >
-          <MenuItem onClick={this.handleClose("anchorEl")}>
-            <RouterLink to="/edit-profile">Profile</RouterLink>
-          </MenuItem>
-          <MenuItem onClick={this.handleClose("anchorEl")}>My account</MenuItem>
-        </Menu>
-      </div>
-    );
+    // const homeLinks = (
+    //   <div>
+    //     <IconButton
+    //       aria-owns={open ? "menu-appbar" : null}
+    //       aria-haspopup="true"
+    //       onClick={this.handleSearch}
+    //       color="inherit"
+    //     >
+    //       <SearchIcon />
+    //     </IconButton>
+    //     <IconButton
+    //       aria-owns={open ? "menu-appbar" : null}
+    //       aria-haspopup="true"
+    //       onClick={this.handleMenu("anchorEl")}
+    //       color="inherit"
+    //     >
+    //       <NotiFicationIcon />
+    //     </IconButton>
+    //     <IconButton
+    //       aria-owns={open ? "menu-appbar" : null}
+    //       aria-haspopup="true"
+    //       onClick={this.handleMenu("anchorEl")}
+    //       color="inherit"
+    //     >
+    //       <AccountCircle />
+    //     </IconButton>
 
-    const editProfileLinks = (
-      <div>
-        <IconButton
-          aria-owns={open ? "menu-appbar" : null}
-          aria-haspopup="true"
-          onClick={this.handleSaveProfile}
-          color="inherit"
-        >
-          <SaveIcon />
-        </IconButton>
-      </div>
-    );
+    //     <Menu
+    //       id="menu-appbar"
+    //       anchorEl={anchorEl}
+    //       anchorOrigin={{
+    //         vertical: "top",
+    //         horizontal: "right"
+    //       }}
+    //       transformOrigin={{
+    //         vertical: "top",
+    //         horizontal: "right"
+    //       }}
+    //       open={open}
+    //       onClose={this.handleClose("anchorEl")}
+    //     >
+    //       <MenuItem onClick={this.handleClose("anchorEl")}>
+    //         <RouterLink to="/edit-profile">Profile</RouterLink>
+    //       </MenuItem>
+    //       <MenuItem onClick={this.handleClose("anchorEl")}>My account</MenuItem>
+    //     </Menu>
+    //   </div>
+    // );
+
+    // const editProfileLinks = (
+    //   <div>
+    //     <IconButton
+    //       aria-owns={open ? "menu-appbar" : null}
+    //       aria-haspopup="true"
+    //       onClick={this.handleSaveProfile}
+    //       color="inherit"
+    //     >
+    //       <SaveIcon />
+    //     </IconButton>
+    //   </div>
+    // );
 
     const location = "Montreal";
 
@@ -296,7 +297,7 @@ class Appwrapper extends Component {
                 onClick={() => this.navigate("home")}
                 className={classes.logoNavigator}
               >
-                <img src={Logo} className={classes.logo} />
+                <img src={Logo} className={classes.logo} alt="RENTGLOBAL" />
               </div>
               <Hidden smDown>
                 <Button

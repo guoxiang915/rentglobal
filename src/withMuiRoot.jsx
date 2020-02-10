@@ -1,6 +1,4 @@
 import React from "react";
-import purple from "@material-ui/core/colors/purple";
-import green from "@material-ui/core/colors/green";
 import CssBaseline from "@material-ui/core/CssBaseline";
 
 function withMuiRoot(Component) {
