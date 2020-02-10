@@ -1,32 +1,30 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { withStyles } from "@material-ui/core/styles";
-import { Card, Collapse, Typography, InputAdornment } from "@material-ui/core";
-import { MailOutline, LockOpen } from "@material-ui/icons";
-import { Link as RouterLink, Route } from "react-router-dom";
-import "./Login.css";
+import { Collapse, Typography } from "@material-ui/core";
+import { MailOutline } from "@material-ui/icons";
+import { Route } from "react-router-dom";
 import { withTranslation } from "react-i18next";
-import withMuiRoot from "../../withMuiRoot";
 import {
   TextField,
   Button,
   Box,
   Column,
-  Checkbox,
-  Spinner,
-  Link,
-  Divider,
-  HorizontalDivider
+  Spinner
 } from "../../common/base-components";
 import LoginForm from "./LoginForm";
 import RegisterForm from "./RegisterForm";
 import ForgotPasswordForm from "./ForgotPasswordForm";
+import HeaderImage from "../../assets/img/img_header@2x.jpg";
+
+import "./Login.css";
 
 const styleSheet = theme => ({
   backgroundWrapper: {
     width: "100%",
     height: theme.spacing(6),
-    background: `transparent url(${require("../../assets/img/img_header@2x.jpg")}) 0% 0% no-repeat padding-box`,
+    background: `transparent url(${HeaderImage}) 0% 0% no-repeat padding-box`,
+    backgroundSize: "cover",
     [theme.breakpoints.down("sm")]: {
       background: "white"
     }

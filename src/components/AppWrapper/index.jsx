@@ -3,9 +3,6 @@ import { withStyles } from "@material-ui/core/styles";
 import { withTranslation } from "react-i18next";
 import withMuiRoot from "../../withMuiRoot";
 import {
-  AppBar,
-  Toolbar,
-  Typography,
   SwipeableDrawer,
   MenuItem,
   Grid,
@@ -24,10 +21,7 @@ import {
 import {
   Button,
   Link,
-  Select,
-  Box,
   Row,
-  Stretch,
   Column,
   IconButton
 } from "../../common/base-components";
@@ -402,55 +396,7 @@ class Appwrapper extends Component {
             </Row>
           </Grid>
         </Grid>
-        {/* {showAppBar && !showSearchBar && (
-          <AppBar position="fixed" style={{ backgroundColor: "#1466F7" }}>
-            <Toolbar>
-              <IconButton
-                onClick={() => this.toggleDrawer(true)}
-                className={classes.menuButton}
-                color="inherit"
-                aria-label="Menu"
-              >
-                <MenuIcon />
-              </IconButton>
-              {isLoggedIn && routePath === "/" ? (
-                <IconButton
-                  onClick={() => this.toggleDrawer(true)}
-                  className={classes.menuButton}
-                  color="inherit"
-                  aria-label="Menu"
-                >
-                  <MenuIcon />
-                </IconButton>
-              ) : isLoggedIn && routePath !== "/" ? (
-                <IconButton
-                  onClick={this.goBack}
-                  className={classes.menuButton}
-                  color="inherit"
-                  aria-label="Menu"
-                >
-                  <ArrowBackIcon />
-                </IconButton>
-              ) : (
-                ""
-              )}
-              <Typography
-                variant="subtitle1"
-                color="inherit"
-                className={classes.flex}
-              >
-                {appBarTitle}
-              </Typography>
-              {isLoggedIn && routePath === "/"
-                ? homeLinks
-                : isLoggedIn && routePath === "/edit-profile"
-                ? editProfileLinks
-                : isLoggedIn && routePath === "/compose"
-                ? homeLinks
-                : ""}
-            </Toolbar>
-          </AppBar>
-        )}
+        {/* 
         {showSearchBar && !showAppBar && (
           <AppBar position="fixed" style={{ backgroundColor: "white" }}>
             <Toolbar>
@@ -467,18 +413,6 @@ class Appwrapper extends Component {
             </Toolbar>
           </AppBar>
         )}
-        <SwipeableDrawer
-          open={drawerOpen}
-          onClose={() => this.toggleDrawer(false)}
-          onOpen={() => this.toggleDrawer(true)}
-          disableSwipeToOpen={isLoggedIn ? false : true}
-          className={classes.sideDrawer}
-        >
-          <div>
-            <DrawerUser user={user} />
-            <SideMenu isLoggedIn={isLoggedIn} navigate={this.navigate} />
-          </div>
-        </SwipeableDrawer>
        */}
       </div>
     );

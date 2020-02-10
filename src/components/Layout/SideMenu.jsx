@@ -5,12 +5,12 @@ import Paper from "@material-ui/core/Paper";
 import { withStyles } from "@material-ui/core/styles";
 import ListItemIcon from "@material-ui/core/ListItemIcon";
 import ListItemText from "@material-ui/core/ListItemText";
-import PhotoIcon from "@material-ui/icons/Photo";
-import VideosIcon from "@material-ui/icons/VideoLibrary";
-import GroupIcon from "@material-ui/icons/Group";
-import LogoutIcon from "@material-ui/icons/ExitToApp";
-import LoginIcon from "@material-ui/icons/LockOpen";
-import ChatIcon from "@material-ui/icons/Chat";
+import {
+  ExitToApp as LogoutIcon,
+  LockOpen as LoginIcon,
+  Chat as ChatIcon,
+  Photo as PhotoIcon
+} from "@material-ui/icons";
 import { withTranslation } from "react-i18next";
 
 const styleSheet = theme => ({

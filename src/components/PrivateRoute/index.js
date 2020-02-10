@@ -1,5 +1,5 @@
 import React from "react";
-import { Route, Redirect, withRouter } from "react-router-dom";
+import { Route, withRouter } from "react-router-dom";
 import PropTypes from "prop-types";
 import Auth from "../../utils/auth";
 import AppWrapper from "../../containers/AppWrapper";
@@ -71,7 +71,6 @@ class PrivateRoute extends React.Component {
       noFooter,
       ...rest
     } = this.props;
-    const { isLoggedIn, isLoading, loaded } = this.props.auth;
 
     return (
       <Route

@@ -5,10 +5,7 @@ import HeaderImage from "../../assets/img/img_header.jpg";
 import HeaderImageLarger from "../../assets/img/img_header@2x.jpg";
 import { Typography, Grid, Card } from "@material-ui/core";
 import {
-  Box,
-  Row,
   Column,
-  Stretch,
   TextField,
   Button
 } from "../../common/base-components";
@@ -116,22 +113,18 @@ class Home extends Component {
                   <Typography variant="h6" className={classes.landingTitle}>
                     {t("dashboardLandingTitle", { name: "TESSI" })}
                   </Typography>
-                  {/* <Box> */}
                   <Typography
                     variant="caption"
                     className={classes.landingSubtitle}
                   >
                     {t("dashboardLandingSubtitle")}
                   </Typography>
-                  {/* </Box> */}
-                  {/* <Box fullWidth> */}
                   <TextField
                     fullWidth
                     variant="outlined"
                     placeholder={t("sayHiOrSearch")}
                     className={classes.searchBox}
                   />
-                  {/* </Box> */}
                 </Column>
               </Card>
             </Grid>
