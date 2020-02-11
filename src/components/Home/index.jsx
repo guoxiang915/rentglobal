@@ -8,12 +8,6 @@ import {
   Typography,
   Grid,
   Card,
-  Step,
-  Stepper,
-  StepLabel,
-  StepIcon,
-  StepConnector,
-  StepContent,
   Hidden,
   Slide,
   Fade,
@@ -28,7 +22,10 @@ import {
   TextField,
   Button
 } from "../../common/base-components";
+import { Carousel } from "react-responsive-carousel";
+import "react-responsive-carousel/lib/styles/carousel.min.css";
 
+import { offices } from "../../common/mock/officeMockData";
 import gallery1 from "../../assets/img/img_gallery_01@2x.png";
 import gallery2 from "../../assets/img/img_gallery_02@2x.png";
 import gallery3 from "../../assets/img/img_gallery_03@2x.png";
@@ -57,6 +54,7 @@ const styleSheet = theme => ({
 
   landingBoardImage: {
     visibility: "hidden",
+    maxHeight: "calc(100vh - 100px)",
     [theme.breakpoints.down("sm")]: {
       width: "170%"
     }
@@ -113,6 +111,7 @@ const styleSheet = theme => ({
 
   fixedWith: {
     maxWidth: 1024 + 44,
+    width: "100%",
     paddingLeft: 22,
     paddingRight: 22,
     overflow: "hidden",
@@ -264,20 +263,80 @@ const styleSheet = theme => ({
   },
 
   recommendedOfficeWrapper: {
-    width: 234,
+    width: 245,
     marginRight: 20
+  },
+
+  recommendedOfficeCarousel: {
+    width: "100%",
+    height: 175,
+    borderRadius: 8,
+    position: "relative",
+    overflow: "hidden"
+  },
+
+  favoriteOfficeIcon: {
+    position: "absolute",
+    top: 8,
+    right: 16
   },
 
   officeImage: {
     width: "100%",
-    height: 175,
-    borderRadius: 8
+    height: 175
   },
 
-  ratingText: {}
+  ratingText: {},
+
+  allLatestButton: {
+    paddingTop: 54,
+    paddingBottom: 96,
+    [theme.breakpoints.down("sm")]: {
+      paddingTop: 24,
+      paddingBottom: 0
+    }
+  },
+
+  shadowButton: {
+    boxShadow: "0px 6px 12px #D7DF234D"
+  },
+
+  whiteShadowButton: {
+    boxShadow: "0px 6px 12px #FFFFFF4D"
+  },
+
+  homeRegisterTitle: {
+    paddingTop: 0,
+    color: "white",
+    [theme.breakpoints.down("sm")]: {
+      paddingTop: 8
+    }
+  },
+
+  homeRegisterContent: {
+    fontSize: "14px",
+    textAlign: "center",
+    paddingTop: 53,
+    paddingBottom: 53,
+    maxWidth: 724,
+    color: "white",
+    [theme.breakpoints.down("sm")]: {
+      paddingTop: 24,
+      paddingBottom: 24
+    }
+  },
+
+  prosWrapper: {
+    paddingTop: 45,
+    paddingBottom: 50
+  }
 });
 
 class Home extends Component {
+  static defaultProps = {
+    recommendedOffices: offices
+  };
+
   state = {
     activeHelpStep: 0
   };
@@ -373,18 +432,44 @@ class Home extends Component {
       </Fade>
     );
 
-  officeWrapper = () => (
-    <Column classes={{ box: this.props.classes.recommendedOfficeWrapper }}>
-      <img src="" alt="" className={this.props.classes.officeImage} />
-      <Typography className={this.props.classes.textMedium}>
-        Title (or Short Description)
-      </Typography>
-      <Row>
+  officeWrapper = ({ office }) => (
+    <Column
+      classes={{ box: this.props.classes.recommendedOfficeWrapper }}
+      alignChildrenStart
+    >
+      <Box classes={{ box: this.props.classes.recommendedOfficeCarousel }}>
+        <Box classes={{ box: this.props.classes.favoriteOfficeIcon }}>
+          <Icon>heart</Icon>
+        </Box>
+        <Carousel
+          showThumbs={false}
+          showIndicators={false}
+          swipable={false}
+          showStatus={false}
+        >
+          {office.images.map((img, index) => (
+            <div key={index}>
+              <img
+                src={img.image}
+                alt=""
+                className={this.props.classes.officeImage}
+              />
+              <p className="legend">{img.location}</p>
+            </div>
+          ))}
+        </Carousel>
+      </Box>
+      <Box paddingTopHalf>
+        <Typography className={this.props.classes.textMedium}>
+          {office.title}
+        </Typography>
+      </Box>
+      <Row paddingTopHalf>
         <Icon color="primary">star</Icon>
-        <Typography color="secondary">3.5</Typography>
+        <Typography color="secondary">{office.rating}</Typography>
       </Row>
       <Row>
-        <Typography color="primary">$4500 CAD/month</Typography>
+        <Typography color="primary">${office.price} CAD/month</Typography>
       </Row>
     </Column>
   );
@@ -394,7 +479,7 @@ class Home extends Component {
   };
 
   render() {
-    const { classes, t } = this.props;
+    const { recommendedOffices, classes, t } = this.props;
     const { activeHelpStep } = this.state;
     const TextStepComponent = this.textStepper;
     const ImgStepComponent = this.imgStepper;
@@ -402,6 +487,7 @@ class Home extends Component {
 
     return (
       <Column className={classes.root}>
+        {/* Landing image block */}
         <div className={classes.landingBoardWrapper}>
           <img
             srcSet={`${HeaderImageLarger} 2x`}
@@ -466,6 +552,8 @@ class Home extends Component {
             </Grid>
           </Grid>
         </div>
+
+        {/* RENTGLOBAL helper block */}
         <Column
           classes={{ box: clsx(classes.fixedWith, classes.blockWrapper) }}
         >
@@ -490,21 +578,21 @@ class Home extends Component {
                   index="1"
                   label={t("howHelpFind1_title")}
                   content={t("howHelpFind1_content")}
-                  active={activeHelpStep == 0}
+                  active={activeHelpStep === 0}
                   onClick={this.handleSelectActiveStep(0)}
                 />
                 <TextStepComponent
                   index="2"
                   label={t("howHelpFind2_title")}
                   content={t("howHelpFind2_content")}
-                  active={activeHelpStep == 1}
+                  active={activeHelpStep === 1}
                   onClick={this.handleSelectActiveStep(1)}
                 />
                 <TextStepComponent
                   index="3"
                   label={t("howHelpFind3_title")}
                   content={t("howHelpFind3_content")}
-                  active={activeHelpStep == 2}
+                  active={activeHelpStep === 2}
                   onClick={this.handleSelectActiveStep(2)}
                 />
               </Grid>
@@ -512,15 +600,15 @@ class Home extends Component {
                 <Hidden smDown>
                   <Box classes={{ box: classes.imgHelpStepWrapper }}>
                     <ImgStepComponent
-                      active={activeHelpStep == 0}
+                      active={activeHelpStep === 0}
                       imgSrc={gallery1}
                     />
                     <ImgStepComponent
-                      active={activeHelpStep == 1}
+                      active={activeHelpStep === 1}
                       imgSrc={gallery2}
                     />
                     <ImgStepComponent
-                      active={activeHelpStep == 2}
+                      active={activeHelpStep === 2}
                       imgSrc={gallery3}
                     />
                   </Box>
@@ -544,6 +632,8 @@ class Home extends Component {
             </Grid>
           </Row>
         </Column>
+
+        {/* Office list block */}
         <Column
           classes={{ box: clsx(classes.fixedWith, classes.blockWrapper) }}
         >
@@ -552,12 +642,104 @@ class Home extends Component {
               {t("latestRecommendOffice")}
             </Typography>
           </Row>
-          <Row classes={{ box: classes.blockContentWrapper }}>
-            <OfficeComponent />
-            <OfficeComponent />
-            <OfficeComponent />
-            <OfficeComponent />
+          <Row classes={{ box: classes.blockContentWrapper }} fullWidth>
+            <Box alignChildrenStart>
+              {recommendedOffices.map((office, index) => (
+                <OfficeComponent office={office} key={index} />
+              ))}
+            </Box>
           </Row>
+          <Row classes={{ box: classes.allLatestButton }}>
+            <Button variant="secondary" className={classes.shadowButton}>
+              {t("allLatest", { count: "50+" })}
+            </Button>
+          </Row>
+        </Column>
+
+        {/* Register block */}
+        <Column backgroundPrimary fullWidth>
+          <Column
+            classes={{ box: clsx(classes.fixedWith, classes.blockWrapper) }}
+          >
+            <Row classes={{ box: classes.homeRegisterTitle }}>
+              <Typography variant="h6" className={classes.blockTitle}>
+                {t("homeRegisterTitle")}
+              </Typography>
+            </Row>
+            <Row
+              classes={{ box: classes.homeRegisterContent }}
+              fullWidth
+              color="white"
+            >
+              {t("homeRegisterContent")}
+            </Row>
+            <Row>
+              <Button variant="secondary" className={classes.whiteShadowButton}>
+                {t("registerAndStartRENTGLOBALConsultant")}
+              </Button>
+            </Row>
+          </Column>
+        </Column>
+
+        {/* RENTGLOBAL pros block */}
+        <Column
+          classes={{ box: clsx(classes.fixedWith, classes.blockWrapper) }}
+        >
+          <Grid container direction="row" className={classes.prosWrapper}>
+            <Grid item xs={12} sm={4}>
+              <Column>
+                <Row>
+                  <Icon color="primary" fontSize="large">
+                    face
+                  </Icon>
+                </Row>
+                <Row paddingTop>
+                  <Typography variant="h6">{t("flexibility")}</Typography>
+                </Row>
+                <Row>
+                  <Typography>{t("minimumCommitment")}</Typography>
+                </Row>
+              </Column>
+            </Grid>
+            <Grid item xs={12} sm={4}>
+              <Column>
+                <Row>
+                  <Icon color="primary" fontSize="large">
+                    date_range
+                  </Icon>
+                </Row>
+                <Row paddingTop>
+                  <Typography variant="h6">{t("confiance")}</Typography>
+                </Row>
+                <Row>
+                  <Typography>{t("personalMonitoring")}</Typography>
+                </Row>
+              </Column>
+            </Grid>
+            <Grid item xs={12} sm={4}>
+              <Column>
+                <Row>
+                  <Icon color="primary" fontSize="large">
+                    favorite_border
+                  </Icon>
+                </Row>
+                <Row paddingTop>
+                  <Typography variant="h6">{t("simplicity")}</Typography>
+                </Row>
+                <Row>
+                  <Typography>{t("turnkeySolution")}</Typography>
+                </Row>
+              </Column>
+            </Grid>
+          </Grid>
+        </Column>
+        
+        {/* Following block */}
+        <Column
+          classes={{ box: clsx(classes.fixedWith) }}
+          paddingTopDouble
+          paddingBottomDouble
+        >
         </Column>
       </Column>
     );

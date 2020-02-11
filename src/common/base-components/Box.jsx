@@ -92,10 +92,10 @@ const styleSheet = theme => {
       backgroundColor: theme.colors.primary.lightGrey
     },
     backgroundPrimary: {
-      backgroundColor: theme.colors.primary.mainBlue
+      backgroundColor: theme.colors.primary.mainColor
     },
     backgroundSecondary: {
-      backgroundColor: theme.colors.primary.secondaryBlue
+      backgroundColor: theme.colors.primary.grey
     },
     backgroundAction: {
       backgroundColor: theme.colors.primary.actionGreen
