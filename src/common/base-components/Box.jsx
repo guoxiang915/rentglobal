@@ -181,6 +181,9 @@ const styleSheet = theme => {
     paddingTopDouble: {
       paddingTop: 2 * padding
     },
+    paddingTopThree: {
+      paddingTop: 3 * padding
+    },
     paddingTop: {
       paddingTop: padding
     },

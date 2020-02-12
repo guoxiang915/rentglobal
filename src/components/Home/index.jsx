@@ -15,12 +15,15 @@ import {
   Collapse,
   Icon
 } from "@material-ui/core";
+import { LinkedIn, Facebook, Instagram, Twitter } from "@material-ui/icons";
 import {
   Box,
   Row,
   Column,
+  Stretch,
   TextField,
-  Button
+  Button,
+  Link
 } from "../../common/base-components";
 import { Carousel } from "react-responsive-carousel";
 import "react-responsive-carousel/lib/styles/carousel.min.css";
@@ -329,6 +332,15 @@ const styleSheet = theme => ({
   prosWrapper: {
     paddingTop: 45,
     paddingBottom: 50
+  },
+
+  socialIconsWrapper: {
+    height: 55
+  },
+
+  contactInfoWrapper: {
+    paddingTop: 90,
+    paddingBottom: 52
   }
 });
 
@@ -733,13 +745,119 @@ class Home extends Component {
             </Grid>
           </Grid>
         </Column>
-        
+
         {/* Following block */}
         <Column
           classes={{ box: clsx(classes.fixedWith) }}
           paddingTopDouble
           paddingBottomDouble
         >
+          <Row fullWidth>
+            <Column>
+              <Typography>{t("receiveNewsletter")}</Typography>
+              <Row paddingTopHalf fullWidth>
+                <TextField
+                  variant="outlined"
+                  placeholder={t("yourEmailAddress")}
+                  fullWidth
+                />
+              </Row>
+            </Column>
+            <Stretch />
+            <Column>
+              <Typography>{t("followUpSocials")}</Typography>
+              <Row paddingTopHalf classes={{ box: classes.socialIconsWrapper }}>
+                <Box paddingLeft paddingRight>
+                  <Twitter fontSize="large" />
+                </Box>
+                <Box paddingLeft paddingRight>
+                  <Facebook fontSize="large" />
+                </Box>
+                <Box paddingLeft paddingRight>
+                  <Instagram fontSize="large" />
+                </Box>
+                <Box paddingLeft paddingRight>
+                  <LinkedIn fontSize="large" />
+                </Box>
+              </Row>
+            </Column>
+          </Row>
+        </Column>
+
+        {/* Contact info block */}
+        <Column
+          classes={{ box: clsx(classes.fixedWith, classes.blockWrapper) }}
+        >
+          <Grid
+            container
+            justify="space-between"
+            className={classes.contactInfoWrapper}
+          >
+            <Grid item xs={6} sm={3}>
+              <Typography variant="h6">{t("rentglobal")}</Typography>
+              <Column paddingTop alignChildrenStart>
+                <Link to="/about">
+                  <Typography variant="body1">{t("aboutUs")}</Typography>
+                </Link>
+                <Link to="/news">
+                  <Typography variant="body1">{t("news")}</Typography>
+                </Link>
+                <Link to="/careers">
+                  <Typography variant="body1">{t("careers")}</Typography>
+                </Link>
+                <Link to="/contact">
+                  <Typography variant="body1">{t("contactUs")}</Typography>
+                </Link>
+              </Column>
+            </Grid>
+            <Grid item xs={6} sm={3}>
+              <Typography variant="h6">{t("discover")}</Typography>
+              <Column paddingTop alignChildrenStart>
+                <Link to="/turtorial">
+                  <Typography variant="body1">{t("howItWorks")}</Typography>
+                </Link>
+                <Link to="/legal-notice">
+                  <Typography variant="body1">{t("legalNotice")}</Typography>
+                </Link>
+                <Link to="/policy">
+                  <Typography variant="body1">{t("privacyPolicy")}</Typography>
+                </Link>
+                <Link to="/terms">
+                  <Typography variant="body1">
+                    {t("termsAndConditions")}
+                  </Typography>
+                </Link>
+              </Column>
+            </Grid>
+            <Grid item xs={6} sm={3}>
+              <Typography variant="h6">{t("support")}</Typography>
+              <Column paddingTop alignChildrenStart>
+                <Link to="/help">
+                  <Typography variant="body1">{t("help")}</Typography>
+                </Link>
+                <Link to="/auth/login">
+                  <Typography variant="body1">{t("login")}</Typography>
+                </Link>
+                <Link to="/auth/register">
+                  <Typography variant="body1">{t("register")}</Typography>
+                </Link>
+                <Link to="/support">
+                  <Typography variant="body1">{t("support")}</Typography>
+                </Link>
+              </Column>
+            </Grid>
+            <Grid item xs={6} sm={3}>
+              <Typography variant="h6">{t("contact")}</Typography>
+              <Column paddingTop alignChildrenStart>
+                <Typography variant="body1">
+                  1176, street Bishop, Montreal,
+                </Typography>
+                <Typography variant="body1">QC H3G 2E3</Typography>
+                <Typography variant="body1">info@dokstation.ca</Typography>
+                <Typography variant="body1">Phone: (514) 461-3030</Typography>
+              </Column>
+            </Grid>
+          </Grid>
         </Column>
       </Column>
     );
