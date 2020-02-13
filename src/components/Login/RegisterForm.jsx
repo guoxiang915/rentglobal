@@ -119,7 +119,7 @@ class RegisterForm extends Component {
   handleSignupGoogle = () => {};
 
   render() {
-    const { classes, t } = this.props;
+    const { registerMode, classes, t } = this.props;
 
     return (
       <form
@@ -129,7 +129,11 @@ class RegisterForm extends Component {
         className={classes.formWrapper}
       >
         <Typography className={classes.formTitle}>
-          {t("signupToRENTGLOBAL")}
+          {registerMode === "landlord"
+            ? t("signupAsLandlord")
+            : registerMode === "company"
+            ? t("signupAsCompany")
+            : t("signupToRENTGLOBAL")}
         </Typography>
         <Box paddingTop>
           <TextField

@@ -686,7 +686,13 @@ class Home extends Component {
               {t("homeRegisterContent")}
             </Row>
             <Row>
-              <Button variant="secondary" className={classes.whiteShadowButton}>
+              <Button
+                variant="secondary"
+                className={classes.whiteShadowButton}
+                onClick={() =>
+                  this.props.history.push("/auth/register/landlord")
+                }
+              >
                 {t("registerAndStartRENTGLOBALConsultant")}
               </Button>
             </Row>

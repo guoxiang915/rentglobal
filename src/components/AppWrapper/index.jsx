@@ -367,7 +367,13 @@ class Appwrapper extends Component {
                   </Menu>
                 </Column>
                 <Column paddingLeft>
-                  <Button variant="secondary" className={classes.shadowButton}>
+                  <Button
+                    variant="secondary"
+                    className={classes.shadowButton}
+                    onClick={() =>
+                      this.props.history.push("/auth/register/landlord")
+                    }
+                  >
                     {t("placeToRent")}
                   </Button>
                 </Column>
