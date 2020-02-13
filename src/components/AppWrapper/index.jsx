@@ -156,12 +156,12 @@ class Appwrapper extends Component {
         this.props.history.push("/");
         break;
       case "login":
-        this.props.history.push("/auth");
+        this.props.history.push("/auth/login");
         break;
       case "logout":
         authObj.removeToken();
         this.props.mappedlogout();
-        this.props.history.push("/auth");
+        this.props.history.push("/auth/login");
         break;
       default:
         this.props.history.push("/");
@@ -333,6 +333,15 @@ class Appwrapper extends Component {
               <Hidden smDown>
                 <Column>
                   <Button
+                    onClick={() => this.props.history.push("/")}
+                    color="secondary"
+                    transparent
+                  >
+                    {t("home")}
+                  </Button>
+                </Column>
+                <Column>
+                  <Button
                     aria-controls="language-menu"
                     aria-haspopup="true"
                     onClick={this.handleMenu("languageEl")}
@@ -362,9 +371,14 @@ class Appwrapper extends Component {
                     {t("placeToRent")}
                   </Button>
                 </Column>
+                <Column paddingLeftDouble>
+                  <Link variant="body2" to="/auth/select-register">
+                    {t("register")}
+                  </Link>
+                </Column>
                 <Column paddingLeft>
-                  <Link variant="body2" to="/auth">
-                    {t("loginOrRegister")}
+                  <Link variant="body2" to="/auth/login">
+                    {t("login")}
                   </Link>
                 </Column>
               </Hidden>

@@ -7,7 +7,9 @@ import { withTranslation } from "react-i18next";
 import { Column, Spinner } from "../../common/base-components";
 import LoginForm from "./LoginForm";
 import RegisterForm from "./RegisterForm";
+import SelectRegisterForm from "./SelectRegisterForm";
 import ForgotPasswordForm from "./ForgotPasswordForm";
+
 import HeaderImage from "../../assets/img/img_header@2x.jpg";
 
 import "./Login.css";
@@ -114,44 +116,53 @@ class AuthWrapper extends Component {
       <div>
         <div className={classes.backgroundWrapper}></div>
         <div className={classes.loginWrapper}>
-          <Column classes={{ box: classes.loginCard }}>
-            <Collapse in={true} unmountOnExit className={classes.fullWidth}>
-              <Route
-                exact
-                path={["/auth", "/auth/login"]}
-                render={() => (
-                  <LoginForm
-                    email={this.state.email}
-                    mappedLogin={this.props.mappedLogin}
-                  />
-                )}
-              />
-              <Route
-                path="/auth/register"
-                render={() => (
-                  <RegisterForm
-                    email={this.state.email}
-                    mappedRegister={this.props.mappedRegister}
-                  />
-                )}
-              />
-              <Route
-                path="/auth/forgot-password"
-                render={() => (
-                  <ForgotPasswordForm
-                    email={this.state.email}
-                    mappedResetPassword={() => {}}
-                  />
-                )}
-              />
-            </Collapse>
-
-            {isLoading && (
-              <Column paddingTop fullWidth>
-                <Spinner />
+          <Route
+            exact
+            path={["/auth", "/auth/login"]}
+            render={() => (
+              <Column classes={{ box: classes.loginCard }}>
+                <LoginForm
+                  email={this.state.email}
+                  mappedLogin={this.props.mappedLogin}
+                />
               </Column>
             )}
-          </Column>
+          />
+          <Route
+            exact
+            path="/auth/select-register"
+            render={() => <SelectRegisterForm />}
+          />
+          <Route
+            exact
+            path="/auth/register/:registerMode"
+            render={({ match }) => (
+              <Column classes={{ box: classes.loginCard }}>
+                <RegisterForm
+                  email={this.state.email}
+                  mappedRegister={this.props.mappedRegister}
+                  registerMode={match.params["registerMode"]}
+                />
+              </Column>
+            )}
+          />
+          <Route
+            path="/auth/forgot-password"
+            render={() => (
+              <Column classes={{ box: classes.loginCard }}>
+                <ForgotPasswordForm
+                  email={this.state.email}
+                  mappedResetPassword={() => {}}
+                />
+              </Column>
+            )}
+          />
+
+          {isLoading && (
+            <Column paddingTop fullWidth>
+              <Spinner />
+            </Column>
+          )}
         </div>
       </div>
     );

@@ -15,6 +15,7 @@
     "forgotYourPassword": "Forgot your password",
     "resetPassword": "Reset password",
     "next": "Next",
+    "home": "Home",
     "en": "EN",
     "fr": "FR",
     "changeLocation": "Change Location ({{location}})",
@@ -68,5 +69,11 @@
     "termsAndConditions": "Terms & Conditions",
     "support": "Support",
     "help": "Help",
-    "contact": "Contact"
+    "contact": "Contact",
+    "amLandlord": "I am a Landlord",
+    "iHavePlaceToRent": "I have a place & I want to rent as a office",
+    "needOffice": "I need an office",
+    "iLookForOffice": "I have a team & company looking for a place to work",
+    "landlordSignup": "Landlord sign up",
+    "companySignup": "Company sign up"
 }
