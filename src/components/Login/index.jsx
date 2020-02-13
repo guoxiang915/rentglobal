@@ -131,7 +131,7 @@ class AuthWrapper extends Component {
   handleGetLoginMode = () => {
     this.emailValidation();
     if (!this.state.emailError) {
-      this.props.getRegisteredUser(this.state.email);
+      this.props.getRegisteredUser({email: this.state.email});
     }
   };
 

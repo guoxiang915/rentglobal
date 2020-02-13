@@ -11,11 +11,7 @@ export const resultExist = payload => {
 
 // get registered user request
 export const isExist = (dispatch, payload) => {
-  // mock api
-  new Promise((resolve, reject) => {
-    setTimeout(() => resolve({ message: payload }), 30);
-    // setTimeout(() => reject({ message: "Exist" }), 3000);
-  }).then(
+  axios.get(`${API}/auth/check-email`, payload).then(
     resp => {
       dispatch(resultExist(resp));
     },
@@ -23,15 +19,6 @@ export const isExist = (dispatch, payload) => {
       dispatch(resultExist(null));
     }
   );
-
-  /* axios.get(`${API}/users/exist`, payload).then(
-    resp => {
-      dispatch(resultExist(resp));
-    },
-    error => {
-      dispatch(resultExist(null));
-    }
-  ); */
 
   return {
     type: "REQUEST_IS_EXIST"

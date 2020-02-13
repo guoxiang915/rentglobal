@@ -7,16 +7,7 @@ const authObj = new Auth();
 
 const sendRequest = async credentials => {
   try {
-    // for mock data
-    let resp = await new Promise(resolve =>
-        setTimeout(() => resolve({ success: true, token: "auth-token", message: "" }),
-          3000
-        )
-      );
-      
-    return JSON.stringify(resp);
-
-    resp = await fetch(`${API}/users/userLogin`, {
+    let resp = await fetch(`${API}/auth/login`, {
       method: "post",
       headers: {
         Accept: "application/json",
@@ -27,7 +18,6 @@ const sendRequest = async credentials => {
     let json = await resp.json();
     return json;
   } catch (error) {
-    alert(error.message);
     console.log(error);
   }
 };
@@ -50,7 +40,6 @@ function* login(action) {
       });
     }
   } catch (error) {
-    alert(error.message);
     console.log(error);
   }
   yield call(flushMessage);

@@ -4,17 +4,7 @@ import flushMessage from "../flushMessages";
 
 const sendRequest = async token => {
   try {
-    // for mock data
-    return await new Promise(resolve =>
-      setTimeout(
-        resolve(
-          JSON.stringify({ success: false, token: "auth-token", message: "Authentication failed" })
-        ),
-        3000
-      )
-    );
-
-    let resp = await fetch(`${API}/users/validateToken`, {
+    let resp = await fetch(`${API}/auth/activate/${token}`, {
       method: "get",
       headers: {
         Authorization: token,
@@ -25,7 +15,6 @@ const sendRequest = async token => {
     let json = await resp.json();
     return json;
   } catch (error) {
-    alert(error.message);
     console.log(error);
   }
 };
@@ -47,7 +36,6 @@ function* authenticate(action) {
       // action.history.push("/login");
     }
   } catch (error) {
-    alert(error.message);
     console.log(error);
   }
   yield call(flushMessage);

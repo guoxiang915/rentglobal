@@ -97,8 +97,18 @@ class LoginForm extends Component {
     this.setState({ isRemember: !this.state.isRemember });
   };
 
-  handleLogin = () => {
-    console.log("login");
+  handleLogin = e => {
+    e.preventDefault();
+    if (this.state.error) {
+      return;
+    }
+    const payload = {
+      email: this.state.email,
+      password: this.state.password
+    };
+    if (payload.email !== "" && payload.password !== "") {
+      this.props.mappedLogin(payload, this.props.history);
+    }
   };
 
   handleLoginFacebook = () => {};
@@ -110,7 +120,7 @@ class LoginForm extends Component {
 
     return (
       <form
-        onSubmit={this.handleSubmit}
+        // onSubmit={this.handleSubmit}
         noValidate
         autoComplete="off"
         className={classes.formWrapper}

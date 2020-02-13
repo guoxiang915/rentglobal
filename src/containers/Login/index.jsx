@@ -12,7 +12,9 @@ const mapDispatchToprops = dispatch => {
   return {
     getRegisteredUser: email => dispatch(authActions.isExist(dispatch, email)),
     mappedLogin: (credentials, history) =>
-      dispatch(authActions.login(credentials, history))
+      dispatch(authActions.login(credentials, history)),
+    mappedRegister: (payload, history) =>
+      dispatch(authActions.registerUser(payload, history))
   };
 };
 

@@ -81,15 +81,7 @@ class RegisterForm extends Component {
     const emailValid = this.state.email.match(
       /^([\w.%+-]+)@([\w-]+\.)+([\w]{2,})$/i
     );
-    if (this.state.firstname === "") {
-      this.setState({
-        error: "Firstname required!",
-        errors: {
-          firstname: true
-        }
-      });
-      return false;
-    } else if (this.state.email === "" || !emailValid) {
+    if (this.state.email === "" || !emailValid) {
       this.setState({
         error: "Please enter a valid email!",
         errors: {
@@ -116,8 +108,6 @@ class RegisterForm extends Component {
       return;
     }
     const user = {
-      firstname: this.state.firstname,
-      lastname: this.state.lastname,
       email: this.state.email,
       password: this.state.password
     };
@@ -133,7 +123,7 @@ class RegisterForm extends Component {
 
     return (
       <form
-        onSubmit={this.handleSubmit}
+        // onSubmit={this.handleSubmit}
         noValidate
         autoComplete="off"
         className={classes.formWrapper}
@@ -158,8 +148,8 @@ class RegisterForm extends Component {
           <TextField
             id="createPassword"
             placeholder={t("createPassword")}
-            value={this.state.createPassword}
-            onChange={this.handleChange("createPassword")}
+            value={this.state.password}
+            onChange={this.handleChange("password")}
             type="password"
             variant="outlined"
             startAdornment={<LockOpen color="secondary" />}
@@ -220,7 +210,8 @@ class RegisterForm extends Component {
 
 RegisterForm.propTypes = {
   classes: PropTypes.object.isRequired,
-  t: PropTypes.func.isRequired
+  t: PropTypes.func.isRequired,
+  mappedRegister: PropTypes.func.isRequired
 };
 
 export default withStyles(styleSheet)(withTranslation("common")(RegisterForm));

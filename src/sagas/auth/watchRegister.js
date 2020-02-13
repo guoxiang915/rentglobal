@@ -1,27 +1,26 @@
 import { takeLatest, put, call } from "redux-saga/effects";
 import { API } from "../../utils/constants";
 import Auth from "../../utils/auth";
+import api from "../../api/api";
 import flushMessage from "../flushMessages";
 
 const authObj = new Auth();
 
 const sendRequest = async credentials => {
   try {
-    // for mock data
-    return JSON.stringify({ success: true, token: "auth-token", message: "" });
-
-    let resp = await fetch(`${API}/users/userRegister`, {
-      method: "post",
-      body: JSON.stringify(credentials),
-      headers: {
-        Accept: "application/json",
-        "Content-Type": "application/json"
-      }
-    });
+    let resp = await api.post(`${API}/auth/register`, credentials);
+    // let resp = await fetch(`${API}/auth/register`, {
+    //   method: "post",
+    //   body: JSON.stringify(credentials),
+    //   headers: {
+    //     Accept: "application/json",
+    //     "Content-Type": "application/json"
+    //   }
+    // });
+    console.log(resp);
     let json = await resp.json();
     return json;
   } catch (error) {
-    alert(error.message);
     console.log(error);
   }
 };
@@ -44,7 +43,6 @@ function* register(action) {
       });
     }
   } catch (error) {
-    alert(error.message);
     console.log(error);
   }
   yield call(flushMessage);

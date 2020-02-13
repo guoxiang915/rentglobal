@@ -60,7 +60,9 @@ class PrivateRoute extends React.Component {
 
   authenticate = async () => {
     let token = await authObj.getToken();
-    await this.props.mappedAuthenticate(token, this.props.history);
+    if (token) {
+      await this.props.mappedAuthenticate(token, this.props.history);
+    }
   };
 
   render() {
