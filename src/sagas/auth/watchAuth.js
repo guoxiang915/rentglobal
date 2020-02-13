@@ -4,14 +4,15 @@ import flushMessage from "../flushMessages";
 
 const sendRequest = async token => {
   try {
-    let resp = await fetch(`${API}/auth/activate/${token}`, {
-      method: "get",
-      headers: {
-        Authorization: token,
-        Accept: "application/json",
-        "Content-Type": "application/json"
-      }
-    });
+    // let resp = await fetch(`${API}/auth/activate/${token}`, {
+    //   method: "get",
+    //   headers: {
+    //     Authorization: token,
+    //     Accept: "application/json",
+    //     "Content-Type": "application/json"
+    //   }
+    // });
+    let resp = { success: false, msg: "" };
     let json = await resp.json();
     return json;
   } catch (error) {
@@ -28,7 +29,7 @@ function* authenticate(action) {
         type: "AUTH_SUCCESS",
         resp: response
       });
-    } else if (!response.success && response.message) {
+    } else if (!response.success && response.msg) {
       yield put({
         type: "AUTH_FAILED",
         resp: response

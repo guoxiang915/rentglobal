@@ -4,26 +4,12 @@ const INITIAL_STATE = {
   isLoading: false,
   error: null,
   loaded: false,
-  successMsg: null,
-  loginMode: null
+  successMsg: null
+  // loginMode: null
 };
 
 const authReducer = (currentState = INITIAL_STATE, action) => {
   switch (action.type) {
-    case "REQUEST_IS_EXIST":
-      return {
-        ...currentState,
-        isLoading: true,
-        successMsg: null
-      };
-
-    case "RESPONSE_IS_EXIST":
-      return {
-        ...currentState,
-        isLoading: false,
-        loginMode: action.loginMode
-      };
-
     case "REQUEST_LOGIN":
       return {
         ...currentState,
@@ -35,10 +21,16 @@ const authReducer = (currentState = INITIAL_STATE, action) => {
       return {
         ...currentState,
         isLoading: false,
-        error: action.resp.message,
-        isLoggedIn: false,
-        user: null,
-        successMsg: null
+        error: action.resp.msg,
+        isLoggedIn: false
+      };
+
+    case "USER_NOT_ACTIVATED":
+      return {
+        ...currentState,
+        isLoading: false,
+        error: action.resp.msg,
+        isLoggedIn: false
       };
 
     case "LOGIN_SUCCESS":
@@ -46,9 +38,9 @@ const authReducer = (currentState = INITIAL_STATE, action) => {
         ...currentState,
         isLoading: false,
         isLoggedIn: true,
-        error: null,
-        user: action.resp.user,
-        successMsg: action.resp.message
+        error: null
+        // user: action.resp.user,
+        // successMsg: action.resp.msg
       };
 
     case "REQUEST_AUTHENTICATION":
@@ -70,7 +62,7 @@ const authReducer = (currentState = INITIAL_STATE, action) => {
         error: null,
         user: action.resp.user,
         loaded: true,
-        successMsg: action.resp.message
+        successMsg: action.resp.msg
       };
 
     case "AUTH_FAILED":
@@ -78,7 +70,7 @@ const authReducer = (currentState = INITIAL_STATE, action) => {
         ...currentState,
         isLoading: false,
         isLoggedIn: false,
-        error: action.resp.message,
+        error: action.resp.msg,
         user: null,
         loaded: true,
         successMsg: null
@@ -119,19 +111,18 @@ const authReducer = (currentState = INITIAL_STATE, action) => {
         isLoading: false,
         isLoggedIn: false,
         user: null,
-        error: action.resp.message,
+        error: action.resp.msg,
         loaded: true
       };
 
+    // unusable
     case "REGISTER_USER_SUCCESS":
       return {
         ...currentState,
         isLoading: false,
         isLoggedIn: true,
-        user: action.resp.user,
         error: null,
-        loaded: true,
-        successMsg: action.resp.message
+        loaded: true
       };
 
     default:

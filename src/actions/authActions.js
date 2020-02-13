@@ -1,30 +1,3 @@
-import axios from "axios";
-import { API } from "../utils/constants";
-
-// get registered user response
-export const resultExist = payload => {
-  return {
-    type: "RESPONSE_IS_EXIST",
-    loginMode: payload && payload.status === 200 ? "login" : "register"
-  };
-};
-
-// get registered user request
-export const isExist = (dispatch, payload) => {
-  axios.post(`${API}/auth/check-email`, payload).then(
-    resp => {
-      dispatch(resultExist(resp));
-    },
-    error => {
-      dispatch(resultExist(null));
-    }
-  );
-
-  return {
-    type: "REQUEST_IS_EXIST"
-  };
-};
-
 export const login = (payload, history) => {
   return {
     type: "REQUEST_LOGIN",

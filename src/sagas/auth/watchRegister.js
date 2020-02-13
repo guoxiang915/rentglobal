@@ -4,33 +4,30 @@ import Auth from "../../utils/auth";
 import api from "../../api/api";
 import flushMessage from "../flushMessages";
 
-const authObj = new Auth();
-
 const sendRequest = async credentials => {
+  let resp = null;
   try {
-    let resp = await api.post(`${API}/auth/register`, credentials);
-    let json = await resp.json();
-    return json;
+    resp = await api.post(`${API}/auth/register`, credentials);
   } catch (error) {
     console.log(error);
+    resp = error.response;
+  } finally {
+    return resp;
   }
 };
 
 function* register(action) {
   try {
     let response = yield call(sendRequest, action.payload);
-    if (response.success) {
+    if (response.status === 200) {
       yield put({
-        type: "REGISTER_USER_SUCCESS",
-        resp: response
+        type: "USER_NOT_ACTIVATED",
+        resp: response.data
       });
-      console.log(response);
-      authObj.setToken(response.token);
-      action.history.push("/");
-    } else if (!response.success && response.message) {
+    } else {
       yield put({
         type: "REGISTER_USER_FAILED",
-        resp: response
+        resp: response.data
       });
     }
   } catch (error) {

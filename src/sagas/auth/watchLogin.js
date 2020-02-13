@@ -1,42 +1,42 @@
 import { takeLatest, put, call } from "redux-saga/effects";
 import { API } from "../../utils/constants";
+import api from "../../api/api";
 import Auth from "../../utils/auth";
 import flushMessage from "../flushMessages";
 
 const authObj = new Auth();
 
 const sendRequest = async credentials => {
+  let resp = null;
   try {
-    let resp = await fetch(`${API}/auth/login`, {
-      method: "post",
-      headers: {
-        Accept: "application/json",
-        "Content-Type": "application/json"
-      },
-      body: JSON.stringify(credentials)
-    });
-    let json = await resp.json();
-    return json;
+    resp = await api.post(`${API}/auth/login`, credentials);
   } catch (error) {
     console.log(error);
+    resp = error.response;
+  } finally {
+    return resp;
   }
 };
 
 function* login(action) {
   try {
     const response = yield call(sendRequest, action.payload);
-    if (response.success) {
+    if (response.status === 200) {
       yield put({
         type: "LOGIN_SUCCESS",
-        resp: response
+        resp: response.data
       });
-      //localStorage.setItem('userToken', response.token);
-      authObj.setToken(response.token);
+      authObj.setToken(response.data.token);
       action.history.push("/");
-    } else if (!response.success && response.message) {
+    } else if (response.status === 403) {
+      yield put({
+        type: "USER_NOT_ACTIVATED",
+        resp: response.data
+      });
+    } else {
       yield put({
         type: "LOGIN_FAILED",
-        resp: response
+        resp: response.data
       });
     }
   } catch (error) {

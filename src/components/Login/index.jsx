@@ -1,17 +1,10 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { withStyles } from "@material-ui/core/styles";
-import { Collapse, Typography } from "@material-ui/core";
-import { MailOutline } from "@material-ui/icons";
+import { Collapse } from "@material-ui/core";
 import { Route } from "react-router-dom";
 import { withTranslation } from "react-i18next";
-import {
-  TextField,
-  Button,
-  Box,
-  Column,
-  Spinner
-} from "../../common/base-components";
+import { Column, Spinner } from "../../common/base-components";
 import LoginForm from "./LoginForm";
 import RegisterForm from "./RegisterForm";
 import ForgotPasswordForm from "./ForgotPasswordForm";
@@ -92,21 +85,6 @@ class AuthWrapper extends Component {
     };
   }
 
-  UNSAFE_componentWillReceiveProps(newProps) {
-    if (this.props.auth.loginMode !== newProps.auth.loginMode) {
-      let newRoute = "/auth";
-      if (newProps.auth.loginMode === "login") {
-        newRoute += "/login";
-      } else if (newProps.auth.loginMode === "register") {
-        newRoute += "/register";
-      }
-
-      if (newRoute !== this.props.match.path) {
-        this.props.history.push(newRoute);
-      }
-    }
-  }
-
   emailValidation = () => {
     const emailValid = this.state.email.match(
       /^([\w.%+-]+)@([\w-]+\.)+([\w]{2,})$/i
@@ -128,74 +106,19 @@ class AuthWrapper extends Component {
     }
   };
 
-  handleGetLoginMode = () => {
-    this.emailValidation();
-    if (!this.state.emailError) {
-      this.props.getRegisteredUser({email: this.state.email});
-    }
-  };
-
   render() {
     const { classes, t } = this.props;
-    const { isLoading, loginMode } = this.props.auth;
-    const route = this.props.match.pathname;
+    const { isLoading } = this.props.auth;
 
     return (
       <div>
         <div className={classes.backgroundWrapper}></div>
         <div className={classes.loginWrapper}>
           <Column classes={{ box: classes.loginCard }}>
-            {(route === "/auth" || !loginMode) && (
-              <form
-                onSubmit={this.handleSubmit}
-                noValidate
-                autoComplete="off"
-                className={classes.fullWidth}
-              >
-                <Typography className={classes.loginTitle}>
-                  {t("loginOrRegister")}
-                </Typography>
-                <Box paddingTop>
-                  <TextField
-                    id="email"
-                    placeholder="Email"
-                    value={this.state.email}
-                    onChange={this.handleChange("email")}
-                    variant="outlined"
-                    startAdornment={<MailOutline color="secondary" />}
-                    error={!!this.state.emailError}
-                    helperText={this.state.emailError}
-                    fullWidth
-                  />
-                </Box>
-                {!isLoading && (
-                  <Box
-                    paddingTopHalf
-                    justifyChildrenEnd
-                    fullWidth
-                    paddingBottom
-                  >
-                    <Button
-                      type="submit"
-                      variant="contained"
-                      size="medium"
-                      className={classes.loginButton}
-                      onClick={this.handleGetLoginMode}
-                      disabled={!this.state.email}
-                    >
-                      {t("next")}
-                    </Button>
-                  </Box>
-                )}
-              </form>
-            )}
-            <Collapse
-              in={!!loginMode}
-              unmountOnExit
-              className={classes.fullWidth}
-            >
+            <Collapse in={true} unmountOnExit className={classes.fullWidth}>
               <Route
-                path="/auth/login"
+                exact
+                path={["/auth", "/auth/login"]}
                 render={() => (
                   <LoginForm
                     email={this.state.email}
