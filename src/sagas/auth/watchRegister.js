@@ -9,15 +9,6 @@ const authObj = new Auth();
 const sendRequest = async credentials => {
   try {
     let resp = await api.post(`${API}/auth/register`, credentials);
-    // let resp = await fetch(`${API}/auth/register`, {
-    //   method: "post",
-    //   body: JSON.stringify(credentials),
-    //   headers: {
-    //     Accept: "application/json",
-    //     "Content-Type": "application/json"
-    //   }
-    // });
-    console.log(resp);
     let json = await resp.json();
     return json;
   } catch (error) {

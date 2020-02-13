@@ -5,13 +5,13 @@ import { API } from "../utils/constants";
 export const resultExist = payload => {
   return {
     type: "RESPONSE_IS_EXIST",
-    loginMode: payload && payload.message ? "login" : "register"
+    loginMode: payload && payload.status === 200 ? "login" : "register"
   };
 };
 
 // get registered user request
 export const isExist = (dispatch, payload) => {
-  axios.get(`${API}/auth/check-email`, payload).then(
+  axios.post(`${API}/auth/check-email`, payload).then(
     resp => {
       dispatch(resultExist(resp));
     },
