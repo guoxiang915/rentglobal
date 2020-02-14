@@ -3,6 +3,7 @@ import { API } from "../../utils/constants";
 import api from "../../api/api";
 import Auth from "../../utils/auth";
 import flushMessage from "../flushMessages";
+import { push } from "react-router-redux";
 
 const authObj = new Auth();
 
@@ -29,10 +30,12 @@ function* login(action) {
       authObj.setToken(response.data.token);
       action.history.push("/");
     } else if (response.status === 403) {
-      yield put({
-        type: "USER_NOT_ACTIVATED",
-        resp: response.data
-      });
+      // yield put({
+      //   type: "USER_NOT_ACTIVATED",
+      //   resp: response.data
+      // });
+      console.log(push);
+      yield put(push("/auth/send-verification"));
     } else {
       yield put({
         type: "LOGIN_FAILED",

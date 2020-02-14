@@ -123,7 +123,6 @@ class RegisterForm extends Component {
 
     return (
       <form
-        // onSubmit={this.handleSubmit}
         noValidate
         autoComplete="off"
         className={classes.formWrapper}

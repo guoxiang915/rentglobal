@@ -77,5 +77,7 @@
     "needOffice": "I need an office",
     "iLookForOffice": "I have a team & company looking for a place to work",
     "landlordSignup": "Landlord sign up",
-    "companySignup": "Company sign up"
+    "companySignup": "Company sign up",
+    "verificationSent": "Verification Sent",
+    "checkEmailForVerification": "Verification sent to your email address: <0>{{email}}</0><br />Please check your email."
 }

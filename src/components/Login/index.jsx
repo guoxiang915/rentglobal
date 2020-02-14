@@ -6,8 +6,9 @@ import { Route } from "react-router-dom";
 import { withTranslation } from "react-i18next";
 import { Column, Spinner } from "../../common/base-components";
 import LoginForm from "./LoginForm";
-import RegisterForm from "./RegisterForm";
 import SelectRegisterForm from "./SelectRegisterForm";
+import RegisterForm from "./RegisterForm";
+import SendVerificationForm from "./SendVerificationForm";
 import ForgotPasswordForm from "./ForgotPasswordForm";
 
 import HeaderImage from "../../assets/img/img_header@2x.jpg";
@@ -143,6 +144,14 @@ class AuthWrapper extends Component {
                   mappedRegister={this.props.mappedRegister}
                   registerMode={match.params["registerMode"]}
                 />
+              </Column>
+            )}
+          />
+          <Route
+            path="/auth/send-verification"
+            render={() => (
+              <Column classes={{ box: classes.loginCard }}>
+                <SendVerificationForm email={this.state.email} />
               </Column>
             )}
           />
