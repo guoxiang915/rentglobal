@@ -111,7 +111,7 @@ class RegisterForm extends Component {
       email: this.state.email,
       password: this.state.password
     };
-    this.props.mappedRegister(user, this.props.history);
+    this.props.mappedRegister(user);
   };
 
   handleSignupFacebook = () => {};

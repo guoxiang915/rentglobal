@@ -109,12 +109,16 @@ const authReducer = (currentState = INITIAL_STATE, action) => {
       };
 
     case "REQUEST_VERIFY_EMAIL":
+    case "REQUEST_FORGOT_PASSWORD":
+    case "REQUEST_RESET_PASSWORD":
       return {
         ...currentState,
         isLoading: true
       };
 
     case "RESPONSE_VERIFY_EMAIL":
+    case "RESPONSE_FORGOT_PASSWORD":
+    case "RESPONSE_RESET_PASSWORD":
       return {
         ...currentState,
         isLoading: false

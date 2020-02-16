@@ -66,7 +66,7 @@ const styleSheet = theme => ({
 class SelectRegisterForm extends Component {
   handleSelectRegister = registerMode => () => {
     if (registerMode) {
-      this.props.history.push(`/auth/register/${registerMode}`);
+      this.props.navigate(`register/${registerMode}`);
     }
   };
 
@@ -152,9 +152,10 @@ class SelectRegisterForm extends Component {
 
 SelectRegisterForm.propTypes = {
   classes: PropTypes.object.isRequired,
-  t: PropTypes.func.isRequired
+  t: PropTypes.func.isRequired,
+  navigate: PropTypes.func
 };
 
-export default withRouter(
-  withStyles(styleSheet)(withTranslation("common")(SelectRegisterForm))
+export default withStyles(styleSheet)(
+  withTranslation("common")(SelectRegisterForm)
 );

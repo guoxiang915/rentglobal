@@ -40,34 +40,17 @@ class SetNewPasswordForm extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      email: this.props.email ? this.props.email : "",
-      emailError: null,
+      password: "",
+      passwordError: null,
       error: null
     };
   }
-
-  emailValidation = () => {
-    const emailValid = this.state.email.match(
-      /^([\w.%+-]+)@([\w-]+\.)+([\w]{2,})$/i
-    );
-    if (!emailValid) {
-      this.setState({ emailError: this.props.t("invalidEmail") });
-    } else {
-      this.setState({ emailError: null });
-    }
-  };
 
   handleChange = name => event => {
     this.setState({
       [name]: event.target.value
     });
-
-    if (name === "email") {
-      this.emailValidation();
-    }
   };
-
-  handleResetPassword = () => {};
 
   handleSubmit = e => {
     e.preventDefault();
@@ -75,9 +58,10 @@ class SetNewPasswordForm extends Component {
       return;
     }
     const payload = {
-      email: this.state.email
+      token: this.props.token,
+      password: this.state.password
     };
-    if (payload.email !== "") {
+    if (payload.password !== "") {
       this.props.mappedResetPassword(payload);
     }
   };
@@ -97,19 +81,6 @@ class SetNewPasswordForm extends Component {
         </Typography>
         <Box paddingTop>
           <TextField
-            id="email"
-            placeholder="Email"
-            value={this.state.email}
-            onChange={this.handleChange("email")}
-            variant="outlined"
-            startAdornment={<MailOutline color="secondary" />}
-            error={!!this.state.emailError}
-            helperText={this.state.emailError}
-            fullWidth
-          />
-        </Box>
-        <Box paddingTopHalf>
-          <TextField
             id="password"
             placeholder={t("password")}
             value={this.state.password}
@@ -117,6 +88,8 @@ class SetNewPasswordForm extends Component {
             type="password"
             variant="outlined"
             startAdornment={<LockOpen color="secondary" />}
+            error={!!this.state.passwordError}
+            helperText={this.state.passwordError}
             fullWidth
           />
         </Box>
@@ -126,8 +99,7 @@ class SetNewPasswordForm extends Component {
             variant="contained"
             size="medium"
             className={classes.submitButton}
-            onClick={this.handleResetPassword}
-            disabled={!this.state.email}
+            disabled={!this.state.password}
           >
             {t("resetPassword")}
           </Button>
@@ -149,7 +121,8 @@ class SetNewPasswordForm extends Component {
 
 SetNewPasswordForm.propTypes = {
   classes: PropTypes.object.isRequired,
-  t: PropTypes.func.isRequired
+  t: PropTypes.func.isRequired,
+  token: PropTypes.string.isRequired
 };
 
 export default withStyles(styleSheet)(

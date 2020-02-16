@@ -89,7 +89,7 @@ class LoginForm extends Component {
       password: this.state.password
     };
     if (payload.email !== "" && payload.password !== "") {
-      this.props.mappedLogin(payload, this.props.history);
+      this.props.mappedLogin(payload);
     }
   };
 

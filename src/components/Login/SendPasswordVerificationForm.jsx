@@ -39,7 +39,7 @@ const styleSheet = theme => ({
 
 class SendPasswordVerificationForm extends Component {
   handleLogin = () => {
-    this.props.onLogin();
+    this.props.navigate('login');
   };
 
   render() {
@@ -83,7 +83,7 @@ class SendPasswordVerificationForm extends Component {
 SendPasswordVerificationForm.propTypes = {
   classes: PropTypes.object.isRequired,
   t: PropTypes.func.isRequired,
-  mappedRegister: PropTypes.func.isRequired
+  navigate: PropTypes.func,
 };
 
 export default withStyles(styleSheet)(

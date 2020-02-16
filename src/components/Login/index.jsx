@@ -108,6 +108,10 @@ class AuthWrapper extends Component {
     }
   };
 
+  navigate = route => {
+    this.props.history.push(`/auth/${route}`);
+  };
+
   render() {
     const { classes, t } = this.props;
     const { isLoggedIn, isActivated, isLoading } = this.props.auth;
@@ -132,7 +136,9 @@ class AuthWrapper extends Component {
                     <Column classes={{ box: classes.loginCard }}>
                       <LoginForm
                         email={this.state.email}
-                        mappedLogin={this.props.mappedLogin}
+                        mappedLogin={payload =>
+                          this.props.mappedLogin(payload, this.props.history)
+                        }
                       />
                     </Column>
                   )}
@@ -140,7 +146,7 @@ class AuthWrapper extends Component {
                 <Route
                   exact
                   path="/auth/select-register"
-                  render={() => <SelectRegisterForm />}
+                  render={() => <SelectRegisterForm navigate={this.navigate} />}
                 />
                 <Route
                   exact
@@ -149,7 +155,9 @@ class AuthWrapper extends Component {
                     <Column classes={{ box: classes.loginCard }}>
                       <RegisterForm
                         email={this.state.email}
-                        mappedRegister={this.props.mappedRegister}
+                        mappedRegister={payload =>
+                          this.props.mappedRegister(payload, this.props.history)
+                        }
                         registerMode={match.params["registerMode"]}
                       />
                     </Column>
@@ -195,9 +203,7 @@ class AuthWrapper extends Component {
                     <Column classes={{ box: classes.loginCard }}>
                       <SendPasswordVerificationForm
                         email={this.state.email}
-                        onLogin={() => {
-                          this.props.history.push("/auth/login");
-                        }}
+                        navigate={this.navigate}
                       />
                     </Column>
                   )}

@@ -61,26 +61,52 @@ export const verifyEmail = (payload, history, dispatch) => {
       dispatch(verifyEmailResponse(error.response));
     });
   return {
-    type: "REQUEST_VERIFY_EMAIL",
-    history,
-    payload
+    type: "REQUEST_VERIFY_EMAIL"
   };
 };
 
-export const forgotPassword = (payload, history) => {
-  api
-    .post(`${API}/auth/forgot-password`, payload)
-    .then(() => {
-      history.push("/auth/reset-password/confirm");
-    })
-    .catch(error => {});
+export const forgotPasswordResponse = response => {
+  return {
+    type: "RESPONSE_FORGOT_PASSWORD",
+    payload: response
+  };
 };
 
-export const resetPassword = (payload, history) => {
+export const forgotPassword = (payload, history, dispatch) => {
+  console.log(payload);
+  api
+    .post(`${API}/auth/forgot-password`, payload)
+    .then(response => {
+      history.push("/auth/reset-password/confirm");
+      dispatch(forgotPasswordResponse(response));
+    })
+    .catch(error => {
+      dispatch(forgotPasswordResponse(error.response));
+    });
+  return {
+    type: "REQUEST_FORGOT_PASSWORD"
+  };
+};
+
+export const resetPasswordResponse = response => {
+  return {
+    type: "RESPONSE_RESET_PASSWORD",
+    payload: response
+  };
+};
+
+export const resetPassword = (payload, history, dispatch) => {
+  console.log(payload);
   api
     .post(`${API}/auth/reset-password/${payload.token}`, payload)
-    .then(() => {
+    .then(response => {
       history.push("/auth/login");
+      dispatch(resetPasswordResponse(response));
     })
-    .catch(error => {});
+    .catch(error => {
+      dispatch(resetPasswordResponse(error.response));
+    });
+  return {
+    type: "REQUEST_RESET_PASSWORD"
+  };
 };

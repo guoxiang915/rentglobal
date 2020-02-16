@@ -64,7 +64,6 @@ class SendVerificationForm extends Component {
 SendVerificationForm.propTypes = {
   classes: PropTypes.object.isRequired,
   t: PropTypes.func.isRequired,
-  mappedRegister: PropTypes.func.isRequired
 };
 
 export default withStyles(styleSheet)(
