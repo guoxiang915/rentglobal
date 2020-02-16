@@ -7,7 +7,8 @@ import {
   MenuItem,
   Grid,
   Hidden,
-  Menu
+  Menu,
+  Typography
 } from "@material-ui/core";
 import {
   Menu as MenuIcon,
@@ -22,6 +23,7 @@ import {
   Link,
   Row,
   Column,
+  Box,
   IconButton
 } from "../../common/base-components";
 import { SideMenu } from "../Layout";
@@ -31,6 +33,7 @@ import Auth from "../../utils/auth";
 
 import "./style.css";
 import Logo from "../../assets/logo.svg";
+import MiniLogo from "../../assets/mini-logo.svg";
 
 const authObj = new Auth();
 
@@ -97,6 +100,11 @@ const styleSheet = theme => ({
     height: "100%"
   },
 
+  grayButton: {
+    fontSize: "16px",
+    padding: theme.spacing()
+  },
+
   shadowButton: {
     boxShadow: "0px 6px 12px #D7DF234D"
   },
@@ -110,6 +118,12 @@ const styleSheet = theme => ({
 
   menuButton: {
     padding: 5
+  },
+
+  stickyBar: {
+    width: "100%",
+    height: 4,
+    background: `linear-gradient(97deg, ${theme.colors.primary.mainColor} 0%, ${theme.colors.primary.darkColor} 100%)`
   }
 });
 
@@ -206,6 +220,8 @@ class Appwrapper extends Component {
     this.handleClose("languageEl")();
   };
 
+  handleHelp = () => {};
+
   render() {
     const { classes, t } = this.props;
     const { isLoggedIn, user } = this.props.auth;
@@ -281,6 +297,7 @@ class Appwrapper extends Component {
     // );
 
     const location = "Montreal";
+    const language = "en";
 
     return (
       <div className={classes.root}>
@@ -297,124 +314,173 @@ class Appwrapper extends Component {
                 onClick={() => this.navigate("home")}
                 className={classes.logoNavigator}
               >
-                <img src={Logo} className={classes.logo} alt="RENTGLOBAL" />
+                {isLoggedIn ? (
+                  <>
+                    <Hidden smDown>
+                      <img src={Logo} className={classes.logo} alt="RENTGLOBAL" />
+                    </Hidden>
+                    <Hidden smUp>
+                      <img src={MiniLogo} className={classes.logo} alt="RENTGLOBAL" />
+                    </Hidden>
+                  </>
+                ) : (
+                  <img src={Logo} className={classes.logo} alt="RENTGLOBAL" />
+                )}
               </div>
-              <Hidden smDown>
-                <Button
-                  aria-controls="location-menu"
-                  aria-haspopup="true"
-                  onClick={this.handleMenu("locationEl")}
-                  color="secondary"
-                  transparent
-                >
-                  {t("changeLocation", { location })}
-                  <ExpandMoreIcon />
-                </Button>
-                <Menu
-                  id="location-menu"
-                  anchorEl={locationEl}
-                  keepMounted
-                  open={Boolean(locationEl)}
-                  onClose={this.handleClose("locationEl")}
-                  className={classes.headerMenu}
-                >
-                  <MenuItem onClick={this.handleSelectLocation("Montreal")}>
-                    Montreal
-                  </MenuItem>
-                  <MenuItem onClick={this.handleSelectLocation("Toronto")}>
-                    Toronto
-                  </MenuItem>
-                </Menu>
-              </Hidden>
+              {!isLoggedIn && (
+                <Hidden smDown>
+                  <Box paddingLeftDouble>
+                    <Column>
+                      <Button
+                        aria-controls="language-menu"
+                        aria-haspopup="true"
+                        onClick={this.handleMenu("languageEl")}
+                        color="secondary"
+                        transparent
+                        className={classes.grayButton}
+                      >
+                        {t(language)}
+                        <ExpandMoreIcon />
+                      </Button>
+                      <Menu
+                        id="language-menu"
+                        anchorEl={languageEl}
+                        keepMounted
+                        open={Boolean(languageEl)}
+                        onClose={this.handleClose("languageEl")}
+                        className={classes.headerMenu}
+                      >
+                        <MenuItem
+                          onClick={this.handleSelectLanguage("English")}
+                        >
+                          English
+                        </MenuItem>
+                        <MenuItem onClick={this.handleSelectLanguage("French")}>
+                          French
+                        </MenuItem>
+                      </Menu>
+                    </Column>
+                    <Column>
+                      <Button
+                        aria-controls="location-menu"
+                        aria-haspopup="true"
+                        onClick={this.handleMenu("locationEl")}
+                        color="secondary"
+                        transparent
+                        className={classes.grayButton}
+                      >
+                        {location}
+                        <ExpandMoreIcon />
+                      </Button>
+                      <Menu
+                        id="location-menu"
+                        anchorEl={locationEl}
+                        keepMounted
+                        open={Boolean(locationEl)}
+                        onClose={this.handleClose("locationEl")}
+                        className={classes.headerMenu}
+                      >
+                        <MenuItem
+                          onClick={this.handleSelectLocation("Montreal")}
+                        >
+                          Montreal
+                        </MenuItem>
+                        <MenuItem
+                          onClick={this.handleSelectLocation("Toronto")}
+                        >
+                          Toronto
+                        </MenuItem>
+                      </Menu>
+                    </Column>
+                    <Column>
+                      <Button
+                        onClick={this.handleHelp}
+                        color="secondary"
+                        transparent
+                        className={classes.grayButton}
+                      >
+                        {t("help")}
+                      </Button>
+                    </Column>
+                  </Box>
+                </Hidden>
+              )}
             </div>
           </Grid>
           <Grid item>
-            <Row>
-              <Hidden smDown>
-                <Column>
-                  <Button
-                    onClick={() => this.props.history.push("/")}
-                    color="secondary"
-                    transparent
+            {isLoggedIn ? (
+              <Row></Row>
+            ) : (
+              <Row>
+                <Hidden smDown>
+                  <Column>
+                    <Typography>
+                      <Link variant="body2" to="/">
+                        {t("home")}
+                      </Link>
+                    </Typography>
+                  </Column>
+                  <Column paddingLeftDouble>
+                    <Typography>
+                      <Link variant="primary" to="/">
+                        {t("chatWithTessi")}
+                      </Link>
+                    </Typography>
+                  </Column>
+                  <Column paddingLeftDouble>
+                    <Typography>
+                      <Link variant="body2" to="/auth/login">
+                        {t("login")}
+                      </Link>
+                    </Typography>
+                  </Column>
+                  <Column paddingLeftDouble>
+                    <Typography>
+                      <Link variant="body2" to="/auth/register">
+                        {t("register")}
+                      </Link>
+                    </Typography>
+                  </Column>
+                  <Column paddingLeftDouble>
+                    <Button
+                      variant="secondary"
+                      className={classes.shadowButton}
+                      onClick={() =>
+                        this.props.history.push("/auth/register/landlord")
+                      }
+                    >
+                      <Typography>{t("placeToRent")}</Typography>
+                    </Button>
+                  </Column>
+                </Hidden>
+                <Hidden smUp>
+                  <IconButton
+                    onClick={() => this.toggleDrawer(true)}
+                    className={classes.menuButton}
+                    color="inherit"
+                    aria-label="Menu"
+                    variant="outline"
                   >
-                    {t("home")}
-                  </Button>
-                </Column>
-                <Column>
-                  <Button
-                    aria-controls="language-menu"
-                    aria-haspopup="true"
-                    onClick={this.handleMenu("languageEl")}
-                    color="secondary"
-                    transparent
+                    <MenuIcon />
+                  </IconButton>
+                  <SwipeableDrawer
+                    open={drawerOpen}
+                    onClose={() => this.toggleDrawer(false)}
+                    onOpen={() => this.toggleDrawer(true)}
+                    disableSwipeToOpen={isLoggedIn ? false : true}
+                    className={classes.sideDrawer}
                   >
-                    {t("en")}
-                  </Button>
-                  <Menu
-                    id="language-menu"
-                    anchorEl={languageEl}
-                    keepMounted
-                    open={Boolean(languageEl)}
-                    onClose={this.handleClose("languageEl")}
-                    className={classes.headerMenu}
-                  >
-                    <MenuItem onClick={this.handleSelectLanguage("English")}>
-                      English
-                    </MenuItem>
-                    <MenuItem onClick={this.handleSelectLanguage("French")}>
-                      French
-                    </MenuItem>
-                  </Menu>
-                </Column>
-                <Column paddingLeft>
-                  <Button
-                    variant="secondary"
-                    className={classes.shadowButton}
-                    onClick={() =>
-                      this.props.history.push("/auth/register/landlord")
-                    }
-                  >
-                    {t("placeToRent")}
-                  </Button>
-                </Column>
-                <Column paddingLeftDouble>
-                  <Link variant="body2" to="/auth/select-register">
-                    {t("register")}
-                  </Link>
-                </Column>
-                <Column paddingLeft>
-                  <Link variant="body2" to="/auth/login">
-                    {t("login")}
-                  </Link>
-                </Column>
-              </Hidden>
-              <Hidden smUp>
-                <IconButton
-                  onClick={() => this.toggleDrawer(true)}
-                  className={classes.menuButton}
-                  color="inherit"
-                  aria-label="Menu"
-                  variant="outline"
-                >
-                  <MenuIcon />
-                </IconButton>
-                <SwipeableDrawer
-                  open={drawerOpen}
-                  onClose={() => this.toggleDrawer(false)}
-                  onOpen={() => this.toggleDrawer(true)}
-                  disableSwipeToOpen={isLoggedIn ? false : true}
-                  className={classes.sideDrawer}
-                >
-                  <div>
-                    {user && <DrawerUser user={user} />}
-                    <SideMenu
-                      isLoggedIn={isLoggedIn}
-                      navigate={this.navigate}
-                    />
-                  </div>
-                </SwipeableDrawer>
-              </Hidden>
-            </Row>
+                    <div>
+                      {user && <DrawerUser user={user} />}
+                      <SideMenu
+                        isLoggedIn={isLoggedIn}
+                        navigate={this.navigate}
+                      />
+                    </div>
+                  </SwipeableDrawer>
+                </Hidden>
+              </Row>
+            )}
           </Grid>
         </Grid>
         {/* 
@@ -435,6 +501,7 @@ class Appwrapper extends Component {
           </AppBar>
         )}
        */}
+        {isLoggedIn && <div className={classes.stickyBar}></div>}
       </div>
     );
   }

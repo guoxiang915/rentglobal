@@ -145,7 +145,7 @@ class AuthWrapper extends Component {
                 />
                 <Route
                   exact
-                  path="/auth/select-register"
+                  path="/auth/register"
                   render={() => <SelectRegisterForm navigate={this.navigate} />}
                 />
                 <Route
