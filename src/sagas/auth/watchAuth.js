@@ -4,6 +4,9 @@ import flushMessage from "../flushMessages";
 
 const sendRequest = async token => {
   try {
+    // mock data
+    let resp = { success: false, msg: "" };
+
     // let resp = await fetch(`${API}/auth/activate/${token}`, {
     //   method: "get",
     //   headers: {
@@ -12,7 +15,7 @@ const sendRequest = async token => {
     //     "Content-Type": "application/json"
     //   }
     // });
-    let resp = { success: false, msg: "" };
+    
     let json = await resp.json();
     return json;
   } catch (error) {

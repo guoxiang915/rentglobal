@@ -24,7 +24,6 @@ function* register(action) {
         type: "USER_NOT_ACTIVATED",
         resp: response.data
       });
-      action.history.push("/auth/send-verification");
     } else {
       yield put({
         type: "REGISTER_USER_FAILED",

@@ -4,7 +4,8 @@ const INITIAL_STATE = {
   isLoading: false,
   error: null,
   loaded: false,
-  successMsg: null
+  successMsg: null,
+  isActivated: false,
   // loginMode: null
 };
 
@@ -30,7 +31,8 @@ const authReducer = (currentState = INITIAL_STATE, action) => {
         ...currentState,
         isLoading: false,
         error: action.resp.msg,
-        isLoggedIn: false
+        isLoggedIn: true,
+        isActivated: false
       };
 
     case "LOGIN_SUCCESS":
@@ -38,7 +40,8 @@ const authReducer = (currentState = INITIAL_STATE, action) => {
         ...currentState,
         isLoading: false,
         isLoggedIn: true,
-        error: null
+        error: null,
+        isActivated: true,
         // user: action.resp.user,
         // successMsg: action.resp.msg
       };

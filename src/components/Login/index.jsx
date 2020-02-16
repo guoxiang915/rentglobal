@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { withStyles } from "@material-ui/core/styles";
 import { Collapse } from "@material-ui/core";
-import { Route } from "react-router-dom";
+import { Switch, Route, Redirect } from "react-router-dom";
 import { withTranslation } from "react-i18next";
 import { Column, Spinner } from "../../common/base-components";
 import LoginForm from "./LoginForm";
@@ -81,8 +81,6 @@ class AuthWrapper extends Component {
       emailError: null,
       password: "",
       passwordError: null,
-      createPassword: "",
-      createPasswordError: null,
       isRemember: false,
       error: null
     };
@@ -111,66 +109,65 @@ class AuthWrapper extends Component {
 
   render() {
     const { classes, t } = this.props;
-    const { isLoading } = this.props.auth;
+    const { isLoggedIn, isActivated, isLoading } = this.props.auth;
 
     return (
       <div>
         <div className={classes.backgroundWrapper}></div>
         <div className={classes.loginWrapper}>
-          <Route
-            exact
-            path={["/auth", "/auth/login"]}
-            render={() => (
-              <Column classes={{ box: classes.loginCard }}>
-                <LoginForm
-                  email={this.state.email}
-                  mappedLogin={this.props.mappedLogin}
-                />
+          {isLoading ? (
+            <Column classes={{ box: classes.loginCard }}>
+              <Column paddingTop fullWidth>
+                <Spinner />
               </Column>
-            )}
-          />
-          <Route
-            exact
-            path="/auth/select-register"
-            render={() => <SelectRegisterForm />}
-          />
-          <Route
-            exact
-            path="/auth/register/:registerMode"
-            render={({ match }) => (
-              <Column classes={{ box: classes.loginCard }}>
-                <RegisterForm
-                  email={this.state.email}
-                  mappedRegister={this.props.mappedRegister}
-                  registerMode={match.params["registerMode"]}
-                />
-              </Column>
-            )}
-          />
-          <Route
-            path="/auth/send-verification"
-            render={() => (
-              <Column classes={{ box: classes.loginCard }}>
-                <SendVerificationForm email={this.state.email} />
-              </Column>
-            )}
-          />
-          <Route
-            path="/auth/forgot-password"
-            render={() => (
-              <Column classes={{ box: classes.loginCard }}>
-                <ForgotPasswordForm
-                  email={this.state.email}
-                  mappedResetPassword={() => {}}
-                />
-              </Column>
-            )}
-          />
-
-          {isLoading && (
-            <Column paddingTop fullWidth>
-              <Spinner />
             </Column>
+          ) : (
+            !isLoggedIn && (
+              <Switch>
+                <Route
+                  exact
+                  path="/auth/login"
+                  render={() => (
+                    <Column classes={{ box: classes.loginCard }}>
+                      <LoginForm
+                        email={this.state.email}
+                        mappedLogin={this.props.mappedLogin}
+                      />
+                    </Column>
+                  )}
+                />
+                <Route
+                  exact
+                  path="/auth/select-register"
+                  render={() => <SelectRegisterForm />}
+                />
+                <Route
+                  exact
+                  path="/auth/register/:registerMode"
+                  render={({ match }) => (
+                    <Column classes={{ box: classes.loginCard }}>
+                      <RegisterForm
+                        email={this.state.email}
+                        mappedRegister={this.props.mappedRegister}
+                        registerMode={match.params["registerMode"]}
+                      />
+                    </Column>
+                  )}
+                />
+                <Route
+                  path="/auth/forgot-password"
+                  render={() => (
+                    <Column classes={{ box: classes.loginCard }}>
+                      <ForgotPasswordForm
+                        email={this.state.email}
+                        mappedResetPassword={() => {}}
+                      />
+                    </Column>
+                  )}
+                />
+                <Route render={() => <Redirect to="/auth/login" />} />
+              </Switch>
+            )
           )}
         </div>
       </div>

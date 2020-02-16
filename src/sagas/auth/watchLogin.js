@@ -30,12 +30,10 @@ function* login(action) {
       authObj.setToken(response.data.token);
       action.history.push("/");
     } else if (response.status === 403) {
-      // yield put({
-      //   type: "USER_NOT_ACTIVATED",
-      //   resp: response.data
-      // });
-      console.log(push);
-      yield put(push("/auth/send-verification"));
+      yield put({
+        type: "USER_NOT_ACTIVATED",
+        resp: response.data
+      });
     } else {
       yield put({
         type: "LOGIN_FAILED",
