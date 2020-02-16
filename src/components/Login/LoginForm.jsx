@@ -175,7 +175,7 @@ class LoginForm extends Component {
           <Divider light />
           <Box paddingTop paddingBottom>
             <Typography>
-              <Link variant="primary" to="/auth/forgot-password">
+              <Link variant="primary" to="/auth/reset-password">
                 {t("forgotPassword")}
               </Link>
             </Typography>

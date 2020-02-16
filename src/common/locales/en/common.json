@@ -16,6 +16,7 @@
     "forgotPassword": "Forgot Password?",
     "forgotYourPassword": "Forgot your password",
     "resetPassword": "Reset password",
+    "setNewPassword": "Set your new password",
     "next": "Next",
     "home": "Home",
     "en": "EN",
@@ -79,5 +80,6 @@
     "landlordSignup": "Landlord sign up",
     "companySignup": "Company sign up",
     "verificationSent": "Verification Sent",
-    "checkEmailForVerification": "Verification sent to your email address: <0>{{email}}</0><br />Please check your email."
+    "checkEmailForVerification": "Verification sent to your email address: <0>{{email}}</0><br />Please check your email.",
+    "checkEmailForPasswordVerification": "Verification sent to your email address: <0>{{email}}</0><br />Please check your email to reset password."
 }

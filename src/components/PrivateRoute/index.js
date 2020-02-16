@@ -89,9 +89,9 @@ class PrivateRoute extends React.Component {
 
   UNSAFE_componentWillMount() {
     // check authenticated user
-    this.authenticate().then(() => {
-      console.log("Authenticated");
-    });
+    // this.authenticate().then(() => {
+    //   console.log("Authenticated");
+    // });
   }
 
   authenticate = async () => {

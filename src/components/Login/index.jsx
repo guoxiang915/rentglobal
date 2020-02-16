@@ -8,8 +8,9 @@ import { Column, Spinner } from "../../common/base-components";
 import LoginForm from "./LoginForm";
 import SelectRegisterForm from "./SelectRegisterForm";
 import RegisterForm from "./RegisterForm";
-import SendVerificationForm from "./SendVerificationForm";
 import ForgotPasswordForm from "./ForgotPasswordForm";
+import SendPasswordVerificationForm from "./SendPasswordVerificationForm";
+import SetNewPasswordForm from "./SetNewPasswordForm";
 
 import HeaderImage from "../../assets/img/img_header@2x.jpg";
 
@@ -155,12 +156,65 @@ class AuthWrapper extends Component {
                   )}
                 />
                 <Route
-                  path="/auth/forgot-password"
+                  exact
+                  path="/auth/register/verify-email/:token"
+                  render={({ match }) => {
+                    this.props.mappedVerifyEmail(
+                      { token: match.params["token"] },
+                      this.props.history
+                    );
+                    return (
+                      <Column classes={{ box: classes.loginCard }}>
+                        <Column paddingTop fullWidth>
+                          <Spinner />
+                        </Column>
+                      </Column>
+                    );
+                  }}
+                />
+                <Route
+                  exact
+                  path="/auth/reset-password"
                   render={() => (
                     <Column classes={{ box: classes.loginCard }}>
                       <ForgotPasswordForm
                         email={this.state.email}
-                        mappedResetPassword={() => {}}
+                        mappedForgotPassword={payload =>
+                          this.props.mappedForgotPassword(
+                            payload,
+                            this.props.history
+                          )
+                        }
+                      />
+                    </Column>
+                  )}
+                />
+                <Route
+                  path="/auth/reset-password/confirm"
+                  render={() => (
+                    <Column classes={{ box: classes.loginCard }}>
+                      <SendPasswordVerificationForm
+                        email={this.state.email}
+                        onLogin={() => {
+                          this.props.history.push("/auth/login");
+                        }}
+                      />
+                    </Column>
+                  )}
+                />
+                <Route
+                  path="/auth/reset-password/update/:token"
+                  render={({ match }) => (
+                    <Column classes={{ box: classes.loginCard }}>
+                      <SetNewPasswordForm
+                        token={match.params["token"]}
+                        email={this.state.email}
+                        mappedResetPassword={payload =>
+                          this.props.mappedResetPassword(
+                            payload,
+                            this.props.history
+                          )
+                        }
                       />
                     </Column>
                   )}

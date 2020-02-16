@@ -9,7 +9,6 @@ const sendRequest = async credentials => {
   try {
     resp = await api.post(`${API}/auth/register`, credentials);
   } catch (error) {
-    console.log(error);
     resp = error.response;
   } finally {
     return resp;
@@ -20,6 +19,7 @@ function* register(action) {
   try {
     let response = yield call(sendRequest, action.payload);
     if (response.status === 200) {
+      console.log(response);
       yield put({
         type: "USER_NOT_ACTIVATED",
         resp: response.data

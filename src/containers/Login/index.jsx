@@ -13,7 +13,13 @@ const mapDispatchToprops = dispatch => {
     mappedLogin: (credentials, history) =>
       dispatch(authActions.login(credentials, history)),
     mappedRegister: (payload, history) =>
-      dispatch(authActions.registerUser(payload, history))
+      dispatch(authActions.registerUser(payload, history)),
+    mappedVerifyEmail: (payload, history) =>
+      dispatch(authActions.verifyEmail(payload, history, dispatch)),
+    mappedForgotPassword: (payload, history) =>
+      dispatch(authActions.forgotPassword(payload, history)),
+    mappedResetPassword: (payload, history) =>
+      dispatch(authActions.resetPassword(payload, history)),
   };
 };
 

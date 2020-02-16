@@ -5,7 +5,7 @@ const INITIAL_STATE = {
   error: null,
   loaded: false,
   successMsg: null,
-  isActivated: false,
+  isActivated: false
   // loginMode: null
 };
 
@@ -16,6 +16,17 @@ const authReducer = (currentState = INITIAL_STATE, action) => {
         ...currentState,
         isLoading: true,
         successMsg: null
+      };
+
+    case "LOGIN_SUCCESS":
+      return {
+        ...currentState,
+        isLoading: false,
+        isLoggedIn: true,
+        error: null,
+        isActivated: true
+        // user: action.resp.user,
+        // successMsg: action.resp.msg
       };
 
     case "LOGIN_FAILED":
@@ -33,17 +44,6 @@ const authReducer = (currentState = INITIAL_STATE, action) => {
         error: action.resp.msg,
         isLoggedIn: true,
         isActivated: false
-      };
-
-    case "LOGIN_SUCCESS":
-      return {
-        ...currentState,
-        isLoading: false,
-        isLoggedIn: true,
-        error: null,
-        isActivated: true,
-        // user: action.resp.user,
-        // successMsg: action.resp.msg
       };
 
     case "REQUEST_AUTHENTICATION":
@@ -106,6 +106,18 @@ const authReducer = (currentState = INITIAL_STATE, action) => {
         error: null,
         loaded: false,
         successMsg: null
+      };
+
+    case "REQUEST_VERIFY_EMAIL":
+      return {
+        ...currentState,
+        isLoading: true
+      };
+
+    case "RESPONSE_VERIFY_EMAIL":
+      return {
+        ...currentState,
+        isLoading: false
       };
 
     case "REGISTER_USER_FAILED":
