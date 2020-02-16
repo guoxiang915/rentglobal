@@ -1,6 +1,5 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
-import { Redirect } from "react-router-dom";
 import { withStyles } from "@material-ui/core/styles";
 import { Typography } from "@material-ui/core";
 import "./Login.css";
@@ -13,7 +12,7 @@ import {
   Link,
   Divider
 } from "../../common/base-components";
-import { MailOutline } from "@material-ui/icons";
+import { MailOutline, LockOpen } from "@material-ui/icons";
 
 const styleSheet = theme => ({
   formWrapper: {
@@ -37,7 +36,7 @@ const styleSheet = theme => ({
   }
 });
 
-class ForgotPasswordForm extends Component {
+class SetNewPasswordForm extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -68,7 +67,9 @@ class ForgotPasswordForm extends Component {
     }
   };
 
-  handleResetPassword = e => {
+  handleResetPassword = () => {};
+
+  handleSubmit = e => {
     e.preventDefault();
     if (this.state.error) {
       return;
@@ -77,7 +78,7 @@ class ForgotPasswordForm extends Component {
       email: this.state.email
     };
     if (payload.email !== "") {
-      this.props.mappedForgotPassword(payload);
+      this.props.mappedResetPassword(payload);
     }
   };
 
@@ -86,12 +87,13 @@ class ForgotPasswordForm extends Component {
 
     return (
       <form
+        onSubmit={this.handleSubmit}
         noValidate
         autoComplete="off"
         className={classes.formWrapper}
       >
         <Typography className={classes.formTitle}>
-          {t("forgotPassword")}
+          {t("setNewPassword")}
         </Typography>
         <Box paddingTop>
           <TextField
@@ -103,6 +105,18 @@ class ForgotPasswordForm extends Component {
             startAdornment={<MailOutline color="secondary" />}
             error={!!this.state.emailError}
             helperText={this.state.emailError}
+            fullWidth
+          />
+        </Box>
+        <Box paddingTopHalf>
+          <TextField
+            id="password"
+            placeholder={t("password")}
+            value={this.state.password}
+            onChange={this.handleChange("password")}
+            type="password"
+            variant="outlined"
+            startAdornment={<LockOpen color="secondary" />}
             fullWidth
           />
         </Box>
@@ -133,11 +147,11 @@ class ForgotPasswordForm extends Component {
   }
 }
 
-ForgotPasswordForm.propTypes = {
+SetNewPasswordForm.propTypes = {
   classes: PropTypes.object.isRequired,
   t: PropTypes.func.isRequired
 };
 
 export default withStyles(styleSheet)(
-  withTranslation("common")(ForgotPasswordForm)
+  withTranslation("common")(SetNewPasswordForm)
 );
