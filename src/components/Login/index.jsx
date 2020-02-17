@@ -1,7 +1,6 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { withStyles } from "@material-ui/core/styles";
-import { Collapse } from "@material-ui/core";
 import { Switch, Route, Redirect } from "react-router-dom";
 import { withTranslation } from "react-i18next";
 import { Column, Spinner } from "../../common/base-components";
@@ -113,8 +112,8 @@ class AuthWrapper extends Component {
   };
 
   render() {
-    const { classes, t } = this.props;
-    const { isLoggedIn, isActivated, isLoading } = this.props.auth;
+    const { classes } = this.props;
+    const { isLoggedIn, isLoading } = this.props.auth;
 
     return (
       <div>

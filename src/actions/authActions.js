@@ -73,7 +73,6 @@ export const forgotPasswordResponse = response => {
 };
 
 export const forgotPassword = (payload, history, dispatch) => {
-  console.log(payload);
   api
     .post(`${API}/auth/forgot-password`, payload)
     .then(response => {
@@ -96,7 +95,6 @@ export const resetPasswordResponse = response => {
 };
 
 export const resetPassword = (payload, history, dispatch) => {
-  console.log(payload);
   api
     .post(`${API}/auth/reset-password/${payload.token}`, payload)
     .then(response => {

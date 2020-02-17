@@ -1,7 +1,6 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { withStyles } from "@material-ui/core/styles";
-import { withRouter } from "react-router-dom";
 import { Typography, Grid } from "@material-ui/core";
 import { withTranslation } from "react-i18next";
 import { Button, Row, Box, Column, Link } from "../../common/base-components";

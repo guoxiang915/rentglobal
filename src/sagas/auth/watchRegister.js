@@ -1,6 +1,5 @@
 import { takeLatest, put, call } from "redux-saga/effects";
 import { API } from "../../utils/constants";
-import Auth from "../../utils/auth";
 import api from "../../api/api";
 import flushMessage from "../flushMessages";
 
@@ -19,7 +18,6 @@ function* register(action) {
   try {
     let response = yield call(sendRequest, action.payload);
     if (response.status === 200) {
-      console.log(response);
       yield put({
         type: "USER_NOT_ACTIVATED",
         resp: response.data

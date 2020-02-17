@@ -1,6 +1,5 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
-import { Redirect } from "react-router-dom";
 import { withStyles } from "@material-ui/core/styles";
 import { Typography } from "@material-ui/core";
 import "./Login.css";

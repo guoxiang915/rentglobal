@@ -12,7 +12,7 @@ import {
   Link,
   Divider
 } from "../../common/base-components";
-import { MailOutline, LockOpen } from "@material-ui/icons";
+import { LockOpen } from "@material-ui/icons";
 
 const styleSheet = theme => ({
   formWrapper: {

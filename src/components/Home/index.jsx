@@ -20,7 +20,6 @@ import {
   Box,
   Row,
   Column,
-  Stretch,
   TextField,
   Button,
   Link

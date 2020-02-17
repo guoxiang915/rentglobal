@@ -3,7 +3,6 @@ import { API } from "../../utils/constants";
 import api from "../../api/api";
 import Auth from "../../utils/auth";
 import flushMessage from "../flushMessages";
-import { push } from "react-router-redux";
 
 const authObj = new Auth();
 
