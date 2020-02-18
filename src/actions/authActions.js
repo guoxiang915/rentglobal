@@ -76,7 +76,7 @@ export const forgotPassword = (payload, history, dispatch) => {
   api
     .post(`${API}/auth/forgot-password`, payload)
     .then(response => {
-      history.push("/auth/reset-password/confirm");
+      history.push("/auth/reset-password/confirm", payload);
       dispatch(forgotPasswordResponse(response));
     })
     .catch(error => {

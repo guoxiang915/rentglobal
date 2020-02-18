@@ -108,7 +108,9 @@ class SetNewPasswordForm extends Component {
             className={classes.submitButton}
             disabled={!this.state.password}
           >
-            {t("resetPassword")}
+            <Typography fontSizeS fontWeightBold>
+              {t("resetPassword")}
+            </Typography>
           </Button>
         </Box>
         <Column classes={{ box: classes.moreWrapper }}>

@@ -198,14 +198,18 @@ class AuthWrapper extends Component {
                 />
                 <Route
                   path="/auth/reset-password/confirm"
-                  render={() => (
-                    <Column classes={{ box: classes.loginCard }}>
-                      <SendPasswordVerificationForm
-                        email={this.state.email}
-                        navigate={this.navigate}
-                      />
-                    </Column>
-                  )}
+                  render={({ location }) =>
+                    location.state && location.state.email ? (
+                      <Column classes={{ box: classes.loginCard }}>
+                        <SendPasswordVerificationForm
+                          email={location.state.email}
+                          navigate={this.navigate}
+                        />
+                      </Column>
+                    ) : (
+                      <Redirect to="/auth/login" />
+                    )
+                  }
                 />
                 <Route
                   path="/auth/reset-password/update/:token"
@@ -213,7 +217,6 @@ class AuthWrapper extends Component {
                     <Column classes={{ box: classes.loginCard }}>
                       <SetNewPasswordForm
                         token={match.params["token"]}
-                        email={this.state.email}
                         mappedResetPassword={payload =>
                           this.props.mappedResetPassword(
                             payload,
