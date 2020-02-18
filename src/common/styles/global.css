@@ -1,3 +1,38 @@
+/* regular */
+@font-face {
+  font-family: "Avenir Next";
+  font-style: normal;
+  font-weight: 400;
+  src: local("Avenir Next"),
+    local("Avenir-Next-Regular"),
+      url("../../assets/font/AvenirNextLTPro/AvenirNextLTPro-Regular.otf")
+      format("truetype");
+}
+
+/* italic */
+@font-face {
+  font-family: "Avenir Next";
+  font-style: italic;
+  font-weight: 400;
+  src: local("Avenir Next Italic"),
+    local("Avenir-Next-Italic")
+      url("../../assets/font/AvenirNextLTPro/AvenirNextLTPro-It.otf")
+      format("truetype");
+}
+
+/* bold */
+@font-face {
+  font-family: "Avenir Next";
+  font-style: normal;
+  font-weight: 700;
+  src: local("Avenir Next Bold"),
+    local("Avenir-Next-Bold")
+      url("../../assets/font/AvenirNextLTPro/AvenirNextLTPro-Bold.otf")
+      format("truetype");
+}
+
+html,
+body,
 * {
-    font-family: "Lucida Sans Unicode", "Lucida Grande", sans-serif;
+  font-family: "Avenir Next", "Lucida Sans Unicode", "Lucida Grande", sans-serif;
 }

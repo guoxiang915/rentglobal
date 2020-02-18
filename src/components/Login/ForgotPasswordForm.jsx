@@ -1,7 +1,6 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { withStyles } from "@material-ui/core/styles";
-import { Typography } from "@material-ui/core";
 import "./Login.css";
 import { withTranslation } from "react-i18next";
 import {
@@ -10,7 +9,8 @@ import {
   Box,
   Column,
   Link,
-  Divider
+  Divider,
+  Typography
 } from "../../common/base-components";
 import { MailOutline } from "@material-ui/icons";
 
@@ -84,12 +84,15 @@ class ForgotPasswordForm extends Component {
     const { classes, t } = this.props;
 
     return (
-      <form
-        noValidate
-        autoComplete="off"
-        className={classes.formWrapper}
-      >
-        <Typography className={classes.formTitle}>
+      <form noValidate autoComplete="off" className={classes.formWrapper}>
+        <Typography
+          fontSizeM
+          fontWeightBold
+          textSecondary
+          fullWidth
+          paddingTopHalf
+          justifyChildrenCenter
+        >
           {t("forgotPassword")}
         </Typography>
         <Box paddingTop>
@@ -114,13 +117,15 @@ class ForgotPasswordForm extends Component {
             onClick={this.handleResetPassword}
             disabled={!this.state.email}
           >
-            {t("resetPassword")}
+            <Typography fontSizeS fontWeightBold>
+              {t("resetPassword")}
+            </Typography>
           </Button>
         </Box>
         <Column classes={{ box: classes.moreWrapper }}>
           <Divider light />
           <Box paddingTop paddingBottom>
-            <Typography>
+            <Typography fontSizeS fontWeightBold>
               <Link variant="primary" to="/auth/login">
                 {t("login")}
               </Link>

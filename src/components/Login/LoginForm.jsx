@@ -1,7 +1,6 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { withStyles } from "@material-ui/core/styles";
-import { Typography } from "@material-ui/core";
 import { withTranslation } from "react-i18next";
 import {
   TextField,
@@ -11,7 +10,8 @@ import {
   Checkbox,
   Link,
   Divider,
-  HorizontalDivider
+  HorizontalDivider,
+  Typography
 } from "../../common/base-components";
 import { MailOutline, LockOpen } from "@material-ui/icons";
 
@@ -21,9 +21,9 @@ const styleSheet = theme => ({
   },
 
   formTitle: {
-    color: theme.colors.primary.darkGrey,
-    lineHeight: "26px",
-    fontSize: "20px",
+    // color: theme.colors.primary.darkGrey,
+    // lineHeight: "26px",
+    // fontSize: "20px",
     marginTop: 8,
     textAlign: "center"
   },
@@ -125,7 +125,16 @@ class LoginForm extends Component {
         autoComplete="off"
         className={classes.formWrapper}
       >
-        <Typography className={classes.formTitle}>{t("loginToRENTGLOBAL")}</Typography>
+        <Typography
+          fontSizeM
+          fontWeightBold
+          textSecondary
+          fullWidth
+          paddingTopHalf
+          justifyChildrenCenter
+        >
+          {t("loginToRENTGLOBAL")}
+        </Typography>
         <Box paddingTop>
           <TextField
             id="email"
@@ -168,13 +177,15 @@ class LoginForm extends Component {
             className={classes.fixedWidthButton}
             onClick={this.handleLogin}
           >
-            {t("login")}
+            <Typography fontSizeS fontWeightBold>
+              {t("login")}
+            </Typography>
           </Button>
         </Box>
         <Column classes={{ box: classes.moreWrapper }}>
           <Divider light />
           <Box paddingTop paddingBottom>
-            <Typography>
+            <Typography fontSizeS fontWeightBold>
               <Link variant="primary" to="/auth/reset-password">
                 {t("forgotPassword")}
               </Link>
@@ -191,7 +202,9 @@ class LoginForm extends Component {
               onClick={this.handleLoginFacebook}
             >
               {t("loginWith")}&nbsp;
-              <Typography color="primary">{t("facebook")}</Typography>
+              <Typography textPrimary fontSizeS fontWeightBold>
+                {t("facebook")}
+              </Typography>
             </Button>
           </Box>
           <Box paddingTopHalf justifyChildrenEnd fullWidth>
@@ -203,16 +216,20 @@ class LoginForm extends Component {
               onClick={this.handleLoginGoogle}
             >
               {t("loginWith")}&nbsp;
-              <Typography color="primary">{t("google")}</Typography>
+              <Typography textPrimary fontSizeS fontWeightBold>
+                {t("google")}
+              </Typography>
             </Button>
           </Box>
         </Column>
 
         <Column paddingTopDouble>
           <Box paddingTop>
-            <Typography color="secondary" className={classes.switchText}>
+            <Typography fontSizeXS textMediumGrey>
               {t("dontHaveAccount")}
-              <Link to="/auth/register">&nbsp;{t("register")}</Link>
+              <Link variant="primary" to="/auth/register">
+                &nbsp;{t("register")}
+              </Link>
             </Typography>
           </Box>
         </Column>

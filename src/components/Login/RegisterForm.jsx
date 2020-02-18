@@ -1,7 +1,6 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { withStyles } from "@material-ui/core/styles";
-import { Typography } from "@material-ui/core";
 import { withTranslation } from "react-i18next";
 import {
   TextField,
@@ -9,7 +8,8 @@ import {
   Box,
   Column,
   Link,
-  HorizontalDivider
+  HorizontalDivider,
+  Typography
 } from "../../common/base-components";
 import { MailOutline, LockOpen } from "@material-ui/icons";
 
@@ -122,12 +122,15 @@ class RegisterForm extends Component {
     const { registerMode, classes, t } = this.props;
 
     return (
-      <form
-        noValidate
-        autoComplete="off"
-        className={classes.formWrapper}
-      >
-        <Typography className={classes.formTitle}>
+      <form noValidate autoComplete="off" className={classes.formWrapper}>
+        <Typography
+          fontSizeM
+          fontWeightBold
+          textSecondary
+          fullWidth
+          paddingTopHalf
+          justifyChildrenCenter
+        >
           {registerMode === "landlord"
             ? t("signupAsLandlord")
             : registerMode === "company"
@@ -167,7 +170,9 @@ class RegisterForm extends Component {
             className={classes.submitButton}
             onClick={this.handleSignup}
           >
-            {t("signup")}
+            <Typography fontSizeS fontWeightBold>
+              {t("signup")}
+            </Typography>
           </Button>
         </Box>
         <Column classes={{ box: classes.moreWrapper }}>
@@ -181,7 +186,9 @@ class RegisterForm extends Component {
               onClick={this.handleSignupFacebook}
             >
               {t("signupWith")}&nbsp;
-              <Typography color="primary">{t("facebook")}</Typography>
+              <Typography textPrimary fontSizeS fontWeightBold>
+                {t("facebook")}
+              </Typography>
             </Button>
           </Box>
           <Box paddingTopHalf justifyChildrenEnd fullWidth>
@@ -193,16 +200,20 @@ class RegisterForm extends Component {
               onClick={this.handleSignupGoogle}
             >
               {t("signupWith")}&nbsp;
-              <Typography color="primary">{t("google")}</Typography>
+              <Typography textPrimary fontSizeS fontWeightBold>
+                {t("google")}
+              </Typography>
             </Button>
           </Box>
         </Column>
 
         <Column paddingTopDouble>
           <Box paddingTop>
-            <Typography color="secondary" className={classes.switchText}>
+            <Typography textMediumGrey fontSizeXS>
               {t("alreadyHaveAccount")}
-              <Link to="/auth/login">&nbsp;{t("login")}</Link>
+              <Link to="/auth/login" variant="primary">
+                &nbsp;{t("login")}
+              </Link>
             </Typography>
           </Box>
         </Column>

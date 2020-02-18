@@ -1,7 +1,6 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { withStyles } from "@material-ui/core/styles";
-import { Typography } from "@material-ui/core";
 import "./Login.css";
 import { withTranslation } from "react-i18next";
 import {
@@ -10,7 +9,8 @@ import {
   Box,
   Column,
   Link,
-  Divider
+  Divider,
+  Typography
 } from "../../common/base-components";
 import { LockOpen } from "@material-ui/icons";
 
@@ -76,7 +76,14 @@ class SetNewPasswordForm extends Component {
         autoComplete="off"
         className={classes.formWrapper}
       >
-        <Typography className={classes.formTitle}>
+        <Typography
+          fontSizeM
+          fontWeightBold
+          textSecondary
+          fullWidth
+          paddingTopHalf
+          justifyChildrenCenter
+        >
           {t("setNewPassword")}
         </Typography>
         <Box paddingTop>
@@ -107,7 +114,7 @@ class SetNewPasswordForm extends Component {
         <Column classes={{ box: classes.moreWrapper }}>
           <Divider light />
           <Box paddingTop paddingBottom>
-            <Typography>
+            <Typography fontSizeS fontWeightBold>
               <Link variant="primary" to="/auth/login">
                 {t("login")}
               </Link>

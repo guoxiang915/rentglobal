@@ -1,6 +1,7 @@
 export * from "./Box";
 export * from "./Selection";
 export * from "./Text";
+export * from "./Typography";
 export { default as Button } from "./Button";
 export { default as IconButton } from "./IconButton";
 export { default as Link } from "./Link";

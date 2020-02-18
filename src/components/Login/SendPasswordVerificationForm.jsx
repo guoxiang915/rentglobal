@@ -1,9 +1,8 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { withStyles } from "@material-ui/core/styles";
-import { Typography } from "@material-ui/core";
 import { Trans, withTranslation } from "react-i18next";
-import { Box, Column, Button } from "../../common/base-components";
+import { Box, Column, Button, Typography } from "../../common/base-components";
 import { CheckCircleOutline } from "@material-ui/icons";
 
 const styleSheet = theme => ({
@@ -31,7 +30,7 @@ const styleSheet = theme => ({
     fontSize: "16px",
     textAlign: "center"
   },
-  
+
   fixedWidthButton: {
     width: 220
   }
@@ -39,7 +38,7 @@ const styleSheet = theme => ({
 
 class SendPasswordVerificationForm extends Component {
   handleLogin = () => {
-    this.props.navigate('login');
+    this.props.navigate("login");
   };
 
   render() {
@@ -50,14 +49,21 @@ class SendPasswordVerificationForm extends Component {
         <Column fullWidth>
           <CheckCircleOutline color="primary" className={classes.successIcon} />
           <Box paddingTop>
-            <Typography className={classes.formTitle}>
+            <Typography
+              fontSizeM
+              fontWeightBold
+              textSecondary
+              fullWidth
+              paddingTopHalf
+              justifyChildrenCenter
+            >
               {t("verificationSent")}
             </Typography>
           </Box>
           <Box paddingTop>
-            <Typography className={classes.formSubtitle}>
+            <Typography fontSizeS textMediumGrey textCenter block>
               <Trans i18nKey="checkEmailForPasswordVerification">
-                <Typography color="primary" component="span">
+                <Typography textPrimary span>
                   {{ email: email }}
                 </Typography>
               </Trans>
@@ -71,7 +77,9 @@ class SendPasswordVerificationForm extends Component {
               className={classes.fixedWidthButton}
               onClick={this.handleLogin}
             >
-              {t("login")}
+              <Typography fontSizeS fontWeightBold>
+                {t("login")}
+              </Typography>
             </Button>
           </Column>
         </Column>
@@ -83,7 +91,7 @@ class SendPasswordVerificationForm extends Component {
 SendPasswordVerificationForm.propTypes = {
   classes: PropTypes.object.isRequired,
   t: PropTypes.func.isRequired,
-  navigate: PropTypes.func,
+  navigate: PropTypes.func
 };
 
 export default withStyles(styleSheet)(

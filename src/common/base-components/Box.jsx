@@ -6,8 +6,15 @@ import { withStyles } from "@material-ui/core";
 const styleSheet = theme => {
   let padding = theme.spacing(2);
   return {
+    /* display mode */
     box: {
       display: "flex"
+    },
+    block: {
+      display: "block"
+    },
+    span: {
+      display: "inline"
     },
     container: {
       justifyContent: "flex-start",
@@ -20,6 +27,8 @@ const styleSheet = theme => {
     column: {
       flexDirection: "column"
     },
+
+    /* aligning */
     justifyChildrenStart: {
       justifyContent: "flex-start"
     },
@@ -77,6 +86,7 @@ const styleSheet = theme => {
       alignSelf: "stretch"
     },
 
+    /* size */
     fullWidth: {
       width: "100%"
     },
@@ -88,6 +98,7 @@ const styleSheet = theme => {
       height: "100%"
     },
 
+    /* background */
     background: {
       backgroundColor: theme.colors.primary.lightGrey
     },
@@ -104,6 +115,7 @@ const styleSheet = theme => {
       backgroundColor: theme.colors.primary.backgroundGrey
     },
 
+    /* borders */
     borderHalf: {
       border: `0.5px solid ${theme.colors.primary.lightGrey}`
     },
@@ -166,6 +178,7 @@ const styleSheet = theme => {
       boxShadow: "0 1px 4px rgba(0, 0, 0, .6)"
     },
 
+    /* paddings */
     paddingDouble: {
       padding: 2 * padding
     },
@@ -230,29 +243,29 @@ const styleSheet = theme => {
       paddingLeft: 0
     },
 
-    fontSizeXS: {
-      fontSize: 12
-    },
-    fontSizeS: {
-      fontSize: 14
-    },
-    fontSizeM: {
-      fontSize: 16
-    },
-    fontSizeL: {
-      fontSize: 20
-    },
-    fontSizeXL: {
-      fontSize: 32
-    },
-    fontWeightMedium: {
-      fontWeight: 500
+    /* font styles */
+    fontSizeXS: { ...theme.fonts.size.fontSizeXS },
+    fontSizeS: { ...theme.fonts.size.fontSizeS },
+    fontSizeM: { ...theme.fonts.size.fontSizeM },
+    fontSizeL: { ...theme.fonts.size.fontSizeL },
+    fontSizeXL: { ...theme.fonts.size.fontSizeXL },
+    fontWeightLight: { ...theme.fonts.weight.fontWeightLight },
+    fontWeightMedium: { ...theme.fonts.weight.fontWeightMedium },
+    fontWeightBold: { ...theme.fonts.weight.fontWeightBold },
+    textBlackGrey: {
+      color: theme.colors.primary.blackGrey
     },
     textDarkGrey: {
       color: theme.colors.primary.darkGrey
     },
     textMediumGrey: {
       color: theme.colors.primary.grey
+    },
+    textLightGrey: {
+      color: theme.colors.primary.lightGrey
+    },
+    textWhiteGrey: {
+      color: theme.colors.primary.whiteGrey
     },
     textPrimary: {
       color: theme.colors.primary.mainColor
@@ -261,16 +274,25 @@ const styleSheet = theme => {
       color: theme.colors.primary.darkColor
     },
     textSecondary: {
-      color: theme.colors.primary.grey
+      color: theme.colors.primary.darkGrey
     },
     textSecondaryDark: {
-      color: theme.colors.primary.darkGrey
+      color: theme.colors.primary.blackGrey
     },
     textWhite: {
       color: theme.colors.primary.white
     },
     textBlack: {
       color: theme.colors.primary.black
+    },
+    textCenter: {
+      textAlign: "center"
+    },
+    textLeft: {
+      textAlign: "left"
+    },
+    textRight: {
+      textAlign: "right"
     },
     bold: {
       fontWeight: "bold"
@@ -282,6 +304,7 @@ const styleSheet = theme => {
       textTransform: "uppercase"
     },
 
+    /* layout styles */
     verticalScroll: {
       overflowY: "auto"
     },
@@ -358,8 +381,10 @@ export const Box = withStyles(styleSheet, { name: "Box" })(
     render() {
       let { children, classes, ...props } = this.props;
       let propsClasses = {};
-      Object.entries(props).forEach(([key, value]) => propsClasses[classes[key]] = value);
-      
+      Object.entries(props).forEach(
+        ([key, value]) => (propsClasses[classes[key]] = value)
+      );
+
       return (
         <div
           className={clsx({

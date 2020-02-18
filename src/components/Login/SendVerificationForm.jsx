@@ -1,9 +1,8 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { withStyles } from "@material-ui/core/styles";
-import { Typography } from "@material-ui/core";
 import { Trans, withTranslation } from "react-i18next";
-import { Box, Column } from "../../common/base-components";
+import { Box, Column, Typography } from "../../common/base-components";
 import { CheckCircleOutline } from "@material-ui/icons";
 
 const styleSheet = theme => ({
@@ -42,14 +41,21 @@ class SendVerificationForm extends Component {
         <Column fullWidth>
           <CheckCircleOutline color="primary" className={classes.successIcon} />
           <Box paddingTop>
-            <Typography className={classes.formTitle}>
+            <Typography
+              fontSizeM
+              fontWeightBold
+              textSecondary
+              fullWidth
+              paddingTopHalf
+              justifyChildrenCenter
+            >
               {t("verificationSent")}
             </Typography>
           </Box>
           <Box paddingTop>
-            <Typography className={classes.formSubtitle}>
+            <Typography fontSizeS textMediumGrey textCenter block>
               <Trans i18nKey="checkEmailForVerification">
-                <Typography color="primary" component="span">
+                <Typography textPrimary span>
                   {{ email: email }}
                 </Typography>
               </Trans>
@@ -63,7 +69,7 @@ class SendVerificationForm extends Component {
 
 SendVerificationForm.propTypes = {
   classes: PropTypes.object.isRequired,
-  t: PropTypes.func.isRequired,
+  t: PropTypes.func.isRequired
 };
 
 export default withStyles(styleSheet)(

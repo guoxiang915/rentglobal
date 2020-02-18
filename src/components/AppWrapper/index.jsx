@@ -7,8 +7,7 @@ import {
   MenuItem,
   Grid,
   Hidden,
-  Menu,
-  Typography
+  Menu
 } from "@material-ui/core";
 import {
   Menu as MenuIcon,
@@ -24,7 +23,8 @@ import {
   Row,
   Column,
   Box,
-  IconButton
+  IconButton,
+  Typography
 } from "../../common/base-components";
 import { SideMenu } from "../Layout";
 import DrawerUser from "../DrawerUser";
@@ -339,8 +339,10 @@ class Appwrapper extends Component {
                         transparent
                         className={classes.grayButton}
                       >
-                        {t(language)}
-                        <ExpandMoreIcon />
+                        <Typography fontSizeS>
+                          {t(language)}
+                          <ExpandMoreIcon />
+                        </Typography>
                       </Button>
                       <Menu
                         id="language-menu"
@@ -369,8 +371,10 @@ class Appwrapper extends Component {
                         transparent
                         className={classes.grayButton}
                       >
-                        {location}
-                        <ExpandMoreIcon />
+                        <Typography fontSizeS>
+                          {location}
+                          <ExpandMoreIcon />
+                        </Typography>
                       </Button>
                       <Menu
                         id="location-menu"
@@ -399,7 +403,7 @@ class Appwrapper extends Component {
                         transparent
                         className={classes.grayButton}
                       >
-                        {t("help")}
+                        <Typography fontSizeS>{t("help")}</Typography>
                       </Button>
                     </Column>
                   </Box>
@@ -414,28 +418,28 @@ class Appwrapper extends Component {
               <Row>
                 <Hidden smDown>
                   <Column>
-                    <Typography>
+                    <Typography fontSizeS>
                       <Link variant="body2" to="/">
                         {t("home")}
                       </Link>
                     </Typography>
                   </Column>
                   <Column paddingLeftDouble>
-                    <Typography>
+                    <Typography fontSizeS fontWeightBold>
                       <Link variant="primary" to="/">
                         {t("chatWithTessi")}
                       </Link>
                     </Typography>
                   </Column>
                   <Column paddingLeftDouble>
-                    <Typography>
+                    <Typography fontSizeS>
                       <Link variant="body2" to="/auth/login">
                         {t("login")}
                       </Link>
                     </Typography>
                   </Column>
                   <Column paddingLeftDouble>
-                    <Typography>
+                    <Typography fontSizeS>
                       <Link variant="body2" to="/auth/register">
                         {t("register")}
                       </Link>
@@ -449,7 +453,7 @@ class Appwrapper extends Component {
                         this.props.history.push("/auth/register/landlord")
                       }
                     >
-                      <Typography>{t("placeToRent")}</Typography>
+                      <Typography fontSizeS fontWeightBold>{t("placeToRent")}</Typography>
                     </Button>
                   </Column>
                 </Hidden>

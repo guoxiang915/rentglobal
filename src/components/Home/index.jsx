@@ -5,7 +5,6 @@ import { Trans, withTranslation } from "react-i18next";
 import HeaderImage from "../../assets/img/img_header.jpg";
 import HeaderImageLarger from "../../assets/img/img_header@2x.jpg";
 import {
-  Typography,
   Grid,
   Card,
   Hidden,
@@ -22,7 +21,8 @@ import {
   Column,
   TextField,
   Button,
-  Link
+  Link,
+  Typography
 } from "../../common/base-components";
 import { Carousel } from "react-responsive-carousel";
 import "react-responsive-carousel/lib/styles/carousel.min.css";
@@ -75,7 +75,7 @@ const styleSheet = theme => ({
   },
 
   searchWrapper: {
-    maxWidth: 600,
+    // maxWidth: 600,
     width: "100%",
     boxShadow: "0px 24px 24px #0000001A;",
     padding: `${theme.spacing(4)}px ${theme.spacing(4.5)}px`,
@@ -316,12 +316,12 @@ const styleSheet = theme => ({
   },
 
   homeRegisterContent: {
-    fontSize: "14px",
+    // fontSize: "14px",
     textAlign: "center",
     paddingTop: 53,
     paddingBottom: 53,
     maxWidth: 724,
-    color: "white",
+    // color: "white",
     [theme.breakpoints.down("sm")]: {
       paddingTop: 24,
       paddingBottom: 24
@@ -367,21 +367,29 @@ class Home extends Component {
               alignChildrenCenter
               justifyChildrenCenter
             >
-              {index}
+              <Typography fontSizeM fontWeightBold>
+                {index}
+              </Typography>
             </Box>
           </Box>
           <Column alignChildrenStart>
             <Typography
-              variant="h6"
-              color={!active ? "secondary" : ""}
-              className={this.props.classes.textStepTitle}
+              fontSizeM
+              fontWeightBold
+              textSecondary={active}
+              textMediumGrey={!active}
+              // color={!active ? "secondary" : undefined}
+              // className={this.props.classes.textStepTitle}
             >
               {label}
             </Typography>
             <Box paddingTopHalf>
               <Typography
-                className={this.props.classes.textStepContent}
-                color={!active ? "secondary" : ""}
+                fontSizeS
+                textSecondary={active}
+                textMediumGrey={!active}
+                // className={this.props.classes.textStepContent}
+                // color={!active ? "secondary" : undefined}
               >
                 {content}
               </Typography>
@@ -408,8 +416,9 @@ class Home extends Component {
               {index}
             </Box>
             <Typography
-              variant="h6"
-              className={this.props.classes.textStepTitle}
+              fontSizeS
+              fontWeightBold
+              // className={this.props.classes.textStepTitle}
             >
               {label}
             </Typography>
@@ -420,8 +429,9 @@ class Home extends Component {
           <Collapse in={active}>
             <Row paddingTopHalf>
               <Typography
-                className={this.props.classes.textStepContent}
-                color={!active ? "secondary" : ""}
+                fontSizeXS
+                // className={this.props.classes.textStepContent}
+                color={!active ? "secondary" : undefined}
               >
                 {content}
               </Typography>
@@ -471,16 +481,20 @@ class Home extends Component {
         </Carousel>
       </Box>
       <Box paddingTopHalf>
-        <Typography className={this.props.classes.textMedium}>
+        <Typography fontSizeM textBlackGrey>
           {office.title}
         </Typography>
       </Box>
       <Row paddingTopHalf>
         <Icon color="primary">star</Icon>
-        <Typography color="secondary">{office.rating}</Typography>
+        <Typography fontSizeS textMediumGrey paddingLeftHalf>
+          {office.rating}
+        </Typography>
       </Row>
       <Row>
-        <Typography color="primary">${office.price} CAD/month</Typography>
+        <Typography fontSizeS textPrimary>
+          ${office.price} CAD/month
+        </Typography>
       </Row>
     </Column>
   );
@@ -517,13 +531,20 @@ class Home extends Component {
             <Grid item width="100%">
               <Card className={classes.searchWrapper}>
                 <Column alignChildrenStart>
-                  <Typography variant="h6" className={classes.landingTitle}>
+                  <Typography
+                    fontSizeXL
+                    textSecondary
+                    fontWeightBold
+                    // className={classes.landingTitle}
+                    block
+                  >
                     <Trans i18nKey="dashboardLandingTitle">
                       <Typography
-                        color="primary"
-                        variant="h6"
-                        component="span"
-                        className={classes.landingTitle}
+                        fontSizeXL
+                        textPrimary
+                        fontWeightBold
+                        // className={classes.landingTitle}
+                        span
                       >
                         {{ name: "TESSI" }}
                       </Typography>
@@ -531,8 +552,9 @@ class Home extends Component {
                     </Trans>
                   </Typography>
                   <Typography
-                    variant="caption"
-                    className={classes.landingSubtitle}
+                    textMediumGrey
+                    fontSizeS
+                    // className={classes.landingSubtitle}
                   >
                     {t("dashboardLandingSubtitle")}
                   </Typography>
@@ -554,10 +576,18 @@ class Home extends Component {
                 justify="center"
               >
                 <Grid item>
-                  <Button>{t("chatWithTessi")}</Button>
+                  <Button>
+                    <Typography fontSizeS fontWeightBold textWhite>
+                      {t("chatWithTessi")}
+                    </Typography>
+                  </Button>
                 </Grid>
                 <Grid item>
-                  <Button>{t("advancedSearch")}</Button>
+                  <Button>
+                    <Typography fontSizeS fontWeightBold textWhite>
+                      {t("advancedSearch")}
+                    </Typography>
+                  </Button>
                 </Grid>
               </Grid>
             </Grid>
@@ -569,13 +599,20 @@ class Home extends Component {
           classes={{ box: clsx(classes.fixedWith, classes.blockWrapper) }}
         >
           <Row classes={{ box: classes.blockTitleWrapper }}>
-            <Typography variant="h6" className={classes.blockTitle}>
+            <Typography
+              fontSizeL
+              textSecondary
+              fontWeightBold
+              // className={classes.blockTitle}
+              block
+            >
               <Trans i18nKey="howHelpFind">
                 <Typography
-                  color="primary"
-                  variant="h6"
-                  component="span"
-                  className={classes.blockTitle}
+                  textPrimary
+                  fontSizeL
+                  textWeightBold
+                  // className={classes.blockTitle}
+                  span
                 >
                   {{ name: "RENTGLOBAL" }}
                 </Typography>
@@ -649,7 +686,12 @@ class Home extends Component {
           classes={{ box: clsx(classes.fixedWith, classes.blockWrapper) }}
         >
           <Row classes={{ box: classes.blockTitleWrapper }}>
-            <Typography variant="h6" className={classes.blockTitle}>
+            <Typography
+              fontWeightBold
+              fontSizeL
+              textSecondary
+              //  className={classes.blockTitle}
+            >
               {t("latestRecommendOffice")}
             </Typography>
           </Row>
@@ -662,7 +704,9 @@ class Home extends Component {
           </Row>
           <Row classes={{ box: classes.allLatestButton }}>
             <Button variant="secondary" className={classes.shadowButton}>
-              {t("allLatest", { count: "50+" })}
+              <Typography fontSizeS fontWeightBold textSecondary>
+                {t("allLatest", { count: "50+" })}
+              </Typography>
             </Button>
           </Row>
         </Column>
@@ -673,7 +717,12 @@ class Home extends Component {
             classes={{ box: clsx(classes.fixedWith, classes.blockWrapper) }}
           >
             <Row classes={{ box: classes.homeRegisterTitle }}>
-              <Typography variant="h6" className={classes.blockTitle}>
+              <Typography
+                fontSizeL
+                fontWeightBold
+                textWhite
+                // className={classes.blockTitle}
+              >
                 {t("homeRegisterTitle")}
               </Typography>
             </Row>
@@ -681,6 +730,9 @@ class Home extends Component {
               classes={{ box: classes.homeRegisterContent }}
               fullWidth
               color="white"
+              fontSizeS
+              fontWeightBold
+              textWhite
             >
               {t("homeRegisterContent")}
             </Row>
@@ -692,7 +744,9 @@ class Home extends Component {
                   this.props.history.push("/auth/register/landlord")
                 }
               >
-                {t("registerAndStartRENTGLOBALConsultant")}
+                <Typography fontSizeS fontWeightBold textSecondary>
+                  {t("registerAndStartRENTGLOBALConsultant")}
+                </Typography>
               </Button>
             </Row>
           </Column>
@@ -711,10 +765,14 @@ class Home extends Component {
                   </Icon>
                 </Row>
                 <Row paddingTop>
-                  <Typography variant="h6">{t("flexibility")}</Typography>
+                  <Typography fontSizeM uppercase textSecondary fontWeightBold>
+                    {t("flexibility")}
+                  </Typography>
                 </Row>
                 <Row>
-                  <Typography>{t("minimumCommitment")}</Typography>
+                  <Typography fontSizeS uppercase textSecondary>
+                    {t("minimumCommitment")}
+                  </Typography>
                 </Row>
               </Column>
             </Grid>
@@ -726,10 +784,14 @@ class Home extends Component {
                   </Icon>
                 </Row>
                 <Row paddingTop>
-                  <Typography variant="h6">{t("confiance")}</Typography>
+                  <Typography fontSizeM uppercase textSecondary fontWeightBold>
+                    {t("confiance")}
+                  </Typography>
                 </Row>
                 <Row>
-                  <Typography>{t("personalMonitoring")}</Typography>
+                  <Typography fontSizeS uppercase textSecondary>
+                    {t("personalMonitoring")}
+                  </Typography>
                 </Row>
               </Column>
             </Grid>
@@ -741,10 +803,14 @@ class Home extends Component {
                   </Icon>
                 </Row>
                 <Row paddingTop>
-                  <Typography variant="h6">{t("simplicity")}</Typography>
+                  <Typography fontSizeM uppercase textSecondary fontWeightBold>
+                    {t("simplicity")}
+                  </Typography>
                 </Row>
                 <Row>
-                  <Typography>{t("turnkeySolution")}</Typography>
+                  <Typography fontSizeS uppercase textSecondary>
+                    {t("turnkeySolution")}
+                  </Typography>
                 </Row>
               </Column>
             </Grid>
@@ -760,7 +826,9 @@ class Home extends Component {
           <Grid container justify="space-between">
             <Grid item xs={12} sm={6}>
               <Column paddingTop paddingBottom>
-                <Typography>{t("receiveNewsletter")}</Typography>
+                <Typography fontSizeS textSecondary>
+                  {t("receiveNewsletter")}
+                </Typography>
                 <Row paddingTopHalf fullWidth>
                   <TextField
                     variant="outlined"
@@ -772,7 +840,9 @@ class Home extends Component {
             </Grid>
             <Grid item xs={12} sm={6}>
               <Column paddingTop paddingBottom>
-                <Typography>{t("followUpSocials")}</Typography>
+                <Typography fontSizeS textSecondary>
+                  {t("followUpSocials")}
+                </Typography>
                 <Row
                   paddingTopHalf
                   classes={{ box: classes.socialIconsWrapper }}
@@ -814,75 +884,85 @@ class Home extends Component {
           >
             <Grid item xs={6} sm={3}>
               <Column paddingTopDouble paddingBottomDouble alignChildrenStart>
-                <Typography variant="h6">{t("rentglobal")}</Typography>
+                <Typography fontSizeM fontWeightBold textSecondary>
+                  {t("rentglobal")}
+                </Typography>
                 <Column paddingTop alignChildrenStart>
                   <Link to="/">
-                    <Typography variant="body1">{t("aboutUs")}</Typography>
+                    <Typography fontSizeS>{t("aboutUs")}</Typography>
                   </Link>
                   <Link to="/">
-                    <Typography variant="body1">{t("news")}</Typography>
+                    <Typography fontSizeS>{t("news")}</Typography>
                   </Link>
                   <Link to="/">
-                    <Typography variant="body1">{t("careers")}</Typography>
+                    <Typography fontSizeS>{t("careers")}</Typography>
                   </Link>
                   <Link to="/">
-                    <Typography variant="body1">{t("contactUs")}</Typography>
+                    <Typography fontSizeS>{t("contactUs")}</Typography>
                   </Link>
                 </Column>
               </Column>
             </Grid>
             <Grid item xs={6} sm={3}>
               <Column paddingTopDouble paddingBottomDouble alignChildrenStart>
-                <Typography variant="h6">{t("discover")}</Typography>
+                <Typography fontSizeM fontWeightBold textSecondary>
+                  {t("discover")}
+                </Typography>
                 <Column paddingTop alignChildrenStart>
                   <Link to="/">
-                    <Typography variant="body1">{t("howItWorks")}</Typography>
+                    <Typography fontSizeS>{t("howItWorks")}</Typography>
                   </Link>
                   <Link to="/">
-                    <Typography variant="body1">{t("legalNotice")}</Typography>
+                    <Typography fontSizeS>{t("legalNotice")}</Typography>
                   </Link>
                   <Link to="/">
-                    <Typography variant="body1">
-                      {t("privacyPolicy")}
-                    </Typography>
+                    <Typography fontSizeS>{t("privacyPolicy")}</Typography>
                   </Link>
                   <Link to="/">
-                    <Typography variant="body1">
-                      {t("termsAndConditions")}
-                    </Typography>
+                    <Typography fontSizeS>{t("termsAndConditions")}</Typography>
                   </Link>
                 </Column>
               </Column>
             </Grid>
             <Grid item xs={6} sm={3}>
               <Column paddingTopDouble paddingBottomDouble alignChildrenStart>
-                <Typography variant="h6">{t("support")}</Typography>
+                <Typography fontSizeM fontWeightBold textSecondary>
+                  {t("support")}
+                </Typography>
                 <Column paddingTop alignChildrenStart>
                   <Link to="/">
-                    <Typography variant="body1">{t("help")}</Typography>
+                    <Typography fontSizeS>{t("help")}</Typography>
                   </Link>
                   <Link to="/auth/login">
-                    <Typography variant="body1">{t("login")}</Typography>
+                    <Typography fontSizeS>{t("login")}</Typography>
                   </Link>
                   <Link to="/auth/register">
-                    <Typography variant="body1">{t("register")}</Typography>
+                    <Typography fontSizeS>{t("register")}</Typography>
                   </Link>
                   <Link to="/">
-                    <Typography variant="body1">{t("support")}</Typography>
+                    <Typography fontSizeS>{t("support")}</Typography>
                   </Link>
                 </Column>
               </Column>
             </Grid>
             <Grid item xs={6} sm={3}>
               <Column paddingTopDouble paddingBottomDouble alignChildrenStart>
-                <Typography variant="h6">{t("contact")}</Typography>
+                <Typography fontSizeM fontWeightBold textSecondary>
+                  {t("contact")}
+                </Typography>
                 <Column paddingTop alignChildrenStart>
-                  <Typography variant="body1">
+                  <Typography fontSizeS textSecondary>
                     1176, street Bishop, Montreal,
                   </Typography>
-                  <Typography variant="body1">QC H3G 2E3</Typography>
-                  <Typography variant="body1">info@dokstation.ca</Typography>
-                  <Typography variant="body1">Phone: (514) 461-3030</Typography>
+                  <Typography fontSizeS textSecondary>
+                    QC H3G 2E3
+                  </Typography>
+                  <Typography fontSizeS textSecondary>
+                    info@dokstation.ca
+                  </Typography>
+                  <Typography fontSizeS textSecondary>
+                    Phone: (514) 461-3030
+                  </Typography>
                 </Column>
               </Column>
             </Grid>

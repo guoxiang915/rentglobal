@@ -1,7 +1,13 @@
 import React, { Component } from "react";
 import { withStyles } from "@material-ui/core/styles";
-import { Box, Column, Stretch, Link, Row } from "../../common/base-components";
-import { Typography } from "@material-ui/core";
+import {
+  Box,
+  Column,
+  Stretch,
+  Link,
+  Row,
+  Typography
+} from "../../common/base-components";
 import MiniLogo from "../../assets/mini-logo-gray.svg";
 import { withTranslation } from "react-i18next";
 import withMuiRoot from "../../withMuiRoot";
@@ -44,24 +50,30 @@ class AppFooter extends Component {
       <Column classes={{ box: classes.footerWrapper }}>
         <Row classes={{ box: classes.container }} fullWidth>
           <Box classes={{ box: classes.navWrapper }}>
-            <Typography variant="caption" className={classes.navLink}>
+            <Typography textMediumGrey fontSizeXS paddingRight>
               {t("allRightsReserved")}
             </Typography>
-            <Typography variant="caption">
-              <Link to="/terms" styles={classes.navLink}>
-                {t("terms")}
-              </Link>
-              <Link to="/privacy" styles={classes.navLink}>
-                {t("privacy")}
-              </Link>
-              <Link to="/sitemap" styles={classes.navLink}>
-                {t("siteMap")}
-              </Link>
+            <Typography fontSizeXS>
+              <Box paddingRight span>
+                <Link variant="normalLight" to="/terms">
+                  {t("terms")}
+                </Link>
+              </Box>
+              <Box paddingRight span>
+                <Link variant="normalLight" to="/privacy">
+                  {t("privacy")}
+                </Link>
+              </Box>
+              <Box span>
+                <Link variant="normalLight" to="/sitemap">
+                  {t("siteMap")}
+                </Link>
+              </Box>
             </Typography>
           </Box>
           <Stretch />
           <Box classes={{ box: classes.logoWrapper }}>
-            <img src={MiniLogo} className={classes.miniLogo} alt="RENTGLOBAL"/>
+            <img src={MiniLogo} className={classes.miniLogo} alt="RENTGLOBAL" />
           </Box>
         </Row>
       </Column>

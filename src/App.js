@@ -10,6 +10,7 @@ import { I18nextProvider } from "react-i18next";
 import theme from "./common/config/theme";
 import i18n from "./i18n";
 
+import "./assets/font/AvenirNextLTPro/AvenirNextLTPro-Regular.otf";
 import "./common/styles/global.css";
 
 const store = configureStore();

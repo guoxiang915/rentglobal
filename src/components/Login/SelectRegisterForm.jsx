@@ -1,9 +1,16 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { withStyles } from "@material-ui/core/styles";
-import { Typography, Grid } from "@material-ui/core";
+import { Grid } from "@material-ui/core";
 import { withTranslation } from "react-i18next";
-import { Button, Row, Box, Column, Link } from "../../common/base-components";
+import {
+  Button,
+  Row,
+  Box,
+  Column,
+  Link,
+  Typography
+} from "../../common/base-components";
 import {
   Business as LandlordIcon,
   PeopleOutline as CompanyIcon,
@@ -83,12 +90,25 @@ class SelectRegisterForm extends Component {
               >
                 <LandlordIcon color="secondary" fontSize="large" />
                 <Box paddingTopHalf>
-                  <Typography className={classes.formTitle}>
+                  <Typography
+                    fontSizeL
+                    fontWeightBold
+                    textSecondary
+                    fullWidth
+                    paddingTopHalf
+                    textLeft
+                    // classes={{ box: classes.formTitle }}
+                  >
                     {t("amLandlord")}
                   </Typography>
                 </Box>
                 <Box paddingTopHalf>
-                  <Typography className={classes.formSubtitle}>
+                  <Typography
+                    fontSizeM
+                    textSecondary
+                    textLeft
+                    // className={classes.formSubtitle}
+                  >
                     {t("iHavePlaceToRent")}
                   </Typography>
                 </Box>
@@ -96,10 +116,12 @@ class SelectRegisterForm extends Component {
                   className={classes.signupButton}
                   onClick={this.handleSelectRegister("landlord")}
                 >
-                  {t("landlordSignup")}
-                  <Box paddingLeft>
-                    <ArrowForward fontSize="small" />
-                  </Box>
+                  <Typography fontSizeS fontWeightBold textWhite>
+                    {t("landlordSignup")}
+                    <Box paddingLeft>
+                      <ArrowForward fontSize="small" />
+                    </Box>
+                  </Typography>
                 </Button>
               </Column>
             </Column>
@@ -112,12 +134,25 @@ class SelectRegisterForm extends Component {
               >
                 <CompanyIcon color="secondary" fontSize="large" />
                 <Box paddingTopHalf>
-                  <Typography className={classes.formTitle}>
+                  <Typography
+                    fontSizeL
+                    fontWeightBold
+                    textSecondary
+                    fullWidth
+                    paddingTopHalf
+                    textLeft
+                    // classes={{ box: classes.formTitle }}
+                  >
                     {t("needOffice")}
                   </Typography>
                 </Box>
                 <Box paddingTopHalf>
-                  <Typography className={classes.formSubtitle}>
+                  <Typography
+                    fontSizeM
+                    textSecondary
+                    textLeft
+                    // classes={{ box: classes.formSubtitle }}
+                  >
                     {t("iLookForOffice")}
                   </Typography>
                 </Box>
@@ -125,10 +160,12 @@ class SelectRegisterForm extends Component {
                   className={classes.signupButton}
                   onClick={this.handleSelectRegister("company")}
                 >
-                  {t("companySignup")}
-                  <Box paddingLeft>
-                    <ArrowForward fontSize="small" />
-                  </Box>
+                  <Typography fontSizeS fontWeightBold textWhite>
+                    {t("companySignup")}
+                    <Box paddingLeft>
+                      <ArrowForward fontSize="small" />
+                    </Box>
+                  </Typography>
                 </Button>
               </Column>
             </Column>
@@ -136,7 +173,7 @@ class SelectRegisterForm extends Component {
         </Grid>
         <Row fullWidth classes={{ box: classes.switchTextWrapper }}>
           <Column fullWidth>
-            <Typography color="secondary" className={classes.switchText}>
+            <Typography textSecondary fontSizeS>
               {t("alreadyHaveAccount")}
               <Link to="/auth/login" variant="primary">
                 &nbsp;{t("login")}

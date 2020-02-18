@@ -8,14 +8,15 @@ const colors = {
     mainColor: "#d7df23",
     darkColor: "#a3b100",
     mainShadow: "#D7DF234D",
-    darkGrey: "#525252",
+    whiteGrey: "#fafafa",
+    lightGrey: "#efefef",
     grey: "#b9b9b9",
-    lightGrey: "#fafafa",
+    darkGrey: "#525252",
+    blackGrey: "#3b3b3b",
     borderGrey: "#e8e8e8",
     errorRed: "#fd6d9f",
-    lightPink: "#8468e2",
-    pink: "#8468e2",
-    darkPink: "#63529b"
+    purple: "#8468e2",
+    darkPurple: "#63529b"
   }
 };
 
@@ -32,17 +33,103 @@ const palette = {
     dark: colors.primary.darkGrey
   },
   third: {
-    light: colors.primary.lightPink,
-    main: colors.primary.pink,
-    dark: colors.primary.darkPink
+    light: colors.primary.purple,
+    main: colors.primary.purple,
+    dark: colors.primary.darkPurple
   }
+};
+
+// font sizes
+const fontSize = {
+  fontSizeXS: {
+    fontSize: "13px",
+    lineHeight: "18px"
+  },
+  fontSizeS: {
+    fontSize: "15px",
+    lineHeight: "20px"
+  },
+  fontSizeM: {
+    fontSize: "19px",
+    lineHeight: "26px"
+  },
+  fontSizeL: {
+    fontSize: "25px",
+    lineHeight: "34px"
+  },
+  fontSizeXL: {
+    fontSize: "31px",
+    lineHeight: "42px"
+  }
+};
+
+// font weights
+const fontWeight = {
+  fontWeightLight: {
+    fontWeight: 100
+  },
+  fontWeightMedium: {
+    fontWeight: "normal"
+  },
+  fontWeightBold: {
+    fontWeight: "bold"
+  }
+};
+
+// font styles
+const fonts = {
+  size: fontSize,
+  weight: fontWeight
+};
+
+// link styles
+const links = {
+  normal: {
+    color: colors.primary.darkGrey,
+    "&:hover": {
+      color: colors.primary.mainColor
+    }
+  },
+  normalLight: {
+    color: colors.primary.grey,
+    "&:hover": {
+      color: colors.primary.mainColor
+    }
+  },
+  primary: {
+    color: colors.primary.mainColor,
+    "&:hover": {
+      color: colors.primary.darkColor
+    }
+  },
+  secondary: {
+    color: colors.primary.grey,
+    "&:hover": {
+      color: colors.primary.darkGrey
+    }
+  },
+  secondaryLight: {
+    color: colors.primary.lightGrey,
+    "&:hover": {
+      color: colors.primary.grey
+    }
+  },
+  inverse: {
+    "&:hover": {
+      color: colors.primary.white
+    }
+  },
+};
+
+// link background styles
+const linksBackground = {
 };
 
 // theme typography variants
 const typography = {
   useNextVariants: true,
 
-  mainFont: "Roboto",
+  mainFont: "Avenir Next",
   headline: {
     fontWeight: "normal",
     fontSize: "24px",
@@ -101,7 +188,9 @@ const typography = {
 const theme = {
   colors,
   palette,
-  typography
+  typography,
+  fonts,
+  links
 };
 
 export default createMuiTheme(theme);
