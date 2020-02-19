@@ -34,6 +34,13 @@ export const updateUser = (payload, history) => {
   };
 };
 
+export const setUserType = payload => {
+  return {
+    type: "SET_USER_TYPE",
+    userType: payload.userType
+  };
+};
+
 export const registerUser = (payload, history) => {
   return {
     type: "REQUEST_USER_REGISTER",

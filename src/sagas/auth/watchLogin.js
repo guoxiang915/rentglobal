@@ -27,7 +27,9 @@ function* login(action) {
         resp: response.data
       });
       authObj.setToken(response.data.token);
-      action.history.push("/");
+
+      console.log(response.data);
+      action.history.push("/landlord");
     } else if (response.status === 403) {
       yield put({
         type: "USER_NOT_ACTIVATED",

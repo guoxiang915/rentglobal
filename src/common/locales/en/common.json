@@ -18,7 +18,6 @@
     "resetPassword": "Reset password",
     "setNewPassword": "Set your new password",
     "next": "Next",
-    "home": "Home",
     "en": "EN",
     "fr": "FR",
     "changeLocation": "Change Location ({{location}})",
@@ -70,7 +69,6 @@
     "legalNotice": "Legal Notice",
     "privacyPolicy": "Privacy policy",
     "termsAndConditions": "Terms & Conditions",
-    "support": "Support",
     "help": "Help",
     "contact": "Contact",
     "amLandlord": "I am a Landlord",
@@ -81,5 +79,16 @@
     "companySignup": "Company sign up",
     "verificationSent": "Verification Sent",
     "checkEmailForVerification": "Verification sent to your email address: <0>{{email}}</0><br />Please check your email.",
-    "checkEmailForPasswordVerification": "Verification sent to your email address: <0>{{email}}</0><br />Please check your email to reset password."
+    "checkEmailForPasswordVerification": "Verification sent to your email address: <0>{{email}}</0><br />Please check your email to reset password.",
+
+    "home": "Home",
+    "dashboard": "Dashboard",
+    "offices": "Offices",
+    "contracts": "Contracts",
+    "optimization": "Optimization",
+    "calendar": "Calendar",
+    "financials": "Financials",
+    "support": "Support",
+    "profile": "Profile",
+    "setting": "Setting"
 }

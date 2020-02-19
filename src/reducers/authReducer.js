@@ -24,8 +24,7 @@ const authReducer = (currentState = INITIAL_STATE, action) => {
         isLoading: false,
         isLoggedIn: true,
         error: null,
-        isActivated: true
-        // user: action.resp.user,
+        user: { ...action.resp, active: true }
         // successMsg: action.resp.msg
       };
 
@@ -43,7 +42,7 @@ const authReducer = (currentState = INITIAL_STATE, action) => {
         isLoading: false,
         error: action.resp.msg,
         isLoggedIn: true,
-        isActivated: false
+        user: null
       };
 
     case "REQUEST_AUTHENTICATION":
@@ -63,9 +62,8 @@ const authReducer = (currentState = INITIAL_STATE, action) => {
         isLoading: false,
         isLoggedIn: true,
         error: null,
-        user: action.resp.user,
-        loaded: true,
-        successMsg: action.resp.msg
+        user: action.resp,
+        loaded: true
       };
 
     case "AUTH_FAILED":
@@ -75,8 +73,7 @@ const authReducer = (currentState = INITIAL_STATE, action) => {
         isLoggedIn: false,
         error: action.resp.msg,
         user: null,
-        loaded: true,
-        successMsg: null
+        loaded: true
       };
 
     case "FLUSH_MESSAGES":
@@ -104,7 +101,7 @@ const authReducer = (currentState = INITIAL_STATE, action) => {
         isLoggedIn: false,
         user: null,
         error: null,
-        loaded: false,
+        // loaded: false,
         successMsg: null
       };
 
@@ -131,7 +128,7 @@ const authReducer = (currentState = INITIAL_STATE, action) => {
         isLoggedIn: false,
         user: null,
         error: action.resp.msg,
-        loaded: true
+        // loaded: true
       };
 
     // unusable
@@ -141,7 +138,13 @@ const authReducer = (currentState = INITIAL_STATE, action) => {
         isLoading: false,
         isLoggedIn: true,
         error: null,
-        loaded: true
+        // loaded: true
+      };
+
+    case "SET_USER_TYPE":
+      return {
+        ...currentState,
+        user: { ...currentState.user, userType: action.userTYpe }
       };
 
     default:
