@@ -191,6 +191,8 @@ class Appwrapper extends Component {
   };
 
   navigate = path => {
+    const { user } = this.props.auth;
+
     this.setState({
       drawerOpen: false
     });
@@ -206,6 +208,9 @@ class Appwrapper extends Component {
         authObj.removeToken();
         this.props.mappedlogout();
         this.props.history.push("/auth/login");
+        break;
+      case "dashboard":
+        this.props.history.push(`/${user.role}/${path}`);
         break;
       default:
         this.props.history.push("/");
@@ -297,7 +302,7 @@ class Appwrapper extends Component {
         </Typography>
       </Row>
       <Row paddingTopDouble>
-        <Link to="/">
+        <Link to="#" onClick={() => navigate("home")}>
           <Typography fontSizeS>
             <Icon className={classes.menuIcon}>home</Icon>
             {t("home")}
@@ -305,7 +310,7 @@ class Appwrapper extends Component {
         </Link>
       </Row>
       <Row paddingTop>
-        <Link to={`/${user.role}/dashboard`}>
+        <Link to="#" onClick={() => navigate("dashboard")}>
           <Typography fontSizeS>
             <Icon className={classes.menuIcon}>dashboard</Icon>
             {t("dashboard")}
@@ -313,7 +318,7 @@ class Appwrapper extends Component {
         </Link>
       </Row>
       <Row paddingTop>
-        <Link to="/logout">
+        <Link to="#" onClick={() => navigate("logout")}>
           <Typography fontSizeS textErrorRed>
             <Icon className={classes.menuIcon}>power_settings_new</Icon>
             {t("signOut")}
@@ -584,7 +589,10 @@ class Appwrapper extends Component {
                   >
                     <AccountInfo
                       user={user}
-                      navigate={this.navigate}
+                      navigate={path => {
+                        this.handleCloseAccountInfo();
+                        this.navigate(path);
+                      }}
                       classes={classes}
                       t={t}
                     />

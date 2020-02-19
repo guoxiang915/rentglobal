@@ -13,24 +13,6 @@ const sendRequest = async token => {
   } finally {
     return resp;
   }
-  // try {
-  //   // mock data
-  //   let resp = { success: false, msg: "" };
-
-  //   let resp = await fetch(`${API}/auth/activate/${token}`, {
-  //     method: "get",
-  //     headers: {
-  //       Authorization: token,
-  //       Accept: "application/json",
-  //       "Content-Type": "application/json"
-  //     }
-  //   });
-
-  //   let json = await resp.json();
-  //   return json;
-  // } catch (error) {
-  //   console.log(error);
-  // }
 };
 
 function* authenticate(action) {
@@ -46,7 +28,6 @@ function* authenticate(action) {
         type: "AUTH_FAILED",
         resp: response.data
       });
-      // action.history.push("/login");
     }
   } catch (error) {
     console.log(error);
