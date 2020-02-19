@@ -90,7 +90,7 @@ class AppSidebar extends Component {
   render() {
     const { classes, t } = this.props;
     const { isLoggedIn } = this.props.auth;
-    const { userType } = this.props;
+    const { role } = this.props;
 
     return (
       <div className={classes.sidebarWrapper}>
@@ -102,7 +102,7 @@ class AppSidebar extends Component {
         >
           {!isLoggedIn
             ? this.normalMenu.map(item => this.renderMenuItem("", item))
-            : userType === "landlord"
+            : role === "landlord"
             ? this.landlordMenu.map(item =>
                 this.renderMenuItem("landlord", item)
               )

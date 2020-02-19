@@ -13,8 +13,7 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
   return {
-    mappedSetUserType: (userType, history) =>
-      dispatch(authActions.setUserType({ userType }))
+    mappedSetUserRole: role => dispatch(authActions.setUserRole({ role }))
   };
 };
 

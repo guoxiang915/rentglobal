@@ -6,14 +6,15 @@ import clsx from "clsx";
 const styleSheet = theme => ({
   root: {
     background: `${theme.colors.primary.mainColor}`,
-    padding: "5px 30px",
+    padding: "7px 27px",
     textTransform: "none",
-    fontWeight: 500,
-    color: `${theme.colors.primary.white}`,
+    color: "white",
     "&:hover": {
-      background: `${theme.colors.primary.darkColor}`,
-      color: `${theme.colors.primary.white}`,
-    }
+      color: "white",
+      background: `${theme.colors.primary.darkColor}`
+    },
+    ...theme.fonts.size.fontSizeS,
+    ...theme.fonts.weight.fontWeightBold
   },
 
   rounded: {
@@ -33,6 +34,20 @@ const styleSheet = theme => ({
     }
   },
 
+  icon: {
+    padding: 7,
+    background: "none",
+    minWidth: 0,
+    color: theme.colors.primary.grey,
+    border: `1px solid ${theme.colors.primary.borderGrey}`,
+    "&:hover": {
+      color: theme.colors.primary.mainColor,
+      border: `1px solid ${theme.colors.primary.mainColor}`,
+      background: "none"
+    },
+    ...theme.fonts.weight.fontWeightMedium
+  },
+
   transparent: {
     border: "none",
     background: "none",
@@ -40,7 +55,7 @@ const styleSheet = theme => ({
     "&:hover": {
       border: "none",
       background: "none",
-      color: `${theme.colors.primary.darkGrey}`,
+      color: `${theme.colors.primary.darkGrey}`
     }
   }
 });
@@ -71,7 +86,7 @@ class Button extends Component {
           root: clsx(
             classes.root,
             rounded !== false && classes.rounded,
-            variant === "secondary" && classes.secondary,
+            variant && classes[variant],
             transparent && classes.transparent,
             styles
           )

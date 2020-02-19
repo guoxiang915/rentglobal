@@ -34,10 +34,10 @@ export const updateUser = (payload, history) => {
   };
 };
 
-export const setUserType = payload => {
+export const setUserRole = payload => {
   return {
-    type: "SET_USER_TYPE",
-    userType: payload.userType
+    type: "SET_USER_ROLE",
+    role: payload.role
   };
 };
 

@@ -285,6 +285,9 @@ const styleSheet = theme => {
     textBlack: {
       color: theme.colors.primary.black
     },
+    textErrorRed: {
+      color: theme.colors.primary.errorRed
+    },
     textCenter: {
       textAlign: "center"
     },

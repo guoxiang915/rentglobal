@@ -90,5 +90,7 @@
     "financials": "Financials",
     "support": "Support",
     "profile": "Profile",
-    "setting": "Setting"
+    "setting": "Setting",
+    "signOut": "Sign out",
+    "profileNeedAttention": "Your profile need attention!"
 }

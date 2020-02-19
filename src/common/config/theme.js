@@ -84,6 +84,12 @@ const fonts = {
 
 // link styles
 const links = {
+  white: {
+    color: colors.primary.white,
+    "&:hover": {
+      color: colors.primary.white
+    }
+  },
   normal: {
     color: colors.primary.darkGrey,
     "&:hover": {
@@ -118,12 +124,11 @@ const links = {
     "&:hover": {
       color: colors.primary.white
     }
-  },
+  }
 };
 
 // link background styles
-const linksBackground = {
-};
+const linksBackground = {};
 
 // theme typography variants
 const typography = {

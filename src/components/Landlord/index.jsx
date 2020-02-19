@@ -24,7 +24,7 @@ class Landlord extends Component {
         <Column fullWidth>
           <Row classes={{ box: classes.root }} fullWidth>
             <Column classes={{ box: classes.sidebarWrapper }} fullWdith>
-              <AppSidebar userType="landlord" />
+              <AppSidebar role="landlord" />
             </Column>
             <Column classes={{ box: classes.contentWrapper }} fullWidth>
               <Switch>

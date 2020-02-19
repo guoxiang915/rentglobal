@@ -141,10 +141,10 @@ const authReducer = (currentState = INITIAL_STATE, action) => {
         // loaded: true
       };
 
-    case "SET_USER_TYPE":
+    case "SET_USER_ROLE":
       return {
         ...currentState,
-        user: { ...currentState.user, userType: action.userTYpe }
+        user: { ...currentState.user, role: action.role }
       };
 
     default:

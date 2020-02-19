@@ -7,7 +7,11 @@ import {
   MenuItem,
   Grid,
   Hidden,
-  Menu
+  Menu,
+  Icon,
+  Popover,
+  Avatar,
+  LinearProgress
 } from "@material-ui/core";
 import {
   Menu as MenuIcon,
@@ -124,6 +128,31 @@ const styleSheet = theme => ({
     width: "100%",
     height: 4,
     background: `linear-gradient(97deg, ${theme.colors.primary.mainColor} 0%, ${theme.colors.primary.darkColor} 100%)`
+  },
+
+  accountInfoWrapper: {
+    "&::before": {
+      border: `10px solid black`
+    }
+  },
+
+  accountAvatar: {
+    width: 80,
+    height: 80
+  },
+
+  profileProgress: {
+    width: "100%"
+  },
+
+  profileProgressText: {},
+
+  attentionIcon: {
+    marginLeft: 25
+  },
+
+  menuIcon: {
+    marginRight: 25
   }
 });
 
@@ -135,7 +164,8 @@ class Appwrapper extends Component {
       routePath: "",
       anchorEl: null,
       locationEl: null,
-      languageEl: null
+      languageEl: null,
+      accountInfoEl: null
     };
     this.handleSearch = this.handleSearch.bind(this);
     this.handleSaveProfile = this.handleSaveProfile.bind(this);
@@ -222,6 +252,77 @@ class Appwrapper extends Component {
 
   handleHelp = () => {};
 
+  handleToggleRole = role => () => {
+    this.props.mappedSetUserRole(role === "landlord" ? "office" : "landlord");
+  };
+
+  handleOpenAccountInfo = event => {
+    this.setState({ accountInfoEl: event.currentTarget });
+  };
+
+  handleCloseAccountInfo = () => {
+    this.setState({ accountInfoEl: null });
+  };
+
+  renderAccountInfo = ({ user, navigate, classes, t }) => (
+    <Column
+      paddingTopDouble
+      paddingBottomDouble
+      paddingLeft
+      paddingRight
+      alignChildrenStart
+    >
+      <Row justifyChildrenCenter fullWidth>
+        <Avatar alt={user.username} className={classes.accountAvatar} />
+      </Row>
+      <Row paddingTop>
+        <Typography fontSizeS textSecondary>
+          {user.username}
+        </Typography>
+      </Row>
+      <Row paddingTopDouble fullWidth>
+        <LinearProgress
+          color="primary"
+          value={30}
+          valueBuffer={50}
+          // value="completed"
+          variant="buffer"
+          className={classes.profileProgress}
+        />
+      </Row>
+      <Row paddingTopHalf fullWidth>
+        <Typography classes={{ box: classes.profileProgressText }} textErrorRed>
+          {t("profileNeedAttention")}
+          <Icon className={classes.attentionIcon}>arrow_right_alt</Icon>
+        </Typography>
+      </Row>
+      <Row paddingTopDouble>
+        <Link to="/">
+          <Typography fontSizeS>
+            <Icon className={classes.menuIcon}>home</Icon>
+            {t("home")}
+          </Typography>
+        </Link>
+      </Row>
+      <Row paddingTop>
+        <Link to={`/${user.role}/dashboard`}>
+          <Typography fontSizeS>
+            <Icon className={classes.menuIcon}>dashboard</Icon>
+            {t("dashboard")}
+          </Typography>
+        </Link>
+      </Row>
+      <Row paddingTop>
+        <Link to="/logout">
+          <Typography fontSizeS textErrorRed>
+            <Icon className={classes.menuIcon}>power_settings_new</Icon>
+            {t("signOut")}
+          </Typography>
+        </Link>
+      </Row>
+    </Column>
+  );
+
   render() {
     const { classes, t } = this.props;
     const { isLoggedIn, user } = this.props.auth;
@@ -229,7 +330,8 @@ class Appwrapper extends Component {
       // anchorEl,
       drawerOpen,
       locationEl,
-      languageEl
+      languageEl,
+      accountInfoEl
     } = this.state;
 
     // const open = Boolean(anchorEl);
@@ -298,6 +400,8 @@ class Appwrapper extends Component {
 
     const location = "Montreal";
     const language = "en";
+
+    const AccountInfo = this.renderAccountInfo;
 
     return (
       <div className={classes.root}>
@@ -413,7 +517,81 @@ class Appwrapper extends Component {
           </Grid>
           <Grid item>
             {isLoggedIn ? (
-              <Row></Row>
+              <Row>
+                <Hidden smDown>
+                  <Column paddingLeftDouble>
+                    <Typography fontSizeS fontWeightBold>
+                      <Link variant="primary" to="/">
+                        {t("chatWithTessi")}
+                      </Link>
+                    </Typography>
+                  </Column>
+                </Hidden>
+                <Hidden smDown>
+                  <Column paddingLeftDouble>
+                    <Button
+                      variant="secondary"
+                      className={classes.shadowButton}
+                      onClick={this.handleToggleRole(user.role)}
+                    >
+                      <Typography fontSizeS fontWeightBold>
+                        {t(
+                          user.role === "landlord"
+                            ? "needOffice"
+                            : "placeToRent"
+                        )}
+                      </Typography>
+                    </Button>
+                  </Column>
+                </Hidden>
+                <Column paddingLeftDouble>
+                  <Button variant="icon">
+                    <Icon fontSize="small">mail_outline</Icon>
+                  </Button>
+                </Column>
+                <Column paddingLeft>
+                  <Button variant="icon">
+                    <Icon fontSize="small">notifications</Icon>
+                  </Button>
+                </Column>
+                <Column paddingLeft>
+                  <Button
+                    variant="icon"
+                    aria-describedby="accountinfo-popover"
+                    onClick={this.handleOpenAccountInfo}
+                  >
+                    <Hidden smDown>
+                      <Typography paddingRight>
+                        <Icon fontSize="small">keyboard_arrow_down</Icon>
+                      </Typography>
+                    </Hidden>
+                    <Icon fontSize="small">person</Icon>
+                  </Button>
+                  <Popover
+                    id="accountinfo-popover"
+                    open={Boolean(accountInfoEl)}
+                    anchorEl={accountInfoEl}
+                    onClose={this.handleCloseAccountInfo}
+                    anchorOrigin={{
+                      vertical: "bottom",
+                      horizontal: "right"
+                    }}
+                    transformOrigin={{
+                      vertical: "top",
+                      horizontal: "right"
+                    }}
+                    className={classes.accountInfoWrapper}
+                  >
+                    <AccountInfo
+                      user={user}
+                      navigate={this.navigate}
+                      classes={classes}
+                      t={t}
+                    />
+                    {/* <Typography>The content of the Popover.</Typography> */}
+                  </Popover>
+                </Column>
+              </Row>
             ) : (
               <Row>
                 <Hidden smDown>
@@ -453,7 +631,9 @@ class Appwrapper extends Component {
                         this.props.history.push("/auth/register/landlord")
                       }
                     >
-                      <Typography fontSizeS fontWeightBold>{t("placeToRent")}</Typography>
+                      <Typography fontSizeS fontWeightBold>
+                        {t("placeToRent")}
+                      </Typography>
                     </Button>
                   </Column>
                 </Hidden>
