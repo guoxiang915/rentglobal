@@ -16,22 +16,35 @@ const styleSheet = theme => {
       fontSize: "14px",
       fontWeight: "normal",
       color: "#A3A3A3",
-      "&::before, &::after": {
+    },
+
+    left: {
+      "&::before": {
         content: "''",
         display: "block",
         width: "50%",
         height: "1.1px",
-        background: "#A3A3A3",
+        background: theme.colors.primary.borderGrey,
         position: "absolute",
         top: "50%",
         left: "0",
-        //   boxSizing: "border-box",
         marginRight: "-14px",
         marginLeft: "-14px"
-      },
-      "&::before": {},
+      }
+    },
+
+    right: {
       "&::after": {
+        content: "''",
+        display: "block",
+        width: "50%",
+        height: "1.1px",
+        background: theme.colors.primary.borderGrey,
+        position: "absolute",
+        top: "50%",
         left: "auto",
+        marginRight: "-14px",
+        marginLeft: "-14px",
         right: "0"
       }
     },
@@ -81,7 +94,9 @@ export default withStyles(styleSheet, { name: "HorizontalDivider" })(
             [classes.single]: props.single,
             [classes.double]: props.double,
             [classes.light]: props.light,
-            [classes.dark]: props.dark
+            [classes.dark]: props.dark,
+            [classes.left]: (props.left || !props.right),
+            [classes.right]: (props.right || !props.left),
           })}
         >
           {props.text}
