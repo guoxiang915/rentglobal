@@ -4,6 +4,7 @@ import { withTranslation } from "react-i18next";
 import { Switch, Route, Redirect } from "react-router-dom";
 import AppSidebar from "../../containers/Layout/AppSidebar";
 import { Row, Column } from "../../common/base-components";
+import Profile from "./Profile";
 
 const styleSheet = theme => ({
   root: {
@@ -22,7 +23,7 @@ class Landlord extends Component {
     return (
       <div>
         <Column fullWidth>
-          <Row classes={{ box: classes.root }} fullWidth>
+          <Row classes={{ box: classes.root }} fullWidth alignChildrenStart>
             <Column classes={{ box: classes.sidebarWrapper }} fullWdith>
               <AppSidebar role="landlord" />
             </Column>
@@ -34,11 +35,9 @@ class Landlord extends Component {
                 />
                 <Route
                   path="/landlord/profile"
-                  render={props => <>Profile</>}
+                  render={props => <Profile user={user} />}
                 />
-                <Route
-                  render={() => <Redirect to="/landlord/dashboard" />}
-                />
+                <Route render={() => <Redirect to="/landlord/dashboard" />} />
               </Switch>
             </Column>
           </Row>

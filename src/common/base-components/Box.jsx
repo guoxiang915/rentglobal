@@ -194,9 +194,6 @@ const styleSheet = theme => {
     paddingTopDouble: {
       paddingTop: 2 * padding
     },
-    paddingTopThree: {
-      paddingTop: 3 * padding
-    },
     paddingTop: {
       paddingTop: padding
     },
@@ -395,6 +392,7 @@ export const Box = withStyles(styleSheet, { name: "Box" })(
             [classes.container]: props.row || props.column,
             ...propsClasses
           })}
+          {...props}
         >
           {children}
         </div>

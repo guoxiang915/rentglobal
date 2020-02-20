@@ -24,7 +24,7 @@ const authReducer = (currentState = INITIAL_STATE, action) => {
         isLoading: false,
         isLoggedIn: true,
         error: null,
-        user: { ...action.resp, active: true }
+        user: action.resp
         // successMsg: action.resp.msg
       };
 
@@ -40,9 +40,10 @@ const authReducer = (currentState = INITIAL_STATE, action) => {
       return {
         ...currentState,
         isLoading: false,
-        error: action.resp.msg,
+        // error: action.resp.msg,
+        error: null,
         isLoggedIn: true,
-        user: null
+        user: action.resp
       };
 
     case "REQUEST_AUTHENTICATION":
@@ -127,7 +128,7 @@ const authReducer = (currentState = INITIAL_STATE, action) => {
         isLoading: false,
         isLoggedIn: false,
         user: null,
-        error: action.resp.msg,
+        error: action.resp.msg
         // loaded: true
       };
 
@@ -137,7 +138,7 @@ const authReducer = (currentState = INITIAL_STATE, action) => {
         ...currentState,
         isLoading: false,
         isLoggedIn: true,
-        error: null,
+        error: null
         // loaded: true
       };
 

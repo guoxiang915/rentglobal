@@ -86,9 +86,9 @@ class PrivateRoute extends React.Component {
 
   authenticate = async () => {
     let token = await authObj.getToken();
-    if (token) {
-      await this.props.mappedAuthenticate(token, this.props.history);
-    }
+    // if (token) {
+    await this.props.mappedAuthenticate(token, this.props.history);
+    // }
   };
 
   render() {
@@ -132,7 +132,7 @@ class PrivateRoute extends React.Component {
                               <div className={classes.loginWrapper}>
                                 <Column classes={{ box: classes.loginCard }}>
                                   <SendVerificationForm
-                                    email={this.state.email}
+                                    email={user.email}
                                     {...props}
                                   />
                                 </Column>

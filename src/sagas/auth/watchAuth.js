@@ -30,7 +30,10 @@ function* authenticate(action) {
       });
     }
   } catch (error) {
-    console.log(error);
+    yield put({
+      type: "AUTH_FAILED",
+      resp: { msg: error }
+    });
   }
   yield call(flushMessage);
 }

@@ -138,7 +138,7 @@ class LoginForm extends Component {
         <Box paddingTop>
           <TextField
             id="email"
-            placeholder="Email"
+            placeholder={t("email")}
             value={this.state.email}
             onChange={this.handleChange("email")}
             variant="outlined"

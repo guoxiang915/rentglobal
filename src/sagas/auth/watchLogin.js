@@ -18,18 +18,41 @@ const sendRequest = async credentials => {
   }
 };
 
+const sendRequestForUser = async () => {
+  let resp = null;
+  try {
+    resp = await api.get(`${API}/users/me`);
+  } catch (error) {
+    console.log(error);
+    resp = error.response;
+  } finally {
+    return resp;
+  }
+};
+
 function* login(action) {
   try {
-    const response = yield call(sendRequest, action.payload);
+    let response = yield call(sendRequest, action.payload);
     if (response.status === 200) {
-      yield put({
-        type: "LOGIN_SUCCESS",
-        resp: response.data
-      });
       authObj.setToken(response.data.token);
 
-      console.log(response.data);
-      action.history.push("/landlord");
+      response = yield call(sendRequestForUser);
+      if (response.status === 200) {
+        yield put({
+          type: "LOGIN_SUCCESS",
+          resp: response.data
+        });
+        if (response.data.role === "landlord") {
+          action.history.push("/landlord");
+        } else {
+          action.history.push("/office");
+        }
+      } else {
+        yield put({
+          type: "LOGIN_FAILED",
+          resp: response.data
+        });
+      }
     } else if (response.status === 403) {
       yield put({
         type: "USER_NOT_ACTIVATED",

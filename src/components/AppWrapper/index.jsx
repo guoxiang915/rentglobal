@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import { withStyles } from "@material-ui/core/styles";
 import { withTranslation } from "react-i18next";
+import clsx from "clsx";
 import withMuiRoot from "../../withMuiRoot";
 import {
   SwipeableDrawer,
@@ -45,12 +46,19 @@ const styleSheet = theme => ({
   root: {
     flexGrow: 1,
     // marginTop: 70,
-    boxShadow: "0px 34px 34px #00000026",
     height: "100%",
     background: "rgba(255, 255, 255, .8)",
     backdropFilter: "blur(10px)",
+    boxShadow: "0px 10px 10px #0000000D",
     [theme.breakpoints.down("sm")]: {
-      boxShadow: "0px 14px 14px #00000026"
+      boxShadow: "0px 10px 10px #0000001A"
+    }
+  },
+
+  loggedIn: {
+    boxShadow: "0px 14px 14px #15151514",
+    [theme.breakpoints.down("sm")]: {
+      boxShadow: "0px 14px 14px #15151514"
     }
   },
 
@@ -409,7 +417,7 @@ class Appwrapper extends Component {
     const AccountInfo = this.renderAccountInfo;
 
     return (
-      <div className={classes.root}>
+      <div className={clsx(classes.root, isLoggedIn && classes.loggedIn)}>
         <Grid
           container
           direction="row"
