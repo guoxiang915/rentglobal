@@ -1,12 +1,11 @@
 import { takeLatest, put, call } from "redux-saga/effects";
-import { API } from "../../utils/constants";
 import api from "../../api/api";
 import flushMessage from "../flushMessages";
 
 const sendRequest = async credentials => {
   let resp = null;
   try {
-    resp = await api.post(`${API}/auth/register`, credentials);
+    resp = await api.post(`/auth/register`, credentials);
   } catch (error) {
     resp = error.response;
   } finally {

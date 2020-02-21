@@ -379,7 +379,7 @@ export const Box = withStyles(styleSheet, { name: "Box" })(
     };
 
     render() {
-      let { children, classes, ...props } = this.props;
+      let { children, classes, onClick, ...props } = this.props;
       let propsClasses = {};
       Object.entries(props).forEach(
         ([key, value]) => (propsClasses[classes[key]] = value)
@@ -392,7 +392,7 @@ export const Box = withStyles(styleSheet, { name: "Box" })(
             [classes.container]: props.row || props.column,
             ...propsClasses
           })}
-          {...props}
+          onClick={onClick}
         >
           {children}
         </div>

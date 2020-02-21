@@ -1,17 +1,15 @@
 import axios from "axios";
-import { API } from "../utils/constants";
 import Auth from "../utils/auth";
 
 const axiosApi = axios.create({
-  baseURL: API
+  baseURL: `http://${process.env.REACT_APP_API_URL}`
 });
 
 axiosApi.interceptors.request.use(
   config => {
-    config.headers['Access-Control-Allow-Origin'] = '*';
-    
+    config.headers["Access-Control-Allow-Origin"] = "*";
+
     const token = new Auth().getToken();
-    console.log(token);
     if (token) {
       config.headers["Authorization"] = `Bearer ${token}`;
     }

@@ -13,7 +13,10 @@ import i18n from "./i18n";
 import "./assets/font/AvenirNextLTPro/AvenirNextLTPro-Regular.otf";
 import "./common/styles/global.css";
 
+// Configure store
 const store = configureStore();
+
+// Configure browser history
 const history = createBrowserHistory();
 
 class App extends Component {

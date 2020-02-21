@@ -1,13 +1,23 @@
 import React, { useState } from "react";
 import { withStyles, Card } from "@material-ui/core";
 import { withTranslation } from "react-i18next";
-import { Typography, Button, Link, Row, Column, Box } from "../base-components";
+import {
+  Typography,
+  Button,
+  Link,
+  Row,
+  Column,
+  Box,
+  Stretch
+} from "../base-components";
 import {
   ArrowLeft,
   ArrowRight,
   CloudUploadOutlined,
   CheckCircle,
-  DeleteOutline
+  DeleteOutline,
+  KeyboardArrowLeft,
+  KeyboardArrowRight
 } from "@material-ui/icons";
 
 const styleSheet = theme => ({
@@ -24,17 +34,6 @@ const styleSheet = theme => ({
 
   documents: {
     color: theme.colors.primary.lightGrey
-  },
-
-  deleteButton: {
-    border: `1px solid ${theme.colors.primary.lightGrey}`,
-    color: theme.colors.primary.lightGrey,
-    background: "none",
-    "&:hover": {
-      border: "none",
-      color: theme.colors.primary.white,
-      background: theme.colors.primary.errorRed
-    }
   }
 });
 
@@ -49,7 +48,7 @@ const UploadDocument = ({
   ...props
 }) => {
   const [current, setCurrent] = useState(0);
-  
+
   return (
     <Card variant="outlined" className={classes.root}>
       <Column fullWidth padding>
@@ -58,47 +57,77 @@ const UploadDocument = ({
           fontSizeS
           textSecondary
           fullWidth
+          justifyChildrenCenter
         >
           {title}
         </Typography>
         {documents && documents.length ? (
           <>
-            <Row paddingTopHalf classes={{ box: classes.documents }} fontSizeXS>
-              {current > 0 && (
-                <Link to="" onClick={() => setCurrent(current - 1)}>
-                  <ArrowLeft />
-                </Link>
-              )}
+            <Row
+              paddingTopHalf
+              classes={{ box: classes.documents }}
+              fontSizeXS
+              fullWidth
+            >
+              <Box>
+                {current > 0 && (
+                  <Link
+                    to="#"
+                    variant="secondaryLight"
+                    onClick={() => setCurrent(current - 1)}
+                  >
+                    <KeyboardArrowLeft />
+                  </Link>
+                )}
+              </Box>
+              <Stretch />
               <Typography paddingLeftHalf paddingRightHalf>
                 {documents[current].name}
               </Typography>
-              {current < documents.length - 1 && (
-                <Link to="" onClick={() => setCurrent(current + 1)}>
-                  <ArrowRight />
-                </Link>
-              )}
+              <Stretch />
+              <Box>
+                {current < documents.length - 1 && (
+                  <Link
+                    to="#"
+                    variant="secondaryLight"
+                    onClick={() => setCurrent(current + 1)}
+                  >
+                    <KeyboardArrowRight />
+                  </Link>
+                )}
+              </Box>
             </Row>
             {approved ? (
               <CheckCircle color="primary" />
             ) : (
               <Button
                 variant="icon"
-                className={classes.deleteButton}
+                link="secondaryLight"
+                background="errorRedLight"
+                outline="transparent"
+                inverse
                 onClick={() => onDelete(current)}
               >
-                <DeleteOutline />
+                <Typography fontSizeXS>
+                  <DeleteOutline />
+                </Typography>
               </Button>
             )}
           </>
         ) : (
-          <Link onClick={onUpload}>
-            <Typography paddingTop textLightGrey>
-              <CloudUploadOutlined />
-            </Typography>
-            <Typography paddingTop textLightGrey fontSizeXS>
-              {t("upload")}
-            </Typography>
-          </Link>
+          <Button
+            link="secondaryLight"
+            background="transparent"
+            outline="transparent"
+            onClick={onUpload}
+          >
+            <Column fontSizeXS fontWeightMedium>
+              <Typography paddingTopHalf>
+                <CloudUploadOutlined />
+              </Typography>
+              <Typography>{t("upload")}</Typography>
+            </Column>
+          </Button>
         )}
       </Column>
     </Card>

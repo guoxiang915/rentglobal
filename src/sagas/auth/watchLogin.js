@@ -1,5 +1,4 @@
 import { takeLatest, put, call } from "redux-saga/effects";
-import { API } from "../../utils/constants";
 import api from "../../api/api";
 import Auth from "../../utils/auth";
 import flushMessage from "../flushMessages";
@@ -9,7 +8,7 @@ const authObj = new Auth();
 const sendRequest = async credentials => {
   let resp = null;
   try {
-    resp = await api.post(`${API}/auth/login`, credentials);
+    resp = await api.post(`/auth/login`, credentials);
   } catch (error) {
     console.log(error);
     resp = error.response;
@@ -21,7 +20,7 @@ const sendRequest = async credentials => {
 const sendRequestForUser = async () => {
   let resp = null;
   try {
-    resp = await api.get(`${API}/users/me`);
+    resp = await api.get(`/users/me`);
   } catch (error) {
     console.log(error);
     resp = error.response;

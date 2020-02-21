@@ -1,70 +1,88 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
-import { Button as MUIButton, withStyles } from "@material-ui/core";
+import { Button as MUIButton, withStyles, withTheme } from "@material-ui/core";
 import clsx from "clsx";
 
-const styleSheet = theme => ({
-  root: {
-    background: `${theme.colors.primary.mainColor}`,
-    padding: "7px 27px",
-    textTransform: "none",
-    color: "white",
-    "&:hover": {
-      color: "white",
-      background: `${theme.colors.primary.darkColor}`
-    },
-    ...theme.fonts.size.fontSizeS,
-    ...theme.fonts.weight.fontWeightBold
-  },
-
-  rounded: {
-    borderRadius: 99999
-  },
-
-  secondary: {
-    border: `1px solid ${theme.colors.primary.mainColor}`,
-    background: "white",
-    color: theme.colors.primary.darkGrey,
-    "&:hover": {
+const styleSheet = theme => {
+  const styles = {
+    root: {
       background: `${theme.colors.primary.mainColor}`,
-      color: `white !important`,
-      "& *": {
-        color: `white !important`
-      }
-    }
-  },
-
-  icon: {
-    padding: 7,
-    background: "none",
-    minWidth: 0,
-    color: theme.colors.primary.grey,
-    border: `1px solid ${theme.colors.primary.borderGrey}`,
-    "&:hover": {
-      color: theme.colors.primary.mainColor,
-      border: `1px solid ${theme.colors.primary.mainColor}`,
-      background: "none"
+      padding: "7px 27px",
+      textTransform: "none",
+      color: "white",
+      "&:hover": {
+        color: "white",
+        background: `${theme.colors.primary.darkColor}`
+      },
+      ...theme.fonts.size.fontSizeS,
+      ...theme.fonts.weight.fontWeightBold
     },
-    ...theme.fonts.weight.fontWeightMedium
-  },
 
-  transparent: {
-    border: "none",
-    background: "none",
-    color: `${theme.colors.primary.grey}`,
-    "&:hover": {
+    rounded: {
+      borderRadius: 99999
+    },
+
+    secondary: {
+      border: `1px solid ${theme.colors.primary.mainColor}`,
+      background: "white",
+      color: theme.colors.primary.darkGrey,
+      "&:hover": {
+        background: `${theme.colors.primary.mainColor}`,
+        color: `white !important`,
+        "& *": {
+          color: `white !important`
+        }
+      }
+    },
+
+    icon: {
+      padding: 7,
+      background: "none",
+      minWidth: 0,
+      color: theme.colors.primary.grey,
+      border: `1px solid ${theme.colors.primary.borderGrey}`,
+      "&:hover": {
+        color: theme.colors.primary.mainColor,
+        border: `1px solid ${theme.colors.primary.mainColor}`,
+        background: "none"
+      },
+      ...theme.fonts.weight.fontWeightMedium
+    },
+
+    transparent: {
       border: "none",
       background: "none",
-      color: `${theme.colors.primary.darkGrey}`
+      color: `${theme.colors.primary.grey}`,
+      "&:hover": {
+        border: "none",
+        background: "none",
+        color: `${theme.colors.primary.darkGrey}`
+      }
     }
-  }
-});
+  };
+
+  Object.entries(theme.links).forEach(
+    ([key, val]) => (styles[`link${key}`] = val)
+  );
+  Object.entries(theme.linksBackground).forEach(
+    ([key, val]) => (styles[`bk${key}`] = val)
+  );
+  Object.entries(theme.linksOutline).forEach(
+    ([key, val]) => (styles[`bd${key}`] = val)
+  );
+
+  return styles;
+};
 
 class Button extends Component {
   static propTypes = {
     classes: PropTypes.object.isRequired,
     rounded: PropTypes.bool,
+    theme: PropTypes.object,
     variant: PropTypes.string,
+    link: PropTypes.string,
+    background: PropTypes.string,
+    outline: PropTypes.string,
     transparent: PropTypes.bool,
     styles: PropTypes.object
   };
@@ -72,9 +90,14 @@ class Button extends Component {
   render() {
     const {
       classes,
+      theme,
       children,
       rounded,
       variant,
+      link,
+      background,
+      outline,
+      inverse,
       transparent,
       styles,
       ...props
@@ -87,6 +110,10 @@ class Button extends Component {
             classes.root,
             rounded !== false && classes.rounded,
             variant && classes[variant],
+            link && classes[`link${link}`],
+            link && inverse && classes['linkinverse'],
+            background && classes[`bk${background}`],
+            outline && classes[`bd${outline}`],
             transparent && classes.transparent,
             styles
           )
@@ -99,4 +126,4 @@ class Button extends Component {
   }
 }
 
-export default withStyles(styleSheet, { name: "Button" })(Button);
+export default withStyles(styleSheet, { name: "Button" })(withTheme(Button));

@@ -24,7 +24,8 @@ import {
   LocationOnOutlined,
   BookOutlined,
   EditOutlined,
-  ImageOutlined
+  ImageOutlined,
+  CloseOutlined
 } from "@material-ui/icons";
 
 const styleSheet = theme => ({
@@ -39,10 +40,6 @@ const styleSheet = theme => ({
 
   fullWidth: {
     width: "100%"
-  },
-
-  collapseWrapper: {
-    paddingTop: theme.spacing(1)
   },
 
   profileTabWrapper: {
@@ -83,7 +80,7 @@ const styleSheet = theme => ({
     display: "flex",
     justifyContent: "center",
     alignItems: "center"
-  },
+  }
 });
 
 class Profile extends Component {
@@ -99,12 +96,23 @@ class Profile extends Component {
     lease: [],
     password: "",
     confirmPassword: "",
+
     isEditLandlordInfo: false,
-    isEditSecurityInfo: false
+    isEditSecurityInfo: false,
+    isEditPaymentsInfo: false,
+    isEditPrivacyInfo: false
   };
 
-  renderProfileTab = ({ children, classes, t, title }) => {
-    const [expanded, setExpanded] = useState(false);
+  renderProfileTab = ({
+    children,
+    classes,
+    isEdit,
+    onToggleEdit,
+    open,
+    t,
+    title
+  }) => {
+    const [expanded, setExpanded] = useState(!!open);
 
     return (
       <Column fullWidth alignChildrenStart>
@@ -118,23 +126,50 @@ class Profile extends Component {
             </Icon>
           </Box>
           <Stretch />
-          <Button variant="primary">
-            <EditOutlined />
-            <Typography paddingLeft>{t("edit")}</Typography>
-          </Button>
+          {isEdit ? (
+            <Button
+              link="errorRedLight"
+              background="secondaryLight"
+              onClick={onToggleEdit}
+            >
+              <CloseOutlined />
+              <Typography paddingLeft fontSizeS>
+                {t("cancel")}
+              </Typography>
+            </Button>
+          ) : (
+            <Button
+              link="primary"
+              background="normalLight"
+              inverse
+              onClick={onToggleEdit}
+            >
+              <EditOutlined />
+              <Typography paddingLeft fontSizeS>
+                {t("edit")}
+              </Typography>
+            </Button>
+          )}
         </Row>
-        <Collapse
-          in={expanded}
-          className={clsx(classes.fullWidth, classes.collapseWrapper)}
-        >
-          {children}
+        <Collapse in={expanded} className={classes.fullWidth}>
+          <Column paddingTopHalf alignChildrenStart>
+            {children}
+          </Column>
         </Collapse>
       </Column>
     );
   };
 
-  handleStateChange = field => event => {
-    this.setState({ [field]: event.target.value });
+  handleStateChange = field => value => {
+    this.setState({ [field]: value });
+  };
+
+  handleStateChangeByInput = field => event => {
+    this.handleStateChangeByInput(field, event.target.value);
+  };
+
+  handleStateChangeByEvent = field => value => () => {
+    this.handleStateChange(field, value);
   };
 
   render() {
@@ -149,11 +184,25 @@ class Profile extends Component {
         paddingTopDouble
         paddingBottomDouble
       >
+        {/* title */}
         <Typography fontSizeM textSecondary paddingBottom>
           {t("profileAndAccount")}
         </Typography>
+
+        {/* landlord info tab */}
         <Row fullWidth classes={{ box: classes.profileTabWrapper }}>
-          <ProfileTab classes={classes} t={t} title={t("landlordInfo")}>
+          <ProfileTab
+            classes={classes}
+            t={t}
+            title={t("landlordInfo")}
+            open={true}
+            isEdit={this.state.isEditLandlordInfo}
+            onToggleEdit={() =>
+              this.handleStateChange("isEditLandlordInfo")(
+                !this.state.isEditLandlordInfo
+              )
+            }
+          >
             <Row fullWidth>
               <Grid container direction="row-reverse">
                 <Grid item xs={12} sm={6}>
@@ -174,7 +223,7 @@ class Profile extends Component {
                     <TextField
                       variant="outlined"
                       placeholder={t("landlordName")}
-                      onChange={this.handleStateChange("landlordName")}
+                      onChange={this.handleStateChangeByInput("landlordName")}
                       value={this.state.landlordName}
                       className={classes.profileInput}
                       startAdornment={<PersonOutline color="secondary" />}
@@ -184,7 +233,7 @@ class Profile extends Component {
                     <TextField
                       variant="outlined"
                       placeholder={t("emailAddress")}
-                      onChange={this.handleStateChange("emailAddress")}
+                      onChange={this.handleStateChangeByInput("emailAddress")}
                       value={this.state.emailAddress}
                       className={classes.profileInput}
                       startAdornment={<MailOutline color="secondary" />}
@@ -194,7 +243,7 @@ class Profile extends Component {
                     <TextField
                       variant="outlined"
                       placeholder={t("phoneNumber")}
-                      onChange={this.handleStateChange("phoneNumber")}
+                      onChange={this.handleStateChangeByInput("phoneNumber")}
                       value={this.state.phoneNumber}
                       className={classes.profileInput}
                       startAdornment={<PhoneOutlined color="secondary" />}
@@ -204,7 +253,7 @@ class Profile extends Component {
                     <TextField
                       variant="outlined"
                       placeholder={t("currentAddress")}
-                      onChange={this.handleStateChange("currentAddress")}
+                      onChange={this.handleStateChangeByInput("currentAddress")}
                       value={this.state.currentAddress}
                       className={classes.profileInput}
                       startAdornment={<BookOutlined color="secondary" />}
@@ -214,7 +263,7 @@ class Profile extends Component {
                     <TextField
                       variant="outlined"
                       placeholder={t("postalCode")}
-                      onChange={this.handleStateChange("postalCode")}
+                      onChange={this.handleStateChangeByInput("postalCode")}
                       value={this.state.postalCode}
                       className={classes.profileInput}
                       startAdornment={<LocationOnOutlined color="secondary" />}
@@ -261,6 +310,51 @@ class Profile extends Component {
               </Box>
             </Row>
           </ProfileTab>
+        </Row>
+
+        {/* login and security tab */}
+        <Row fullWidth classes={{ box: classes.profileTabWrapper }}>
+          <ProfileTab
+            classes={classes}
+            t={t}
+            title={t("loginAndSecurity")}
+            isEdit={this.state.isEditSecurityInfo}
+            onToggleEdit={() =>
+              this.handleStateChange("isEditSecurityInfo")(
+                !this.state.isEditSecurityInfo
+              )
+            }
+          ></ProfileTab>
+        </Row>
+
+        {/* payments and payouts tab */}
+        <Row fullWidth classes={{ box: classes.profileTabWrapper }}>
+          <ProfileTab
+            classes={classes}
+            t={t}
+            title={t("paymentsAndPayouts")}
+            isEdit={this.state.isEditPaymentsInfo}
+            onToggleEdit={() =>
+              this.handleStateChange("isEditPaymentsInfo")(
+                !this.state.isEditPaymentsInfo
+              )
+            }
+          ></ProfileTab>
+        </Row>
+
+        {/* privacy & sharing tab */}
+        <Row fullWidth classes={{ box: classes.profileTabWrapper }}>
+          <ProfileTab
+            classes={classes}
+            t={t}
+            title={t("privacyAndSharing")}
+            isEdit={this.state.isEditPrivacyInfo}
+            onToggleEdit={() =>
+              this.handleStateChange("isEditSecurityInfo")(
+                !this.state.isEditSecurityInfo
+              )
+            }
+          ></ProfileTab>
         </Row>
       </Column>
     );

@@ -38,8 +38,6 @@ class Link extends Component {
         className={clsx(
           classes.root,
           variant && classes[variant],
-          // variant === "primary" && classes.primary,
-          // variant === "secondary" && classes.secondary,
           styles
         )}
         underline={underline ? underline : "none"}

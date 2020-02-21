@@ -102,6 +102,12 @@ const links = {
       color: colors.primary.mainColor
     }
   },
+  normalXLight: {
+    color: colors.primary.lightGrey,
+    "&:hover": {
+      color: colors.primary.mainColor
+    }
+  },
   primary: {
     color: colors.primary.mainColor,
     "&:hover": {
@@ -120,6 +126,18 @@ const links = {
       color: colors.primary.grey
     }
   },
+  errorRed: {
+    color: colors.primary.grey,
+    "&:hover": {
+      color: colors.primary.errorRed
+    }
+  },
+  errorRedLight: {
+    color: colors.primary.lightGrey,
+    "&:hover": {
+      color: colors.primary.errorRed
+    }
+  },
   inverse: {
     "&:hover": {
       color: colors.primary.white
@@ -128,7 +146,122 @@ const links = {
 };
 
 // link background styles
-const linksBackground = {};
+const linksBackground = {
+  transparent: {
+    background: 'none',
+    '&:hover': {
+      background: 'none'
+    }
+  },
+  normal: {
+    background: colors.primary.grey,
+    "&:hover": {
+      background: colors.primary.mainColor
+    }
+  },
+  normalLight: {
+    background: colors.primary.white,
+    "&:hover": {
+      background: colors.primary.mainColor
+    }
+  },
+  primary: {
+    background: colors.primary.mainColor,
+    "&:hover": {
+      background: colors.primary.darkColor
+    }
+  },
+  secondary: {
+    background: colors.primary.white,
+    "&:hover": {
+      background: colors.primary.grey
+    }
+  },
+  secondaryLight: {
+    background: colors.primary.white,
+    "&:hover": {
+      background: colors.primary.lightGrey
+    }
+  },
+  errorRed: {
+    background: colors.primary.lightGrey,
+    "&:hover": {
+      background: colors.primary.errorRed
+    }
+  },
+  errorRedLight: {
+    background: colors.primary.white,
+    "&:hover": {
+      background: colors.primary.errorRed
+    }
+  },
+};
+
+// link outline styles
+const linksOutline = {
+  transparent: {
+    border: 'none',
+    '&:hover': {
+      border: 'none'
+    }
+  },
+  normal: {
+    borderWidth: 1,
+    borderStyle: 'solid',
+    borderColor: colors.primary.darkGrey,
+    "&:hover": {
+      borderColor: colors.primary.mainColor
+    }
+  },
+  normalLight: {
+    borderWidth: 1,
+    borderStyle: 'solid',
+    borderColor: colors.primary.grey,
+    "&:hover": {
+      borderColor: colors.primary.mainColor
+    }
+  },
+  primary: {
+    borderWidth: 1,
+    borderStyle: 'solid',
+    borderColor: colors.primary.mainColor,
+    "&:hover": {
+      borderColor: colors.primary.darkColor
+    }
+  },
+  secondary: {
+    borderWidth: 1,
+    borderStyle: 'solid',
+    borderColor: colors.primary.grey,
+    "&:hover": {
+      borderColor: colors.primary.darkGrey
+    }
+  },
+  secondaryLight: {
+    borderWidth: 1,
+    borderStyle: 'solid',
+    borderColor: colors.primary.lightGrey,
+    "&:hover": {
+      borderColor: colors.primary.grey
+    }
+  },
+  errorRed: {
+    borderWidth: 1,
+    borderStyle: 'solid',
+    borderColor: colors.primary.grey,
+    "&:hover": {
+      borderColor: colors.primary.errorRed
+    }
+  },
+  errorRedLight: {
+    borderWidth: 1,
+    borderStyle: 'solid',
+    borderColor: colors.primary.lightGrey,
+    "&:hover": {
+      borderColor: colors.primary.errorRed
+    }
+  },
+}
 
 // theme typography variants
 const typography = {
@@ -195,7 +328,9 @@ const theme = {
   palette,
   typography,
   fonts,
-  links
+  links,
+  linksBackground,
+  linksOutline
 };
 
 export default createMuiTheme(theme);

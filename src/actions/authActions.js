@@ -1,4 +1,3 @@
-import { API } from "../utils/constants";
 import api from "../api/api";
 import Auth from "../utils/auth";
 
@@ -58,7 +57,7 @@ export const verifyEmailResponse = response => {
 
 export const verifyEmail = (payload, history, dispatch) => {
   api
-    .get(`${API}/auth/activate/${payload.token}`)
+    .get(`/auth/activate/${payload.token}`)
     .then(response => {
       authObj.setToken(response.token);
       history.push("/");
@@ -81,7 +80,7 @@ export const forgotPasswordResponse = response => {
 
 export const forgotPassword = (payload, history, dispatch) => {
   api
-    .post(`${API}/auth/forgot-password`, payload)
+    .post(`/auth/forgot-password`, payload)
     .then(response => {
       history.push("/auth/reset-password/confirm", payload);
       dispatch(forgotPasswordResponse(response));
@@ -103,7 +102,7 @@ export const resetPasswordResponse = response => {
 
 export const resetPassword = (payload, history, dispatch) => {
   api
-    .post(`${API}/auth/reset-password/${payload.token}`, payload)
+    .post(`/auth/reset-password/${payload.token}`, payload)
     .then(response => {
       history.push("/auth/login");
       dispatch(resetPasswordResponse(response));
