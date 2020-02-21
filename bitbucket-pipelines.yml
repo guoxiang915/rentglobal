@@ -12,4 +12,20 @@ pipelines:
           - node
         script: # Modify the commands below to build your repository.
           - npm install
+          - npm build
           - npm test
+    - step:
+        name: Create artifact
+        script:
+          - tar czfv $ZIP_FILE -C build .
+        artifacts:
+          - application.tgz
+    - step:
+        name: Deploy to production
+        deployment: production
+        script:
+          - pipe: atlassian/heroku-deploy:0.1.1
+            variables:
+              HEROKU_API_KEY: $HEROKU_API_KEY
+              HEROKU_APP_NAME: $HEROKU_APP_NAME
+              ZIP_FILE: $ZIP_FILE
