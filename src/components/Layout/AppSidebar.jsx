@@ -88,7 +88,7 @@ class AppSidebar extends Component {
   };
 
   render() {
-    const { classes, t } = this.props;
+    const { classes } = this.props;
     const { isLoggedIn } = this.props.auth;
     const { role } = this.props;
 

@@ -1,9 +1,6 @@
 import React, { Component, useState } from "react";
 import { withStyles } from "@material-ui/core/styles";
 import { withTranslation } from "react-i18next";
-import clsx from "clsx";
-import { Switch, Route, Redirect } from "react-router-dom";
-import AppSidebar from "../../containers/Layout/AppSidebar";
 import {
   Box,
   Row,
@@ -11,9 +8,8 @@ import {
   Stretch,
   Typography,
   Button,
-  Link,
   TextField,
-  HorizontalDivider
+  // HorizontalDivider
 } from "../../common/base-components";
 import { UploadDocument } from "../../common/base-layouts";
 import { Icon, Collapse, Grid, Card, CardMedia } from "@material-ui/core";
@@ -26,7 +22,8 @@ import {
   EditOutlined,
   ImageOutlined,
   CloseOutlined,
-  CheckOutlined
+  CheckOutlined,
+  LockOutlined
 } from "@material-ui/icons";
 
 const styleSheet = theme => ({
@@ -44,7 +41,7 @@ const styleSheet = theme => ({
   },
 
   profileTabWrapper: {
-    paddingTop: theme.spacing(5)
+    paddingTop: theme.spacing(4)
   },
 
   tabExpandIcon: {},
@@ -69,6 +66,10 @@ const styleSheet = theme => ({
       right: 0,
       background: theme.colors.primary.borderGrey
     }
+  },
+
+  landlordInfoForm: {
+    width: "100%"
   },
 
   imageWrapper: {
@@ -96,6 +97,7 @@ class Profile extends Component {
     checkSpecimen: [],
     lease: [],
     password: "",
+    passwordError: "",
     confirmPassword: "",
 
     isEditLandlordInfo: false,
@@ -173,7 +175,11 @@ class Profile extends Component {
     this.handleStateChange(field)(value);
   };
 
-  handleSubmitLandlordInfo = e => {
+  handleSaveLandlordInfo = e => {
+    console.log(e, this.state);
+  };
+
+  handleSaveSecurityInfo = e => {
     console.log(e, this.state);
   };
 
@@ -210,9 +216,10 @@ class Profile extends Component {
           >
             <Row fullWidth>
               <form
-                onSubmit={this.handleSubmitLandlordInfo}
+                // onSubmit={this.handleSaveLandlordInfo}
                 noValidate
                 autoComplete="off"
+                className={classes.landlordInfoForm}
               >
                 <Grid container direction="row-reverse">
                   <Grid item xs={12} sm={6}>
@@ -308,8 +315,12 @@ class Profile extends Component {
                             </Typography>
                           </Button>
                         </Box>
-                        <Box>
-                          <Button type="submit" variant="primary">
+                        <Box fullWidth>
+                          <Button
+                            variant="primary"
+                            fullWidth
+                            onClick={this.handleSaveLandlordInfo}
+                          >
                             <CheckOutlined />
                             <Typography paddingLeft fontSizeS>
                               {t("save")}
@@ -334,7 +345,7 @@ class Profile extends Component {
             <Typography fontSizeS textSecondary paddingTop>
               {t("provideDocumentsNeeded")}
             </Typography>
-            <Row fullWidth paddingTop>
+            <Row fullWidth paddingTop paddingBottom>
               <Box paddingRightHalf>
                 <UploadDocument
                   title={t("legalStatusDocument")}
@@ -374,7 +385,106 @@ class Profile extends Component {
                 !this.state.isEditSecurityInfo
               )
             }
-          ></ProfileTab>
+          >
+            <Row fullWidth>
+              <form
+                // onSubmit={this.handleSaveLandlordInfo}
+                noValidate
+                autoComplete="off"
+                className={classes.landlordInfoForm}
+              >
+                <Grid container direction="row">
+                  <Grid item xs={12} sm={6}>
+                    <Row paddingTop>
+                      <TextField
+                        type="password"
+                        variant="outlined"
+                        placeholder={t("password")}
+                        onChange={this.handleStateChangeByInput("password")}
+                        value={this.state.password}
+                        className={classes.profileInput}
+                        startAdornment={<LockOutlined color="secondary" />}
+                        readOnly={!this.state.isEditSecurityInfo}
+                        error={!!this.state.passwordError}
+                        helperText={this.state.passwordError}
+                      />
+                    </Row>
+                    <Row paddingTopHalf>
+                      <TextField
+                        type="password"
+                        variant="outlined"
+                        placeholder={t("confirmPassword")}
+                        onChange={this.handleStateChangeByInput(
+                          "confirmPassword"
+                        )}
+                        value={this.state.confirmPassword}
+                        className={classes.profileInput}
+                        startAdornment={<LockOutlined color="secondary" />}
+                        readOnly={!this.state.isEditSecurityInfo}
+                      />
+                    </Row>
+                    {this.state.isEditSecurityInfo && (
+                      // buttons for save
+                      <Row paddingTopHalf>
+                        <Box paddingRightDouble>
+                          <Button
+                            link="errorRed"
+                            background="secondaryLight"
+                            onClick={() =>
+                              this.handleStateChange("isEditSecurityInfo")(
+                                false
+                              )
+                            }
+                          >
+                            <CloseOutlined />
+                            <Typography paddingLeft fontSizeS>
+                              {t("cancel")}
+                            </Typography>
+                          </Button>
+                        </Box>
+                        <Box fullWidth>
+                          <Button
+                            variant="primary"
+                            fullWidth
+                            onClick={this.handleSaveSecurityInfo}
+                            disabled={
+                              !!this.state.passwordError ||
+                              this.state.password !== this.state.confirmPassword
+                            }
+                          >
+                            <CheckOutlined />
+                            <Typography paddingLeft fontSizeS>
+                              {t("save")}
+                            </Typography>
+                          </Button>
+                        </Box>
+                      </Row>
+                    )}
+                  </Grid>
+                </Grid>
+              </form>
+            </Row>
+            <Row classes={{ box: classes.panelWrapper }} fullWidth>
+              <Typography
+                fontSizeS
+                textMediumGrey
+                classes={{ box: classes.panelDivider }}
+              >
+                {t("landlordDocuments")}
+              </Typography>
+            </Row>
+            <Row fullWidth paddingTopDouble paddingBottom>
+              <Box paddingRightHalf>
+                <Button variant="primary">{t("securityQuestion")}</Button>
+              </Box>
+              <Box paddingRightHalf>
+                <Button variant="primary">{t("twoFactorLogin")}</Button>
+              </Box>
+              <Box paddingRightHalf>
+                <Button variant="primary">{t("activeSessions")}</Button>
+              </Box>
+            </Row>
+          </ProfileTab>
         </Row>
 
         {/* payments and payouts tab */}

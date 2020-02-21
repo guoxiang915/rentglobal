@@ -2,7 +2,6 @@ import { connect } from "react-redux";
 import AppSidebar from "../../components/Layout/AppSidebar";
 import * as authActions from "../../actions/authActions";
 import { withRouter } from "react-router-dom";
-import * as appActions from "../../actions/appActions";
 
 const mapStateToProps = state => {
   return {

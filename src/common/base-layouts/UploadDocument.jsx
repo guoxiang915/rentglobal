@@ -11,8 +11,6 @@ import {
   Stretch
 } from "../base-components";
 import {
-  ArrowLeft,
-  ArrowRight,
   CloudUploadOutlined,
   CheckCircle,
   DeleteOutline,

@@ -6,7 +6,7 @@ import AppSidebar from "../../containers/Layout/AppSidebar";
 import { Row, Column } from "../../common/base-components";
 import Profile from "./Profile";
 
-const styleSheet = theme => ({
+const styleSheet = () => ({
   root: {
     maxWidth: 1024 + 44
   },
@@ -17,8 +17,8 @@ const styleSheet = theme => ({
 
 class Landlord extends Component {
   render() {
-    const { classes, t } = this.props;
-    const { isLoggedIn, user } = this.props.auth;
+    const { classes } = this.props;
+    const { user } = this.props.auth;
 
     return (
       <div>
