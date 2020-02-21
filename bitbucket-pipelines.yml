@@ -14,13 +14,10 @@ pipelines:
         script: # Modify the commands below to build your repository.
           - npm install
           - npm build
+          - tar czfv application.tgz public/
           - npm test
-    - step:
-        name: Create artifact
-        script:
-          - tar czvf $ZIP_FILE public/
         artifacts:
-          - $ZIP_FILE
+          - application.tgz
     - step:
         name: Deploy to production
         deployment: production
@@ -29,4 +26,4 @@ pipelines:
             variables:
               HEROKU_API_KEY: $HEROKU_API_KEY
               HEROKU_APP_NAME: $HEROKU_APP_NAME
-              ZIP_FILE: $ZIP_FILE
+              ZIP_FILE: "application.tgz"
