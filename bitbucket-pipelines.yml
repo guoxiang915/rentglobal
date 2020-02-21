@@ -8,6 +8,7 @@ image: node:10.15.3
 pipelines:
   default:
     - step:
+        name: Build project
         caches:
           - node
         script: # Modify the commands below to build your repository.
@@ -17,7 +18,7 @@ pipelines:
     - step:
         name: Create artifact
         script:
-          - tar czfv $ZIP_FILE -C build .
+          - tar czfv $ZIP_FILE -C build public/
         artifacts:
           - application.tgz
     - step:
