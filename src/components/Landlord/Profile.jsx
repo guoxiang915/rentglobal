@@ -8,7 +8,7 @@ import {
   Stretch,
   Typography,
   Button,
-  TextField,
+  TextField
   // HorizontalDivider
 } from "../../common/base-components";
 import { UploadDocument } from "../../common/base-layouts";
@@ -186,6 +186,18 @@ class Profile extends Component {
   render() {
     const { user, classes, t } = this.props;
     const ProfileTab = this.renderProfileTab;
+
+    let passwordLastUpdated = new Date(user.passwordLastUpdated);
+    if (user.passwordLastUpdated) {
+      passwordLastUpdated =
+        passwordLastUpdated.getFullYear() +
+        "/" +
+        (passwordLastUpdated.getMonth() + 1) +
+        "/" +
+        passwordLastUpdated.getDate();
+    } else {
+      passwordLastUpdated = "-";
+    }
 
     return (
       <Column
@@ -423,43 +435,55 @@ class Profile extends Component {
                         readOnly={!this.state.isEditSecurityInfo}
                       />
                     </Row>
-                    {this.state.isEditSecurityInfo && (
-                      // buttons for save
-                      <Row paddingTopHalf>
-                        <Box paddingRightDouble>
-                          <Button
-                            link="errorRed"
-                            background="secondaryLight"
-                            onClick={() =>
-                              this.handleStateChange("isEditSecurityInfo")(
-                                false
-                              )
-                            }
-                          >
-                            <CloseOutlined />
-                            <Typography paddingLeft fontSizeS>
-                              {t("cancel")}
-                            </Typography>
-                          </Button>
-                        </Box>
-                        <Box fullWidth>
-                          <Button
-                            variant="primary"
-                            fullWidth
-                            onClick={this.handleSaveSecurityInfo}
-                            disabled={
-                              !!this.state.passwordError ||
-                              this.state.password !== this.state.confirmPassword
-                            }
-                          >
-                            <CheckOutlined />
-                            <Typography paddingLeft fontSizeS>
-                              {t("save")}
-                            </Typography>
-                          </Button>
-                        </Box>
-                      </Row>
-                    )}
+                    <Row paddingTop>
+                      {this.state.isEditSecurityInfo ? (
+                        // buttons for save
+                        <>
+                          <Box paddingRightDouble>
+                            <Button
+                              link="errorRed"
+                              background="secondaryLight"
+                              onClick={() =>
+                                this.handleStateChange("isEditSecurityInfo")(
+                                  false
+                                )
+                              }
+                            >
+                              <CloseOutlined />
+                              <Typography paddingLeft fontSizeS>
+                                {t("cancel")}
+                              </Typography>
+                            </Button>
+                          </Box>
+                          <Box fullWidth>
+                            <Button
+                              variant="primary"
+                              fullWidth
+                              onClick={this.handleSaveSecurityInfo}
+                              disabled={
+                                !!this.state.passwordError ||
+                                this.state.password !==
+                                  this.state.confirmPassword
+                              }
+                            >
+                              <CheckOutlined />
+                              <Typography paddingLeft fontSizeS>
+                                {t("save")}
+                              </Typography>
+                            </Button>
+                          </Box>
+                        </>
+                      ) : (
+                        <>
+                          <Typography fontSizeS textMediumGrey paddingRightHalf>
+                            {t("lastUpdate")}:
+                          </Typography>
+                          <Typography fontSizeS textSecondary>
+                            {passwordLastUpdated}
+                          </Typography>
+                        </>
+                      )}
+                    </Row>
                   </Grid>
                 </Grid>
               </form>
