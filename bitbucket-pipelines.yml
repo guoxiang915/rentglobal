@@ -18,9 +18,9 @@ pipelines:
     - step:
         name: Create artifact
         script:
-          - tar -czvf $ZIP_FILE -C build src/
+          - tar czvf $ZIP_FILE public/
         artifacts:
-          - application.tgz
+          - $ZIP_FILE
     - step:
         name: Deploy to production
         deployment: production
