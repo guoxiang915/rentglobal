@@ -8,16 +8,14 @@ image: node:10.15.3
 pipelines:
   default:
     - step:
+        name: Build project
         caches:
           - node
         script: # Modify the commands below to build your repository.
           - npm install
-          - npm build
+          - npm run build
+          - tar czfv application.tgz public/
           - npm test
-    - step:
-        name: Create artifact
-        script:
-          - tar czfv $ZIP_FILE -C build .
         artifacts:
           - application.tgz
     - step:
@@ -28,4 +26,4 @@ pipelines:
             variables:
               HEROKU_API_KEY: $HEROKU_API_KEY
               HEROKU_APP_NAME: $HEROKU_APP_NAME
-              ZIP_FILE: $ZIP_FILE
+              ZIP_FILE: "application.tgz"
