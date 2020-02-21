@@ -25,7 +25,8 @@ import {
   BookOutlined,
   EditOutlined,
   ImageOutlined,
-  CloseOutlined
+  CloseOutlined,
+  CheckOutlined
 } from "@material-ui/icons";
 
 const styleSheet = theme => ({
@@ -128,7 +129,7 @@ class Profile extends Component {
           <Stretch />
           {isEdit ? (
             <Button
-              link="errorRedLight"
+              link="errorRed"
               background="secondaryLight"
               onClick={onToggleEdit}
             >
@@ -165,11 +166,15 @@ class Profile extends Component {
   };
 
   handleStateChangeByInput = field => event => {
-    this.handleStateChangeByInput(field, event.target.value);
+    this.handleStateChange(field)(event.target.value);
   };
 
   handleStateChangeByEvent = field => value => () => {
-    this.handleStateChange(field, value);
+    this.handleStateChange(field)(value);
+  };
+
+  handleSubmitLandlordInfo = e => {
+    console.log(e, this.state);
   };
 
   render() {
@@ -204,73 +209,118 @@ class Profile extends Component {
             }
           >
             <Row fullWidth>
-              <Grid container direction="row-reverse">
-                <Grid item xs={12} sm={6}>
-                  <Column fullWidth paddingTop>
-                    <Row classes={{ box: classes.imageWrapper }}>
-                      <Card variant="outlined" className={classes.imageCard}>
-                        {user.profile_image ? (
-                          <CardMedia image={user.profile_image} title="" />
-                        ) : (
-                          <ImageOutlined color="secondary" fontSize="large" />
-                        )}
-                      </Card>
+              <form
+                onSubmit={this.handleSubmitLandlordInfo}
+                noValidate
+                autoComplete="off"
+              >
+                <Grid container direction="row-reverse">
+                  <Grid item xs={12} sm={6}>
+                    <Column fullWidth paddingTop>
+                      <Row classes={{ box: classes.imageWrapper }}>
+                        <Card variant="outlined" className={classes.imageCard}>
+                          {user.profile_image ? (
+                            <CardMedia image={user.profile_image} title="" />
+                          ) : (
+                            <ImageOutlined color="secondary" fontSize="large" />
+                          )}
+                        </Card>
+                      </Row>
+                    </Column>
+                  </Grid>
+                  <Grid item xs={12} sm={6}>
+                    <Row paddingTop>
+                      <TextField
+                        variant="outlined"
+                        placeholder={t("landlordName")}
+                        onChange={this.handleStateChangeByInput("landlordName")}
+                        value={this.state.landlordName}
+                        className={classes.profileInput}
+                        startAdornment={<PersonOutline color="secondary" />}
+                        readOnly={!this.state.isEditLandlordInfo}
+                      />
                     </Row>
-                  </Column>
+                    <Row paddingTopHalf>
+                      <TextField
+                        type="email"
+                        variant="outlined"
+                        placeholder={t("emailAddress")}
+                        onChange={this.handleStateChangeByInput("emailAddress")}
+                        value={this.state.emailAddress}
+                        className={classes.profileInput}
+                        startAdornment={<MailOutline color="secondary" />}
+                        readOnly={!this.state.isEditLandlordInfo}
+                      />
+                    </Row>
+                    <Row paddingTopHalf>
+                      <TextField
+                        variant="outlined"
+                        placeholder={t("phoneNumber")}
+                        onChange={this.handleStateChangeByInput("phoneNumber")}
+                        value={this.state.phoneNumber}
+                        className={classes.profileInput}
+                        startAdornment={<PhoneOutlined color="secondary" />}
+                        readOnly={!this.state.isEditLandlordInfo}
+                      />
+                    </Row>
+                    <Row paddingTopHalf>
+                      <TextField
+                        variant="outlined"
+                        placeholder={t("currentAddress")}
+                        onChange={this.handleStateChangeByInput(
+                          "currentAddress"
+                        )}
+                        value={this.state.currentAddress}
+                        className={classes.profileInput}
+                        startAdornment={<BookOutlined color="secondary" />}
+                        readOnly={!this.state.isEditLandlordInfo}
+                      />
+                    </Row>
+                    <Row paddingTopHalf>
+                      <TextField
+                        variant="outlined"
+                        placeholder={t("postalCode")}
+                        onChange={this.handleStateChangeByInput("postalCode")}
+                        value={this.state.postalCode}
+                        className={classes.profileInput}
+                        startAdornment={
+                          <LocationOnOutlined color="secondary" />
+                        }
+                        readOnly={!this.state.isEditLandlordInfo}
+                      />
+                    </Row>
+                    {this.state.isEditLandlordInfo && (
+                      // buttons for save
+                      <Row paddingTopHalf>
+                        <Box paddingRightDouble>
+                          <Button
+                            link="errorRed"
+                            background="secondaryLight"
+                            onClick={() =>
+                              this.handleStateChange("isEditLandlordInfo")(
+                                false
+                              )
+                            }
+                          >
+                            <CloseOutlined />
+                            <Typography paddingLeft fontSizeS>
+                              {t("cancel")}
+                            </Typography>
+                          </Button>
+                        </Box>
+                        <Box>
+                          <Button type="submit" variant="primary">
+                            <CheckOutlined />
+                            <Typography paddingLeft fontSizeS>
+                              {t("save")}
+                            </Typography>
+                          </Button>
+                        </Box>
+                      </Row>
+                    )}
+                  </Grid>
                 </Grid>
-                <Grid item xs={12} sm={6}>
-                  <Row paddingTop>
-                    <TextField
-                      variant="outlined"
-                      placeholder={t("landlordName")}
-                      onChange={this.handleStateChangeByInput("landlordName")}
-                      value={this.state.landlordName}
-                      className={classes.profileInput}
-                      startAdornment={<PersonOutline color="secondary" />}
-                    />
-                  </Row>
-                  <Row paddingTopHalf>
-                    <TextField
-                      variant="outlined"
-                      placeholder={t("emailAddress")}
-                      onChange={this.handleStateChangeByInput("emailAddress")}
-                      value={this.state.emailAddress}
-                      className={classes.profileInput}
-                      startAdornment={<MailOutline color="secondary" />}
-                    />
-                  </Row>
-                  <Row paddingTopHalf>
-                    <TextField
-                      variant="outlined"
-                      placeholder={t("phoneNumber")}
-                      onChange={this.handleStateChangeByInput("phoneNumber")}
-                      value={this.state.phoneNumber}
-                      className={classes.profileInput}
-                      startAdornment={<PhoneOutlined color="secondary" />}
-                    />
-                  </Row>
-                  <Row paddingTopHalf>
-                    <TextField
-                      variant="outlined"
-                      placeholder={t("currentAddress")}
-                      onChange={this.handleStateChangeByInput("currentAddress")}
-                      value={this.state.currentAddress}
-                      className={classes.profileInput}
-                      startAdornment={<BookOutlined color="secondary" />}
-                    />
-                  </Row>
-                  <Row paddingTopHalf>
-                    <TextField
-                      variant="outlined"
-                      placeholder={t("postalCode")}
-                      onChange={this.handleStateChangeByInput("postalCode")}
-                      value={this.state.postalCode}
-                      className={classes.profileInput}
-                      startAdornment={<LocationOnOutlined color="secondary" />}
-                    />
-                  </Row>
-                </Grid>
-              </Grid>
+              </form>
             </Row>
             <Row classes={{ box: classes.panelWrapper }} fullWidth>
               <Typography
