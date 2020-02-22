@@ -13,17 +13,25 @@ pipelines:
           - node
         script: # Modify the commands below to build your repository.
           - npm install
-          - npm run build
-          - tar czfv application.tgz src/
           - npm test
-        artifacts:
-          - application.tgz
+          # - npm run build
+          # - tar czfv application.tgz build/
+        # artifacts:
+          # - application.tgz
     - step:
-        name: Deploy to production
-        deployment: production
+        name: Git merge and deploy
+        caches:
+          - node
         script:
-          - pipe: atlassian/heroku-deploy:0.1.1
-            variables:
-              HEROKU_API_KEY: $HEROKU_API_KEY
-              HEROKU_APP_NAME: $HEROKU_APP_NAME
-              ZIP_FILE: "application.tgz"
+          - npm install
+          # - npm run build
+          - git push https://heroku:$HEROKU_API_KEY@git.heroku.com/$HEROKU_APP_NAME.git +HEAD:master
+    # - step:
+        # name: Deploy to production
+        # deployment: production
+        # script:
+          # - pipe: atlassian/heroku-deploy:0.1.1
+            # variables:
+              # HEROKU_API_KEY: $HEROKU_API_KEY
+              # HEROKU_APP_NAME: $HEROKU_APP_NAME
+              # ZIP_FILE: "application.tgz"
