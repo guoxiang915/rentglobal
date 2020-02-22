@@ -14,13 +14,16 @@ pipelines:
         script: # Modify the commands below to build your repository.
           - npm install
           - npm test
+          - npm run build
+          - tar czfv application.tgz build/
+        artifacts:
+          - application.tgz
     - step:
         name: Deploy to production
-        caches:
-          - node
+        deployment: production
         script:
-          - git add -A
-          - git commit -m "production build"
-          - git config --global user.email "bigsmall2697@gmail.com"
-          - git config --global user.name "bigsmall2697"
-          - git push -f https://heroku:$HEROKU_API_KEY@git.heroku.com/$HEROKU_APP_NAME.git master
+          - pipe: atlassian/heroku-deploy:0.1.1
+            variables:
+              HEROKU_API_KEY: $HEROKU_API_KEY
+              HEROKU_APP_NAME: $HEROKU_APP_NAME
+              ZIP_FILE: "application.tgz"
