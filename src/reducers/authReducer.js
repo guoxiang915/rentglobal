@@ -148,6 +148,26 @@ const authReducer = (currentState = INITIAL_STATE, action) => {
         user: { ...currentState.user, role: action.role }
       };
 
+    case "REQUEST_UPDATE_USER":
+      return {
+        ...currentState,
+        isLoading: true,
+      };
+
+    case "UPDATE_USER_SUCCESS":
+      return {
+        ...currentState,
+        isLoading: false,
+        user: action.resp
+      };
+
+    case "UPDATE_USER_FAILED":
+      return {
+        ...currentState,
+        isLoading: false,
+        error: action.resp.msg
+      };
+
     default:
       return currentState;
   }
