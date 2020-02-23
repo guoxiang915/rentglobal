@@ -44,7 +44,7 @@ function* login(action) {
         if (response.data.role === "landlord") {
           action.history.push("/landlord");
         } else {
-          action.history.push("/office");
+          action.history.push("/company");
         }
       } else {
         yield put({
