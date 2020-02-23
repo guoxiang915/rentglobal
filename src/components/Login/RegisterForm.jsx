@@ -110,7 +110,8 @@ class RegisterForm extends Component {
     const user = {
       email: this.state.email,
       password: this.state.password,
-      role: this.props.registerMode
+      role: this.props.registerMode,
+      passwordLastUpdated: new Date()
     };
     this.props.mappedRegister(user);
   };

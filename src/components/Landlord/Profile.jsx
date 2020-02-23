@@ -1,4 +1,4 @@
-import React, { Component, useState } from "react";
+import React, { Component } from "react";
 import { withStyles } from "@material-ui/core/styles";
 import { withTranslation } from "react-i18next";
 import {
@@ -103,14 +103,16 @@ class Profile extends Component {
     isEditLandlordInfo: false,
     isEditSecurityInfo: false,
     isEditPaymentsInfo: false,
-    isEditPrivacyInfo: false
+    isEditPrivacyInfo: false,
+    openedTab: "landlordInfo"
   };
 
   constructor(props) {
     super(props);
     this.state = {
       ...this.state,
-      ...props.user
+      ...props.user,
+      password: ""
     };
   }
 
@@ -118,22 +120,21 @@ class Profile extends Component {
     children,
     classes,
     isEdit,
-    onToggleEdit,
     open,
+    onToggleEdit,
+    onToggleOpen,
     t,
     title
   }) => {
-    const [expanded, setExpanded] = useState(!!open);
-
     return (
       <Column fullWidth alignChildrenStart>
         <Row fullWidth>
-          <Box onClick={() => setExpanded(!expanded)}>
+          <Box onClick={onToggleOpen}>
             <Typography fontSizeS textMediumGrey paddingRight>
               {title}
             </Typography>
             <Icon color="secondary" className={classes.tabExpandIcon}>
-              {expanded ? "keyboard_arrow_up" : "keyboard_arrow_down"}
+              {open ? "keyboard_arrow_up" : "keyboard_arrow_down"}
             </Icon>
           </Box>
           <Stretch />
@@ -162,7 +163,7 @@ class Profile extends Component {
             </Button>
           )}
         </Row>
-        <Collapse in={expanded} className={classes.fullWidth}>
+        <Collapse in={open} className={classes.fullWidth}>
           <Column paddingTopHalf alignChildrenStart>
             {children}
           </Column>
@@ -206,20 +207,33 @@ class Profile extends Component {
     }
   };
 
+  handleToggleOpen = tab => () => {
+    if (this.state.openedTab === tab) {
+      this.setState({ openedTab: null });
+    } else {
+      this.setState({ openedTab: tab });
+    }
+  };
+
+  handleToggleEdit = tab => editName => () => {
+    this.setState({ openedTab: tab });
+    this.setState({ [editName]: !this.state[editName] });
+  };
+
   render() {
     const { user, classes, t } = this.props;
+    const { openedTab } = this.state;
     const ProfileTab = this.renderProfileTab;
 
-    let passwordLastUpdated = new Date(user.passwordLastUpdated);
+    let passwordLastUpdated = "-";
     if (user.passwordLastUpdated) {
+      passwordLastUpdated = new Date(user.passwordLastUpdated);
       passwordLastUpdated =
         passwordLastUpdated.getFullYear() +
         "/" +
         (passwordLastUpdated.getMonth() + 1) +
         "/" +
         passwordLastUpdated.getDate();
-    } else {
-      passwordLastUpdated = "-";
     }
 
     return (
@@ -241,13 +255,12 @@ class Profile extends Component {
             classes={classes}
             t={t}
             title={t("landlordInfo")}
-            open={true}
+            open={openedTab === "landlordInfo"}
+            onToggleOpen={this.handleToggleOpen("landlordInfo")}
             isEdit={this.state.isEditLandlordInfo}
-            onToggleEdit={() =>
-              this.handleStateChange("isEditLandlordInfo")(
-                !this.state.isEditLandlordInfo
-              )
-            }
+            onToggleEdit={this.handleToggleEdit("landlordInfo")(
+              "isEditLandlordInfo"
+            )}
           >
             <Row fullWidth>
               <form
@@ -412,12 +425,12 @@ class Profile extends Component {
             classes={classes}
             t={t}
             title={t("loginAndSecurity")}
+            open={openedTab === "loginAndSecurity"}
+            onToggleOpen={this.handleToggleOpen("loginAndSecurity")}
             isEdit={this.state.isEditSecurityInfo}
-            onToggleEdit={() =>
-              this.handleStateChange("isEditSecurityInfo")(
-                !this.state.isEditSecurityInfo
-              )
-            }
+            onToggleEdit={this.handleToggleEdit("loginAndSecurity")(
+              "isEditSecurityInfo"
+            )}
           >
             <Row fullWidth>
               <form
@@ -538,12 +551,12 @@ class Profile extends Component {
             classes={classes}
             t={t}
             title={t("paymentsAndPayouts")}
+            open={openedTab === "paymentsAndPayouts"}
+            onToggleOpen={this.handleToggleOpen("paymentsAndPayouts")}
             isEdit={this.state.isEditPaymentsInfo}
-            onToggleEdit={() =>
-              this.handleStateChange("isEditPaymentsInfo")(
-                !this.state.isEditPaymentsInfo
-              )
-            }
+            onToggleEdit={this.handleToggleEdit("paymentsAndPayouts")(
+              "isEditPaymentsInfo"
+            )}
           ></ProfileTab>
         </Row>
 
@@ -553,12 +566,12 @@ class Profile extends Component {
             classes={classes}
             t={t}
             title={t("privacyAndSharing")}
+            open={openedTab === "privacyAndSharing"}
+            onToggleOpen={this.handleToggleOpen("privacyAndSharing")}
             isEdit={this.state.isEditPrivacyInfo}
-            onToggleEdit={() =>
-              this.handleStateChange("isEditSecurityInfo")(
-                !this.state.isEditSecurityInfo
-              )
-            }
+            onToggleEdit={this.handleToggleEdit("isEditPrivacyInfo")(
+              "privacyAndSharing"
+            )}
           ></ProfileTab>
         </Row>
       </Column>

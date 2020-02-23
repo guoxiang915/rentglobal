@@ -1,6 +1,6 @@
 import axios from "axios";
 import Auth from "../utils/auth";
-import {API} from "../utils/constants";
+import { API } from "../utils/constants";
 
 const axiosApi = axios.create({
   // baseURL: `http://${process.env.REACT_APP_API_URL}`
