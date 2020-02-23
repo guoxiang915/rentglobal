@@ -34,8 +34,17 @@ class Landlord extends Component {
                   render={props => <>Dashboard</>}
                 />
                 <Route
+                  path="/landlord/offices"
+                  render={props => <>Offices</>}
+                />
+                <Route
                   path="/landlord/profile"
-                  render={props => <Profile user={user} />}
+                  render={props => (
+                    <Profile
+                      user={user}
+                      mappedupdateUser={this.props.mappedupdateUser}
+                    />
+                  )}
                 />
                 <Route render={() => <Redirect to="/landlord/dashboard" />} />
               </Switch>

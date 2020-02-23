@@ -106,6 +106,14 @@ class Profile extends Component {
     isEditPrivacyInfo: false
   };
 
+  constructor(props) {
+    super(props);
+    this.state = {
+      ...this.state,
+      ...props.user
+    };
+  }
+
   renderProfileTab = ({
     children,
     classes,
@@ -193,7 +201,7 @@ class Profile extends Component {
     if (this.state.password === this.state.confirmPassword) {
       this.props.mappedupdateUser({
         password: this.state.password,
-        passwordLastUpdated: new Date().getTime(),
+        passwordLastUpdated: new Date().getTime()
       });
     }
   };
