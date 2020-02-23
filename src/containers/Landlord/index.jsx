@@ -1,6 +1,6 @@
 import { connect } from "react-redux";
 import Landlord from "../../components/Landlord";
-import authActions from "../../actions/authActions";
+import * as authActions from "../../actions/authActions";
 
 const mapStateToProps = state => {
   return {
