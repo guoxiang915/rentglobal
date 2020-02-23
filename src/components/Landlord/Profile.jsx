@@ -190,7 +190,12 @@ class Profile extends Component {
   };
 
   handleSaveSecurityInfo = e => {
-    console.log(e, this.state);
+    if (this.state.password === this.state.confirmPassword) {
+      this.props.mappedupdateUser({
+        password: this.state.password,
+        passwordLastUpdated: new Date().getTime(),
+      });
+    }
   };
 
   render() {
