@@ -1,6 +1,7 @@
 import React from "react";
 import { Switch, Route, withRouter, Redirect } from "react-router-dom";
 import PropTypes from "prop-types";
+import clsx from "clsx";
 import Auth from "../../utils/auth";
 import AppWrapper from "../../containers/AppWrapper";
 import { AppFooter } from "../Layout";
@@ -14,6 +15,11 @@ import HeaderImage from "../../assets/img/img_header@2x.jpg";
 const authObj = new Auth();
 
 const styleSheet = theme => ({
+  root: {
+    height: "100vh",
+    width: "100%"
+  },
+
   headerWrapper: {
     position: "sticky",
     top: 0,
@@ -21,6 +27,19 @@ const styleSheet = theme => ({
     height: 100,
     [theme.breakpoints.down("sm")]: {
       height: 66
+    }
+  },
+
+  bodyWrapper: {
+    height: "100%",
+    width: "100%",
+    overflowY: "auto"
+  },
+
+  bodyHeaderOffset: {
+    height: "calc(100% - 100px)",
+    [theme.breakpoints.down("sm")]: {
+      top: "calc(100% - 66px)"
     }
   },
 
@@ -115,47 +134,56 @@ class PrivateRoute extends React.Component {
               {authRequired && !isLoggedIn ? (
                 <Redirect to="/auth/login" />
               ) : (
-                <>
+                <div className={classes.root}>
                   {!noHeader && (
                     <div className={classes.headerWrapper}>
                       <AppWrapper />
                     </div>
                   )}
-                  <div className={classes.contentWrapper}>
-                    {isLoggedIn && !user.active ? (
-                      <Switch>
-                        <Route
-                          path="/auth/send-verification"
-                          render={() => (
-                            <div>
-                              <div className={classes.backgroundWrapper}></div>
-                              <div className={classes.loginWrapper}>
-                                <Column classes={{ box: classes.loginCard }}>
-                                  <SendVerificationForm
-                                    email={user.email}
-                                    {...props}
-                                  />
-                                </Column>
+                  <div
+                    className={clsx(
+                      classes.bodyWrapper,
+                      !noHeader && classes.bodyHeaderOffset
+                    )}
+                  >
+                    <div className={classes.contentWrapper}>
+                      {isLoggedIn && !user.active ? (
+                        <Switch>
+                          <Route
+                            path="/auth/send-verification"
+                            render={() => (
+                              <div>
+                                <div
+                                  className={classes.backgroundWrapper}
+                                ></div>
+                                <div className={classes.loginWrapper}>
+                                  <Column classes={{ box: classes.loginCard }}>
+                                    <SendVerificationForm
+                                      email={user.email}
+                                      {...props}
+                                    />
+                                  </Column>
+                                </div>
                               </div>
-                            </div>
-                          )}
-                        />
-                        <Route
-                          render={() => (
-                            <Redirect to="/auth/send-verification" />
-                          )}
-                        />
-                      </Switch>
-                    ) : (
-                      <Component {...props} />
+                            )}
+                          />
+                          <Route
+                            render={() => (
+                              <Redirect to="/auth/send-verification" />
+                            )}
+                          />
+                        </Switch>
+                      ) : (
+                        <Component {...props} />
+                      )}
+                    </div>
+                    {!noFooter && (
+                      <div className={classes.footerWrapper}>
+                        <AppFooter className={classes.footerWrapper} />
+                      </div>
                     )}
                   </div>
-                  {!noFooter && (
-                    <div className={classes.footerWrapper}>
-                      <AppFooter className={classes.footerWrapper} />
-                    </div>
-                  )}
-                </>
+                </div>
               )}
             </>
           );
