@@ -10,6 +10,8 @@ import RegisterForm from "./RegisterForm";
 import ForgotPasswordForm from "./ForgotPasswordForm";
 import SendPasswordVerificationForm from "./SendPasswordVerificationForm";
 import SetNewPasswordForm from "./SetNewPasswordForm";
+import VerifyEmailSuccessForm from "./VerifyEmailSuccessForm";
+import VerifyEmailFailedForm from "./VerifyEmailFailedForm";
 
 import HeaderImage from "../../assets/img/img_header@2x.jpg";
 
@@ -178,6 +180,32 @@ class AuthWrapper extends Component {
                       </Column>
                     );
                   }}
+                />
+                <Route
+                  exact
+                  path="/auth/verify-email-success"
+                  render={({ location }) =>
+                    location.state && location.state.success ? (
+                      <Column classes={{ box: classes.loginCard }}>
+                        <VerifyEmailSuccessForm navigate={this.navigate} />
+                      </Column>
+                    ) : (
+                      <Redirect to="/auth/login" />
+                    )
+                  }
+                />
+                <Route
+                  exact
+                  path="/auth/verify-email-failed"
+                  render={({ location }) =>
+                    location.state && location.state.failed ? (
+                      <Column classes={{ box: classes.loginCard }}>
+                        <VerifyEmailFailedForm navigate={this.navigate} />
+                      </Column>
+                    ) : (
+                      <Redirect to="/auth/login" />
+                    )
+                  }
                 />
                 <Route
                   exact

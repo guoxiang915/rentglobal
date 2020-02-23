@@ -28,7 +28,7 @@ const styleSheet = theme => {
   };
 };
 
-const Divider = ({ classes, half, single, double, light, dark, ...props }) => (
+const Divider = ({ classes, half, single, double, light, dark, styles, ...props }) => (
   <div
     className={clsx({
       [classes.divider]: true,
@@ -36,7 +36,8 @@ const Divider = ({ classes, half, single, double, light, dark, ...props }) => (
       [classes.single]: single,
       [classes.double]: double,
       [classes.light]: light,
-      [classes.dark]: dark
+      [classes.dark]: dark,
+      [styles]: styles
     })}
   />
 );

@@ -60,10 +60,13 @@ export const verifyEmail = (payload, history, dispatch) => {
     .get(`/auth/activate/${payload.token}`)
     .then(response => {
       authObj.setToken(response.token);
-      history.push("/");
+      history.push("/auth/verify-email-success", {
+        success: true
+      });
       dispatch(verifyEmailResponse(response));
     })
     .catch(error => {
+      history.push("/auth/verify-email-failed", { failed: true });
       dispatch(verifyEmailResponse(error.response));
     });
   return {
