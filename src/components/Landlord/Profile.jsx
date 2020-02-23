@@ -87,10 +87,10 @@ const styleSheet = theme => ({
 
 class Profile extends Component {
   state = {
-    landlordName: "",
-    emailAddress: "",
+    name: "",
+    email: "",
     phoneNumber: "",
-    currentAddress: "",
+    address: "",
     postalCode: "",
     photo: "",
     legalStatusDocument: [],
@@ -176,7 +176,17 @@ class Profile extends Component {
   };
 
   handleSaveLandlordInfo = e => {
-    console.log(e, this.state);
+    this.props.mappedupdateUser({
+      name: this.state.name,
+      email: this.state.email,
+      phoneNumber: this.state.phoneNumber,
+      address: this.state.address,
+      postalCode: this.state.postalCode,
+      photo: this.state.photo,
+      legalStatusDocument: this.state.legalStatusDocument,
+      checkSpecimen: this.state.checkSpecimen,
+      lease: this.state.lease
+    });
   };
 
   handleSaveSecurityInfo = e => {
@@ -252,8 +262,8 @@ class Profile extends Component {
                       <TextField
                         variant="outlined"
                         placeholder={t("landlordName")}
-                        onChange={this.handleStateChangeByInput("landlordName")}
-                        value={this.state.landlordName}
+                        onChange={this.handleStateChangeByInput("name")}
+                        value={this.state.name}
                         className={classes.profileInput}
                         startAdornment={<PersonOutline color="secondary" />}
                         readOnly={!this.state.isEditLandlordInfo}
@@ -264,8 +274,8 @@ class Profile extends Component {
                         type="email"
                         variant="outlined"
                         placeholder={t("emailAddress")}
-                        onChange={this.handleStateChangeByInput("emailAddress")}
-                        value={this.state.emailAddress}
+                        onChange={this.handleStateChangeByInput("email")}
+                        value={this.state.email}
                         className={classes.profileInput}
                         startAdornment={<MailOutline color="secondary" />}
                         readOnly={!this.state.isEditLandlordInfo}
@@ -286,10 +296,8 @@ class Profile extends Component {
                       <TextField
                         variant="outlined"
                         placeholder={t("currentAddress")}
-                        onChange={this.handleStateChangeByInput(
-                          "currentAddress"
-                        )}
-                        value={this.state.currentAddress}
+                        onChange={this.handleStateChangeByInput("address")}
+                        value={this.state.address}
                         className={classes.profileInput}
                         startAdornment={<BookOutlined color="secondary" />}
                         readOnly={!this.state.isEditLandlordInfo}

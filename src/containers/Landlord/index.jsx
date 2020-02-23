@@ -1,5 +1,6 @@
 import { connect } from "react-redux";
 import Landlord from "../../components/Landlord";
+import authActions from "../../actions/authActions";
 
 const mapStateToProps = state => {
   return {
@@ -9,7 +10,10 @@ const mapStateToProps = state => {
 };
 
 const mapDispatchToprops = dispatch => {
-  return {};
+  return {
+    mappedupdateUser: (user, history) =>
+      dispatch(authActions.updateUser(user, history))
+  };
 };
 
 export default connect(mapStateToProps, mapDispatchToprops)(Landlord);
