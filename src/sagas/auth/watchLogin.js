@@ -41,11 +41,16 @@ function* login(action) {
           type: "LOGIN_SUCCESS",
           resp: response.data
         });
+        let route = "";
         if (response.data.role === "landlord") {
-          action.history.push("/landlord");
+          route = "/landlord";
         } else {
-          action.history.push("/company");
+          route = "/company";
         }
+        if (!response.data.profile) {
+          route += "/profile";
+        }
+        action.history.push(route);
       } else {
         yield put({
           type: "LOGIN_FAILED",

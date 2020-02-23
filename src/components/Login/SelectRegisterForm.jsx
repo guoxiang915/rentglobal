@@ -87,8 +87,9 @@ class SelectRegisterForm extends Component {
               <Column
                 alignChildrenStart
                 classes={{ box: classes.selectorWrapper }}
+                textLightGrey
               >
-                <LandlordIcon color="secondary" fontSize="large" />
+                <LandlordIcon fontSize="large" />
                 <Box paddingTopHalf>
                   <Typography
                     fontSizeL
@@ -131,8 +132,9 @@ class SelectRegisterForm extends Component {
               <Column
                 alignChildrenStart
                 classes={{ box: classes.selectorWrapper }}
+                textLightGrey
               >
-                <CompanyIcon color="secondary" fontSize="large" />
+                <CompanyIcon fontSize="large" />
                 <Box paddingTopHalf>
                   <Typography
                     fontSizeL

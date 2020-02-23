@@ -11,7 +11,12 @@ import {
   HorizontalDivider,
   Typography
 } from "../../common/base-components";
-import { MailOutline, LockOpen } from "@material-ui/icons";
+import {
+  Business as LandlordIcon,
+  PeopleOutline as CompanyIcon,
+  MailOutline,
+  LockOpen
+} from "@material-ui/icons";
 
 const styleSheet = theme => ({
   formWrapper: {
@@ -125,12 +130,19 @@ class RegisterForm extends Component {
 
     return (
       <form noValidate autoComplete="off" className={classes.formWrapper}>
+        <Column paddingTopHalf fullWidth textLightGrey>
+          {registerMode === "landlord" ? (
+            <LandlordIcon fontSize="large" />
+          ) : (
+            <CompanyIcon fontSize="large" />
+          )}
+        </Column>
         <Typography
           fontSizeM
           fontWeightBold
           textSecondary
           fullWidth
-          paddingTopHalf
+          paddingTop
           justifyChildrenCenter
         >
           {registerMode === "landlord"
