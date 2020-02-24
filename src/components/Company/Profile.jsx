@@ -72,6 +72,14 @@ const styleSheet = theme => ({
     }
   },
 
+  documentsWrapper: {
+    flexWrap: "wrap",
+    [theme.breakpoints.down("sm")]: {
+      flexWrap: "nowrap",
+      overflowY: "auto"
+    }
+  },
+
   companyInfoForm: {
     width: "100%"
   },
@@ -87,7 +95,7 @@ const styleSheet = theme => ({
     justifyContent: "center",
     alignItems: "center",
     borderRadius: "50%",
-    overflow: "hidden",
+    overflow: "hidden"
   }
 });
 
@@ -418,58 +426,51 @@ class Profile extends Component {
             <Typography fontSizeS textSecondary paddingTop>
               {t("provideDocumentsNeeded")}
             </Typography>
-            <Row fullWidth paddingTop paddingBottom>
-              <Grid container space={10}>
-                <Grid item xs={4} sm={3}>
-                  <Box paddingRightHalf paddingBottomHalf>
-                    <UploadDocument
-                      title={t("legalStatusDocument")}
-                      documents={this.state.legalStatusDocument}
-                      onUpload={() => {}}
-                      onDelete={() => {}}
-                    />
-                  </Box>
-                </Grid>
-                <Grid item xs={4} sm={3}>
-                  <Box paddingRightHalf paddingBottomHalf>
-                    <UploadDocument
-                      title={t("checkSpecimen")}
-                      documents={this.state.checkSpecimen}
-                      onDelete={() => {}}
-                    />
-                  </Box>
-                </Grid>
-                <Grid item xs={4} sm={3}>
-                  <Box paddingRightHalf paddingBottomHalf>
-                    <UploadDocument
-                      title={t("lease")}
-                      documents={this.state.lease}
-                      onUpload={() => {}}
-                      onDelete={() => {}}
-                    />
-                  </Box>
-                </Grid>
-                <Grid item xs={4} sm={3}>
-                  <Box paddingRightHalf paddingBottomHalf>
-                    <UploadDocument
-                      title={t("lastThreeBalance")}
-                      documents={this.state.lastThreeBalance}
-                      onUpload={() => {}}
-                      onDelete={() => {}}
-                    />
-                  </Box>
-                </Grid>
-                <Grid item xs={4} sm={3}>
-                  <Box paddingRightHalf paddingBottomHalf>
-                    <UploadDocument
-                      title={t("commercialBrochure")}
-                      documents={this.state.commercialBrochure}
-                      onUpload={() => {}}
-                      onDelete={() => {}}
-                    />
-                  </Box>
-                </Grid>
-              </Grid>
+            <Row
+              fullWidth
+              paddingTop
+              paddingBottom
+              classes={{ box: classes.documentsWrapper }}
+            >
+              <Box paddingRightHalf paddingBottomHalf>
+                <UploadDocument
+                  title={t("legalStatusDocument")}
+                  documents={this.state.legalStatusDocument}
+                  onUpload={() => {}}
+                  onDelete={() => {}}
+                />
+              </Box>
+              <Box paddingRightHalf paddingBottomHalf>
+                <UploadDocument
+                  title={t("checkSpecimen")}
+                  documents={this.state.checkSpecimen}
+                  onDelete={() => {}}
+                />
+              </Box>
+              <Box paddingRightHalf paddingBottomHalf>
+                <UploadDocument
+                  title={t("lease")}
+                  documents={this.state.lease}
+                  onUpload={() => {}}
+                  onDelete={() => {}}
+                />
+              </Box>
+              <Box paddingRightHalf paddingBottomHalf>
+                <UploadDocument
+                  title={t("lastThreeBalance")}
+                  documents={this.state.lastThreeBalance}
+                  onUpload={() => {}}
+                  onDelete={() => {}}
+                />
+              </Box>
+              <Box paddingRightHalf paddingBottomHalf>
+                <UploadDocument
+                  title={t("commercialBrochure")}
+                  documents={this.state.commercialBrochure}
+                  onUpload={() => {}}
+                  onDelete={() => {}}
+                />
+              </Box>
             </Row>
           </ProfileTab>
         </Row>

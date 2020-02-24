@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import { withStyles } from "@material-ui/core/styles";
 import { withTranslation } from "react-i18next";
+import { Hidden } from "@material-ui/core";
 import { Switch, Route, Redirect } from "react-router-dom";
 import AppSidebar from "../../containers/Layout/AppSidebar";
 import { Row, Column } from "../../common/base-components";
@@ -25,9 +26,11 @@ class Landlord extends Component {
       <div>
         <Column fullWidth>
           <Row classes={{ box: classes.root }} fullWidth alignChildrenStart>
-            <Column classes={{ box: classes.sidebarWrapper }} fullWdith>
-              <AppSidebar role="landlord" />
-            </Column>
+            <Hidden smDown>
+              <Column classes={{ box: classes.sidebarWrapper }} fullWdith>
+                <AppSidebar role="landlord" />
+              </Column>
+            </Hidden>
             <Column classes={{ box: classes.contentWrapper }} fullWidth>
               <Switch>
                 <Route path="/landlord/dashboard" render={props => <></>} />

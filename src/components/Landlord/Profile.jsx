@@ -415,7 +415,7 @@ class Profile extends Component {
             <Typography fontSizeS textSecondary paddingTop>
               {t("provideDocumentsNeeded")}
             </Typography>
-            <Row fullWidth paddingTop paddingBottom>
+            <Row fullWidth paddingTop paddingBottom verticalScroll>
               <Box paddingRightHalf>
                 <UploadDocument
                   title={t("legalStatusDocument")}
