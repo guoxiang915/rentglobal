@@ -195,10 +195,11 @@ class PrivateRoute extends React.Component {
 
     const { sidebarOpened } = this.state;
     let role = "";
-    if (this.props.location.pathname.indexOf("/landlord") !== -1)
-      role = "landlord";
-    else if (this.props.location.pathname.indexOf("/company") !== -1)
-      role = "company";
+    if (isLoggedIn) {
+      if (this.props.location.pathname.indexOf("/company") !== -1)
+        role = "landlord";
+      else role = "company";
+    }
 
     return (
       <Route
@@ -238,7 +239,7 @@ class PrivateRoute extends React.Component {
                     {/* show sidebar for mobile */}
                     {sidebarOpened && (
                       <AppSidebar
-                        role={role}
+                        role={isLoggedIn ? role : ""}
                         onCollapse={() => this.handleToggleSidebar(false)}
                         onToggleRole={this.handleToggleRole}
                         navigate={this.navigate}

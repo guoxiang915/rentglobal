@@ -5,16 +5,32 @@ import { withRouter } from "react-router-dom";
 import withWidth, { isWidthDown } from "@material-ui/core/withWidth";
 import PropTypes from "prop-types";
 import clsx from "clsx";
-import { Icon } from "@material-ui/core";
 import {
   Link,
   Typography,
   Row,
   Column,
+  Box,
   Button,
   Divider
 } from "../../common/base-components";
-import { KeyboardArrowUp } from "@material-ui/icons";
+import {
+  KeyboardArrowUp,
+  HomeOutlined,
+  PersonOutline,
+  EditOutlined,
+  DashboardOutlined,
+  ChatOutlined,
+  BusinessOutlined,
+  NoteOutlined,
+  DirectionsBusOutlined,
+  DateRangeOutlined,
+  AttachMoneyOutlined,
+  ContactSupportOutlined,
+  SettingsOutlined,
+  HelpOutline,
+  LocationOnOutlined
+} from "@material-ui/icons";
 
 const styleSheet = theme => ({
   sidebarWrapper: {
@@ -30,6 +46,12 @@ const styleSheet = theme => ({
       zIndex: 1000,
       opacity: 0.95
     }
+  },
+
+  sidebarContent: {
+    minHeight: "100%",
+    width: "100%",
+    position: "relative"
   },
 
   sidebarBody: {
@@ -97,38 +119,44 @@ class AppSidebar extends Component {
 
     width: PropTypes.string,
     classes: PropTypes.object,
-    t: PropTypes.number
+    t: PropTypes.func
   };
 
-  normalMenu = [
-    { text: "home", link: "", icon: "home" },
-    { text: "chatWithTessi", link: "chat", icon: "home" },
-    { text: "login", link: "login", icon: "person" },
-    { text: "register", link: "register", icon: "edit" }
-  ];
-  landlordMenu = [
-    { text: "home", link: "", icon: "home" },
-    { text: "dashboard", link: "dashboard", icon: "dashboard" },
-    { text: "offices", link: "offices", icon: "business" },
-    { text: "contracts", link: "contracts", icon: "note" },
-    { text: "optimization", link: "optimization", icon: "directions_bus" },
-    { text: "calendar", link: "calendar", icon: "date_range" },
-    { text: "financials", link: "financial", icon: "attach_money" },
-    { text: "support", link: "support", icon: "contact_support" },
-    { text: "profile", link: "profile", icon: "person" },
-    { text: "setting", link: "settings", icon: "settings" }
-  ];
-  companyMenu = [
-    { text: "home", link: "", icon: "home" },
-    { text: "dashboard", link: "dashboard", icon: "dashboard" },
-    { text: "offices", link: "offices", icon: "business" },
-    { text: "contracts", link: "contracts", icon: "note" },
-    { text: "calendar", link: "calendar", icon: "date_range" },
-    { text: "financials", link: "financial", icon: "attach_money" },
-    { text: "support", link: "support", icon: "contact_support" },
-    { text: "profile", link: "profile", icon: "person" },
-    { text: "setting", link: "settings", icon: "settings" }
-  ];
+  menus = {
+    "": [
+      { text: "home", link: "", icon: <HomeOutlined /> },
+      { text: "chatWithTessi", link: "chat", icon: <ChatOutlined /> },
+      { text: "login", link: "login", icon: <PersonOutline /> },
+      { text: "register", link: "register", icon: <EditOutlined /> }
+    ],
+    landlord: [
+      { text: "home", link: "", icon: <HomeOutlined /> },
+      { text: "dashboard", link: "dashboard", icon: <DashboardOutlined /> },
+      { text: "offices", link: "offices", icon: <BusinessOutlined /> },
+      { text: "contracts", link: "contracts", icon: <NoteOutlined /> },
+      {
+        text: "optimization",
+        link: "optimization",
+        icon: <DirectionsBusOutlined />
+      },
+      { text: "calendar", link: "calendar", icon: <DateRangeOutlined /> },
+      { text: "financials", link: "financial", icon: <AttachMoneyOutlined /> },
+      { text: "support", link: "support", icon: <ContactSupportOutlined /> },
+      { text: "profile", link: "profile", icon: <PersonOutline /> },
+      { text: "setting", link: "settings", icon: <SettingsOutlined /> }
+    ],
+    company: [
+      { text: "home", link: "", icon: <HomeOutlined /> },
+      { text: "dashboard", link: "dashboard", icon: <DashboardOutlined /> },
+      { text: "offices", link: "offices", icon: <BusinessOutlined /> },
+      { text: "contracts", link: "contracts", icon: <NoteOutlined /> },
+      { text: "calendar", link: "calendar", icon: <DateRangeOutlined /> },
+      { text: "financials", link: "financial", icon: <AttachMoneyOutlined /> },
+      { text: "support", link: "support", icon: <ContactSupportOutlined /> },
+      { text: "profile", link: "profile", icon: <PersonOutline /> },
+      { text: "setting", link: "settings", icon: <SettingsOutlined /> }
+    ]
+  };
 
   renderMenuItem = (itemType, item, navigate) => {
     const { width, classes, t } = this.props;
@@ -152,14 +180,16 @@ class AppSidebar extends Component {
               inverse
             >
               <Typography fontSizeM>
-                <Icon className={classes.menuIcon}>{item.icon}</Icon>
+                {/* <Icon className={classes.menuIcon}>{item.icon}</Icon> */}
+                <Box classes={{ box: classes.menuIcon }}>{item.icon}</Box>
                 {t(item.text)}
               </Typography>
             </Link>
           ) : (
             <Link to={link} variant={active ? "primary" : "normal"}>
               <Typography fontSizeS>
-                <Icon className={classes.menuIcon}>{item.icon}</Icon>
+                {/* <Icon className={classes.menuIcon}>{item.icon}</Icon> */}
+                <Box classes={{ box: classes.menuIcon }}>{item.icon}</Box>
                 {t(item.text)}
               </Typography>
             </Link>
@@ -184,73 +214,109 @@ class AppSidebar extends Component {
 
     return (
       <div className={classes.sidebarWrapper}>
-        <Column
-          alignChildrenEnd
-          classes={{ box: classes.sidebarBody }}
-          paddingTopDouble
-          paddingBottomDouble
-        >
-          {role === "" &&
-            this.normalMenu.map(item =>
-              this.renderMenuItem("", item, this.navigate)
+        <div className={classes.sidebarContent}>
+          <Column
+            alignChildrenEnd
+            classes={{ box: classes.sidebarBody }}
+            paddingTopDouble
+            paddingBottomDouble
+          >
+            {this.menus[role].map(item =>
+              this.renderMenuItem(role, item, this.navigate)
             )}
-          {role === "landlord" &&
-            this.landlordMenu.map(item =>
-              this.renderMenuItem("landlord", item, this.navigate)
-            )}
-          {role === "company" &&
-            this.companyMenu.map(item =>
-              this.renderMenuItem("company", item, this.navigate)
-            )}
-        </Column>
-        {isWidthDown("sm", width) && (
-          <>
-            <Divider light styles={classes.divider} />
-            {role === "landlord" ||
-              (role === "company" && (
-                <Column
-                  classes={{
-                    box: clsx(classes.moreWrapper, classes.sidebarBody)
-                  }}
-                >
-                  <Button
-                    link="normal"
-                    background="primary"
-                    outline="primaryDark"
-                    inverse
-                    onClick={this.handleToggleRole}
-                    className={classes.fixedWidthButton}
-                  >
-                    <Typography fontSizeS>
-                      {role === "landlord" ? t("needOffice") : t("placeToRent")}
-                    </Typography>
-                  </Button>
-                  <Row classes={{ box: classes.chatItem }} fullWidth>
-                    {this.renderMenuItem("landlord", {
-                      text: "chatWithTessi",
-                      link: "",
-                      icon: "settings"
-                    })}
-                  </Row>
-                </Column>
-              ))}
-            <Column
-              classes={{ box: classes.collapseButton }}
-              paddingTop
-              paddingBottomHalf
-              fullWidth
-            >
-              <Link
-                to="#"
-                onClick={this.props.onCollapse}
-                variant="secondaryDark"
-                inverse
+          </Column>
+          {isWidthDown("sm", width) && (
+            <>
+              <Divider light styles={classes.divider} />
+              <Column
+                classes={{
+                  box: clsx(classes.moreWrapper, classes.sidebarBody)
+                }}
               >
-                <KeyboardArrowUp />
-              </Link>
-            </Column>
-          </>
-        )}
+                <Button
+                  link="normal"
+                  background="primary"
+                  outline="primaryDark"
+                  inverse
+                  onClick={() =>
+                    role
+                      ? this.handleToggleRole()
+                      : this.props.navigate("register", "landlord")
+                  }
+                  className={classes.fixedWidthButton}
+                >
+                  <Typography fontSizeS>
+                    {role === "landlord" ? t("needOffice") : t("placeToRent")}
+                  </Typography>
+                </Button>
+                {!role ? (
+                  <Row classes={{ box: classes.chatItem }} fullWidth>
+                    <Column alignChildrenStart>
+                      {this.renderMenuItem(
+                        role,
+                        {
+                          text: "montreal",
+                          link: "location",
+                          // icon: "location_on"
+                          icon: <LocationOnOutlined />
+                        },
+                        this.navigate
+                      )}
+                      {this.renderMenuItem(
+                        role,
+                        {
+                          text: "english",
+                          link: "language",
+                          // icon: "en"
+                          icon: "EN"
+                        },
+                        this.navigate
+                      )}
+                      {this.renderMenuItem(
+                        role,
+                        {
+                          text: "help",
+                          link: "help",
+                          // icon: "help_outline"
+                          icon: <HelpOutline />
+                        },
+                        this.navigate
+                      )}
+                    </Column>
+                  </Row>
+                ) : (
+                  <Row classes={{ box: classes.chatItem }} fullWidth>
+                    {this.renderMenuItem(
+                      role,
+                      {
+                        text: "chatWithTessi",
+                        link: "",
+                        // icon: "settings"
+                        icon: <ChatOutlined />
+                      },
+                      this.navigate
+                    )}
+                  </Row>
+                )}
+              </Column>
+              <Column
+                classes={{ box: classes.collapseButton }}
+                paddingTop
+                paddingBottomHalf
+                fullWidth
+              >
+                <Link
+                  to="#"
+                  onClick={this.props.onCollapse}
+                  variant="secondaryDark"
+                  inverse
+                >
+                  <KeyboardArrowUp />
+                </Link>
+              </Column>
+            </>
+          )}
+        </div>
       </div>
     );
   }
