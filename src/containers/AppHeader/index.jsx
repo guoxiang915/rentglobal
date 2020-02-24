@@ -1,23 +1,17 @@
 import { connect } from "react-redux";
-import AppWrapper from "../../components/AppWrapper";
+import AppHeader from "../../components/AppHeader";
 import * as authActions from "../../actions/authActions";
 import { withRouter } from "react-router-dom";
-import * as appActions from "../../actions/appActions";
 
 const mapStateToProps = state => {
   return {
-    auth: state.authState,
-    appState: state.appState
+    auth: state.authState
   };
 };
 
 const mapDispatchToProps = dispatch => {
   return {
     mappedlogout: () => dispatch(authActions.logout()),
-    mappedshowAppBar: visible => dispatch(appActions.showAppBar(visible)),
-    mappedshowSearchBar: visible => dispatch(appActions.showSearchBar(visible)),
-    mappedupdateUser: (user, history) =>
-      dispatch(authActions.updateUser(user, history)),
     mappedSetUserRole: (role, history) => dispatch(authActions.setUserRole(role, history))
   };
 };
@@ -25,4 +19,4 @@ const mapDispatchToProps = dispatch => {
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(withRouter(AppWrapper));
+)(withRouter(AppHeader));

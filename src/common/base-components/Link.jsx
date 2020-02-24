@@ -29,6 +29,7 @@ class Link extends Component {
       children,
       underline,
       variant,
+      inverse,
       styles,
       ...props
     } = this.props;
@@ -38,6 +39,7 @@ class Link extends Component {
         className={clsx(
           classes.root,
           variant && classes[variant],
+          inverse && classes.inverse,
           styles
         )}
         underline={underline ? underline : "none"}

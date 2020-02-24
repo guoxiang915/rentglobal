@@ -3,7 +3,7 @@ import { withStyles } from "@material-ui/core/styles";
 import { withTranslation } from "react-i18next";
 import { Hidden } from "@material-ui/core";
 import { Switch, Route, Redirect } from "react-router-dom";
-import AppSidebar from "../../containers/Layout/AppSidebar";
+import { AppSidebar } from "../Layout";
 import { Row, Column } from "../../common/base-components";
 import Profile from "./Profile";
 

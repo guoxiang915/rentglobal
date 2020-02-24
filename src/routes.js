@@ -10,8 +10,8 @@ import PageNotFound from "./containers/Landlord";
 export default (
   <div>
     <Switch>
-      <PrivateRoute exact path="/" component={Home} />
-      <PrivateRoute path="/auth" component={AuthWrapper} />
+      <PrivateRoute exact path="/" component={Home} noSidebar />
+      <PrivateRoute path="/auth" component={AuthWrapper} noSidebar />
       <PrivateRoute path="/landlord" component={Landlord} authRequired />
       <PrivateRoute path="/company" component={Company} authRequired />
       <PrivateRoute component={PageNotFound} />

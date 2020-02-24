@@ -13,7 +13,8 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = dispatch => ({
   mappedAuthenticate: (token, history) =>
-    dispatch(authActions.authenticate(token, history))
+    dispatch(authActions.authenticate(token, history)),
+  mappedlogout: () => dispatch(authActions.logout())
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(PrivateRoute);

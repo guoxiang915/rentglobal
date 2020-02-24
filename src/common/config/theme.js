@@ -120,6 +120,12 @@ const links = {
       color: colors.primary.darkGrey
     }
   },
+  secondaryDark: {
+    color: colors.primary.darkGrey,
+    "&:hover": {
+      color: colors.primary.darkGrey
+    }
+  },
   secondaryLight: {
     color: colors.primary.lightGrey,
     "&:hover": {
@@ -148,9 +154,9 @@ const links = {
 // link background styles
 const linksBackground = {
   transparent: {
-    background: 'none',
-    '&:hover': {
-      background: 'none'
+    background: "none",
+    "&:hover": {
+      background: "none"
     }
   },
   normal: {
@@ -194,20 +200,20 @@ const linksBackground = {
     "&:hover": {
       background: colors.primary.errorRed
     }
-  },
+  }
 };
 
 // link outline styles
 const linksOutline = {
   transparent: {
-    border: 'none',
-    '&:hover': {
-      border: 'none'
+    border: "none",
+    "&:hover": {
+      border: "none"
     }
   },
   normal: {
     borderWidth: 1,
-    borderStyle: 'solid',
+    borderStyle: "solid",
     borderColor: colors.primary.darkGrey,
     "&:hover": {
       borderColor: colors.primary.mainColor
@@ -215,7 +221,7 @@ const linksOutline = {
   },
   normalLight: {
     borderWidth: 1,
-    borderStyle: 'solid',
+    borderStyle: "solid",
     borderColor: colors.primary.grey,
     "&:hover": {
       borderColor: colors.primary.mainColor
@@ -223,15 +229,23 @@ const linksOutline = {
   },
   primary: {
     borderWidth: 1,
-    borderStyle: 'solid',
+    borderStyle: "solid",
     borderColor: colors.primary.mainColor,
+    "&:hover": {
+      borderColor: colors.primary.darkColor
+    }
+  },
+  primaryDark: {
+    borderWidth: 1,
+    borderStyle: "solid",
+    borderColor: colors.primary.darkColor,
     "&:hover": {
       borderColor: colors.primary.darkColor
     }
   },
   secondary: {
     borderWidth: 1,
-    borderStyle: 'solid',
+    borderStyle: "solid",
     borderColor: colors.primary.grey,
     "&:hover": {
       borderColor: colors.primary.darkGrey
@@ -239,7 +253,7 @@ const linksOutline = {
   },
   secondaryLight: {
     borderWidth: 1,
-    borderStyle: 'solid',
+    borderStyle: "solid",
     borderColor: colors.primary.lightGrey,
     "&:hover": {
       borderColor: colors.primary.grey
@@ -247,7 +261,7 @@ const linksOutline = {
   },
   errorRed: {
     borderWidth: 1,
-    borderStyle: 'solid',
+    borderStyle: "solid",
     borderColor: colors.primary.grey,
     "&:hover": {
       borderColor: colors.primary.errorRed
@@ -255,13 +269,13 @@ const linksOutline = {
   },
   errorRedLight: {
     borderWidth: 1,
-    borderStyle: 'solid',
+    borderStyle: "solid",
     borderColor: colors.primary.lightGrey,
     "&:hover": {
       borderColor: colors.primary.errorRed
     }
-  },
-}
+  }
+};
 
 // theme typography variants
 const typography = {
