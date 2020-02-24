@@ -197,8 +197,8 @@ class PrivateRoute extends React.Component {
     let role = "";
     if (isLoggedIn) {
       if (this.props.location.pathname.indexOf("/company") !== -1)
-        role = "landlord";
-      else role = "company";
+        role = "company";
+      else role = "landlord";
     }
 
     return (
