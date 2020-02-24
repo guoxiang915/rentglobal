@@ -18,7 +18,7 @@ const mapDispatchToProps = dispatch => {
     mappedshowSearchBar: visible => dispatch(appActions.showSearchBar(visible)),
     mappedupdateUser: (user, history) =>
       dispatch(authActions.updateUser(user, history)),
-    mappedSetUserRole: role => dispatch(authActions.setUserRole(role))
+    mappedSetUserRole: (role, history) => dispatch(authActions.setUserRole(role, history))
   };
 };
 

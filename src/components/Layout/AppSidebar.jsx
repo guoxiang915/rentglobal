@@ -105,7 +105,7 @@ class AppSidebar extends Component {
             ? this.landlordMenu.map(item =>
                 this.renderMenuItem("landlord", item)
               )
-            : this.companyMenu.map(item => this.renderMenuItem("office", item))}
+            : this.companyMenu.map(item => this.renderMenuItem("company", item))}
         </Column>
       </div>
     );

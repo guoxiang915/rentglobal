@@ -151,7 +151,7 @@ const authReducer = (currentState = INITIAL_STATE, action) => {
     case "REQUEST_UPDATE_USER":
       return {
         ...currentState,
-        isLoading: true,
+        isLoading: true
       };
 
     case "UPDATE_USER_SUCCESS":

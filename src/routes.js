@@ -4,7 +4,7 @@ import Home from "./containers/Home";
 import AuthWrapper from "./containers/Login";
 import PrivateRoute from "./containers/PrivateRoute";
 import Landlord from "./containers/Landlord";
-import Company from "./containers/Landlord";
+import Company from "./containers/Company";
 import PageNotFound from "./containers/Landlord";
 
 export default (
