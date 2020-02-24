@@ -299,10 +299,6 @@ const styleSheet = theme => ({
     }
   },
 
-  shadowButton: {
-    boxShadow: "0px 6px 12px #D7DF234D"
-  },
-
   whiteShadowButton: {
     boxShadow: "0px 6px 12px #FFFFFF4D"
   },
@@ -703,7 +699,7 @@ class Home extends Component {
             </Box>
           </Row>
           <Row classes={{ box: classes.allLatestButton }}>
-            <Button variant="secondary" className={classes.shadowButton}>
+            <Button variant="secondary" shadow>
               <Typography fontSizeS fontWeightBold textSecondary>
                 {t("allLatest", { count: "50+" })}
               </Typography>

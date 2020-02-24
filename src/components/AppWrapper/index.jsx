@@ -544,7 +544,7 @@ class Appwrapper extends Component {
                   <Column paddingLeftDouble>
                     <Button
                       variant="secondary"
-                      className={classes.shadowButton}
+                      shadow
                       onClick={this.handleToggleRole(user.role)}
                     >
                       <Typography fontSizeS fontWeightBold>
@@ -642,7 +642,7 @@ class Appwrapper extends Component {
                   <Column paddingLeftDouble>
                     <Button
                       variant="secondary"
-                      className={classes.shadowButton}
+                      shadow
                       onClick={() =>
                         this.props.history.push("/auth/register/landlord")
                       }

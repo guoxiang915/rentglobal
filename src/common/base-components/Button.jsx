@@ -58,6 +58,10 @@ const styleSheet = theme => {
         background: "none",
         color: `${theme.colors.primary.darkGrey}`
       }
+    },
+
+    shadowButton: {
+      boxShadow: "0px 6px 12px #D7DF234D"
     }
   };
 
@@ -99,6 +103,7 @@ class Button extends Component {
       outline,
       inverse,
       transparent,
+      shadow,
       styles,
       ...props
     } = this.props;
@@ -111,10 +116,11 @@ class Button extends Component {
             rounded !== false && classes.rounded,
             variant && classes[variant],
             link && classes[`link${link}`],
-            link && inverse && classes['linkinverse'],
+            link && inverse && classes["linkinverse"],
             background && classes[`bk${background}`],
             outline && classes[`bd${outline}`],
             transparent && classes.transparent,
+            shadow && classes.shadowButton,
             styles
           )
         }}

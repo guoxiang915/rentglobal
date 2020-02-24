@@ -49,12 +49,11 @@ class AppSidebar extends Component {
     { text: "profile", link: "profile", icon: "person" },
     { text: "setting", link: "settings", icon: "settings" }
   ];
-  officeMenu = [
+  companyMenu = [
     { text: "home", link: "", icon: "home" },
     { text: "dashboard", link: "dashboard", icon: "dashboard" },
     { text: "offices", link: "offices", icon: "business" },
     { text: "contracts", link: "contracts", icon: "note" },
-    { text: "optimization", link: "optimization", icon: "directions_bus" },
     { text: "calendar", link: "calendar", icon: "date_range" },
     { text: "financials", link: "financial", icon: "attach_money" },
     { text: "support", link: "support", icon: "contact_support" },
@@ -106,7 +105,7 @@ class AppSidebar extends Component {
             ? this.landlordMenu.map(item =>
                 this.renderMenuItem("landlord", item)
               )
-            : this.officeMenu.map(item => this.renderMenuItem("office", item))}
+            : this.companyMenu.map(item => this.renderMenuItem("office", item))}
         </Column>
       </div>
     );
