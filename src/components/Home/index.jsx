@@ -14,7 +14,7 @@ import {
   Collapse,
   Icon
 } from "@material-ui/core";
-import { LinkedIn, Facebook, Instagram, Twitter } from "@material-ui/icons";
+import { LinkedIn, Facebook, Instagram, Twitter, SentimentSatisfiedOutlined } from "@material-ui/icons";
 import {
   Box,
   Row,
@@ -528,18 +528,18 @@ class Home extends Component {
               <Card className={classes.searchWrapper}>
                 <Column alignChildrenStart>
                   <Typography
-                    fontSizeXL
+                    // fontSizeXL
                     textSecondary
                     fontWeightBold
-                    // className={classes.landingTitle}
+                    classes={{ box: classes.landingTitle }}
                     block
                   >
                     <Trans i18nKey="dashboardLandingTitle">
                       <Typography
-                        fontSizeXL
+                        // fontSizeXL
                         textPrimary
                         fontWeightBold
-                        // className={classes.landingTitle}
+                        classes={{ box: classes.landingTitle }}
                         span
                       >
                         {{ name: "TESSI" }}
@@ -549,8 +549,8 @@ class Home extends Component {
                   </Typography>
                   <Typography
                     textMediumGrey
-                    fontSizeS
-                    // className={classes.landingSubtitle}
+                    // fontSizeS
+                    className={{ box: classes.landingSubtitle }}
                   >
                     {t("dashboardLandingSubtitle")}
                   </Typography>
@@ -596,10 +596,10 @@ class Home extends Component {
         >
           <Row classes={{ box: classes.blockTitleWrapper }}>
             <Typography
-              fontSizeL
+              // fontSizeL
               textSecondary
               fontWeightBold
-              // className={classes.blockTitle}
+              classes={{ box: classes.blockTitle }}
               block
             >
               <Trans i18nKey="howHelpFind">
@@ -607,7 +607,7 @@ class Home extends Component {
                   textPrimary
                   fontSizeL
                   textWeightBold
-                  // className={classes.blockTitle}
+                  classes={{ box: classes.blockTitle }}
                   span
                 >
                   {{ name: "RENTGLOBAL" }}
@@ -684,9 +684,9 @@ class Home extends Component {
           <Row classes={{ box: classes.blockTitleWrapper }}>
             <Typography
               fontWeightBold
-              fontSizeL
+              // fontSizeL
               textSecondary
-              //  className={classes.blockTitle}
+              classes={{ box: classes.blockTitle }}
             >
               {t("latestRecommendOffice")}
             </Typography>
@@ -714,10 +714,10 @@ class Home extends Component {
           >
             <Row classes={{ box: classes.homeRegisterTitle }}>
               <Typography
-                fontSizeL
+                // fontSizeL
                 fontWeightBold
                 textWhite
-                // className={classes.blockTitle}
+                classes={{ box: classes.blockTitle }}
               >
                 {t("homeRegisterTitle")}
               </Typography>
@@ -756,9 +756,10 @@ class Home extends Component {
             <Grid item xs={12} sm={4}>
               <Column>
                 <Row>
-                  <Icon color="primary" fontSize="large">
-                    face
-                  </Icon>
+                  <SentimentSatisfiedOutlined
+                    color="primary"
+                    fontSize="large"
+                  />
                 </Row>
                 <Row paddingTop>
                   <Typography fontSizeM uppercase textSecondary fontWeightBold>
