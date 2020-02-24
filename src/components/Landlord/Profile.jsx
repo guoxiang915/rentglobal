@@ -9,10 +9,9 @@ import {
   Typography,
   Button,
   TextField
-  // HorizontalDivider
 } from "../../common/base-components";
 import { UploadDocument } from "../../common/base-layouts";
-import { Icon, Collapse, Grid, Card, CardMedia } from "@material-ui/core";
+import { Collapse, Grid, Card, CardMedia } from "@material-ui/core";
 import {
   MailOutline,
   PersonOutline,
@@ -23,7 +22,9 @@ import {
   ImageOutlined,
   CloseOutlined,
   CheckOutlined,
-  LockOutlined
+  LockOutlined,
+  KeyboardArrowUpSharp,
+  KeyboardArrowDownSharp
 } from "@material-ui/icons";
 
 const styleSheet = theme => ({
@@ -44,7 +45,10 @@ const styleSheet = theme => ({
     paddingTop: theme.spacing(4)
   },
 
-  tabExpandIcon: {},
+  buttonIcon: {
+    width: 20,
+    height: 20
+  },
 
   profileInput: {
     width: 370,
@@ -87,7 +91,7 @@ const styleSheet = theme => ({
 
 class Profile extends Component {
   state = {
-    name: "",
+    username: "",
     email: "",
     phoneNumber: "",
     address: "",
@@ -107,13 +111,24 @@ class Profile extends Component {
     openedTab: "landlordInfo"
   };
 
-  constructor(props) {
-    super(props);
-    this.state = {
+  UNSAFE_componentWillReceiveProps(newProps) {
+    const { user } = newProps;
+    if (!user.profile) {
+      user.profile = {};
+    }
+    if (!user.profile.address) {
+      user.profile.address = {};
+    }
+
+    this.setState({
       ...this.state,
-      ...props.user,
-      password: ""
-    };
+      username: user.username || "",
+      email: user.email || "",
+      phoneNumber: user.profile.phoneNumber || "",
+      address: user.profile.address.fullAddress || "",
+      postalCode: user.profile.address.postalCode || "",
+      photo: user.profile.photo || ""
+    });
   }
 
   renderProfileTab = ({
@@ -133,9 +148,17 @@ class Profile extends Component {
             <Typography fontSizeS textMediumGrey paddingRight>
               {title}
             </Typography>
-            <Icon color="secondary" className={classes.tabExpandIcon}>
-              {open ? "keyboard_arrow_up" : "keyboard_arrow_down"}
-            </Icon>
+            {open ? (
+              <KeyboardArrowUpSharp
+                color="secondary"
+                className={classes.buttonIcon}
+              />
+            ) : (
+              <KeyboardArrowDownSharp
+                color="secondary"
+                className={classes.buttonIcon}
+              />
+            )}
           </Box>
           <Stretch />
           {isEdit ? (
@@ -144,7 +167,7 @@ class Profile extends Component {
               background="secondaryLight"
               onClick={onToggleEdit}
             >
-              <CloseOutlined />
+              <CloseOutlined className={classes.buttonIcon} />
               <Typography paddingLeft fontSizeS>
                 {t("cancel")}
               </Typography>
@@ -156,7 +179,7 @@ class Profile extends Component {
               inverse
               onClick={onToggleEdit}
             >
-              <EditOutlined />
+              <EditOutlined className={classes.buttonIcon} />
               <Typography paddingLeft fontSizeS>
                 {t("edit")}
               </Typography>
@@ -186,15 +209,16 @@ class Profile extends Component {
 
   handleSaveLandlordInfo = e => {
     this.props.mappedupdateUser({
-      name: this.state.name,
+      username: this.state.username,
       email: this.state.email,
-      phoneNumber: this.state.phoneNumber,
-      address: this.state.address,
-      postalCode: this.state.postalCode,
-      photo: this.state.photo,
-      legalStatusDocument: this.state.legalStatusDocument,
-      checkSpecimen: this.state.checkSpecimen,
-      lease: this.state.lease
+      profile: {
+        phoneNumber: this.state.phoneNumber,
+        address: {
+          fullAddress: this.state.address,
+          postalCode: this.state.postalCode
+        },
+        photo: this.state.photo
+      }
     });
   };
 
@@ -288,8 +312,8 @@ class Profile extends Component {
                       <TextField
                         variant="outlined"
                         placeholder={t("landlordName")}
-                        onChange={this.handleStateChangeByInput("name")}
-                        value={this.state.name}
+                        onChange={this.handleStateChangeByInput("username")}
+                        value={this.state.username}
                         className={classes.profileInput}
                         startAdornment={<PersonOutline color="secondary" />}
                         readOnly={!this.state.isEditLandlordInfo}
@@ -355,7 +379,7 @@ class Profile extends Component {
                               )
                             }
                           >
-                            <CloseOutlined />
+                            <CloseOutlined className={classes.buttonIcon} />
                             <Typography paddingLeft fontSizeS>
                               {t("cancel")}
                             </Typography>
@@ -367,7 +391,7 @@ class Profile extends Component {
                             fullWidth
                             onClick={this.handleSaveLandlordInfo}
                           >
-                            <CheckOutlined />
+                            <CheckOutlined className={classes.buttonIcon} />
                             <Typography paddingLeft fontSizeS>
                               {t("save")}
                             </Typography>
@@ -483,7 +507,7 @@ class Profile extends Component {
                                 )
                               }
                             >
-                              <CloseOutlined />
+                              <CloseOutlined className={classes.buttonIcon} />
                               <Typography paddingLeft fontSizeS>
                                 {t("cancel")}
                               </Typography>

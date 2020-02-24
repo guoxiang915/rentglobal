@@ -187,5 +187,12 @@
     "rj45Cable": "RJ45 Cable",
     "cleaningService": "Cleaning service",
     "furniture": "Furniture",
-    "coffeeOrTea": "CoffeeOrTea"
+    "coffeeOrTea": "CoffeeOrTea",
+
+    "companyInfo": "Company info",
+    "companyDocuments": "Company documents",
+    "companyName": "Company name",
+    "copyOfID": "Copy of photo ID",
+    "lastThreeBalance": "Last three balance",
+    "commercialBrochure": "Commercial brochure"
 }

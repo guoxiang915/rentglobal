@@ -267,7 +267,7 @@ class Appwrapper extends Component {
   handleHelp = () => {};
 
   handleToggleRole = role => () => {
-    this.props.mappedSetUserRole(role === "landlord" ? "office" : "landlord");
+    this.props.mappedSetUserRole(role === "landlord" ? "company" : "landlord", this.props.history);
   };
 
   handleOpenAccountInfo = event => {

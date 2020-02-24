@@ -1,7 +1,6 @@
 import { takeLatest, put, call } from "redux-saga/effects";
 import api from "../../api/api";
 import flushMessage from "../flushMessages";
-import { delay } from "redux-saga";
 
 const sendRequest = async updateData => {
   let resp = null;
@@ -45,5 +44,6 @@ export function* watchUpdateUser() {
 export function* watchSetUserRole() {
   yield takeLatest("SET_USER_ROLE", function* setUserRole(action) {
     action.history.push(`/${action.role}`);
+    yield call(flushMessage);
   });
 }

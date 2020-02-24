@@ -5,7 +5,6 @@ import { Switch, Route, Redirect } from "react-router-dom";
 import AppSidebar from "../../containers/Layout/AppSidebar";
 import { Row, Column } from "../../common/base-components";
 import Profile from "./Profile";
-import Offices from "./Offices";
 
 const styleSheet = () => ({
   root: {
@@ -16,8 +15,9 @@ const styleSheet = () => ({
   }
 });
 
-class Landlord extends Component {
+class Company extends Component {
   render() {
+    console.log('company');
     const { classes } = this.props;
     const { user } = this.props.auth;
 
@@ -26,14 +26,13 @@ class Landlord extends Component {
         <Column fullWidth>
           <Row classes={{ box: classes.root }} fullWidth alignChildrenStart>
             <Column classes={{ box: classes.sidebarWrapper }} fullWdith>
-              <AppSidebar role="landlord" />
+              <AppSidebar role="company" />
             </Column>
             <Column classes={{ box: classes.contentWrapper }} fullWidth>
               <Switch>
-                <Route path="/landlord/dashboard" render={props => <></>} />
-                <Route path="/landlord/offices" render={props => <Offices />} />
+                <Route path="/company/dashboard" render={props => <></>} />
                 <Route
-                  path="/landlord/profile"
+                  path="/company/profile"
                   render={props => (
                     <Profile
                       user={user}
@@ -41,7 +40,7 @@ class Landlord extends Component {
                     />
                   )}
                 />
-                <Route render={() => <Redirect to="/landlord/dashboard" />} />
+                <Route render={() => <Redirect to="/company/dashboard" />} />
               </Switch>
             </Column>
           </Row>
@@ -51,4 +50,4 @@ class Landlord extends Component {
   }
 }
 
-export default withStyles(styleSheet)(withTranslation("common")(Landlord));
+export default withStyles(styleSheet)(withTranslation("common")(Company));

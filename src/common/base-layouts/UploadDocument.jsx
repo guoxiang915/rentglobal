@@ -26,6 +26,7 @@ const styleSheet = theme => ({
   title: {
     width: "100%",
     overflow: "hidden",
+    whiteSpace: "nowrap",
     textOverflow: "ellipsis",
     marginTop: 3
   },
