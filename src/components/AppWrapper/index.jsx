@@ -28,6 +28,7 @@ import {
   Row,
   Column,
   Box,
+  Stretch,
   IconButton,
   Typography
 } from "../../common/base-components";
@@ -185,7 +186,6 @@ class Appwrapper extends Component {
     });
 
     this.props.history.listen(location => {
-      // console.log(location.pathname);
       this.setState({
         routePath: location.pathname
       });
@@ -218,6 +218,7 @@ class Appwrapper extends Component {
         this.props.history.push("/auth/login");
         break;
       case "dashboard":
+      case "profile":
         this.props.history.push(`/${user.role}/${path}`);
         break;
       default:
@@ -288,7 +289,7 @@ class Appwrapper extends Component {
       <Row justifyChildrenCenter fullWidth>
         <Avatar alt={user.username} className={classes.accountAvatar} />
       </Row>
-      <Row paddingTop>
+      <Row paddingTop fullWidth justifyChildrenCenter>
         <Typography fontSizeS textSecondary>
           {user.username}
         </Typography>
@@ -306,8 +307,13 @@ class Appwrapper extends Component {
       <Row paddingTopHalf fullWidth>
         <Typography classes={{ box: classes.profileProgressText }} textErrorRed>
           {t("profileNeedAttention")}
-          <Icon className={classes.attentionIcon}>arrow_right_alt</Icon>
         </Typography>
+        <Stretch />
+        <Link to="#" onClick={() => navigate("profile")}>
+          <Typography fontSizeS textErrorRed>
+            <Icon className={classes.attentionIcon}>arrow_right_alt</Icon>
+          </Typography>
+        </Link>
       </Row>
       <Row paddingTopDouble>
         <Link to="#" onClick={() => navigate("home")}>
