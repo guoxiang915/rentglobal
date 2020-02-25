@@ -179,7 +179,7 @@ class AppSidebar extends Component {
               variant={active ? "white" : "normal"}
               inverse
             >
-              <Typography fontSizeM>
+              <Typography fontSizeM alignChildrenCenter>
                 {/* <Icon className={classes.menuIcon}>{item.icon}</Icon> */}
                 <Box classes={{ box: classes.menuIcon }}>{item.icon}</Box>
                 {t(item.text)}
@@ -187,7 +187,7 @@ class AppSidebar extends Component {
             </Link>
           ) : (
             <Link to={link} variant={active ? "primary" : "normal"}>
-              <Typography fontSizeS>
+              <Typography fontSizeS alignChildrenCenter>
                 {/* <Icon className={classes.menuIcon}>{item.icon}</Icon> */}
                 <Box classes={{ box: classes.menuIcon }}>{item.icon}</Box>
                 {t(item.text)}
