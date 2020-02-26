@@ -104,9 +104,13 @@ class LoginForm extends Component {
     this.setState({ isRemember: !this.state.isRemember });
   };
 
-  handleLogin = e => {
+  handleLogin = async e => {
     e.preventDefault();
     if (this.state.error) {
+      return;
+    }
+    const validForm = await this.validateForm();
+    if (!validForm) {
       return;
     }
     const payload = {
