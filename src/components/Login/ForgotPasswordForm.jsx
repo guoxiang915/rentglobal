@@ -46,30 +46,34 @@ class ForgotPasswordForm extends Component {
     };
   }
 
-  emailValidation = () => {
+  handleChange = name => event => {
+    this.setState({
+      [name]: event.target.value,
+      [`${name}Error`]: null
+    });
+  };
+
+  async validateForm() {
     const emailValid = this.state.email.match(
       /^([\w.%+-]+)@([\w-]+\.)+([\w]{2,})$/i
     );
-    if (!emailValid) {
-      this.setState({ emailError: this.props.t("invalidEmail") });
-    } else {
-      this.setState({ emailError: null });
+    if (this.state.email === "") {
+      this.setState({ emailError: this.props.t("emailRequired") });
+      return false;
+    } else if (!emailValid) {
+      this.setState({ emailError: this.props.t("invalidEmailAddress") });
+      return false;
     }
-  };
+    return true;
+  }
 
-  handleChange = name => event => {
-    this.setState({
-      [name]: event.target.value
-    });
-
-    if (name === "email") {
-      this.emailValidation();
-    }
-  };
-
-  handleResetPassword = e => {
+  handleResetPassword = async e => {
     e.preventDefault();
     if (this.state.error) {
+      return;
+    }
+    const validForm = await this.validateForm();
+    if (!validForm) {
       return;
     }
     const payload = {

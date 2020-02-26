@@ -80,34 +80,10 @@ class AuthWrapper extends Component {
     super(props);
     this.state = {
       email: "",
-      emailError: null,
-      password: "",
-      passwordError: null,
       isRemember: false,
       error: null
     };
   }
-
-  emailValidation = () => {
-    const emailValid = this.state.email.match(
-      /^([\w.%+-]+)@([\w-]+\.)+([\w]{2,})$/i
-    );
-    if (!emailValid) {
-      this.setState({ emailError: this.props.t("invalidEmail") });
-    } else {
-      this.setState({ emailError: null });
-    }
-  };
-
-  handleChange = name => event => {
-    this.setState({
-      [name]: event.target.value
-    });
-
-    if (name === "email") {
-      this.emailValidation();
-    }
-  };
 
   navigate = route => {
     this.props.history.push(`/auth/${route}`);

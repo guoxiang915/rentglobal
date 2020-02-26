@@ -61,46 +61,25 @@ class RegisterForm extends Component {
     };
   }
 
-  emailValidation = () => {
-    const emailValid = this.state.email.match(
-      /^([\w.%+-]+)@([\w-]+\.)+([\w]{2,})$/i
-    );
-    if (!emailValid) {
-      this.setState({ emailError: this.props.t("invalidEmail") });
-    } else {
-      this.setState({ emailError: null });
-    }
-  };
-
   handleChange = name => event => {
     this.setState({
-      [name]: event.target.value
+      [name]: event.target.value,
+      [`${name}Error`]: null
     });
-
-    if (name === "email") {
-      this.emailValidation();
-    }
   };
 
   async validateForm() {
     const emailValid = this.state.email.match(
       /^([\w.%+-]+)@([\w-]+\.)+([\w]{2,})$/i
     );
-    if (this.state.email === "" || !emailValid) {
-      this.setState({
-        error: "Please enter a valid email!",
-        errors: {
-          email: true
-        }
-      });
+    if (this.state.email === "") {
+      this.setState({ emailError: this.props.t("emailRequired") });
+      return false;
+    } else if (!emailValid) {
+      this.setState({ emailError: this.props.t("invalidEmailAddress") });
       return false;
     } else if (this.state.password === "") {
-      this.setState({
-        error: "Password required!",
-        errors: {
-          password: true
-        }
-      });
+      this.setState({ passwordError: this.props.t("passwordRequired") });
       return false;
     }
     return true;
@@ -108,7 +87,7 @@ class RegisterForm extends Component {
 
   handleSignup = async e => {
     e.preventDefault();
-    let validForm = await this.validateForm();
+    const validForm = await this.validateForm();
     if (!validForm) {
       return;
     }
@@ -173,6 +152,8 @@ class RegisterForm extends Component {
             type="password"
             variant="outlined"
             startAdornment={<LockOpen color="secondary" />}
+            error={!!this.state.passwordError}
+            helperText={this.state.passwordError}
             fullWidth
           />
         </Box>

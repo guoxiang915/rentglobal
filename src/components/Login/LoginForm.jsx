@@ -58,30 +58,37 @@ class LoginForm extends Component {
     };
   }
 
-  emailValidation = () => {
+  handleChange = name => event => {
+    this.setState({
+      [name]: event.target.value,
+      [`${name}Error`]: null
+    });
+  };
+
+  async validateForm() {
     const emailValid = this.state.email.match(
       /^([\w.%+-]+)@([\w-]+\.)+([\w]{2,})$/i
     );
-    if (!emailValid) {
-      this.setState({ emailError: this.props.t("invalidEmail") });
-    } else {
-      this.setState({ emailError: null });
+    if (this.state.email === "") {
+      this.setState({ emailError: this.props.t("emailRequired") });
+      return false;
+    } else if (!emailValid) {
+      this.setState({ emailError: this.props.t("invalidEmailAddress") });
+      return false;
+    } else if (this.state.password === "") {
+      this.setState({ passwordError: this.props.t("passwordRequired") });
+      return false;
     }
-  };
+    return true;
+  }
 
-  handleChange = name => event => {
-    this.setState({
-      [name]: event.target.value
-    });
-
-    if (name === "email") {
-      this.emailValidation();
-    }
-  };
-
-  handleSubmit = e => {
+  handleSubmit = async e => {
     e.preventDefault();
     if (this.state.error) {
+      return;
+    }
+    const validForm = await this.validateForm();
+    if (!validForm) {
       return;
     }
     const payload = {
@@ -157,6 +164,8 @@ class LoginForm extends Component {
             type="password"
             variant="outlined"
             startAdornment={<LockOpen color="secondary" />}
+            error={!!this.state.passwordError}
+            helperText={this.state.passwordError}
             fullWidth
           />
         </Box>
