@@ -15,6 +15,7 @@ import {
 
 const styleSheet = theme => ({
   root: {
+    position: "relative",
     color: theme.colors.primary.darkGrey,
     padding: 5,
     margin: 0,
