@@ -9,7 +9,8 @@ import {
   Grid,
   Menu,
   Popover,
-  LinearProgress
+  LinearProgress,
+  Paper
 } from "@material-ui/core";
 import {
   Button,
@@ -101,8 +102,31 @@ const styleSheet = theme => ({
   },
 
   accountInfoWrapper: {
+    background: "transparent",
+    boxShadow: "none",
+    overflow: 'visible',
+  },
+
+  accountInfoContentWrapper: {
+    position: "relative",
+    top: 15,
+    boxShadow: "0px 2px 4px #00000014",
+    border: `1px solid ${theme.colors.primary.borderGrey}`,
+    [theme.breakpoints.down('sm')]: {
+      right: -29
+    },
     "&::before": {
-      border: `10px solid black`
+      position: "absolute",
+      top: -8,
+      right: 36,
+      content: '" "',
+      width: 16,
+      height: 16,
+      background: theme.colors.primary.white,
+      border: `1px solid ${theme.colors.primary.borderGrey}`,
+      borderBottom: 'none',
+      borderRight: 'none',
+      transform: "rotate(45deg)"
     }
   },
 
@@ -110,12 +134,12 @@ const styleSheet = theme => ({
     paddingTop: 30,
     paddingBottom: 6,
     paddingLeft: 18,
-    paddingRight: 14
+    paddingRight: 14,
   },
 
   accountAvatar: {
     width: 80,
-    height: 80
+    height: 80,
   },
 
   profileProgress: {
@@ -129,7 +153,7 @@ const styleSheet = theme => ({
   },
 
   dashedBuffer: {
-    background: 'none'
+    background: "none"
   },
 
   attentionIcon: {
@@ -307,7 +331,11 @@ class AppHeader extends Component {
             value={profileCompleteness}
             valueBuffer={50}
             variant="buffer"
-            classes={{root: classes.profileProgress, bar2Buffer: classes.bar2Buffer, dashed: classes.dashedBuffer}}
+            classes={{
+              root: classes.profileProgress,
+              bar2Buffer: classes.bar2Buffer,
+              dashed: classes.dashedBuffer
+            }}
           />
         </Row>
 
@@ -421,8 +449,8 @@ class AppHeader extends Component {
                       transparent
                       className={classes.grayButton}
                     >
-                      <Typography fontSizeS fontWeightMedium>
-                        {t(language)}&nbsp;
+                      <Typography fontSizeS fontWeightMedium alignChildrenCenter>
+                        {t(language)}&nbsp;&nbsp;
                         <ArrowDownIcon className={classes.arrowDownIcon} />
                       </Typography>
                     </Button>
@@ -451,8 +479,8 @@ class AppHeader extends Component {
                       transparent
                       className={classes.grayButton}
                     >
-                      <Typography fontSizeS fontWeightMedium>
-                        {location}&nbsp;
+                      <Typography fontSizeS fontWeightMedium alignChildrenCenter>
+                        {location}&nbsp;&nbsp;
                         <ArrowDownIcon className={classes.arrowDownIcon} />
                       </Typography>
                     </Button>
@@ -566,18 +594,20 @@ class AppHeader extends Component {
                         vertical: "top",
                         horizontal: "right"
                       }}
-                      className={classes.accountInfoWrapper}
+                      classes={{ paper: classes.accountInfoWrapper }}
                     >
-                      <AccountInfo
-                        role={role}
-                        user={user}
-                        navigate={path => {
-                          this.handleCloseMenu("accountInfoEl")();
-                          this.navigate(path);
-                        }}
-                        classes={classes}
-                        t={t}
-                      />
+                      <Paper className={classes.accountInfoContentWrapper}>
+                        <AccountInfo
+                          role={role}
+                          user={user}
+                          navigate={path => {
+                            this.handleCloseMenu("accountInfoEl")();
+                            this.navigate(path);
+                          }}
+                          classes={classes}
+                          t={t}
+                        />
+                      </Paper>
                     </Popover>
                   </Column>
                 </>
