@@ -19,7 +19,10 @@ import {
   Close as CloseIcon,
   MailOutline,
   PersonOutline,
-  NotificationsOutlined
+  NotificationsOutlined,
+  ArrowRightAlt,
+  HomeOutlined,
+  DashboardOutlined
 } from "@material-ui/icons";
 import {
   Button,
@@ -89,10 +92,6 @@ const styleSheet = theme => ({
     minWidth: 200,
     position: "relative",
     top: 30
-  },
-
-  menuButton: {
-    padding: 5
   },
 
   stickyBar: {
@@ -227,14 +226,14 @@ class AppHeader extends Component {
         <Stretch />
         <Link to="#" onClick={() => navigate("profile")}>
           <Typography fontSizeS textErrorRed>
-            <Icon className={classes.attentionIcon}>arrow_right_alt</Icon>
+            <ArrowRightAlt className={classes.attentionIcon} />
           </Typography>
         </Link>
       </Row>
       <Row paddingTopDouble>
         <Link to="#" onClick={() => navigate("home")}>
           <Typography fontSizeS>
-            <Icon className={classes.menuIcon}>home</Icon>
+            <HomeOutlined className={classes.menuIcon} />
             {t("home")}
           </Typography>
         </Link>
@@ -242,7 +241,7 @@ class AppHeader extends Component {
       <Row paddingTop>
         <Link to="#" onClick={() => navigate("dashboard")}>
           <Typography fontSizeS>
-            <Icon className={classes.menuIcon}>dashboard</Icon>
+            <DashboardOutlined className={classes.menuIcon} />
             {t("dashboard")}
           </Typography>
         </Link>
@@ -315,9 +314,9 @@ class AppHeader extends Component {
                       transparent
                       className={classes.grayButton}
                     >
-                      <Typography fontSizeS>
-                        {t(language)}
-                        <ExpandMoreIcon />
+                      <Typography fontSizeS fontWeightMedium>
+                        {t(language)}&nbsp;
+                        <ExpandMoreIcon fontSize="small" />
                       </Typography>
                     </Button>
                     <Menu
@@ -329,10 +328,10 @@ class AppHeader extends Component {
                       className={classes.headerMenu}
                     >
                       <MenuItem onClick={this.handleSelectLanguage("English")}>
-                        English
+                        {t("english")}
                       </MenuItem>
                       <MenuItem onClick={this.handleSelectLanguage("French")}>
-                        French
+                        {t("french")}
                       </MenuItem>
                     </Menu>
                   </Column>
@@ -345,9 +344,9 @@ class AppHeader extends Component {
                       transparent
                       className={classes.grayButton}
                     >
-                      <Typography fontSizeS>
-                        {location}
-                        <ExpandMoreIcon />
+                      <Typography fontSizeS fontWeightMedium>
+                        {location}&nbsp;
+                        <ExpandMoreIcon fontSize="small" />
                       </Typography>
                     </Button>
                     <Menu
@@ -373,7 +372,7 @@ class AppHeader extends Component {
                       transparent
                       className={classes.grayButton}
                     >
-                      <Typography fontSizeS>{t("help")}</Typography>
+                      <Typography fontSizeS fontWeightMedium>{t("help")}</Typography>
                     </Button>
                   </Column>
                 </Box>
@@ -528,8 +527,7 @@ class AppHeader extends Component {
                       background="primary"
                       outline="primary"
                       onClick={() => this.handleToggleSidebar()}
-                      // className={classes.menuButton}
-                      // color="inherit"
+                      shadow
                     >
                       <CloseIcon fontSize="small" />
                     </Button>
@@ -541,8 +539,7 @@ class AppHeader extends Component {
                       outline="primary"
                       inverse
                       onClick={() => this.handleToggleSidebar()}
-                      // className={classes.menuButton}
-                      // color="inherit"
+                      shadow
                     >
                       <MenuIcon fontSize="small" />
                     </Button>

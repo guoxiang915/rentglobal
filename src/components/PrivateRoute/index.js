@@ -143,6 +143,7 @@ class PrivateRoute extends React.Component {
       case "home":
         this.props.history.push("/");
         break;
+
       case "login":
         this.props.history.push("/auth/login");
         break;
@@ -158,10 +159,15 @@ class PrivateRoute extends React.Component {
           this.props.history.push("/auth/register");
         }
         break;
+
       case "dashboard":
       case "profile":
+      case "offices":
+      case "contracts":
+      case "optimization":
         this.props.history.push(`/${role}/${path}`);
         break;
+
       default:
         this.props.history.push("/");
         break;
@@ -279,7 +285,7 @@ class PrivateRoute extends React.Component {
                             />
                           </Switch>
                         ) : (
-                          <Component {...props} />
+                          <Component navigate={this.navigate} {...props} />
                         )}
                       </div>
 

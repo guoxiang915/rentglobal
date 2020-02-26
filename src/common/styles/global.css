@@ -6,7 +6,7 @@
   src: local("Avenir Next"),
     local("Avenir-Next-Regular"),
       url("../../assets/font/AvenirNextLTPro/AvenirNextLTPro-Regular.otf")
-      format("truetype");
+      format("opentype");
 }
 
 /* italic */
@@ -17,7 +17,7 @@
   src: local("Avenir Next Italic"),
     local("Avenir-Next-Italic")
       url("../../assets/font/AvenirNextLTPro/AvenirNextLTPro-It.otf")
-      format("truetype");
+      format("opentype");
 }
 
 /* bold */
@@ -27,8 +27,8 @@
   font-weight: 700;
   src: local("Avenir Next Bold"),
     local("Avenir-Next-Bold")
-      url("../../assets/font/AvenirNextLTPro/AvenirNextLTPro-Bold.otf")
-      format("truetype");
+      url("../../assets/font/AvenirNextLTPro/AvenirNextLTPro-Regular.otf")
+      format("opentype");
 }
 
 html,
