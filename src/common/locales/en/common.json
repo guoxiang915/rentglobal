@@ -112,6 +112,9 @@
     "setting": "Setting",
     "signOut": "Sign out",
     "profileNeedAttention": "Your profile need attention!",
+    "profileCompleted": "Your profile completed",
+    "companyPanel": "Company panel",
+    "landlordPanel": "Landlord panel",
 
     "profileAndAccount": "Profile & Account",
     "landlordInfo": "Landlord info",

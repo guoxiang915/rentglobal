@@ -8,22 +8,9 @@ import {
   MenuItem,
   Grid,
   Menu,
-  Icon,
   Popover,
-  Avatar,
   LinearProgress
 } from "@material-ui/core";
-import {
-  Menu as MenuIcon,
-  ExpandMore as ExpandMoreIcon,
-  Close as CloseIcon,
-  MailOutline,
-  PersonOutline,
-  NotificationsOutlined,
-  ArrowRightAlt,
-  HomeOutlined,
-  DashboardOutlined
-} from "@material-ui/icons";
 import {
   Button,
   Link,
@@ -31,7 +18,20 @@ import {
   Column,
   Box,
   Stretch,
-  Typography
+  Typography,
+  Divider,
+  HomeIcon,
+  UsersIcon,
+  PowerIcon,
+  ArrowRightIcon,
+  EmailIcon,
+  AlarmIcon,
+  UserIcon,
+  CloseIcon,
+  MenuIcon,
+  ArrowDownIcon,
+  DashboardIcon,
+  ImageIcon
 } from "../../common/base-components";
 
 import "./style.css";
@@ -106,23 +106,73 @@ const styleSheet = theme => ({
     }
   },
 
+  accountInfoContent: {
+    paddingTop: 30,
+    paddingBottom: 6,
+    paddingLeft: 18,
+    paddingRight: 14
+  },
+
   accountAvatar: {
     width: 80,
     height: 80
   },
 
   profileProgress: {
-    width: "100%"
+    width: "100%",
+    background: theme.colors.primary.borderGrey
   },
 
-  profileProgressText: {},
+  bar2Buffer: {
+    color: theme.colors.primary.errorRed,
+    background: theme.colors.primary.errorRed
+  },
+
+  dashedBuffer: {
+    background: 'none'
+  },
 
   attentionIcon: {
-    marginLeft: 25
+    marginLeft: 25,
+    width: 11,
+    height: 8
   },
 
   menuIcon: {
     marginRight: 25
+  },
+
+  accountNavItem: {
+    paddingTop: 12,
+    paddingBottom: 12
+  },
+
+  smallIcon: {
+    width: 16,
+    height: 16
+  },
+
+  accountNavIcon: {
+    marginRight: 25,
+    color: theme.colors.primary.borderGrey,
+    opacity: 1
+  },
+
+  errorRedIcon: {
+    color: theme.colors.primary.errorRed,
+    opacity: 1
+  },
+
+  arrowDownIcon: {
+    width: 12,
+    height: 7
+  },
+
+  divider: {
+    left: -18,
+    right: -14,
+    position: "relative",
+    width: "calc(100% + 32px)"
   }
 });
 
@@ -193,69 +243,126 @@ class AppHeader extends Component {
     }
   };
 
-  renderAccountInfo = ({ user, navigate, classes, t }) => (
-    <Column
-      paddingTopDouble
-      paddingBottomDouble
-      paddingLeft
-      paddingRight
-      alignChildrenStart
-    >
-      <Row justifyChildrenCenter fullWidth>
-        <Avatar alt={user.username} className={classes.accountAvatar} />
+  renderAccountNavItem = ({ onClick, icon, text, errorRed, classes }) => {
+    const NavIcon = icon;
+    return (
+      <Row classes={{ box: classes.accountNavItem }}>
+        <Link to="#" onClick={onClick}>
+          <Typography fontSizeS textErrorRed={errorRed} alignChildrenCenter>
+            <Box>
+              <NavIcon
+                className={clsx(
+                  classes.smallIcon,
+                  classes.accountNavIcon,
+                  errorRed && classes.errorRedIcon
+                )}
+              />
+            </Box>
+            {text}
+          </Typography>
+        </Link>
       </Row>
-      <Row paddingTop fullWidth justifyChildrenCenter>
-        <Typography fontSizeS textSecondary>
-          {user.username}
-        </Typography>
-      </Row>
-      <Row paddingTopDouble fullWidth>
-        <LinearProgress
-          color="primary"
-          value={30}
-          valueBuffer={50}
-          // value="completed"
-          variant="buffer"
-          className={classes.profileProgress}
+    );
+  };
+
+  // Account Info PopOver Component
+  renderAccountInfo = ({ role, user, navigate, classes, t }) => {
+    const NavItem = this.renderAccountNavItem;
+    const profileCompleteness = 30;
+
+    return (
+      <Column alignChildrenStart classes={{ box: classes.accountInfoContent }}>
+        {/* user avatar */}
+        <Row justifyChildrenCenter fullWidth>
+          <Box
+            alignChildrenCenter
+            justifyChildrenCenter
+            style={{ borderRadius: role === "landlord" ? 8 : "50%" }}
+            border
+            classes={{
+              box: clsx(classes.accountAvatar)
+            }}
+          >
+            {user.profile_image ? (
+              <img src={user.profile_image} alt={user.username} />
+            ) : role === "landlord" ? (
+              <ImageIcon className={classes.smallIcon} variant="normal" />
+            ) : (
+              <UserIcon className={classes.smallIcon} variant="normal" />
+            )}
+          </Box>
+        </Row>
+
+        {/* username */}
+        <Row paddingTop fullWidth justifyChildrenCenter>
+          <Typography fontSizeS textSecondary>
+            {user.username}
+          </Typography>
+        </Row>
+
+        {/* profile completeness linearprogress */}
+        <Row paddingTopDouble fullWidth>
+          <LinearProgress
+            color="primary"
+            value={profileCompleteness}
+            valueBuffer={50}
+            variant="buffer"
+            classes={{root: classes.profileProgress, bar2Buffer: classes.bar2Buffer, dashed: classes.dashedBuffer}}
+          />
+        </Row>
+
+        {/* profile completeness text */}
+        <Row paddingTopHalf fullWidth>
+          <Typography fontSizeXS textErrorRed>
+            {profileCompleteness < 100
+              ? t("profileNeedAttention")
+              : t("profileCompleted")}
+          </Typography>
+          <Stretch />
+          <Link to="#" onClick={() => navigate("profile")}>
+            <Typography fontSizeS textErrorRed>
+              <ArrowRightIcon
+                className={classes.attentionIcon}
+                variant={profileCompleteness < 100 ? "errorRed" : "normal"}
+              />
+            </Typography>
+          </Link>
+        </Row>
+
+        {/* links */}
+        <Box paddingTopDouble />
+        <NavItem
+          onClick={() => navigate("home")}
+          icon={HomeIcon}
+          text={t("home")}
+          classes={classes}
         />
-      </Row>
-      <Row paddingTopHalf fullWidth>
-        <Typography classes={{ box: classes.profileProgressText }} textErrorRed>
-          {t("profileNeedAttention")}
-        </Typography>
-        <Stretch />
-        <Link to="#" onClick={() => navigate("profile")}>
-          <Typography fontSizeS textErrorRed>
-            <ArrowRightAlt className={classes.attentionIcon} />
-          </Typography>
-        </Link>
-      </Row>
-      <Row paddingTopDouble>
-        <Link to="#" onClick={() => navigate("home")}>
-          <Typography fontSizeS>
-            <HomeOutlined className={classes.menuIcon} />
-            {t("home")}
-          </Typography>
-        </Link>
-      </Row>
-      <Row paddingTop>
-        <Link to="#" onClick={() => navigate("dashboard")}>
-          <Typography fontSizeS>
-            <DashboardOutlined className={classes.menuIcon} />
-            {t("dashboard")}
-          </Typography>
-        </Link>
-      </Row>
-      <Row paddingTop>
-        <Link to="#" onClick={() => navigate("logout")}>
-          <Typography fontSizeS textErrorRed>
-            <Icon className={classes.menuIcon}>power_settings_new</Icon>
-            {t("signOut")}
-          </Typography>
-        </Link>
-      </Row>
-    </Column>
-  );
+        <NavItem
+          onClick={() => navigate("dashboard")}
+          icon={DashboardIcon}
+          text={t("dashboard")}
+          classes={classes}
+        />
+        <Box padding2 />
+        <Divider className={classes.divider} />
+        <NavItem
+          onClick={() => navigate("dashboard")}
+          icon={UsersIcon}
+          text={role === "company" ? t("companyPanel") : t("landlordPanel")}
+          classes={classes}
+        />
+        <Divider className={classes.divider} />
+        <Box padding2 />
+        <NavItem
+          onClick={() => navigate("logout")}
+          icon={PowerIcon}
+          text={t("signOut")}
+          classes={classes}
+          errorRed
+        />
+      </Column>
+    );
+  };
 
   render() {
     const {
@@ -316,7 +423,7 @@ class AppHeader extends Component {
                     >
                       <Typography fontSizeS fontWeightMedium>
                         {t(language)}&nbsp;
-                        <ExpandMoreIcon fontSize="small" />
+                        <ArrowDownIcon className={classes.arrowDownIcon} />
                       </Typography>
                     </Button>
                     <Menu
@@ -346,7 +453,7 @@ class AppHeader extends Component {
                     >
                       <Typography fontSizeS fontWeightMedium>
                         {location}&nbsp;
-                        <ExpandMoreIcon fontSize="small" />
+                        <ArrowDownIcon className={classes.arrowDownIcon} />
                       </Typography>
                     </Button>
                     <Menu
@@ -372,7 +479,9 @@ class AppHeader extends Component {
                       transparent
                       className={classes.grayButton}
                     >
-                      <Typography fontSizeS fontWeightMedium>{t("help")}</Typography>
+                      <Typography fontSizeS fontWeightMedium>
+                        {t("help")}
+                      </Typography>
                     </Button>
                   </Column>
                 </Box>
@@ -416,14 +525,14 @@ class AppHeader extends Component {
                   {/* mails */}
                   <Column paddingLeftDouble>
                     <Button variant="icon">
-                      <MailOutline fontSize="small" />
+                      <EmailIcon className={classes.smallIcon} />
                     </Button>
                   </Column>
 
                   {/* notifications */}
                   <Column paddingLeft>
                     <Button variant="icon">
-                      <NotificationsOutlined fontSize="small" />
+                      <AlarmIcon className={classes.smallIcon} />
                     </Button>
                   </Column>
 
@@ -437,10 +546,10 @@ class AppHeader extends Component {
                     >
                       {!isWidthDown("sm", width) && (
                         <Typography paddingRight>
-                          <Icon fontSize="small">keyboard_arrow_down</Icon>
+                          <ArrowDownIcon className={classes.arrowDownIcon} />
                         </Typography>
                       )}
-                      <PersonOutline fontSize="small" />
+                      <UserIcon className={classes.smallIcon} />
                     </Button>
 
                     {/* account info panel */}
@@ -460,6 +569,7 @@ class AppHeader extends Component {
                       className={classes.accountInfoWrapper}
                     >
                       <AccountInfo
+                        role={role}
                         user={user}
                         navigate={path => {
                           this.handleCloseMenu("accountInfoEl")();
@@ -529,7 +639,7 @@ class AppHeader extends Component {
                       onClick={() => this.handleToggleSidebar()}
                       shadow
                     >
-                      <CloseIcon fontSize="small" />
+                      <CloseIcon className={classes.smallIcon} />
                     </Button>
                   ) : (
                     <Button
@@ -541,7 +651,7 @@ class AppHeader extends Component {
                       onClick={() => this.handleToggleSidebar()}
                       shadow
                     >
-                      <MenuIcon fontSize="small" />
+                      <MenuIcon className={classes.smallIcon} />
                     </Button>
                   )}
                 </Column>

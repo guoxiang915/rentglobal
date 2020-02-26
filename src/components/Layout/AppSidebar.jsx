@@ -26,9 +26,9 @@ import {
   CalendarIcon,
   TicketIcon,
   ChatIcon,
-  SettingIcon
+  SettingIcon,
+  ArrowUpIcon
 } from "../../common/base-components";
-import { KeyboardArrowUp } from "@material-ui/icons";
 
 const styleSheet = theme => ({
   sidebarWrapper: {
@@ -196,7 +196,7 @@ class AppSidebar extends Component {
       const isHover = false;
 
       return (
-        <React.Fragment key={item.text}>
+        <React.Fragment>
           <Row
             classes={{
               box: clsx(
@@ -287,9 +287,9 @@ class AppSidebar extends Component {
                   navigate={this.navigate}
                   classes={classes}
                   t={t}
+                  key={item.text}
                 />
               )
-              // this.renderMenuItem(role, item, this.navigate)
             )}
 
             {/* show more buttons for mobile version */}
@@ -351,15 +351,6 @@ class AppSidebar extends Component {
                           classes={classes}
                           t={t}
                         />
-                        {/* {this.renderMenuItem(
-                          role,
-                          {
-                            text: "montreal",
-                            link: "location",
-                            icon: MapPointerIcon
-                          },
-                          this.navigate
-                        )} */}
                         <MenuItem
                           active={false}
                           item={{
@@ -371,15 +362,6 @@ class AppSidebar extends Component {
                           classes={classes}
                           t={t}
                         />
-                        {/* {this.renderMenuItem(
-                          role,
-                          {
-                            text: "english",
-                            link: "language",
-                            icon: props => <Typography>EN</Typography>
-                          },
-                          this.navigate
-                        )} */}
                         <MenuItem
                           active={false}
                           item={{
@@ -391,15 +373,6 @@ class AppSidebar extends Component {
                           classes={classes}
                           t={t}
                         />
-                        {/* {this.renderMenuItem(
-                          role,
-                          {
-                            text: "help",
-                            link: "help",
-                            icon: HelpIcon
-                          },
-                          this.navigate
-                        )} */}
                       </>
                     ) : (
                       <Row classes={{ box: classes.chatItem }} fullWidth>
@@ -414,15 +387,6 @@ class AppSidebar extends Component {
                           classes={classes}
                           t={t}
                         />
-                        {/* {this.renderMenuItem(
-                          role,
-                          {
-                            text: "chatWithTessi",
-                            link: "",
-                            icon: TessiIcon
-                          },
-                          this.navigate
-                        )} */}
                       </Row>
                     )}
                   </Column>
@@ -440,7 +404,7 @@ class AppSidebar extends Component {
                     variant="secondaryDark"
                     inverse
                   >
-                    <KeyboardArrowUp />
+                    <ArrowUpIcon />
                   </Link>
                 </Column>
               </>

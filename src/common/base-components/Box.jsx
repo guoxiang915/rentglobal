@@ -117,22 +117,22 @@ const styleSheet = theme => {
 
     /* borders */
     borderHalf: {
-      border: `0.5px solid ${theme.colors.primary.lightGrey}`
+      border: `0.5px solid ${theme.colors.primary.borderGrey}`
     },
     borderTopHalf: {
-      borderTop: `0.5px solid ${theme.colors.primary.lightGrey}`
+      borderTop: `0.5px solid ${theme.colors.primary.borderGrey}`
     },
     borderRightHalf: {
-      borderRight: `0.5px solid ${theme.colors.primary.lightGrey}`
+      borderRight: `0.5px solid ${theme.colors.primary.borderGrey}`
     },
     borderLeftHalf: {
-      borderLeft: `0.5px solid ${theme.colors.primary.lightGrey}`
+      borderLeft: `0.5px solid ${theme.colors.primary.borderGrey}`
     },
     borderBottomHalf: {
-      borderBottom: `0.5px solid ${theme.colors.primary.lightGrey}`
+      borderBottom: `0.5px solid ${theme.colors.primary.borderGrey}`
     },
     border: {
-      border: `1px solid ${theme.colors.primary.lightGrey}`
+      border: `1px solid ${theme.colors.primary.borderGrey}`
     },
     borderTopNone: {
       borderTop: `none`
@@ -141,19 +141,19 @@ const styleSheet = theme => {
       borderBottom: `none`
     },
     borderTop: {
-      borderTop: `1px solid ${theme.colors.primary.lightGrey}`
+      borderTop: `1px solid ${theme.colors.primary.borderGrey}`
     },
     borderRight: {
-      borderRight: `1px solid ${theme.colors.primary.lightGrey}`
+      borderRight: `1px solid ${theme.colors.primary.borderGrey}`
     },
     borderBottom: {
-      borderBottom: `1px solid ${theme.colors.primary.lightGrey}`
+      borderBottom: `1px solid ${theme.colors.primary.borderGrey}`
     },
     borderLeft: {
-      borderLeft: `1px solid ${theme.colors.primary.lightGrey}`
+      borderLeft: `1px solid ${theme.colors.primary.borderGrey}`
     },
     borderDouble: {
-      border: `2px solid ${theme.colors.primary.lightGrey}`
+      border: `2px solid ${theme.colors.primary.borderGrey}`
     },
     borderDark: {
       borderColor: `${theme.colors.primary.lightGrey}`
@@ -379,7 +379,7 @@ export const Box = withStyles(styleSheet, { name: "Box" })(
     };
 
     render() {
-      let { children, classes, onClick, ...props } = this.props;
+      let { children, style, classes, onClick, ...props } = this.props;
       let propsClasses = {};
       Object.entries(props).forEach(
         ([key, value]) => (propsClasses[classes[key]] = value)
@@ -387,6 +387,7 @@ export const Box = withStyles(styleSheet, { name: "Box" })(
 
       return (
         <div
+          style={style}
           className={clsx({
             [classes.box]: true,
             [classes.container]: props.row || props.column,

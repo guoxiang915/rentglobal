@@ -1,10 +1,11 @@
 import React from "react";
-import { SvgIcon as MUISvgIcon } from "@material-ui/core";
+import { SvgIcon as MUISvgIcon, withStyles } from "@material-ui/core";
+import clsx from "clsx";
 
 import { ReactComponent as AddressSvg } from "../../assets/icon/icon_address_gray.svg";
 import { ReactComponent as AlarmSvg } from "../../assets/icon/icon_alarm_graydark.svg";
 import { ReactComponent as ArrowDownSvg } from "../../assets/icon/icon_arrow_down_graydark.svg";
-import { ReactComponent as ArrowRightSvg } from "../../assets/icon/icon_arrow_right.png.svg";
+import { ReactComponent as ArrowRightSvg } from "../../assets/icon/icon_arrow_right.svg";
 import { ReactComponent as ArrowUpSvg } from "../../assets/icon/icon_arrow_up_graydark.svg";
 import { ReactComponent as CalendarSvg } from "../../assets/icon/icon_calendar_white.svg";
 import { ReactComponent as CallSvg } from "../../assets/icon/icon_call_gray.svg";
@@ -24,7 +25,7 @@ import { ReactComponent as OptimizationSvg } from "../../assets/icon/icon_optimi
 import { ReactComponent as PicSvg } from "../../assets/icon/icon_pic_gray.svg";
 import { ReactComponent as SettingSvg } from "../../assets/icon/icon_setting_white.svg";
 import { ReactComponent as SmilingFaceSvg } from "../../assets/icon/icon_smiling_face_green.svg";
-import { ReactComponent as StartSvg } from "../../assets/icon/icon_start_green.svg";
+import { ReactComponent as StarSvg } from "../../assets/icon/icon_start_green.svg";
 import { ReactComponent as TicketSvg } from "../../assets/icon/icon_ticket_white.svg";
 import { ReactComponent as TruckSvg } from "../../assets/icon/icon_truck_white.svg";
 import { ReactComponent as UserSvg } from "../../assets/icon/icon_user.svg";
@@ -36,10 +37,50 @@ import { ReactComponent as FacebookSvg } from "../../assets/icon/icon_social_fac
 import { ReactComponent as InstagramSvg } from "../../assets/icon/icon_social_instagram_gray.svg";
 import { ReactComponent as LinkedinSvg } from "../../assets/icon/icon_social_linkedin_gray.svg";
 import { ReactComponent as TwitterSvg } from "../../assets/icon/icon_social_twitter_gray.svg";
+import { ReactComponent as BackSvg } from "../../assets/icon/icon_back_white.svg";
+import { ReactComponent as CancelSvg } from "../../assets/icon/icon_cancel_white.svg";
+import { ReactComponent as DeleteSvg } from "../../assets/icon/icon_delete_white.svg";
+import { ReactComponent as FavSvg } from "../../assets/icon/icon_fav_white.svg";
+import { ReactComponent as MapSvg } from "../../assets/icon/icon_map_white.svg";
+import { ReactComponent as PhoneSvg } from "../../assets/icon/icon_phone_white.svg";
+import { ReactComponent as RegisterSvg } from "../../assets/icon/icon_register_white.svg";
+import { ReactComponent as SearchSvg } from "../../assets/icon/icon_search_white.svg";
+import { ReactComponent as ShareSvg } from "../../assets/icon/icon_share_white.svg";
+import { ReactComponent as SignoutSvg } from "../../assets/icon/icon_signout.svg";
+import { ReactComponent as CompanyRegisterSvg } from "../../assets/icon/icon_company_register.svg";
 
-export const SvgIcon = ({ src, ...props }) => {
-  return <MUISvgIcon component={src} {...props} />;
-};
+const styleSheet = theme => ({
+  primary: {
+    color: theme.colors.primary.mainColor,
+    opacity: 1
+  },
+  normal: {
+    color: theme.colors.primary.darkGrey,
+    opacity: 0.15
+  },
+  white: {
+    color: theme.colors.primary.white,
+    opacity: 1
+  },
+  errorRed: {
+    color: theme.colors.primary.errorRed,
+    opacity: 1
+  }
+});
+
+export const SvgIcon = withStyles(styleSheet, { name: "SvgIcon" })(
+  ({ src, variant, className, classes, styles, ...props }) => {
+    const C = src;
+
+    return (
+      <MUISvgIcon
+        component={({ viewBox, ...props }) => <C {...props} />}
+        className={clsx(variant && classes[variant], styles, className)}
+        {...props}
+      />
+    );
+  }
+);
 
 export const AddressIcon = props => <SvgIcon src={AddressSvg} {...props} />;
 export const AlarmIcon = props => <SvgIcon src={AlarmSvg} {...props} />;
@@ -56,7 +97,7 @@ export const EditIcon = props => <SvgIcon src={EditSvg} {...props} />;
 export const EmailIcon = props => <SvgIcon src={EmailSvg} {...props} />;
 export const LockIcon = props => <SvgIcon src={LockSvg} {...props} />;
 export const MenuIcon = props => <SvgIcon src={MenuSvg} {...props} />;
-export const StartIcon = props => <SvgIcon src={StartSvg} {...props} />;
+export const StarIcon = props => <SvgIcon src={StarSvg} {...props} />;
 export const TruckIcon = props => <SvgIcon src={TruckSvg} {...props} />;
 export const HomeIcon = props => <SvgIcon src={HomeSvg} {...props} />;
 export const TessiIcon = props => <SvgIcon src={TessiSvg} {...props} />;
@@ -84,3 +125,16 @@ export const FacebookIcon = props => <SvgIcon src={FacebookSvg} {...props} />;
 export const InstagramIcon = props => <SvgIcon src={InstagramSvg} {...props} />;
 export const TwitterIcon = props => <SvgIcon src={TwitterSvg} {...props} />;
 export const LinkedinIcon = props => <SvgIcon src={LinkedinSvg} {...props} />;
+export const BackIcon = props => <SvgIcon src={BackSvg} {...props} />;
+export const CancelIcon = props => <SvgIcon src={CancelSvg} {...props} />;
+export const DeleteIcon = props => <SvgIcon src={DeleteSvg} {...props} />;
+export const FavIcon = props => <SvgIcon src={FavSvg} {...props} />;
+export const MapIcon = props => <SvgIcon src={MapSvg} {...props} />;
+export const PhoneIcon = props => <SvgIcon src={PhoneSvg} {...props} />;
+export const RegisterIcon = props => <SvgIcon src={RegisterSvg} {...props} />;
+export const SearchIcon = props => <SvgIcon src={SearchSvg} {...props} />;
+export const ShareIcon = props => <SvgIcon src={ShareSvg} {...props} />;
+export const PowerIcon = props => <SvgIcon src={SignoutSvg} {...props} />;
+export const UsersIcon = props => (
+  <SvgIcon src={CompanyRegisterSvg} {...props} />
+);
