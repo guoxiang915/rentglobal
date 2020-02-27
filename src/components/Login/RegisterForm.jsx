@@ -9,14 +9,12 @@ import {
   Column,
   Link,
   HorizontalDivider,
-  Typography
+  Typography,
+  UsersIcon,
+  BuildingsIcon,
+  EmailIcon,
+  LockIcon
 } from "../../common/base-components";
-import {
-  Business as LandlordIcon,
-  PeopleOutline as CompanyIcon,
-  MailOutline,
-  LockOpen
-} from "@material-ui/icons";
 
 const styleSheet = theme => ({
   formWrapper: {
@@ -45,6 +43,10 @@ const styleSheet = theme => ({
 
   switchText: {
     fontSize: "14px"
+  },
+
+  outlineIcon: {
+    color: theme.colors.primary.borderGrey
   }
 });
 
@@ -111,9 +113,9 @@ class RegisterForm extends Component {
       <form noValidate autoComplete="off" className={classes.formWrapper}>
         <Column paddingTopHalf fullWidth textLightGrey>
           {registerMode === "landlord" ? (
-            <LandlordIcon fontSize="large" />
+            <BuildingsIcon fontSize="large" className={classes.outlineIcon} />
           ) : (
-            <CompanyIcon fontSize="large" />
+            <UsersIcon fontSize="large" className={classes.outlineIcon} />
           )}
         </Column>
         <Typography
@@ -137,7 +139,7 @@ class RegisterForm extends Component {
             value={this.state.email}
             onChange={this.handleChange("email")}
             variant="outlined"
-            startAdornment={<MailOutline color="secondary" />}
+            startAdornment={<EmailIcon className={classes.outlineIcon} />}
             error={!!this.state.emailError}
             helperText={this.state.emailError}
             fullWidth
@@ -151,7 +153,7 @@ class RegisterForm extends Component {
             onChange={this.handleChange("password")}
             type="password"
             variant="outlined"
-            startAdornment={<LockOpen color="secondary" />}
+            startAdornment={<LockIcon className={classes.outlineIcon} />}
             error={!!this.state.passwordError}
             helperText={this.state.passwordError}
             fullWidth

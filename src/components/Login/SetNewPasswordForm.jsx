@@ -10,9 +10,9 @@ import {
   Column,
   Link,
   Divider,
-  Typography
+  Typography,
+  LockIcon
 } from "../../common/base-components";
-import { LockOpen } from "@material-ui/icons";
 
 const styleSheet = theme => ({
   formWrapper: {
@@ -33,6 +33,10 @@ const styleSheet = theme => ({
 
   moreWrapper: {
     marginTop: 20
+  },
+
+  outlineIcon: {
+    color: theme.colors.primary.borderGrey
   }
 });
 
@@ -94,7 +98,7 @@ class SetNewPasswordForm extends Component {
             onChange={this.handleChange("password")}
             type="password"
             variant="outlined"
-            startAdornment={<LockOpen color="secondary" />}
+            startAdornment={<LockIcon className={classes.outlineIcon} />}
             error={!!this.state.passwordError}
             helperText={this.state.passwordError}
             fullWidth

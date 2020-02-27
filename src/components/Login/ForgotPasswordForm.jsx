@@ -10,9 +10,9 @@ import {
   Column,
   Link,
   Divider,
-  Typography
+  Typography,
+  EmailIcon
 } from "../../common/base-components";
-import { MailOutline } from "@material-ui/icons";
 
 const styleSheet = theme => ({
   formWrapper: {
@@ -33,6 +33,10 @@ const styleSheet = theme => ({
 
   moreWrapper: {
     marginTop: 20
+  },
+
+  outlineIcon: {
+    color: theme.colors.primary.borderGrey
   }
 });
 
@@ -97,7 +101,7 @@ class ForgotPasswordForm extends Component {
           paddingTopHalf
           justifyChildrenCenter
         >
-          {t("forgotPassword")}
+          {t("forgotYourPassword")}
         </Typography>
         <Box paddingTop>
           <TextField
@@ -106,7 +110,7 @@ class ForgotPasswordForm extends Component {
             value={this.state.email}
             onChange={this.handleChange("email")}
             variant="outlined"
-            startAdornment={<MailOutline color="secondary" />}
+            startAdornment={<EmailIcon className={classes.outlineIcon} />}
             error={!!this.state.emailError}
             helperText={this.state.emailError}
             fullWidth

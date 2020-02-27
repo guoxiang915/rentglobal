@@ -11,9 +11,10 @@ import {
   Link,
   Divider,
   HorizontalDivider,
-  Typography
+  Typography,
+  LockIcon,
+  EmailIcon
 } from "../../common/base-components";
-import { MailOutline, LockOpen } from "@material-ui/icons";
 
 const styleSheet = theme => ({
   formWrapper: {
@@ -21,9 +22,6 @@ const styleSheet = theme => ({
   },
 
   formTitle: {
-    // color: theme.colors.primary.darkGrey,
-    // lineHeight: "26px",
-    // fontSize: "20px",
     marginTop: 8,
     textAlign: "center"
   },
@@ -42,6 +40,10 @@ const styleSheet = theme => ({
 
   switchText: {
     fontSize: "14px"
+  },
+
+  outlineIcon: {
+    color: theme.colors.primary.borderGrey
   }
 });
 
@@ -153,7 +155,7 @@ class LoginForm extends Component {
             value={this.state.email}
             onChange={this.handleChange("email")}
             variant="outlined"
-            startAdornment={<MailOutline color="secondary" />}
+            startAdornment={<EmailIcon className={classes.outlineIcon} />}
             error={!!this.state.emailError}
             helperText={this.state.emailError}
             fullWidth
@@ -167,7 +169,7 @@ class LoginForm extends Component {
             onChange={this.handleChange("password")}
             type="password"
             variant="outlined"
-            startAdornment={<LockOpen color="secondary" />}
+            startAdornment={<LockIcon className={classes.outlineIcon} />}
             error={!!this.state.passwordError}
             helperText={this.state.passwordError}
             fullWidth

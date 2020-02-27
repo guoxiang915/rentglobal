@@ -9,13 +9,11 @@ import {
   Box,
   Column,
   Link,
-  Typography
+  Typography,
+  UsersIcon,
+  BuildingsIcon,
+  ArrowRightAltIcon
 } from "../../common/base-components";
-import {
-  Business as LandlordIcon,
-  PeopleOutline as CompanyIcon,
-  ArrowForward
-} from "@material-ui/icons";
 
 const styleSheet = theme => ({
   formWrapper: {
@@ -66,6 +64,10 @@ const styleSheet = theme => ({
 
   switchTextWrapper: {
     paddingTop: 40
+  },
+
+  outlineIcon: {
+    color: theme.colors.primary.borderGrey
   }
 });
 
@@ -89,7 +91,10 @@ class SelectRegisterForm extends Component {
                 classes={{ box: classes.selectorWrapper }}
                 textLightGrey
               >
-                <LandlordIcon fontSize="large" />
+                <BuildingsIcon
+                  fontSize="large"
+                  className={classes.outlineIcon}
+                />
                 <Box paddingTopHalf>
                   <Typography
                     fontSizeL
@@ -119,8 +124,8 @@ class SelectRegisterForm extends Component {
                 >
                   <Typography fontSizeS fontWeightBold textWhite>
                     {t("landlordSignup")}
-                    <Box paddingLeft>
-                      <ArrowForward fontSize="small" />
+                    <Box paddingLeft alignChildrenCenter>
+                      <ArrowRightAltIcon style={{width: 14, height: 10}} />
                     </Box>
                   </Typography>
                 </Button>
@@ -134,7 +139,7 @@ class SelectRegisterForm extends Component {
                 classes={{ box: classes.selectorWrapper }}
                 textLightGrey
               >
-                <CompanyIcon fontSize="large" />
+                <UsersIcon fontSize="large" className={classes.outlineIcon} />
                 <Box paddingTopHalf>
                   <Typography
                     fontSizeL
@@ -164,8 +169,8 @@ class SelectRegisterForm extends Component {
                 >
                   <Typography fontSizeS fontWeightBold textWhite>
                     {t("companySignup")}
-                    <Box paddingLeft>
-                      <ArrowForward fontSize="small" />
+                    <Box paddingLeft alignChildrenCenter>
+                      <ArrowRightAltIcon style={{width: 14, height: 10}} />
                     </Box>
                   </Typography>
                 </Button>
