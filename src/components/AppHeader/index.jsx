@@ -626,53 +626,56 @@ class AppHeader extends Component {
                     </Popover>
                   </Column>
                 </>
-              ) : !isWidthDown("sm", width) ? (
-                <>
-                  <Column>
-                    <Typography fontSizeS>
-                      <Link variant="body2" to="/">
-                        {t("home")}
-                      </Link>
-                    </Typography>
-                  </Column>
-                  <Column paddingLeftDouble>
-                    <Typography fontSizeS fontWeightBold>
-                      <Link variant="primary" to="/">
-                        {t("chatWithTessi")}
-                      </Link>
-                    </Typography>
-                  </Column>
-                  <Column paddingLeftDouble>
-                    <Typography fontSizeS>
-                      <Link variant="body2" to="/auth/login">
-                        {t("login")}
-                      </Link>
-                    </Typography>
-                  </Column>
-                  <Column paddingLeftDouble>
-                    <Typography fontSizeS>
-                      <Link variant="body2" to="/auth/register">
-                        {t("register")}
-                      </Link>
-                    </Typography>
-                  </Column>
-                  {!isWidthDown("md", width) && (
-                    <Column paddingLeftDouble>
-                      <Button
-                        variant="secondary"
-                        shadow
-                        onClick={() =>
-                          this.props.navigate('register", "landlord')
-                        }
-                      >
-                        <Typography fontSizeS fontWeightBold>
-                          {t("placeToRent")}
-                        </Typography>
-                      </Button>
-                    </Column>
-                  )}
-                </>
               ) : (
+                !isWidthDown("sm", width) && (
+                  <>
+                    <Column>
+                      <Typography fontSizeS>
+                        <Link variant="body2" to="/">
+                          {t("home")}
+                        </Link>
+                      </Typography>
+                    </Column>
+                    <Column paddingLeftDouble>
+                      <Typography fontSizeS fontWeightBold>
+                        <Link variant="primary" to="/">
+                          {t("chatWithTessi")}
+                        </Link>
+                      </Typography>
+                    </Column>
+                    <Column paddingLeftDouble>
+                      <Typography fontSizeS>
+                        <Link variant="body2" to="/auth/login">
+                          {t("login")}
+                        </Link>
+                      </Typography>
+                    </Column>
+                    <Column paddingLeftDouble>
+                      <Typography fontSizeS>
+                        <Link variant="body2" to="/auth/register">
+                          {t("register")}
+                        </Link>
+                      </Typography>
+                    </Column>
+                    {!isWidthDown("md", width) && (
+                      <Column paddingLeftDouble>
+                        <Button
+                          variant="secondary"
+                          shadow
+                          onClick={() =>
+                            this.props.navigate('register", "landlord')
+                          }
+                        >
+                          <Typography fontSizeS fontWeightBold>
+                            {t("placeToRent")}
+                          </Typography>
+                        </Button>
+                      </Column>
+                    )}
+                  </>
+                )
+              )}
+              {isWidthDown("sm", width) && (
                 <Column paddingLeft>
                   {sidebarOpened ? (
                     <Button
