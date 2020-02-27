@@ -269,28 +269,31 @@ class AppSidebar extends Component {
     const MenuItem = this.renderMenuItem;
 
     // get active item
-    const activeItem = this.menus[role].find(
-      item =>
-        this.props.location.pathname === `${role && "/" + role}/${item.link}`
-    );
+    const activeItem = this.menus[role].find(item => {
+      let link = `${role && "/" + role}/${item.link}`;
+      if (item.link === "login") {
+        link = "/auth/login";
+      } else if (item.link === "register") {
+        link = "/auth/register";
+      }
+      return this.props.location.pathname === link;
+    });
 
     return (
       <div className={classes.sidebarWrapper}>
         <div className={classes.sidebarContent}>
           <Column alignChildrenEnd classes={{ box: classes.sidebarBody }}>
             {/* show main menus */}
-            {this.menus[role].map(
-              item => (
-                <MenuItem
-                  active={activeItem === item}
-                  item={item}
-                  navigate={this.navigate}
-                  classes={classes}
-                  t={t}
-                  key={item.text}
-                />
-              )
-            )}
+            {this.menus[role].map(item => (
+              <MenuItem
+                active={activeItem === item}
+                item={item}
+                navigate={this.navigate}
+                classes={classes}
+                t={t}
+                key={item.text}
+              />
+            ))}
 
             {/* show more buttons for mobile version */}
             {isWidthDown("sm", width) && (
