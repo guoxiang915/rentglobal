@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import { withStyles } from "@material-ui/core/styles";
 import { withTranslation } from "react-i18next";
+import withWidth, { isWidthDown } from "@material-ui/core/withWidth";
 import {
   Box,
   Row,
@@ -19,7 +20,10 @@ import {
   EditIcon,
   CloseIcon,
   CheckIcon,
-  LockIcon
+  LockIcon,
+  Tooltip,
+  TooltipContent,
+  Link
 } from "../../common/base-components";
 import { UploadDocument } from "../../common/base-layouts";
 import { Collapse, Grid, Card, CardMedia } from "@material-ui/core";
@@ -87,6 +91,32 @@ const styleSheet = theme => ({
 
   outlineIcon: {
     color: theme.colors.primary.borderGrey
+  },
+
+  errorIcon: {
+    borderRadius: "50%",
+    border: `1px solid ${theme.colors.primary.errorRed}`,
+    boxShadow: `0px 6px 12px ${theme.colors.primary.errorRed}4D`,
+    color: theme.colors.primary.white,
+    background: theme.colors.primary.errorRed,
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center",
+    width: 30,
+    height: 24
+  },
+
+  approveIcon: {
+    borderRadius: "50%",
+    border: `1px solid ${theme.colors.primary.mainColor}`,
+    boxShadow: `0px 6px 12px ${theme.colors.primary.mainColor}4D`,
+    color: theme.colors.primary.white,
+    background: theme.colors.primary.mainColor,
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center",
+    width: 28,
+    height: 24
   }
 });
 
@@ -150,14 +180,11 @@ class Profile extends Component {
               {title}
             </Typography>
             {open ? (
-              <ArrowUpIcon
-                color="secondary"
-                style={{width: 12, height: 7}}
-              />
+              <ArrowUpIcon color="secondary" style={{ width: 12, height: 7 }} />
             ) : (
               <ArrowDownIcon
                 color="secondary"
-                style={{width: 12, height: 7}}
+                style={{ width: 12, height: 7 }}
               />
             )}
           </Box>
@@ -168,7 +195,7 @@ class Profile extends Component {
               background="secondaryLight"
               onClick={onToggleEdit}
             >
-              <CloseIcon style={{width: 9, height: 9}} />
+              <CloseIcon style={{ width: 9, height: 9 }} />
               <Typography paddingLeft fontSizeS>
                 {t("cancel")}
               </Typography>
@@ -180,7 +207,7 @@ class Profile extends Component {
               inverse
               onClick={onToggleEdit}
             >
-              <EditIcon style={{width: 16, height: 16}} />
+              <EditIcon style={{ width: 16, height: 16 }} />
               <Typography paddingLeft fontSizeS>
                 {t("edit")}
               </Typography>
@@ -245,8 +272,10 @@ class Profile extends Component {
     this.setState({ [editName]: !this.state[editName] });
   };
 
+  handleSendPhoneVerification = () => {};
+
   render() {
-    const { user, classes, t } = this.props;
+    const { user, width, classes, t } = this.props;
     const { openedTab } = this.state;
     const ProfileTab = this.renderProfileTab;
 
@@ -302,7 +331,10 @@ class Profile extends Component {
                           {user.profile_image ? (
                             <CardMedia image={user.profile_image} title="" />
                           ) : (
-                            <UserIcon fontSize="large" className={classes.outlineIcon} />
+                            <UserIcon
+                              fontSize="large"
+                              className={classes.outlineIcon}
+                            />
                           )}
                         </Card>
                       </Row>
@@ -316,7 +348,9 @@ class Profile extends Component {
                         onChange={this.handleStateChangeByInput("username")}
                         value={this.state.username}
                         className={classes.profileInput}
-                        startAdornment={<UserIcon className={classes.outlineIcon} />}
+                        startAdornment={
+                          <UserIcon className={classes.outlineIcon} />
+                        }
                         readOnly={!this.state.isEditLandlordInfo}
                       />
                     </Row>
@@ -328,7 +362,33 @@ class Profile extends Component {
                         onChange={this.handleStateChangeByInput("email")}
                         value={this.state.email}
                         className={classes.profileInput}
-                        startAdornment={<EmailIcon className={classes.outlineIcon} />}
+                        startAdornment={
+                          <EmailIcon className={classes.outlineIcon} />
+                        }
+                        endAdornment={
+                          <Tooltip
+                            placement={
+                              isWidthDown("xs", width) ? "left" : "bottom"
+                            }
+                            borderType="primary"
+                            title={
+                              <TooltipContent
+                                title={
+                                  <Column>
+                                    <Typography textSecondary>
+                                      {t("yourEmailConfirmed")}
+                                    </Typography>
+                                  </Column>
+                                }
+                              />
+                            }
+                            interactive
+                          >
+                            <div className={classes.approveIcon}>
+                              <CheckIcon style={{ width: 11, height: 8 }} />
+                            </div>
+                          </Tooltip>
+                        }
                         readOnly={!this.state.isEditLandlordInfo}
                       />
                     </Row>
@@ -339,7 +399,41 @@ class Profile extends Component {
                         onChange={this.handleStateChangeByInput("phoneNumber")}
                         value={this.state.phoneNumber}
                         className={classes.profileInput}
-                        startAdornment={<PhoneIcon className={classes.outlineIcon} />}
+                        startAdornment={
+                          <PhoneIcon className={classes.outlineIcon} />
+                        }
+                        endAdornment={
+                          <Tooltip
+                            placement={
+                              isWidthDown("xs", width) ? "left" : "bottom"
+                            }
+                            borderType="errorRed"
+                            title={
+                              <TooltipContent
+                                title={
+                                  <Column>
+                                    <Typography textErrorRed>
+                                      {t("phoneMustApproved")}
+                                    </Typography>
+                                    <Box paddingTop>
+                                      <Link
+                                        to="#"
+                                        onClick={
+                                          this.handleSendPhoneVerification
+                                        }
+                                      >
+                                        {t("sendVerificationCode")}
+                                      </Link>
+                                    </Box>
+                                  </Column>
+                                }
+                              />
+                            }
+                            interactive
+                          >
+                            <div className={classes.errorIcon}>!</div>
+                          </Tooltip>
+                        }
                         readOnly={!this.state.isEditLandlordInfo}
                       />
                     </Row>
@@ -350,7 +444,9 @@ class Profile extends Component {
                         onChange={this.handleStateChangeByInput("address")}
                         value={this.state.address}
                         className={classes.profileInput}
-                        startAdornment={<AddressIcon className={classes.outlineIcon} />}
+                        startAdornment={
+                          <AddressIcon className={classes.outlineIcon} />
+                        }
                         readOnly={!this.state.isEditLandlordInfo}
                       />
                     </Row>
@@ -380,7 +476,7 @@ class Profile extends Component {
                               )
                             }
                           >
-                            <CloseIcon style={{width: 9, height: 9}} />
+                            <CloseIcon style={{ width: 9, height: 9 }} />
                             <Typography paddingLeft fontSizeS>
                               {t("cancel")}
                             </Typography>
@@ -392,7 +488,7 @@ class Profile extends Component {
                             fullWidth
                             onClick={this.handleSaveLandlordInfo}
                           >
-                            <CheckIcon style={{width: 16, height: 12}} />
+                            <CheckIcon style={{ width: 16, height: 12 }} />
                             <Typography paddingLeft fontSizeS>
                               {t("save")}
                             </Typography>
@@ -474,7 +570,9 @@ class Profile extends Component {
                         onChange={this.handleStateChangeByInput("password")}
                         value={this.state.password}
                         className={classes.profileInput}
-                        startAdornment={<LockIcon className={classes.outlineIcon} />}
+                        startAdornment={
+                          <LockIcon className={classes.outlineIcon} />
+                        }
                         readOnly={!this.state.isEditSecurityInfo}
                         error={!!this.state.passwordError}
                         helperText={this.state.passwordError}
@@ -490,7 +588,9 @@ class Profile extends Component {
                         )}
                         value={this.state.confirmPassword}
                         className={classes.profileInput}
-                        startAdornment={<LockIcon className={classes.outlineIcon} />}
+                        startAdornment={
+                          <LockIcon className={classes.outlineIcon} />
+                        }
                         readOnly={!this.state.isEditSecurityInfo}
                       />
                     </Row>
@@ -508,7 +608,7 @@ class Profile extends Component {
                                 )
                               }
                             >
-                              <CloseIcon style={{width: 9, height: 9}} />
+                              <CloseIcon style={{ width: 9, height: 9 }} />
                               <Typography paddingLeft fontSizeS>
                                 {t("cancel")}
                               </Typography>
@@ -525,7 +625,7 @@ class Profile extends Component {
                                   this.state.confirmPassword
                               }
                             >
-                              <CheckIcon style={{width: 16, height: 12}} />
+                              <CheckIcon style={{ width: 16, height: 12 }} />
                               <Typography paddingLeft fontSizeS>
                                 {t("save")}
                               </Typography>
@@ -604,4 +704,6 @@ class Profile extends Component {
   }
 }
 
-export default withStyles(styleSheet)(withTranslation("common")(Profile));
+export default withStyles(styleSheet)(
+  withTranslation("common")(withWidth()(Profile))
+);

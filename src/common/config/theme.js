@@ -337,6 +337,23 @@ const typography = {
   }
 };
 
+// tooltip theme
+const tooltip = {
+  target: {
+    // borderBottom: `1px dotted ${colors.primary.lightGrey}`
+  },
+  title: {
+    ...fonts.size.fontSizeXS,
+    color: colors.primary.darkGrey,
+    textAlign: "center",
+  },
+  text: {
+    ...fonts.size.fontSizeXS,
+    color: colors.primary.darkGrey,
+    textAlign: "center",
+  }
+};
+
 // A theme with custom primary and secondary color.
 // It's optional.
 const theme = {
@@ -346,7 +363,8 @@ const theme = {
   fonts,
   links,
   linksBackground,
-  linksOutline
+  linksOutline,
+  tooltip
 };
 
 export default createMuiTheme(theme);

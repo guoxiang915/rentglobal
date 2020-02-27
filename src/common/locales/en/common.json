@@ -202,5 +202,12 @@
     "companyName": "Company name",
     "copyOfID": "Copy of photo ID",
     "lastThreeBalance": "Last three balance",
-    "commercialBrochure": "Commercial brochure"
+    "commercialBrochure": "Commercial brochure",
+    "phoneMustApproved": "Your phone number must be approved",
+    "sendVerificationCode": "Send verification code",
+    "checkSpecimenApproved": "Your check specimen approved",
+    "legalStatusApproved": "Your legal status document approved",
+    "photoIDApproved": "Your photoID approved",
+    "balanceNotApproved": "Your balance didn't accept, you must upload last three balance again",
+    "reUpload": "Upload again"
 }
