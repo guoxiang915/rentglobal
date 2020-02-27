@@ -350,7 +350,7 @@ const styleSheet = theme => ({
 
   officeImage: {
     width: "100%",
-    height: 175
+    height: 174
   },
 
   officeLegend: {
@@ -379,7 +379,8 @@ const styleSheet = theme => ({
     width: "100%",
     height: 7,
     left: 0,
-    bottom: 13
+    bottom: 13,
+    zIndex: 1
   },
 
   ratingText: {},
@@ -629,8 +630,9 @@ class Home extends Component {
               onChange={setPos}
               autoPlay={4000}
               stopAutoPlayOnHover
-              centered
+              // centered
               keepDirectionWhenDragging
+              // itemWidth={"100%"}
               arrowLeft={
                 <Box
                   classes={{ box: this.props.classes.carouselArrow }}
@@ -651,6 +653,7 @@ class Home extends Component {
             >
               {office.images.map((img, index) => (
                 <React.Fragment key={index}>
+                  <Box fullWidth>
                   <img
                     src={office.images[0].image}
                     alt=""
@@ -662,7 +665,7 @@ class Home extends Component {
                     classes={{ box: this.props.classes.officeLegend }}
                   >
                     {img.location}
-                  </Typography>
+                  </Typography></Box>
                 </React.Fragment>
               ))}
             </Carousel>
@@ -670,7 +673,7 @@ class Home extends Component {
               value={pos}
               onChange={setPos}
               number={office.images.length}
-              // className={this.props.classes.carouselDots}
+              className={this.props.classes.carouselDots}
             />
           </div>
         </Box>

@@ -8,24 +8,21 @@ import {
   Stretch,
   Typography,
   Button,
-  TextField
+  TextField,
+  EmailIcon,
+  UserIcon,
+  PhoneIcon,
+  AddressIcon,
+  MapPointerIcon,
+  ArrowUpIcon,
+  ArrowDownIcon,
+  EditIcon,
+  CloseIcon,
+  CheckIcon,
+  LockIcon
 } from "../../common/base-components";
 import { UploadDocument } from "../../common/base-layouts";
 import { Collapse, Grid, Card, CardMedia } from "@material-ui/core";
-import {
-  MailOutline,
-  PersonOutline,
-  PhoneOutlined,
-  LocationOnOutlined,
-  BookOutlined,
-  EditOutlined,
-  ImageOutlined,
-  CloseOutlined,
-  CheckOutlined,
-  LockOutlined,
-  KeyboardArrowUpSharp,
-  KeyboardArrowDownSharp
-} from "@material-ui/icons";
 
 const styleSheet = theme => ({
   root: {
@@ -86,6 +83,10 @@ const styleSheet = theme => ({
     display: "flex",
     justifyContent: "center",
     alignItems: "center"
+  },
+
+  outlineIcon: {
+    color: theme.colors.primary.borderGrey
   }
 });
 
@@ -144,19 +145,19 @@ class Profile extends Component {
     return (
       <Column fullWidth alignChildrenStart>
         <Row fullWidth>
-          <Box onClick={onToggleOpen}>
+          <Box onClick={onToggleOpen} alignChildrenCenter>
             <Typography fontSizeS textMediumGrey paddingRight>
               {title}
             </Typography>
             {open ? (
-              <KeyboardArrowUpSharp
+              <ArrowUpIcon
                 color="secondary"
-                className={classes.buttonIcon}
+                style={{width: 12, height: 7}}
               />
             ) : (
-              <KeyboardArrowDownSharp
+              <ArrowDownIcon
                 color="secondary"
-                className={classes.buttonIcon}
+                style={{width: 12, height: 7}}
               />
             )}
           </Box>
@@ -167,7 +168,7 @@ class Profile extends Component {
               background="secondaryLight"
               onClick={onToggleEdit}
             >
-              <CloseOutlined className={classes.buttonIcon} />
+              <CloseIcon style={{width: 9, height: 9}} />
               <Typography paddingLeft fontSizeS>
                 {t("cancel")}
               </Typography>
@@ -179,7 +180,7 @@ class Profile extends Component {
               inverse
               onClick={onToggleEdit}
             >
-              <EditOutlined className={classes.buttonIcon} />
+              <EditIcon style={{width: 16, height: 16}} />
               <Typography paddingLeft fontSizeS>
                 {t("edit")}
               </Typography>
@@ -301,7 +302,7 @@ class Profile extends Component {
                           {user.profile_image ? (
                             <CardMedia image={user.profile_image} title="" />
                           ) : (
-                            <ImageOutlined color="secondary" fontSize="large" />
+                            <UserIcon fontSize="large" className={classes.outlineIcon} />
                           )}
                         </Card>
                       </Row>
@@ -315,7 +316,7 @@ class Profile extends Component {
                         onChange={this.handleStateChangeByInput("username")}
                         value={this.state.username}
                         className={classes.profileInput}
-                        startAdornment={<PersonOutline color="secondary" />}
+                        startAdornment={<UserIcon className={classes.outlineIcon} />}
                         readOnly={!this.state.isEditLandlordInfo}
                       />
                     </Row>
@@ -327,7 +328,7 @@ class Profile extends Component {
                         onChange={this.handleStateChangeByInput("email")}
                         value={this.state.email}
                         className={classes.profileInput}
-                        startAdornment={<MailOutline color="secondary" />}
+                        startAdornment={<EmailIcon className={classes.outlineIcon} />}
                         readOnly={!this.state.isEditLandlordInfo}
                       />
                     </Row>
@@ -338,7 +339,7 @@ class Profile extends Component {
                         onChange={this.handleStateChangeByInput("phoneNumber")}
                         value={this.state.phoneNumber}
                         className={classes.profileInput}
-                        startAdornment={<PhoneOutlined color="secondary" />}
+                        startAdornment={<PhoneIcon className={classes.outlineIcon} />}
                         readOnly={!this.state.isEditLandlordInfo}
                       />
                     </Row>
@@ -349,7 +350,7 @@ class Profile extends Component {
                         onChange={this.handleStateChangeByInput("address")}
                         value={this.state.address}
                         className={classes.profileInput}
-                        startAdornment={<BookOutlined color="secondary" />}
+                        startAdornment={<AddressIcon className={classes.outlineIcon} />}
                         readOnly={!this.state.isEditLandlordInfo}
                       />
                     </Row>
@@ -361,7 +362,7 @@ class Profile extends Component {
                         value={this.state.postalCode}
                         className={classes.profileInput}
                         startAdornment={
-                          <LocationOnOutlined color="secondary" />
+                          <MapPointerIcon className={classes.outlineIcon} />
                         }
                         readOnly={!this.state.isEditLandlordInfo}
                       />
@@ -379,7 +380,7 @@ class Profile extends Component {
                               )
                             }
                           >
-                            <CloseOutlined className={classes.buttonIcon} />
+                            <CloseIcon style={{width: 9, height: 9}} />
                             <Typography paddingLeft fontSizeS>
                               {t("cancel")}
                             </Typography>
@@ -391,7 +392,7 @@ class Profile extends Component {
                             fullWidth
                             onClick={this.handleSaveLandlordInfo}
                           >
-                            <CheckOutlined className={classes.buttonIcon} />
+                            <CheckIcon style={{width: 16, height: 12}} />
                             <Typography paddingLeft fontSizeS>
                               {t("save")}
                             </Typography>
@@ -473,7 +474,7 @@ class Profile extends Component {
                         onChange={this.handleStateChangeByInput("password")}
                         value={this.state.password}
                         className={classes.profileInput}
-                        startAdornment={<LockOutlined color="secondary" />}
+                        startAdornment={<LockIcon className={classes.outlineIcon} />}
                         readOnly={!this.state.isEditSecurityInfo}
                         error={!!this.state.passwordError}
                         helperText={this.state.passwordError}
@@ -489,7 +490,7 @@ class Profile extends Component {
                         )}
                         value={this.state.confirmPassword}
                         className={classes.profileInput}
-                        startAdornment={<LockOutlined color="secondary" />}
+                        startAdornment={<LockIcon className={classes.outlineIcon} />}
                         readOnly={!this.state.isEditSecurityInfo}
                       />
                     </Row>
@@ -507,7 +508,7 @@ class Profile extends Component {
                                 )
                               }
                             >
-                              <CloseOutlined className={classes.buttonIcon} />
+                              <CloseIcon style={{width: 9, height: 9}} />
                               <Typography paddingLeft fontSizeS>
                                 {t("cancel")}
                               </Typography>
@@ -524,7 +525,7 @@ class Profile extends Component {
                                   this.state.confirmPassword
                               }
                             >
-                              <CheckOutlined />
+                              <CheckIcon style={{width: 16, height: 12}} />
                               <Typography paddingLeft fontSizeS>
                                 {t("save")}
                               </Typography>

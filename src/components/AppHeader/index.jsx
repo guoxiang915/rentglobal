@@ -104,7 +104,7 @@ const styleSheet = theme => ({
   accountInfoWrapper: {
     background: "transparent",
     boxShadow: "none",
-    overflow: 'visible',
+    overflow: "visible"
   },
 
   accountInfoContentWrapper: {
@@ -112,7 +112,7 @@ const styleSheet = theme => ({
     top: 15,
     boxShadow: "0px 2px 4px #00000014",
     border: `1px solid ${theme.colors.primary.borderGrey}`,
-    [theme.breakpoints.down('sm')]: {
+    [theme.breakpoints.down("sm")]: {
       right: -29
     },
     "&::before": {
@@ -124,8 +124,8 @@ const styleSheet = theme => ({
       height: 16,
       background: theme.colors.primary.white,
       border: `1px solid ${theme.colors.primary.borderGrey}`,
-      borderBottom: 'none',
-      borderRight: 'none',
+      borderBottom: "none",
+      borderRight: "none",
       transform: "rotate(45deg)"
     }
   },
@@ -134,12 +134,12 @@ const styleSheet = theme => ({
     paddingTop: 30,
     paddingBottom: 6,
     paddingLeft: 18,
-    paddingRight: 14,
+    paddingRight: 14
   },
 
   accountAvatar: {
     width: 80,
-    height: 80,
+    height: 80
   },
 
   profileProgress: {
@@ -226,7 +226,13 @@ class AppHeader extends Component {
   };
 
   navigate = path => {
-    this.props.navigate(path, this.props.role);
+    if (path === "switchRole") {
+      this.props.onToggleRole(
+        this.props.role === "landlord" ? "company" : "landlord"
+      );
+    } else {
+      this.props.navigate(path, this.props.role);
+    }
   };
 
   handleMenu = el => event => {
@@ -292,7 +298,8 @@ class AppHeader extends Component {
   // Account Info PopOver Component
   renderAccountInfo = ({ role, user, navigate, classes, t }) => {
     const NavItem = this.renderAccountNavItem;
-    const profileCompleteness = 30;
+    const profileCompleted = 30;
+    const profileCompleteness = 50;
 
     return (
       <Column alignChildrenStart classes={{ box: classes.accountInfoContent }}>
@@ -328,8 +335,8 @@ class AppHeader extends Component {
         <Row paddingTopDouble fullWidth>
           <LinearProgress
             color="primary"
-            value={profileCompleteness}
-            valueBuffer={50}
+            value={profileCompleted}
+            valueBuffer={profileCompleteness}
             variant="buffer"
             classes={{
               root: classes.profileProgress,
@@ -342,7 +349,7 @@ class AppHeader extends Component {
         {/* profile completeness text */}
         <Row paddingTopHalf fullWidth>
           <Typography fontSizeXS textErrorRed>
-            {profileCompleteness < 100
+            {profileCompleted < 100
               ? t("profileNeedAttention")
               : t("profileCompleted")}
           </Typography>
@@ -351,7 +358,7 @@ class AppHeader extends Component {
             <Typography fontSizeS textErrorRed>
               <ArrowRightAltIcon
                 className={classes.attentionIcon}
-                variant={profileCompleteness < 100 ? "errorRed" : "normal"}
+                variant={profileCompleted < 100 ? "errorRed" : "normal"}
               />
             </Typography>
           </Link>
@@ -374,9 +381,9 @@ class AppHeader extends Component {
         <Box padding2 />
         <Divider className={classes.divider} />
         <NavItem
-          onClick={() => navigate("dashboard")}
+          onClick={() => navigate("switchRole")}
           icon={UsersIcon}
-          text={role === "company" ? t("companyPanel") : t("landlordPanel")}
+          text={role === "company" ? t("landlordPanel") : t("companyPanel")}
           classes={classes}
         />
         <Divider className={classes.divider} />
@@ -449,7 +456,11 @@ class AppHeader extends Component {
                       transparent
                       className={classes.grayButton}
                     >
-                      <Typography fontSizeS fontWeightMedium alignChildrenCenter>
+                      <Typography
+                        fontSizeS
+                        fontWeightMedium
+                        alignChildrenCenter
+                      >
                         {t(language)}&nbsp;&nbsp;
                         <ArrowDownIcon className={classes.arrowDownIcon} />
                       </Typography>
@@ -479,7 +490,11 @@ class AppHeader extends Component {
                       transparent
                       className={classes.grayButton}
                     >
-                      <Typography fontSizeS fontWeightMedium alignChildrenCenter>
+                      <Typography
+                        fontSizeS
+                        fontWeightMedium
+                        alignChildrenCenter
+                      >
                         {location}&nbsp;&nbsp;
                         <ArrowDownIcon className={classes.arrowDownIcon} />
                       </Typography>

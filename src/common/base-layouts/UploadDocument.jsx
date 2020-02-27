@@ -8,12 +8,12 @@ import {
   Row,
   Column,
   Box,
-  Stretch
+  Stretch,
+  UploadIcon,
+  DeleteIcon
 } from "../base-components";
 import {
-  CloudUploadOutlined,
   CheckCircle,
-  DeleteOutline,
   KeyboardArrowLeft,
   KeyboardArrowRight
 } from "@material-ui/icons";
@@ -108,7 +108,7 @@ const UploadDocument = ({
                 onClick={() => onDelete(current)}
               >
                 <Typography fontSizeXS>
-                  <DeleteOutline />
+                  <DeleteIcon style={{width: 12, height: 13}} />
                 </Typography>
               </Button>
             )}
@@ -122,7 +122,7 @@ const UploadDocument = ({
           >
             <Column fontSizeXS fontWeightMedium>
               <Typography paddingTopHalf>
-                <CloudUploadOutlined />
+                <UploadIcon style={{width: 21, height: 19}} />
               </Typography>
               <Typography>{t("upload")}</Typography>
             </Column>

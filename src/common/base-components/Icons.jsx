@@ -49,6 +49,7 @@ import { ReactComponent as ShareSvg } from "../../assets/icon/icon_share_white.s
 import { ReactComponent as SignoutSvg } from "../../assets/icon/icon_signout.svg";
 import { ReactComponent as CompanyRegisterSvg } from "../../assets/icon/icon_company_register.svg";
 import { ReactComponent as LandlordRegisterSvg } from "../../assets/icon/icon_landlord_register.svg";
+import { ReactComponent as UploadSvg } from "../../assets/icon/icon_upload_gray.svg";
 
 const styleSheet = theme => ({
   primary: {
@@ -142,3 +143,4 @@ export const UsersIcon = props => (
 export const BuildingsIcon = props => (
   <SvgIcon src={LandlordRegisterSvg} {...props} />
 );
+export const UploadIcon = props => <SvgIcon src={UploadSvg} {...props} />;
