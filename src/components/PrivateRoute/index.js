@@ -52,6 +52,7 @@ const styleSheet = theme => ({
 
   contentWrapper: {
     minHeight: "calc(100vh - 250px)",
+    background: "white",
     [theme.breakpoints.down("sm")]: {
       minHeight: "calc(100vh - 166px)"
     }
@@ -59,6 +60,7 @@ const styleSheet = theme => ({
 
   footerWrapper: {
     height: 150,
+    background: "white",
     [theme.breakpoints.down("sm")]: {
       height: 100
     }

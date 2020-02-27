@@ -129,7 +129,7 @@ export const LinkedinIcon = props => <SvgIcon src={LinkedinSvg} {...props} />;
 export const BackIcon = props => <SvgIcon src={BackSvg} {...props} />;
 export const CancelIcon = props => <SvgIcon src={CancelSvg} {...props} />;
 export const DeleteIcon = props => <SvgIcon src={DeleteSvg} {...props} />;
-export const FavIcon = props => <SvgIcon src={FavSvg} {...props} />;
+export const FavoriteIcon = props => <SvgIcon src={FavSvg} {...props} />;
 export const MapIcon = props => <SvgIcon src={MapSvg} {...props} />;
 export const PhoneIcon = props => <SvgIcon src={PhoneSvg} {...props} />;
 export const RegisterIcon = props => <SvgIcon src={RegisterSvg} {...props} />;
