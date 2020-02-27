@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import { withStyles } from "@material-ui/core/styles";
 import clsx from "clsx";
 import { Trans, withTranslation } from "react-i18next";
+import withWidth, { isWidthDown } from "@material-ui/core/withWidth";
 import HeaderImage from "../../assets/img/img_header.jpg";
 import HeaderImageLarger from "../../assets/img/img_header@2x.jpg";
 import {
@@ -11,26 +12,46 @@ import {
   Slide,
   Fade,
   MobileStepper,
-  Collapse,
-  Icon
+  Collapse
 } from "@material-ui/core";
-import { LinkedIn, Facebook, Instagram, Twitter, SentimentSatisfiedOutlined } from "@material-ui/icons";
+import {
+  LinkedIn,
+  Facebook,
+  Instagram,
+  Twitter,
+  KeyboardArrowLeft,
+  KeyboardArrowRight,
+  FavoriteBorderOutlined,
+  FavoriteOutlined
+} from "@material-ui/icons";
 import {
   Box,
   Row,
   Column,
+  Stretch,
   TextField,
   Button,
   Link,
-  Typography
+  Typography,
+  Divider,
+  SearchIcon,
+  TessiIcon,
+  ArrowDownIcon,
+  ArrowUpIcon,
+  HeartIcon,
+  StarIcon,
+  EmojiIcon,
+  CalendarIcon,
+  ArrowRightAltIcon
 } from "../../common/base-components";
-import { Carousel } from "react-responsive-carousel";
-import "react-responsive-carousel/lib/styles/carousel.min.css";
+import Carousel, { Dots } from "@brainhubeu/react-carousel";
+import "@brainhubeu/react-carousel/lib/style.css";
 
 import { offices } from "../../common/mock/officeMockData";
 import gallery1 from "../../assets/img/img_gallery_01@2x.png";
 import gallery2 from "../../assets/img/img_gallery_02@2x.png";
 import gallery3 from "../../assets/img/img_gallery_03@2x.png";
+import { useState } from "react";
 
 const styleSheet = theme => ({
   root: {
@@ -56,7 +77,7 @@ const styleSheet = theme => ({
 
   landingBoardImage: {
     visibility: "hidden",
-    maxHeight: "calc(100vh - 100px)",
+    // maxHeight: "calc(100vh - 100px)",
     [theme.breakpoints.down("sm")]: {
       width: "170%"
     }
@@ -68,9 +89,9 @@ const styleSheet = theme => ({
     left: 0,
     width: "100%",
     height: "100%",
-    padding: "128px 16px 56px 16px",
+    padding: "168px 16px 180px 16px",
     [theme.breakpoints.down("sm")]: {
-      padding: "24px 16px"
+      padding: "24px 16px 8px 16px"
     }
   },
 
@@ -82,7 +103,7 @@ const styleSheet = theme => ({
     borderRadius: 8,
     [theme.breakpoints.down("sm")]: {
       boxShadow: "0px 14px 14px #0000001A",
-      padding: `${theme.spacing(2)}px ${theme.spacing(1.5)}px`
+      padding: `${theme.spacing(2)}px 10px`
     }
   },
 
@@ -102,11 +123,20 @@ const styleSheet = theme => ({
     }
   },
 
-  searchBox: {
+  searchInput: {
     marginTop: 14,
     [theme.breakpoints.down("sm")]: {
       marginTop: 8
     }
+  },
+
+  searchInputIcon: {
+    borderRadius: "50%",
+    background: theme.colors.primary.mainColor,
+    width: 44,
+    height: 39,
+    position: "relative",
+    right: -8
   },
 
   actionButtonsWrapper: {},
@@ -142,9 +172,11 @@ const styleSheet = theme => ({
   },
 
   blockTitle: {
-    fontSize: "24px",
+    ...theme.fonts.size.fontSizeL,
+    ...theme.fonts.weight.fontWeightBold,
+    textAlign: "center",
     [theme.breakpoints.down("sm")]: {
-      fontSize: "16px"
+      ...theme.fonts.size.fontSizeS
     }
   },
 
@@ -196,8 +228,10 @@ const styleSheet = theme => ({
 
   textStepExpandIcon: {
     marginLeft: 14,
-    color: theme.colors.primary.borderGrey,
-    fontWeight: 100
+    color: theme.colors.primary.grey,
+    fontWeight: 100,
+    width: 12,
+    height: 7
   },
 
   textStepContent: {
@@ -264,8 +298,12 @@ const styleSheet = theme => ({
     fontSize: "20px"
   },
 
+  divider: {
+    width: "100%"
+  },
+
   recommendedOfficeWrapper: {
-    width: 245,
+    width: 235,
     marginRight: 20
   },
 
@@ -274,18 +312,74 @@ const styleSheet = theme => ({
     height: 175,
     borderRadius: 8,
     position: "relative",
-    overflow: "hidden"
+    overflow: "hidden",
+    "&:hover": {
+      "&::before": {
+        content: '" "',
+        background: `transparent linear-gradient(0deg, ${theme.colors.primary.whiteGrey} 0%, ${theme.colors.primary.darkGrey} 100%) 0% 0% no-repeat padding-box`,
+        width: "100%",
+        height: 34,
+        position: "absolute",
+        top: 0,
+        left: 0,
+        opacity: 0.3,
+        zIndex: 1
+      },
+      "&::after": {
+        content: '" "',
+        background: `transparent linear-gradient(180deg, ${theme.colors.primary.whiteGrey} 0%, ${theme.colors.primary.darkGrey} 100%) 0% 0% no-repeat padding-box`,
+        width: "100%",
+        height: 34,
+        position: "absolute",
+        bottom: 0,
+        right: 0,
+        opacity: 0.3,
+        zIndex: 1
+      }
+    }
   },
 
   favoriteOfficeIcon: {
     position: "absolute",
     top: 8,
-    right: 16
+    right: 16,
+    zIndex: 1,
+    width: 16,
+    height: 16
   },
 
   officeImage: {
     width: "100%",
     height: 175
+  },
+
+  officeLegend: {
+    position: "absolute",
+    right: 14,
+    bottom: 8
+  },
+
+  carouselArrow: {
+    width: 24,
+    height: 24,
+    position: "absolute",
+    top: "calc(50% - 12px)",
+    background: theme.colors.primary.white,
+    boxShadow: `0px 2px 4px ${theme.colors.primary.darkGrey}1A`,
+    borderRadius: "50%",
+    zIndex: 1,
+    opacity: 0.15,
+    "&:hover": {
+      opacity: 1
+    }
+  },
+
+  carouselDots: {
+    position: "absolute",
+    width: "100%",
+    height: 7,
+    left: 0,
+    bottom: 13
   },
 
   ratingText: {},
@@ -312,21 +406,54 @@ const styleSheet = theme => ({
   },
 
   homeRegisterContent: {
-    // fontSize: "14px",
-    textAlign: "center",
-    paddingTop: 53,
-    paddingBottom: 53,
+    position: "relative",
+    paddingTop: 40,
+    paddingBottom: 40,
     maxWidth: 724,
-    // color: "white",
     [theme.breakpoints.down("sm")]: {
       paddingTop: 24,
-      paddingBottom: 24
+      paddingBottom: 24,
+      maxWidth: 237
+    }
+  },
+
+  homeRegisterArrow: {
+    width: 48,
+    height: 48,
+    position: "absolute",
+    top: "calc(50% - 12px)",
+    [theme.breakpoints.down("sm")]: {
+      width: 36,
+      height: 36
+    }
+  },
+
+  homeRegisterArrowButton: {
+    width: 48,
+    height: 48,
+    [theme.breakpoints.down("sm")]: {
+      width: 36,
+      height: 36
     }
   },
 
   prosWrapper: {
     paddingTop: 45,
-    paddingBottom: 50
+    paddingBottom: 50,
+    [theme.breakpoints.down("sm")]: {
+      paddingLeft: 40,
+      paddingRight: 40
+    }
+  },
+
+  prosIcon: {
+    width: 40,
+    height: 40,
+    color: theme.colors.primary.mainColor,
+    [theme.breakpoints.down("sm")]: {
+      width: 27,
+      height: 27
+    }
   },
 
   socialIconsWrapper: {
@@ -336,6 +463,17 @@ const styleSheet = theme => ({
   contactInfoWrapper: {
     paddingTop: 58,
     paddingBottom: 20
+  },
+
+  landingButtonsWrapper: {
+    maxWidth: "calc(194px * 2 + 44px)",
+    flexWrap: "wrap"
+  },
+
+  landingButton: {
+    width: 194,
+    margin: 4,
+    padding: 7
   }
 });
 
@@ -348,96 +486,104 @@ class Home extends Component {
     activeHelpStep: 0
   };
 
-  textStepper = ({ active, index, label, content, onClick, ...props }) => (
-    <div onClick={() => onClick(index)}>
-      <Hidden smDown>
-        <Box classes={{ box: this.props.classes.textStepWrapper }}>
-          <Box classes={{ box: this.props.classes.textStepIconWrapper }}>
-            <Box
-              classes={{
-                box: clsx(
-                  this.props.classes.textStepIcon,
-                  active && this.props.classes.textStepActiveIcon
-                )
-              }}
-              alignChildrenCenter
-              justifyChildrenCenter
-            >
-              <Typography fontSizeM fontWeightBold>
-                {index}
-              </Typography>
+  // text step component
+  textStepper = withWidth()(
+    ({ active, index, label, content, onClick, width, ...props }) => (
+      <div onClick={() => onClick(index)}>
+        {!isWidthDown("sm", width) ? (
+          <Box classes={{ box: this.props.classes.textStepWrapper }}>
+            <Box classes={{ box: this.props.classes.textStepIconWrapper }}>
+              <Box
+                classes={{
+                  box: clsx(
+                    this.props.classes.textStepIcon,
+                    active && this.props.classes.textStepActiveIcon
+                  )
+                }}
+                alignChildrenCenter
+                justifyChildrenCenter
+              >
+                <Typography fontSizeM fontWeightBold>
+                  {index}
+                </Typography>
+              </Box>
             </Box>
-          </Box>
-          <Column alignChildrenStart>
-            <Typography
-              fontSizeM
-              fontWeightBold
-              textSecondary={active}
-              textMediumGrey={!active}
-              // color={!active ? "secondary" : undefined}
-              // className={this.props.classes.textStepTitle}
-            >
-              {label}
-            </Typography>
-            <Box paddingTopHalf>
+            <Column alignChildrenStart>
               <Typography
-                fontSizeS
+                fontSizeM
+                fontWeightBold
                 textSecondary={active}
                 textMediumGrey={!active}
-                // className={this.props.classes.textStepContent}
                 // color={!active ? "secondary" : undefined}
+                // className={this.props.classes.textStepTitle}
               >
-                {content}
+                {label}
               </Typography>
-            </Box>
-          </Column>
-        </Box>
-      </Hidden>
-      <Hidden smUp>
-        <Column
-          classes={{ box: this.props.classes.textStepWrapper }}
-          alignChildrenStart
-        >
-          <Row classes={{ box: this.props.classes.textStepIconWrapper }}>
-            <Box
-              classes={{
-                box: clsx(
-                  this.props.classes.textStepIcon,
-                  active && this.props.classes.textStepActiveIcon
-                )
-              }}
+              <Box paddingTopHalf>
+                <Typography
+                  fontSizeS
+                  textSecondary={active}
+                  textMediumGrey={!active}
+                  // className={this.props.classes.textStepContent}
+                  // color={!active ? "secondary" : undefined}
+                >
+                  {content}
+                </Typography>
+              </Box>
+            </Column>
+          </Box>
+        ) : (
+          <Column
+            classes={{ box: this.props.classes.textStepWrapper }}
+            alignChildrenStart
+          >
+            <Row
+              classes={{ box: this.props.classes.textStepIconWrapper }}
               alignChildrenCenter
-              justifyChildrenCenter
             >
-              {index}
-            </Box>
-            <Typography
-              fontSizeS
-              fontWeightBold
-              // className={this.props.classes.textStepTitle}
-            >
-              {label}
-            </Typography>
-            <Icon className={this.props.classes.textStepExpandIcon}>
-              {active ? "keyboard_arrow_down" : "keyboard_arrow_up"}
-            </Icon>
-          </Row>
-          <Collapse in={active}>
-            <Row paddingTopHalf>
-              <Typography
-                fontSizeXS
-                // className={this.props.classes.textStepContent}
-                color={!active ? "secondary" : undefined}
+              <Box
+                classes={{
+                  box: clsx(
+                    this.props.classes.textStepIcon,
+                    active && this.props.classes.textStepActiveIcon
+                  )
+                }}
+                alignChildrenCenter
+                justifyChildrenCenter
               >
-                {content}
+                {index}
+              </Box>
+              <Typography fontSizeS fontWeightBold textSecondary>
+                {label}
               </Typography>
+              {active ? (
+                <ArrowDownIcon
+                  className={this.props.classes.textStepExpandIcon}
+                />
+              ) : (
+                <ArrowUpIcon
+                  className={this.props.classes.textStepExpandIcon}
+                />
+              )}
             </Row>
-          </Collapse>
-        </Column>
-      </Hidden>
-    </div>
+            <Collapse in={active}>
+              <Row paddingTopHalf>
+                <Typography
+                  fontSizeXS
+                  textSecondary={active}
+                  textMediumGrey={!active}
+                >
+                  {content}
+                </Typography>
+              </Row>
+            </Collapse>
+          </Column>
+        )}
+      </div>
+    )
   );
 
+  // image step component
   imgStepper = ({ active, imgSrc }) =>
     active && (
       <Fade in={active}>
@@ -449,58 +595,118 @@ class Home extends Component {
       </Fade>
     );
 
-  officeWrapper = ({ office }) => (
-    <Column
-      classes={{ box: this.props.classes.recommendedOfficeWrapper }}
-      alignChildrenStart
-    >
-      <Box classes={{ box: this.props.classes.recommendedOfficeCarousel }}>
-        <Box classes={{ box: this.props.classes.favoriteOfficeIcon }}>
-          <Icon>heart</Icon>
+  // office component
+  officeWrapper = ({ office, setFavorite }) => {
+    const [pos, setPos] = useState(0);
+
+    return (
+      <Column
+        classes={{ box: this.props.classes.recommendedOfficeWrapper }}
+        alignChildrenStart
+      >
+        <Box classes={{ box: this.props.classes.recommendedOfficeCarousel }}>
+          <div style={{ width: "100%", height: "100%" }}>
+            {/* <HeartIcon
+              className={this.props.classes.favoriteOfficeIcon}
+              onClick={setFavorite}
+            /> */}
+            <Box
+              classes={{ box: this.props.classes.favoriteOfficeIcon }}
+              onClick={setFavorite}
+              textErrorRed={office.favorite}
+              textWhite={!office.favorite}
+            >
+              {office.favorite ? (
+                <FavoriteOutlined />
+              ) : (
+                <FavoriteBorderOutlined />
+              )}
+            </Box>
+            <Carousel
+              slidesPerPage={1}
+              value={pos}
+              infinite
+              onChange={setPos}
+              autoPlay={4000}
+              stopAutoPlayOnHover
+              centered
+              keepDirectionWhenDragging
+              arrowLeft={
+                <Box
+                  classes={{ box: this.props.classes.carouselArrow }}
+                  style={{ left: 14 }}
+                >
+                  <KeyboardArrowLeft />
+                </Box>
+              }
+              arrowRight={
+                <Box
+                  classes={{ box: this.props.classes.carouselArrow }}
+                  style={{ right: 14 }}
+                >
+                  <KeyboardArrowRight />
+                </Box>
+              }
+              addArrowClickHandler
+            >
+              {office.images.map((img, index) => (
+                <React.Fragment key={index}>
+                  <img
+                    src={office.images[0].image}
+                    alt=""
+                    className={this.props.classes.officeImage}
+                  />
+                  <Typography
+                    fontSizeXS
+                    textWhite
+                    classes={{ box: this.props.classes.officeLegend }}
+                  >
+                    {img.location}
+                  </Typography>
+                </React.Fragment>
+              ))}
+            </Carousel>
+            <Dots
+              value={pos}
+              onChange={setPos}
+              number={office.images.length}
+              // className={this.props.classes.carouselDots}
+            />
+          </div>
         </Box>
-        <Carousel
-          showThumbs={false}
-          showIndicators={false}
-          swipable={false}
-          showStatus={false}
-        >
-          {office.images.map((img, index) => (
-            <div key={index}>
-              <img
-                src={img.image}
-                alt=""
-                className={this.props.classes.officeImage}
-              />
-              <p className="legend">{img.location}</p>
-            </div>
-          ))}
-        </Carousel>
-      </Box>
-      <Box paddingTopHalf>
-        <Typography fontSizeM textBlackGrey>
-          {office.title}
-        </Typography>
-      </Box>
-      <Row paddingTopHalf>
-        <Icon color="primary">star</Icon>
-        <Typography fontSizeS textMediumGrey paddingLeftHalf>
-          {office.rating}
-        </Typography>
-      </Row>
-      <Row>
-        <Typography fontSizeS textPrimary>
-          ${office.price} CAD/month
-        </Typography>
-      </Row>
-    </Column>
-  );
+        <Box paddingTopHalf>
+          <Typography fontSizeM textBlackGrey>
+            {office.title}
+          </Typography>
+        </Box>
+        <Row paddingTopHalf>
+          <Typography textPrimary>
+            <StarIcon
+              style={{
+                width: 12,
+                height: 12
+              }}
+            />
+          </Typography>
+          <Typography fontSizeS textMediumGrey paddingLeftHalf>
+            {office.rating}
+          </Typography>
+        </Row>
+        <Row paddingTopHalf>
+          <Typography fontSizeS textPrimary>
+            ${office.price} CAD/month
+          </Typography>
+        </Row>
+      </Column>
+    );
+  };
 
   handleSelectActiveStep = activeHelpStep => () => {
     this.setState({ activeHelpStep });
   };
 
   render() {
-    const { recommendedOffices, classes, t } = this.props;
+    const { recommendedOffices, width, classes, t } = this.props;
     const { activeHelpStep } = this.state;
     const TextStepComponent = this.textStepper;
     const ImgStepComponent = this.imgStepper;
@@ -517,14 +723,8 @@ class Home extends Component {
             width="100%"
             className={classes.landingBoardImage}
           />
-          <Grid
-            container
-            justify="space-between"
-            alignItems="center"
-            direction="column"
-            className={classes.landingBoard}
-          >
-            <Grid item width="100%">
+          <Column fullWidth classes={{ box: classes.landingBoard }}>
+            <Row>
               <Card className={classes.searchWrapper}>
                 <Column alignChildrenStart>
                   <Typography
@@ -558,36 +758,58 @@ class Home extends Component {
                     fullWidth
                     variant="outlined"
                     placeholder={t("sayHiOrSearch")}
-                    className={classes.searchBox}
+                    className={classes.searchInput}
+                    endAdornment={
+                      <Button variant="icon" background="primary" className={classes.searchInputIcon} shadow>
+                        <ArrowRightAltIcon
+                          style={{ color: "white", width: 18, height: 18 }}
+                        />
+                      </Button>
+                    }
                   />
                 </Column>
               </Card>
-            </Grid>
-            <Grid item>
+            </Row>
+            <Stretch />
+            <Row
+              fullWidth
+              classes={{ box: classes.landingButtonsWrapper }}
+              justifyChildrenCenter
+            >
               <Grid
                 container
-                spacing={5}
-                direction="row"
-                alignItems="center"
-                justify="center"
+                direction="row-reverse"
+                justify={isWidthDown("xs", width) ? "center" : "space-between"}
               >
                 <Grid item>
-                  <Button>
-                    <Typography fontSizeS fontWeightBold textWhite>
-                      {t("chatWithTessi")}
+                  <Button className={classes.landingButton}>
+                    <Typography
+                      fontSizeS
+                      fontWeightBold
+                      textWhite
+                      alignChildrenCenter
+                    >
+                      <SearchIcon />
+                      <Typography paddingLeft>{t("advancedSearch")}</Typography>
                     </Typography>
                   </Button>
                 </Grid>
                 <Grid item>
-                  <Button>
-                    <Typography fontSizeS fontWeightBold textWhite>
-                      {t("advancedSearch")}
+                  <Button className={classes.landingButton}>
+                    <Typography
+                      fontSizeS
+                      fontWeightBold
+                      textWhite
+                      alignChildrenCenter
+                    >
+                      <TessiIcon />
+                      <Typography paddingLeft>{t("chatWithTessi")}</Typography>
                     </Typography>
                   </Button>
                 </Grid>
               </Grid>
-            </Grid>
-          </Grid>
+            </Row>
+          </Column>
         </div>
 
         {/* RENTGLOBAL helper block */}
@@ -596,18 +818,14 @@ class Home extends Component {
         >
           <Row classes={{ box: classes.blockTitleWrapper }}>
             <Typography
-              // fontSizeL
-              textSecondary
-              fontWeightBold
               classes={{ box: classes.blockTitle }}
+              textSecondary
               block
             >
               <Trans i18nKey="howHelpFind">
                 <Typography
-                  textPrimary
-                  fontSizeL
-                  textWeightBold
                   classes={{ box: classes.blockTitle }}
+                  textPrimary
                   span
                 >
                   {{ name: "RENTGLOBAL" }}
@@ -677,26 +895,57 @@ class Home extends Component {
           </Row>
         </Column>
 
+        <Hidden smUp>
+          <Divider className={classes.divider} half />
+        </Hidden>
+
         {/* Office list block */}
         <Column
           classes={{ box: clsx(classes.fixedWith, classes.blockWrapper) }}
         >
-          <Row classes={{ box: classes.blockTitleWrapper }}>
-            <Typography
-              fontWeightBold
-              // fontSizeL
-              textSecondary
-              classes={{ box: classes.blockTitle }}
-            >
+          <Row
+            classes={{ box: classes.blockTitleWrapper }}
+            style={
+              isWidthDown("sm", width)
+                ? { paddingBottom: 24, paddingTop: 0 }
+                : { paddingTop: 0 }
+            }
+          >
+            <Typography classes={{ box: classes.blockTitle }} textSecondary>
               {t("latestRecommendOffice")}
             </Typography>
           </Row>
-          <Row classes={{ box: classes.blockContentWrapper }} fullWidth>
-            <Box alignChildrenStart>
-              {recommendedOffices.map((office, index) => (
-                <OfficeComponent office={office} key={index} />
-              ))}
-            </Box>
+          <Row
+            classes={{ box: classes.blockContentWrapper }}
+            style={{ overflowX: "hidden" }}
+            fullWidth
+          >
+            {/* <Box alignChildrenStart> */}
+            <div style={{ width: "100%", height: "100%" }}>
+              <Carousel
+                slidesPerPage={
+                  isWidthDown("xs", width)
+                    ? 1.3
+                    : isWidthDown("sm", width)
+                    ? 2
+                    : isWidthDown("md", width)
+                    ? 3
+                    : 4
+                }
+                keepDirectionWhenDragging
+              >
+                {recommendedOffices.map((office, index) => (
+                  <OfficeComponent
+                    office={office}
+                    key={index}
+                    setFavorite={() => {
+                      office.favorite = !office.favorite;
+                    }}
+                  />
+                ))}
+              </Carousel>
+            </div>
+            {/* </Box> */}
           </Row>
           <Row classes={{ box: classes.allLatestButton }}>
             <Button variant="secondary" shadow>
@@ -713,24 +962,61 @@ class Home extends Component {
             classes={{ box: clsx(classes.fixedWith, classes.blockWrapper) }}
           >
             <Row classes={{ box: classes.homeRegisterTitle }}>
-              <Typography
-                // fontSizeL
-                fontWeightBold
-                textWhite
-                classes={{ box: classes.blockTitle }}
-              >
+              <Typography classes={{ box: classes.blockTitle }} textWhite>
                 {t("homeRegisterTitle")}
               </Typography>
             </Row>
             <Row
               classes={{ box: classes.homeRegisterContent }}
               fullWidth
-              color="white"
-              fontSizeS
-              fontWeightBold
               textWhite
+              textCenter
             >
-              {t("homeRegisterContent")}
+              <div style={{ width: "100%", height: "100%" }}>
+                <Carousel
+                  slidesPerPage={1}
+                  arrowLeft={
+                    <Box
+                      style={{
+                        left: isWidthDown("sm", width) ? "-60px" : "-124px"
+                      }}
+                      classes={{ box: this.props.classes.homeRegisterArrow }}
+                    >
+                      <KeyboardArrowLeft
+                        className={this.props.classes.homeRegisterArrowButton}
+                      />
+                    </Box>
+                  }
+                  arrowRight={
+                    <Box
+                      style={{
+                        right: isWidthDown("sm", width) ? "-60px" : "-124px"
+                      }}
+                      classes={{ box: this.props.classes.homeRegisterArrow }}
+                    >
+                      <KeyboardArrowRight
+                        className={this.props.classes.homeRegisterArrowButton}
+                      />
+                    </Box>
+                  }
+                >
+                  <Column>
+                    {!isWidthDown("sm", width) && (
+                      <Typography paddingBottom fontSizeL>
+                        1.
+                      </Typography>
+                    )}
+                    <Typography
+                      fontSizeXS={isWidthDown("sm", width)}
+                      fontSizeS={!isWidthDown("sm", width)}
+                      fontWeightBold
+                      fullWidth
+                    >
+                      {t("homeRegisterContent")}
+                    </Typography>
+                  </Column>
+                </Carousel>
+              </div>
             </Row>
             <Row>
               <Button
@@ -740,9 +1026,15 @@ class Home extends Component {
                   this.props.history.push("/auth/register/landlord")
                 }
               >
-                <Typography fontSizeS fontWeightBold textSecondary>
-                  {t("registerAndStartRENTGLOBALConsultant")}
-                </Typography>
+                {isWidthDown("sm", width) ? (
+                  <Typography fontSizeXS fontWeightBold textSecondary>
+                    {t("registerAndStart")}
+                  </Typography>
+                ) : (
+                  <Typography fontSizeS fontWeightBold textSecondary>
+                    {t("registerAndStartRENTGLOBALConsultant")}
+                  </Typography>
+                )}
               </Button>
             </Row>
           </Column>
@@ -753,63 +1045,146 @@ class Home extends Component {
           classes={{ box: clsx(classes.fixedWith, classes.blockWrapper) }}
         >
           <Grid container direction="row" className={classes.prosWrapper}>
-            <Grid item xs={12} sm={4}>
-              <Column>
+            <Grid item xs={12} md={4}>
+              {isWidthDown("sm", width) ? (
                 <Row>
-                  <SentimentSatisfiedOutlined
-                    color="primary"
-                    fontSize="large"
-                  />
+                  <Column>
+                    <EmojiIcon className={classes.prosIcon} />
+                  </Column>
+                  <Column paddingLeft alignChildrenStart>
+                    <Row>
+                      <Typography
+                        fontSizeS
+                        uppercase
+                        textSecondary
+                        fontWeightBold
+                      >
+                        {t("flexibility")}
+                      </Typography>
+                    </Row>
+                    <Row>
+                      <Typography fontSizeXS uppercase textSecondary>
+                        {t("minimumCommitment")}
+                      </Typography>
+                    </Row>
+                  </Column>
                 </Row>
-                <Row paddingTop>
-                  <Typography fontSizeM uppercase textSecondary fontWeightBold>
-                    {t("flexibility")}
-                  </Typography>
-                </Row>
-                <Row>
-                  <Typography fontSizeS uppercase textSecondary>
-                    {t("minimumCommitment")}
-                  </Typography>
-                </Row>
-              </Column>
+              ) : (
+                <Column>
+                  <Row>
+                    <EmojiIcon className={classes.prosIcon} />
+                  </Row>
+                  <Row paddingTop>
+                    <Typography
+                      fontSizeM
+                      uppercase
+                      textSecondary
+                      fontWeightBold
+                    >
+                      {t("flexibility")}
+                    </Typography>
+                  </Row>
+                  <Row>
+                    <Typography fontSizeS uppercase textSecondary>
+                      {t("minimumCommitment")}
+                    </Typography>
+                  </Row>
+                </Column>
+              )}
             </Grid>
-            <Grid item xs={12} sm={4}>
-              <Column>
-                <Row>
-                  <Icon color="primary" fontSize="large">
-                    date_range
-                  </Icon>
+            <Grid item xs={12} md={4}>
+              {isWidthDown("sm", width) ? (
+                <Row paddingTopDouble>
+                  <Column>
+                    <CalendarIcon className={classes.prosIcon} />
+                  </Column>
+                  <Column paddingLeft alignChildrenStart>
+                    <Row>
+                      <Typography
+                        fontSizeS
+                        uppercase
+                        textSecondary
+                        fontWeightBold
+                      >
+                        {t("confiance")}
+                      </Typography>
+                    </Row>
+                    <Row>
+                      <Typography fontSizeXS uppercase textSecondary>
+                        {t("personalMonitoring")}
+                      </Typography>
+                    </Row>
+                  </Column>
                 </Row>
-                <Row paddingTop>
-                  <Typography fontSizeM uppercase textSecondary fontWeightBold>
-                    {t("confiance")}
-                  </Typography>
-                </Row>
-                <Row>
-                  <Typography fontSizeS uppercase textSecondary>
-                    {t("personalMonitoring")}
-                  </Typography>
-                </Row>
-              </Column>
+              ) : (
+                <Column>
+                  <Row>
+                    <CalendarIcon className={classes.prosIcon} />
+                  </Row>
+                  <Row paddingTop>
+                    <Typography
+                      fontSizeM
+                      uppercase
+                      textSecondary
+                      fontWeightBold
+                    >
+                      {t("confiance")}
+                    </Typography>
+                  </Row>
+                  <Row>
+                    <Typography fontSizeS uppercase textSecondary>
+                      {t("personalMonitoring")}
+                    </Typography>
+                  </Row>
+                </Column>
+              )}
             </Grid>
-            <Grid item xs={12} sm={4}>
-              <Column>
-                <Row>
-                  <Icon color="primary" fontSize="large">
-                    favorite_border
-                  </Icon>
+            <Grid item xs={12} md={4}>
+              {isWidthDown("sm", width) ? (
+                <Row paddingTopDouble>
+                  <Column>
+                    <HeartIcon className={classes.prosIcon} />
+                  </Column>
+                  <Column paddingLeft alignChildrenStart>
+                    <Row>
+                      <Typography
+                        fontSizeS
+                        uppercase
+                        textSecondary
+                        fontWeightBold
+                      >
+                        {t("simplicity")}
+                      </Typography>
+                    </Row>
+                    <Row>
+                      <Typography fontSizeXS uppercase textSecondary>
+                        {t("turnkeySolution")}
+                      </Typography>
+                    </Row>
+                  </Column>
                 </Row>
-                <Row paddingTop>
-                  <Typography fontSizeM uppercase textSecondary fontWeightBold>
-                    {t("simplicity")}
-                  </Typography>
-                </Row>
-                <Row>
-                  <Typography fontSizeS uppercase textSecondary>
-                    {t("turnkeySolution")}
-                  </Typography>
-                </Row>
-              </Column>
+              ) : (
+                <Column>
+                  <Row>
+                    <HeartIcon className={classes.prosIcon} />
+                  </Row>
+                  <Row paddingTop>
+                    <Typography
+                      fontSizeM
+                      uppercase
+                      textSecondary
+                      fontWeightBold
+                    >
+                      {t("simplicity")}
+                    </Typography>
+                  </Row>
+                  <Row>
+                    <Typography fontSizeS uppercase textSecondary>
+                      {t("turnkeySolution")}
+                    </Typography>
+                  </Row>
+                </Column>
+              )}
             </Grid>
           </Grid>
         </Column>
@@ -845,22 +1220,22 @@ class Home extends Component {
                   classes={{ box: classes.socialIconsWrapper }}
                 >
                   <Box paddingLeft paddingRight>
-                    <Link to="#">
+                    <Link to="#" variant="normalXLight">
                       <Twitter fontSize="large" />
                     </Link>
                   </Box>
                   <Box paddingLeft paddingRight>
-                    <Link to="#">
+                    <Link to="#" variant="normalXLight">
                       <Facebook fontSize="large" />
                     </Link>
                   </Box>
                   <Box paddingLeft paddingRight>
-                    <Link to="#">
+                    <Link to="#" variant="normalXLight">
                       <Instagram fontSize="large" />
                     </Link>
                   </Box>
                   <Box paddingLeft paddingRight>
-                    <Link to="#">
+                    <Link to="#" variant="normalXLight">
                       <LinkedIn fontSize="large" />
                     </Link>
                   </Box>
@@ -970,6 +1345,6 @@ class Home extends Component {
   }
 }
 
-export default withStyles(styleSheet)(
-  withTranslation(["home", "common"])(Home)
+export default withWidth()(
+  withStyles(styleSheet)(withTranslation(["home", "common"])(Home))
 );

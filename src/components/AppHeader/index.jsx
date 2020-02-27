@@ -24,7 +24,7 @@ import {
   HomeIcon,
   UsersIcon,
   PowerIcon,
-  ArrowRightIcon,
+  ArrowRightAltIcon,
   EmailIcon,
   AlarmIcon,
   UserIcon,
@@ -349,7 +349,7 @@ class AppHeader extends Component {
           <Stretch />
           <Link to="#" onClick={() => navigate("profile")}>
             <Typography fontSizeS textErrorRed>
-              <ArrowRightIcon
+              <ArrowRightAltIcon
                 className={classes.attentionIcon}
                 variant={profileCompleteness < 100 ? "errorRed" : "normal"}
               />

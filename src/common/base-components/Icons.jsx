@@ -5,7 +5,7 @@ import clsx from "clsx";
 import { ReactComponent as AddressSvg } from "../../assets/icon/icon_address_gray.svg";
 import { ReactComponent as AlarmSvg } from "../../assets/icon/icon_alarm_graydark.svg";
 import { ReactComponent as ArrowDownSvg } from "../../assets/icon/icon_arrow_down_graydark.svg";
-import { ReactComponent as ArrowRightSvg } from "../../assets/icon/icon_arrow_right.svg";
+import { ReactComponent as ArrowRightAltSvg } from "../../assets/icon/icon_arrow_right_alt.svg";
 import { ReactComponent as ArrowUpSvg } from "../../assets/icon/icon_arrow_up_graydark.svg";
 import { ReactComponent as CalendarSvg } from "../../assets/icon/icon_calendar_white.svg";
 import { ReactComponent as CallSvg } from "../../assets/icon/icon_call_gray.svg";
@@ -86,8 +86,8 @@ export const AddressIcon = props => <SvgIcon src={AddressSvg} {...props} />;
 export const AlarmIcon = props => <SvgIcon src={AlarmSvg} {...props} />;
 export const ArrowDownIcon = props => <SvgIcon src={ArrowDownSvg} {...props} />;
 export const ArrowUpIcon = props => <SvgIcon src={ArrowUpSvg} {...props} />;
-export const ArrowRightIcon = props => (
-  <SvgIcon src={ArrowRightSvg} {...props} />
+export const ArrowRightAltIcon = props => (
+  <SvgIcon src={ArrowRightAltSvg} {...props} />
 );
 export const CallIcon = props => <SvgIcon src={CallSvg} {...props} />;
 export const ChatIcon = props => <SvgIcon src={ChatSvg} {...props} />;
