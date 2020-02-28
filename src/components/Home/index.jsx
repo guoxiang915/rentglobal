@@ -5,15 +5,7 @@ import { Trans, withTranslation } from "react-i18next";
 import withWidth, { isWidthDown } from "@material-ui/core/withWidth";
 import HeaderImage from "../../assets/img/img_header.jpg";
 import HeaderImageLarger from "../../assets/img/img_header@2x.jpg";
-import {
-  Grid,
-  Card,
-  Hidden,
-  Slide,
-  Fade,
-  MobileStepper,
-  Collapse
-} from "@material-ui/core";
+import { Grid, Card, Hidden, MobileStepper, Collapse } from "@material-ui/core";
 import {
   LinkedIn,
   Facebook,
@@ -254,7 +246,7 @@ const styleSheet = theme => ({
   },
 
   imgHelpStep: {
-    position: 'absolute',
+    position: "absolute",
     boxShadow: "0px 18px 18px #0000001A",
     borderRadius: theme.spacing(),
     width: 363,
@@ -265,7 +257,7 @@ const styleSheet = theme => ({
 
   imgHelpStepHidden: {
     transform: "translate(50px, 0)",
-    opacity: 0,
+    opacity: 0
   },
 
   imgHelpBkWrapper: {
@@ -499,7 +491,7 @@ class Home extends Component {
   // text step component
   textStepper = withWidth()(
     ({ active, index, label, content, onClick, width }) => (
-      <div onClick={() => onClick(index)}>
+      <div onClick={() => onClick(index)} style={{ cursor: "pointer" }}>
         {!isWidthDown("sm", width) ? (
           <Box classes={{ box: this.props.classes.textStepWrapper }}>
             <Box classes={{ box: this.props.classes.textStepIconWrapper }}>
@@ -594,23 +586,18 @@ class Home extends Component {
   );
 
   // image step component
-  imgStepper = ({ active, imgSrc }) =>
-    // active && (
-      // <Fade in={active}>
-      //   <Slide direction="left" in={active}>
-      <Box
-        classes={{
-          box: clsx(
-            this.props.classes.imgHelpStep,
-            !active && this.props.classes.imgHelpStepHidden
-          )
-        }}
-      >
-        <img src={imgSrc} alt="Gallery" />
-      </Box>
-      //   </Slide>
-      // </Fade>
-    // );
+  imgStepper = ({ active, imgSrc }) => (
+    <Box
+      classes={{
+        box: clsx(
+          this.props.classes.imgHelpStep,
+          !active && this.props.classes.imgHelpStepHidden
+        )
+      }}
+    >
+      <img src={imgSrc} alt="Gallery" />
+    </Box>
+  );
 
   // office component
   officeWrapper = ({ office, setFavorite }) => {
