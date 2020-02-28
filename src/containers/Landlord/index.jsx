@@ -12,7 +12,9 @@ const mapStateToProps = state => {
 const mapDispatchToprops = dispatch => {
   return {
     mappedupdateUser: (user, history) =>
-      dispatch(authActions.updateUser(user, history))
+      dispatch(authActions.updateUser(user, history)),
+    mappedUploadUserImage: userImage =>
+      dispatch(authActions.updateAvatar(userImage, dispatch))
   };
 };
 

@@ -8,6 +8,7 @@ import { AppSidebar } from "../Layout";
 import { Row, Column } from "../../common/base-components";
 import Profile from "./Profile";
 import Offices from "./Offices";
+import api from "../../api/api";
 
 const styleSheet = () => ({
   root: {
@@ -21,6 +22,10 @@ const styleSheet = () => ({
 class Landlord extends Component {
   static propTypes = {
     navigate: PropTypes.func
+  };
+
+  uploadFile = file => {
+    return api.post("/file/upload", file);
   };
 
   render() {
@@ -46,6 +51,8 @@ class Landlord extends Component {
                     <Profile
                       user={user}
                       mappedupdateUser={this.props.mappedupdateUser}
+                      // mappedUploadUserImage={this.props.mappedUploadUserImage}
+                      uploadFile={this.uploadFile}
                     />
                   )}
                 />

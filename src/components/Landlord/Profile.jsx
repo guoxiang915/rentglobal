@@ -10,6 +10,9 @@ import {
   Typography,
   Button,
   TextField,
+  Tooltip,
+  TooltipContent,
+  Link,
   EmailIcon,
   UserIcon,
   PhoneIcon,
@@ -21,12 +24,11 @@ import {
   CloseIcon,
   CheckIcon,
   LockIcon,
-  Tooltip,
-  TooltipContent,
-  Link
+  UploadIcon
 } from "../../common/base-components";
 import { UploadDocument } from "../../common/base-layouts";
 import { Collapse, Grid, Card, CardMedia } from "@material-ui/core";
+import Dropzone from "react-dropzone";
 
 const styleSheet = theme => ({
   root: {
@@ -117,11 +119,18 @@ const styleSheet = theme => ({
     alignItems: "center",
     width: 28,
     height: 24
+  },
+
+  dropzone: {
+    width: "90%",
+    height: "90%",
+    border: `3px dashed ${theme.colors.primary.borderGrey}`
   }
 });
 
 class Profile extends Component {
   state = {
+    userImage: null,
     username: "",
     email: "",
     phoneNumber: "",
@@ -158,7 +167,8 @@ class Profile extends Component {
       phoneNumber: user.profile.phoneNumber || "",
       address: user.profile.address.fullAddress || "",
       postalCode: user.profile.address.postalCode || "",
-      photo: user.profile.photo || ""
+      photo: user.profile.photo || "",
+      userImage: user.profileImage || null
     });
   }
 
@@ -231,7 +241,7 @@ class Profile extends Component {
     this.handleStateChange(field)(event.target.value);
   };
 
-  handleStateChangeByEvent = field => value => () => {
+  handleStateChangeByEvent = (field, value) => () => {
     this.handleStateChange(field)(value);
   };
 
@@ -273,6 +283,22 @@ class Profile extends Component {
   };
 
   handleSendPhoneVerification = () => {};
+
+  handleUploadUserImage = userImage => {
+    const formData = new FormData();
+    formData.append("userImage", userImage);
+    console.log(formData, userImage);
+    this.props.uploadFile({ file: formData }).then(response => {
+      console.log(response);
+      this.setState({ userImage: response });
+    });
+  };
+
+  handleUploadDocument = docType => docFile => {
+    this.props.uploadFile(docFile).then(response => {
+      this.setState({ [docType]: response });
+    });
+  };
 
   render() {
     const { user, width, classes, t } = this.props;
@@ -328,8 +354,30 @@ class Profile extends Component {
                     <Column fullWidth paddingTop>
                       <Row classes={{ box: classes.imageWrapper }}>
                         <Card variant="outlined" className={classes.imageCard}>
-                          {user.profile_image ? (
-                            <CardMedia image={user.profile_image} title="" />
+                          {this.state.isEditLandlordInfo ? (
+                            <Dropzone
+                              multiple={false}
+                              onDrop={files =>
+                                this.handleUploadUserImage(files[0])
+                              }
+                            >
+                              {({ getRootProps, getInputProps }) => (
+                                <Box
+                                  classes={{ box: classes.dropzone }}
+                                  justifyChildrenCenter
+                                  alignChildrenCenter
+                                  {...getRootProps()}
+                                >
+                                  <input {...getInputProps()} />
+                                  <UploadIcon
+                                    fontSize="large"
+                                    className={classes.outlineIcon}
+                                  />
+                                </Box>
+                              )}
+                            </Dropzone>
+                          ) : this.state.userImage ? (
+                            <CardMedia image={this.state.userImage} title="" />
                           ) : (
                             <UserIcon
                               fontSize="large"
@@ -470,11 +518,7 @@ class Profile extends Component {
                           <Button
                             link="errorRed"
                             background="secondaryLight"
-                            onClick={() =>
-                              this.handleStateChange("isEditLandlordInfo")(
-                                false
-                              )
-                            }
+                            onClick={this.handleStateChangeByEvent("isEditLandlordInfo",false)}
                           >
                             <CloseIcon style={{ width: 9, height: 9 }} />
                             <Typography paddingLeft fontSizeS>
@@ -517,23 +561,18 @@ class Profile extends Component {
                 <UploadDocument
                   title={t("legalStatusDocument")}
                   documents={this.state.legalStatusDocument}
-                  onUpload={() => {}}
-                  onDelete={() => {}}
                 />
               </Box>
               <Box paddingRightHalf>
                 <UploadDocument
                   title={t("checkSpecimen")}
                   documents={this.state.checkSpecimen}
-                  onDelete={() => {}}
                 />
               </Box>
               <Box paddingRightHalf>
                 <UploadDocument
                   title={t("lease")}
                   documents={this.state.lease}
-                  onUpload={() => {}}
-                  onDelete={() => {}}
                 />
               </Box>
             </Row>

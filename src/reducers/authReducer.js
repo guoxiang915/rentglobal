@@ -168,6 +168,18 @@ const authReducer = (currentState = INITIAL_STATE, action) => {
         error: action.resp.msg
       };
 
+    case "REQUEST_UPDATE_USER_AVATAR":
+      return {
+        ...currentState,
+        isLoading: true
+      };
+
+    case "RESPONSE_UPDATE_USER_AVATAR":
+      return {
+        ...currentState,
+        isLoading: false
+      };
+
     default:
       return currentState;
   }
