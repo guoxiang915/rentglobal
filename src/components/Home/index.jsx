@@ -245,7 +245,8 @@ const styleSheet = theme => ({
   },
 
   imgHelpStepper: {
-    position: "relative"
+    position: "relative",
+    zIndex: 1
   },
 
   imgHelpStepWrapper: {
@@ -253,10 +254,18 @@ const styleSheet = theme => ({
   },
 
   imgHelpStep: {
+    position: 'absolute',
     boxShadow: "0px 18px 18px #0000001A",
     borderRadius: theme.spacing(),
     width: 363,
-    height: 500
+    height: 500,
+    opacity: 1,
+    transition: "transform .3s, opacity .4s"
+  },
+
+  imgHelpStepHidden: {
+    transform: "translate(50px, 0)",
+    opacity: 0,
   },
 
   imgHelpBkWrapper: {
@@ -489,7 +498,7 @@ class Home extends Component {
 
   // text step component
   textStepper = withWidth()(
-    ({ active, index, label, content, onClick, width, ...props }) => (
+    ({ active, index, label, content, onClick, width }) => (
       <div onClick={() => onClick(index)}>
         {!isWidthDown("sm", width) ? (
           <Box classes={{ box: this.props.classes.textStepWrapper }}>
@@ -586,15 +595,22 @@ class Home extends Component {
 
   // image step component
   imgStepper = ({ active, imgSrc }) =>
-    active && (
-      <Fade in={active}>
-        <Slide direction="left" in={active}>
-          <Box classes={{ box: this.props.classes.imgHelpStep }}>
-            <img src={imgSrc} alt="Gallery" />
-          </Box>
-        </Slide>
-      </Fade>
-    );
+    // active && (
+      // <Fade in={active}>
+      //   <Slide direction="left" in={active}>
+      <Box
+        classes={{
+          box: clsx(
+            this.props.classes.imgHelpStep,
+            !active && this.props.classes.imgHelpStepHidden
+          )
+        }}
+      >
+        <img src={imgSrc} alt="Gallery" />
+      </Box>
+      //   </Slide>
+      // </Fade>
+    // );
 
   // office component
   officeWrapper = ({ office, setFavorite }) => {
@@ -654,18 +670,19 @@ class Home extends Component {
               {office.images.map((img, index) => (
                 <React.Fragment key={index}>
                   <Box fullWidth>
-                  <img
-                    src={office.images[0].image}
-                    alt=""
-                    className={this.props.classes.officeImage}
-                  />
-                  <Typography
-                    fontSizeXS
-                    textWhite
-                    classes={{ box: this.props.classes.officeLegend }}
-                  >
-                    {img.location}
-                  </Typography></Box>
+                    <img
+                      src={office.images[0].image}
+                      alt=""
+                      className={this.props.classes.officeImage}
+                    />
+                    <Typography
+                      fontSizeXS
+                      textWhite
+                      classes={{ box: this.props.classes.officeLegend }}
+                    >
+                      {img.location}
+                    </Typography>
+                  </Box>
                 </React.Fragment>
               ))}
             </Carousel>
@@ -763,7 +780,12 @@ class Home extends Component {
                     placeholder={t("sayHiOrSearch")}
                     className={classes.searchInput}
                     endAdornment={
-                      <Button variant="icon" background="primary" className={classes.searchInputIcon} shadow>
+                      <Button
+                        variant="icon"
+                        background="primary"
+                        className={classes.searchInputIcon}
+                        shadow
+                      >
                         <ArrowRightAltIcon
                           style={{ color: "white", width: 18, height: 18 }}
                         />
