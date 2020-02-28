@@ -235,6 +235,10 @@ class AppHeader extends Component {
     }
   };
 
+  handleNavigate = path => () => {
+    this.navigate(path);
+  };
+
   handleMenu = el => event => {
     const newState = {};
     newState[el] = event.currentTarget;
@@ -265,12 +269,8 @@ class AppHeader extends Component {
     );
   };
 
-  handleToggleSidebar = value => {
-    if (value) {
-      this.props.onToggleSidebar(value);
-    } else {
-      this.props.onToggleSidebar(!this.props.sidebarOpened);
-    }
+  handleToggleSidebar = value => () => {
+    this.props.onToggleSidebar(value);
   };
 
   renderAccountNavItem = ({ onClick, icon, text, errorRed, classes }) => {
@@ -300,6 +300,8 @@ class AppHeader extends Component {
     const NavItem = this.renderAccountNavItem;
     const profileCompleted = 30;
     const profileCompleteness = 50;
+
+    const handleNavigate = path => () => navigate(path);
 
     return (
       <Column alignChildrenStart classes={{ box: classes.accountInfoContent }}>
@@ -354,7 +356,7 @@ class AppHeader extends Component {
               : t("profileCompleted")}
           </Typography>
           <Stretch />
-          <Link to="#" onClick={() => navigate("profile")}>
+          <Link to="#" onClick={handleNavigate("profile")}>
             <Typography fontSizeS textErrorRed>
               <ArrowRightAltIcon
                 className={classes.attentionIcon}
@@ -367,13 +369,13 @@ class AppHeader extends Component {
         {/* links */}
         <Box paddingTopDouble />
         <NavItem
-          onClick={() => navigate("home")}
+          onClick={handleNavigate("home")}
           icon={HomeIcon}
           text={t("home")}
           classes={classes}
         />
         <NavItem
-          onClick={() => navigate("dashboard")}
+          onClick={handleNavigate("dashboard")}
           icon={DashboardIcon}
           text={t("dashboard")}
           classes={classes}
@@ -381,7 +383,7 @@ class AppHeader extends Component {
         <Box padding2 />
         <Divider className={classes.divider} />
         <NavItem
-          onClick={() => navigate("switchRole")}
+          onClick={handleNavigate("switchRole")}
           icon={UsersIcon}
           text={role === "company" ? t("landlordPanel") : t("companyPanel")}
           classes={classes}
@@ -389,7 +391,7 @@ class AppHeader extends Component {
         <Divider className={classes.divider} />
         <Box padding2 />
         <NavItem
-          onClick={() => navigate("logout")}
+          onClick={handleNavigate("logout")}
           icon={PowerIcon}
           text={t("signOut")}
           classes={classes}
@@ -428,7 +430,7 @@ class AppHeader extends Component {
             <div className={classes.logoWrapper}>
               {/* logo image */}
               <div
-                onClick={() => this.navigate("home")}
+                onClick={this.handleNavigate("home")}
                 className={classes.logoNavigator}
               >
                 {isLoggedIn ? (
@@ -663,7 +665,7 @@ class AppHeader extends Component {
                           variant="secondary"
                           shadow
                           onClick={() =>
-                            this.props.navigate('register", "landlord')
+                            this.props.navigate("register", "landlord")
                           }
                         >
                           <Typography fontSizeS fontWeightBold>
@@ -683,7 +685,7 @@ class AppHeader extends Component {
                       link="white"
                       background="primary"
                       outline="primary"
-                      onClick={() => this.handleToggleSidebar()}
+                      onClick={this.handleToggleSidebar(!sidebarOpened)}
                       shadow
                     >
                       <CloseIcon className={classes.smallIcon} />
@@ -695,7 +697,7 @@ class AppHeader extends Component {
                       background="normalLight"
                       outline="primary"
                       inverse
-                      onClick={() => this.handleToggleSidebar()}
+                      onClick={this.handleToggleSidebar(!sidebarOpened)}
                       shadow
                     >
                       <MenuIcon className={classes.smallIcon} />

@@ -43,10 +43,13 @@ const UploadDocument = ({
   approved,
   title,
   onUpload,
-  onDelete,
-  ...props
+  onDelete
 }) => {
   const [current, setCurrent] = useState(0);
+
+  const prevCurrent = () => setCurrent(current - 1);
+  const nextCurrent = () => setCurrent(current + 1);
+  const deleteCurrent = () => onDelete(current);
 
   return (
     <Card variant="outlined" className={classes.root}>
@@ -70,11 +73,7 @@ const UploadDocument = ({
             >
               <Box>
                 {current > 0 && (
-                  <Link
-                    to="#"
-                    variant="secondaryLight"
-                    onClick={() => setCurrent(current - 1)}
-                  >
+                  <Link to="#" variant="secondaryLight" onClick={prevCurrent}>
                     <KeyboardArrowLeft />
                   </Link>
                 )}
@@ -86,11 +85,7 @@ const UploadDocument = ({
               <Stretch />
               <Box>
                 {current < documents.length - 1 && (
-                  <Link
-                    to="#"
-                    variant="secondaryLight"
-                    onClick={() => setCurrent(current + 1)}
-                  >
+                  <Link to="#" variant="secondaryLight" onClick={nextCurrent}>
                     <KeyboardArrowRight />
                   </Link>
                 )}
@@ -105,10 +100,10 @@ const UploadDocument = ({
                 background="errorRedLight"
                 outline="transparent"
                 inverse
-                onClick={() => onDelete(current)}
+                onClick={deleteCurrent}
               >
                 <Typography fontSizeXS>
-                  <DeleteIcon style={{width: 12, height: 13}} />
+                  <DeleteIcon style={{ width: 12, height: 13 }} />
                 </Typography>
               </Button>
             )}
@@ -122,7 +117,7 @@ const UploadDocument = ({
           >
             <Column fontSizeXS fontWeightMedium>
               <Typography paddingTopHalf>
-                <UploadIcon style={{width: 21, height: 19}} />
+                <UploadIcon style={{ width: 21, height: 19 }} />
               </Typography>
               <Typography>{t("upload")}</Typography>
             </Column>

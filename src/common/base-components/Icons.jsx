@@ -73,10 +73,11 @@ const styleSheet = theme => ({
 export const SvgIcon = withStyles(styleSheet, { name: "SvgIcon" })(
   ({ src, variant, className, classes, styles, ...props }) => {
     const C = src;
+    const component = ({ viewBox, ...props }) => <C {...props} />;
 
     return (
       <MUISvgIcon
-        component={({ viewBox, ...props }) => <C {...props} />}
+        component={component}
         className={clsx(variant && classes[variant], styles, className)}
         {...props}
       />

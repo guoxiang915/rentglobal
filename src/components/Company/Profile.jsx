@@ -213,7 +213,7 @@ class Profile extends Component {
     this.handleStateChange(field)(event.target.value);
   };
 
-  handleStateChangeByEvent = field => value => () => {
+  handleStateChangeByEvent = (field, value) => () => {
     this.handleStateChange(field)(value);
   };
 
@@ -394,9 +394,7 @@ class Profile extends Component {
                           <Button
                             link="errorRed"
                             background="secondaryLight"
-                            onClick={() =>
-                              this.handleStateChange("isEditCompanyInfo")(false)
-                            }
+                            onClick={this.handleStateChangeByEvent("isEditCompanyInfo", false)}
                           >
                             <CloseIcon style={{ width: 9, height: 9 }} />
                             <Typography paddingLeft fontSizeS>
@@ -444,39 +442,30 @@ class Profile extends Component {
                 <UploadDocument
                   title={t("legalStatusDocument")}
                   documents={this.state.legalStatusDocument}
-                  onUpload={() => {}}
-                  onDelete={() => {}}
                 />
               </Box>
               <Box paddingRightHalf paddingBottomHalf>
                 <UploadDocument
                   title={t("checkSpecimen")}
                   documents={this.state.checkSpecimen}
-                  onDelete={() => {}}
                 />
               </Box>
               <Box paddingRightHalf paddingBottomHalf>
                 <UploadDocument
                   title={t("lease")}
                   documents={this.state.lease}
-                  onUpload={() => {}}
-                  onDelete={() => {}}
                 />
               </Box>
               <Box paddingRightHalf paddingBottomHalf>
                 <UploadDocument
                   title={t("lastThreeBalance")}
                   documents={this.state.lastThreeBalance}
-                  onUpload={() => {}}
-                  onDelete={() => {}}
                 />
               </Box>
               <Box paddingRightHalf paddingBottomHalf>
                 <UploadDocument
                   title={t("commercialBrochure")}
                   documents={this.state.commercialBrochure}
-                  onUpload={() => {}}
-                  onDelete={() => {}}
                 />
               </Box>
             </Row>
@@ -545,11 +534,7 @@ class Profile extends Component {
                             <Button
                               link="errorRed"
                               background="secondaryLight"
-                              onClick={() =>
-                                this.handleStateChange("isEditSecurityInfo")(
-                                  false
-                                )
-                              }
+                              onClick={this.handleStateChangeByEvent("isEditSecurityInfo", false)}
                             >
                               <CloseIcon style={{ width: 9, height: 9 }} />
                               <Typography paddingLeft fontSizeS>
