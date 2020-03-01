@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import { withStyles } from "@material-ui/core/styles";
 import { withTranslation } from "react-i18next";
+import clsx from "clsx";
 import withWidth, { isWidthDown } from "@material-ui/core/withWidth";
 import {
   Box,
@@ -27,7 +28,7 @@ import {
   UploadIcon
 } from "../../common/base-components";
 import { UploadDocument } from "../../common/base-layouts";
-import { Collapse, Grid, Card, CardMedia } from "@material-ui/core";
+import { Collapse, Grid, Card } from "@material-ui/core";
 import Dropzone from "react-dropzone";
 
 const styleSheet = theme => ({
@@ -83,12 +84,35 @@ const styleSheet = theme => ({
     float: "right"
   },
 
-  imageCard: {
+  avatarCard: {
     width: 216,
     height: 216,
     display: "flex",
     justifyContent: "center",
-    alignItems: "center"
+    alignItems: "center",
+    position: 'relative',
+    "&:hover": {
+      background: "#0000000a"
+    }
+  },
+
+  dropzone: {
+    width: "90%",
+    height: "90%",
+    border: `3px dashed ${theme.colors.primary.borderGrey}`,
+    position: "absolute",
+    top: "5%",
+    left: "5%"
+  },
+
+  uploadIcon: {
+    color: theme.colors.primary.borderGrey
+  },
+
+  avatarImage: {
+    width: "100%",
+    height: "100%",
+    objectFit: "contain"
   },
 
   outlineIcon: {
@@ -119,12 +143,6 @@ const styleSheet = theme => ({
     alignItems: "center",
     width: 28,
     height: 24
-  },
-
-  dropzone: {
-    width: "90%",
-    height: "90%",
-    border: `3px dashed ${theme.colors.primary.borderGrey}`
   }
 });
 
@@ -285,12 +303,8 @@ class Profile extends Component {
   handleSendPhoneVerification = () => {};
 
   handleUploadUserImage = userImage => {
-    const formData = new FormData();
-    formData.append("userImage", userImage);
-    console.log(formData, userImage);
-    this.props.uploadFile({ file: formData }).then(response => {
-      console.log(response);
-      this.setState({ userImage: response });
+    this.props.uploadFile(userImage, "public-read").then(response => {
+      this.setState({ userImage: response.data });
     });
   };
 
@@ -353,8 +367,22 @@ class Profile extends Component {
                   <Grid item xs={12} sm={6}>
                     <Column fullWidth paddingTop>
                       <Row classes={{ box: classes.imageWrapper }}>
-                        <Card variant="outlined" className={classes.imageCard}>
-                          {this.state.isEditLandlordInfo ? (
+                        <Card variant="outlined" className={classes.avatarCard}>
+                          {this.state.userImage ? (
+                            <img
+                              src={this.state.userImage.bucketPath}
+                              alt="User"
+                              className={classes.avatarImage}
+                            />
+                          ) : (
+                            !this.state.isEditLandlordInfo && (
+                              <UserIcon
+                                fontSize="large"
+                                className={classes.outlineIcon}
+                              />
+                            )
+                          )}
+                          {this.state.isEditLandlordInfo && (
                             <Dropzone
                               multiple={false}
                               onDrop={files =>
@@ -371,18 +399,11 @@ class Profile extends Component {
                                   <input {...getInputProps()} />
                                   <UploadIcon
                                     fontSize="large"
-                                    className={classes.outlineIcon}
+                                    className={clsx(classes.uploadIcon, !this.state.userImage && classes.outlineIcon)}
                                   />
                                 </Box>
                               )}
                             </Dropzone>
-                          ) : this.state.userImage ? (
-                            <CardMedia image={this.state.userImage} title="" />
-                          ) : (
-                            <UserIcon
-                              fontSize="large"
-                              className={classes.outlineIcon}
-                            />
                           )}
                         </Card>
                       </Row>
@@ -518,7 +539,10 @@ class Profile extends Component {
                           <Button
                             link="errorRed"
                             background="secondaryLight"
-                            onClick={this.handleStateChangeByEvent("isEditLandlordInfo",false)}
+                            onClick={this.handleStateChangeByEvent(
+                              "isEditLandlordInfo",
+                              false
+                            )}
                           >
                             <CloseIcon style={{ width: 9, height: 9 }} />
                             <Typography paddingLeft fontSizeS>

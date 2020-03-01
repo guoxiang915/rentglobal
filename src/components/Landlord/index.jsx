@@ -24,8 +24,16 @@ class Landlord extends Component {
     navigate: PropTypes.func
   };
 
-  uploadFile = file => {
-    return api.post("/file/upload", file);
+  uploadFile = (file, permission) => {
+    const formData = new FormData();
+    formData.append("file", file);
+    if (permission) {
+      formData.append("permission", permission);
+    }
+    const config = {
+      headers: { "Content-Type": undefined }
+    };
+    return api.post("/file/upload", formData, config);
   };
 
   render() {
