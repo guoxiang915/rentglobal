@@ -34,6 +34,7 @@ function* login(action) {
     let response = yield call(sendRequest, action.payload);
     if (response.status === 200) {
       authObj.setToken(response.data.token);
+      authObj.setRefreshToken(response.data.refreshToken);
 
       response = yield call(sendRequestForUser);
       if (response.status === 200) {

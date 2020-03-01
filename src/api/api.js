@@ -21,4 +21,36 @@ axiosApi.interceptors.request.use(
   error => Promise.reject(error)
 );
 
+axiosApi.interceptors.response.use(
+  response => response,
+  error => {
+    const originalRequest = error.config;
+
+    // remove tokens when generating token failed
+    if (
+      error.response.status !== 200 &&
+      originalRequest.url === `${API}/auth/token`
+    ) {
+      authObj.removeToken();
+      authObj.removeRefreshToken();
+      window.location = "/auth/login";
+      return Promise.reject(error);
+    }
+
+    // generate token using refreshToken
+    if (error.response.status === 401 && !originalRequest._retry) {
+      originalRequest._retry = true;
+      return axiosApi
+        .post("/auth/token", { refreshToken: authObj.getRefreshToken() })
+        .then(response => {
+          authObj.setToken(response.token);
+          axios.defaults.headers.common[
+            "Authorization"
+          ] = `Bearer ${response.token}`;
+          return axios(originalRequest);
+        });
+    }
+  }
+);
+
 export default axiosApi;

@@ -1,7 +1,4 @@
 import api from "../api/api";
-import Auth from "../utils/auth";
-
-const authObj = new Auth();
 
 export const login = (payload, history) => {
   return {
@@ -82,7 +79,6 @@ export const verifyEmail = (payload, history, dispatch) => {
   api
     .get(`/auth/activate/${payload.token}`)
     .then(response => {
-      authObj.setToken(response.token);
       history.push("/auth/verify-email-success", {
         success: true
       });
