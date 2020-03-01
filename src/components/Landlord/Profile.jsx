@@ -28,7 +28,7 @@ import {
   UploadIcon
 } from "../../common/base-components";
 import { UploadDocument } from "../../common/base-layouts";
-import { Collapse, Grid, Card } from "@material-ui/core";
+import { Collapse, Grid, Card, CircularProgress } from "@material-ui/core";
 import Dropzone from "react-dropzone";
 
 const styleSheet = theme => ({
@@ -90,9 +90,13 @@ const styleSheet = theme => ({
     display: "flex",
     justifyContent: "center",
     alignItems: "center",
-    position: 'relative',
+    position: "relative",
+    backgroundSize: "contain",
+    backgroundPosition: "center",
     "&:hover": {
-      background: "#0000000a"
+      // background: "#0000000a"
+      backgroundColor: theme.colors.primary.grey,
+      backgroundBlendMode: "screen"
     }
   },
 
@@ -102,11 +106,13 @@ const styleSheet = theme => ({
     border: `3px dashed ${theme.colors.primary.borderGrey}`,
     position: "absolute",
     top: "5%",
-    left: "5%"
+    left: "5%",
+    filter: "grayscale(1)"
   },
 
   uploadIcon: {
-    color: theme.colors.primary.borderGrey
+    color: theme.colors.primary.mainColor,
+    mixBlendMode: "difference"
   },
 
   avatarImage: {
@@ -166,7 +172,8 @@ class Profile extends Component {
     isEditSecurityInfo: false,
     isEditPaymentsInfo: false,
     isEditPrivacyInfo: false,
-    openedTab: "landlordInfo"
+    openedTab: "landlordInfo",
+    uploadingDocumnet: null
   };
 
   UNSAFE_componentWillReceiveProps(newProps) {
@@ -251,6 +258,10 @@ class Profile extends Component {
     );
   };
 
+  renderProgressIcon = () => (
+    <CircularProgress color="primary" width="24" />
+  );
+
   handleStateChange = field => value => {
     this.setState({ [field]: value });
   };
@@ -303,21 +314,24 @@ class Profile extends Component {
   handleSendPhoneVerification = () => {};
 
   handleUploadUserImage = userImage => {
+    this.setState({ uploadingDocumnet: "avatar" });
     this.props.uploadFile(userImage, "public-read").then(response => {
-      this.setState({ userImage: response.data });
+      this.setState({ userImage: response.data, uploadingDocumnet: null });
     });
   };
 
   handleUploadDocument = docType => docFile => {
+    this.setState({ uploadingDocumnet: docType });
     this.props.uploadFile(docFile).then(response => {
-      this.setState({ [docType]: response });
+      this.setState({ [docType]: response, uploadingDocumnet: null });
     });
   };
 
   render() {
     const { user, width, classes, t } = this.props;
-    const { openedTab } = this.state;
+    const { openedTab, uploadingDocumnet } = this.state;
     const ProfileTab = this.renderProfileTab;
+    const ProgressIcon = this.renderProgressIcon;
 
     let passwordLastUpdated = "-";
     if (user.passwordLastUpdated) {
@@ -367,21 +381,22 @@ class Profile extends Component {
                   <Grid item xs={12} sm={6}>
                     <Column fullWidth paddingTop>
                       <Row classes={{ box: classes.imageWrapper }}>
-                        <Card variant="outlined" className={classes.avatarCard}>
-                          {this.state.userImage ? (
-                            <img
-                              src={this.state.userImage.bucketPath}
-                              alt="User"
-                              className={classes.avatarImage}
-                            />
-                          ) : (
+                        <Card
+                          variant="outlined"
+                          style={{
+                            backgroundImage: this.state.userImage
+                              ? `url("${this.state.userImage.bucketPath}")`
+                              : "none"
+                          }}
+                          className={classes.avatarCard}
+                        >
+                          {!this.state.userImage &&
                             !this.state.isEditLandlordInfo && (
                               <UserIcon
                                 fontSize="large"
                                 className={classes.outlineIcon}
                               />
-                            )
-                          )}
+                            )}
                           {this.state.isEditLandlordInfo && (
                             <Dropzone
                               multiple={false}
@@ -397,10 +412,19 @@ class Profile extends Component {
                                   {...getRootProps()}
                                 >
                                   <input {...getInputProps()} />
+                                  {uploadingDocumnet === 'avatar' ?
+                                  <ProgressIcon />
+                                  :
                                   <UploadIcon
                                     fontSize="large"
-                                    className={clsx(classes.uploadIcon, !this.state.userImage && classes.outlineIcon)}
+                                    className={clsx({
+                                      [classes.uploadIcon]: this.state
+                                        .userImage,
+                                      [classes.outlineIcon]: !this.state
+                                        .userImage
+                                    })}
                                   />
+  }
                                 </Box>
                               )}
                             </Dropzone>
