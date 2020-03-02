@@ -14,7 +14,8 @@ const mapStateToProps = state => ({
 const mapDispatchToProps = dispatch => ({
   mappedAuthenticate: (token, history) =>
     dispatch(authActions.authenticate(token, history)),
-  mappedlogout: () => dispatch(authActions.logout())
+  mappedlogout: () => dispatch(authActions.logout()),
+  mappedToggleRole: (role, history) => dispatch(authActions.setUserRole(role, history))
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(PrivateRoute);

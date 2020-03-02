@@ -8,7 +8,7 @@ const mapStateToProps = state => {
   };
 };
 
-const mapDispatchToprops = dispatch => {
+const mapDispatchToProps = dispatch => {
   return {
     mappedLogin: (credentials, history) =>
       dispatch(authActions.login(credentials, history)),
@@ -23,4 +23,4 @@ const mapDispatchToprops = dispatch => {
   };
 };
 
-export default connect(mapStateToProps, mapDispatchToprops)(AuthWrapper);
+export default connect(mapStateToProps, mapDispatchToProps)(AuthWrapper);

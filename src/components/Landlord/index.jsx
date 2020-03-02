@@ -40,6 +40,10 @@ class Landlord extends Component {
     const { classes } = this.props;
     const { user } = this.props.auth;
 
+    if (user.role !== "landlord") {
+      return <Redirect to="/" />;
+    }
+
     return (
       <div>
         <Column fullWidth>
@@ -57,9 +61,14 @@ class Landlord extends Component {
                   path="/landlord/profile"
                   render={props => (
                     <Profile
-                      user={user}
-                      mappedupdateUser={this.props.mappedupdateUser}
-                      // mappedUploadUserImage={this.props.mappedUploadUserImage}
+                      {...this.props.auth}
+                      updateUser={(field, user) =>
+                        this.props.mappedupdateUser(
+                          field,
+                          user,
+                          this.props.history
+                        )
+                      }
                       uploadFile={this.uploadFile}
                     />
                   )}

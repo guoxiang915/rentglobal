@@ -5,8 +5,9 @@ const INITIAL_STATE = {
   error: null,
   loaded: false,
   successMsg: null,
-  isActivated: false
-  // loginMode: null
+  isActivated: false,
+  // loginMode: null,
+  isUpdating: null
 };
 
 const authReducer = (currentState = INITIAL_STATE, action) => {
@@ -145,39 +146,28 @@ const authReducer = (currentState = INITIAL_STATE, action) => {
     case "SET_USER_ROLE":
       return {
         ...currentState,
-        user: { ...currentState.user, role: action.role }
+        user: { ...currentState.user, role: action.role },
+        isLoading: true
       };
 
     case "REQUEST_UPDATE_USER":
       return {
         ...currentState,
-        isLoading: true
+        isUpdating: action.field
       };
 
     case "UPDATE_USER_SUCCESS":
       return {
         ...currentState,
-        isLoading: false,
+        isUpdating: null,
         user: action.resp
       };
 
     case "UPDATE_USER_FAILED":
       return {
         ...currentState,
-        isLoading: false,
+        isUpdating: null,
         error: action.resp.msg
-      };
-
-    case "REQUEST_UPDATE_USER_AVATAR":
-      return {
-        ...currentState,
-        isLoading: true
-      };
-
-    case "RESPONSE_UPDATE_USER_AVATAR":
-      return {
-        ...currentState,
-        isLoading: false
       };
 
     default:

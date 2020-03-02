@@ -22,33 +22,12 @@ export const logout = () => {
   };
 };
 
-export const updateUser = (payload, history) => {
+export const updateUser = (field, payload, history) => {
   return {
     type: "REQUEST_UPDATE_USER",
     history,
-    payload
-  };
-};
-
-export const updateAvatarResponse = response => {
-  return {
-    type: "RESPONSE_UPDATE_USER_AVATAR",
-    payload: response
-  };
-};
-
-export const updateAvatar = (payload, dispatch) => {
-  api
-    .post("/file/upload", payload)
-    .then(response => {
-      dispatch(updateAvatarResponse(response));
-    })
-    .catch(error => {
-      dispatch(updateAvatarResponse(error.response));
-    });
-
-  return {
-    type: "REQUEST_UPDATE_USER_AVATAR"
+    payload,
+    field
   };
 };
 

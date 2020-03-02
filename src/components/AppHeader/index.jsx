@@ -203,7 +203,6 @@ const styleSheet = theme => ({
 class AppHeader extends Component {
   static propTypes = {
     auth: PropTypes.object,
-    role: PropTypes.oneOf(["landlord", "company", ""]).isRequired,
     sidebarOpened: PropTypes.bool,
     location: PropTypes.string,
     language: PropTypes.string,
@@ -225,18 +224,8 @@ class AppHeader extends Component {
     accountInfoEl: null
   };
 
-  navigate = path => {
-    if (path === "switchRole") {
-      this.props.onToggleRole(
-        this.props.role === "landlord" ? "company" : "landlord"
-      );
-    } else {
-      this.props.navigate(path, this.props.role);
-    }
-  };
-
   handleNavigate = path => () => {
-    this.navigate(path);
+    this.props.navigate(path);
   };
 
   handleMenu = el => event => {
@@ -263,16 +252,16 @@ class AppHeader extends Component {
 
   handleHelp = () => {};
 
-  handleToggleRole = () => {
-    this.props.onToggleRole(
-      this.props.role === "landlord" ? "company" : "landlord"
-    );
-  };
-
   handleToggleSidebar = value => () => {
     this.props.onToggleSidebar(value);
   };
 
+  handleAccountInfoNavigate = path => () => {
+    this.handleCloseMenu("accountInfoEl")();
+    this.props.navigate(path);
+  };
+
+  // render account navigation item
   renderAccountNavItem = ({ onClick, icon, text, errorRed, classes }) => {
     const NavIcon = icon;
     return (
@@ -296,12 +285,21 @@ class AppHeader extends Component {
   };
 
   // Account Info PopOver Component
-  renderAccountInfo = ({ role, user, navigate, classes, t }) => {
+  renderAccountInfo = ({
+    role,
+    user,
+    profileProgress,
+    navigate,
+    classes,
+    t
+  }) => {
     const NavItem = this.renderAccountNavItem;
-    const profileCompleted = 30;
-    const profileCompleteness = 50;
-
-    const handleNavigate = path => () => navigate(path);
+    const {
+      profileCompleted,
+      profileCharged,
+      profileCompleteness
+    } = profileProgress;
+    const profile = user[`${role}Profile`];
 
     return (
       <Column alignChildrenStart classes={{ box: classes.accountInfoContent }}>
@@ -310,26 +308,33 @@ class AppHeader extends Component {
           <Box
             alignChildrenCenter
             justifyChildrenCenter
-            style={{ borderRadius: role === "landlord" ? 8 : "50%" }}
+            style={{
+              borderRadius: role === "landlord" ? 8 : "50%",
+
+              backgroundImage: user.avatar
+                ? `url("${user.avatar.bucketPath}")`
+                : "none",
+              backgroundSize: "contain",
+              backgroundPosition: "center"
+            }}
             border
             classes={{
               box: clsx(classes.accountAvatar)
             }}
           >
-            {user.profile_image ? (
-              <img src={user.profile_image} alt={user.username} />
-            ) : role === "landlord" ? (
-              <ImageIcon className={classes.smallIcon} variant="normal" />
-            ) : (
-              <UserIcon className={classes.smallIcon} variant="normal" />
-            )}
+            {!user.avatar &&
+              (role === "landlord" ? (
+                <ImageIcon className={classes.smallIcon} variant="normal" />
+              ) : (
+                <UserIcon className={classes.smallIcon} variant="normal" />
+              ))}
           </Box>
         </Row>
 
         {/* username */}
         <Row paddingTop fullWidth justifyChildrenCenter>
           <Typography fontSizeS textSecondary>
-            {user.username}
+            {profile ? profile.username : "Unknown"}
           </Typography>
         </Row>
 
@@ -338,7 +343,7 @@ class AppHeader extends Component {
           <LinearProgress
             color="primary"
             value={profileCompleted}
-            valueBuffer={profileCompleteness}
+            valueBuffer={profileCharged}
             variant="buffer"
             classes={{
               root: classes.profileProgress,
@@ -350,32 +355,35 @@ class AppHeader extends Component {
 
         {/* profile completeness text */}
         <Row paddingTopHalf fullWidth>
-          <Typography fontSizeXS textErrorRed>
-            {profileCompleted < 100
-              ? t("profileNeedAttention")
-              : t("profileCompleted")}
-          </Typography>
-          <Stretch />
-          <Link to="#" onClick={handleNavigate("profile")}>
-            <Typography fontSizeS textErrorRed>
-              <ArrowRightAltIcon
-                className={classes.attentionIcon}
-                variant={profileCompleted < 100 ? "errorRed" : "normal"}
-              />
-            </Typography>
+          <Link to="#" onClick={navigate("profile")}>
+            <Box
+              fullWidth
+              textPrimary={profileCompleteness === "profileCompleted"}
+              textMediumGrey={profileCompleteness === "profileNotComplete"}
+              textErrorRed={profileCompleteness === "profileNeedAttention"}
+            >
+              <Typography fontSizeXS>{t(profileCompleteness)}</Typography>
+              <Stretch />
+              <Typography fontSizeS alignChildrenCenter>
+                <ArrowRightAltIcon
+                  className={classes.attentionIcon}
+                  variant={profileCompleted < 100 ? "errorRed" : "normal"}
+                />
+              </Typography>
+            </Box>
           </Link>
         </Row>
 
         {/* links */}
         <Box paddingTopDouble />
         <NavItem
-          onClick={handleNavigate("home")}
+          onClick={navigate("home")}
           icon={HomeIcon}
           text={t("home")}
           classes={classes}
         />
         <NavItem
-          onClick={handleNavigate("dashboard")}
+          onClick={navigate("dashboard")}
           icon={DashboardIcon}
           text={t("dashboard")}
           classes={classes}
@@ -383,7 +391,7 @@ class AppHeader extends Component {
         <Box padding2 />
         <Divider className={classes.divider} />
         <NavItem
-          onClick={handleNavigate("switchRole")}
+          onClick={this.props.onToggleRole}
           icon={UsersIcon}
           text={role === "company" ? t("landlordPanel") : t("companyPanel")}
           classes={classes}
@@ -391,7 +399,7 @@ class AppHeader extends Component {
         <Divider className={classes.divider} />
         <Box padding2 />
         <NavItem
-          onClick={handleNavigate("logout")}
+          onClick={navigate("logout")}
           icon={PowerIcon}
           text={t("signOut")}
           classes={classes}
@@ -402,19 +410,64 @@ class AppHeader extends Component {
   };
 
   render() {
-    const {
-      role,
-      sidebarOpened,
-      location,
-      language,
-      width,
-      classes,
-      t
-    } = this.props;
+    const { sidebarOpened, location, language, width, classes, t } = this.props;
     const { isLoggedIn, user } = this.props.auth;
     const { locationEl, languageEl, accountInfoEl } = this.state;
+    const role = isLoggedIn ? user.role : "";
 
     const AccountInfo = this.renderAccountInfo;
+
+    // calculate profile completeness
+    const profile = isLoggedIn ? user[`${role}Profile`] : null;
+    let profileCompleted = 0;
+    let profileCharged = 10;
+    let profileCompleteness = null;
+    if (isLoggedIn) {
+      const documentTypes = {
+        landlord: ["legalStatusDocuments", "checkSpecimen", "leases"],
+        company: [
+          "legalStatusDocuments",
+          "checkSpecimen",
+          "copyOfPhotoIds",
+          "lastThreeBalances",
+          "commercialBrochures"
+        ]
+      };
+
+      if (profile) {
+        if (profile.username || profile.phoneNumber) {
+          profileCompleted += 30;
+          profileCharged += 30;
+        }
+
+        if (user.avatar) {
+          profileCompleted += 20;
+          profileCharged += 20;
+        }
+
+        documentTypes[role].forEach(docType => {
+          if (profile[docType] && profile[docType].length) {
+            profileCompleted += 10;
+            profileCharged += 15;
+
+            if (profile[docType].find(docItem => docItem.approved === true)) {
+              profileCompleted += 5;
+            }
+          }
+        });
+      }
+
+      if (profileCompleted >= 90) {
+        profileCompleted = 100;
+      }
+
+      profileCompleteness =
+        profileCompleted === 100
+          ? "profileCompleted"
+          : profileCompleted > 60
+          ? "profileNotComplete"
+          : "profileNeedAttention";
+    }
 
     return (
       <div className={clsx(classes.root, isLoggedIn && classes.loggedIn)}>
@@ -510,10 +563,10 @@ class AppHeader extends Component {
                       className={classes.headerMenu}
                     >
                       <MenuItem onClick={this.handleSelectLocation("Montreal")}>
-                        Montreal
+                        {t("montreal")}
                       </MenuItem>
                       <MenuItem onClick={this.handleSelectLocation("Toronto")}>
-                        Toronto
+                        {t("toronto")}
                       </MenuItem>
                     </Menu>
                   </Column>
@@ -555,7 +608,7 @@ class AppHeader extends Component {
                         <Button
                           variant="secondary"
                           shadow
-                          onClick={this.handleToggleRole}
+                          onClick={this.props.onToggleRole}
                         >
                           <Typography fontSizeS fontWeightBold>
                             {t(
@@ -617,10 +670,12 @@ class AppHeader extends Component {
                         <AccountInfo
                           role={role}
                           user={user}
-                          navigate={path => {
-                            this.handleCloseMenu("accountInfoEl")();
-                            this.navigate(path);
+                          profileProgress={{
+                            profileCompleteness,
+                            profileCompleted,
+                            profileCharged
                           }}
+                          navigate={this.handleAccountInfoNavigate}
                           classes={classes}
                           t={t}
                         />
@@ -665,7 +720,7 @@ class AppHeader extends Component {
                           variant="secondary"
                           shadow
                           onClick={() =>
-                            this.props.navigate("register", "landlord")
+                            this.props.navigate("register/landlord")
                           }
                         >
                           <Typography fontSizeS fontWeightBold>

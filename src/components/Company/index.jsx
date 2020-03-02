@@ -7,6 +7,7 @@ import { Switch, Route, Redirect } from "react-router-dom";
 import { AppSidebar } from "../Layout";
 import { Row, Column } from "../../common/base-components";
 import Profile from "./Profile";
+import api from "../../api/api";
 
 const styleSheet = () => ({
   root: {
@@ -22,9 +23,25 @@ class Company extends Component {
     navigate: PropTypes.func
   };
 
+  uploadFile = (file, permission) => {
+    const formData = new FormData();
+    formData.append("file", file);
+    if (permission) {
+      formData.append("permission", permission);
+    }
+    const config = {
+      headers: { "Content-Type": undefined }
+    };
+    return api.post("/file/upload", formData, config);
+  };
+
   render() {
     const { classes } = this.props;
     const { user } = this.props.auth;
+
+    if (user.role !== "company") {
+      return <Redirect to="/" />;
+    }
 
     return (
       <div>
@@ -32,7 +49,7 @@ class Company extends Component {
           <Row classes={{ box: classes.root }} fullWidth alignChildrenStart>
             <Hidden smDown>
               <Column classes={{ box: classes.sidebarWrapper }} fullWdith>
-                <AppSidebar role="company" navigate={this.props.navigate}/>
+                <AppSidebar role="company" navigate={this.props.navigate} />
               </Column>
             </Hidden>
             <Column classes={{ box: classes.contentWrapper }} fullWidth>
@@ -42,8 +59,15 @@ class Company extends Component {
                   path="/company/profile"
                   render={props => (
                     <Profile
-                      user={user}
-                      mappedupdateUser={this.props.mappedupdateUser}
+                      {...this.props.auth}
+                      updateUser={(field, user) =>
+                        this.props.mappedupdateUser(
+                          field,
+                          user,
+                          this.props.history
+                        )
+                      }
+                      uploadFile={this.uploadFile}
                     />
                   )}
                 />

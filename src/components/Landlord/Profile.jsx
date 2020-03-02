@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import { withStyles } from "@material-ui/core/styles";
 import { withTranslation } from "react-i18next";
 import clsx from "clsx";
+import PropTypes from "prop-types";
 import withWidth, { isWidthDown } from "@material-ui/core/withWidth";
 import {
   Box,
@@ -30,6 +31,10 @@ import {
 import { UploadDocument } from "../../common/base-layouts";
 import { Collapse, Grid, Card, CircularProgress } from "@material-ui/core";
 import Dropzone from "react-dropzone";
+
+const ProgressIcon = props => (
+  <CircularProgress color="primary" size={36} {...props} />
+);
 
 const styleSheet = theme => ({
   root: {
@@ -73,6 +78,14 @@ const styleSheet = theme => ({
       left: 35,
       right: 0,
       background: theme.colors.primary.borderGrey
+    }
+  },
+
+  documentsWrapper: {
+    flexWrap: "wrap",
+    [theme.breakpoints.down("sm")]: {
+      flexWrap: "nowrap",
+      overflowY: "auto"
     }
   },
 
@@ -147,7 +160,7 @@ const styleSheet = theme => ({
     display: "flex",
     justifyContent: "center",
     alignItems: "center",
-    width: 28,
+    width: 30,
     height: 24
   }
 });
@@ -160,7 +173,6 @@ class Profile extends Component {
     phoneNumber: "",
     address: "",
     postalCode: "",
-    photo: "",
     legalStatusDocument: [],
     checkSpecimen: [],
     lease: [],
@@ -168,39 +180,28 @@ class Profile extends Component {
     passwordError: "",
     confirmPassword: "",
 
-    isEditLandlordInfo: false,
-    isEditSecurityInfo: false,
-    isEditPaymentsInfo: false,
-    isEditPrivacyInfo: false,
+    editTab: null,
     openedTab: "landlordInfo",
     uploadingDocumnet: null
   };
 
-  UNSAFE_componentWillReceiveProps(newProps) {
-    const { user } = newProps;
-    if (!user.profile) {
-      user.profile = {};
-    }
-    if (!user.profile.address) {
-      user.profile.address = {};
-    }
+  static propTypes = {
+    updateUser: PropTypes.func
+  };
 
-    this.setState({
-      ...this.state,
-      username: user.username || "",
-      email: user.email || "",
-      phoneNumber: user.profile.phoneNumber || "",
-      address: user.profile.address.fullAddress || "",
-      postalCode: user.profile.address.postalCode || "",
-      photo: user.profile.photo || "",
-      userImage: user.profileImage || null
-    });
+  UNSAFE_componentWillReceiveProps(newProps) {
+    this.handleResetProfileInfo(newProps);
+  }
+
+  UNSAFE_componentWillMount() {
+    this.handleResetProfileInfo(this.props);
   }
 
   renderProfileTab = ({
     children,
     classes,
     isEdit,
+    isEditable,
     open,
     onToggleEdit,
     onToggleOpen,
@@ -236,17 +237,19 @@ class Profile extends Component {
               </Typography>
             </Button>
           ) : (
-            <Button
-              link="primary"
-              background="normalLight"
-              inverse
-              onClick={onToggleEdit}
-            >
-              <EditIcon style={{ width: 16, height: 16 }} />
-              <Typography paddingLeft fontSizeS>
-                {t("edit")}
-              </Typography>
-            </Button>
+            isEditable && (
+              <Button
+                link="primary"
+                background="normalLight"
+                inverse
+                onClick={onToggleEdit}
+              >
+                <EditIcon style={{ width: 16, height: 16 }} />
+                <Typography paddingLeft fontSizeS>
+                  {t("edit")}
+                </Typography>
+              </Button>
+            )
           )}
         </Row>
         <Collapse in={open} className={classes.fullWidth}>
@@ -258,8 +261,34 @@ class Profile extends Component {
     );
   };
 
-  renderProgressIcon = () => (
-    <CircularProgress color="primary" width="24" />
+  renderSaveButtons = ({ isUpdating, onSave, onCancel, disabled, t }) => (
+    <>
+      <Box paddingRightDouble>
+        <Button link="errorRed" background="secondaryLight" onClick={onCancel}>
+          <CloseIcon style={{ width: 9, height: 9 }} />
+          <Typography paddingLeft fontSizeS>
+            {t("cancel")}
+          </Typography>
+        </Button>
+      </Box>
+      <Box fullWidth>
+        <Button
+          variant="primary"
+          fullWidth
+          onClick={onSave}
+          disabled={!!disabled}
+        >
+          {isUpdating ? (
+            <ProgressIcon size={16} color="secondary" />
+          ) : (
+            <CheckIcon style={{ width: 16, height: 12 }} />
+          )}
+          <Typography paddingLeft fontSizeS>
+            {t("save")}
+          </Typography>
+        </Button>
+      </Box>
+    </>
   );
 
   handleStateChange = field => value => {
@@ -267,35 +296,78 @@ class Profile extends Component {
   };
 
   handleStateChangeByInput = field => event => {
-    this.handleStateChange(field)(event.target.value);
+    this.setState({ [field]: event.target.value });
   };
 
   handleStateChangeByEvent = (field, value) => () => {
-    this.handleStateChange(field)(value);
+    this.setState({ [field]: value });
   };
 
-  handleSaveLandlordInfo = e => {
-    this.props.mappedupdateUser({
-      username: this.state.username,
-      email: this.state.email,
+  /**
+   * @description Save landlord info
+   */
+  handleSaveLandlordInfo = () => {
+    if (this.state.userImage && this.state.userImage.id) {
+      this.props.updateUser("avatar", {
+        avatarFileId: this.state.userImage.id
+      });
+    }
+    this.props.updateUser("profile", {
+      role: this.props.user.role,
       profile: {
-        phoneNumber: this.state.phoneNumber,
-        address: {
-          fullAddress: this.state.address,
-          postalCode: this.state.postalCode
-        },
-        photo: this.state.photo
+        email: this.state.email,
+        profile: {
+          username: this.state.username,
+          phoneNumber: this.state.phoneNumber,
+          address: {
+            fullAddress: this.state.address,
+            postalCode: this.state.postalCode
+          }
+        }
       }
     });
+    this.setState({ editTab: null });
   };
 
   handleSaveSecurityInfo = e => {
     if (this.state.password === this.state.confirmPassword) {
-      this.props.mappedupdateUser({
+      this.props.updateUser("password", {
         password: this.state.password,
         passwordLastUpdated: new Date().getTime()
       });
     }
+    this.setState({ editTab: null });
+  };
+
+  /**
+   * Cancel editing profile tab
+   * @param {string} profileTab tab name to cancel edit
+   */
+  handleCancelEditProfile = () => {
+    this.setState({ editTab: null });
+  };
+
+  /**
+   * Toggle state variables to input new data in edit mode
+   * @param {string} props props from parent
+   */
+  handleResetProfileInfo = props => {
+    const { user } = props;
+    if (!user.landlordProfile) {
+      user.landlordProfile = {};
+    }
+    if (!user.landlordProfile.address) {
+      user.landlordProfile.address = {};
+    }
+
+    this.setState({
+      username: user.landlordProfile.username || "",
+      email: user.email || "",
+      phoneNumber: user.landlordProfile.phoneNumber || "",
+      address: user.landlordProfile.address.fullAddress || "",
+      postalCode: user.landlordProfile.address.postalCode || "",
+      userImage: user.avatar || null
+    });
   };
 
   handleToggleOpen = tab => () => {
@@ -306,9 +378,12 @@ class Profile extends Component {
     }
   };
 
-  handleToggleEdit = tab => editName => () => {
-    this.setState({ openedTab: tab });
-    this.setState({ [editName]: !this.state[editName] });
+  handleToggleEdit = tab => () => {
+    if (this.state.editTab === tab) {
+      this.handleCancelEditProfile();
+    } else {
+      this.setState({ openedTab: tab, editTab: tab });
+    }
   };
 
   handleSendPhoneVerification = () => {};
@@ -328,10 +403,10 @@ class Profile extends Component {
   };
 
   render() {
-    const { user, width, classes, t } = this.props;
-    const { openedTab, uploadingDocumnet } = this.state;
+    const { user, isUpdating: updatingTab, width, classes, t } = this.props;
+    const { openedTab, editTab, uploadingDocumnet } = this.state;
     const ProfileTab = this.renderProfileTab;
-    const ProgressIcon = this.renderProgressIcon;
+    const SaveButtons = this.renderSaveButtons;
 
     let passwordLastUpdated = "-";
     if (user.passwordLastUpdated) {
@@ -365,10 +440,9 @@ class Profile extends Component {
             title={t("landlordInfo")}
             open={openedTab === "landlordInfo"}
             onToggleOpen={this.handleToggleOpen("landlordInfo")}
-            isEdit={this.state.isEditLandlordInfo}
-            onToggleEdit={this.handleToggleEdit("landlordInfo")(
-              "isEditLandlordInfo"
-            )}
+            isEdit={editTab === "landlordInfo" || updatingTab === "profile"}
+            isEditable={editTab === null}
+            onToggleEdit={this.handleToggleEdit("landlordInfo")}
           >
             <Row fullWidth>
               <form
@@ -391,13 +465,13 @@ class Profile extends Component {
                           className={classes.avatarCard}
                         >
                           {!this.state.userImage &&
-                            !this.state.isEditLandlordInfo && (
+                            !editTab === "landlordInfo" && (
                               <UserIcon
                                 fontSize="large"
                                 className={classes.outlineIcon}
                               />
                             )}
-                          {this.state.isEditLandlordInfo && (
+                          {editTab === "landlordInfo" && (
                             <Dropzone
                               multiple={false}
                               onDrop={files =>
@@ -412,19 +486,19 @@ class Profile extends Component {
                                   {...getRootProps()}
                                 >
                                   <input {...getInputProps()} />
-                                  {uploadingDocumnet === 'avatar' ?
-                                  <ProgressIcon />
-                                  :
-                                  <UploadIcon
-                                    fontSize="large"
-                                    className={clsx({
-                                      [classes.uploadIcon]: this.state
-                                        .userImage,
-                                      [classes.outlineIcon]: !this.state
-                                        .userImage
-                                    })}
-                                  />
-  }
+                                  {uploadingDocumnet === "avatar" ? (
+                                    <ProgressIcon />
+                                  ) : (
+                                    <UploadIcon
+                                      fontSize="large"
+                                      className={clsx({
+                                        [classes.uploadIcon]: this.state
+                                          .userImage,
+                                        [classes.outlineIcon]: !this.state
+                                          .userImage
+                                      })}
+                                    />
+                                  )}
                                 </Box>
                               )}
                             </Dropzone>
@@ -444,7 +518,7 @@ class Profile extends Component {
                         startAdornment={
                           <UserIcon className={classes.outlineIcon} />
                         }
-                        readOnly={!this.state.isEditLandlordInfo}
+                        readOnly={editTab !== "landlordInfo"}
                       />
                     </Row>
                     <Row paddingTopHalf>
@@ -482,7 +556,7 @@ class Profile extends Component {
                             </div>
                           </Tooltip>
                         }
-                        readOnly={!this.state.isEditLandlordInfo}
+                        readOnly={editTab !== "landlordInfo"}
                       />
                     </Row>
                     <Row paddingTopHalf>
@@ -527,7 +601,7 @@ class Profile extends Component {
                             <div className={classes.errorIcon}>!</div>
                           </Tooltip>
                         }
-                        readOnly={!this.state.isEditLandlordInfo}
+                        readOnly={editTab !== "landlordInfo"}
                       />
                     </Row>
                     <Row paddingTopHalf>
@@ -540,7 +614,7 @@ class Profile extends Component {
                         startAdornment={
                           <AddressIcon className={classes.outlineIcon} />
                         }
-                        readOnly={!this.state.isEditLandlordInfo}
+                        readOnly={editTab !== "landlordInfo"}
                       />
                     </Row>
                     <Row paddingTopHalf>
@@ -553,39 +627,19 @@ class Profile extends Component {
                         startAdornment={
                           <MapPointerIcon className={classes.outlineIcon} />
                         }
-                        readOnly={!this.state.isEditLandlordInfo}
+                        readOnly={editTab !== "landlordInfo"}
                       />
                     </Row>
-                    {this.state.isEditLandlordInfo && (
+                    {(editTab === "landlordInfo" ||
+                      updatingTab === "profile") && (
                       // buttons for save
                       <Row paddingTopHalf>
-                        <Box paddingRightDouble>
-                          <Button
-                            link="errorRed"
-                            background="secondaryLight"
-                            onClick={this.handleStateChangeByEvent(
-                              "isEditLandlordInfo",
-                              false
-                            )}
-                          >
-                            <CloseIcon style={{ width: 9, height: 9 }} />
-                            <Typography paddingLeft fontSizeS>
-                              {t("cancel")}
-                            </Typography>
-                          </Button>
-                        </Box>
-                        <Box fullWidth>
-                          <Button
-                            variant="primary"
-                            fullWidth
-                            onClick={this.handleSaveLandlordInfo}
-                          >
-                            <CheckIcon style={{ width: 16, height: 12 }} />
-                            <Typography paddingLeft fontSizeS>
-                              {t("save")}
-                            </Typography>
-                          </Button>
-                        </Box>
+                        <SaveButtons
+                          isUpdating={updatingTab === "profile"}
+                          onSave={this.handleSaveLandlordInfo}
+                          onCancel={this.handleCancelEditProfile}
+                          t={t}
+                        />
                       </Row>
                     )}
                   </Grid>
@@ -604,20 +658,25 @@ class Profile extends Component {
             <Typography fontSizeS textSecondary paddingTop>
               {t("provideDocumentsNeeded")}
             </Typography>
-            <Row fullWidth paddingTop paddingBottom verticalScroll>
-              <Box paddingRightHalf>
+            <Row
+              fullWidth
+              paddingTop
+              paddingBottom
+              classes={{ box: classes.documentsWrapper }}
+            >
+              <Box paddingRightHalf paddingBottomHalf>
                 <UploadDocument
                   title={t("legalStatusDocument")}
                   documents={this.state.legalStatusDocument}
                 />
               </Box>
-              <Box paddingRightHalf>
+              <Box paddingRightHalf paddingBottomHalf>
                 <UploadDocument
                   title={t("checkSpecimen")}
                   documents={this.state.checkSpecimen}
                 />
               </Box>
-              <Box paddingRightHalf>
+              <Box paddingRightHalf paddingBottomHalf>
                 <UploadDocument
                   title={t("lease")}
                   documents={this.state.lease}
@@ -635,10 +694,11 @@ class Profile extends Component {
             title={t("loginAndSecurity")}
             open={openedTab === "loginAndSecurity"}
             onToggleOpen={this.handleToggleOpen("loginAndSecurity")}
-            isEdit={this.state.isEditSecurityInfo}
-            onToggleEdit={this.handleToggleEdit("loginAndSecurity")(
-              "isEditSecurityInfo"
-            )}
+            isEdit={
+              editTab === "loginAndSecurity" || updatingTab === "password"
+            }
+            isEditable={editTab === null}
+            onToggleEdit={this.handleToggleEdit("loginAndSecurity")}
           >
             <Row fullWidth>
               <form
@@ -660,7 +720,7 @@ class Profile extends Component {
                         startAdornment={
                           <LockIcon className={classes.outlineIcon} />
                         }
-                        readOnly={!this.state.isEditSecurityInfo}
+                        readOnly={editTab !== "loginAndSecurity"}
                         error={!!this.state.passwordError}
                         helperText={this.state.passwordError}
                       />
@@ -678,47 +738,23 @@ class Profile extends Component {
                         startAdornment={
                           <LockIcon className={classes.outlineIcon} />
                         }
-                        readOnly={!this.state.isEditSecurityInfo}
+                        readOnly={editTab !== "loginAndSecurity"}
                       />
                     </Row>
                     <Row paddingTop>
-                      {this.state.isEditSecurityInfo ? (
+                      {editTab === "loginAndSecurity" ||
+                      updatingTab === "password" ? (
                         // buttons for save
-                        <>
-                          <Box paddingRightDouble>
-                            <Button
-                              link="errorRed"
-                              background="secondaryLight"
-                              onClick={() =>
-                                this.handleStateChange("isEditSecurityInfo")(
-                                  false
-                                )
-                              }
-                            >
-                              <CloseIcon style={{ width: 9, height: 9 }} />
-                              <Typography paddingLeft fontSizeS>
-                                {t("cancel")}
-                              </Typography>
-                            </Button>
-                          </Box>
-                          <Box fullWidth>
-                            <Button
-                              variant="primary"
-                              fullWidth
-                              onClick={this.handleSaveSecurityInfo}
-                              disabled={
-                                !!this.state.passwordError ||
-                                this.state.password !==
-                                  this.state.confirmPassword
-                              }
-                            >
-                              <CheckIcon style={{ width: 16, height: 12 }} />
-                              <Typography paddingLeft fontSizeS>
-                                {t("save")}
-                              </Typography>
-                            </Button>
-                          </Box>
-                        </>
+                        <SaveButtons
+                          isUpdating={updatingTab === "password"}
+                          onSave={this.handleSaveSecurityInfo}
+                          onCancel={this.handleCancelEditProfile}
+                          t={t}
+                          disabled={
+                            !!this.state.passwordError ||
+                            this.state.password !== this.state.confirmPassword
+                          }
+                        />
                       ) : (
                         <>
                           <Typography fontSizeS textMediumGrey paddingRightHalf>
@@ -765,10 +801,12 @@ class Profile extends Component {
             title={t("paymentsAndPayouts")}
             open={openedTab === "paymentsAndPayouts"}
             onToggleOpen={this.handleToggleOpen("paymentsAndPayouts")}
-            isEdit={this.state.isEditPaymentsInfo}
-            onToggleEdit={this.handleToggleEdit("paymentsAndPayouts")(
-              "isEditPaymentsInfo"
-            )}
+            isEdit={
+              editTab === "paymentsAndPayouts" ||
+              updatingTab === "paymentsAndPayouts"
+            }
+            isEditable={editTab === null}
+            onToggleEdit={this.handleToggleEdit("paymentsAndPayouts")}
           ></ProfileTab>
         </Row>
 
@@ -780,10 +818,12 @@ class Profile extends Component {
             title={t("privacyAndSharing")}
             open={openedTab === "privacyAndSharing"}
             onToggleOpen={this.handleToggleOpen("privacyAndSharing")}
-            isEdit={this.state.isEditPrivacyInfo}
-            onToggleEdit={this.handleToggleEdit("isEditPrivacyInfo")(
-              "privacyAndSharing"
-            )}
+            isEdit={
+              editTab === "privacyAndSharing" ||
+              updatingTab === "privacyAndSharing"
+            }
+            isEditable={editTab === null}
+            onToggleEdit={this.handleToggleEdit("privacyAndSharing")}
           ></ProfileTab>
         </Row>
       </Column>

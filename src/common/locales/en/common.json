@@ -103,6 +103,7 @@
     "number": "Number",
     "upload": "Upload",
     "montreal": "Montreal",
+    "toronto": "Toronto",
 
     "home": "Home",
     "dashboard": "Dashboard",
@@ -117,6 +118,7 @@
     "signOut": "Sign out",
     "profileNeedAttention": "Your profile need attention!",
     "profileCompleted": "Your profile completed",
+    "profileNotComplete": "Your profile not complete",
     "companyPanel": "Company panel",
     "landlordPanel": "Landlord panel",
 

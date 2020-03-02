@@ -1,6 +1,8 @@
 import React, { Component } from "react";
 import { withStyles } from "@material-ui/core/styles";
 import { withTranslation } from "react-i18next";
+import clsx from "clsx";
+import PropTypes from "prop-types";
 import {
   Box,
   Row,
@@ -19,10 +21,16 @@ import {
   EditIcon,
   CloseIcon,
   CheckIcon,
-  LockIcon
+  LockIcon,
+  UploadIcon
 } from "../../common/base-components";
 import { UploadDocument } from "../../common/base-layouts";
-import { Collapse, Grid, Card, CardMedia } from "@material-ui/core";
+import { Collapse, Grid, Card, CircularProgress } from "@material-ui/core";
+import Dropzone from "react-dropzone";
+
+const ProgressIcon = props => (
+  <CircularProgress color="primary" size={36} {...props} />
+);
 
 const styleSheet = theme => ({
   root: {
@@ -85,29 +93,84 @@ const styleSheet = theme => ({
     float: "right"
   },
 
-  imageCard: {
+  avatarCard: {
     width: 216,
     height: 216,
     display: "flex",
     justifyContent: "center",
     alignItems: "center",
     borderRadius: "50%",
-    overflow: "hidden"
+    overflow: "hidden",
+    position: "relative",
+    backgroundSize: "contain",
+    backgroundPosition: "center",
+    "&:hover": {
+      backgroundColor: theme.colors.primary.grey,
+      backgroundBlendMode: "screen"
+    }
+  },
+
+  dropzone: {
+    width: "90%",
+    height: "90%",
+    border: `3px dashed ${theme.colors.primary.borderGrey}`,
+    borderRadius: "50%",
+    position: "absolute",
+    top: "5%",
+    left: "5%",
+    filter: "grayscale(1)"
+  },
+
+  uploadIcon: {
+    color: theme.colors.primary.mainColor,
+    mixBlendMode: "difference"
+  },
+
+  avatarImage: {
+    width: "100%",
+    height: "100%",
+    objectFit: "contain"
   },
 
   outlineIcon: {
     color: theme.colors.primary.borderGrey
+  },
+
+  errorIcon: {
+    borderRadius: "50%",
+    border: `1px solid ${theme.colors.primary.errorRed}`,
+    boxShadow: `0px 6px 12px ${theme.colors.primary.errorRed}4D`,
+    color: theme.colors.primary.white,
+    background: theme.colors.primary.errorRed,
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center",
+    width: 30,
+    height: 24
+  },
+
+  approveIcon: {
+    borderRadius: "50%",
+    border: `1px solid ${theme.colors.primary.mainColor}`,
+    boxShadow: `0px 6px 12px ${theme.colors.primary.mainColor}4D`,
+    color: theme.colors.primary.white,
+    background: theme.colors.primary.mainColor,
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center",
+    width: 28,
+    height: 24
   }
 });
 
 class Profile extends Component {
   state = {
+    userImage: null,
     username: "",
     email: "",
     phoneNumber: "",
     address: "",
     postalCode: "",
-    photo: "",
     legalStatusDocument: [],
     checkSpecimen: [],
     lease: [],
@@ -117,37 +180,28 @@ class Profile extends Component {
     passwordError: "",
     confirmPassword: "",
 
-    isEditCompanyInfo: false,
-    isEditSecurityInfo: false,
-    isEditPaymentsInfo: false,
-    isEditPrivacyInfo: false,
-    openedTab: "companyInfo"
+    editTab: null,
+    openedTab: "companyInfo",
+    uploadingDocumnet: null
+  };
+
+  static propTypes = {
+    updateUser: PropTypes.func
   };
 
   UNSAFE_componentWillReceiveProps(newProps) {
-    const { user } = newProps;
-    if (!user.profile) {
-      user.profile = {};
-    }
-    if (!user.profile.address) {
-      user.profile.address = {};
-    }
+    this.handleResetProfileInfo(newProps);
+  }
 
-    this.setState({
-      ...this.state,
-      username: user.username || "",
-      email: user.email || "",
-      phoneNumber: user.profile.phoneNumber || "",
-      address: user.profile.address.fullAddress || "",
-      postalCode: user.profile.address.postalCode || "",
-      photo: user.profile.photo || ""
-    });
+  UNSAFE_componentWillMount() {
+    this.handleResetProfileInfo(this.props);
   }
 
   renderProfileTab = ({
     children,
     classes,
     isEdit,
+    isEditable,
     open,
     onToggleEdit,
     onToggleOpen,
@@ -157,7 +211,7 @@ class Profile extends Component {
     return (
       <Column fullWidth alignChildrenStart>
         <Row fullWidth>
-          <Box onClick={onToggleOpen}>
+          <Box onClick={onToggleOpen} alignChildrenCenter>
             <Typography fontSizeS textMediumGrey paddingRight>
               {title}
             </Typography>
@@ -183,17 +237,19 @@ class Profile extends Component {
               </Typography>
             </Button>
           ) : (
-            <Button
-              link="primary"
-              background="normalLight"
-              inverse
-              onClick={onToggleEdit}
-            >
-              <EditIcon style={{ width: 16, height: 16 }} />
-              <Typography paddingLeft fontSizeS>
-                {t("edit")}
-              </Typography>
-            </Button>
+            isEditable && (
+              <Button
+                link="primary"
+                background="normalLight"
+                inverse
+                onClick={onToggleEdit}
+              >
+                <EditIcon style={{ width: 16, height: 16 }} />
+                <Typography paddingLeft fontSizeS>
+                  {t("edit")}
+                </Typography>
+              </Button>
+            )
           )}
         </Row>
         <Collapse in={open} className={classes.fullWidth}>
@@ -205,40 +261,113 @@ class Profile extends Component {
     );
   };
 
+  renderSaveButtons = ({ isUpdating, onSave, onCancel, disabled, t }) => (
+    <>
+      <Box paddingRightDouble>
+        <Button link="errorRed" background="secondaryLight" onClick={onCancel}>
+          <CloseIcon style={{ width: 9, height: 9 }} />
+          <Typography paddingLeft fontSizeS>
+            {t("cancel")}
+          </Typography>
+        </Button>
+      </Box>
+      <Box fullWidth>
+        <Button
+          variant="primary"
+          fullWidth
+          onClick={onSave}
+          disabled={!!disabled}
+        >
+          {isUpdating ? (
+            <ProgressIcon size={16} color="secondary" />
+          ) : (
+            <CheckIcon style={{ width: 16, height: 12 }} />
+          )}
+          <Typography paddingLeft fontSizeS>
+            {t("save")}
+          </Typography>
+        </Button>
+      </Box>
+    </>
+  );
+
   handleStateChange = field => value => {
     this.setState({ [field]: value });
   };
 
   handleStateChangeByInput = field => event => {
-    this.handleStateChange(field)(event.target.value);
+    this.setState({ [field]: event.target.value });
   };
 
   handleStateChangeByEvent = (field, value) => () => {
-    this.handleStateChange(field)(value);
+    this.setState({ [field]: value });
   };
 
-  handleSaveCompanyInfo = e => {
-    this.props.mappedupdateUser({
-      username: this.state.username,
-      email: this.state.email,
+  /**
+   * @description Save company info
+   */
+  handleSaveCompanyInfo = () => {
+    if (this.state.userImage && this.state.userImage.id) {
+      this.props.updateUser("avatar", {
+        avatarFileId: this.state.userImage.id
+      });
+    }
+    this.props.updateUser("profile", {
+      role: this.props.user.role,
       profile: {
-        phoneNumber: this.state.phoneNumber,
-        address: {
-          fullAddress: this.state.address,
-          postalCode: this.state.postalCode
-        },
-        photo: this.state.photo
+        email: this.state.email,
+        profile: {
+          username: this.state.username,
+          phoneNumber: this.state.phoneNumber,
+          address: {
+            fullAddress: this.state.address,
+            postalCode: this.state.postalCode
+          }
+        }
       }
     });
+    this.setState({editTab: null});
   };
 
   handleSaveSecurityInfo = e => {
     if (this.state.password === this.state.confirmPassword) {
-      this.props.mappedupdateUser({
+      this.props.updateUser("password", {
         password: this.state.password,
         passwordLastUpdated: new Date().getTime()
       });
     }
+    this.setState({editTab: null});
+  };
+
+  /**
+   * Cancel editing profile tab
+   * @param {string} profileTab tab name to cancel edit
+   */
+  handleCancelEditProfile = () => {
+    this.setState({ editTab: null });
+  };
+
+  /**
+   * Toggle state variables to input new data in edit mode
+   * @param {string} props props from parent
+   */
+  handleResetProfileInfo = props => {
+    const { user } = props;
+    if (!user.companyProfile) {
+      user.companyProfile = {};
+    }
+    if (!user.companyProfile.address) {
+      user.companyProfile.address = {};
+    }
+
+    this.setState({
+      username: user.companyProfile.username || "",
+      email: user.email || "",
+      phoneNumber: user.companyProfile.phoneNumber || "",
+      address: user.companyProfile.address.fullAddress || "",
+      postalCode: user.companyProfile.address.postalCode || "",
+      userImage: user.avatar || null
+    });
   };
 
   handleToggleOpen = tab => () => {
@@ -249,15 +378,35 @@ class Profile extends Component {
     }
   };
 
-  handleToggleEdit = tab => editName => () => {
-    this.setState({ openedTab: tab });
-    this.setState({ [editName]: !this.state[editName] });
+  handleToggleEdit = tab => () => {
+    if (this.state.editTab === tab) {
+      this.handleCancelEditProfile();
+    } else {
+      this.setState({ openedTab: tab, editTab: tab });
+    }
+  };
+
+  handleSendPhoneVerification = () => {};
+
+  handleUploadUserImage = userImage => {
+    this.setState({ uploadingDocumnet: "avatar" });
+    this.props.uploadFile(userImage, "public-read").then(response => {
+      this.setState({ userImage: response.data, uploadingDocumnet: null });
+    });
+  };
+
+  handleUploadDocument = docType => docFile => {
+    this.setState({ uploadingDocumnet: docType });
+    this.props.uploadFile(docFile).then(response => {
+      this.setState({ [docType]: response, uploadingDocumnet: null });
+    });
   };
 
   render() {
-    const { user, classes, t } = this.props;
-    const { openedTab } = this.state;
+    const { user, isUpdating: updatingTab, classes, t } = this.props;
+    const { openedTab, editTab, uploadingDocumnet } = this.state;
     const ProfileTab = this.renderProfileTab;
+    const SaveButtons = this.renderSaveButtons;
 
     let passwordLastUpdated = "-";
     if (user.passwordLastUpdated) {
@@ -291,10 +440,9 @@ class Profile extends Component {
             title={t("companyInfo")}
             open={openedTab === "companyInfo"}
             onToggleOpen={this.handleToggleOpen("companyInfo")}
-            isEdit={this.state.isEditCompanyInfo}
-            onToggleEdit={this.handleToggleEdit("companyInfo")(
-              "isEditCompanyInfo"
-            )}
+            isEdit={editTab === "companyInfo" || updatingTab === 'profile'}
+            isEditable={editTab === null}
+            onToggleEdit={this.handleToggleEdit("companyInfo")}
           >
             <Row fullWidth>
               <form
@@ -307,14 +455,53 @@ class Profile extends Component {
                   <Grid item xs={12} sm={6}>
                     <Column fullWidth paddingTop>
                       <Row classes={{ box: classes.imageWrapper }}>
-                        <Card variant="outlined" className={classes.imageCard}>
-                          {user.profile_image ? (
-                            <CardMedia image={user.profile_image} title="" />
-                          ) : (
-                            <UserIcon
-                              fontSize="large"
-                              className={classes.outlineIcon}
-                            />
+                        <Card
+                          variant="outlined"
+                          style={{
+                            backgroundImage: this.state.userImage
+                              ? `url("${this.state.userImage.bucketPath}")`
+                              : "none"
+                          }}
+                          className={classes.avatarCard}
+                        >
+                          {!this.state.userImage &&
+                            !editTab === "companyInfo" && (
+                              <UserIcon
+                                fontSize="large"
+                                className={classes.outlineIcon}
+                              />
+                            )}
+                          {editTab === "companyInfo" && (
+                            <Dropzone
+                              multiple={false}
+                              onDrop={files =>
+                                this.handleUploadUserImage(files[0])
+                              }
+                            >
+                              {({ getRootProps, getInputProps }) => (
+                                <Box
+                                  classes={{ box: classes.dropzone }}
+                                  justifyChildrenCenter
+                                  alignChildrenCenter
+                                  {...getRootProps()}
+                                >
+                                  <input {...getInputProps()} />
+                                  {uploadingDocumnet === "avatar" ? (
+                                    <ProgressIcon />
+                                  ) : (
+                                    <UploadIcon
+                                      fontSize="large"
+                                      className={clsx({
+                                        [classes.uploadIcon]: this.state
+                                          .userImage,
+                                        [classes.outlineIcon]: !this.state
+                                          .userImage
+                                      })}
+                                    />
+                                  )}
+                                </Box>
+                              )}
+                            </Dropzone>
                           )}
                         </Card>
                       </Row>
@@ -331,7 +518,7 @@ class Profile extends Component {
                         startAdornment={
                           <UserIcon className={classes.outlineIcon} />
                         }
-                        readOnly={!this.state.isEditLandlordInfo}
+                        readOnly={editTab !== "companyInfo"}
                       />
                     </Row>
                     <Row paddingTopHalf>
@@ -345,7 +532,7 @@ class Profile extends Component {
                         startAdornment={
                           <EmailIcon className={classes.outlineIcon} />
                         }
-                        readOnly={!this.state.isEditLandlordInfo}
+                        readOnly={editTab !== "companyInfo"}
                       />
                     </Row>
                     <Row paddingTopHalf>
@@ -358,7 +545,7 @@ class Profile extends Component {
                         startAdornment={
                           <PhoneIcon className={classes.outlineIcon} />
                         }
-                        readOnly={!this.state.isEditLandlordInfo}
+                        readOnly={editTab !== "companyInfo"}
                       />
                     </Row>
                     <Row paddingTopHalf>
@@ -371,7 +558,7 @@ class Profile extends Component {
                         startAdornment={
                           <AddressIcon className={classes.outlineIcon} />
                         }
-                        readOnly={!this.state.isEditLandlordInfo}
+                        readOnly={editTab !== "companyInfo"}
                       />
                     </Row>
                     <Row paddingTopHalf>
@@ -384,36 +571,18 @@ class Profile extends Component {
                         startAdornment={
                           <MapPointerIcon className={classes.outlineIcon} />
                         }
-                        readOnly={!this.state.isEditCompanyInfo}
+                        readOnly={editTab !== "companyInfo"}
                       />
                     </Row>
-                    {this.state.isEditCompanyInfo && (
+                    {(editTab === "companyInfo" || updatingTab === 'profile') && (
                       // buttons for save
                       <Row paddingTopHalf>
-                        <Box paddingRightDouble>
-                          <Button
-                            link="errorRed"
-                            background="secondaryLight"
-                            onClick={this.handleStateChangeByEvent("isEditCompanyInfo", false)}
-                          >
-                            <CloseIcon style={{ width: 9, height: 9 }} />
-                            <Typography paddingLeft fontSizeS>
-                              {t("cancel")}
-                            </Typography>
-                          </Button>
-                        </Box>
-                        <Box fullWidth>
-                          <Button
-                            variant="primary"
-                            fullWidth
-                            onClick={this.handleSaveCompanyInfo}
-                          >
-                            <CheckIcon style={{ width: 16, height: 12 }} />
-                            <Typography paddingLeft fontSizeS>
-                              {t("save")}
-                            </Typography>
-                          </Button>
-                        </Box>
+                        <SaveButtons
+                          isUpdating={updatingTab === "profile"}
+                          onSave={this.handleSaveCompanyInfo}
+                          onCancel={this.handleCancelEditProfile}
+                          t={t}
+                        />
                       </Row>
                     )}
                   </Grid>
@@ -480,10 +649,9 @@ class Profile extends Component {
             title={t("loginAndSecurity")}
             open={openedTab === "loginAndSecurity"}
             onToggleOpen={this.handleToggleOpen("loginAndSecurity")}
-            isEdit={this.state.isEditSecurityInfo}
-            onToggleEdit={this.handleToggleEdit("loginAndSecurity")(
-              "isEditSecurityInfo"
-            )}
+            isEdit={editTab === "loginAndSecurity" || updatingTab === 'password'}
+            isEditable={editTab === null}
+            onToggleEdit={this.handleToggleEdit("loginAndSecurity")}
           >
             <Row fullWidth>
               <form
@@ -505,7 +673,7 @@ class Profile extends Component {
                         startAdornment={
                           <LockIcon className={classes.outlineIcon} />
                         }
-                        readOnly={!this.state.isEditSecurityInfo}
+                        readOnly={editTab !== "loginAndSecurity"}
                         error={!!this.state.passwordError}
                         helperText={this.state.passwordError}
                       />
@@ -523,43 +691,22 @@ class Profile extends Component {
                         startAdornment={
                           <LockIcon className={classes.outlineIcon} />
                         }
-                        readOnly={!this.state.isEditSecurityInfo}
+                        readOnly={editTab !== "loginAndSecurity"}
                       />
                     </Row>
                     <Row paddingTop>
-                      {this.state.isEditSecurityInfo ? (
+                      {(editTab === "loginAndSecurity" || updatingTab === 'password') ? (
                         // buttons for save
-                        <>
-                          <Box paddingRightDouble>
-                            <Button
-                              link="errorRed"
-                              background="secondaryLight"
-                              onClick={this.handleStateChangeByEvent("isEditSecurityInfo", false)}
-                            >
-                              <CloseIcon style={{ width: 9, height: 9 }} />
-                              <Typography paddingLeft fontSizeS>
-                                {t("cancel")}
-                              </Typography>
-                            </Button>
-                          </Box>
-                          <Box fullWidth>
-                            <Button
-                              variant="primary"
-                              fullWidth
-                              onClick={this.handleSaveSecurityInfo}
-                              disabled={
-                                !!this.state.passwordError ||
-                                this.state.password !==
-                                  this.state.confirmPassword
-                              }
-                            >
-                              <CheckIcon style={{ width: 16, height: 12 }} />
-                              <Typography paddingLeft fontSizeS>
-                                {t("save")}
-                              </Typography>
-                            </Button>
-                          </Box>
-                        </>
+                        <SaveButtons
+                          isUpdating={updatingTab === "password"}
+                          onSave={this.handleSaveSecurityInfo}
+                          onCancel={this.handleCancelEditProfile}
+                          t={t}
+                          disabled={
+                            !!this.state.passwordError ||
+                            this.state.password !== this.state.confirmPassword
+                          }
+                        />
                       ) : (
                         <>
                           <Typography fontSizeS textMediumGrey paddingRightHalf>
@@ -606,10 +753,9 @@ class Profile extends Component {
             title={t("paymentsAndPayouts")}
             open={openedTab === "paymentsAndPayouts"}
             onToggleOpen={this.handleToggleOpen("paymentsAndPayouts")}
-            isEdit={this.state.isEditPaymentsInfo}
-            onToggleEdit={this.handleToggleEdit("paymentsAndPayouts")(
-              "isEditPaymentsInfo"
-            )}
+            isEdit={editTab === "paymentsAndPayouts" || updatingTab === 'paymentsAndPayouts'}
+            isEditable={editTab === null}
+            onToggleEdit={this.handleToggleEdit("paymentsAndPayouts")}
           ></ProfileTab>
         </Row>
 
@@ -621,10 +767,9 @@ class Profile extends Component {
             title={t("privacyAndSharing")}
             open={openedTab === "privacyAndSharing"}
             onToggleOpen={this.handleToggleOpen("privacyAndSharing")}
-            isEdit={this.state.isEditPrivacyInfo}
-            onToggleEdit={this.handleToggleEdit("isEditPrivacyInfo")(
-              "privacyAndSharing"
-            )}
+            isEdit={editTab === "privacyAndSharing" || updatingTab === 'privacyAndSharing'}
+            isEditable={editTab === null}
+            onToggleEdit={this.handleToggleEdit("privacyAndSharing")}
           ></ProfileTab>
         </Row>
       </Column>

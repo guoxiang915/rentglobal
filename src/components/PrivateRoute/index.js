@@ -109,8 +109,7 @@ class PrivateRoute extends React.Component {
   };
 
   state = {
-    sidebarOpened: false,
-    role: ""
+    sidebarOpened: false
   };
 
   UNSAFE_componentWillMount() {
@@ -140,26 +139,26 @@ class PrivateRoute extends React.Component {
   //   });
   // }
 
-  navigate = (path, role) => {
+  navigate = path => {
+    const { isLoggedIn, user } = this.props.auth;
+
     switch (path) {
       case "home":
         this.props.history.push("/");
         break;
 
       case "login":
-        this.props.history.push("/auth/login");
+      case "register":
+      case "register/landlord":
+      case "register/company":
+      case "forgot-password":
+        this.props.history.push(`/auth/${path}`);
         break;
       case "logout":
         authObj.removeToken();
+        authObj.removeRefreshToken();
         this.props.mappedlogout();
         this.props.history.push("/auth/login");
-        break;
-      case "register":
-        if (role) {
-          this.props.history.push(`/auth/register/${role}`);
-        } else {
-          this.props.history.push("/auth/register");
-        }
         break;
 
       case "dashboard":
@@ -167,7 +166,12 @@ class PrivateRoute extends React.Component {
       case "offices":
       case "contracts":
       case "optimization":
-        this.props.history.push(`/${role}/${path}`);
+        if (isLoggedIn) {
+          const role = user.role;
+          this.props.history.push(`/${role}/${path}`);
+          break;
+        }
+        this.props.history.push("/");
         break;
 
       default:
@@ -177,8 +181,13 @@ class PrivateRoute extends React.Component {
     this.handleToggleSidebar(false);
   };
 
-  handleToggleRole = role => {
-    this.props.history.push(`/${role}`);
+  handleToggleRole = () => {
+    // this.props.history.push(`/${role}`);
+    const { user } = this.props.auth;
+    this.props.mappedToggleRole(
+      user.role === "landlord" ? "company" : "landlord",
+      this.props.history
+    );
     this.handleToggleSidebar(false);
   };
 
@@ -202,12 +211,6 @@ class PrivateRoute extends React.Component {
     }
 
     const { sidebarOpened } = this.state;
-    let role = "";
-    if (isLoggedIn) {
-      if (this.props.location.pathname.indexOf("/company") !== -1)
-        role = "company";
-      else role = "landlord";
-    }
 
     return (
       <Route
@@ -224,7 +227,6 @@ class PrivateRoute extends React.Component {
                     <div className={classes.headerWrapper}>
                       <AppHeader
                         auth={this.props.auth}
-                        role={role}
                         sidebarOpened={sidebarOpened}
                         location="Montreal"
                         language="en"
@@ -247,7 +249,7 @@ class PrivateRoute extends React.Component {
                     {/* show sidebar for mobile */}
                     {sidebarOpened && (
                       <AppSidebar
-                        role={isLoggedIn ? role : ""}
+                        role={isLoggedIn ? user.role : ""}
                         onCollapse={() => this.handleToggleSidebar(false)}
                         onToggleRole={this.handleToggleRole}
                         navigate={this.navigate}

@@ -255,19 +255,13 @@ class AppSidebar extends Component {
   );
 
   navigate = path => {
-    this.props.navigate(path, this.props.role);
-  };
-
-  handleToggleRole = () => {
-    this.props.onToggleRole(
-      this.props.role === "landlord" ? "company" : "landlord"
-    );
+    this.props.navigate(path);
   };
 
   render() {
     const { role, width, classes, t } = this.props;
     const MenuItem = this.renderMenuItem;
-
+    
     // get active item
     const activeItem = this.menus[role].find(item => {
       let link = `${role && "/" + role}/${item.link}`;
@@ -304,11 +298,7 @@ class AppSidebar extends Component {
                     background="primary"
                     outline="primaryDark"
                     inverse
-                    onClick={() =>
-                      role
-                        ? this.handleToggleRole()
-                        : this.props.navigate("register", "landlord")
-                    }
+                    onClick={() => this.navigate("register/company")}
                     className={classes.fullWidthButton}
                   >
                     <Typography fontSizeS>{t("placeToRent")}</Typography>
@@ -327,11 +317,7 @@ class AppSidebar extends Component {
                         background="primary"
                         outline="primaryDark"
                         inverse
-                        onClick={() =>
-                          role
-                            ? this.handleToggleRole()
-                            : this.props.navigate("register", "landlord")
-                        }
+                        onClick={this.props.onToggleRole}
                         className={classes.fullWidthButton}
                       >
                         <Typography fontSizeS>
