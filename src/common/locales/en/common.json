@@ -104,6 +104,12 @@
     "upload": "Upload",
     "montreal": "Montreal",
     "toronto": "Toronto",
+    "needSpaceForBusiness": "I need a space for my business",
+    "needSpaceForBusinessSub": "Lorem ipsum dolor sit amet, consectetur adipiscing elit",
+    "havePlaceAsOffice": "I have a place for rent as an office",
+    "havePlaceAsOfficeSub": "Lorem ipsum dolor sit amet, …",
+    "consultant": "Consultant",
+    "consultantSub": "Lorem ipsum dolor sit amet, consectetur adipiscing elit …Lorem",
 
     "home": "Home",
     "dashboard": "Dashboard",

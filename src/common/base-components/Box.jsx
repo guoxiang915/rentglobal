@@ -317,6 +317,9 @@ const styleSheet = theme => {
     absolute: {
       position: "absolute"
     },
+    relative: {
+      position: "relative"
+    },
     top: {
       top: 0
     },

@@ -1,11 +1,15 @@
-import React, { Component } from "react";
+import React, { Component, useState } from "react";
 import { withStyles } from "@material-ui/core/styles";
 import clsx from "clsx";
 import { Trans, withTranslation } from "react-i18next";
 import withWidth, { isWidthDown } from "@material-ui/core/withWidth";
-import HeaderImage from "../../assets/img/img_header.jpg";
-import HeaderImageLarger from "../../assets/img/img_header@2x.jpg";
-import { Grid, Card, Hidden, MobileStepper, Collapse } from "@material-ui/core";
+import {
+  Grid,
+  Card,
+  Hidden,
+  MobileStepper,
+  Collapse
+} from "@material-ui/core";
 import {
   LinkedIn,
   Facebook,
@@ -39,11 +43,21 @@ import {
 import Carousel, { Dots } from "@brainhubeu/react-carousel";
 import "@brainhubeu/react-carousel/lib/style.css";
 
-import { offices } from "../../common/mock/officeMockData";
+// load assets
+import headerimg from "../../assets/img/img_header.jpg";
+import headerimgL from "../../assets/img/img_header@2x.jpg";
+import headerimg1 from "../../assets/img/img_header_01.png";
+import headerimgL1 from "../../assets/img/img_header_01@2x.png";
+import headerimg2 from "../../assets/img/img_header_02.png";
+import headerimgL2 from "../../assets/img/img_header_02@2x.png";
+// import headerimg3 from "../../assets/img/img_header_03.png";
+// import headerimgL3 from "../../assets/img/img_header_03@2x.png";
 import gallery1 from "../../assets/img/img_gallery_01@2x.png";
 import gallery2 from "../../assets/img/img_gallery_02@2x.png";
 import gallery3 from "../../assets/img/img_gallery_03@2x.png";
-import { useState } from "react";
+
+// import mock data
+import { offices } from "../../common/mock/officeMockData";
 
 const styleSheet = theme => ({
   root: {
@@ -58,35 +72,31 @@ const styleSheet = theme => ({
     width: "100%",
     maxHeight: "calc(100vh + 50px)",
     position: "relative",
-    background: `url(${require("../../assets/img/img_header@2x.jpg")}) 0% 0% no-repeat padding-box`,
-    backgroundSize: "100% auto",
-    overflow: "hidden",
-    [theme.breakpoints.down("xs")]: {
-      background: `url(${require("../../assets/img/img_header.jpg")}) 0% 0% no-repeat padding-box`,
-      backgroundSize: "640px auto",
-      backgroundPosition: "100% 0%"
-    },
+    overflow: "hidden"
   },
 
   landingBoardImage: {
-    visibility: "hidden",
-    // maxHeight: "calc(100vh - 100px)",
     width: "100%",
     [theme.breakpoints.down("xs")]: {
-      width: "640px"
+      width: "640px",
+      position: "relative",
+      right: "calc(640px - 100vw)"
     }
   },
 
-  landingBoard: {
+  landingBoardImageHidden: {
+    opacity: 0,
     position: "absolute",
-    top: 0,
-    left: 0,
-    width: "100%",
+    transition: "opacity 1s"
+  },
+
+  landingBoard: {
+    // width: "100%",
     height: "100%",
     maxHeight: "calc(100vh - 100px)",
-    padding: "168px 16px 32px 16px",
-    [theme.breakpoints.down('sm')]: {
-      padding: "48px 16px 32px 16px"
+    padding: "168px 16px 16px 16px",
+    [theme.breakpoints.down("sm")]: {
+      padding: "48px 16px 16px 16px"
     },
     [theme.breakpoints.down("xs")]: {
       padding: "24px 16px 8px 16px"
@@ -289,6 +299,12 @@ const styleSheet = theme => ({
     background: "transparent"
   },
 
+  dotStepperLandingBlock: {
+    position: "absolute",
+    width: "100%",
+    background: "transparent"
+  },
+
   dotStyle: {
     width: 12,
     height: 12,
@@ -474,8 +490,7 @@ const styleSheet = theme => ({
   },
 
   landingButtonsWrapper: {
-    maxWidth: "calc(194px * 2 + 44px)",
-    flexWrap: "wrap"
+    maxWidth: "calc(194px * 2 + 44px)"
   },
 
   landingButton: {
@@ -491,10 +506,24 @@ class Home extends Component {
   };
 
   state = {
+    activeLandingBlock: 0,
     activeHelpStep: 0
   };
 
-  // text step component
+  UNSAFE_componentWillMount() {
+    /* set timer for active landing block (every 5 seconds) */
+    setInterval(
+      () =>
+        this.setState({
+          activeLandingBlock: (this.state.activeLandingBlock + 1) % 3
+        }),
+      5000
+    );
+  }
+
+  /**
+   * @description Text stepper component
+   */
   textStepper = withWidth()(
     ({ active, index, label, content, onClick, width }) => (
       <div onClick={() => onClick(index)} style={{ cursor: "pointer" }}>
@@ -591,7 +620,9 @@ class Home extends Component {
     )
   );
 
-  // image step component
+  /**
+   * @description Image stepper component
+   */
   imgStepper = ({ active, imgSrc }) => (
     <Box
       classes={{
@@ -605,7 +636,9 @@ class Home extends Component {
     </Box>
   );
 
-  // office component
+  /**
+   * @description Show office info component
+   */
   officeWrapper = ({ office, setFavorite }) => {
     const [pos, setPos] = useState(0);
 
@@ -718,113 +751,222 @@ class Home extends Component {
     this.setState({ activeHelpStep });
   };
 
+  landingBlocks = [
+    {
+      img: headerimg1,
+      imgL: headerimgL1,
+      title: this.props.t("needSpaceForBusiness"),
+      subtitle: this.props.t("needSpaceForBusinessSub")
+    },
+    {
+      img: headerimg2,
+      imgL: headerimgL2,
+      title: this.props.t("havePlaceAsOffice"),
+      subtitle: this.props.t("havePlaceAsOfficeSub")
+    },
+    {
+      img: headerimg,
+      imgL: headerimgL,
+      title: this.props.t("consultant"),
+      subtitle: this.props.t("consultantSub")
+    }
+    // {img: headerimg, imgL: headerimgL, title: this.props.t("needSpaceForBusiness"), subtitle: this.props.t("needSpaceForBusinessSub")}
+  ];
+
   render() {
     const { recommendedOffices, width, classes, t } = this.props;
-    const { activeHelpStep } = this.state;
+    const { activeHelpStep, activeLandingBlock } = this.state;
     const TextStepComponent = this.textStepper;
     const ImgStepComponent = this.imgStepper;
     const OfficeComponent = this.officeWrapper;
+
+    const landingBlock = this.landingBlocks[activeLandingBlock];
 
     return (
       <Column className={classes.root}>
         {/* Landing image block */}
         <div className={classes.landingBoardWrapper}>
-          <img
-            srcSet={`${HeaderImageLarger} 2x`}
-            src={HeaderImage}
-            alt=""
-            className={classes.landingBoardImage}
-          />
-          <Column fullWidth classes={{ box: classes.landingBoard }}>
-            <Row>
-              <Card className={classes.searchWrapper}>
-                <Column alignChildrenStart>
-                  <Typography
-                    // fontSizeXL
-                    textSecondary
-                    fontWeightBold
-                    classes={{ box: classes.landingTitle }}
-                    block
-                  >
-                    <Trans i18nKey="dashboardLandingTitle">
+          {this.landingBlocks.map((block, index) => (
+            <img
+              srcSet={`${block.imgL} 2x`}
+              src={block.img}
+              alt=""
+              className={clsx(
+                classes.landingBoardImage,
+                index !== activeLandingBlock && classes.landingBoardImageHidden
+              )}
+            />
+          ))}
+          <Column
+            fullWidth
+            absolute
+            style={{ top: 0, left: 0, height: "100%" }}
+          >
+            <Row
+              style={{
+                width: "fit-content",
+                height: "100%"
+              }}
+              alignChildrenStart
+            >
+              <Column classes={{ box: classes.landingBoard }}>
+                <Row>
+                  <Card className={classes.searchWrapper}>
+                    <Column alignChildrenStart>
                       <Typography
                         // fontSizeXL
-                        textPrimary
+                        textSecondary
                         fontWeightBold
                         classes={{ box: classes.landingTitle }}
-                        span
+                        block
                       >
-                        {{ name: "TESSI" }}
+                        <Trans i18nKey="dashboardLandingTitle">
+                          <Typography
+                            // fontSizeXL
+                            textPrimary
+                            fontWeightBold
+                            classes={{ box: classes.landingTitle }}
+                            span
+                          >
+                            {{ name: "TESSI" }}
+                          </Typography>
+                          <br />
+                        </Trans>
                       </Typography>
-                      <br />
-                    </Trans>
-                  </Typography>
-                  <Typography
-                    textMediumGrey
-                    // fontSizeS
-                    className={{ box: classes.landingSubtitle }}
-                  >
-                    {t("dashboardLandingSubtitle")}
-                  </Typography>
-                  <TextField
-                    fullWidth
-                    variant="outlined"
-                    placeholder={t("sayHiOrSearch")}
-                    className={classes.searchInput}
-                    endAdornment={
-                      <Button
-                        variant="icon"
-                        background="primary"
-                        className={classes.searchInputIcon}
-                        shadow
+                      <Typography
+                        textMediumGrey
+                        // fontSizeS
+                        className={{ box: classes.landingSubtitle }}
                       >
-                        <ArrowRightAltIcon
-                          style={{ color: "white", width: 18, height: 18 }}
+                        {t("dashboardLandingSubtitle")}
+                      </Typography>
+                      <TextField
+                        fullWidth
+                        variant="outlined"
+                        placeholder={t("sayHiOrSearch")}
+                        className={classes.searchInput}
+                        endAdornment={
+                          <Button
+                            variant="icon"
+                            background="primary"
+                            className={classes.searchInputIcon}
+                            shadow
+                          >
+                            <ArrowRightAltIcon
+                              style={{ color: "white", width: 18, height: 18 }}
+                            />
+                          </Button>
+                        }
+                      />
+                    </Column>
+                  </Card>
+                </Row>
+                <Stretch />
+                {!isWidthDown("sm", width) && (
+                  <Row
+                    fullWidth
+                    relative
+                    style={{ height: isWidthDown("sm", width) ? 26 : 42 }}
+                  >
+                    <Typography
+                      textWhite
+                      fontWeightBold
+                      fontSizeXL={!isWidthDown("sm", width)}
+                      fontSizeM={isWidthDown("sm", width)}
+                      fullWidth
+                      style={{
+                        overflow: "visible",
+                        whiteSpace: "nowrap"
+                      }}
+                      absolute
+                    >
+                      {landingBlock.title}
+                    </Typography>
+                  </Row>
+                )}
+                {!isWidthDown("sm", width) && (
+                  <Row
+                    paddingTopHalf
+                    fullWidth
+                    relative
+                    style={{ height: isWidthDown("sm", width) ? 28 : 42 }}
+                  >
+                    <Typography
+                      textWhite
+                      fontWeightBold
+                      fontSizeL={!isWidthDown("sm", width)}
+                      fontSizeS={isWidthDown("sm", width)}
+                      fullWidth
+                      style={{
+                        overflow: "visible",
+                        whiteSpace: "nowrap"
+                      }}
+                      absolute
+                    >
+                      {landingBlock.subtitle}
+                    </Typography>
+                  </Row>
+                )}
+                <Row paddingTop fullWidth style={{ flexWrap: "wrap" }}>
+                  {!isWidthDown("xs", width) && (
+                    <>
+                      <Column style={{ height: "100%", left: -6 }} relative>
+                        <MobileStepper
+                          variant="dots"
+                          steps={this.landingBlocks.length}
+                          position="static"
+                          activeStep={activeLandingBlock}
+                          classes={{
+                            root: classes.dotStepperLandingBlock,
+                            dot: classes.dotStyle,
+                            dotActive: classes.dotActiveStyle
+                          }}
                         />
-                      </Button>
+                      </Column>
+                      <Stretch />
+                    </>
+                  )}
+                  <Grid
+                    className={classes.landingButtonsWrapper}
+                    container
+                    direction="row-reverse"
+                    justify={
+                      isWidthDown("xs", width) ? "center" : "space-between"
                     }
-                  />
-                </Column>
-              </Card>
-            </Row>
-            <Stretch />
-            <Row
-              fullWidth
-              classes={{ box: classes.landingButtonsWrapper }}
-              justifyChildrenCenter
-            >
-              <Grid
-                container
-                direction="row-reverse"
-                justify={isWidthDown("xs", width) ? "center" : "space-between"}
-              >
-                <Grid item>
-                  <Button className={classes.landingButton}>
-                    <Typography
-                      fontSizeS
-                      fontWeightBold
-                      textWhite
-                      alignChildrenCenter
-                    >
-                      <SearchIcon />
-                      <Typography paddingLeft>{t("advancedSearch")}</Typography>
-                    </Typography>
-                  </Button>
-                </Grid>
-                <Grid item>
-                  <Button className={classes.landingButton}>
-                    <Typography
-                      fontSizeS
-                      fontWeightBold
-                      textWhite
-                      alignChildrenCenter
-                    >
-                      <TessiIcon />
-                      <Typography paddingLeft>{t("chatWithTessi")}</Typography>
-                    </Typography>
-                  </Button>
-                </Grid>
-              </Grid>
+                  >
+                    <Grid item>
+                      <Button className={classes.landingButton}>
+                        <Typography
+                          fontSizeS
+                          fontWeightBold
+                          textWhite
+                          alignChildrenCenter
+                        >
+                          <SearchIcon />
+                          <Typography paddingLeft>
+                            {t("advancedSearch")}
+                          </Typography>
+                        </Typography>
+                      </Button>
+                    </Grid>
+                    <Grid item>
+                      <Button className={classes.landingButton}>
+                        <Typography
+                          fontSizeS
+                          fontWeightBold
+                          textWhite
+                          alignChildrenCenter
+                        >
+                          <TessiIcon />
+                          <Typography paddingLeft>
+                            {t("chatWithTessi")}
+                          </Typography>
+                        </Typography>
+                      </Button>
+                    </Grid>
+                  </Grid>
+                </Row>
+              </Column>
             </Row>
           </Column>
         </div>
