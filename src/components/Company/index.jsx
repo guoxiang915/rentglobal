@@ -23,6 +23,11 @@ class Company extends Component {
     navigate: PropTypes.func
   };
 
+  /**
+   * @description Upload file to the api
+   * @param {File} file File object to upload
+   * @param {string} permission "public-read" or "private"
+   */
   uploadFile = (file, permission) => {
     const formData = new FormData();
     formData.append("file", file);
@@ -33,6 +38,27 @@ class Company extends Component {
       headers: { "Content-Type": undefined }
     };
     return api.post("/file/upload", formData, config);
+  };
+
+  /**
+   * @description Download file from api
+   * @param {string} fileId id of file to download
+   * @param {string} fileName name of file to be downloaded
+   */
+  downloadFile = (fileId, fileName) => {
+    api.get(`/file/${fileId}`, { responseType: "blob" }).then(response => {
+      const url = window.URL.createObjectURL(response.data);
+      const el = document.createElement("a");
+
+      el.href = url;
+      el.download = fileName;
+      el.style.display = "none";
+      document.body.appendChild(el);
+      el.click();
+
+      document.body.removeChild(el);
+      window.URL.revokeObjectURL(url);
+    });
   };
 
   render() {
@@ -68,6 +94,7 @@ class Company extends Component {
                         )
                       }
                       uploadFile={this.uploadFile}
+                      downloadFile={this.downloadFile}
                     />
                   )}
                 />

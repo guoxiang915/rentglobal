@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { withStyles, Card } from "@material-ui/core";
+import { withStyles, Card, CircularProgress } from "@material-ui/core";
 import { withTranslation } from "react-i18next";
 import {
   Typography,
@@ -17,6 +17,7 @@ import {
   KeyboardArrowLeft,
   KeyboardArrowRight
 } from "@material-ui/icons";
+import Dropzone from "react-dropzone";
 
 const styleSheet = theme => ({
   root: {
@@ -33,6 +34,27 @@ const styleSheet = theme => ({
 
   documents: {
     color: theme.colors.primary.lightGrey
+  },
+
+  fileNameWrapper: {
+    width: 110,
+    height: 24,
+    overflow: "hidden",
+    position: "relative"
+  },
+
+  fileName: {
+    transition: "transform 1s linear",
+    overflow: "hidden",
+    textOverflow: "ellipsis",
+    whiteSpace: "nowrap",
+    width: 110,
+    "&:hover": {
+      width: "fit-content",
+      overflow: "visible",
+      position: "absolute",
+      transform: "translateX(calc(110px - 100%))"
+    }
   }
 });
 
@@ -40,16 +62,21 @@ const UploadDocument = ({
   classes,
   t,
   documents,
-  approved,
   title,
   onUpload,
-  onDelete
+  onDownload,
+  onDelete,
+  uploading
 }) => {
   const [current, setCurrent] = useState(0);
 
   const prevCurrent = () => setCurrent(current - 1);
   const nextCurrent = () => setCurrent(current + 1);
-  const deleteCurrent = () => onDelete(current);
+  const deleteCurrent = () => onDelete(documents[current]._id);
+  const downloadCurrent = () =>
+    onDownload(documents[current]._id, documents[current].fileName);
+
+  const approved = documents && documents.find(item => item.approved === true);
 
   return (
     <Card variant="outlined" className={classes.root}>
@@ -70,8 +97,9 @@ const UploadDocument = ({
               classes={{ box: classes.documents }}
               fontSizeXS
               fullWidth
+              alignChildrenCenter
             >
-              <Box>
+              <Box style={{ width: 24, height: 24 }}>
                 {current > 0 && (
                   <Link to="#" variant="secondaryLight" onClick={prevCurrent}>
                     <KeyboardArrowLeft />
@@ -79,14 +107,24 @@ const UploadDocument = ({
                 )}
               </Box>
               <Stretch />
-              <Typography paddingLeftHalf paddingRightHalf>
-                {documents[current].name}
-              </Typography>
+              <Box
+                alignChildrenCenter
+                classes={{ box: classes.fileNameWrapper }}
+              >
+                <Link
+                  to="#"
+                  onClick={downloadCurrent}
+                  variant="normalLight"
+                  styles={classes.fileName}
+                >
+                  {documents[current].fileName}
+                </Link>
+              </Box>
               <Stretch />
-              <Box>
+              <Box style={{ width: 24, height: 24 }}>
                 {current < documents.length - 1 && (
                   <Link to="#" variant="secondaryLight" onClick={nextCurrent}>
-                    <KeyboardArrowRight />
+                    <KeyboardArrowRight disabled />
                   </Link>
                 )}
               </Box>
@@ -108,20 +146,30 @@ const UploadDocument = ({
               </Button>
             )}
           </>
+        ) : uploading ? (
+          <Box style={{ paddingTop: 16, paddingBottom: 18 }}>
+            <CircularProgress size={24} />
+          </Box>
         ) : (
-          <Button
-            link="secondaryLight"
-            background="transparent"
-            outline="transparent"
-            onClick={onUpload}
-          >
-            <Column fontSizeXS fontWeightMedium>
-              <Typography paddingTopHalf>
-                <UploadIcon style={{ width: 21, height: 19 }} />
-              </Typography>
-              <Typography>{t("upload")}</Typography>
-            </Column>
-          </Button>
+          <Dropzone multiple={false} onDrop={files => onUpload(files[0])}>
+            {({ getRootProps, getInputProps }) => (
+              <Button
+                link="secondaryLight"
+                background="transparent"
+                outline="transparent"
+                // onClick={onUpload}
+                {...getRootProps()}
+              >
+                <input {...getInputProps()} />
+                <Column fontSizeXS fontWeightMedium>
+                  <Typography paddingTopHalf>
+                    <UploadIcon style={{ width: 21, height: 19 }} />
+                  </Typography>
+                  <Typography>{t("upload")}</Typography>
+                </Column>
+              </Button>
+            )}
+          </Dropzone>
         )}
       </Column>
     </Card>

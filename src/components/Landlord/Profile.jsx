@@ -107,7 +107,6 @@ const styleSheet = theme => ({
     backgroundSize: "contain",
     backgroundPosition: "center",
     "&:hover": {
-      // background: "#0000000a"
       backgroundColor: theme.colors.primary.grey,
       backgroundBlendMode: "screen"
     }
@@ -173,19 +172,21 @@ class Profile extends Component {
     phoneNumber: "",
     address: "",
     postalCode: "",
-    legalStatusDocument: [],
+    legalStatusDocuments: [],
     checkSpecimen: [],
-    lease: [],
+    leases: [],
     password: "",
     passwordError: "",
     confirmPassword: "",
 
     editTab: null,
     openedTab: "landlordInfo",
-    uploadingDocumnet: null
+    uploadingDocument: null
   };
 
   static propTypes = {
+    uploadFile: PropTypes.func,
+    downloadFile: PropTypes.func,
     updateUser: PropTypes.func
   };
 
@@ -345,6 +346,7 @@ class Profile extends Component {
    */
   handleCancelEditProfile = () => {
     this.setState({ editTab: null });
+    this.handleResetProfileInfo(this.props);
   };
 
   /**
@@ -389,24 +391,36 @@ class Profile extends Component {
   handleSendPhoneVerification = () => {};
 
   handleUploadUserImage = userImage => {
-    this.setState({ uploadingDocumnet: "avatar" });
+    this.setState({ uploadingDocument: "avatar" });
     this.props.uploadFile(userImage, "public-read").then(response => {
-      this.setState({ userImage: response.data, uploadingDocumnet: null });
+      this.setState({ userImage: response.data, uploadingDocument: null });
     });
   };
 
   handleUploadDocument = docType => docFile => {
-    this.setState({ uploadingDocumnet: docType });
+    this.setState({ uploadingDocument: docType });
     this.props.uploadFile(docFile).then(response => {
-      this.setState({ [docType]: response, uploadingDocumnet: null });
+      this.props.updateUser("documents", {
+        role: this.props.user.role,
+        documentInfo: {
+          document: docType,
+          documentFileId: response.data.id
+        }
+      });
+      this.setState({
+        uploadingDocument: null
+      });
     });
   };
 
   render() {
     const { user, isUpdating: updatingTab, width, classes, t } = this.props;
-    const { openedTab, editTab, uploadingDocumnet } = this.state;
+    const { openedTab, editTab, uploadingDocument } = this.state;
     const ProfileTab = this.renderProfileTab;
     const SaveButtons = this.renderSaveButtons;
+
+    console.log(user);
+    console.log(this.state);
 
     let passwordLastUpdated = "-";
     if (user.passwordLastUpdated) {
@@ -486,7 +500,7 @@ class Profile extends Component {
                                   {...getRootProps()}
                                 >
                                   <input {...getInputProps()} />
-                                  {uploadingDocumnet === "avatar" ? (
+                                  {uploadingDocument === "avatar" ? (
                                     <ProgressIcon />
                                   ) : (
                                     <UploadIcon
@@ -664,24 +678,28 @@ class Profile extends Component {
               paddingBottom
               classes={{ box: classes.documentsWrapper }}
             >
-              <Box paddingRightHalf paddingBottomHalf>
-                <UploadDocument
-                  title={t("legalStatusDocument")}
-                  documents={this.state.legalStatusDocument}
-                />
-              </Box>
-              <Box paddingRightHalf paddingBottomHalf>
-                <UploadDocument
-                  title={t("checkSpecimen")}
-                  documents={this.state.checkSpecimen}
-                />
-              </Box>
-              <Box paddingRightHalf paddingBottomHalf>
-                <UploadDocument
-                  title={t("lease")}
-                  documents={this.state.lease}
-                />
-              </Box>
+              {[
+                {
+                  value: "legalStatusDocuments",
+                  title: t("legalStatusDocument")
+                },
+                { value: "checkSpecimen", title: t("checkSpecimen") },
+                { value: "leases", title: t("lease") }
+              ].map(item => (
+                <React.Fragment key={item.value}>
+                  <Box paddingRightHalf paddingBottomHalf>
+                    <UploadDocument
+                      title={item.title}
+                      documents={
+                        user.landlordProfile && user.landlordProfile[item.value]
+                      }
+                      uploading={uploadingDocument === item.value}
+                      onUpload={this.handleUploadDocument(item.value)}
+                      onDownload={this.props.downloadFile}
+                    />
+                  </Box>
+                </React.Fragment>
+              ))}
             </Row>
           </ProfileTab>
         </Row>

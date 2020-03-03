@@ -44,10 +44,10 @@ axiosApi.interceptors.response.use(
         .post("/auth/token", { refreshToken: authObj.getRefreshToken() })
         .then(response => {
           authObj.setToken(response.data.token);
-          axios.defaults.headers.common[
+          axiosApi.defaults.headers.common[
             "Authorization"
           ] = `Bearer ${response.data.token}`;
-          return axios(originalRequest);
+          return axiosApi(originalRequest);
         });
     }
   }

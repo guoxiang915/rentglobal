@@ -15,7 +15,7 @@ const sendRequest = async ({ field, data }) => {
       resp = await api.put(`/users/me/edit/${field}`, data);
     } else if (field === "documents") {
       resp = await api.put(`/users/me/edit/${field}?role=${data.role}`, {
-        documentInfo: data.documentInfo
+        ...data.documentInfo
       });
     } else {
       resp = {};

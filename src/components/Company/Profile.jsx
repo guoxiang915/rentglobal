@@ -171,21 +171,23 @@ class Profile extends Component {
     phoneNumber: "",
     address: "",
     postalCode: "",
-    legalStatusDocument: [],
+    legalStatusDocuments: [],
     checkSpecimen: [],
-    lease: [],
-    lastThreeBalance: [],
-    commercialBrochure: [],
+    copyOfPhotoIds: [],
+    lastThreeBalances: [],
+    commercialBrochures: [],
     password: "",
     passwordError: "",
     confirmPassword: "",
 
     editTab: null,
     openedTab: "companyInfo",
-    uploadingDocumnet: null
+    uploadingDocument: null
   };
 
   static propTypes = {
+    uploadFile: PropTypes.func,
+    downloadFile: PropTypes.func,
     updateUser: PropTypes.func
   };
 
@@ -326,7 +328,7 @@ class Profile extends Component {
         }
       }
     });
-    this.setState({editTab: null});
+    this.setState({ editTab: null });
   };
 
   handleSaveSecurityInfo = e => {
@@ -336,7 +338,7 @@ class Profile extends Component {
         passwordLastUpdated: new Date().getTime()
       });
     }
-    this.setState({editTab: null});
+    this.setState({ editTab: null });
   };
 
   /**
@@ -345,6 +347,7 @@ class Profile extends Component {
    */
   handleCancelEditProfile = () => {
     this.setState({ editTab: null });
+    this.handleResetProfileInfo(this.props);
   };
 
   /**
@@ -389,22 +392,31 @@ class Profile extends Component {
   handleSendPhoneVerification = () => {};
 
   handleUploadUserImage = userImage => {
-    this.setState({ uploadingDocumnet: "avatar" });
+    this.setState({ uploadingDocument: "avatar" });
     this.props.uploadFile(userImage, "public-read").then(response => {
-      this.setState({ userImage: response.data, uploadingDocumnet: null });
+      this.setState({ userImage: response.data, uploadingDocument: null });
     });
   };
 
   handleUploadDocument = docType => docFile => {
-    this.setState({ uploadingDocumnet: docType });
+    this.setState({ uploadingDocument: docType });
     this.props.uploadFile(docFile).then(response => {
-      this.setState({ [docType]: response, uploadingDocumnet: null });
+      this.props.updateUser("documents", {
+        role: this.props.user.role,
+        documentInfo: {
+          document: docType,
+          documentFileId: response.data.id
+        }
+      });
+      this.setState({
+        uploadingDocument: null
+      });
     });
   };
 
   render() {
     const { user, isUpdating: updatingTab, classes, t } = this.props;
-    const { openedTab, editTab, uploadingDocumnet } = this.state;
+    const { openedTab, editTab, uploadingDocument } = this.state;
     const ProfileTab = this.renderProfileTab;
     const SaveButtons = this.renderSaveButtons;
 
@@ -440,7 +452,7 @@ class Profile extends Component {
             title={t("companyInfo")}
             open={openedTab === "companyInfo"}
             onToggleOpen={this.handleToggleOpen("companyInfo")}
-            isEdit={editTab === "companyInfo" || updatingTab === 'profile'}
+            isEdit={editTab === "companyInfo" || updatingTab === "profile"}
             isEditable={editTab === null}
             onToggleEdit={this.handleToggleEdit("companyInfo")}
           >
@@ -486,7 +498,7 @@ class Profile extends Component {
                                   {...getRootProps()}
                                 >
                                   <input {...getInputProps()} />
-                                  {uploadingDocumnet === "avatar" ? (
+                                  {uploadingDocument === "avatar" ? (
                                     <ProgressIcon />
                                   ) : (
                                     <UploadIcon
@@ -574,7 +586,8 @@ class Profile extends Component {
                         readOnly={editTab !== "companyInfo"}
                       />
                     </Row>
-                    {(editTab === "companyInfo" || updatingTab === 'profile') && (
+                    {(editTab === "companyInfo" ||
+                      updatingTab === "profile") && (
                       // buttons for save
                       <Row paddingTopHalf>
                         <SaveButtons
@@ -607,10 +620,34 @@ class Profile extends Component {
               paddingBottom
               classes={{ box: classes.documentsWrapper }}
             >
-              <Box paddingRightHalf paddingBottomHalf>
+              {[
+                {
+                  value: "legalStatusDocuments",
+                  title: t("legalStatusDocument")
+                },
+                { value: "checkSpecimen", title: t("checkSpecimen") },
+                { value: "copyOfPhotoIds", title: t("copyOfID") },
+                { value: "lastThreeBalances", title: t("lastThreeBalance") },
+                { value: "commercialBrochures", title: t("commercialBrochure") }
+              ].map(item => (
+                <React.Fragment key={item.value}>
+                  <Box paddingRightHalf paddingBottomHalf>
+                    <UploadDocument
+                      title={item.title}
+                      documents={
+                        user.companyProfile && user.companyProfile[item.value]
+                      }
+                      uploading={uploadingDocument === item.value}
+                      onUpload={this.handleUploadDocument(item.value)}
+                      onDownload={this.props.downloadFile}
+                    />
+                  </Box>
+                </React.Fragment>
+              ))}
+              {/* <Box paddingRightHalf paddingBottomHalf>
                 <UploadDocument
                   title={t("legalStatusDocument")}
-                  documents={this.state.legalStatusDocument}
+                  documents={this.state.legalStatusDocuments}
                 />
               </Box>
               <Box paddingRightHalf paddingBottomHalf>
@@ -621,22 +658,22 @@ class Profile extends Component {
               </Box>
               <Box paddingRightHalf paddingBottomHalf>
                 <UploadDocument
-                  title={t("lease")}
-                  documents={this.state.lease}
+                  title={t("copyOfID")}
+                  documents={this.state.copyOfPhotoIds}
                 />
               </Box>
               <Box paddingRightHalf paddingBottomHalf>
                 <UploadDocument
                   title={t("lastThreeBalance")}
-                  documents={this.state.lastThreeBalance}
+                  documents={this.state.lastThreeBalances}
                 />
               </Box>
               <Box paddingRightHalf paddingBottomHalf>
                 <UploadDocument
                   title={t("commercialBrochure")}
-                  documents={this.state.commercialBrochure}
+                  documents={this.state.commercialBrochures}
                 />
-              </Box>
+              </Box> */}
             </Row>
           </ProfileTab>
         </Row>
@@ -649,7 +686,9 @@ class Profile extends Component {
             title={t("loginAndSecurity")}
             open={openedTab === "loginAndSecurity"}
             onToggleOpen={this.handleToggleOpen("loginAndSecurity")}
-            isEdit={editTab === "loginAndSecurity" || updatingTab === 'password'}
+            isEdit={
+              editTab === "loginAndSecurity" || updatingTab === "password"
+            }
             isEditable={editTab === null}
             onToggleEdit={this.handleToggleEdit("loginAndSecurity")}
           >
@@ -695,7 +734,8 @@ class Profile extends Component {
                       />
                     </Row>
                     <Row paddingTop>
-                      {(editTab === "loginAndSecurity" || updatingTab === 'password') ? (
+                      {editTab === "loginAndSecurity" ||
+                      updatingTab === "password" ? (
                         // buttons for save
                         <SaveButtons
                           isUpdating={updatingTab === "password"}
@@ -753,7 +793,10 @@ class Profile extends Component {
             title={t("paymentsAndPayouts")}
             open={openedTab === "paymentsAndPayouts"}
             onToggleOpen={this.handleToggleOpen("paymentsAndPayouts")}
-            isEdit={editTab === "paymentsAndPayouts" || updatingTab === 'paymentsAndPayouts'}
+            isEdit={
+              editTab === "paymentsAndPayouts" ||
+              updatingTab === "paymentsAndPayouts"
+            }
             isEditable={editTab === null}
             onToggleEdit={this.handleToggleEdit("paymentsAndPayouts")}
           ></ProfileTab>
@@ -767,7 +810,10 @@ class Profile extends Component {
             title={t("privacyAndSharing")}
             open={openedTab === "privacyAndSharing"}
             onToggleOpen={this.handleToggleOpen("privacyAndSharing")}
-            isEdit={editTab === "privacyAndSharing" || updatingTab === 'privacyAndSharing'}
+            isEdit={
+              editTab === "privacyAndSharing" ||
+              updatingTab === "privacyAndSharing"
+            }
             isEditable={editTab === null}
             onToggleEdit={this.handleToggleEdit("privacyAndSharing")}
           ></ProfileTab>
