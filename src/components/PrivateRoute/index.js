@@ -52,7 +52,7 @@ const styleSheet = theme => ({
 
   contentWrapper: {
     minHeight: "calc(100vh - 250px)",
-    background: "white",
+    background: theme.colors.primary.whiteGrey,
     [theme.breakpoints.down("sm")]: {
       minHeight: "calc(100vh - 166px)"
     }
