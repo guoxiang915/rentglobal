@@ -419,9 +419,6 @@ class Profile extends Component {
     const ProfileTab = this.renderProfileTab;
     const SaveButtons = this.renderSaveButtons;
 
-    console.log(user);
-    console.log(this.state);
-
     let passwordLastUpdated = "-";
     if (user.passwordLastUpdated) {
       passwordLastUpdated = new Date(user.passwordLastUpdated);

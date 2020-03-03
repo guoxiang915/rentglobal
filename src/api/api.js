@@ -28,9 +28,11 @@ axiosApi.interceptors.response.use(
 
     // remove tokens when generating token failed
     if (
+      error.response &&
       error.response.status !== 200 &&
       originalRequest.url === `${API}/auth/token`
     ) {
+      console.log(error.response);
       authObj.removeToken();
       authObj.removeRefreshToken();
       window.location = "/auth/login";
@@ -38,15 +40,16 @@ axiosApi.interceptors.response.use(
     }
 
     // generate token using refreshToken
-    if (error.response.status === 401 && !originalRequest._retry) {
+    if (error.response && error.response.status === 401 && !originalRequest._retry) {
       originalRequest._retry = true;
       return axiosApi
         .post("/auth/token", { refreshToken: authObj.getRefreshToken() })
-        .then(response => {
-          authObj.setToken(response.data.token);
+        .then(async response => {
+          await authObj.setToken(response.data.token);
           axiosApi.defaults.headers.common[
             "Authorization"
           ] = `Bearer ${response.data.token}`;
+          console.log(originalRequest, authObj, axiosApi);
           return axiosApi(originalRequest);
         });
     }
