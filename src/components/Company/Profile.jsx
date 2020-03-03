@@ -477,7 +477,7 @@ class Profile extends Component {
                           className={classes.avatarCard}
                         >
                           {!this.state.userImage &&
-                            !editTab === "companyInfo" && (
+                            editTab !== "companyInfo" && (
                               <UserIcon
                                 fontSize="large"
                                 className={classes.outlineIcon}
