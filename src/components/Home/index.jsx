@@ -56,22 +56,24 @@ const styleSheet = theme => ({
   landingBoardWrapper: {
     display: "block",
     width: "100%",
+    maxHeight: "calc(100vh + 50px)",
     position: "relative",
     background: `url(${require("../../assets/img/img_header@2x.jpg")}) 0% 0% no-repeat padding-box`,
-    backgroundSize: "cover",
+    backgroundSize: "100% auto",
     overflow: "hidden",
-    [theme.breakpoints.down("sm")]: {
+    [theme.breakpoints.down("xs")]: {
       background: `url(${require("../../assets/img/img_header.jpg")}) 0% 0% no-repeat padding-box`,
-      backgroundSize: "170% auto",
+      backgroundSize: "640px auto",
       backgroundPosition: "100% 0%"
-    }
+    },
   },
 
   landingBoardImage: {
     visibility: "hidden",
     // maxHeight: "calc(100vh - 100px)",
-    [theme.breakpoints.down("sm")]: {
-      width: "170%"
+    width: "100%",
+    [theme.breakpoints.down("xs")]: {
+      width: "640px"
     }
   },
 
@@ -81,8 +83,12 @@ const styleSheet = theme => ({
     left: 0,
     width: "100%",
     height: "100%",
-    padding: "168px 16px 180px 16px",
-    [theme.breakpoints.down("sm")]: {
+    maxHeight: "calc(100vh - 100px)",
+    padding: "168px 16px 32px 16px",
+    [theme.breakpoints.down('sm')]: {
+      padding: "48px 16px 32px 16px"
+    },
+    [theme.breakpoints.down("xs")]: {
       padding: "24px 16px 8px 16px"
     }
   },
@@ -727,7 +733,6 @@ class Home extends Component {
             srcSet={`${HeaderImageLarger} 2x`}
             src={HeaderImage}
             alt=""
-            width="100%"
             className={classes.landingBoardImage}
           />
           <Column fullWidth classes={{ box: classes.landingBoard }}>
