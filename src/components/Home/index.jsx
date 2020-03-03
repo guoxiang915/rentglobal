@@ -3,13 +3,7 @@ import { withStyles } from "@material-ui/core/styles";
 import clsx from "clsx";
 import { Trans, withTranslation } from "react-i18next";
 import withWidth, { isWidthDown } from "@material-ui/core/withWidth";
-import {
-  Grid,
-  Card,
-  Hidden,
-  MobileStepper,
-  Collapse
-} from "@material-ui/core";
+import { Grid, Card, Hidden, MobileStepper, Collapse } from "@material-ui/core";
 import {
   LinkedIn,
   Facebook,
@@ -133,18 +127,20 @@ const styleSheet = theme => ({
 
   searchInput: {
     marginTop: 14,
+    position: "relative",
     [theme.breakpoints.down("sm")]: {
       marginTop: 8
     }
   },
 
   searchInputIcon: {
-    borderRadius: "50%",
+    // borderRadius: "50%",
     background: theme.colors.primary.mainColor,
-    width: 44,
+    minWidth: 39,
     height: 39,
-    position: "relative",
-    right: -8
+    position: "absolute",
+    right: 6,
+    margin: 0
   },
 
   actionButtonsWrapper: {},
@@ -506,6 +502,7 @@ class Home extends Component {
   };
 
   state = {
+    tessiQuery: "",
     activeLandingBlock: 0,
     activeHelpStep: 0
   };
@@ -747,8 +744,20 @@ class Home extends Component {
     );
   };
 
+  /**
+   * @description Select active step for helpers
+   * @param {number} activeHelpStep Index of active helper step
+   */
   handleSelectActiveStep = activeHelpStep => () => {
     this.setState({ activeHelpStep });
+  };
+
+  /**
+   * @description Change event emitter to update state
+   * @param {string} field Name of state field to update
+   */
+  handleChangeByEvent = field => e => {
+    this.setState({ [field]: e.target.value });
   };
 
   landingBlocks = [
@@ -775,7 +784,7 @@ class Home extends Component {
 
   render() {
     const { recommendedOffices, width, classes, t } = this.props;
-    const { activeHelpStep, activeLandingBlock } = this.state;
+    const { activeHelpStep, activeLandingBlock, tessiQuery } = this.state;
     const TextStepComponent = this.textStepper;
     const ImgStepComponent = this.imgStepper;
     const OfficeComponent = this.officeWrapper;
@@ -788,6 +797,7 @@ class Home extends Component {
         <div className={classes.landingBoardWrapper}>
           {this.landingBlocks.map((block, index) => (
             <img
+              key={index}
               srcSet={`${block.imgL} 2x`}
               src={block.img}
               alt=""
@@ -843,18 +853,53 @@ class Home extends Component {
                       <TextField
                         fullWidth
                         variant="outlined"
+                        onChange={this.handleChangeByEvent("tessiQuery")}
                         placeholder={t("sayHiOrSearch")}
                         className={classes.searchInput}
                         endAdornment={
                           <Button
                             variant="icon"
                             background="primary"
-                            className={classes.searchInputIcon}
+                            style={{margin: 0}}
+                            className={clsx(
+                              tessiQuery && classes.landingButton,
+                              classes.searchInputIcon
+                            )}
                             shadow
                           >
-                            <ArrowRightAltIcon
-                              style={{ color: "white", width: 18, height: 18 }}
-                            />
+                            {!tessiQuery ? (
+                              <ArrowRightAltIcon
+                                style={{
+                                  color: "white",
+                                  width: 18,
+                                  height: 18
+                                }}
+                              />
+                            ) : /hi/i.test(tessiQuery) ? (
+                              <Typography
+                                fontSizeS
+                                fontWeightBold
+                                textWhite
+                                alignChildrenCenter
+                              >
+                                <TessiIcon />
+                                <Typography paddingLeft>
+                                  {t("chatWithTessi")}
+                                </Typography>
+                              </Typography>
+                            ) : (
+                              <Typography
+                                fontSizeS
+                                fontWeightBold
+                                textWhite
+                                alignChildrenCenter
+                              >
+                                <SearchIcon />
+                                <Typography paddingLeft>
+                                  {t("advancedSearch")}
+                                </Typography>
+                              </Typography>
+                            )}
                           </Button>
                         }
                       />
