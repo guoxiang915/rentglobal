@@ -212,7 +212,7 @@ class Profile extends Component {
     return (
       <Column fullWidth alignChildrenStart>
         <Row fullWidth>
-          <Box onClick={onToggleOpen} alignChildrenCenter>
+          <Box onClick={onToggleOpen} pointer alignChildrenCenter>
             <Typography fontSizeS textMediumGrey paddingRight>
               {title}
             </Typography>
@@ -420,8 +420,8 @@ class Profile extends Component {
     const SaveButtons = this.renderSaveButtons;
 
     let passwordLastUpdated = "-";
-    if (user.passwordLastUpdated) {
-      passwordLastUpdated = new Date(user.passwordLastUpdated);
+    if (user.updatedAt) {
+      passwordLastUpdated = new Date(user.updatedAt);
       passwordLastUpdated =
         passwordLastUpdated.getFullYear() +
         "/" +
