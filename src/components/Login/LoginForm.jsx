@@ -15,6 +15,9 @@ import {
   LockIcon,
   EmailIcon
 } from "../../common/base-components";
+import Auth from "../../utils/auth";
+
+const authObj = new Auth();
 
 const styleSheet = theme => ({
   formWrapper: {
@@ -48,18 +51,34 @@ const styleSheet = theme => ({
 });
 
 class LoginForm extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      email: this.props.email ? this.props.email : "",
-      emailError: null,
-      password: "",
-      passwordError: null,
-      isRemember: false,
-      error: null
-    };
-  }
+  /**
+   * @static Prop types of LoginForm component
+   */
+  static propTypes = {
+    email: PropTypes.string,
+    error: PropTypes.any,
+    isLoading: PropTypes.bool,
+    mappedLogin: PropTypes.func.isRequired,
+    classes: PropTypes.object.isRequired,
+    t: PropTypes.func.isRequired
+  };
 
+  /**
+   * @member {Object} state State of LoginForm component
+   */
+  state = {
+    email: this.props.email ? this.props.email : "",
+    emailError: null,
+    password: "",
+    passwordError: null,
+    isRemember: authObj.getRememberUser() ? true : false
+  };
+
+  /**
+   * Event handler for changing textfields
+   * @param {string} name Field name to update the state
+   * @returns {Function} Event handler
+   */
   handleChange = name => event => {
     this.setState({
       [name]: event.target.value,
@@ -67,6 +86,10 @@ class LoginForm extends Component {
     });
   };
 
+  /**
+   * Check form validations
+   * @async
+   */
   async validateForm() {
     const emailValid = this.state.email.match(
       /^([\w.%+-]+)@([\w-]+\.)+([\w]{2,})$/i
@@ -84,11 +107,12 @@ class LoginForm extends Component {
     return true;
   }
 
+  /**
+   * Submit the login form
+   * @deprecated
+   */
   handleSubmit = async e => {
     e.preventDefault();
-    if (this.state.error) {
-      return;
-    }
     const validForm = await this.validateForm();
     if (!validForm) {
       return;
@@ -102,15 +126,19 @@ class LoginForm extends Component {
     }
   };
 
+  /**
+   * Toggle remembering user
+   */
   handleToggleRememberUser = () => {
+    authObj.setRememberUser(!this.state.isRemember);
     this.setState({ isRemember: !this.state.isRemember });
   };
 
+  /**
+   * Submit the login form
+   */
   handleLogin = async e => {
     e.preventDefault();
-    if (this.state.error) {
-      return;
-    }
     const validForm = await this.validateForm();
     if (!validForm) {
       return;
@@ -124,20 +152,32 @@ class LoginForm extends Component {
     }
   };
 
+  /**
+   * Login with facebook
+   * @ignore
+   */
   handleLoginFacebook = () => {};
 
+  /**
+   * Login with google
+   * @ignore
+   */
   handleLoginGoogle = () => {};
 
+  /**
+   * Renderer function
+   */
   render() {
     const { classes, t } = this.props;
+    const { error, isLoading } = this.props;
 
     return (
       <form
-        // onSubmit={this.handleSubmit}
         noValidate
         autoComplete="off"
         className={classes.formWrapper}
       >
+        {/* title */}
         <Typography
           fontSizeM
           fontWeightBold
@@ -148,6 +188,8 @@ class LoginForm extends Component {
         >
           {t("loginToRENTGLOBAL")}
         </Typography>
+
+        {/* email */}
         <Box paddingTop>
           <TextField
             id="email"
@@ -161,6 +203,8 @@ class LoginForm extends Component {
             fullWidth
           />
         </Box>
+
+        {/* password */}
         <Box paddingTopHalf>
           <TextField
             id="password"
@@ -175,6 +219,15 @@ class LoginForm extends Component {
             fullWidth
           />
         </Box>
+
+        {/* error message */}
+        {error && error.type === "login" && (
+          <Typography fontSizeS textErrorRed justifyChildrenEnd paddingTopHalf paddingRightHalf>
+            {t(`loginError_${error.msg}`)}
+          </Typography>
+        )}
+
+        {/* remember user */}
         <Box paddingTopHalf justifyChildrenEnd fullWidth>
           <Checkbox
             variant="outlined"
@@ -184,6 +237,8 @@ class LoginForm extends Component {
             onChange={this.handleToggleRememberUser}
           />
         </Box>
+
+        {/* submit login */}
         <Box paddingTopHalf justifyChildrenEnd fullWidth>
           <Button
             type="submit"
@@ -191,14 +246,18 @@ class LoginForm extends Component {
             size="medium"
             className={classes.fixedWidthButton}
             onClick={this.handleLogin}
+            loading={isLoading}
           >
             <Typography fontSizeS fontWeightBold>
               {t("login")}
             </Typography>
           </Button>
         </Box>
+
         <Column classes={{ box: classes.moreWrapper }}>
           <Divider light />
+
+          {/* forgot password */}
           <Box paddingTop paddingBottom>
             <Typography fontSizeS fontWeightBold>
               <Link variant="primary" to="/auth/reset-password">
@@ -208,6 +267,8 @@ class LoginForm extends Component {
           </Box>
 
           <HorizontalDivider text={t("or")} light />
+
+          {/* login with facebook */}
           <Box paddingTop justifyChildrenEnd fullWidth>
             <Button
               type="submit"
@@ -222,6 +283,8 @@ class LoginForm extends Component {
               </Typography>
             </Button>
           </Box>
+
+          {/* login with google */}
           <Box paddingTopHalf justifyChildrenEnd fullWidth>
             <Button
               type="submit"
@@ -238,6 +301,7 @@ class LoginForm extends Component {
           </Box>
         </Column>
 
+        {/* register */}
         <Column paddingTopDouble>
           <Box paddingTop>
             <Typography fontSizeXS textMediumGrey>
@@ -252,10 +316,5 @@ class LoginForm extends Component {
     );
   }
 }
-
-LoginForm.propTypes = {
-  classes: PropTypes.object.isRequired,
-  t: PropTypes.func.isRequired
-};
 
 export default withStyles(styleSheet)(withTranslation("common")(LoginForm));

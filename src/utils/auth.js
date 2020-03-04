@@ -24,6 +24,15 @@ class Auth {
   removeRefreshToken = async () => {
     localStorage.removeItem("refreshToken");
   };
+
+  setRememberUser = async rememberUser => {
+    localStorage.setItem("rememberUser", rememberUser);
+  };
+
+  getRememberUser = () => {
+    let rememberUser = localStorage.getItem('rememeberUser');
+    return rememberUser;
+  }
 }
 
 export default Auth;

@@ -16,6 +16,7 @@ axiosApi.interceptors.request.use(
     if (token) {
       config.headers["Authorization"] = `Bearer ${token}`;
     }
+    console.log(token);
     return config;
   },
   error => Promise.reject(error)
@@ -40,7 +41,13 @@ axiosApi.interceptors.response.use(
     }
 
     // generate token using refreshToken
-    if (error.response && error.response.status === 401 && !originalRequest._retry) {
+    if (
+      authObj.getRefreshToken() &&
+      authObj.getRememberUser() &&
+      error.response &&
+      error.response.status === 401 &&
+      !originalRequest._retry
+    ) {
       originalRequest._retry = true;
       return axiosApi
         .post("/auth/token", { refreshToken: authObj.getRefreshToken() })
@@ -49,10 +56,12 @@ axiosApi.interceptors.response.use(
           axiosApi.defaults.headers.common[
             "Authorization"
           ] = `Bearer ${response.data.token}`;
-          console.log(originalRequest, authObj, axiosApi);
+          console.log(originalRequest, authObj.getToken(), axiosApi);
           return axiosApi(originalRequest);
         });
     }
+
+    return Promise.reject(error);
   }
 );
 

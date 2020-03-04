@@ -33,7 +33,7 @@ const authReducer = (currentState = INITIAL_STATE, action) => {
       return {
         ...currentState,
         isLoading: false,
-        error: action.resp.msg,
+        error: { type: "login", msg: action.resp.msg },
         isLoggedIn: false
       };
 
@@ -73,7 +73,7 @@ const authReducer = (currentState = INITIAL_STATE, action) => {
         ...currentState,
         isLoading: false,
         isLoggedIn: false,
-        error: action.resp.msg,
+        error: { type: "auth", msg: action.resp.msg },
         user: null,
         loaded: true
       };
@@ -129,7 +129,7 @@ const authReducer = (currentState = INITIAL_STATE, action) => {
         isLoading: false,
         isLoggedIn: false,
         user: null,
-        error: action.resp.msg
+        error: { type: "register", msg: action.resp.msg }
         // loaded: true
       };
 
@@ -167,7 +167,7 @@ const authReducer = (currentState = INITIAL_STATE, action) => {
       return {
         ...currentState,
         isUpdating: null,
-        error: action.resp.msg
+        error: { type: "updateUser", msg: action.resp.msg }
       };
 
     default:

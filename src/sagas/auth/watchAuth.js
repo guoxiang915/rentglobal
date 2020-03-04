@@ -16,8 +16,11 @@ const sendRequest = async token => {
 
 function* authenticate(action) {
   try {
-    let response = yield call(sendRequest, action.token);
-    if (response.status === 200) {
+    let response = null;
+    if (action.token) {
+      response = yield call(sendRequest, action.token);
+    }
+    if (response && response.status === 200) {
       yield put({
         type: "AUTH_SUCCESS",
         resp: response.data
@@ -25,13 +28,13 @@ function* authenticate(action) {
     } else {
       yield put({
         type: "AUTH_FAILED",
-        resp: response.data
+        resp: response ? response.data : ""
       });
     }
   } catch (error) {
     yield put({
       type: "AUTH_FAILED",
-      resp: { msg: error }
+      resp: ""
     });
   }
   yield call(flushMessage);

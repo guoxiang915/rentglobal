@@ -1,6 +1,12 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
-import { Button as MUIButton, withStyles, withTheme } from "@material-ui/core";
+import {
+  Button as MUIButton,
+  CircularProgress,
+  withStyles,
+  withTheme
+} from "@material-ui/core";
+import { Box } from ".";
 import clsx from "clsx";
 
 const styleSheet = theme => {
@@ -104,6 +110,7 @@ class Button extends Component {
       inverse,
       transparent,
       shadow,
+      loading,
       styles,
       ...props
     } = this.props;
@@ -126,6 +133,11 @@ class Button extends Component {
         }}
         {...props}
       >
+        {loading && (
+          <Box paddingRight>
+            <CircularProgress size={16} style={{ color: "white" }} />
+          </Box>
+        )}
         {children}
       </MUIButton>
     );
