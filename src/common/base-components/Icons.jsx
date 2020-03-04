@@ -31,7 +31,8 @@ import { ReactComponent as TruckSvg } from "../../assets/icon/icon_truck_white.s
 import { ReactComponent as UserSvg } from "../../assets/icon/icon_user.svg";
 import { ReactComponent as MapPointerSvg } from "../../assets/icon/icon_map_pointer.svg";
 import { ReactComponent as HelpSvg } from "../../assets/icon/icon_help.svg";
-import { ReactComponent as TessiSvg } from "../../assets/icon/icon_tessi.svg";
+import { ReactComponent as TessiSvg } from "../../assets/icon/icon_tessi_line_gray.svg";
+import { ReactComponent as TessiColorSvg } from "../../assets/icon/icon_tessi_color.svg";
 import { ReactComponent as EditDocumentSvg } from "../../assets/icon/icon_edit_document.svg";
 import { ReactComponent as FacebookSvg } from "../../assets/icon/icon_social_facebook_gray.svg";
 import { ReactComponent as InstagramSvg } from "../../assets/icon/icon_social_instagram_gray.svg";
@@ -104,6 +105,7 @@ export const StarIcon = props => <SvgIcon src={StarSvg} {...props} />;
 export const TruckIcon = props => <SvgIcon src={TruckSvg} {...props} />;
 export const HomeIcon = props => <SvgIcon src={HomeSvg} {...props} />;
 export const TessiIcon = props => <SvgIcon src={TessiSvg} {...props} />;
+export const TessiColorIcon = props => <SvgIcon src={TessiColorSvg} {...props} />;
 export const UserIcon = props => <SvgIcon src={UserSvg} {...props} />;
 export const HelpIcon = props => <SvgIcon src={HelpSvg} {...props} />;
 export const EditDocumentIcon = props => (

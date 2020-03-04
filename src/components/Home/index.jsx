@@ -40,12 +40,6 @@ import "@brainhubeu/react-carousel/lib/style.css";
 // load assets
 import headerimg from "../../assets/img/img_header.jpg";
 import headerimgL from "../../assets/img/img_header@2x.jpg";
-import headerimg1 from "../../assets/img/img_header_01.png";
-import headerimgL1 from "../../assets/img/img_header_01@2x.png";
-import headerimg2 from "../../assets/img/img_header_02.png";
-import headerimgL2 from "../../assets/img/img_header_02@2x.png";
-// import headerimg3 from "../../assets/img/img_header_03.png";
-// import headerimgL3 from "../../assets/img/img_header_03@2x.png";
 import gallery1 from "../../assets/img/img_gallery_01@2x.png";
 import gallery2 from "../../assets/img/img_gallery_02@2x.png";
 import gallery3 from "../../assets/img/img_gallery_03@2x.png";
@@ -299,6 +293,14 @@ const styleSheet = theme => ({
     position: "absolute",
     width: "100%",
     background: "transparent"
+  },
+
+  dotLandingBlockStyle: {
+    width: 12,
+    height: 12,
+    margin: 6,
+    background: theme.colors.primary.darkGrey,
+    opacity: 0.35
   },
 
   dotStyle: {
@@ -762,14 +764,14 @@ class Home extends Component {
 
   landingBlocks = [
     {
-      img: headerimg1,
-      imgL: headerimgL1,
+      img: headerimg,
+      imgL: headerimgL,
       title: this.props.t("needSpaceForBusiness"),
       subtitle: this.props.t("needSpaceForBusinessSub")
     },
     {
-      img: headerimg2,
-      imgL: headerimgL2,
+      img: headerimg,
+      imgL: headerimgL,
       title: this.props.t("havePlaceAsOffice"),
       subtitle: this.props.t("havePlaceAsOfficeSub")
     },
@@ -882,7 +884,7 @@ class Home extends Component {
                                 textWhite
                                 alignChildrenCenter
                               >
-                                <TessiIcon />
+                                <TessiIcon style={{stroke: 'white'}} />
                                 <Typography paddingLeft>
                                   {t("chatWithTessi")}
                                 </Typography>
@@ -911,13 +913,13 @@ class Home extends Component {
                   <Row
                     fullWidth
                     relative
-                    style={{ height: isWidthDown("sm", width) ? 26 : 42 }}
+                    style={{ height: isWidthDown("sm", width) ? 20 : 34 }}
                   >
                     <Typography
-                      textWhite
+                      textSecondary
                       fontWeightBold
-                      fontSizeXL={!isWidthDown("sm", width)}
-                      fontSizeM={isWidthDown("sm", width)}
+                      fontSizeL={!isWidthDown("sm", width)}
+                      fontSizeS={isWidthDown("sm", width)}
                       fullWidth
                       style={{
                         overflow: "visible",
@@ -931,16 +933,15 @@ class Home extends Component {
                 )}
                 {!isWidthDown("sm", width) && (
                   <Row
-                    paddingTopHalf
                     fullWidth
                     relative
-                    style={{ height: isWidthDown("sm", width) ? 28 : 42 }}
+                    style={{ height: isWidthDown("sm", width) ? 26 : 28 }}
                   >
                     <Typography
-                      textWhite
+                      textSecondary
                       fontWeightBold
-                      fontSizeL={!isWidthDown("sm", width)}
-                      fontSizeS={isWidthDown("sm", width)}
+                      fontSizeS={!isWidthDown("sm", width)}
+                      fontSizeXS={isWidthDown("sm", width)}
                       fullWidth
                       style={{
                         overflow: "visible",
@@ -963,7 +964,7 @@ class Home extends Component {
                           activeStep={activeLandingBlock}
                           classes={{
                             root: classes.dotStepperLandingBlock,
-                            dot: classes.dotStyle,
+                            dot: classes.dotLandingBlockStyle,
                             dotActive: classes.dotActiveStyle
                           }}
                         />
@@ -1002,7 +1003,7 @@ class Home extends Component {
                           textWhite
                           alignChildrenCenter
                         >
-                          <TessiIcon />
+                          <TessiIcon style={{stroke: 'white'}} />
                           <Typography paddingLeft>
                             {t("chatWithTessi")}
                           </Typography>
