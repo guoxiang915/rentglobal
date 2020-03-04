@@ -7,7 +7,6 @@ import {
   Box,
   Row,
   Column,
-  Stretch,
   Typography,
   Button,
   TextField,
@@ -16,20 +15,47 @@ import {
   PhoneIcon,
   AddressIcon,
   MapPointerIcon,
-  ArrowUpIcon,
-  ArrowDownIcon,
-  EditIcon,
   CloseIcon,
   CheckIcon,
   LockIcon,
   UploadIcon
 } from "../../common/base-components";
-import { UploadDocument } from "../../common/base-layouts";
-import { Collapse, Grid, Card, CircularProgress } from "@material-ui/core";
+import { UploadDocument, ProfileTab } from "../../common/base-layouts";
+import { Grid, Card, CircularProgress } from "@material-ui/core";
 import Dropzone from "react-dropzone";
 
 const ProgressIcon = props => (
   <CircularProgress color="primary" size={36} {...props} />
+);
+
+const SaveButtons = ({ isUpdating, onSave, onCancel, disabled, t }) => (
+  <>
+    <Box paddingRightDouble>
+      <Button link="errorRed" background="secondaryLight" onClick={onCancel}>
+        <CloseIcon style={{ width: 9, height: 9 }} />
+        <Typography paddingLeft fontSizeS>
+          {t("cancel")}
+        </Typography>
+      </Button>
+    </Box>
+    <Box fullWidth>
+      <Button
+        variant="primary"
+        fullWidth
+        onClick={onSave}
+        disabled={!!disabled}
+      >
+        {isUpdating ? (
+          <ProgressIcon size={16} color="secondary" />
+        ) : (
+          <CheckIcon style={{ width: 16, height: 12 }} />
+        )}
+        <Typography paddingLeft fontSizeS>
+          {t("save")}
+        </Typography>
+      </Button>
+    </Box>
+  </>
 );
 
 const styleSheet = theme => ({
@@ -199,100 +225,6 @@ class Profile extends Component {
     this.handleResetProfileInfo(this.props);
   }
 
-  renderProfileTab = ({
-    children,
-    classes,
-    isEdit,
-    isEditable,
-    open,
-    onToggleEdit,
-    onToggleOpen,
-    t,
-    title
-  }) => {
-    return (
-      <Column fullWidth alignChildrenStart>
-        <Row fullWidth>
-          <Box onClick={onToggleOpen} pointer alignChildrenCenter>
-            <Typography fontSizeS textMediumGrey paddingRight>
-              {title}
-            </Typography>
-            {open ? (
-              <ArrowUpIcon color="secondary" style={{ width: 12, height: 7 }} />
-            ) : (
-              <ArrowDownIcon
-                color="secondary"
-                style={{ width: 12, height: 7 }}
-              />
-            )}
-          </Box>
-          <Stretch />
-          {isEdit ? (
-            <Button
-              link="errorRed"
-              background="secondaryLight"
-              onClick={onToggleEdit}
-            >
-              <CloseIcon style={{ width: 9, height: 9 }} />
-              <Typography paddingLeft fontSizeS>
-                {t("cancel")}
-              </Typography>
-            </Button>
-          ) : (
-            isEditable && (
-              <Button
-                link="primary"
-                background="normalLight"
-                inverse
-                onClick={onToggleEdit}
-              >
-                <EditIcon style={{ width: 16, height: 16 }} />
-                <Typography paddingLeft fontSizeS>
-                  {t("edit")}
-                </Typography>
-              </Button>
-            )
-          )}
-        </Row>
-        <Collapse in={open} className={classes.fullWidth}>
-          <Column paddingTopHalf alignChildrenStart>
-            {children}
-          </Column>
-        </Collapse>
-      </Column>
-    );
-  };
-
-  renderSaveButtons = ({ isUpdating, onSave, onCancel, disabled, t }) => (
-    <>
-      <Box paddingRightDouble>
-        <Button link="errorRed" background="secondaryLight" onClick={onCancel}>
-          <CloseIcon style={{ width: 9, height: 9 }} />
-          <Typography paddingLeft fontSizeS>
-            {t("cancel")}
-          </Typography>
-        </Button>
-      </Box>
-      <Box fullWidth>
-        <Button
-          variant="primary"
-          fullWidth
-          onClick={onSave}
-          disabled={!!disabled}
-        >
-          {isUpdating ? (
-            <ProgressIcon size={16} color="secondary" />
-          ) : (
-            <CheckIcon style={{ width: 16, height: 12 }} />
-          )}
-          <Typography paddingLeft fontSizeS>
-            {t("save")}
-          </Typography>
-        </Button>
-      </Box>
-    </>
-  );
-
   handleStateChange = field => value => {
     this.setState({ [field]: value });
   };
@@ -417,8 +349,6 @@ class Profile extends Component {
   render() {
     const { user, isUpdating: updatingTab, classes, t } = this.props;
     const { openedTab, editTab, uploadingDocument } = this.state;
-    const ProfileTab = this.renderProfileTab;
-    const SaveButtons = this.renderSaveButtons;
 
     let passwordLastUpdated = "-";
     if (user.updatedAt) {
@@ -447,8 +377,6 @@ class Profile extends Component {
         {/* company info tab */}
         <Row fullWidth classes={{ box: classes.profileTabWrapper }}>
           <ProfileTab
-            classes={classes}
-            t={t}
             title={t("companyInfo")}
             open={openedTab === "companyInfo"}
             onToggleOpen={this.handleToggleOpen("companyInfo")}
@@ -681,8 +609,6 @@ class Profile extends Component {
         {/* login and security tab */}
         <Row fullWidth classes={{ box: classes.profileTabWrapper }}>
           <ProfileTab
-            classes={classes}
-            t={t}
             title={t("loginAndSecurity")}
             open={openedTab === "loginAndSecurity"}
             onToggleOpen={this.handleToggleOpen("loginAndSecurity")}
@@ -788,8 +714,6 @@ class Profile extends Component {
         {/* payments and payouts tab */}
         <Row fullWidth classes={{ box: classes.profileTabWrapper }}>
           <ProfileTab
-            classes={classes}
-            t={t}
             title={t("paymentsAndPayouts")}
             open={openedTab === "paymentsAndPayouts"}
             onToggleOpen={this.handleToggleOpen("paymentsAndPayouts")}
@@ -805,8 +729,6 @@ class Profile extends Component {
         {/* privacy & sharing tab */}
         <Row fullWidth classes={{ box: classes.profileTabWrapper }}>
           <ProfileTab
-            classes={classes}
-            t={t}
             title={t("privacyAndSharing")}
             open={openedTab === "privacyAndSharing"}
             onToggleOpen={this.handleToggleOpen("privacyAndSharing")}
