@@ -17,7 +17,7 @@ import {
 } from "../base-components";
 
 /**
- * Stylesheet for ProfileTab component
+ * Stylesheet for TabWrapper component
  * @param {Object} theme
  */
 const styleSheet = theme => ({
@@ -27,15 +27,16 @@ const styleSheet = theme => ({
 });
 
 /**
- * Function component for rendering profile tab
+ * Function component for rendering tab wrapper
  * @param {Object} props
  */
-const ProfileTab = props => {
+const TabWrapper = props => {
   const {
     children,
     classes,
     isEdit,
     isEditable,
+    actionButton,
     open,
     onToggleEdit,
     onToggleOpen,
@@ -83,6 +84,7 @@ const ProfileTab = props => {
             </Button>
           )
         )}
+        {actionButton}
       </Row>
       <Collapse in={open} className={classes.fullWidth}>
         <Column paddingTopHalf alignChildrenStart>
@@ -93,6 +95,6 @@ const ProfileTab = props => {
   );
 };
 
-export default withStyles(styleSheet, { name: "ProfileTab" })(
-  withTranslation("common")(ProfileTab)
+export default withStyles(styleSheet, { name: "TabWrapper" })(
+  withTranslation("common")(TabWrapper)
 );

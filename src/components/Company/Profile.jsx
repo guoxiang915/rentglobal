@@ -20,7 +20,7 @@ import {
   LockIcon,
   UploadIcon
 } from "../../common/base-components";
-import { UploadDocument, ProfileTab } from "../../common/base-layouts";
+import { UploadDocument, TabWrapper } from "../../common/base-layouts";
 import { Grid, Card, CircularProgress } from "@material-ui/core";
 import Dropzone from "react-dropzone";
 
@@ -379,7 +379,7 @@ class Profile extends Component {
 
         {/* company info tab */}
         <Row fullWidth classes={{ box: classes.profileTabWrapper }}>
-          <ProfileTab
+          <TabWrapper
             title={t("companyInfo")}
             open={openedTab === "companyInfo"}
             onToggleOpen={this.handleToggleOpen("companyInfo")}
@@ -577,12 +577,12 @@ class Profile extends Component {
                 </React.Fragment>
               ))}
             </Row>
-          </ProfileTab>
+          </TabWrapper>
         </Row>
 
         {/* login and security tab */}
         <Row fullWidth classes={{ box: classes.profileTabWrapper }}>
-          <ProfileTab
+          <TabWrapper
             title={t("loginAndSecurity")}
             open={openedTab === "loginAndSecurity"}
             onToggleOpen={this.handleToggleOpen("loginAndSecurity")}
@@ -682,12 +682,12 @@ class Profile extends Component {
                 <Button variant="primary">{t("activeSessions")}</Button>
               </Box>
             </Row>
-          </ProfileTab>
+          </TabWrapper>
         </Row>
 
         {/* payments and payouts tab */}
         <Row fullWidth classes={{ box: classes.profileTabWrapper }}>
-          <ProfileTab
+          <TabWrapper
             title={t("paymentsAndPayouts")}
             open={openedTab === "paymentsAndPayouts"}
             onToggleOpen={this.handleToggleOpen("paymentsAndPayouts")}
@@ -697,12 +697,12 @@ class Profile extends Component {
             }
             isEditable={editTab === null}
             onToggleEdit={this.handleToggleEdit("paymentsAndPayouts")}
-          ></ProfileTab>
+          ></TabWrapper>
         </Row>
 
         {/* privacy & sharing tab */}
         <Row fullWidth classes={{ box: classes.profileTabWrapper }}>
-          <ProfileTab
+          <TabWrapper
             title={t("privacyAndSharing")}
             open={openedTab === "privacyAndSharing"}
             onToggleOpen={this.handleToggleOpen("privacyAndSharing")}
@@ -712,7 +712,7 @@ class Profile extends Component {
             }
             isEditable={editTab === null}
             onToggleEdit={this.handleToggleEdit("privacyAndSharing")}
-          ></ProfileTab>
+          ></TabWrapper>
         </Row>
       </Column>
     );

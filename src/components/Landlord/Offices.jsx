@@ -1,20 +1,15 @@
 import React, { Component } from "react";
 import { withStyles } from "@material-ui/core/styles";
 import { withTranslation } from "react-i18next";
+import PropTypes from "prop-types";
 import {
-  Box,
   Row,
   Column,
   Stretch,
   Typography,
   Button
 } from "../../common/base-components";
-import { Collapse } from "@material-ui/core";
-import {
-  KeyboardArrowUpSharp,
-  KeyboardArrowDownSharp
-} from "@material-ui/icons";
-import { useState } from "react";
+import { TabWrapper } from "../../common/base-layouts";
 
 const styleSheet = theme => ({
   root: {
@@ -41,43 +36,24 @@ const styleSheet = theme => ({
 });
 
 class Offices extends Component {
-  state = {};
-
-  renderOfficeTab = ({ children, classes, open, t, title }) => {
-    const [expanded, setExpanded] = useState(open);
-
-    return (
-      <Column fullWidth alignChildrenStart>
-        <Row fullWidth>
-          <Box onClick={() => setExpanded(!expanded)}>
-            <Typography fontSizeS textMediumGrey paddingRight>
-              {title}
-            </Typography>
-            {expanded ? (
-              <KeyboardArrowUpSharp
-                color="secondary"
-                className={classes.buttonIcon}
-              />
-            ) : (
-              <KeyboardArrowDownSharp
-                color="secondary"
-                className={classes.buttonIcon}
-              />
-            )}
-          </Box>
-        </Row>
-        <Collapse in={expanded} className={classes.fullWidth}>
-          <Column paddingTopHalf alignChildrenStart>
-            {children}
-          </Column>
-        </Collapse>
-      </Column>
-    );
+  static propTypes = {
+    classes: PropTypes.object,
+    t: PropTypes.func
   };
 
+  state = {};
+
+  /** Navigation */
+  navigate = () => {};
+
+  /** Toggling office tabs */
+  handleToggleOpen = () => {};
+
+  /**
+   * Renderer function
+   */
   render() {
     const { classes, t } = this.props;
-    const OfficeTab = this.renderOfficeTab;
 
     return (
       <Column
@@ -100,31 +76,52 @@ class Offices extends Component {
 
         {/* requests tab */}
         <Row fullWidth classes={{ box: classes.officesTabWrapper }}>
-          <OfficeTab
-            open={true}
-            classes={classes}
-            t={t}
+          <TabWrapper
             title={t("requests")}
+            open={true}
+            onToggleOpen={this.handleToggleOpen("requests")}
           />
         </Row>
 
         {/* office lists tab */}
         <Row fullWidth classes={{ box: classes.officesTabWrapper }}>
-          <OfficeTab
-            open={true}
-            classes={classes}
-            t={t}
+          <TabWrapper
             title={t("officeLists")}
+            open={true}
+            onToggleOpen={this.handleToggleOpen("officeLists")}
+            actionButton={
+              <Button
+                link="primary"
+                background="normalLight"
+                inverse
+                onClick={this.navigate("allOfficesList")}
+              >
+                <Typography paddingLeft fontSizeS>
+                  {t("allOfficesList")}
+                </Typography>
+              </Button>
+            }
           />
         </Row>
 
         {/* offices need attention tab */}
         <Row fullWidth classes={{ box: classes.officesTabWrapper }}>
-          <OfficeTab
+          <TabWrapper
+            title={t("needAttention")}
             open={true}
-            classes={classes}
-            t={t}
-            title={t("officeNeedAttention")}
+            onToggleOpen={this.handleToggleOpen("needAttention")}
+            actionButton={
+              <Button
+                link="primary"
+                background="normalLight"
+                inverse
+                onClick={this.navigate("allUnpublish")}
+              >
+                <Typography paddingLeft fontSizeS>
+                  {t("allUnpublish")}
+                </Typography>
+              </Button>
+            }
           />
         </Row>
       </Column>
