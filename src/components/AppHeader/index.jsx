@@ -10,7 +10,8 @@ import {
   Menu,
   Popover,
   LinearProgress,
-  Paper
+  Paper,
+  Badge
 } from "@material-ui/core";
 import {
   Button,
@@ -410,7 +411,16 @@ class AppHeader extends Component {
   };
 
   render() {
-    const { sidebarOpened, location, language, width, classes, t } = this.props;
+    const {
+      sidebarOpened,
+      location,
+      language,
+      notifications,
+      mails,
+      width,
+      classes,
+      t
+    } = this.props;
     const { isLoggedIn, user } = this.props.auth;
     const { locationEl, languageEl, accountInfoEl } = this.state;
     const role = isLoggedIn ? user.role : "";
@@ -623,14 +633,32 @@ class AppHeader extends Component {
                   {/* mails */}
                   <Column paddingLeftDouble>
                     <Button variant="icon">
-                      <EmailIcon className={classes.smallIcon} />
+                      <Badge
+                        color="primary"
+                        badgeContent={
+                          mails &&
+                          (mails.length > 3 ? `${mails.length}+` : mails.length)
+                        }
+                      >
+                        <EmailIcon className={classes.smallIcon} />
+                      </Badge>
                     </Button>
                   </Column>
 
                   {/* notifications */}
                   <Column paddingLeft>
                     <Button variant="icon">
-                      <AlarmIcon className={classes.smallIcon} />
+                      <Badge
+                        color="primary"
+                        badgeContent={
+                          notifications &&
+                          (notifications.length > 9
+                            ? `${notifications.length}+`
+                            : notifications.length)
+                        }
+                      >
+                        <AlarmIcon className={classes.smallIcon} />
+                      </Badge>
                     </Button>
                   </Column>
 
@@ -647,7 +675,15 @@ class AppHeader extends Component {
                           <ArrowDownIcon className={classes.arrowDownIcon} />
                         </Typography>
                       )}
-                      <UserIcon className={classes.smallIcon} />
+                      <Badge
+                        color="error"
+                        badgeContent="!"
+                        invisible={
+                          profileCompleteness !== "profileNeedAttention"
+                        }
+                      >
+                        <UserIcon className={classes.smallIcon} />
+                      </Badge>
                     </Button>
 
                     {/* account info panel */}

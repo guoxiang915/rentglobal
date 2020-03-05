@@ -24,7 +24,7 @@ class Company extends Component {
   };
 
   /**
-   * @description Upload file to the api
+   * Upload file to the api
    * @param {File} file File object to upload
    * @param {string} permission "public-read" or "private"
    */
@@ -41,7 +41,7 @@ class Company extends Component {
   };
 
   /**
-   * @description Download file from api
+   * Download file from api
    * @param {string} fileId id of file to download
    * @param {string} fileName name of file to be downloaded
    */

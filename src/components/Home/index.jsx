@@ -529,7 +529,7 @@ class Home extends Component {
   }
 
   /**
-   * @description Text stepper component
+   * Text stepper component
    */
   textStepper = withWidth()(
     ({ active, index, label, content, onClick, width }) => (
@@ -628,7 +628,7 @@ class Home extends Component {
   );
 
   /**
-   * @description Image stepper component
+   * Image stepper component
    */
   imgStepper = ({ active, imgSrc }) => (
     <Box
@@ -644,7 +644,7 @@ class Home extends Component {
   );
 
   /**
-   * @description Show office info component
+   * Show office info component
    */
   officeWrapper = ({ office, setFavorite }) => {
     const [pos, setPos] = useState(0);
@@ -755,7 +755,7 @@ class Home extends Component {
   };
 
   /**
-   * @description Select active step for helpers
+   * Select active step for helpers
    * @param {number} activeHelpStep Index of active helper step
    */
   handleSelectActiveStep = activeHelpStep => () => {
@@ -763,7 +763,7 @@ class Home extends Component {
   };
 
   /**
-   * @description Change event emitter to update state
+   * Change event emitter to update state
    * @param {string} field Name of state field to update
    */
   handleChangeByEvent = field => e => {

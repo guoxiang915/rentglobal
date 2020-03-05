@@ -25,7 +25,8 @@ const palette = {
   primary: {
     light: colors.primary.mainColor,
     main: colors.primary.mainColor,
-    dark: colors.primary.darkColor
+    dark: colors.primary.darkColor,
+    contrastText: colors.primary.white
   },
   secondary: {
     light: colors.primary.lightGrey,
@@ -36,6 +37,12 @@ const palette = {
     light: colors.primary.purple,
     main: colors.primary.purple,
     dark: colors.primary.darkPurple
+  },
+  error: {
+    light: colors.primary.errorRed,
+    main: colors.primary.errorRed,
+    dark: colors.primary.errorRed,
+    contrastText: colors.primary.white
   }
 };
 

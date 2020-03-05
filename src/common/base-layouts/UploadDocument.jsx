@@ -58,6 +58,10 @@ const styleSheet = theme => ({
   }
 });
 
+/**
+ * Function component for uploading document
+ * @param {Object} props  Props for display UploadDocument component
+ */
 const UploadDocument = ({
   classes,
   t,
@@ -77,6 +81,8 @@ const UploadDocument = ({
     onDownload(documents[current]._id, documents[current].fileName);
 
   const approved = documents && documents.find(item => item.approved === true);
+
+  console.log(documents);
 
   return (
     <Card variant="outlined" className={classes.root}>

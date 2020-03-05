@@ -238,7 +238,7 @@ class Profile extends Component {
   };
 
   /**
-   * @description Save company info
+   * Save company info
    */
   handleSaveCompanyInfo = () => {
     if (this.state.userImage && this.state.userImage.id) {
@@ -346,6 +346,9 @@ class Profile extends Component {
     });
   };
 
+  /**
+   * Renderer function
+   */
   render() {
     const { user, isUpdating: updatingTab, classes, t } = this.props;
     const { openedTab, editTab, uploadingDocument } = this.state;
@@ -568,6 +571,7 @@ class Profile extends Component {
                       uploading={uploadingDocument === item.value}
                       onUpload={this.handleUploadDocument(item.value)}
                       onDownload={this.props.downloadFile}
+                      onDelete={() => {}}
                     />
                   </Box>
                 </React.Fragment>
