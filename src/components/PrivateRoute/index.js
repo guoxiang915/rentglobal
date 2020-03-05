@@ -123,22 +123,6 @@ class PrivateRoute extends React.Component {
     await this.props.mappedAuthenticate(token, this.props.history);
   };
 
-  // componentDidMount() {
-  //   let role = "";
-  //   if (this.props.location.pathname.indexOf("/landlord") !== -1)
-  //     role = "landlord";
-  //   else if (this.props.location.pathname.indexOf("/company") !== -1)
-  //     role = "company";
-  //   this.setState({ role });
-
-  //   this.props.history.listen(location => {
-  //     let role = "";
-  //     if (location.pathname.indexOf("/landlord") !== -1) role = "landlord";
-  //     else if (location.pathname.indexOf("/company") !== -1) role = "company";
-  //     this.setState({ role });
-  //   });
-  // }
-
   navigate = path => {
     const { isLoggedIn, user } = this.props.auth;
 

@@ -257,12 +257,27 @@ class AppHeader extends Component {
     this.props.onToggleSidebar(value);
   };
 
+  /** Navigate from Account Info panel */
   handleAccountInfoNavigate = path => () => {
     this.handleCloseMenu("accountInfoEl")();
     this.props.navigate(path);
   };
 
-  // render account navigation item
+  /** Toggle role when user selects another role in Account Info panel */
+  handleAccountInfoToggleRole = () => {
+    this.handleCloseMenu("accountInfoEl")();
+    this.props.onToggleRole();
+  };
+
+  /**
+   * Render Account Navigation Item
+   * @typedef Props
+   * @property  {function}  onClick
+   * @property  {component} icon
+   * @property  {string}    text
+   * @property  {boolean}   errorRed
+   * @property  {object}    classes
+   */
   renderAccountNavItem = ({ onClick, icon, text, errorRed, classes }) => {
     const NavIcon = icon;
     return (
@@ -285,12 +300,23 @@ class AppHeader extends Component {
     );
   };
 
-  // Account Info PopOver Component
+  /**
+   * Render Account Info Form
+   * @typedef Props
+   * @property  {string}    role
+   * @property  {object}    user
+   * @property  {object}    profileProgress
+   * @property  {function}  navigate
+   * @property  {function}  onToggleRole
+   * @property  {object}    classes
+   * @property  {function}  t
+   */
   renderAccountInfo = ({
     role,
     user,
     profileProgress,
     navigate,
+    onToggleRole,
     classes,
     t
   }) => {
@@ -392,11 +418,20 @@ class AppHeader extends Component {
         <Box padding2 />
         <Divider className={classes.divider} />
         <NavItem
-          onClick={this.props.onToggleRole}
+          onClick={onToggleRole}
           icon={UsersIcon}
           text={role === "company" ? t("landlordPanel") : t("companyPanel")}
           classes={classes}
         />
+        {/** When both profile exists, then show both navigators */}
+        {user.landlordProfile && user.companyProfile && (
+          <NavItem
+            onClick={onToggleRole}
+            icon={UsersIcon}
+            text={role === "company" ? t("companyPanel") : t("landlordPanel")}
+            classes={classes}
+          />
+        )}
         <Divider className={classes.divider} />
         <Box padding2 />
         <NavItem
@@ -410,6 +445,7 @@ class AppHeader extends Component {
     );
   };
 
+  /** Renderer function */
   render() {
     const {
       sidebarOpened,
@@ -712,6 +748,7 @@ class AppHeader extends Component {
                             profileCharged
                           }}
                           navigate={this.handleAccountInfoNavigate}
+                          onToggleRole={this.handleAccountInfoToggleRole}
                           classes={classes}
                           t={t}
                         />
