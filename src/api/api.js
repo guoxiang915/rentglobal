@@ -16,7 +16,6 @@ axiosApi.interceptors.request.use(
     if (token) {
       config.headers["Authorization"] = `Bearer ${token}`;
     }
-    console.log(token);
     return config;
   },
   error => Promise.reject(error)
@@ -33,7 +32,6 @@ axiosApi.interceptors.response.use(
       error.response.status !== 200 &&
       originalRequest.url === `${API}/auth/token`
     ) {
-      console.log(error.response);
       authObj.removeToken();
       authObj.removeRefreshToken();
       window.location = "/auth/login";
@@ -43,7 +41,7 @@ axiosApi.interceptors.response.use(
     // generate token using refreshToken
     if (
       authObj.getRefreshToken() &&
-      authObj.getRememberUser() === 'true' &&
+      authObj.getRememberUser() === "true" &&
       error.response &&
       error.response.status === 401 &&
       !originalRequest._retry
@@ -53,10 +51,20 @@ axiosApi.interceptors.response.use(
         .post("/auth/token", { refreshToken: authObj.getRefreshToken() })
         .then(async response => {
           await authObj.setToken(response.data.token);
-          axiosApi.defaults.headers.common[
+
+          // Update the authorization header
+          originalRequest.headers[
             "Authorization"
           ] = `Bearer ${response.data.token}`;
-          console.log(originalRequest, authObj.getToken(), axiosApi);
+
+          // If this request is for validate-token, then set the token data with the new token
+          if (originalRequest.url === `${API}/auth/validate-token`) {
+            originalRequest.data = JSON.stringify({
+              token: response.data.token
+            });
+          }
+
+          // Resend request
           return axiosApi(originalRequest);
         });
     }
