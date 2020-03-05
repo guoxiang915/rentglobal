@@ -509,15 +509,23 @@ class Home extends Component {
     activeHelpStep: 0
   };
 
+  intervalId = null;
+
   UNSAFE_componentWillMount() {
     /* set timer for active landing block (every 5 seconds) */
-    setInterval(
+    this.intervalId = setInterval(
       () =>
         this.setState({
           activeLandingBlock: (this.state.activeLandingBlock + 1) % 3
         }),
       5000
     );
+  }
+
+  componentWillUnmount() {
+    if (this.intervalId !== null) {
+      clearInterval(this.intervalId);
+    }
   }
 
   /**
@@ -862,7 +870,7 @@ class Home extends Component {
                           <Button
                             variant="icon"
                             background="primary"
-                            style={{margin: 0}}
+                            style={{ margin: 0 }}
                             className={clsx(
                               tessiQuery && classes.landingButton,
                               classes.searchInputIcon
@@ -884,7 +892,7 @@ class Home extends Component {
                                 textWhite
                                 alignChildrenCenter
                               >
-                                <TessiIcon style={{stroke: 'white'}} />
+                                <TessiIcon style={{ stroke: "white" }} />
                                 <Typography paddingLeft>
                                   {t("chatWithTessi")}
                                 </Typography>
@@ -1003,7 +1011,7 @@ class Home extends Component {
                           textWhite
                           alignChildrenCenter
                         >
-                          <TessiIcon style={{stroke: 'white'}} />
+                          <TessiIcon style={{ stroke: "white" }} />
                           <Typography paddingLeft>
                             {t("chatWithTessi")}
                           </Typography>

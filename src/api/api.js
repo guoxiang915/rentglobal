@@ -43,7 +43,7 @@ axiosApi.interceptors.response.use(
     // generate token using refreshToken
     if (
       authObj.getRefreshToken() &&
-      authObj.getRememberUser() &&
+      authObj.getRememberUser() === 'true' &&
       error.response &&
       error.response.status === 401 &&
       !originalRequest._retry

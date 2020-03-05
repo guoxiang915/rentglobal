@@ -30,7 +30,7 @@ class Auth {
   };
 
   getRememberUser = () => {
-    let rememberUser = localStorage.getItem('rememeberUser');
+    let rememberUser = localStorage.getItem('rememberUser');
     return rememberUser;
   }
 }

@@ -572,36 +572,6 @@ class Profile extends Component {
                   </Box>
                 </React.Fragment>
               ))}
-              {/* <Box paddingRightHalf paddingBottomHalf>
-                <UploadDocument
-                  title={t("legalStatusDocument")}
-                  documents={this.state.legalStatusDocuments}
-                />
-              </Box>
-              <Box paddingRightHalf paddingBottomHalf>
-                <UploadDocument
-                  title={t("checkSpecimen")}
-                  documents={this.state.checkSpecimen}
-                />
-              </Box>
-              <Box paddingRightHalf paddingBottomHalf>
-                <UploadDocument
-                  title={t("copyOfID")}
-                  documents={this.state.copyOfPhotoIds}
-                />
-              </Box>
-              <Box paddingRightHalf paddingBottomHalf>
-                <UploadDocument
-                  title={t("lastThreeBalance")}
-                  documents={this.state.lastThreeBalances}
-                />
-              </Box>
-              <Box paddingRightHalf paddingBottomHalf>
-                <UploadDocument
-                  title={t("commercialBrochure")}
-                  documents={this.state.commercialBrochures}
-                />
-              </Box> */}
             </Row>
           </ProfileTab>
         </Row>

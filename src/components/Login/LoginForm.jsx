@@ -71,7 +71,7 @@ class LoginForm extends Component {
     emailError: null,
     password: "",
     passwordError: null,
-    isRemember: authObj.getRememberUser() ? true : false
+    isRemember: authObj.getRememberUser() === 'true'
   };
 
   /**
@@ -130,8 +130,9 @@ class LoginForm extends Component {
    * Toggle remembering user
    */
   handleToggleRememberUser = () => {
-    authObj.setRememberUser(!this.state.isRemember);
-    this.setState({ isRemember: !this.state.isRemember });
+    const isRemember = !this.state.isRemember;
+    this.setState({ isRemember });
+    authObj.setRememberUser(isRemember);
   };
 
   /**
