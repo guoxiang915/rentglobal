@@ -223,5 +223,12 @@
     "reUpload": "Upload again",
 
     "allOfficesList": "All offices list",
-    "allUnpublish": "All unpublish"
+    "allUnpublish": "All unpublish",
+    "followUpReuqests": "Follow Up Requests",
+    "moreInfoRequests": "More Info Req",
+    "contactRequests": "Contact Req",
+    "independentOffice": "Independent office",
+    "privateOffice": "Private office",
+    "assignedWorkstation": "Assigned workstation",
+    "unassignedWorkstation": "Unassigned workstation"
 }

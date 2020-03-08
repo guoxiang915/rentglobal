@@ -88,13 +88,13 @@ const styleSheet = theme => ({
   menuIcon: {
     marginRight: 26,
     color: theme.colors.primary.borderGrey,
-    stroke: theme.colors.primary.borderGrey,
+    // stroke: theme.colors.primary.borderGrey,
     opacity: 1,
     [theme.breakpoints.down("sm")]: {
       marginRight: 32,
       opacity: 0.15,
       color: theme.colors.primary.darkGrey,
-      stroke: theme.colors.primary.darkGrey
+      // stroke: theme.colors.primary.darkGrey
     }
   },
 

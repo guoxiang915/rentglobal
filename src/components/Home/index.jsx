@@ -1,4 +1,4 @@
-import React, { Component, useState } from "react";
+import React, { Component } from "react";
 import { withStyles } from "@material-ui/core/styles";
 import clsx from "clsx";
 import { Trans, withTranslation } from "react-i18next";
@@ -10,9 +10,7 @@ import {
   Instagram,
   Twitter,
   KeyboardArrowLeft,
-  KeyboardArrowRight,
-  FavoriteBorderOutlined,
-  FavoriteOutlined
+  KeyboardArrowRight
 } from "@material-ui/icons";
 import {
   Box,
@@ -29,13 +27,12 @@ import {
   ArrowDownIcon,
   ArrowUpIcon,
   HeartIcon,
-  StarIcon,
   EmojiIcon,
   CalendarIcon,
   ArrowRightAltIcon
 } from "../../common/base-components";
-import Carousel, { Dots } from "@brainhubeu/react-carousel";
-import "@brainhubeu/react-carousel/lib/style.css";
+import { OfficeItem } from "../../common/base-layouts";
+import Carousel from "@brainhubeu/react-carousel";
 
 // load assets
 import headerimg from "../../assets/img/img_header.jpg";
@@ -79,12 +76,11 @@ const styleSheet = theme => ({
   },
 
   landingBoard: {
-    // width: "100%",
     height: "100%",
     maxHeight: "calc(100vh - 100px)",
     padding: "168px 16px 16px 16px",
     [theme.breakpoints.down("sm")]: {
-      padding: "48px 16px 16px 16px"
+      padding: "96px 16px 16px 16px"
     },
     [theme.breakpoints.down("xs")]: {
       padding: "24px 16px 8px 16px"
@@ -92,22 +88,29 @@ const styleSheet = theme => ({
   },
 
   searchWrapper: {
-    // maxWidth: 600,
     width: "100%",
     boxShadow: "0px 24px 24px #0000001A;",
     padding: `${theme.spacing(4)}px ${theme.spacing(4.5)}px`,
     borderRadius: 8,
     [theme.breakpoints.down("sm")]: {
       boxShadow: "0px 14px 14px #0000001A",
+      padding: `${theme.spacing(3)}px`
+    },
+    [theme.breakpoints.down("xs")]: {
+      boxShadow: "0px 14px 14px #0000001A",
       padding: `${theme.spacing(2)}px 10px`
     }
   },
 
   landingTitle: {
-    fontSize: "32px",
+    fontSize: "31px",
     lineHeight: "42px",
     [theme.breakpoints.down("sm")]: {
-      fontSize: "20px",
+      fontSize: "25px",
+      lineHeight: "34px"
+    },
+    [theme.breakpoints.down("xs")]: {
+      fontSize: "19px",
       lineHeight: "26px"
     }
   },
@@ -323,89 +326,6 @@ const styleSheet = theme => ({
     width: "100%"
   },
 
-  recommendedOfficeWrapper: {
-    width: 235,
-    marginRight: 20
-  },
-
-  recommendedOfficeCarousel: {
-    width: "100%",
-    height: 175,
-    borderRadius: 8,
-    position: "relative",
-    overflow: "hidden",
-    "&:hover": {
-      "&::before": {
-        content: '" "',
-        background: `transparent linear-gradient(0deg, ${theme.colors.primary.whiteGrey} 0%, ${theme.colors.primary.darkGrey} 100%) 0% 0% no-repeat padding-box`,
-        width: "100%",
-        height: 34,
-        position: "absolute",
-        top: 0,
-        left: 0,
-        opacity: 0.3,
-        zIndex: 1
-      },
-      "&::after": {
-        content: '" "',
-        background: `transparent linear-gradient(180deg, ${theme.colors.primary.whiteGrey} 0%, ${theme.colors.primary.darkGrey} 100%) 0% 0% no-repeat padding-box`,
-        width: "100%",
-        height: 34,
-        position: "absolute",
-        bottom: 0,
-        right: 0,
-        opacity: 0.3,
-        zIndex: 1
-      }
-    }
-  },
-
-  favoriteOfficeIcon: {
-    position: "absolute",
-    top: 8,
-    right: 16,
-    zIndex: 1,
-    width: 16,
-    height: 16
-  },
-
-  officeImage: {
-    width: "100%",
-    height: 174
-  },
-
-  officeLegend: {
-    position: "absolute",
-    right: 14,
-    bottom: 8
-  },
-
-  carouselArrow: {
-    width: 24,
-    height: 24,
-    position: "absolute",
-    top: "calc(50% - 12px)",
-    background: theme.colors.primary.white,
-    boxShadow: `0px 2px 4px ${theme.colors.primary.darkGrey}1A`,
-    borderRadius: "50%",
-    zIndex: 1,
-    opacity: 0.15,
-    "&:hover": {
-      opacity: 1
-    }
-  },
-
-  carouselDots: {
-    position: "absolute",
-    width: "100%",
-    height: 7,
-    left: 0,
-    bottom: 13,
-    zIndex: 1
-  },
-
-  ratingText: {},
-
   allLatestButton: {
     paddingTop: 54,
     paddingBottom: 96,
@@ -435,27 +355,27 @@ const styleSheet = theme => ({
     [theme.breakpoints.down("sm")]: {
       paddingTop: 24,
       paddingBottom: 24,
-      maxWidth: 237
+      maxWidth: "80%"
     }
   },
 
   homeRegisterArrow: {
-    width: 48,
-    height: 48,
+    width: 56,
+    height: 56,
     position: "absolute",
     top: "calc(50% - 12px)",
     [theme.breakpoints.down("sm")]: {
-      width: 36,
-      height: 36
+      width: 48,
+      height: 48
     }
   },
 
   homeRegisterArrowButton: {
-    width: 48,
-    height: 48,
+    width: 56,
+    height: 56,
     [theme.breakpoints.down("sm")]: {
-      width: 36,
-      height: 36
+      width: 48,
+      height: 48
     }
   },
 
@@ -644,117 +564,6 @@ class Home extends Component {
   );
 
   /**
-   * Show office info component
-   */
-  officeWrapper = ({ office, setFavorite }) => {
-    const [pos, setPos] = useState(0);
-
-    return (
-      <Column
-        classes={{ box: this.props.classes.recommendedOfficeWrapper }}
-        alignChildrenStart
-      >
-        <Box classes={{ box: this.props.classes.recommendedOfficeCarousel }}>
-          <div style={{ width: "100%", height: "100%" }}>
-            {/* <HeartIcon
-              className={this.props.classes.favoriteOfficeIcon}
-              onClick={setFavorite}
-            /> */}
-            <Box
-              classes={{ box: this.props.classes.favoriteOfficeIcon }}
-              onClick={setFavorite}
-              textErrorRed={office.favorite}
-              textWhite={!office.favorite}
-            >
-              {office.favorite ? (
-                <FavoriteOutlined />
-              ) : (
-                <FavoriteBorderOutlined />
-              )}
-            </Box>
-            <Carousel
-              slidesPerPage={1}
-              value={pos}
-              infinite
-              onChange={setPos}
-              autoPlay={4000}
-              stopAutoPlayOnHover
-              // centered
-              keepDirectionWhenDragging
-              // itemWidth={"100%"}
-              arrowLeft={
-                <Box
-                  classes={{ box: this.props.classes.carouselArrow }}
-                  style={{ left: 14 }}
-                >
-                  <KeyboardArrowLeft />
-                </Box>
-              }
-              arrowRight={
-                <Box
-                  classes={{ box: this.props.classes.carouselArrow }}
-                  style={{ right: 14 }}
-                >
-                  <KeyboardArrowRight />
-                </Box>
-              }
-              addArrowClickHandler
-            >
-              {office.images.map((img, index) => (
-                <React.Fragment key={index}>
-                  <Box fullWidth>
-                    <img
-                      src={office.images[0].image}
-                      alt=""
-                      className={this.props.classes.officeImage}
-                    />
-                    <Typography
-                      fontSizeXS
-                      textWhite
-                      classes={{ box: this.props.classes.officeLegend }}
-                    >
-                      {img.location}
-                    </Typography>
-                  </Box>
-                </React.Fragment>
-              ))}
-            </Carousel>
-            <Dots
-              value={pos}
-              onChange={setPos}
-              number={office.images.length}
-              className={this.props.classes.carouselDots}
-            />
-          </div>
-        </Box>
-        <Box paddingTopHalf>
-          <Typography fontSizeM textBlackGrey>
-            {office.title}
-          </Typography>
-        </Box>
-        <Row paddingTopHalf>
-          <Typography textPrimary>
-            <StarIcon
-              style={{
-                width: 12,
-                height: 12
-              }}
-            />
-          </Typography>
-          <Typography fontSizeS textMediumGrey paddingLeftHalf>
-            {office.rating}
-          </Typography>
-        </Row>
-        <Row paddingTopHalf>
-          <Typography fontSizeS textPrimary>
-            ${office.price} CAD/month
-          </Typography>
-        </Row>
-      </Column>
-    );
-  };
-
-  /**
    * Select active step for helpers
    * @param {number} activeHelpStep Index of active helper step
    */
@@ -797,7 +606,6 @@ class Home extends Component {
     const { activeHelpStep, activeLandingBlock, tessiQuery } = this.state;
     const TextStepComponent = this.textStepper;
     const ImgStepComponent = this.imgStepper;
-    const OfficeComponent = this.officeWrapper;
 
     const landingBlock = this.landingBlocks[activeLandingBlock];
 
@@ -962,7 +770,7 @@ class Home extends Component {
                   </Row>
                 )}
                 <Row paddingTop fullWidth style={{ flexWrap: "wrap" }}>
-                  {!isWidthDown("xs", width) && (
+                  {!isWidthDown("sm", width) && (
                     <>
                       <Column style={{ height: "100%", left: -6 }} relative>
                         <MobileStepper
@@ -1148,13 +956,12 @@ class Home extends Component {
                 keepDirectionWhenDragging
               >
                 {recommendedOffices.map((office, index) => (
-                  <OfficeComponent
-                    office={office}
-                    key={index}
-                    setFavorite={() => {
-                      office.favorite = !office.favorite;
-                    }}
-                  />
+                  <div style={{ position: "relative" }} key={index}>
+                    <OfficeItem
+                      office={office}
+                      setFavorite={() => (office.favorite = !office.favorite)}
+                    />
+                  </div>
                 ))}
               </Carousel>
             </div>

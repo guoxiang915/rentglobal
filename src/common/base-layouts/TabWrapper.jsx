@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { Collapse, withStyles } from "@material-ui/core";
 import { withTranslation } from "react-i18next";
 import {
@@ -40,18 +40,31 @@ const TabWrapper = props => {
     open,
     onToggleEdit,
     onToggleOpen,
+    insideOpen,
     t,
     title
   } = props;
 
+  const [openS, setOpenS] = useState(!!open);
+  const opened = insideOpen ? openS : open;
+
+  /** Toggle Open Event handler */
+  const handleToggleOpen = () => {
+    setOpenS(!openS);
+    if (onToggleOpen) {
+      onToggleOpen();
+    }
+  };
+
+  /** Renderer */
   return (
     <Column fullWidth alignChildrenStart>
-      <Row fullWidth>
-        <Box onClick={onToggleOpen} pointer alignChildrenCenter>
+      <Row fullWidth style={{ minHeight: 34 }}>
+        <Box onClick={handleToggleOpen} pointer alignChildrenCenter>
           <Typography fontSizeS textMediumGrey paddingRight>
             {title}
           </Typography>
-          {open ? (
+          {opened ? (
             <ArrowUpIcon color="secondary" style={{ width: 12, height: 7 }} />
           ) : (
             <ArrowDownIcon color="secondary" style={{ width: 12, height: 7 }} />
@@ -86,7 +99,7 @@ const TabWrapper = props => {
         )}
         {actionButton}
       </Row>
-      <Collapse in={open} className={classes.fullWidth}>
+      <Collapse in={opened} className={classes.fullWidth}>
         <Column paddingTopHalf alignChildrenStart>
           {children}
         </Column>

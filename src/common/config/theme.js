@@ -79,8 +79,8 @@ const fontWeight = {
     fontWeight: "normal"
   },
   fontWeightBold: {
-    // fontWeight: "bold"
-    fontWeight: 700,
+    fontWeight: "bold",
+    // fontWeight: 700,
     fontStyle: "normal"
   }
 };

@@ -21,7 +21,8 @@ import Dropzone from "react-dropzone";
 
 const styleSheet = theme => ({
   root: {
-    width: 192
+    width: 192,
+    height: 116
   },
 
   title: {
@@ -60,7 +61,9 @@ const styleSheet = theme => ({
 
 /**
  * Function component for uploading document
- * @param {Object} props  Props for display UploadDocument component
+ * @typeof Props
+ * @property  {ProfileDocument[]} documents  Documents information
+ * @property  {string} title  Title of box
  */
 const UploadDocument = ({
   classes,
@@ -81,8 +84,6 @@ const UploadDocument = ({
     onDownload(documents[current]._id, documents[current].fileName);
 
   const approved = documents && documents.find(item => item.approved === true);
-
-  console.log(documents);
 
   return (
     <Card variant="outlined" className={classes.root}>

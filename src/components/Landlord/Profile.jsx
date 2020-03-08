@@ -24,8 +24,13 @@ import {
   LockIcon,
   UploadIcon
 } from "../../common/base-components";
-import { UploadDocument, TabWrapper } from "../../common/base-layouts";
+import {
+  UploadDocument,
+  TabWrapper,
+  StatisticBox
+} from "../../common/base-layouts";
 import { Grid, Card, CircularProgress } from "@material-ui/core";
+import { CheckCircle } from "@material-ui/icons";
 import Dropzone from "react-dropzone";
 
 const ProgressIcon = props => (
@@ -722,14 +727,23 @@ class Profile extends Component {
               </Typography>
             </Row>
             <Row fullWidth paddingTopDouble paddingBottom>
-              <Box paddingRightHalf>
-                <Button variant="primary">{t("securityQuestion")}</Button>
+              <Box>
+                <StatisticBox
+                  title={t("securityQuestion")}
+                  statistics={[{ value: <CheckCircle />, variant: "primary" }]}
+                />
               </Box>
-              <Box paddingRightHalf>
-                <Button variant="primary">{t("twoFactorLogin")}</Button>
+              <Box paddingLeftHalf>
+                <StatisticBox
+                  title={t("twoFactorLogin")}
+                  statistics={[{ value: "-" }]}
+                />
               </Box>
-              <Box paddingRightHalf>
-                <Button variant="primary">{t("activeSessions")}</Button>
+              <Box paddingLeftHalf>
+                <StatisticBox
+                  title={t("activeSessions")}
+                  statistics={[{ value: 2 }]}
+                />
               </Box>
             </Row>
           </TabWrapper>

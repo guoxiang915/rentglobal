@@ -1,15 +1,25 @@
 import React, { Component } from "react";
 import { withStyles } from "@material-ui/core/styles";
 import { withTranslation } from "react-i18next";
+import withWidth, { isWidthDown } from "@material-ui/core/withWidth";
 import PropTypes from "prop-types";
 import {
   Row,
   Column,
   Stretch,
+  Box,
   Typography,
   Button
 } from "../../common/base-components";
-import { TabWrapper } from "../../common/base-layouts";
+import {
+  TabWrapper,
+  StatisticBox,
+  OfficeItem
+} from "../../common/base-layouts";
+import Carousel from "@brainhubeu/react-carousel";
+
+// import mock data
+import { offices } from "../../common/mock/officeMockData";
 
 const styleSheet = theme => ({
   root: {
@@ -31,7 +41,8 @@ const styleSheet = theme => ({
   },
 
   officesTabWrapper: {
-    paddingTop: theme.spacing(4)
+    paddingTop: 20,
+    paddingBottom: 56
   }
 });
 
@@ -46,14 +57,11 @@ class Offices extends Component {
   /** Navigation */
   navigate = () => {};
 
-  /** Toggling office tabs */
-  handleToggleOpen = () => {};
-
   /**
    * Renderer function
    */
   render() {
-    const { classes, t } = this.props;
+    const { width, classes, t } = this.props;
 
     return (
       <Column
@@ -76,11 +84,28 @@ class Offices extends Component {
 
         {/* requests tab */}
         <Row fullWidth classes={{ box: classes.officesTabWrapper }}>
-          <TabWrapper
-            title={t("requests")}
-            open={true}
-            onToggleOpen={this.handleToggleOpen("requests")}
-          />
+          <TabWrapper title={t("requests") + " (10)"} open={true} insideOpen>
+            <Row paddingTopDouble>
+              <Box>
+                <StatisticBox
+                  title={t("followUpRequests")}
+                  statistics={[{ value: 8, variant: "primary" }]}
+                />
+              </Box>
+              <Box paddingLeftHalf>
+                <StatisticBox
+                  title={t("moreInfoRequests")}
+                  statistics={[{ value: 1 }]}
+                />
+              </Box>
+              <Box paddingLeftHalf>
+                <StatisticBox
+                  title={t("contactRequests")}
+                  statistics={[{ value: 1 }]}
+                />
+              </Box>
+            </Row>
+          </TabWrapper>
         </Row>
 
         {/* office lists tab */}
@@ -88,7 +113,7 @@ class Offices extends Component {
           <TabWrapper
             title={t("officeLists")}
             open={true}
-            onToggleOpen={this.handleToggleOpen("officeLists")}
+            insideOpen
             actionButton={
               <Button
                 link="primary"
@@ -101,7 +126,33 @@ class Offices extends Component {
                 </Typography>
               </Button>
             }
-          />
+          >
+            <Row paddingTopDouble fullWidth>
+              <div style={{ width: "100%", height: "100%" }}>
+                <Carousel
+                  slidesPerPage={
+                    isWidthDown("xs", width)
+                      ? 1.3
+                      : isWidthDown("sm", width)
+                      ? 2
+                      : isWidthDown("md", width)
+                      ? 3
+                      : 4
+                  }
+                  keepDirectionWhenDragging
+                >
+                  {offices.map((office, index) => (
+                    <div style={{ position: "relative" }} key={index}>
+                      <OfficeItem
+                        office={office}
+                        setFavorite={() => (office.favorite = !office.favorite)}
+                      />
+                    </div>
+                  ))}
+                </Carousel>
+              </div>
+            </Row>
+          </TabWrapper>
         </Row>
 
         {/* offices need attention tab */}
@@ -109,7 +160,7 @@ class Offices extends Component {
           <TabWrapper
             title={t("needAttention")}
             open={true}
-            onToggleOpen={this.handleToggleOpen("needAttention")}
+            insideOpen
             actionButton={
               <Button
                 link="primary"
@@ -122,11 +173,44 @@ class Offices extends Component {
                 </Typography>
               </Button>
             }
-          />
+          >
+            <Row paddingTopDouble fullWidth>
+              <div style={{ width: "100%", height: "100%" }}>
+                <Carousel
+                  slidesPerPage={
+                    isWidthDown("xs", width)
+                      ? 1.3
+                      : isWidthDown("sm", width)
+                      ? 2
+                      : isWidthDown("md", width)
+                      ? 3
+                      : 4
+                  }
+                  keepDirectionWhenDragging
+                >
+                  {offices
+                    .filter(item => item.published === false)
+                    .map((office, index) => (
+                      <div style={{ position: "relative" }} key={index}>
+                        <OfficeItem
+                          office={office}
+                          errorMsg="pending"
+                          setFavorite={() =>
+                            (office.favorite = !office.favorite)
+                          }
+                        />
+                      </div>
+                    ))}
+                </Carousel>
+              </div>
+            </Row>
+          </TabWrapper>
         </Row>
       </Column>
     );
   }
 }
 
-export default withStyles(styleSheet)(withTranslation("common")(Offices));
+export default withWidth()(
+  withStyles(styleSheet)(withTranslation("common")(Offices))
+);
