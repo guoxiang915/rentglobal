@@ -1,7 +1,6 @@
 import React, { Component } from "react";
 import { withStyles } from "@material-ui/core/styles";
 import { withTranslation } from "react-i18next";
-import withWidth, { isWidthDown } from "@material-ui/core/withWidth";
 import PropTypes from "prop-types";
 import {
   Row,
@@ -35,9 +34,12 @@ const styleSheet = theme => ({
     width: "100%"
   },
 
-  buttonIcon: {
-    width: 20,
-    height: 20
+  statisticWrapper: {
+    flexWrap: "wrap",
+    [theme.breakpoints.down("sm")]: {
+      flexWrap: "nowrap",
+      overflowX: "auto"
+    }
   },
 
   officesTabWrapper: {
@@ -52,16 +54,25 @@ class Offices extends Component {
     t: PropTypes.func
   };
 
-  state = {};
+  state = { sliderCnt: 1 };
+
+  /** Element Ref to get element width */
+  carouselRef = React.createRef();
 
   /** Navigation */
   navigate = () => {};
+
+  componentDidMount() {
+    this.setState({
+      sliderCnt: this.carouselRef.current.getBoundingClientRect().width / 255
+    });
+  }
 
   /**
    * Renderer function
    */
   render() {
-    const { width, classes, t } = this.props;
+    const { classes, t } = this.props;
 
     return (
       <Column
@@ -85,7 +96,11 @@ class Offices extends Component {
         {/* requests tab */}
         <Row fullWidth classes={{ box: classes.officesTabWrapper }}>
           <TabWrapper title={t("requests") + " (10)"} open={true} insideOpen>
-            <Row paddingTopDouble>
+            <Row
+              fullWidth
+              paddingTopDouble
+              classes={{ box: classes.statisticWrapper }}
+            >
               <Box>
                 <StatisticBox
                   title={t("followUpRequests")}
@@ -111,7 +126,7 @@ class Offices extends Component {
         {/* office lists tab */}
         <Row fullWidth classes={{ box: classes.officesTabWrapper }}>
           <TabWrapper
-            title={t("officeLists")}
+            title={t("officeLists") + " (" + offices.length + ")"}
             open={true}
             insideOpen
             actionButton={
@@ -127,18 +142,13 @@ class Offices extends Component {
               </Button>
             }
           >
-            <Row paddingTopDouble fullWidth>
-              <div style={{ width: "100%", height: "100%" }}>
+            <Row paddingTopDouble fullWidth noOverflow>
+              <div
+                style={{ width: "100%", height: "100%" }}
+                ref={this.carouselRef}
+              >
                 <Carousel
-                  slidesPerPage={
-                    isWidthDown("xs", width)
-                      ? 1.3
-                      : isWidthDown("sm", width)
-                      ? 2
-                      : isWidthDown("md", width)
-                      ? 3
-                      : 4
-                  }
+                  slidesPerPage={this.state.sliderCnt}
                   keepDirectionWhenDragging
                 >
                   {offices.map((office, index) => (
@@ -158,7 +168,12 @@ class Offices extends Component {
         {/* offices need attention tab */}
         <Row fullWidth classes={{ box: classes.officesTabWrapper }}>
           <TabWrapper
-            title={t("needAttention")}
+            title={
+              t("needAttention") +
+              " (" +
+              offices.filter(item => item.published === false).length +
+              ")"
+            }
             open={true}
             insideOpen
             actionButton={
@@ -174,18 +189,10 @@ class Offices extends Component {
               </Button>
             }
           >
-            <Row paddingTopDouble fullWidth>
+            <Row paddingTopDouble fullWidth noOverflow>
               <div style={{ width: "100%", height: "100%" }}>
                 <Carousel
-                  slidesPerPage={
-                    isWidthDown("xs", width)
-                      ? 1.3
-                      : isWidthDown("sm", width)
-                      ? 2
-                      : isWidthDown("md", width)
-                      ? 3
-                      : 4
-                  }
+                  slidesPerPage={this.state.sliderCnt}
                   keepDirectionWhenDragging
                 >
                   {offices
@@ -211,6 +218,4 @@ class Offices extends Component {
   }
 }
 
-export default withWidth()(
-  withStyles(styleSheet)(withTranslation("common")(Offices))
-);
+export default withStyles(styleSheet)(withTranslation("common")(Offices));

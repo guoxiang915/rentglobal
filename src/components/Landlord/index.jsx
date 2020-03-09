@@ -10,12 +10,21 @@ import Profile from "./Profile";
 import Offices from "./Offices";
 import api from "../../api/api";
 
-const styleSheet = () => ({
+const styleSheet = theme => ({
   root: {
     maxWidth: 1024 + 44
   },
+
   sidebarWrapper: {
-    position: "sticky"
+    position: "sticky",
+    top: 0
+  },
+
+  contentWrapper: {
+    width: "calc(100% - 204px)",
+    [theme.breakpoints.down("sm")]: {
+      width: "100%"
+    }
   }
 });
 
@@ -50,7 +59,7 @@ class Landlord extends Component {
     api.get(`/file/${fileId}`, { responseType: "blob" }).then(response => {
       const url = window.URL.createObjectURL(response.data);
       const el = document.createElement("a");
-      
+
       el.href = url;
       el.download = fileName;
       el.style.display = "none";

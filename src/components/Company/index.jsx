@@ -13,8 +13,10 @@ const styleSheet = () => ({
   root: {
     maxWidth: 1024 + 44
   },
+
   sidebarWrapper: {
-    position: "sticky"
+    position: "sticky",
+    top: 0
   }
 });
 
