@@ -50,6 +50,8 @@ const styleSheet = theme => ({
 
 class Offices extends Component {
   static propTypes = {
+    navigate: PropTypes.func,
+
     classes: PropTypes.object,
     t: PropTypes.func
   };
@@ -60,7 +62,9 @@ class Offices extends Component {
   carouselRef = React.createRef();
 
   /** Navigation */
-  navigate = () => {};
+  navigate = path => () => {
+    this.props.navigate(path);
+  };
 
   componentDidMount() {
     this.setState({
@@ -84,11 +88,15 @@ class Offices extends Component {
       >
         <Row fullWidth paddingBottom>
           {/* title */}
-          <Typography fontSizeM textSecondary paddingBottom>
+          <Typography fontSizeM textSecondary>
             {t("offices")}
           </Typography>
           <Stretch />
-          <Button variant="secondary" shadow>
+          <Button
+            variant="secondary"
+            shadow
+            onClick={this.navigate("offices/add")}
+          >
             {t("addNewOffice")}
           </Button>
         </Row>
@@ -109,13 +117,13 @@ class Offices extends Component {
               </Box>
               <Box paddingLeftHalf>
                 <StatisticBox
-                  title={t("moreInfoRequests")}
+                  title={t("moreInfoReq")}
                   statistics={[{ value: 1 }]}
                 />
               </Box>
               <Box paddingLeftHalf>
                 <StatisticBox
-                  title={t("contactRequests")}
+                  title={t("contactReq")}
                   statistics={[{ value: 1 }]}
                 />
               </Box>

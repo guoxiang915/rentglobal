@@ -10,11 +10,29 @@ const API =
 /**
  * Office types
  */
-const OfficeTypes = [
+const officeTypes = [
+  "independentOffice",
+  "privateOffice",
+  "assignedWorkstation",
+  "unassignedWorkstation"
+];
+const contractTypes = [
+  "independentOffice",
+  "privateOffice",
+  "assignedWorkstation",
+  "unassignedWorkstation"
+];
+const guarantees = [
+  "independentOffice",
+  "privateOffice",
+  "assignedWorkstation",
+  "unassignedWorkstation"
+];
+const checkOutNotices = [
   "independentOffice",
   "privateOffice",
   "assignedWorkstation",
   "unassignedWorkstation"
 ];
 
-export { API, OfficeTypes };
+export { API, officeTypes, contractTypes, guarantees, checkOutNotices };

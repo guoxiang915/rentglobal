@@ -148,6 +148,7 @@ class PrivateRoute extends React.Component {
       case "dashboard":
       case "profile":
       case "offices":
+      case "offices/add":
       case "contracts":
       case "optimization":
         if (isLoggedIn) {

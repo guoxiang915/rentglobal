@@ -17,7 +17,7 @@ const styleSheet = theme => ({
   root: {
     position: "relative",
     color: theme.colors.primary.darkGrey,
-    padding: 5,
+    padding: 2,
     margin: 0,
     border: "none",
     borderRadius: 99999,
@@ -57,16 +57,22 @@ const styleSheet = theme => ({
   },
 
   label: {
-    fontSize: 16,
+    padding: "5px 28px",
+    fontSize: "13px",
+    lineHeight: "18px",
     width: "200%"
   },
 
   icon: {
-    color: theme.colors.primary.darkGrey
+    color: theme.colors.primary.darkGrey,
+    width: 28,
+    height: 28
   },
 
   checkedIcon: {
-    color: theme.colors.primary.mainColor
+    color: theme.colors.primary.mainColor,
+    width: 28,
+    height: 28
   },
 
   primaryIcon: {
@@ -103,7 +109,7 @@ const Selection = withStyles(styleSheet, { name: "Selection" })(
 
     render() {
       let {
-        classes,
+        classes: s,
         control: Control,
         icon: Icon,
         checkedIcon: CheckedIcon,
@@ -121,11 +127,10 @@ const Selection = withStyles(styleSheet, { name: "Selection" })(
               icon={
                 <Icon
                   classes={{
-                    root: clsx(
-                      classes.icon,
-                      variant === "outlined" && classes.whiteIcon,
-                      variant === "contained" && classes.whiteIcon
-                    )
+                    root: clsx(s.icon, {
+                      [s.whiteIcon]:
+                        variant === "outlined" || variant === "contained"
+                    })
                   }}
                 />
               }
@@ -133,28 +138,27 @@ const Selection = withStyles(styleSheet, { name: "Selection" })(
                 <CheckedIcon
                   classes={{
                     root: clsx(
-                      classes.checkedIcon,
-                      variant === "outlined" && classes.primaryIcon,
-                      variant === "contained" && classes.whiteIcon
+                      s.checkedIcon,
+                      variant === "outlined" && s.primaryIcon,
+                      variant === "contained" && s.whiteIcon
                     )
                   }}
                 />
               }
               checked={isChecked}
               onChange={onChange}
-              className={classes.controlStyle}
+              className={s.controlStyle}
             />
           }
           label={label}
           classes={{
-            root: clsx(
-              classes.root,
-              variant === "outlined" && classes.outlined,
-              variant === "outlined" && isChecked && classes.checkedOutlined,
-              variant === "contained" && classes.contained,
-              variant === "contained" && isChecked && classes.checkedContained
-            ),
-            label: classes.label
+            root: clsx(s.root, {
+              [s.outlined]: variant === "outlined",
+              [s.checkedOutlined]: variant === "outlined" && isChecked,
+              [s.contained]: variant === "contained",
+              [s.checkedContained]: variant === "contained" && isChecked
+            }),
+            label: s.label
           }}
           {...props}
         />
@@ -177,6 +181,7 @@ export const Checkbox = props => (
     control={MUICheckbox}
     icon={RadioButtonUnchecked}
     checkedIcon={CheckCircle}
+    style={{ textAlign: "center" }}
     {...props}
   />
 );

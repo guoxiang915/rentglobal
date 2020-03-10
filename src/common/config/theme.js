@@ -174,6 +174,12 @@ const linksBackground = {
       background: colors.primary.mainColor
     }
   },
+  borderLight: {
+    background: colors.primary.borderGrey,
+    "&:hover": {
+      background: colors.primary.mainColor
+    }
+  },
   normalLight: {
     background: colors.primary.white,
     "&:hover": {
@@ -352,12 +358,12 @@ const tooltip = {
   title: {
     ...fonts.size.fontSizeXS,
     color: colors.primary.darkGrey,
-    textAlign: "center",
+    textAlign: "center"
   },
   text: {
     ...fonts.size.fontSizeXS,
     color: colors.primary.darkGrey,
-    textAlign: "center",
+    textAlign: "center"
   }
 };
 

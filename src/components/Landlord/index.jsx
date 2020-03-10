@@ -8,6 +8,7 @@ import { AppSidebar } from "../Layout";
 import { Row, Column } from "../../common/base-components";
 import Profile from "./Profile";
 import Offices from "./Offices";
+import AddNewOffice from "./AddNewOffice";
 import api from "../../api/api";
 
 const styleSheet = theme => ({
@@ -22,6 +23,7 @@ const styleSheet = theme => ({
 
   contentWrapper: {
     width: "calc(100% - 204px)",
+    overflowX: "hidden",
     [theme.breakpoints.down("sm")]: {
       width: "100%"
     }
@@ -91,7 +93,18 @@ class Landlord extends Component {
             <Column classes={{ box: classes.contentWrapper }} fullWidth>
               <Switch>
                 <Route path="/landlord/dashboard" render={props => <></>} />
-                <Route path="/landlord/offices" render={props => <Offices />} />
+                <Route
+                  exact
+                  path="/landlord/offices"
+                  render={props => <Offices navigate={this.props.navigate} />}
+                />
+                <Route
+                  exact
+                  path="/landlord/offices/add"
+                  render={props => (
+                    <AddNewOffice navigate={this.props.navigate} />
+                  )}
+                />
                 <Route
                   path="/landlord/profile"
                   render={props => (

@@ -5,7 +5,7 @@ import { TextField as MUITextField, withStyles } from "@material-ui/core";
 
 const styleSheet = theme => ({
   root: {
-    borderRadius: 99999,
+    borderRadius: 27
   },
 
   label: {
@@ -32,6 +32,10 @@ const styleSheet = theme => ({
     padding: `14px 16px`
   },
 
+  multiline: {
+    padding: 0
+  },
+
   readOnly: {
     opacity: 0.4
   },
@@ -52,7 +56,12 @@ class TextField extends Component {
     className: PropTypes.string,
     classes: PropTypes.any.isRequired,
     errorHelper: PropTypes.bool,
-    type: PropTypes.string
+    type: PropTypes.string,
+    variant: PropTypes.string
+  };
+
+  static defaultProps = {
+    variant: "outlined"
   };
 
   render() {
@@ -68,6 +77,8 @@ class TextField extends Component {
       fullWidth,
       errorHelper,
       type,
+      variant,
+      styles,
       ...props
     } = this.props;
 
@@ -81,9 +92,10 @@ class TextField extends Component {
           startAdornment,
           endAdornment,
           classes: {
-            root: classes.root,
-            input: classes.input,
-            error: classes.inputError
+            root: clsx(classes.root, styles && styles.root),
+            input: clsx(classes.input, styles && styles.input),
+            error: clsx(classes.inputError, styles && styles.inputError),
+            multiline: clsx(classes.multiline, styles && styles.multiline)
           },
           inputProps: { readOnly: !!readOnly }
         }}
@@ -99,6 +111,7 @@ class TextField extends Component {
         className={clsx(className, {
           [classes.fullWidth]: fullWidth
         })}
+        variant={variant}
         {...props}
       />
     );
