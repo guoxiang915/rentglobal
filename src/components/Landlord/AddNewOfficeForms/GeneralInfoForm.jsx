@@ -88,7 +88,7 @@ class GeneralInfoForm extends Component {
     t: PropTypes.func
   };
 
-  state = {};
+  state = { importOfficeUrl: "" };
 
   /**
    * Update state
@@ -137,6 +137,12 @@ class GeneralInfoForm extends Component {
   };
 
   /**
+   * Import office from url
+   * @ignore
+   */
+  handleImportOffice = () => {};
+
+  /**
    * Render grid row
    */
   renderGridRow = ({ classes: s, title, required, children }) => {
@@ -170,9 +176,8 @@ class GeneralInfoForm extends Component {
    */
   render() {
     const { office, classes: s, t, width } = this.props;
+    const { importOfficeUrl } = this.state;
     const GridRow = this.renderGridRow;
-
-    console.log(office);
 
     return (
       <Column classes={{ box: s.root }} fullWidth alignChildrenStart>
@@ -186,10 +191,20 @@ class GeneralInfoForm extends Component {
           {t("importOfficeFromUrl")}
         </Typography>
         <GridRow classes={s} title={t("url")}>
-          <TextField variant="outlined" placeholder="http://" fullWidth />
+          <TextField
+            variant="outlined"
+            placeholder="http://"
+            fullWidth
+            value={importOfficeUrl}
+            onChange={this.handleChangeByEventValue("importOfficeUrl")}
+          />
         </GridRow>
         <Row fullWidth justifyChildrenEnd>
-          <Button variant="primary" className={s.importOfficeButton}>
+          <Button
+            variant="primary"
+            className={s.importOfficeButton}
+            onClick={this.handleImportOffice}
+          >
             <ArrowDownIcon style={{ width: 16, height: 18 }} />
             <Typography paddingLeft>{t("importOfficeData")}</Typography>
           </Button>
@@ -206,6 +221,7 @@ class GeneralInfoForm extends Component {
             className={s.textField350}
             value={office.title}
             onChange={this.handleChangePropsByEventValue("title")}
+            required
           />
         </GridRow>
         {/** type of office */}
@@ -217,6 +233,7 @@ class GeneralInfoForm extends Component {
             displayEmpty
             value={office.officeType || ""}
             onChange={this.handleChangePropsByEventValue("officeType")}
+            required
           />
         </GridRow>
         {/** price / monthly */}
@@ -236,6 +253,7 @@ class GeneralInfoForm extends Component {
             }
             value={office.priceMonthly}
             onChange={this.handleChangePropsByEventValue("priceMonthly")}
+            required
           />
         </GridRow>
         {/** business / other fees */}
@@ -295,6 +313,7 @@ class GeneralInfoForm extends Component {
             className={s.textField175}
             value={office.numberOfEmployees}
             onChange={this.handleChangePropsByEventValue("numberOfEmployees")}
+            required
           />
         </GridRow>
         {/** business hours */}

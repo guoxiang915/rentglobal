@@ -12,7 +12,8 @@ import {
   Typography,
   Button,
   CheckIcon,
-  CloseIcon
+  CloseIcon,
+  ConfirmDialog
 } from "../../common/base-components";
 import { KeyboardBackspace } from "@material-ui/icons";
 import { Step, Stepper, StepConnector, StepLabel } from "@material-ui/core";
@@ -134,7 +135,8 @@ class AddNewOffice extends Component {
 
   state = {
     office: {},
-    currentStep: 0
+    currentStep: 0,
+    dialog: null
   };
 
   steps = [
@@ -179,8 +181,65 @@ class AddNewOffice extends Component {
     this.setState({ office });
   };
 
-  cancelCurrentStep = () => {};
-  saveCurrentStep = () => {};
+  /** Cancel adding new office */
+  cancelAddOffice = () => {
+    this.setState({
+      dialog: (
+        <ConfirmDialog
+          variant="error"
+          text={this.props.t("confirmLeavePage")}
+          closeLabel={
+            <>
+              <CloseIcon style={{ width: 10, height: 10 }} />
+              <Typography paddingLeft>{this.props.t("cancel")}</Typography>
+            </>
+          }
+          confirmLabel={
+            <>
+              <CheckIcon style={{ width: 15, height: 12 }} />
+              <Typography paddingLeft>{this.props.t("leave")}</Typography>
+            </>
+          }
+          onConfirm={this.navigate("offices")}
+          onClose={this.closeDialog}
+        />
+      )
+    });
+  };
+  closeDialog = () => {
+    this.setState({ dialog: null });
+  };
+
+  /** Goto previous step */
+  backCurrentStep = () => {
+    if (this.state.currentStep === 0) {
+      this.cancelAddOffice();
+    } else {
+      this.setState({ currentStep: this.state.currentStep - 1 });
+    }
+  };
+
+  /** Save office info */
+  saveCurrentStep = () => {
+    switch (this.state.currentStep) {
+      case 0:
+        this.saveGeneralInfo();
+        break;
+      case 1:
+        this.saveCoverPhotos();
+        break;
+      case 2:
+        this.saveServicesAmenities();
+        break;
+      default:
+        break;
+    }
+  };
+
+  saveGeneralInfo = () => {};
+  saveCoverPhotos = () => {};
+  saveServicesAmenities = () => {};
+
   saveAndNextCurrentStep = () => {};
 
   /**
@@ -188,7 +247,7 @@ class AddNewOffice extends Component {
    */
   render() {
     const { classes: s, t, width } = this.props;
-    const { office, currentStep } = this.state;
+    const { office, currentStep, dialog } = this.state;
     const CurrentForm = this.steps[currentStep].form;
 
     return (
@@ -208,7 +267,7 @@ class AddNewOffice extends Component {
           <Button
             link="secondary"
             background="secondaryLight"
-            onClick={this.navigate("offices")}
+            onClick={this.backCurrentStep}
           >
             <KeyboardBackspace />
             <Typography paddingLeft fontSizeS>
@@ -272,49 +331,52 @@ class AddNewOffice extends Component {
         </Row>
 
         {/** forms by step */}
-        <Row fullWidth classes={{ box: clsx(s.addOfficeTabWrapper) }}>
-          <CurrentForm
-            office={office}
-            onChangeField={this.handleChangeOfficeField}
-          />
-        </Row>
+        <form style={{ width: "100%" }}>
+          <Row fullWidth classes={{ box: clsx(s.addOfficeTabWrapper) }}>
+            <CurrentForm
+              office={office}
+              onChangeField={this.handleChangeOfficeField}
+            />
+          </Row>
 
-        {/** form buttons */}
-        <Row
-          fullWidth
-          classes={{ box: clsx(s.addOfficeTabWrapper, s.formButtons) }}
-        >
-          <Button
-            link="errorRed"
-            background="secondaryLight"
-            onClick={this.cancelCurrentStep}
+          {/** form buttons */}
+          <Row
+            fullWidth
+            classes={{ box: clsx(s.addOfficeTabWrapper, s.formButtons) }}
           >
-            <CloseIcon style={{ width: 9, height: 9 }} />
-            <Typography paddingLeft fontSizeS>
-              {t("cancel")}
-            </Typography>
-          </Button>
-          <Stretch />
-          <Button
-            link="primary"
-            background="normalLight"
-            inverse
-            onClick={this.saveCurrentStep}
-          >
-            <CheckIcon style={{ width: 16, height: 16 }} />
-            <Typography paddingLeft fontSizeS>
-              {t("save")}
-            </Typography>
-          </Button>
-          <Box paddingLeft />
-          <Button
-            variant="primary"
-            onClick={this.saveAndNextCurrentStep}
-            style={{ width: 215 }}
-          >
-            <Typography fontSizeS>{t("nextStep")}</Typography>
-          </Button>
-        </Row>
+            <Button
+              link="errorRed"
+              background="secondaryLight"
+              onClick={this.cancelAddOffice}
+            >
+              <CloseIcon style={{ width: 9, height: 9 }} />
+              <Typography paddingLeft fontSizeS>
+                {t("cancel")}
+              </Typography>
+            </Button>
+            <Stretch />
+            <Button
+              link="primary"
+              background="normalLight"
+              inverse
+              onClick={this.saveCurrentStep}
+            >
+              <CheckIcon style={{ width: 16, height: 16 }} />
+              <Typography paddingLeft fontSizeS>
+                {t("save")}
+              </Typography>
+            </Button>
+            <Box paddingLeft />
+            <Button
+              variant="primary"
+              onClick={this.saveAndNextCurrentStep}
+              style={{ width: 215 }}
+            >
+              <Typography fontSizeS>{t("nextStep")}</Typography>
+            </Button>
+          </Row>
+        </form>
+        {dialog}
       </Column>
     );
   }
