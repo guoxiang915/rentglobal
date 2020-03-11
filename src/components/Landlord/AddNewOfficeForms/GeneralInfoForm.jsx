@@ -83,12 +83,13 @@ const styleSheet = theme => ({
 class GeneralInfoForm extends Component {
   static propTypes = {
     office: PropTypes.object.isRequired,
+    error: PropTypes.array,
     onChangeField: PropTypes.func.isRequired,
     classes: PropTypes.object,
     t: PropTypes.func
   };
 
-  state = { importOfficeUrl: "" };
+  state = { importOfficeUrl: "", spokenLanguage: "" };
 
   /**
    * Update state
@@ -136,6 +137,34 @@ class GeneralInfoForm extends Component {
     this.props.onChangeField(field, value);
   };
 
+  /** Change location fields */
+  handleChangeLocation = field => e => {
+    const location = { ...this.props.office.location, [field]: e.target.value };
+    this.handleChangeProps("location")(location);
+  };
+
+  /** Add/Delete spoken languages */
+  handleAddLanguage = e => {
+    if (e.key === "Enter") {
+      let languages = this.props.office.spokenLanguages;
+      const language = e.target.value;
+      if (!(languages && languages.indexOf(language) !== -1))
+        this.handleChangeProps("spokenLanguages")([
+          ...(languages || []),
+          language
+        ]);
+      this.setState({ spokenLanguage: "" });
+    }
+  };
+
+  handleDeleteLanguage = language => () => {
+    let languages = this.props.office.spokenLanguages;
+    if (languages && languages.indexOf(language) !== -1) {
+      languages.splice(languages.indexOf(language), 1);
+      this.handleChangeProps("spokenLanguages")(languages);
+    }
+  };
+
   /**
    * Import office from url
    * @ignore
@@ -171,6 +200,50 @@ class GeneralInfoForm extends Component {
     );
   };
 
+  /** Render general textfields */
+  renderFormField = ({ tag, field, options, ...props }) => {
+    const { office, error, t } = this.props;
+    const validation = error && error.find(item => item.param === field);
+    switch (tag) {
+      case "textfield":
+        return (
+          <TextField
+            variant="outlined"
+            value={office[field]}
+            onChange={this.handleChangePropsByEventValue(field)}
+            error={!!validation}
+            helperText={validation && validation.msg}
+            {...props}
+          />
+        );
+      case "numberfield":
+        return (
+          <NumberField
+            value={office[field]}
+            onChange={this.handleChangePropsByEventValue(field)}
+            error={!!validation}
+            helperText={validation && validation.msg}
+            {...props}
+          />
+        );
+      case "select":
+        return (
+          <Select
+            options={["", ...options]}
+            renderOption={item => (!item ? t("selectOne") : t(item))}
+            displayEmpty
+            value={office[field] || ""}
+            onChange={this.handleChangePropsByEventValue(field)}
+            error={!!validation}
+            helperText={validation && validation.msg}
+            {...props}
+          />
+        );
+      default:
+        return null;
+    }
+  };
+
   /**
    * Renderer function
    */
@@ -178,6 +251,7 @@ class GeneralInfoForm extends Component {
     const { office, classes: s, t, width } = this.props;
     const { importOfficeUrl } = this.state;
     const GridRow = this.renderGridRow;
+    const NormalFormField = this.renderFormField;
 
     return (
       <Column classes={{ box: s.root }} fullWidth alignChildrenStart>
@@ -215,31 +289,28 @@ class GeneralInfoForm extends Component {
 
         {/** office name */}
         <GridRow classes={s} title={t("title")} required>
-          <TextField
-            variant="outlined"
+          <NormalFormField
+            tag="textfield"
             placeholder={t("officeName")}
+            field="title"
             className={s.textField350}
-            value={office.title}
-            onChange={this.handleChangePropsByEventValue("title")}
             required
           />
         </GridRow>
         {/** type of office */}
         <GridRow classes={s} title={t("typeOfOffice")} required>
-          <Select
+          <NormalFormField
+            tag="select"
+            field="officeType"
             className={s.textField350}
-            options={["", ...officeTypes]}
-            renderOption={item => (!item ? t("selectOne") : t(item))}
-            displayEmpty
-            value={office.officeType || ""}
-            onChange={this.handleChangePropsByEventValue("officeType")}
+            options={officeTypes}
             required
           />
         </GridRow>
         {/** price / monthly */}
         <GridRow classes={s} title={t("priceOrMonthly")} required>
-          <TextField
-            variant="outlined"
+          <NormalFormField
+            tag="textfield"
             className={s.textField350}
             type="number"
             endAdornment={
@@ -251,15 +322,14 @@ class GeneralInfoForm extends Component {
                 {t("$/month")}
               </Typography>
             }
-            value={office.priceMonthly}
-            onChange={this.handleChangePropsByEventValue("priceMonthly")}
+            field="priceMonthly"
             required
           />
         </GridRow>
         {/** business / other fees */}
         <GridRow classes={s} title={t("businessOrOtherFees")}>
-          <TextField
-            variant="outlined"
+          <NormalFormField
+            tag="textfield"
             className={s.textField350}
             type="number"
             endAdornment={
@@ -271,8 +341,7 @@ class GeneralInfoForm extends Component {
                 {t("$/month")}
               </Typography>
             }
-            value={office.businessOtherFees}
-            onChange={this.handleChangePropsByEventValue("businessOtherFees")}
+            field="businessOrOtherFees"
           />
         </GridRow>
 
@@ -282,7 +351,8 @@ class GeneralInfoForm extends Component {
 
         {/** area */}
         <GridRow classes={s} title={t("area")}>
-          <TextField
+          <NormalFormField
+            tag="textfield"
             type="number"
             placeholder={t("area")}
             className={s.textField350}
@@ -295,24 +365,23 @@ class GeneralInfoForm extends Component {
                 mxm
               </Typography>
             }
-            value={office.area}
-            onChange={this.handleChangePropsByEventValue("area")}
+            field="area"
           />
         </GridRow>
         {/** roms */}
         <GridRow classes={s} title={t("rooms")}>
-          <NumberField
+          <NormalFormField
+            tag="numberfield"
             className={s.textField175}
-            value={office.rooms}
-            onChange={this.handleChangePropsByEventValue("rooms")}
+            field="rooms"
           />
         </GridRow>
         {/** number of employees */}
         <GridRow classes={s} title={t("numberOfEmployees")} required>
-          <NumberField
+          <NormalFormField
+            tag="numberfield"
             className={s.textField175}
-            value={office.numberOfEmployees}
-            onChange={this.handleChangePropsByEventValue("numberOfEmployees")}
+            field="numberOfEmployees"
             required
           />
         </GridRow>
@@ -320,7 +389,8 @@ class GeneralInfoForm extends Component {
         <GridRow classes={s} title={t("businessHours")}>
           <Grid container spacing={1}>
             <Grid item xs={6}>
-              <TextField
+              <NormalFormField
+                tag="textfield"
                 type="number"
                 endAdornment={
                   <Typography
@@ -331,14 +401,12 @@ class GeneralInfoForm extends Component {
                     {t("am")}
                   </Typography>
                 }
-                value={office.businessHoursFrom}
-                onChange={this.handleChangePropsByEventValue(
-                  "businessHoursFrom"
-                )}
+                field="businessHoursFrom"
               />
             </Grid>
             <Grid item xs={6}>
-              <TextField
+              <NormalFormField
+                tag="textfield"
                 type="number"
                 endAdornment={
                   <Typography
@@ -349,8 +417,7 @@ class GeneralInfoForm extends Component {
                     {t("pm")}
                   </Typography>
                 }
-                value={office.businessHoursTo}
-                onChange={this.handleChangePropsByEventValue("businessHoursTo")}
+                field="businessHoursTo"
               />
             </Grid>
           </Grid>
@@ -372,27 +439,28 @@ class GeneralInfoForm extends Component {
           <TextField
             placeholder={t("enterLanguage")}
             className={s.textField350}
+            onKeyPress={this.handleAddLanguage}
             value={this.state.spokenLanguage}
             onChange={this.handleChangeByEventValue("spokenLanguage")}
           />
           <Row paddingTopHalf />
           {office.spokenLanguages &&
-            office.spokenLanguages.map(language => (
-              <Chip
-                className={s.textField250Fixed}
-                label={language}
-                onDelete={this.handleDeleteLanguage(language)}
-              />
+            office.spokenLanguages.map((language, index) => (
+              <React.Fragment key={index}>
+                <Chip
+                  className={s.textField250Fixed}
+                  label={language}
+                  onDelete={this.handleDeleteLanguage(language)}
+                />
+              </React.Fragment>
             ))}
         </GridRow>
         {/** lease duration / months */}
         <GridRow classes={s} title={t("leaseDurationPerMonths")}>
-          <NumberField
+          <NormalFormField
+            tag="numberfield"
             className={s.textField175}
-            value={office.leaseDurationPerMonths}
-            onChange={this.handleChangePropsByEventValue(
-              "leaseDurationPerMonths"
-            )}
+            field="leaseDurationPerMonths"
           />
           <Row paddingTopHalf />
           <Checkbox
@@ -412,42 +480,45 @@ class GeneralInfoForm extends Component {
 
         {/** office number */}
         <GridRow classes={s} title={t("officeNumber")}>
-          <TextField
+          <NormalFormField
+            tag="textfield"
             type="number"
             placeholder={t("number")}
             className={s.textField350}
-            value={office.officeNumber}
-            onChange={this.handleChangePropsByEventValue("officeNumber")}
+            field="officeNumber"
           />
         </GridRow>
         {/** office floor */}
         <GridRow classes={s} title={t("officeFloor")}>
-          <TextField
+          <NormalFormField
+            tag="textfield"
             type="number"
             placeholder={t("floor")}
             className={s.textField350}
-            value={office.officeFloor}
-            onChange={this.handleChangePropsByEventValue("officeFloor")}
+            field="officeFloor"
           />
         </GridRow>
         {/** location */}
         <GridRow classes={s} title={t("location")} required>
-          <TextField
+          <NormalFormField
+            tag="textfield"
+            field="location"
             placeholder={t("officeAddress") + " (" + t("autocomplete") + ")"}
             fullWidth
+            required
             value={office.location && office.location.fullAddress}
-            onChange={this.handleChangePropsByEventValue("location")}
+            onChange={this.handleChangeLocation("fullAddress")}
           />
         </GridRow>
         {/** description */}
         <GridRow classes={s} title={t("description")}>
-          <TextField
+          <NormalFormField
+            tag="textfield"
             placeholder={t("officeBriefDescription")}
             fullWidth
             rows={isWidthDown("xs", width) ? 6 : 16}
             multiline
-            value={office.description}
-            onChange={this.handleChangePropsByEventValue("description")}
+            field="description"
           />
         </GridRow>
 
@@ -461,35 +532,29 @@ class GeneralInfoForm extends Component {
         <TabWrapper title={t("moreInfo")} open={true} insideOpen>
           {/** type of contract */}
           <GridRow classes={s} title={t("typeOfContract")}>
-            <Select
+            <NormalFormField
+              tag="select"
+              field="contractType"
               className={s.textField350}
-              options={["", ...contractTypes]}
-              renderOption={item => (!item ? t("selectOne") : item)}
-              displayEmpty
-              value={office.contractType || ""}
-              onChange={this.handleChangePropsByEventValue("contractType")}
+              options={contractTypes}
             />
           </GridRow>
           {/** guarantees / security deposit */}
           <GridRow classes={s} title={t("guaranteesOrSecurityDeposit")}>
-            <Select
+            <NormalFormField
+              tag="select"
               className={s.textField350}
-              options={["", ...guarantees]}
-              renderOption={item => (!item ? t("selectOne") : item)}
-              displayEmpty
-              value={office.guarantees || ""}
-              onChange={this.handleChangePropsByEventValue("guarantees")}
+              options={guarantees}
+              field="guarantees"
             />
           </GridRow>
           {/** check out notice */}
           <GridRow classes={s} title={t("checkOutNotice")}>
-            <Select
+            <NormalFormField
+              tag="select"
               className={s.textField350}
-              options={["", ...checkOutNotices]}
-              renderOption={item => (!item ? t("selectOne") : item)}
-              displayEmpty
-              value={office.checkOutNotice || ""}
-              onChange={this.handleChangePropsByEventValue("checkOutNotice")}
+              options={checkOutNotices}
+              field="checkOutNotice"
             />
           </GridRow>
         </TabWrapper>

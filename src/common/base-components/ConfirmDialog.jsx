@@ -4,7 +4,6 @@ import {
   Dialog,
   DialogTitle,
   DialogContent,
-  DialogContentText,
   DialogActions,
   withStyles
 } from "@material-ui/core";
@@ -57,8 +56,8 @@ export const ConfirmDialog = withStyles(styleSheet, { name: "ConfirmDialog" })(
         variant: PropTypes.string,
         open: PropTypes.bool,
         text: PropTypes.string.isRequired,
-        confirmLabel: PropTypes.string,
-        closeLabel: PropTypes.string,
+        confirmLabel: PropTypes.any,
+        closeLabel: PropTypes.any,
         onConfirm: PropTypes.func,
         onClose: PropTypes.func
       };
@@ -109,26 +108,25 @@ export const ConfirmDialog = withStyles(styleSheet, { name: "ConfirmDialog" })(
             open={open}
             onClose={this.handleClose}
             aria-labelledby="confirm-dialog-title"
-            aria-describedby="confirm-dialog-description"
             classes={{ paper: clsx(s.root, className) }}
           >
             <DialogTitle
               id="confirm-dialog-title"
               className={clsx(s.header, variant && s[`${variant}`])}
-            />
+            >
+              <></>
+            </DialogTitle>
             <DialogContent className={s.contentWrapper}>
-              <DialogContentText id="confirm-dialog-description">
-                <Typography
-                  fontSizeM={!isWidthDown("xs", width)}
-                  fontSizeS={isWidthDown("xs", width)}
-                  textSecondary
-                  fontWeightBold
-                  justifyChildrenCenter
-                  textCenter
-                >
-                  {text}
-                </Typography>
-              </DialogContentText>
+              <Typography
+                fontSizeM={!isWidthDown("xs", width)}
+                fontSizeS={isWidthDown("xs", width)}
+                textSecondary
+                fontWeightBold
+                justifyChildrenCenter
+                textCenter
+              >
+                {text}
+              </Typography>
             </DialogContent>
             <DialogActions className={s.footer}>
               <Row fullWidth>

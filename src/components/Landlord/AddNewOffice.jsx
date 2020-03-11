@@ -236,11 +236,15 @@ class AddNewOffice extends Component {
     }
   };
 
-  saveGeneralInfo = () => {};
+  saveGeneralInfo = () => {
+    this.props.mappedCreateOffice(this.state.office);
+  };
   saveCoverPhotos = () => {};
   saveServicesAmenities = () => {};
 
-  saveAndNextCurrentStep = () => {};
+  saveAndNextCurrentStep = () => {
+    this.saveCurrentStep();
+  };
 
   /**
    * Renderer function
@@ -248,6 +252,7 @@ class AddNewOffice extends Component {
   render() {
     const { classes: s, t, width } = this.props;
     const { office, currentStep, dialog } = this.state;
+    const { error, isLoading } = this.props.office;
     const CurrentForm = this.steps[currentStep].form;
 
     return (
@@ -335,6 +340,7 @@ class AddNewOffice extends Component {
           <Row fullWidth classes={{ box: clsx(s.addOfficeTabWrapper) }}>
             <CurrentForm
               office={office}
+              error={error}
               onChangeField={this.handleChangeOfficeField}
             />
           </Row>

@@ -8,7 +8,7 @@ import { AppSidebar } from "../Layout";
 import { Row, Column } from "../../common/base-components";
 import Profile from "./Profile";
 import Offices from "./Offices";
-import AddNewOffice from "./AddNewOffice";
+import AddNewOffice from "../../containers/Landlord/AddNewOffice";
 import api from "../../api/api";
 
 const styleSheet = theme => ({
