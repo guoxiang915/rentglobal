@@ -47,7 +47,7 @@ const styleSheet = theme => ({
 
 class TextField extends Component {
   static propTypes = {
-    value: PropTypes.string,
+    value: PropTypes.any,
     onChange: PropTypes.func,
     label: PropTypes.string,
     startAdornment: PropTypes.any,
@@ -84,7 +84,7 @@ class TextField extends Component {
 
     return (
       <MUITextField
-        value={value}
+        value={value || (type === "number" ? 0 : "")}
         onChange={onChange}
         type={type}
         label={label}

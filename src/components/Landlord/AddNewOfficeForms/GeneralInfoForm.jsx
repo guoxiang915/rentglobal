@@ -82,6 +82,8 @@ const styleSheet = theme => ({
 
 class GeneralInfoForm extends Component {
   static propTypes = {
+    office: PropTypes.object.isRequired,
+    onChangeField: PropTypes.func.isRequired,
     classes: PropTypes.object,
     t: PropTypes.func
   };
@@ -102,8 +104,36 @@ class GeneralInfoForm extends Component {
    * @member
    * @param {string} field Name of field to be updated
    */
-  handleChangeByEvent = field => value => () => {
-    this.setState({ [field]: value });
+  handleChangeByEventValue = field => e => {
+    this.setState({ [field]: e.target.value });
+  };
+
+  /**
+   * Update parent value by event
+   * @member
+   * @param {string} field Name of field to be updated
+   */
+  handleChangePropsByEvent = field => value => () => {
+    this.props.onChangeField(field, value);
+  };
+
+  /**
+   * Update parent value by event value
+   * @member
+   * @param {string} field Name of field to be updated
+   */
+  handleChangePropsByEventValue = field => e => {
+    this.props.onChangeField(field, e.target.value);
+  };
+
+  /**
+   * Update parent value by event
+   * @member
+   * @param {string} field Name of field to be updated
+   */
+  handleChangeProps = field => value => {
+    console.log(field, value);
+    this.props.onChangeField(field, value);
   };
 
   /**
@@ -139,8 +169,10 @@ class GeneralInfoForm extends Component {
    * Renderer function
    */
   render() {
-    const { classes: s, t, width } = this.props;
+    const { office, classes: s, t, width } = this.props;
     const GridRow = this.renderGridRow;
+
+    console.log(office);
 
     return (
       <Column classes={{ box: s.root }} fullWidth alignChildrenStart>
@@ -172,6 +204,8 @@ class GeneralInfoForm extends Component {
             variant="outlined"
             placeholder={t("officeName")}
             className={s.textField350}
+            value={office.title}
+            onChange={this.handleChangePropsByEventValue("title")}
           />
         </GridRow>
         {/** type of office */}
@@ -181,7 +215,8 @@ class GeneralInfoForm extends Component {
             options={["", ...officeTypes]}
             renderOption={item => (!item ? t("selectOne") : t(item))}
             displayEmpty
-            value=""
+            value={office.officeType || ""}
+            onChange={this.handleChangePropsByEventValue("officeType")}
           />
         </GridRow>
         {/** price / monthly */}
@@ -199,6 +234,8 @@ class GeneralInfoForm extends Component {
                 {t("$/month")}
               </Typography>
             }
+            value={office.priceMonthly}
+            onChange={this.handleChangePropsByEventValue("priceMonthly")}
           />
         </GridRow>
         {/** business / other fees */}
@@ -216,6 +253,8 @@ class GeneralInfoForm extends Component {
                 {t("$/month")}
               </Typography>
             }
+            value={office.businessOtherFees}
+            onChange={this.handleChangePropsByEventValue("businessOtherFees")}
           />
         </GridRow>
 
@@ -226,6 +265,7 @@ class GeneralInfoForm extends Component {
         {/** area */}
         <GridRow classes={s} title={t("area")}>
           <TextField
+            type="number"
             placeholder={t("area")}
             className={s.textField350}
             endAdornment={
@@ -237,15 +277,25 @@ class GeneralInfoForm extends Component {
                 mxx
               </Typography>
             }
+            value={office.area}
+            onChange={this.handleChangePropsByEventValue("area")}
           />
         </GridRow>
         {/** roms */}
         <GridRow classes={s} title={t("rooms")}>
-          <NumberField className={s.textField175} />
+          <NumberField
+            className={s.textField175}
+            value={office.rooms}
+            onChange={this.handleChangePropsByEventValue("rooms")}
+          />
         </GridRow>
         {/** number of employees */}
         <GridRow classes={s} title={t("numberOfEmployees")} required>
-          <NumberField className={s.textField175} />
+          <NumberField
+            className={s.textField175}
+            value={office.numberOfEmployees}
+            onChange={this.handleChangePropsByEventValue("numberOfEmployees")}
+          />
         </GridRow>
         {/** business hours */}
         <GridRow classes={s} title={t("businessHours")}>
@@ -262,6 +312,10 @@ class GeneralInfoForm extends Component {
                     {t("am")}
                   </Typography>
                 }
+                value={office.businessHoursFrom}
+                onChange={this.handleChangePropsByEventValue(
+                  "businessHoursFrom"
+                )}
               />
             </Grid>
             <Grid item xs={6}>
@@ -276,6 +330,8 @@ class GeneralInfoForm extends Component {
                     {t("pm")}
                   </Typography>
                 }
+                value={office.businessHoursTo}
+                onChange={this.handleChangePropsByEventValue("businessHoursTo")}
               />
             </Grid>
           </Grid>
@@ -286,7 +342,10 @@ class GeneralInfoForm extends Component {
             variant="outlined"
             label="24x7"
             className={s.textField250Fixed}
-            isChecked={true}
+            isChecked={!!office.fullTimeAccessibility}
+            onChange={this.handleChangePropsByEvent("fullTimeAccessibility")(
+              !office.fullTimeAccessibility
+            )}
           />
         </GridRow>
         {/** spoken language */}
@@ -294,28 +353,37 @@ class GeneralInfoForm extends Component {
           <TextField
             placeholder={t("enterLanguage")}
             className={s.textField350}
+            value={this.state.spokenLanguage}
+            onChange={this.handleChangeByEventValue("spokenLanguage")}
           />
           <Row paddingTopHalf />
-          <Chip
-            className={s.textField250Fixed}
-            label={t("english")}
-            onDelete={() => console.log("delete")}
-          />
-          <Chip
-            className={s.textField250Fixed}
-            label={t("french")}
-            onDelete={() => console.log("delete")}
-          />
+          {office.spokenLanguages &&
+            office.spokenLanguages.map(language => (
+              <Chip
+                className={s.textField250Fixed}
+                label={language}
+                onDelete={this.handleDeleteLanguage(language)}
+              />
+            ))}
         </GridRow>
         {/** lease duration / months */}
         <GridRow classes={s} title={t("leaseDurationPerMonths")}>
-          <NumberField className={s.textField175} />
+          <NumberField
+            className={s.textField175}
+            value={office.leaseDurationPerMonths}
+            onChange={this.handleChangePropsByEventValue(
+              "leaseDurationPerMonths"
+            )}
+          />
           <Row paddingTopHalf />
           <Checkbox
             variant="outlined"
             label={t("undefineDuration")}
             className={s.textField250Fixed}
-            isChecked={true}
+            isChecked={office.leaseDurationPerMonths === null}
+            onChange={this.handleChangePropsByEvent("leaseDurationPerMonths")(
+              null
+            )}
           />
         </GridRow>
 
@@ -329,6 +397,8 @@ class GeneralInfoForm extends Component {
             type="number"
             placeholder={t("number")}
             className={s.textField350}
+            value={office.officeNumber}
+            onChange={this.handleChangePropsByEventValue("officeNumber")}
           />
         </GridRow>
         {/** office floor */}
@@ -337,6 +407,8 @@ class GeneralInfoForm extends Component {
             type="number"
             placeholder={t("floor")}
             className={s.textField350}
+            value={office.officeFloor}
+            onChange={this.handleChangePropsByEventValue("officeFloor")}
           />
         </GridRow>
         {/** location */}
@@ -344,6 +416,8 @@ class GeneralInfoForm extends Component {
           <TextField
             placeholder={t("officeAddress") + " (" + t("autocomplete") + ")"}
             fullWidth
+            value={office.location && office.location.fullAddress}
+            onChange={this.handleChangePropsByEventValue("location")}
           />
         </GridRow>
         {/** description */}
@@ -353,6 +427,8 @@ class GeneralInfoForm extends Component {
             fullWidth
             rows={isWidthDown("xs", width) ? 6 : 16}
             multiline
+            value={office.description}
+            onChange={this.handleChangePropsByEventValue("description")}
           />
         </GridRow>
 
@@ -369,9 +445,10 @@ class GeneralInfoForm extends Component {
             <Select
               className={s.textField350}
               options={["", ...contractTypes]}
-              renderOption={item => (!item ? t("selectOne") : t(item))}
+              renderOption={item => (!item ? t("selectOne") : item)}
               displayEmpty
-              value=""
+              value={office.contractType || ""}
+              onChange={this.handleChangePropsByEventValue("contractType")}
             />
           </GridRow>
           {/** guarantees / security deposit */}
@@ -379,9 +456,10 @@ class GeneralInfoForm extends Component {
             <Select
               className={s.textField350}
               options={["", ...guarantees]}
-              renderOption={item => (!item ? t("selectOne") : t(item))}
+              renderOption={item => (!item ? t("selectOne") : item)}
               displayEmpty
-              value=""
+              value={office.guarantees || ""}
+              onChange={this.handleChangePropsByEventValue("guarantees")}
             />
           </GridRow>
           {/** check out notice */}
@@ -389,9 +467,10 @@ class GeneralInfoForm extends Component {
             <Select
               className={s.textField350}
               options={["", ...checkOutNotices]}
-              renderOption={item => (!item ? t("selectOne") : t(item))}
+              renderOption={item => (!item ? t("selectOne") : item)}
               displayEmpty
-              value=""
+              value={office.checkOutNotice || ""}
+              onChange={this.handleChangePropsByEventValue("checkOutNotice")}
             />
           </GridRow>
         </TabWrapper>

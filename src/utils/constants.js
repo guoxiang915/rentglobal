@@ -17,22 +17,12 @@ const officeTypes = [
   "unassignedWorkstation"
 ];
 const contractTypes = [
-  "independentOffice",
-  "privateOffice",
-  "assignedWorkstation",
-  "unassignedWorkstation"
+  "3 months Lease",
+  "6 months Lease",
+  "9 months Lease",
+  "Sublease"
 ];
-const guarantees = [
-  "independentOffice",
-  "privateOffice",
-  "assignedWorkstation",
-  "unassignedWorkstation"
-];
-const checkOutNotices = [
-  "independentOffice",
-  "privateOffice",
-  "assignedWorkstation",
-  "unassignedWorkstation"
-];
+const guarantees = ["1 month", "2 month", "3 month"];
+const checkOutNotices = ["1 month", "2 month", "3 month"];
 
 export { API, officeTypes, contractTypes, guarantees, checkOutNotices };

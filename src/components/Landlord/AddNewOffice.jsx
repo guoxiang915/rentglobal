@@ -133,6 +133,7 @@ class AddNewOffice extends Component {
   };
 
   state = {
+    office: {},
     currentStep: 0
   };
 
@@ -169,6 +170,15 @@ class AddNewOffice extends Component {
     this.setState({ [field]: value });
   };
 
+  /**
+   * Update office info
+   * @member
+   */
+  handleChangeOfficeField = (field, value) => {
+    const office = { ...this.state.office, [field]: value };
+    this.setState({ office });
+  };
+
   cancelCurrentStep = () => {};
   saveCurrentStep = () => {};
   saveAndNextCurrentStep = () => {};
@@ -178,7 +188,7 @@ class AddNewOffice extends Component {
    */
   render() {
     const { classes: s, t, width } = this.props;
-    const { currentStep } = this.state;
+    const { office, currentStep } = this.state;
     const CurrentForm = this.steps[currentStep].form;
 
     return (
@@ -263,7 +273,10 @@ class AddNewOffice extends Component {
 
         {/** forms by step */}
         <Row fullWidth classes={{ box: clsx(s.addOfficeTabWrapper) }}>
-          <CurrentForm />
+          <CurrentForm
+            office={office}
+            onChangeField={this.handleChangeOfficeField}
+          />
         </Row>
 
         {/** form buttons */}

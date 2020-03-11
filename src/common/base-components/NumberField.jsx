@@ -1,10 +1,7 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import clsx from "clsx";
-import {
-  Icon,
-  withStyles
-} from "@material-ui/core";
+import { Icon, withStyles } from "@material-ui/core";
 import { TextField, Button } from ".";
 
 const styleSheet = theme => ({
@@ -13,8 +10,8 @@ const styleSheet = theme => ({
   },
 
   input: {
-    textAlign: 'center',
-    margin: "0 20px",
+    textAlign: "center",
+    margin: "0 20px"
   },
 
   button: {
@@ -26,7 +23,7 @@ const styleSheet = theme => ({
 
 class NumberField extends Component {
   static propTypes = {
-    value: PropTypes.string,
+    value: PropTypes.any,
     onChange: PropTypes.func,
     classes: PropTypes.any.isRequired
   };
@@ -37,13 +34,17 @@ class NumberField extends Component {
 
   handleMinus = () => {
     if (this.props.onChange) {
-      this.props.onChange(this.props.value - 1);
+      this.props.onChange({
+        target: { value: (this.props.value ? Number(this.props.value) : 0) - 1 }
+      });
     }
   };
 
   handlePlus = () => {
     if (this.props.onChange) {
-      this.props.onChange(this.props.value + 1);
+      this.props.onChange({
+        target: { value: (this.props.value ? Number(this.props.value) : 0) + 1 }
+      });
     }
   };
 
@@ -52,11 +53,11 @@ class NumberField extends Component {
 
     return (
       <TextField
-      type="number"
+        type="number"
         value={value}
         onChange={onChange}
         className={clsx(className, classes.root)}
-        styles={{input: classes.input}}
+        styles={{ input: classes.input }}
         startAdornment={
           <Button
             variant="icon"
