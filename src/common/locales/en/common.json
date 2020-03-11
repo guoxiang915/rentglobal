@@ -242,5 +242,7 @@
     "privateOffice": "Private office",
     "assignedWorkstation": "Assigned workstation",
     "unassignedWorkstation": "Unassigned workstation",
-    "back": "Back"
+    "back": "Back",
+    "confirmLeavePage": "Are you sure you want to leave this page?",
+    "leave": "Leave"
 }

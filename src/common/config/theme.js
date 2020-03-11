@@ -153,6 +153,12 @@ const links = {
       color: colors.primary.errorRed
     }
   },
+  errorRedNormal: {
+    color: colors.primary.errorRed,
+    "&:hover": {
+      color: colors.primary.errorRed
+    }
+  },
   inverse: {
     "&:hover": {
       color: colors.primary.white
