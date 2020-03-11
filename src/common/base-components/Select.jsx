@@ -9,7 +9,7 @@ import {
 } from "@material-ui/core";
 import { ArrowDownIcon } from ".";
 
-export const selectStylesheet = theme => ({
+export const styleSheet = theme => ({
   root: {
     borderRadius: 99999
   },
@@ -42,7 +42,12 @@ export const selectStylesheet = theme => ({
 
   input: {
     ...theme.typography.primaryBody,
-    padding: `14px 16px`
+    padding: `14px 16px`,
+    borderRadius: 99999,
+    "&:focus": {
+      borderRadius: 99999,
+      background: "inherit"
+    }
   },
 
   readOnly: {
@@ -80,7 +85,7 @@ export const selectStylesheet = theme => ({
   }
 });
 
-export const Select = withStyles(selectStylesheet, { name: "Select" })(
+export const Select = withStyles(styleSheet, { name: "Select" })(
   class Select extends PureComponent {
     static propTypes = {
       options: PropTypes.array,

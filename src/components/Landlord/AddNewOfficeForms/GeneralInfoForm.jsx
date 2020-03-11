@@ -274,7 +274,7 @@ class GeneralInfoForm extends Component {
                 textMediumGrey
                 style={{ whiteSpace: "nowrap" }}
               >
-                mxx
+                mxm
               </Typography>
             }
             value={office.area}
