@@ -280,6 +280,14 @@ const linksOutline = {
       borderColor: colors.primary.grey
     }
   },
+  errorRedNormal: {
+    borderWidth: 1,
+    borderStyle: "solid",
+    borderColor: colors.primary.errorRed,
+    "&:hover": {
+      borderColor: colors.primary.errorRed
+    }
+  },
   errorRed: {
     borderWidth: 1,
     borderStyle: "solid",

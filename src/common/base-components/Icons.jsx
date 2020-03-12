@@ -2,6 +2,7 @@ import React from "react";
 import { SvgIcon as MUISvgIcon, withStyles } from "@material-ui/core";
 import clsx from "clsx";
 
+import { CircularProgress } from "@material-ui/core";
 import { ReactComponent as AddressSvg } from "../../assets/icon/icon_address_gray.svg";
 import { ReactComponent as AlarmSvg } from "../../assets/icon/icon_alarm_graydark.svg";
 import { ReactComponent as ArrowDownSvg } from "../../assets/icon/icon_arrow_down_graydark.svg";
@@ -105,7 +106,9 @@ export const StarIcon = props => <SvgIcon src={StarSvg} {...props} />;
 export const TruckIcon = props => <SvgIcon src={TruckSvg} {...props} />;
 export const HomeIcon = props => <SvgIcon src={HomeSvg} {...props} />;
 export const TessiIcon = props => <SvgIcon src={TessiSvg} {...props} />;
-export const TessiColorIcon = props => <SvgIcon src={TessiColorSvg} {...props} />;
+export const TessiColorIcon = props => (
+  <SvgIcon src={TessiColorSvg} {...props} />
+);
 export const UserIcon = props => <SvgIcon src={UserSvg} {...props} />;
 export const HelpIcon = props => <SvgIcon src={HelpSvg} {...props} />;
 export const EditDocumentIcon = props => (
@@ -147,3 +150,7 @@ export const BuildingsIcon = props => (
   <SvgIcon src={LandlordRegisterSvg} {...props} />
 );
 export const UploadIcon = props => <SvgIcon src={UploadSvg} {...props} />;
+
+export const ProgressIcon = props => (
+  <CircularProgress color="primary" size={36} {...props} />
+);

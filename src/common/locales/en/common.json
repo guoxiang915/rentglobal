@@ -206,8 +206,10 @@
     "guaranteesOrSecurityDeposit": "Guarantees / Security deposit",
     "checkOutNotice": "Check out notice",
     "dragAndDropOfficePicture": "Drag & Drop Office Picture Here",
+    "dragAndDropOfficePictureToRemove": "Drag & Drop Office Picture Here to Remove",
     "selectFromDevice": "Select from your device",
     "removeSelectedPicture": "Remove Selected Picture",
+    "deselect": "Deselect",
     "enterCustomFeature": "Enter custom feature",
     "featureName": "Feature name",
     "showOnMap": "Show on map",
@@ -241,12 +243,13 @@
     "reUpload": "Upload again",
 
     "allOfficesList": "All offices list",
-    "allUnpublish": "All unpublish",
+    "allUnpublish": "All unpublished",
     "independentOffice": "Independent office",
     "privateOffice": "Private office",
     "assignedWorkstation": "Assigned workstation",
     "unassignedWorkstation": "Unassigned workstation",
     "back": "Back",
     "confirmLeavePage": "Are you sure you want to leave this page?",
-    "leave": "Leave"
+    "leave": "Leave",
+    "coverPicture": "Cover Picture"
 }

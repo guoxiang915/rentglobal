@@ -18,20 +18,17 @@ import {
   CloseIcon,
   CheckIcon,
   LockIcon,
-  UploadIcon
+  UploadIcon,
+  ProgressIcon
 } from "../../common/base-components";
 import {
   UploadDocument,
   TabWrapper,
   StatisticBox
 } from "../../common/base-layouts";
-import { Grid, Card, CircularProgress } from "@material-ui/core";
+import { Grid, Card } from "@material-ui/core";
 import { CheckCircle } from "@material-ui/icons";
 import Dropzone from "react-dropzone";
-
-const ProgressIcon = props => (
-  <CircularProgress color="primary" size={36} {...props} />
-);
 
 const SaveButtons = ({ isUpdating, onSave, onCancel, disabled, t }) => (
   <>

@@ -73,6 +73,21 @@ class Landlord extends Component {
     });
   };
 
+  /** Call api to create office */
+  createOffice = office => {
+    return api.post("/offices/create", office);
+  };
+
+  /** Call api to save cover-photos */
+  createOfficeCoverPhotos = coverPhotos => {
+    return api.post("/offices/create/cover-photos", coverPhotos);
+  };
+
+  /** Call api to save services & amenities of office */
+  createOfficeServicesAmenities = servicesAmenities => {
+    return api.post("/offices/create/services-amenities", servicesAmenities);
+  };
+
   render() {
     const { classes } = this.props;
     const { user } = this.props.auth;
@@ -102,7 +117,15 @@ class Landlord extends Component {
                   exact
                   path="/landlord/offices/add"
                   render={props => (
-                    <AddNewOffice navigate={this.props.navigate} />
+                    <AddNewOffice
+                      navigate={this.props.navigate}
+                      uploadFile={this.uploadFile}
+                      createOffice={this.createOffice}
+                      createOfficeCoverPhotos={this.createOfficeCoverPhotos}
+                      createOfficeServicesAmenities={
+                        this.createOfficeServicesAmenities
+                      }
+                    />
                   )}
                 />
                 <Route

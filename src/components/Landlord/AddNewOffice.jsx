@@ -129,12 +129,18 @@ const StepperIcon = ({ classes, icon, active, completed }) => (
 class AddNewOffice extends Component {
   static propTypes = {
     navigate: PropTypes.func,
+    uploadFile: PropTypes.func,
+    createOffice: PropTypes.func,
+    createOfficeCoverPhotos: PropTypes.func,
+    createOfficeServicesAmenities: PropTypes.func,
     classes: PropTypes.object,
     t: PropTypes.func
   };
 
   state = {
     office: {},
+    error: null,
+    isLoading: false,
     currentStep: 0,
     dialog: null
   };
@@ -221,29 +227,43 @@ class AddNewOffice extends Component {
 
   /** Save office info */
   saveCurrentStep = () => {
+    this.setState({ isLoading: false });
+    let result = Promise.reject(null);
     switch (this.state.currentStep) {
       case 0:
-        this.saveGeneralInfo();
+        result = this.props.createOffice(this.state.office);
         break;
       case 1:
-        this.saveCoverPhotos();
+        if (this.state.office)
+          result = this.props.createOfficeCoverPhotos({
+            office_id: this.state.office.id,
+            cover_photos: this.state.office.coverPhotos
+          });
         break;
       case 2:
-        this.saveServicesAmenities();
+        if (this.state.office)
+          result = this.props.createOfficeServicesAmenities({
+            office_id: this.state.office.id,
+            services_amenities: this.state.office.servicesAndAmenities
+          });
         break;
       default:
         break;
     }
+    console.log(result);
+    return result.then(
+      response =>
+        this.setState({ isLoading: false, office: response.data, error: null }),
+      error =>
+        this.setState({ isLoading: false, error: error.response.data.msg })
+    );
   };
 
-  saveGeneralInfo = () => {
-    this.props.mappedCreateOffice(this.state.office);
-  };
-  saveCoverPhotos = () => {};
-  saveServicesAmenities = () => {};
-
+  /** Save and next current step */
   saveAndNextCurrentStep = () => {
-    this.saveCurrentStep();
+    this.saveCurrentStep().then(() => {
+      this.setState({ currentStep: this.state.currentStep + 1 });
+    });
   };
 
   /**
@@ -251,8 +271,7 @@ class AddNewOffice extends Component {
    */
   render() {
     const { classes: s, t, width } = this.props;
-    const { office, currentStep, dialog } = this.state;
-    const { error, isLoading } = this.props.office;
+    const { office, error, isLoading, currentStep, dialog } = this.state;
     const CurrentForm = this.steps[currentStep].form;
 
     return (
@@ -342,6 +361,7 @@ class AddNewOffice extends Component {
               office={office}
               error={error}
               onChangeField={this.handleChangeOfficeField}
+              uploadFile={this.props.uploadFile}
             />
           </Row>
 
@@ -366,6 +386,7 @@ class AddNewOffice extends Component {
               background="normalLight"
               inverse
               onClick={this.saveCurrentStep}
+              loading={isLoading}
             >
               <CheckIcon style={{ width: 16, height: 16 }} />
               <Typography paddingLeft fontSizeS>
