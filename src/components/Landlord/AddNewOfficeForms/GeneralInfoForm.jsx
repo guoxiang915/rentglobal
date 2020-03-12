@@ -73,7 +73,7 @@ const styleSheet = theme => ({
   },
 
   textField250Fixed: {
-    width: 250,
+    width: 249,
     marginRight: theme.spacing(1.5),
     marginTop: theme.spacing(0.5),
     marginBottom: theme.spacing(0.5)

@@ -141,7 +141,7 @@ class AddNewOffice extends Component {
     office: {},
     error: null,
     isLoading: false,
-    currentStep: 0,
+    currentStep: 2,
     dialog: null
   };
 
@@ -250,7 +250,6 @@ class AddNewOffice extends Component {
       default:
         break;
     }
-    console.log(result);
     return result.then(
       response => {
         this.setState({ isLoading: false, office: response.data, error: null });
@@ -361,7 +360,8 @@ class AddNewOffice extends Component {
         </Row>
 
         {/** forms by step */}
-        <form style={{ width: "100%" }}>
+        {/* <form style={{ width: "100%" }}> */}
+        <>
           <Row fullWidth classes={{ box: clsx(s.addOfficeTabWrapper) }}>
             <CurrentForm
               office={office}
@@ -408,7 +408,7 @@ class AddNewOffice extends Component {
               <Typography fontSizeS>{t("nextStep")}</Typography>
             </Button>
           </Row>
-        </form>
+        </>
         {dialog}
       </Column>
     );
