@@ -236,14 +236,14 @@ class AddNewOffice extends Component {
       case 1:
         if (this.state.office)
           result = this.props.createOfficeCoverPhotos({
-            office_id: this.state.office.id,
+            officeId: this.state.office._id,
             cover_photos: this.state.office.coverPhotos
           });
         break;
       case 2:
         if (this.state.office)
           result = this.props.createOfficeServicesAmenities({
-            office_id: this.state.office.id,
+            officeId: this.state.office._id,
             services_amenities: this.state.office.servicesAndAmenities
           });
         break;
@@ -252,10 +252,14 @@ class AddNewOffice extends Component {
     }
     console.log(result);
     return result.then(
-      response =>
-        this.setState({ isLoading: false, office: response.data, error: null }),
-      error =>
-        this.setState({ isLoading: false, error: error.response.data.msg })
+      response => {
+        this.setState({ isLoading: false, office: response.data, error: null });
+        return Promise.resolve(response);
+      },
+      error => {
+        this.setState({ isLoading: false, error: error.response.data.msg });
+        return Promise.reject(error);
+      }
     );
   };
 
@@ -273,6 +277,8 @@ class AddNewOffice extends Component {
     const { classes: s, t, width } = this.props;
     const { office, error, isLoading, currentStep, dialog } = this.state;
     const CurrentForm = this.steps[currentStep].form;
+
+    console.log(office);
 
     return (
       <Column
