@@ -70,14 +70,14 @@ class TextField extends Component {
       onChange,
       label,
       readOnly,
-      className,
-      classes,
       startAdornment,
       endAdornment,
       fullWidth,
       errorHelper,
       type,
       variant,
+      classes: s,
+      className,
       styles,
       ...props
     } = this.props;
@@ -92,24 +92,24 @@ class TextField extends Component {
           startAdornment,
           endAdornment,
           classes: {
-            root: clsx(classes.root, styles && styles.root),
-            input: clsx(classes.input, styles && styles.input),
-            error: clsx(classes.inputError, styles && styles.inputError),
-            multiline: clsx(classes.multiline, styles && styles.multiline)
+            root: clsx(s.root, styles && styles.root),
+            input: clsx(s.input, styles && styles.input),
+            error: clsx(s.inputError, styles && styles.inputError),
+            multiline: clsx(s.multiline, styles && styles.multiline)
           },
           inputProps: { readOnly: !!readOnly }
         }}
         InputLabelProps={{
-          FormLabelClasses: { asterisk: classes.asterisk, root: classes.label },
+          FormLabelClasses: { asterisk: s.asterisk, root: s.label },
           error: false,
           focused: false
         }}
         FormHelperTextProps={{
-          classes: { error: classes.errorMessage },
+          classes: { error: s.errorMessage },
           error: errorHelper
         }}
         className={clsx(className, {
-          [classes.fullWidth]: fullWidth
+          [s.fullWidth]: fullWidth
         })}
         variant={variant}
         {...props}

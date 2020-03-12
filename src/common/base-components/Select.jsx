@@ -5,7 +5,9 @@ import {
   withStyles,
   MenuItem,
   Typography,
-  Select as MUISelect
+  Select as MUISelect,
+  FormControl as MUIFormControl,
+  FormHelperText as MUIFormHelperText
 } from "@material-ui/core";
 import { ArrowDownIcon } from ".";
 
@@ -31,7 +33,8 @@ export const styleSheet = theme => ({
   errorMessage: {
     ...theme.typography.errorMessage,
     color: `${theme.colors.primary.errorRed} !important`,
-    textAlign: "right"
+    textAlign: "right",
+    margin: "8px 14px 0px"
   },
 
   inputError: {
@@ -104,14 +107,13 @@ export const Select = withStyles(styleSheet, { name: "Select" })(
       disabled: PropTypes.bool,
       native: PropTypes.bool,
       white: PropTypes.bool,
+      errorHelper: PropTypes.bool,
       tooltip: PropTypes.any,
       classes: PropTypes.object.isRequired
     };
 
     static defaultProps = {
       variant: "outlined",
-      // shrink: true,
-      // focused: false,
       displayEmpty: true,
       getKey: option => option || "",
       renderOption: option => option
@@ -132,53 +134,62 @@ export const Select = withStyles(styleSheet, { name: "Select" })(
         renderOption,
         displayEmpty,
         native,
+        errorHelper,
+        variant,
         classes: s,
         className,
-        variant,
+        helperText,
         ...props
       } = this.props;
 
       return (
-        <MUISelect
-          variant={variant}
-          value={native ? getKey(value) : value}
-          onChange={this.handleChange}
-          displayEmpty={displayEmpty}
-          native={native}
-          className={clsx(className, s.root)}
-          classes={{
-            root: s.input,
-            icon: s.icon
-          }}
-          IconComponent={props => (
-            <div {...props}>
-              <ArrowDownIcon
-                style={{ width: 12, height: 8 }}
-                color="secondary"
-              />
-            </div>
-          )}
-          renderValue={value => renderOption(value)}
-          {...props}
-        >
-          {native && displayEmpty && (
-            <option key={0} value={""}>
-              &nbsp;
-            </option>
-          )}
-          {options &&
-            options.map((option, i) =>
-              native ? (
-                <option key={i + 1} value={getKey(option)}>
-                  {renderOption(option)}
-                </option>
-              ) : (
-                <MenuItem key={i} value={getKey(option)}>
-                  <Typography>{renderOption(option)}</Typography>
-                </MenuItem>
-              )
+        <MUIFormControl className={className}>
+          <MUISelect
+            variant={variant}
+            value={native ? getKey(value) : value}
+            onChange={this.handleChange}
+            displayEmpty={displayEmpty}
+            native={native}
+            className={clsx(className, s.root)}
+            classes={{
+              root: s.input,
+              icon: s.icon
+            }}
+            IconComponent={props => (
+              <div {...props}>
+                <ArrowDownIcon
+                  style={{ width: 12, height: 8 }}
+                  color="secondary"
+                />
+              </div>
             )}
-        </MUISelect>
+            renderValue={value => renderOption(value)}
+            {...props}
+          >
+            {native && displayEmpty && (
+              <option key={0} value={""}>
+                &nbsp;
+              </option>
+            )}
+            {options &&
+              options.map((option, i) =>
+                native ? (
+                  <option key={i + 1} value={getKey(option)}>
+                    {renderOption(option)}
+                  </option>
+                ) : (
+                  <MenuItem key={i} value={getKey(option)}>
+                    <Typography>{renderOption(option)}</Typography>
+                  </MenuItem>
+                )
+              )}
+          </MUISelect>
+          {helperText && (
+            <MUIFormHelperText className={s.errorMessage}>
+              {helperText}
+            </MUIFormHelperText>
+          )}
+        </MUIFormControl>
       );
     }
   }
