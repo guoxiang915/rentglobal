@@ -24,6 +24,7 @@ import {
   Divider,
   HomeIcon,
   UsersIcon,
+  BuildingsIcon,
   PowerIcon,
   ArrowRightAltIcon,
   EmailIcon,
@@ -427,7 +428,6 @@ class AppHeader extends Component {
         {user.landlordProfile && user.companyProfile && (
           <NavItem
             onClick={onToggleRole}
-            icon={UsersIcon}
             icon={role === "company" ? UsersIcon : BuildingsIcon}
             text={role === "company" ? t("companyPanel") : t("landlordPanel")}
             classes={classes}

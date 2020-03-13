@@ -66,6 +66,7 @@ const styleSheet = theme => ({
   },
 
   menuItem: {
+    position: "relative",
     width: 150,
     overflow: "hidden",
     paddingTop: 10,
@@ -79,9 +80,19 @@ const styleSheet = theme => ({
   },
 
   activeItem: {
-    borderRight: `4px solid ${theme.colors.primary.mainColor}`,
-    [theme.breakpoints.down("sm")]: {
-      borderColor: theme.colors.primary.white
+    "&:after": {
+      position: "absolute",
+      right: 0,
+      top: 0,
+      width: 4,
+      height: "100%",
+      content: "' '",
+      borderRadius: 2,
+      border: "none",
+      background: theme.colors.primary.mainColor,
+      [theme.breakpoints.down("sm")]: {
+        background: theme.colors.primary.white
+      }
     }
   },
 
@@ -93,7 +104,7 @@ const styleSheet = theme => ({
     [theme.breakpoints.down("sm")]: {
       marginRight: 32,
       opacity: 0.15,
-      color: theme.colors.primary.darkGrey,
+      color: theme.colors.primary.darkGrey
       // stroke: theme.colors.primary.darkGrey
     }
   },
@@ -157,13 +168,13 @@ class AppSidebar extends Component {
 
   menus = {
     "": [
-      { text: "home", link: "", icon: HomeIcon },
+      { text: "home", link: "", icon: HomeIcon, exact: true },
       { text: "chatWithTessi", link: "chat", icon: TessiIcon },
       { text: "login", link: "login", icon: UserIcon },
       { text: "register", link: "register", icon: EditDocumentIcon }
     ],
     landlord: [
-      { text: "home", link: "", icon: HomeIcon },
+      { text: "home", link: "", icon: HomeIcon, exact: true },
       { text: "dashboard", link: "dashboard", icon: DashboardIcon },
       { text: "offices", link: "offices", icon: OfficeIcon },
       { text: "contracts", link: "contracts", icon: NoteIcon },
@@ -179,7 +190,7 @@ class AppSidebar extends Component {
       { text: "setting", link: "settings", icon: SettingIcon }
     ],
     company: [
-      { text: "home", link: "", icon: HomeIcon },
+      { text: "home", link: "", icon: HomeIcon, exact: true },
       { text: "dashboard", link: "dashboard", icon: DashboardIcon },
       { text: "offices", link: "offices", icon: OfficeIcon },
       { text: "contracts", link: "contracts", icon: NoteIcon },
@@ -256,6 +267,7 @@ class AppSidebar extends Component {
     }
   );
 
+  /** Navigate pages */
   navigate = path => {
     this.props.navigate(path);
   };
@@ -264,7 +276,7 @@ class AppSidebar extends Component {
     const { role, width, classes, t } = this.props;
     const MenuItem = this.renderMenuItem;
 
-    // get active item
+    /** Get active item */
     const activeItem = this.menus[role].find(item => {
       let link = `${role && "/" + role}/${item.link}`;
       if (item.link === "login") {
@@ -272,14 +284,16 @@ class AppSidebar extends Component {
       } else if (item.link === "register") {
         link = "/auth/register";
       }
-      return this.props.location.pathname === link;
+      return item.exact
+        ? this.props.location.pathname === link
+        : this.props.location.pathname.startsWith(link);
     });
 
     return (
       <div className={classes.sidebarWrapper}>
         <div className={classes.sidebarContent}>
           <Column alignChildrenEnd classes={{ box: classes.sidebarBody }}>
-            {/* show main menus */}
+            {/** Show main menus */}
             {this.menus[role].map(item => (
               <MenuItem
                 active={activeItem === item}
