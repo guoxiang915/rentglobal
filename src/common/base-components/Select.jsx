@@ -11,7 +11,7 @@ import {
 } from "@material-ui/core";
 import { ArrowDownIcon } from ".";
 
-export const styleSheet = theme => ({
+const styleSheet = theme => ({
   root: {
     borderRadius: 99999
   },
