@@ -13,9 +13,9 @@ import {
   Divider,
   TextField,
   Chip
-} from "../../../common/base-components";
-import { TabWrapper } from "../../../common/base-layouts";
-import { servicesCategories } from "../../../utils/constants";
+} from "../../../../common/base-components";
+import { TabWrapper } from "../../../../common/base-layouts";
+import { servicesCategories } from "../../../../utils/constants";
 
 const styleSheet = theme => ({
   root: {},

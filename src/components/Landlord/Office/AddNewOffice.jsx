@@ -13,8 +13,11 @@ import {
   Button,
   CheckIcon,
   CloseIcon,
+  EyeIcon,
+  DeleteIcon,
+  EditIcon,
   ConfirmDialog
-} from "../../common/base-components";
+} from "../../../common/base-components";
 import { KeyboardBackspace } from "@material-ui/icons";
 import { Step, Stepper, StepConnector, StepLabel } from "@material-ui/core";
 import {
@@ -22,6 +25,7 @@ import {
   PictureGalleryForm,
   ServicesAmenitiesForm
 } from "./AddNewOfficeForms";
+import OfficeDetailForm from "./OfficeDetailForm";
 
 const styleSheet = theme => ({
   root: {
@@ -138,7 +142,12 @@ class AddNewOffice extends Component {
   };
 
   state = {
-    office: {},
+    office: {
+      coverPhotos: [{ bucketPath: "" }],
+      spokenLanguages: ["English"],
+      location: { fullAddress: "ssx", streetName: "Street N xxx" },
+      servicesAndAmenities: { category2: ["airConditioner"] }
+    },
     error: null,
     isLoading: false,
     currentStep: 0,
@@ -148,7 +157,10 @@ class AddNewOffice extends Component {
   steps = [
     { title: this.props.t("generalInfo"), form: GeneralInfoForm },
     { title: this.props.t("pictureGallery"), form: PictureGalleryForm },
-    { title: this.props.t("servicesAndAmenities"), form: ServicesAmenitiesForm }
+    {
+      title: this.props.t("servicesAndAmenities"),
+      form: ServicesAmenitiesForm
+    }
   ];
 
   /**
@@ -247,6 +259,10 @@ class AddNewOffice extends Component {
             services_amenities: this.state.office.servicesAndAmenities
           });
         break;
+      case 3:
+        if (this.state.office)
+          result = this.props.publishOffice(this.state.office._id);
+        break;
       default:
         break;
     }
@@ -265,9 +281,21 @@ class AddNewOffice extends Component {
   /** Save and next current step */
   saveAndNextCurrentStep = () => {
     this.saveCurrentStep().then(() => {
-      this.setState({ currentStep: this.state.currentStep + 1 });
+      const { currentStep } = this.state;
+      if (currentStep === 3) {
+        // temporary codes
+        this.props.navigate(`offices`);
+      } else {
+        this.setState({ currentStep: currentStep + 1 });
+      }
     });
   };
+
+  /** Event for edit office */
+  handleEditOffice = () => {};
+
+  /** Event for delete office */
+  handleDeleteOffice = () => {};
 
   /**
    * Renderer function
@@ -275,7 +303,8 @@ class AddNewOffice extends Component {
   render() {
     const { classes: s, t, width } = this.props;
     const { office, error, isLoading, currentStep, dialog } = this.state;
-    const CurrentForm = this.steps[currentStep].form;
+    const CurrentForm =
+      currentStep < 3 ? this.steps[currentStep].form : OfficeDetailForm;
 
     console.log(office);
 
@@ -290,7 +319,7 @@ class AddNewOffice extends Component {
         <Row fullWidth paddingBottom>
           {/** title */}
           <Typography fontSizeM textSecondary>
-            {t("addNewOffice")}
+            {currentStep === 3 ? t("preview") : t("addNewOffice")}
           </Typography>
           <Stretch />
           <Button
@@ -305,59 +334,110 @@ class AddNewOffice extends Component {
           </Button>
         </Row>
 
-        {/** stepper */}
-        <Row fullWidth classes={{ box: s.addOfficeTabWrapper }}>
-          <Column fullWidth>
-            <Row fullWidth>
-              <Stepper
-                alternativeLabel
-                activeStep={currentStep}
-                connector={<StepperConnector />}
-                className={s.stepper}
-              >
-                {this.steps.map((label, index) => (
-                  <Step key={index}>
-                    <StepLabel
-                      StepIconComponent={props => (
-                        <StepperIcon {...props} classes={s} />
-                      )}
-                    ></StepLabel>
-                  </Step>
-                ))}
-              </Stepper>
-            </Row>
-            <Row fullWidth justifyChildrenSpaceBetween paddingTopHalf>
-              {isWidthDown("sm", width) ? (
-                <Typography fontSizeS textSecondary>
-                  {this.steps[currentStep].title}
+        {currentStep === 3 ? (
+          <Row fullWidth paddingBottom>
+            {/** Show publish button */}
+            <Button
+              variant="primary"
+              onClick={this.saveAndNextCurrentStep}
+              style={{ width: 190 }}
+              shadow
+            >
+              <EyeIcon style={{ width: 16, height: 16 }} />
+              <Typography fontSizeS paddingLeft>
+                {t("publishOffice")}
+              </Typography>
+            </Button>
+            <Stretch />
+
+            {/** Show delete button */}
+            <Button
+              link="errorRedNormal"
+              background="errorRedLight"
+              inverse
+              onClick={this.handleDeleteOffice}
+              variant={isWidthDown("xs", width) && "icon"}
+            >
+              <DeleteIcon style={{ width: 20, height: 18 }} />
+              {!isWidthDown("xs", width) && (
+                <Typography paddingLeft fontSizeS>
+                  {t("delete")}
                 </Typography>
-              ) : (
-                this.steps.map((step, index) => (
-                  <React.Fragment key={index}>
-                    <Box
-                      relative
-                      style={{ width: 0 }}
-                      justifyChildrenStart={index === 0}
-                      justifyChildrenEnd={index === this.steps.length - 1}
-                      justifyChildrenCenter={
-                        index !== 0 && index !== this.steps.length - 1
-                      }
-                    >
-                      <Typography
-                        fontSizeS
-                        textSecondary
-                        absolute
-                        style={{ whiteSpace: "nowrap" }}
-                      >
-                        {step.title}
-                      </Typography>
-                    </Box>
-                  </React.Fragment>
-                ))
               )}
-            </Row>
-          </Column>
-        </Row>
+            </Button>
+            <Box paddingLeft />
+
+            {/** Show edit button */}
+            <Button
+              link="primary"
+              background="normalLight"
+              inverse
+              onClick={this.handleEditOffice}
+              variant={isWidthDown("xs", width) && "icon"}
+            >
+              <EditIcon style={{ width: 20, height: 18 }} />
+              {!isWidthDown("xs", width) && (
+                <Typography paddingLeft fontSizeS>
+                  {t("edit")}
+                </Typography>
+              )}
+            </Button>
+          </Row>
+        ) : (
+          /** stepper */
+          <Row fullWidth classes={{ box: s.addOfficeTabWrapper }}>
+            <Column fullWidth>
+              <Row fullWidth>
+                <Stepper
+                  alternativeLabel
+                  activeStep={currentStep}
+                  connector={<StepperConnector />}
+                  className={s.stepper}
+                >
+                  {this.steps.map((label, index) => (
+                    <Step key={index}>
+                      <StepLabel
+                        StepIconComponent={props => (
+                          <StepperIcon {...props} classes={s} />
+                        )}
+                      ></StepLabel>
+                    </Step>
+                  ))}
+                </Stepper>
+              </Row>
+              <Row fullWidth justifyChildrenSpaceBetween paddingTopHalf>
+                {isWidthDown("sm", width) ? (
+                  <Typography fontSizeS textSecondary>
+                    {this.steps[currentStep].title}
+                  </Typography>
+                ) : (
+                  this.steps.map((step, index) => (
+                    <React.Fragment key={index}>
+                      <Box
+                        relative
+                        style={{ width: 0 }}
+                        justifyChildrenStart={index === 0}
+                        justifyChildrenEnd={index === this.steps.length - 1}
+                        justifyChildrenCenter={
+                          index !== 0 && index !== this.steps.length - 1
+                        }
+                      >
+                        <Typography
+                          fontSizeS
+                          textSecondary
+                          absolute
+                          style={{ whiteSpace: "nowrap" }}
+                        >
+                          {step.title}
+                        </Typography>
+                      </Box>
+                    </React.Fragment>
+                  ))
+                )}
+              </Row>
+            </Column>
+          </Row>
+        )}
 
         {/** forms by step */}
         {/* <form style={{ width: "100%" }}> */}
@@ -372,42 +452,74 @@ class AddNewOffice extends Component {
           </Row>
 
           {/** form buttons */}
-          <Row
-            fullWidth
-            classes={{ box: clsx(s.addOfficeTabWrapper, s.formButtons) }}
-          >
-            <Button
-              link="errorRed"
-              background="secondaryLight"
-              onClick={this.cancelAddOffice}
+          {currentStep === 3 ? (
+            <Row
+              fullWidth
+              classes={{ box: clsx(s.addOfficeTabWrapper, s.formButtons) }}
             >
-              <CloseIcon style={{ width: 9, height: 9 }} />
-              <Typography paddingLeft fontSizeS>
-                {t("cancel")}
-              </Typography>
-            </Button>
-            <Stretch />
-            <Button
-              link="primary"
-              background="normalLight"
-              inverse
-              onClick={this.saveCurrentStep}
-              loading={isLoading}
+              {/** Show publish button */}
+              <Button
+                variant="primary"
+                onClick={this.saveAndNextCurrentStep}
+                style={{ width: 190 }}
+                shadow
+              >
+                <EyeIcon style={{ width: 16, height: 16 }} />
+                <Typography fontSizeS paddingLeft>
+                  {t("publishOffice")}
+                </Typography>
+              </Button>
+            </Row>
+          ) : (
+            <Row
+              fullWidth
+              classes={{ box: clsx(s.addOfficeTabWrapper, s.formButtons) }}
             >
-              <CheckIcon style={{ width: 16, height: 16 }} />
-              <Typography paddingLeft fontSizeS>
-                {t("save")}
-              </Typography>
-            </Button>
-            <Box paddingLeft />
-            <Button
-              variant="primary"
-              onClick={this.saveAndNextCurrentStep}
-              style={{ width: 215 }}
-            >
-              <Typography fontSizeS>{t("nextStep")}</Typography>
-            </Button>
-          </Row>
+              {/** Show cancel button */}
+              <Button
+                link="errorRed"
+                background="secondaryLight"
+                onClick={this.cancelAddOffice}
+              >
+                <CloseIcon style={{ width: 9, height: 9 }} />
+                <Typography paddingLeft fontSizeS>
+                  {t("cancel")}
+                </Typography>
+              </Button>
+
+              <Stretch />
+
+              {/** Show save button */}
+              {currentStep < 2 && (
+                <Button
+                  link="primary"
+                  background="normalLight"
+                  inverse
+                  onClick={this.saveCurrentStep}
+                  loading={isLoading}
+                >
+                  <CheckIcon style={{ width: 16, height: 16 }} />
+                  <Typography paddingLeft fontSizeS>
+                    {t("save")}
+                  </Typography>
+                </Button>
+              )}
+
+              <Box paddingLeft />
+
+              {/** Show next button */}
+              <Button
+                variant="primary"
+                onClick={this.saveAndNextCurrentStep}
+                style={{ width: 215 }}
+                shadow
+              >
+                <Typography fontSizeS>
+                  {t(currentStep < 2 ? "nextStep" : "saveAndPreview")}
+                </Typography>
+              </Button>
+            </Row>
+          )}
         </>
         {dialog}
       </Column>

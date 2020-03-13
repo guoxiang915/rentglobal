@@ -99,6 +99,10 @@
     "save": "Save",
     "delete": "Delete",
     "nextStep": "Next Step",
+    "preview": "Preview",
+    "publishOffice": "Publish office",
+    "unpublish": "Unpublish",
+    "saveAndPreview": "Save & Preview",
     "pending": "Pending",
     "month": "Month",
     "english": "English",
@@ -281,5 +285,6 @@
     "elevator": "Elevator",
     "rooftop": "Rooftop",
     "gym": "Gym",
-    "restRoom": "Rest room"
+    "restRoom": "Rest room",
+    "dollarPerMonth": "${{dollar}} CAD/month"
 }

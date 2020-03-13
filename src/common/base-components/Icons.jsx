@@ -52,6 +52,8 @@ import { ReactComponent as SignoutSvg } from "../../assets/icon/icon_signout.svg
 import { ReactComponent as CompanyRegisterSvg } from "../../assets/icon/icon_company_register.svg";
 import { ReactComponent as LandlordRegisterSvg } from "../../assets/icon/icon_landlord_register.svg";
 import { ReactComponent as UploadSvg } from "../../assets/icon/icon_upload_gray.svg";
+import { ReactComponent as EyeSvg } from "../../assets/icon/icon_eye.svg";
+import { ReactComponent as EyeDisSvg } from "../../assets/icon/icon_eye_dis.svg";
 
 const styleSheet = theme => ({
   primary: {
@@ -143,6 +145,8 @@ export const RegisterIcon = props => <SvgIcon src={RegisterSvg} {...props} />;
 export const SearchIcon = props => <SvgIcon src={SearchSvg} {...props} />;
 export const ShareIcon = props => <SvgIcon src={ShareSvg} {...props} />;
 export const PowerIcon = props => <SvgIcon src={SignoutSvg} {...props} />;
+export const EyeIcon = props => <SvgIcon src={EyeSvg} {...props} />;
+export const EyeDisIcon = props => <SvgIcon src={EyeDisSvg} {...props} />;
 export const UsersIcon = props => (
   <SvgIcon src={CompanyRegisterSvg} {...props} />
 );

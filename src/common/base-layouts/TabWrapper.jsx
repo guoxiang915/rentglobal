@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { Collapse, withStyles } from "@material-ui/core";
 import { withTranslation } from "react-i18next";
+import clsx from "clsx";
 import {
   Typography,
   Button,
@@ -21,6 +22,10 @@ import {
  * @param {Object} theme
  */
 const styleSheet = theme => ({
+  headerClass: {
+    minHeight: 34
+  },
+
   fullWidth: {
     width: "100%"
   }
@@ -34,6 +39,9 @@ const TabWrapper = props => {
   const {
     children,
     classes,
+    className,
+    headerClass,
+    bodyClass,
     isEdit,
     isEditable,
     actionButton,
@@ -58,8 +66,8 @@ const TabWrapper = props => {
 
   /** Renderer */
   return (
-    <Column fullWidth alignChildrenStart>
-      <Row fullWidth style={{ minHeight: 34 }}>
+    <Column fullWidth alignChildrenStart classes={{box: clsx(className)}}>
+      <Row fullWidth classes={{box:clsx(headerClass, classes.headerClass)}}>
         <Box onClick={handleToggleOpen} pointer alignChildrenCenter>
           <Typography fontSizeS textMediumGrey paddingRight>
             {title}
@@ -100,7 +108,7 @@ const TabWrapper = props => {
         {actionButton}
       </Row>
       <Collapse in={opened} className={classes.fullWidth}>
-        <Column paddingTopHalf alignChildrenStart>
+        <Column paddingTopHalf alignChildrenStart classes={{box: clsx(bodyClass)}}>
           {children}
         </Column>
       </Collapse>

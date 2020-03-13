@@ -9,16 +9,16 @@ import {
   Box,
   Typography,
   Button
-} from "../../common/base-components";
+} from "../../../common/base-components";
 import {
   TabWrapper,
   StatisticBox,
   OfficeItem
-} from "../../common/base-layouts";
+} from "../../../common/base-layouts";
 import Carousel from "@brainhubeu/react-carousel";
 
 // import mock data
-import { offices } from "../../common/mock/officeMockData";
+import { offices } from "../../../common/mock/officeMockData";
 
 const styleSheet = theme => ({
   root: {

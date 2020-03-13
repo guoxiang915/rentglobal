@@ -7,8 +7,8 @@ import { Switch, Route, Redirect } from "react-router-dom";
 import { AppSidebar } from "../Layout";
 import { Row, Column } from "../../common/base-components";
 import Profile from "./Profile";
-import Offices from "./Offices";
-import AddNewOffice from "../../containers/Landlord/AddNewOffice";
+import Office from "./Office";
+import AddNewOffice from "../../containers/Landlord/Office/AddNewOffice";
 import api from "../../api/api";
 
 const styleSheet = theme => ({
@@ -79,13 +79,18 @@ class Landlord extends Component {
   };
 
   /** Call api to save cover-photos */
-  createOfficeCoverPhotos = coverPhotos => {
-    return api.post("/offices/create/cover-photos", coverPhotos);
+  createOfficeCoverPhotos = payload => {
+    return api.post("/offices/create/cover-photos", payload);
   };
 
   /** Call api to save services & amenities of office */
-  createOfficeServicesAmenities = servicesAmenities => {
-    return api.post("/offices/create/services-amenities", servicesAmenities);
+  createOfficeServicesAmenities = payload => {
+    return api.post("/offices/create/services-amenities", payload);
+  };
+
+  /** Call api to publish office */
+  publishOffice = officeId => {
+    return api.post(`/offices/publish/${officeId}`);
   };
 
   render() {
@@ -111,7 +116,7 @@ class Landlord extends Component {
                 <Route
                   exact
                   path="/landlord/offices"
-                  render={props => <Offices navigate={this.props.navigate} />}
+                  render={props => <Office navigate={this.props.navigate} />}
                 />
                 <Route
                   exact
@@ -125,6 +130,7 @@ class Landlord extends Component {
                       createOfficeServicesAmenities={
                         this.createOfficeServicesAmenities
                       }
+                      publishOffice={this.publishOffice}
                     />
                   )}
                 />

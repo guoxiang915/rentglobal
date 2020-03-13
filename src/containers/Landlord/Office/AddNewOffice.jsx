@@ -1,6 +1,6 @@
 import { connect } from "react-redux";
-import AddNewOffice from "../../components/Landlord/AddNewOffice";
-import * as officeActions from "../../actions/officeActions";
+import AddNewOffice from "../../../components/Landlord/Office/AddNewOffice";
+import * as officeActions from "../../../actions/officeActions";
 
 const mapStateToProps = state => {
   return {

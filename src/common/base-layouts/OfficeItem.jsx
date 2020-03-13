@@ -239,7 +239,7 @@ const OfficeItem = ({
       {/** show office price */}
       <Row paddingTopHalf>
         <Typography fontSizeS textPrimary>
-          ${office.priceMonthly} CAD/month
+          {t("dollarPerMonth", { currency: office.priceMonthly })}
         </Typography>
       </Row>
 

@@ -45,7 +45,7 @@ const servicesCategories = [
   },
   {
     name: "categoryName2",
-    value: "category12",
+    value: "category2",
     icon: UserIcon,
     options: [
       { name: "airConditioner", value: "airConditioner" },

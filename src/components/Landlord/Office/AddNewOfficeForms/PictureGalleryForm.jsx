@@ -15,7 +15,7 @@ import {
   ProgressIcon,
   DeleteIcon,
   CloseIcon
-} from "../../../common/base-components";
+} from "../../../../common/base-components";
 import Dropzone from "react-dropzone";
 
 const styleSheet = theme => ({

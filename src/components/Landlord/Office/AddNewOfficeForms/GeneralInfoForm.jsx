@@ -15,15 +15,15 @@ import {
   ArrowDownIcon,
   Divider,
   Chip
-} from "../../../common/base-components";
-import { TabWrapper } from "../../../common/base-layouts";
+} from "../../../../common/base-components";
+import { TabWrapper } from "../../../../common/base-layouts";
 import { Grid } from "@material-ui/core";
 import {
   officeTypes,
   contractTypes,
   guarantees,
   checkOutNotices
-} from "../../../utils/constants";
+} from "../../../../utils/constants";
 
 const styleSheet = theme => ({
   root: {},
