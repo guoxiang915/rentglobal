@@ -419,7 +419,7 @@ class AppHeader extends Component {
         <Divider className={classes.divider} />
         <NavItem
           onClick={onToggleRole}
-          icon={UsersIcon}
+          icon={role === "company" ? BuildingsIcon : UsersIcon}
           text={role === "company" ? t("landlordPanel") : t("companyPanel")}
           classes={classes}
         />
@@ -428,6 +428,7 @@ class AppHeader extends Component {
           <NavItem
             onClick={onToggleRole}
             icon={UsersIcon}
+            icon={role === "company" ? UsersIcon : BuildingsIcon}
             text={role === "company" ? t("companyPanel") : t("landlordPanel")}
             classes={classes}
           />
