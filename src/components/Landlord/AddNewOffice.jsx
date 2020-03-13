@@ -141,7 +141,7 @@ class AddNewOffice extends Component {
     office: {},
     error: null,
     isLoading: false,
-    currentStep: 2,
+    currentStep: 0,
     dialog: null
   };
 
