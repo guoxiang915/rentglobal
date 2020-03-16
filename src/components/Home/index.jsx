@@ -671,6 +671,7 @@ class Home extends Component {
                       <TextField
                         fullWidth
                         variant="outlined"
+                        value={tessiQuery}
                         onChange={this.handleChangeByEvent("tessiQuery")}
                         placeholder={t("sayHiOrSearch")}
                         className={classes.searchInput}
