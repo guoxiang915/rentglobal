@@ -84,7 +84,8 @@ class TextField extends Component {
 
     return (
       <MUITextField
-        value={value || (type === "number" ? 0 : "")}
+        // defaultValue={type === "number" ? 0 : ""}
+        value={value || ""}
         onChange={onChange}
         type={type}
         label={label}
