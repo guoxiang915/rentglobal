@@ -3,6 +3,7 @@ import { createMuiTheme } from "@material-ui/core/styles";
 // theme colors
 const colors = {
   primary: {
+    transparent: "transparent",
     black: "#000000",
     white: "#ffffff",
     mainColor: "#d7df23",
@@ -187,7 +188,7 @@ const linksBackground = {
     }
   },
   normalLight: {
-    background: colors.primary.white,
+    background: colors.primary.transparent,
     "&:hover": {
       background: colors.primary.mainColor
     }
@@ -199,13 +200,13 @@ const linksBackground = {
     }
   },
   secondary: {
-    background: colors.primary.white,
+    background: colors.primary.transparent,
     "&:hover": {
       background: colors.primary.grey
     }
   },
   secondaryLight: {
-    background: colors.primary.white,
+    background: colors.primary.transparent,
     "&:hover": {
       background: colors.primary.lightGrey
     }
@@ -217,7 +218,7 @@ const linksBackground = {
     }
   },
   errorRedLight: {
-    background: colors.primary.white,
+    background: colors.primary.transparent,
     "&:hover": {
       background: colors.primary.errorRed
     }
