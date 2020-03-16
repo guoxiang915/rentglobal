@@ -995,7 +995,10 @@ class Home extends Component {
             >
               <div style={{ width: "100%", height: "100%" }}>
                 <Carousel
+                  infinite
                   slidesPerPage={1}
+                  keepDirectionWhenDragging
+                  addArrowClickHandler
                   arrowLeft={
                     <Box
                       style={{
@@ -1021,21 +1024,29 @@ class Home extends Component {
                     </Box>
                   }
                 >
-                  <Column>
-                    {!isWidthDown("sm", width) && (
-                      <Typography paddingBottom fontSizeL>
-                        1.
-                      </Typography>
-                    )}
-                    <Typography
-                      fontSizeXS={isWidthDown("sm", width)}
-                      fontSizeS={!isWidthDown("sm", width)}
-                      fontWeightBold
-                      fullWidth
-                    >
-                      {t("homeRegisterContent")}
-                    </Typography>
-                  </Column>
+                  {[
+                    { title: "1.", content: t("homeRegisterContent") },
+                    { title: "2.", content: t("homeRegisterContent") },
+                    { title: "3.", content: t("homeRegisterContent") }
+                  ].map((val, index) => (
+                    <React.Fragment key={index}>
+                      <Column>
+                        {!isWidthDown("sm", width) && (
+                          <Typography paddingBottom fontSizeL>
+                            {val.title}
+                          </Typography>
+                        )}
+                        <Typography
+                          fontSizeXS={isWidthDown("sm", width)}
+                          fontSizeS={!isWidthDown("sm", width)}
+                          fontWeightBold
+                          fullWidth
+                        >
+                          {val.content}
+                        </Typography>
+                      </Column>
+                    </React.Fragment>
+                  ))}
                 </Carousel>
               </div>
             </Row>
