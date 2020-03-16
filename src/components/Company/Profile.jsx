@@ -208,7 +208,7 @@ class Profile extends Component {
     passwordError: "",
     confirmPassword: "",
 
-    editTab: null,
+    editTab: "companyInfo",
     openedTab: "companyInfo",
     uploadingDocument: null
   };
