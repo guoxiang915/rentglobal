@@ -336,7 +336,13 @@ const styleSheet = theme => ({
   },
 
   whiteShadowButton: {
-    boxShadow: "0px 6px 12px #FFFFFF4D"
+    background: theme.colors.primary.white,
+    color: theme.colors.primary.darkGrey,
+    boxShadow: `0px 6px 12px #${theme.colors.primary.white}4D`,
+    "&:hover": {
+      background: theme.colors.primary.darkColor,
+      color: theme.colors.primary.white
+    }
   },
 
   homeRegisterTitle: {
@@ -1052,18 +1058,18 @@ class Home extends Component {
             </Row>
             <Row>
               <Button
-                variant="secondary"
+                // variant="secondary"
                 className={classes.whiteShadowButton}
                 onClick={() =>
                   this.props.history.push("/auth/register/landlord")
                 }
               >
                 {isWidthDown("sm", width) ? (
-                  <Typography fontSizeXS fontWeightBold textSecondary>
+                  <Typography fontSizeXS fontWeightBold>
                     {t("registerAndStart")}
                   </Typography>
                 ) : (
-                  <Typography fontSizeS fontWeightBold textSecondary>
+                  <Typography fontSizeS fontWeightBold>
                     {t("registerAndStartRENTGLOBALConsultant")}
                   </Typography>
                 )}
