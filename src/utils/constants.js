@@ -1,6 +1,5 @@
 import { UserIcon } from "../common/base-components";
 
-
 /**
  * API url
  * In development mode, url is local server's url
@@ -97,6 +96,18 @@ const servicesCategories = [
     value: "category6",
     icon: UserIcon,
     options: [{ name: "wifi", value: "wifi" }]
+  },
+  {
+    name: "categoryName7",
+    value: "category7",
+    icon: UserIcon,
+    options: [{ name: "wifi", value: "wifi" }]
+  },
+  {
+    name: "customFeatures",
+    value: "customFeatures",
+    icon: UserIcon,
+    options: []
   }
 ];
 

@@ -123,10 +123,14 @@ class PrivateRoute extends React.Component {
     await this.props.mappedAuthenticate(token, this.props.history);
   };
 
-  navigate = path => {
+  navigate = (path, payload) => {
     const { isLoggedIn, user } = this.props.auth;
 
     switch (path) {
+      case "back":
+        this.props.history.goBack();
+        break;
+
       case "home":
         this.props.history.push("/");
         break;
@@ -153,7 +157,7 @@ class PrivateRoute extends React.Component {
       case "optimization":
         if (isLoggedIn) {
           const role = user.role;
-          this.props.history.push(`/${role}/${path}`);
+          this.props.history.push(`/${role}/${path}/${payload ? payload : ""}`);
           break;
         }
         this.props.history.push("/");

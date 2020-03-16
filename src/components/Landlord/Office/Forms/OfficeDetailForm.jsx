@@ -13,9 +13,9 @@ import {
   StarIcon,
   MapPointerIcon,
   Link
-} from "../../../common/base-components";
-import { TabWrapper, StatisticBox } from "../../../common/base-layouts";
-import { servicesCategories } from "../../../utils/constants";
+} from "../../../../common/base-components";
+import { TabWrapper, StatisticBox } from "../../../../common/base-layouts";
+import { servicesCategories } from "../../../../utils/constants";
 import Carousel from "@brainhubeu/react-carousel";
 
 const styleSheet = theme => ({
@@ -42,6 +42,13 @@ const styleSheet = theme => ({
     left: 0,
     bottom: 0,
     right: 0,
+    overflow: "hidden",
+    borderRadius: 8
+  },
+
+  coverPhotoContent: {
+    width: "100%",
+    height: "100%",
     objectFit: "cover",
     borderRadius: 8
   },
@@ -75,7 +82,8 @@ const styleSheet = theme => ({
     width: 168,
     height: 126,
     border: `1px solid ${theme.colors.primary.borderGrey}`,
-    borderRadius: 8
+    borderRadius: 8,
+    marginBottom: 15
   },
 
   detailsWrapper: {
@@ -99,10 +107,9 @@ const styleSheet = theme => ({
   infoRow: {
     width: "100%",
     alignItems: "center",
-    marginBottom: 5,
     flexWrap: "wrap",
-    [theme.breakpoints.down("xs")]: {
-      marginBottom: 15
+    [theme.breakpoints.down("sm")]: {
+      marginBottom: 8
     }
   },
 
@@ -111,14 +118,18 @@ const styleSheet = theme => ({
     width: "45%",
     fontSize: "15px",
     lineHeight: "20px",
+    minHeight: 20,
+    marginBottom: 4,
     alignItems: "flex-start",
     color: theme.colors.primary.darkGrey
   },
 
   infoValue: {
-    width: "55%",
+    width: "54%",
     fontSize: "19px",
     lineHeight: "26px",
+    minHeight: 26,
+    marginBottom: 4,
     fontWeight: "bold",
     alignItems: "flex-start",
     color: theme.colors.primary.darkGrey
@@ -193,33 +204,47 @@ class OfficeDetailForm extends Component {
     const { office, classes: s, t, width } = this.props;
     const { currentPhoto } = this.state;
 
+    console.log(office, currentPhoto);
+
     return (
       <Column classes={{ box: s.root }} fullWidth alignChildrenStart>
         {/** Show office coverPhotos */}
         {isWidthDown("xs", width) ? (
           <div className={s.imageWrapper}>
             <Carousel slidesPerPage={1.2} keepDirectionWhenDragging>
-              {office.coverPhotos.map(photo => (
-                <div className={s.coverPhotoWrapper}>
-                  <img src={photo.bucketPath} className={s.coverPhoto} alt="" />
-                </div>
-              ))}
+              {office.coverPhotos &&
+                office.coverPhotos.map(photo => (
+                  <div className={s.coverPhotoWrapper}>
+                    <div className={s.coverPhoto}>
+                      <img
+                        src={photo.bucketPath}
+                        className={s.coverPhotoContent}
+                        alt=""
+                      />
+                    </div>
+                  </div>
+                ))}
             </Carousel>
           </div>
         ) : (
           <Row fullWidth relative>
             <Box classes={{ box: s.imageWrapper }}>
               <div className={s.coverPhotoWrapper}>
-                <img
-                  src={office.coverPhotos[currentPhoto].bucketPath}
-                  className={s.coverPhoto}
-                  alt=""
-                />
+                <div className={s.coverPhoto}>
+                  <img
+                    src={
+                      office.coverPhotos &&
+                      office.coverPhotos[currentPhoto].bucketPath
+                    }
+                    className={s.coverPhotoContent}
+                    alt=""
+                  />
+                </div>
               </div>
             </Box>
             <Column absolute classes={{ box: s.imageNavWrapper }}>
               <Link
-                to=""
+                to="#"
                 variant="normalLight"
                 onClick={this.handlePrevPhoto}
                 disabled={currentPhoto <= 0}
@@ -231,18 +256,19 @@ class OfficeDetailForm extends Component {
                   style={{ top: -currentPhoto * 140 }}
                   classes={{ box: s.imageNavList }}
                 >
-                  {office.coverPhotos.map((photo, index) => (
-                    <img
-                      key={index}
-                      src={photo.bucketPath}
-                      className={s.coverPhotoNav}
-                      alt=""
-                    />
-                  ))}
+                  {office.coverPhotos &&
+                    office.coverPhotos.map((photo, index) => (
+                      <img
+                        key={index}
+                        src={photo.bucketPath}
+                        className={s.coverPhotoNav}
+                        alt=""
+                      />
+                    ))}
                 </Column>
               </Box>
               <Link
-                to=""
+                to="#"
                 variant="normalLight"
                 onClick={this.handleNextPhoto}
                 disabled={currentPhoto <= 0}
@@ -253,6 +279,8 @@ class OfficeDetailForm extends Component {
           </Row>
         )}
 
+        <Row paddingTop />
+
         {/** Show office main info (title, type, priceMonthly, rating) */}
         <Row paddingTopHalf fontSizeM textBlackGrey fontWeightBold>
           {office.title}
@@ -261,16 +289,18 @@ class OfficeDetailForm extends Component {
           {t(office.officeType)}
         </Row>
         <Row paddingTopHalf fontSizeS textPrimary>
-          {t("dollarPerMonth", { currency: office.priceMonthly })}
+          {t("dollarPerMonth", { dollar: office.priceMonthly })}
         </Row>
-        <Row paddingTopHalf>
-          <Typography textPrimary>
-            <StarIcon style={{ width: 12, height: 12 }} />
-          </Typography>
-          <Typography fontSizeS textMediumGrey paddingLeftHalf>
-            {office.rating || 0}
-          </Typography>
-        </Row>
+        {office.rating && (
+          <Row paddingTopHalf>
+            <Typography textPrimary>
+              <StarIcon style={{ width: 12, height: 12 }} />
+            </Typography>
+            <Typography fontSizeS textMediumGrey paddingLeftHalf>
+              {office.rating}
+            </Typography>
+          </Row>
+        )}
 
         {/** Show office details */}
         <Row classes={{ box: s.detailsWrapper }} alignChildrenStart>
@@ -288,15 +318,14 @@ class OfficeDetailForm extends Component {
                 </Column>
                 <Column classes={{ box: s.infoValue }}>
                   {t("dollarPerMonth", {
-                    currency: office.businessOrOtherFees
+                    dollar: office.businessOrOtherFees || 0
                   })}
                 </Column>
               </Row>
               <Row classes={{ box: s.infoRow }}>
                 <Column classes={{ box: s.infoLabel }}>{t("area")}</Column>
-                <Column
-                  classes={{ box: s.infoValue }}
-                >{`${office.area} mxm`}</Column>
+                <Column classes={{ box: s.infoValue }}>{`${office.area ||
+                  0} mxm`}</Column>
               </Row>
               <Row classes={{ box: s.infoRow }}>
                 <Column classes={{ box: s.infoLabel }}>{t("rooms")}</Column>
@@ -315,7 +344,8 @@ class OfficeDetailForm extends Component {
                   {t("businessHours")}
                 </Column>
                 <Column classes={{ box: s.infoValue }}>
-                  {`${office.businessHoursFrom} - ${office.businessHoursTo}`}
+                  {`${office.businessHoursFrom ||
+                    ""} - ${office.businessHoursTo || ""}`}
                 </Column>
               </Row>
               <Row classes={{ box: s.infoRow }}>
@@ -331,7 +361,7 @@ class OfficeDetailForm extends Component {
                   {t("spokenLanguage")}
                 </Column>
                 <Column classes={{ box: s.infoValue }}>
-                  {office.spokenLanguages.join(" / ")}
+                  {office.spokenLanguages && office.spokenLanguages.join(" / ")}
                 </Column>
               </Row>
               <Row classes={{ box: s.infoRow }}>
@@ -366,31 +396,31 @@ class OfficeDetailForm extends Component {
                   {t("streetAddress")}
                 </Column>
                 <Column classes={{ box: s.infoValue }}>
-                  {office.location.streetName}
+                  {office.location && office.location.streetName}
                 </Column>
               </Row>
               <Row classes={{ box: s.infoRow }}>
                 <Column classes={{ box: s.infoLabel }}>{t("city")}</Column>
                 <Column classes={{ box: s.infoValue }}>
-                  {office.location.city}
+                  {office.location && office.location.city}
                 </Column>
               </Row>
               <Row classes={{ box: s.infoRow }}>
                 <Column classes={{ box: s.infoLabel }}>{t("state")}</Column>
                 <Column classes={{ box: s.infoValue }}>
-                  {office.location.state}
+                  {office.location && office.location.state}
                 </Column>
               </Row>
               <Row classes={{ box: s.infoRow }}>
                 <Column classes={{ box: s.infoLabel }}>{t("zipCode")}</Column>
                 <Column classes={{ box: s.infoValue }}>
-                  {office.location.zipCode}
+                  {office.location && office.location.zipCode}
                 </Column>
               </Row>
               <Row classes={{ box: s.infoRow }}>
                 <Column classes={{ box: s.infoLabel }}>{t("country")}</Column>
                 <Column classes={{ box: s.infoValue }}>
-                  {office.location.country}
+                  {office.location && office.location.country}
                 </Column>
               </Row>
               <Row classes={{ box: s.infoRow }}>
@@ -484,51 +514,50 @@ class OfficeDetailForm extends Component {
             <Typography textSecondary fontSizeS>
               {t("servicesAndAmenities")}
             </Typography>
-            {Object.entries(office.servicesAndAmenities).map(
-              ([key, options]) => {
-                const category = servicesCategories.find(
-                  item => item.value === key
-                );
-                return (
-                  <React.Fragment key={category}>
-                    <TabWrapper
-                      title={
-                        <Typography
-                          alignChildrenCenter
-                          fontSizeS
-                          textMediumGrey
-                        >
-                          <category.icon className={s.serviceCategoryIcon} />
-                          <Typography paddingLeft>
-                            {t(category.name)}
-                          </Typography>
-                        </Typography>
-                      }
-                      open={true}
-                      insideOpen
-                      className={s.serviceCategoryWrapper}
-                      bodyClass={s.serviceCategoryBody}
-                    >
-                      {options.map((opt, optIndex) => (
-                        <React.Fragment key={optIndex}>
+            {office.servicesAndAmenities &&
+              Object.entries(office.servicesAndAmenities).map(
+                ([key, options]) => {
+                  const category = servicesCategories.find(
+                    item => item.value === key
+                  );
+                  return (
+                    <React.Fragment key={key}>
+                      <TabWrapper
+                        title={
                           <Typography
-                            classes={{ box: s.serviceOption }}
-                            fontSizeM
-                            fontWeightBold
-                            textSecondary
+                            alignChildrenCenter
+                            fontSizeS
+                            textMediumGrey
                           >
-                            {t(
-                              category.options.find(item => item.value === opt)
-                                .name
-                            )}
+                            <category.icon className={s.serviceCategoryIcon} />
+                            <Typography paddingLeft>
+                              {t(category.name)}
+                            </Typography>
                           </Typography>
-                        </React.Fragment>
-                      ))}
-                    </TabWrapper>
-                  </React.Fragment>
-                );
-              }
-            )}
+                        }
+                        open={true}
+                        insideOpen
+                        className={s.serviceCategoryWrapper}
+                        bodyClass={s.serviceCategoryBody}
+                      >
+                        {options.map((opt, optIndex) => (
+                          <React.Fragment key={optIndex}>
+                            <Typography
+                              classes={{ box: s.serviceOption }}
+                              fontSizeM
+                              fontWeightBold
+                              textSecondary
+                              paddingBottomHalf
+                            >
+                              {t(opt)}
+                            </Typography>
+                          </React.Fragment>
+                        ))}
+                      </TabWrapper>
+                    </React.Fragment>
+                  );
+                }
+              )}
           </Column>
         </Row>
       </Column>

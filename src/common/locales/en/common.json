@@ -256,6 +256,8 @@
     "categoryName4": "Category name 4",
     "categoryName5": "Category name 5",
     "categoryName6": "Category name 6",
+    "categoryName7": "Category name 7",
+    "customFeatures": "Custom Features",
     
     "wifi": "Wifi",
     "privateWifi": "Private wifi",
@@ -286,5 +288,11 @@
     "rooftop": "Rooftop",
     "gym": "Gym",
     "restRoom": "Rest room",
-    "dollarPerMonth": "${{dollar}} CAD/month"
+    "dollarPerMonth": "${{dollar}} CAD/month",
+    "savedSuccessfully": "Your data saved successfully.",
+    "errorInValidation": "There are some invalid data in your input.",
+    "photoCountMaxLimitError": "You cannot add more than 15 images for an office!",
+    "photoCountMinLimitError": "You should add at least 3 images for an office!",
+    "photoCountLimitError": "You should add 3 - 15 images for an office!",
+    "office": "Office"
 }

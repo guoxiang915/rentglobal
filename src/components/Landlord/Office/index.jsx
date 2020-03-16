@@ -17,9 +17,6 @@ import {
 } from "../../../common/base-layouts";
 import Carousel from "@brainhubeu/react-carousel";
 
-// import mock data
-import { offices } from "../../../common/mock/officeMockData";
-
 const styleSheet = theme => ({
   root: {
     paddingLeft: theme.spacing(5),
@@ -51,12 +48,13 @@ const styleSheet = theme => ({
 class Offices extends Component {
   static propTypes = {
     navigate: PropTypes.func,
+    getOffices: PropTypes.func.isRequired,
 
     classes: PropTypes.object,
     t: PropTypes.func
   };
 
-  state = { sliderCnt: 1 };
+  state = { sliderCnt: 1, offices: [] };
 
   /** Element Ref to get element width */
   carouselRef = React.createRef();
@@ -70,13 +68,27 @@ class Offices extends Component {
     this.setState({
       sliderCnt: this.carouselRef.current.getBoundingClientRect().width / 255
     });
+    this.props.getOffices().then(
+      response => this.setState({ offices: response.data }),
+      error => {}
+    );
   }
+
+  /** navigate to office detail page */
+  handleNavigateOfficeDetail = office => () => {
+    if (office.published === true) {
+      this.props.navigate("offices", office._id);
+    } else {
+      this.props.navigate("offices/add", office._id);
+    }
+  };
 
   /**
    * Renderer function
    */
   render() {
     const { classes, t } = this.props;
+    const { offices, sliderCnt } = this.state;
 
     return (
       <Column
@@ -134,7 +146,12 @@ class Offices extends Component {
         {/* office lists tab */}
         <Row fullWidth classes={{ box: classes.officesTabWrapper }}>
           <TabWrapper
-            title={t("officeLists") + " (" + offices.length + ")"}
+            title={
+              t("officeLists") +
+              " (" +
+              offices.filter(item => item.published === true).length +
+              ")"
+            }
             open={true}
             insideOpen
             actionButton={
@@ -155,18 +172,23 @@ class Offices extends Component {
                 style={{ width: "100%", height: "100%" }}
                 ref={this.carouselRef}
               >
-                <Carousel
-                  slidesPerPage={this.state.sliderCnt}
-                  keepDirectionWhenDragging
-                >
-                  {offices.map((office, index) => (
-                    <div style={{ position: "relative" }} key={index}>
-                      <OfficeItem
-                        office={office}
-                        setFavorite={() => (office.favorite = !office.favorite)}
-                      />
-                    </div>
-                  ))}
+                <Carousel slidesPerPage={sliderCnt} keepDirectionWhenDragging>
+                  {offices
+                    .filter(item => item.published === true)
+                    .map((office, index) => (
+                      <div
+                        style={{ position: "relative" }}
+                        key={index}
+                        onClick={this.handleNavigateOfficeDetail(office)}
+                      >
+                        <OfficeItem
+                          office={office}
+                          setFavorite={() =>
+                            (office.favorite = !office.favorite)
+                          }
+                        />
+                      </div>
+                    ))}
                 </Carousel>
               </div>
             </Row>
@@ -199,14 +221,15 @@ class Offices extends Component {
           >
             <Row paddingTopDouble fullWidth noOverflow>
               <div style={{ width: "100%", height: "100%" }}>
-                <Carousel
-                  slidesPerPage={this.state.sliderCnt}
-                  keepDirectionWhenDragging
-                >
+                <Carousel slidesPerPage={sliderCnt} keepDirectionWhenDragging>
                   {offices
                     .filter(item => item.published === false)
                     .map((office, index) => (
-                      <div style={{ position: "relative" }} key={index}>
+                      <div
+                        style={{ position: "relative" }}
+                        key={index}
+                        onClick={this.handleNavigateOfficeDetail(office)}
+                      >
                         <OfficeItem
                           office={office}
                           errorMsg="pending"

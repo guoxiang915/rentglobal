@@ -203,7 +203,10 @@ class GeneralInfoForm extends Component {
   /** Render general textfields */
   renderFormField = ({ tag, field, options, ...props }) => {
     const { office, error, t } = this.props;
-    const validation = error && error.find(item => item.param === field);
+    let validation = null;
+    try {
+      validation = error && error.find(item => item.param === field);
+    } catch (e) {}
     switch (tag) {
       case "textfield":
         return (

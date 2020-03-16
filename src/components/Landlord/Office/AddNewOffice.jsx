@@ -19,13 +19,20 @@ import {
   ConfirmDialog
 } from "../../../common/base-components";
 import { KeyboardBackspace } from "@material-ui/icons";
-import { Step, Stepper, StepConnector, StepLabel } from "@material-ui/core";
+import {
+  Step,
+  Stepper,
+  StepConnector,
+  StepLabel,
+  Snackbar
+} from "@material-ui/core";
+import { Alert } from "@material-ui/lab";
 import {
   GeneralInfoForm,
   PictureGalleryForm,
-  ServicesAmenitiesForm
-} from "./AddNewOfficeForms";
-import OfficeDetailForm from "./OfficeDetailForm";
+  ServicesAmenitiesForm,
+  OfficeDetailForm
+} from "./Forms";
 
 const styleSheet = theme => ({
   root: {
@@ -52,6 +59,7 @@ const styleSheet = theme => ({
 
   stepper: {
     width: "150%",
+    background: "transparent",
     padding: 0,
     marginLeft: "calc(-25% + 35px)",
     marginRight: "calc(-25% + 35px)"
@@ -132,21 +140,65 @@ const StepperIcon = ({ classes, icon, active, completed }) => (
 
 class AddNewOffice extends Component {
   static propTypes = {
+    officeId: PropTypes.string,
+    getOfficeById: PropTypes.func,
     navigate: PropTypes.func,
     uploadFile: PropTypes.func,
     createOffice: PropTypes.func,
+    updateOffice: PropTypes.func,
     createOfficeCoverPhotos: PropTypes.func,
     createOfficeServicesAmenities: PropTypes.func,
+    onEditOffice: PropTypes.func,
+    onDeleteOffice: PropTypes.func,
     classes: PropTypes.object,
     t: PropTypes.func
   };
 
   state = {
+    snackMsg: null,
     office: {
-      coverPhotos: [{ bucketPath: "" }],
-      spokenLanguages: ["English"],
-      location: { fullAddress: "ssx", streetName: "Street N xxx" },
-      servicesAndAmenities: { category2: ["airConditioner"] }
+      // _id: "5e694f16f18e30286c952119",
+      // title: "New Office",
+      // officeType: "privateOffice",
+      // priceMonthly: 4500,
+      // businessOrOtherFees: 123,
+      // area: 74,
+      // rooms: 2,
+      // numberOfEmployees: 6,
+      // businessHoursFrom: 8,
+      // businessHoursTo: 5,
+      // location: { fullAddress: "Location Full Address" },
+      // coverPhotos: [
+      //   {
+      //     id: "5e6f4b60af2f21061071ce1a",
+      //     bucketPath:
+      //       "https://rentglobal.s3.us-east-2.amazonaws.com/2020/2/167fe56cc08fb476d5/RENTGLOBAL_Logo_Preview_06.png",
+      //     fileName: "RENTGLOBAL_Logo_Preview_06.png"
+      //   },
+      //   {
+      //     id: "5e59d4661d43b820dc261c92",
+      //     bucketPath:
+      //       "https://rentglobal.s3.us-east-2.amazonaws.com/2020/1/297afdba1c39dc5c26/RENTGLOBAL_Logo_Preview_01.jpg",
+      //     fileName: "RENTGLOBAL_Logo_Preview_01.jpg"
+      //   },
+      //   {
+      //     id: "5e5bda2b6250430a502d8e89",
+      //     bucketPath:
+      //       "https://rentglobal.s3.us-east-2.amazonaws.com/2020/2/1d724cc9179a2799d/RENTGLOBAL_Logo_Preview_03.jpg",
+      //     fileName: "RENTGLOBAL_Logo_Preview_03.jpg"
+      //   }
+      // ],
+      // servicesAndAmenities: {
+      //   category1: ["cleaningService", "privateWifi", "rj45Cable", "furniture"],
+      //   category2: ["shower", "reception"],
+      //   category3: ["alarm", "disabledAccess"],
+      //   category4: [],
+      //   category5: [],
+      //   category6: [],
+      //   category7: [],
+      //   customFeatures: ["Custom Feature 1", "Custom Feature 2"]
+      // },
+      // spokenLanguages: []
     },
     error: null,
     isLoading: false,
@@ -162,6 +214,39 @@ class AddNewOffice extends Component {
       form: ServicesAmenitiesForm
     }
   ];
+
+  componentDidMount() {
+    if (this.props.officeId) {
+      this.props.getOfficeById(this.props.officeId).then(response => {
+        if (response.status === 200) {
+          const office = response.data;
+          let currentStep = 0;
+          if (
+            office.servicesAndAmenities &&
+            (office.servicesAndAmenities.category1.length ||
+              office.servicesAndAmenities.category2.length ||
+              office.servicesAndAmenities.category3.length ||
+              office.servicesAndAmenities.category4.length ||
+              office.servicesAndAmenities.category5.length ||
+              office.servicesAndAmenities.category6.length ||
+              office.servicesAndAmenities.category7.length ||
+              office.servicesAndAmenities.customFeatures.length)
+          ) {
+            currentStep = 3;
+          } else if (
+            office.coverPhotos &&
+            office.coverPhotos.length >= 3 &&
+            office.coverPhotos.length <= 15
+          ) {
+            currentStep = 2;
+          } else {
+            currentStep = 1;
+          }
+          this.setState({ office, currentStep });
+        }
+      });
+    }
+  }
 
   /**
    * Navigate page
@@ -243,20 +328,25 @@ class AddNewOffice extends Component {
     let result = Promise.reject(null);
     switch (this.state.currentStep) {
       case 0:
-        result = this.props.createOffice(this.state.office);
+        if (this.state.office._id) {
+          result = this.props.updateOffice(this.state.office);
+        } else {
+          result = this.props.createOffice(this.state.office);
+        }
         break;
       case 1:
-        if (this.state.office)
+        if (this.state.office) {
           result = this.props.createOfficeCoverPhotos({
             officeId: this.state.office._id,
-            cover_photos: this.state.office.coverPhotos
+            coverPhotos: this.state.office.coverPhotos.map(photo => photo._id)
           });
+        }
         break;
       case 2:
         if (this.state.office)
           result = this.props.createOfficeServicesAmenities({
             officeId: this.state.office._id,
-            services_amenities: this.state.office.servicesAndAmenities
+            servicesAndAmenities: this.state.office.servicesAndAmenities
           });
         break;
       case 3:
@@ -268,11 +358,26 @@ class AddNewOffice extends Component {
     }
     return result.then(
       response => {
-        this.setState({ isLoading: false, office: response.data, error: null });
+        this.setState({
+          isLoading: false,
+          office: response.data,
+          error: null,
+          snackMsg: {
+            severity: "success",
+            msg: this.props.t("savedSuccessfully")
+          }
+        });
         return Promise.resolve(response);
       },
       error => {
-        this.setState({ isLoading: false, error: error.response.data.msg });
+        this.setState({
+          isLoading: false,
+          error: error.response.data.msg,
+          snackMsg: {
+            severity: "error",
+            msg: this.props.t("errorInValidation")
+          }
+        });
         return Promise.reject(error);
       }
     );
@@ -280,33 +385,69 @@ class AddNewOffice extends Component {
 
   /** Save and next current step */
   saveAndNextCurrentStep = () => {
-    this.saveCurrentStep().then(() => {
-      const { currentStep } = this.state;
-      if (currentStep === 3) {
-        // temporary codes
-        this.props.navigate(`offices`);
-      } else {
-        this.setState({ currentStep: currentStep + 1 });
+    const { currentStep } = this.state;
+    if (this.state.office) {
+      /** Check photos count when current step is 1 */
+      if (
+        currentStep === 1 &&
+        (!this.state.office.coverPhotos ||
+          this.state.office.coverPhotos.length < 3 ||
+          this.state.office.coverPhotos.length > 15)
+      ) {
+        this.setState({
+          snackMsg: {
+            severity: "error",
+            msg: this.props.t("photoCountLimitError")
+          }
+        });
+        return;
       }
-    });
+      this.saveCurrentStep().then(() => {
+        if (currentStep === 3) {
+          // navigate to office detail page
+          this.props.navigate(`offices`, this.state.office._id);
+        } else {
+          this.setState({ currentStep: currentStep + 1 });
+        }
+      });
+    }
   };
 
   /** Event for edit office */
-  handleEditOffice = () => {};
+  handleEditOffice = () => {
+    this.props.onEditOffice(this.state.office._id);
+  };
 
   /** Event for delete office */
-  handleDeleteOffice = () => {};
+  handleDeleteOffice = () => {
+    this.props.onDeleteOffice(this.state.office._id);
+  };
+
+  /** Show snack msg */
+  handleShowSnackMsg = snackMsg => {
+    this.setState({ snackMsg });
+  };
+
+  /** Close snack msg */
+  handleCloseSnackMsg = () => {
+    this.setState({ snackMsg: null });
+  };
 
   /**
    * Renderer function
    */
   render() {
     const { classes: s, t, width } = this.props;
-    const { office, error, isLoading, currentStep, dialog } = this.state;
+    const {
+      office,
+      error,
+      isLoading,
+      currentStep,
+      dialog,
+      snackMsg
+    } = this.state;
     const CurrentForm =
       currentStep < 3 ? this.steps[currentStep].form : OfficeDetailForm;
-
-    console.log(office);
 
     return (
       <Column
@@ -521,7 +662,25 @@ class AddNewOffice extends Component {
             </Row>
           )}
         </>
+
+        {/** Show dialogs */}
         {dialog}
+
+        {/** Show snack msgs */}
+        {snackMsg && (
+          <Snackbar
+            open={true}
+            autoHideDuration={4000}
+            onClose={this.handleCloseSnackMsg}
+          >
+            <Alert
+              onClose={this.handleCloseSnackMsg}
+              severity={snackMsg.severity || "info"}
+            >
+              {snackMsg.msg || snackMsg}
+            </Alert>
+          </Snackbar>
+        )}
       </Column>
     );
   }
