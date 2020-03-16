@@ -68,6 +68,21 @@ const styleSheet = theme => ({
 
   outlineIcon: {
     color: theme.colors.primary.borderGrey
+  },
+
+  rightColumn: {
+    position: "relative",
+    "&:before": {
+      content: '" "',
+      position: "absolute",
+      left: 0,
+      top: 67,
+      bottom: 16,
+      borderLeft: `1px solid ${theme.colors.primary.borderGrey}`,
+      [theme.breakpoints.down("sm")]: {
+        border: "none"
+      }
+    }
   }
 });
 
@@ -79,22 +94,19 @@ class SelectRegisterForm extends Component {
   };
 
   render() {
-    const { classes, t } = this.props;
+    const { classes: s, t } = this.props;
 
     return (
       <Column fullWidth>
-        <Grid container className={classes.formWrapper}>
+        <Grid container className={s.formWrapper}>
           <Grid item xs={12} sm={6}>
             <Column fullWidth padding>
               <Column
                 alignChildrenStart
-                classes={{ box: classes.selectorWrapper }}
+                classes={{ box: s.selectorWrapper }}
                 textLightGrey
               >
-                <BuildingsIcon
-                  fontSize="large"
-                  className={classes.outlineIcon}
-                />
+                <BuildingsIcon fontSize="large" className={s.outlineIcon} />
                 <Box paddingTopHalf>
                   <Typography
                     fontSizeL
@@ -112,20 +124,19 @@ class SelectRegisterForm extends Component {
                   <Typography
                     fontSizeM
                     textSecondary
-                    textLeft
-                    // className={classes.formSubtitle}
+                    classes={{ box: s.formSubtitle }}
                   >
                     {t("iHavePlaceToRent")}
                   </Typography>
                 </Box>
                 <Button
-                  className={classes.signupButton}
+                  className={s.signupButton}
                   onClick={this.handleSelectRegister("landlord")}
                 >
                   <Typography fontSizeS fontWeightBold textWhite>
                     {t("landlordSignup")}
                     <Box paddingLeft alignChildrenCenter>
-                      <ArrowRightAltIcon style={{width: 14, height: 10}} />
+                      <ArrowRightAltIcon style={{ width: 14, height: 10 }} />
                     </Box>
                   </Typography>
                 </Button>
@@ -133,13 +144,13 @@ class SelectRegisterForm extends Component {
             </Column>
           </Grid>
           <Grid item xs={12} sm={6}>
-            <Column fullWidth padding>
+            <Column fullWidth padding classes={{ box: s.rightColumn }}>
               <Column
                 alignChildrenStart
-                classes={{ box: classes.selectorWrapper }}
+                classes={{ box: s.selectorWrapper }}
                 textLightGrey
               >
-                <UsersIcon fontSize="large" className={classes.outlineIcon} />
+                <UsersIcon fontSize="large" className={s.outlineIcon} />
                 <Box paddingTopHalf>
                   <Typography
                     fontSizeL
@@ -157,20 +168,19 @@ class SelectRegisterForm extends Component {
                   <Typography
                     fontSizeM
                     textSecondary
-                    textLeft
-                    // classes={{ box: classes.formSubtitle }}
+                    classes={{ box: s.formSubtitle }}
                   >
                     {t("iLookForOffice")}
                   </Typography>
                 </Box>
                 <Button
-                  className={classes.signupButton}
+                  className={s.signupButton}
                   onClick={this.handleSelectRegister("company")}
                 >
                   <Typography fontSizeS fontWeightBold textWhite>
                     {t("companySignup")}
                     <Box paddingLeft alignChildrenCenter>
-                      <ArrowRightAltIcon style={{width: 14, height: 10}} />
+                      <ArrowRightAltIcon style={{ width: 14, height: 10 }} />
                     </Box>
                   </Typography>
                 </Button>
@@ -178,7 +188,7 @@ class SelectRegisterForm extends Component {
             </Column>
           </Grid>
         </Grid>
-        <Row fullWidth classes={{ box: classes.switchTextWrapper }}>
+        <Row fullWidth classes={{ box: s.switchTextWrapper }}>
           <Column fullWidth>
             <Typography textSecondary fontSizeS>
               {t("alreadyHaveAccount")}
