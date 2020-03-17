@@ -29,7 +29,8 @@ import {
   HeartIcon,
   EmojiIcon,
   CalendarIcon,
-  ArrowRightAltIcon
+  ArrowRightAltIcon,
+  CheckIcon
 } from "../../common/base-components";
 import { OfficeItem } from "../../common/base-layouts";
 import Carousel from "@brainhubeu/react-carousel";
@@ -131,8 +132,6 @@ const styleSheet = theme => ({
   },
 
   searchInputIcon: {
-    // borderRadius: "50%",
-    background: theme.colors.primary.mainColor,
     minWidth: 39,
     height: 39,
     position: "absolute",
@@ -404,6 +403,11 @@ const styleSheet = theme => ({
     }
   },
 
+  receiveNewsletter: {
+    maxWidth: 400,
+    width: "100%"
+  },
+
   socialIconsWrapper: {
     height: 55
   },
@@ -431,6 +435,7 @@ class Home extends Component {
 
   state = {
     tessiQuery: "",
+    receiveNewsletter: "",
     activeLandingBlock: 0,
     activeHelpStep: 0
   };
@@ -609,7 +614,12 @@ class Home extends Component {
 
   render() {
     const { recommendedOffices, width, classes, t } = this.props;
-    const { activeHelpStep, activeLandingBlock, tessiQuery } = this.state;
+    const {
+      activeHelpStep,
+      activeLandingBlock,
+      tessiQuery,
+      receiveNewsletter
+    } = this.state;
     const TextStepComponent = this.textStepper;
     const ImgStepComponent = this.imgStepper;
 
@@ -622,7 +632,7 @@ class Home extends Component {
           {this.landingBlocks.map((block, index) => (
             <img
               key={index}
-              srcSet={`${block.imgL} 2x`}
+              srcSet={`${block.img} 960w, ${block.imgL} 1280w`}
               src={block.img}
               alt=""
               className={clsx(
@@ -1239,11 +1249,33 @@ class Home extends Component {
                 <Typography fontSizeS textSecondary>
                   {t("receiveNewsletter")}
                 </Typography>
-                <Row paddingTopHalf fullWidth>
+                <Row paddingTopHalf fullWidth justifyChildrenCenter>
                   <TextField
                     variant="outlined"
                     placeholder={t("yourEmailAddress")}
-                    fullWidth
+                    className={classes.receiveNewsletter}
+                    type="email"
+                    value={receiveNewsletter}
+                    onChange={this.handleChangeByEvent("receiveNewsletter")}
+                    endAdornment={
+                      <Button
+                        variant="icon"
+                        style={{ margin: 0 }}
+                        className={clsx(classes.searchInputIcon)}
+                        background={
+                          receiveNewsletter ? "primary" : "borderLight"
+                        }
+                        shadow
+                      >
+                        <CheckIcon
+                          style={{
+                            color: "white",
+                            width: 18,
+                            height: 18
+                          }}
+                        />
+                      </Button>
+                    }
                   />
                 </Row>
               </Column>
