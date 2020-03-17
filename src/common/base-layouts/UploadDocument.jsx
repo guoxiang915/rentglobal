@@ -79,7 +79,8 @@ const UploadDocument = ({
 
   const prevCurrent = () => setCurrent(current - 1);
   const nextCurrent = () => setCurrent(current + 1);
-  const deleteCurrent = () => onDelete(documents[current]._id);
+  const deleteCurrent = () =>
+    onDelete(documents[current]).then(() => setCurrent(0));
   const downloadCurrent = () =>
     onDownload(documents[current]._id, documents[current].fileName);
 

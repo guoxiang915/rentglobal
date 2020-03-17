@@ -84,6 +84,16 @@ class Landlord extends Component {
     });
   };
 
+  /** Call api to delete user document */
+  deleteUserDocument = (document, documentFileId) => {
+    return api.delete(`/users/me/delete/document?role=landlord`, {
+      data: {
+        document,
+        documentFileId
+      }
+    });
+  };
+
   /** Call api to get office list */
   getOffices = () => {
     return api.get("/users/me/offices");
@@ -122,6 +132,11 @@ class Landlord extends Component {
   /** Call api to unpublish office */
   unpublishOffice = officeId => {
     return api.put(`/offices/unpublish/${officeId}`);
+  };
+
+  /** Call api to delete office photo */
+  deleteOfficePhoto = (officeId, photoId) => {
+    return api.delete(`/offices/delete/${officeId}/cover-photos/${photoId}`);
   };
 
   /** Event handler for edit office */
@@ -232,6 +247,7 @@ class Landlord extends Component {
                       uploadFile={this.uploadFile}
                       createOffice={this.createOffice}
                       updateOffice={this.updateOffice}
+                      deleteOfficePhoto={this.deleteOfficePhoto}
                       createOfficeCoverPhotos={this.createOfficeCoverPhotos}
                       createOfficeServicesAmenities={
                         this.createOfficeServicesAmenities
@@ -270,6 +286,7 @@ class Landlord extends Component {
                       }
                       uploadFile={this.uploadFile}
                       downloadFile={this.downloadFile}
+                      deleteDocument={this.deleteUserDocument}
                     />
                   )}
                 />

@@ -70,7 +70,7 @@ const styleSheet = theme => ({
     left: "calc(50% - 12px)",
     color: `${theme.colors.primary.white} !important`,
     background: `${theme.colors.primary.errorRed} !important`,
-    border: "none !important",
+    border: "none !important"
   }
 });
 
@@ -79,12 +79,13 @@ class PictureGalleryForm extends Component {
     office: PropTypes.object,
     error: PropTypes.object,
     onChangeField: PropTypes.func,
+    deletePhoto: PropTypes.func,
 
     classes: PropTypes.object,
     t: PropTypes.func
   };
 
-  state = { isUploading: false, selectedPicture: null };
+  state = { isLoading: false, selectedPicture: null };
 
   dropzoneRef = React.createRef();
 
@@ -110,10 +111,9 @@ class PictureGalleryForm extends Component {
    * Upload photos
    */
   handleUploadPhotos = file => {
-    this.setState({ isUploading: true });
+    this.setState({ isLoading: true });
     this.props.uploadFile(file, "public-read").then(response => {
-      console.log(response);
-      this.setState({ isUploading: false });
+      this.setState({ isLoading: false });
       this.props.onChangeField("coverPhotos", [
         ...(this.props.office.coverPhotos || []),
         response.data
@@ -130,8 +130,20 @@ class PictureGalleryForm extends Component {
     this.setState({ selectedPicture: null });
   };
 
+  /** Remove selected picture */
   handleRemoveSelectedPicture = () => {
-    this.setState({ selectedPicture: null });
+    this.setState({ isLoading: true });
+    this.props
+      .deletePhoto(this.props.office._id, this.state.selectedPicture)
+      .then(
+        response => {
+          this.setState({ isLoading: false, selectedPicture: null });
+          this.props.onChangeField("coverPhotos", response.data.coverPhotos);
+        },
+        error => {
+          this.setState({ isLoading: false });
+        }
+      );
   };
 
   /**
@@ -139,7 +151,7 @@ class PictureGalleryForm extends Component {
    */
   render() {
     const { office, classes: s, t } = this.props;
-    const { isUploading, selectedPicture } = this.state;
+    const { isLoading, selectedPicture } = this.state;
 
     return (
       <Column classes={{ box: s.root }} fullWidth alignChildrenStart>
@@ -162,7 +174,7 @@ class PictureGalleryForm extends Component {
               {...getRootProps()}
             >
               <input {...getInputProps()} />
-              {isUploading ? (
+              {isLoading ? (
                 <ProgressIcon />
               ) : selectedPicture ? (
                 <DeleteIcon fontSize="large" color="secondary" />

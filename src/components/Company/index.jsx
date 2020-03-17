@@ -63,6 +63,16 @@ class Company extends Component {
     });
   };
 
+  /** Call api to delete user document */
+  deleteUserDocument = (document, documentFileId) => {
+    return api.delete(`/users/me/delete/document?role=company`, {
+      data: {
+        document,
+        documentFileId
+      }
+    });
+  };
+
   render() {
     const { classes } = this.props;
     const { user } = this.props.auth;
@@ -97,6 +107,7 @@ class Company extends Component {
                       }
                       uploadFile={this.uploadFile}
                       downloadFile={this.downloadFile}
+                      deleteDocument={this.deleteUserDocument}
                     />
                   )}
                 />

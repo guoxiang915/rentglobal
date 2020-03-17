@@ -589,6 +589,7 @@ class AddNewOffice extends Component {
               error={error}
               onChangeField={this.handleChangeOfficeField}
               uploadFile={this.props.uploadFile}
+              deletePhoto={this.props.deleteOfficePhoto}
             />
           </Row>
 

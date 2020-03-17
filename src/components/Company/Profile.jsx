@@ -192,6 +192,13 @@ const styleSheet = theme => ({
 });
 
 class Profile extends Component {
+  static propTypes = {
+    uploadFile: PropTypes.func,
+    downloadFile: PropTypes.func,
+    updateUser: PropTypes.func,
+    deleteDocument: PropTypes.func
+  };
+
   state = {
     userImage: null,
     username: "",
@@ -211,12 +218,6 @@ class Profile extends Component {
     editTab: "companyInfo",
     openedTab: "companyInfo",
     uploadingDocument: null
-  };
-
-  static propTypes = {
-    uploadFile: PropTypes.func,
-    downloadFile: PropTypes.func,
-    updateUser: PropTypes.func
   };
 
   UNSAFE_componentWillReceiveProps(newProps) {
@@ -342,6 +343,15 @@ class Profile extends Component {
           documentFileId: response.data.id
         }
       });
+      this.setState({
+        uploadingDocument: null
+      });
+    });
+  };
+
+  handleDeleteDocument = docType => docFile => {
+    this.setState({ uploadingDocument: docType });
+    return this.props.deleteDocument(docType, docFile).then(response => {
       this.setState({
         uploadingDocument: null
       });
@@ -573,7 +583,7 @@ class Profile extends Component {
                       uploading={uploadingDocument === item.value}
                       onUpload={this.handleUploadDocument(item.value)}
                       onDownload={this.props.downloadFile}
-                      onDelete={() => {}}
+                      onDelete={this.handleDeleteDocument(item.value)}
                     />
                   </Box>
                 </React.Fragment>
