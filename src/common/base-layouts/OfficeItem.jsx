@@ -141,8 +141,9 @@ const OfficeItem = ({
   const next = () =>
     setPos(pos === office.coverPhotos.length - 1 ? 0 : pos + 1);
   const dots = React.useMemo(() => {
-    const dots = office.coverPhotos.map(() => <Dot classes={s} />);
-    return dots;
+    return office.coverPhotos
+      ? office.coverPhotos.map(() => <Dot classes={s} />)
+      : [];
   }, [office, s]);
 
   return (
