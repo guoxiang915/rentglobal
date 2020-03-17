@@ -234,6 +234,7 @@ class OfficeDetailForm extends Component {
                   <img
                     src={
                       office.coverPhotos &&
+                      office.coverPhotos.length !== 0 &&
                       office.coverPhotos[currentPhoto].bucketPath
                     }
                     className={s.coverPhotoContent}
@@ -314,11 +315,11 @@ class OfficeDetailForm extends Component {
             >
               <Row classes={{ box: s.infoRow }}>
                 <Column classes={{ box: s.infoLabel }}>
-                  {t("businessOrOtherFees")}
+                  {t("businessOtherFees")}
                 </Column>
                 <Column classes={{ box: s.infoValue }}>
                   {t("dollarPerMonth", {
-                    dollar: office.businessOrOtherFees || 0
+                    dollar: office.businessOtherFees || 0
                   })}
                 </Column>
               </Row>

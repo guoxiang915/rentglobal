@@ -161,7 +161,7 @@ class AddNewOffice extends Component {
       // title: "New Office",
       // officeType: "privateOffice",
       // priceMonthly: 4500,
-      // businessOrOtherFees: 123,
+      // businessOtherFees: 123,
       // area: 74,
       // rooms: 2,
       // numberOfEmployees: 6,
@@ -222,25 +222,35 @@ class AddNewOffice extends Component {
           const office = response.data;
           let currentStep = 0;
           if (
-            office.servicesAndAmenities &&
-            (office.servicesAndAmenities.category1.length ||
+            !office.title ||
+            !office.officeType ||
+            !office.pricemonthly ||
+            !office.location ||
+            !office.numberOfEmployees
+          ) {
+            currentStep = 0;
+          } else if (
+            !office.coverPhotos ||
+            office.coverPhotos.length < 3 ||
+            office.coverPhotos.length > 15
+          ) {
+            currentStep = 1;
+          } else if (
+            !office.servicesAndAmenities ||
+            !(
+              office.servicesAndAmenities.category1.length ||
               office.servicesAndAmenities.category2.length ||
               office.servicesAndAmenities.category3.length ||
               office.servicesAndAmenities.category4.length ||
               office.servicesAndAmenities.category5.length ||
               office.servicesAndAmenities.category6.length ||
               office.servicesAndAmenities.category7.length ||
-              office.servicesAndAmenities.customFeatures.length)
-          ) {
-            currentStep = 3;
-          } else if (
-            office.coverPhotos &&
-            office.coverPhotos.length >= 3 &&
-            office.coverPhotos.length <= 15
+              office.servicesAndAmenities.customFeatures.length
+            )
           ) {
             currentStep = 2;
           } else {
-            currentStep = 1;
+            currentStep = 3;
           }
           this.setState({ office, currentStep });
         }

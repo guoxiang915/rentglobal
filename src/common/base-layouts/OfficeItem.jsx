@@ -170,14 +170,16 @@ const OfficeItem = ({
           )}
 
           {/** dots */}
-          <Box classes={{ box: s.dots }} justifyChildrenCenter>
-            <Dots
-              value={pos}
-              onChange={setPos}
-              number={office.coverPhotos.length}
-              thumbnails={dots}
-            />
-          </Box>
+          {office.coverPhotos && office.coverPhotos.length !== 0 && (
+            <Box classes={{ box: s.dots }} justifyChildrenCenter>
+              <Dots
+                value={pos}
+                onChange={setPos}
+                number={office.coverPhotos.length}
+                thumbnails={dots}
+              />
+            </Box>
+          )}
 
           {/** office location */}
           <Typography fontSizeXS textWhite classes={{ box: s.officeLocation }}>
@@ -185,41 +187,51 @@ const OfficeItem = ({
           </Typography>
 
           {/** arrows */}
-          <Box
-            classes={{ box: s.carouselArrow }}
-            style={{ left: 14 }}
-            onClick={prev}
-          >
-            <KeyboardArrowLeft />
-          </Box>
-          <Box
-            classes={{ box: s.carouselArrow }}
-            style={{ right: 14 }}
-            onClick={next}
-          >
-            <KeyboardArrowRight />
-          </Box>
+          {office.coverPhotos && office.coverPhotos.length !== 0 && (
+            <Box
+              classes={{ box: s.carouselArrow }}
+              style={{ left: 14 }}
+              onClick={prev}
+            >
+              <KeyboardArrowLeft />
+            </Box>
+          )}
+          {office.coverPhotos && office.coverPhotos.length !== 0 && (
+            <Box
+              classes={{ box: s.carouselArrow }}
+              style={{ right: 14 }}
+              onClick={next}
+            >
+              <KeyboardArrowRight />
+            </Box>
+          )}
         </div>
 
         {/** office images */}
         <div style={{ width: "100%", height: "100%" }}>
-          <Carousel
-            slidesPerPage={1}
-            value={pos}
-            infinite
-            onChange={setPos}
-            autoPlay={autoPlay || 7000}
-            stopAutoPlayOnHover
-            keepDirectionWhenDragging
-          >
-            {office.coverPhotos.map((photo, index) => (
-              <React.Fragment key={index}>
-                {/* <Box fullWidth> */}
-                <img src={photo.bucketPath} alt="" className={s.officeImage} />
-                {/* </Box> */}
-              </React.Fragment>
-            ))}
-          </Carousel>
+          {office.coverPhotos && (
+            <Carousel
+              slidesPerPage={1}
+              value={pos}
+              infinite
+              onChange={setPos}
+              autoPlay={autoPlay || 7000}
+              stopAutoPlayOnHover
+              keepDirectionWhenDragging
+            >
+              {office.coverPhotos.map((photo, index) => (
+                <React.Fragment key={index}>
+                  {/* <Box fullWidth> */}
+                  <img
+                    src={photo.bucketPath}
+                    alt=""
+                    className={s.officeImage}
+                  />
+                  {/* </Box> */}
+                </React.Fragment>
+              ))}
+            </Carousel>
+          )}
         </div>
       </Box>
 

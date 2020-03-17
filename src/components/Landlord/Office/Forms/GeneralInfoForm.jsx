@@ -207,6 +207,7 @@ class GeneralInfoForm extends Component {
     try {
       validation = error && error.find(item => item.param === field);
     } catch (e) {}
+    console.log(props, field, office[field]);
     switch (tag) {
       case "textfield":
         return (
@@ -330,7 +331,7 @@ class GeneralInfoForm extends Component {
           />
         </GridRow>
         {/** business / other fees */}
-        <GridRow classes={s} title={t("businessOrOtherFees")}>
+        <GridRow classes={s} title={t("businessOtherFees")}>
           <NormalFormField
             tag="textfield"
             className={s.textField350}
@@ -344,7 +345,7 @@ class GeneralInfoForm extends Component {
                 {t("$/month")}
               </Typography>
             }
-            field="businessOrOtherFees"
+            field="businessOtherFees"
           />
         </GridRow>
 
