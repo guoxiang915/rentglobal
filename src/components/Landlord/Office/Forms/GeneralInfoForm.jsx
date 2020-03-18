@@ -207,7 +207,6 @@ class GeneralInfoForm extends Component {
     try {
       validation = error && error.find(item => item.param === field);
     } catch (e) {}
-    console.log(props, field, office[field]);
     switch (tag) {
       case "textfield":
         return (
