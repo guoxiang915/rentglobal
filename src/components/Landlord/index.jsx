@@ -18,7 +18,21 @@ import Profile from "../Layout/Profile";
 import Office from "./Office";
 import OfficeDetail from "./Office/OfficeDetail";
 import AddNewOffice from "../../containers/Landlord/Office/AddNewOffice";
-import api from "../../api/api";
+import {
+  uploadFile,
+  downloadFile,
+  deleteUserDocument,
+  getOffices,
+  getOfficeById,
+  createOffice,
+  updateOffice,
+  createOfficeCoverPhotos,
+  createOfficeServicesAmenities,
+  publishOffice,
+  unpublishOffice,
+  deleteOfficePhoto,
+  deleteOffice
+} from "../../api/endpoints";
 
 const styleSheet = theme => ({
   root: {
@@ -46,98 +60,20 @@ class Landlord extends Component {
 
   state = { dialog: null };
 
-  /**
-   * Upload file to the api
-   * @param {File} file File object to upload
-   * @param {string} permission "public-read" or "private"
-   */
-  uploadFile = (file, permission) => {
-    const formData = new FormData();
-    formData.append("file", file);
-    if (permission) {
-      formData.append("permission", permission);
-    }
-    const config = {
-      headers: { "Content-Type": undefined }
-    };
-    return api.post("/file/upload", formData, config);
-  };
-
-  /**
-   * Download file from api
-   * @param {string} fileId id of file to download
-   * @param {string} fileName name of file to be downloaded
-   */
-  downloadFile = (fileId, fileName) => {
-    api.get(`/file/${fileId}`, { responseType: "blob" }).then(response => {
-      const url = window.URL.createObjectURL(response.data);
-      const el = document.createElement("a");
-
-      el.href = url;
-      el.download = fileName;
-      el.style.display = "none";
-      document.body.appendChild(el);
-      el.click();
-
-      document.body.removeChild(el);
-      window.URL.revokeObjectURL(url);
-    });
-  };
-
-  /** Call api to delete user document */
-  deleteUserDocument = (document, documentFileId) => {
-    return api.delete(`/users/me/delete/document?role=landlord`, {
-      data: {
-        document,
-        documentFileId
+  /** Call api to delete office */
+  deleteOffice = officeId => () => {
+    deleteOffice(officeId).then(response => {
+      if (response.status === 200) {
+        this.props.navigate("offices");
       }
     });
   };
 
-  /** Call api to get office list */
-  getOffices = () => {
-    return api.get("/users/me/offices");
-  };
-
-  /** Call api to get office from id */
-  getOfficeById = officeId => {
-    return api.get(`/users/me/offices/${officeId}`);
-  };
-
-  /** Call api to create office */
-  createOffice = office => {
-    return api.post("/offices/create", office);
-  };
-
-  /** Call api to update office */
-  updateOffice = office => {
-    return api.put(`/users/me/offices/${office._id}`, { office });
-  };
-
-  /** Call api to save cover-photos */
-  createOfficeCoverPhotos = payload => {
-    return api.post("/offices/create/cover-photos", payload);
-  };
-
-  /** Call api to save services & amenities of office */
-  createOfficeServicesAmenities = payload => {
-    return api.post("/offices/create/services-amenities", payload);
-  };
-
-  /** Call api to publish office */
-  publishOffice = officeId => {
-    return api.put(`/offices/publish/${officeId}`);
-  };
-
-  /** Call api to unpublish office */
-  unpublishOffice = officeId => {
-    return api.put(`/offices/unpublish/${officeId}`);
-  };
-
-  /** Call api to delete office photo */
-  deleteOfficePhoto = (officeId, photoId) => {
-    return api.delete(`/offices/delete/${officeId}/cover-photos/${photoId}`);
-  };
+  /**
+   * Edit office
+   * @deprecated
+   */
+  editOffice = officeId => () => {};
 
   /** Event handler for edit office */
   handleEditOffice = officeId => {
@@ -191,19 +127,10 @@ class Landlord extends Component {
     });
   };
 
+  /** Close dialog */
   closeDialog = () => {
     this.setState({ dialog: null });
   };
-
-  deleteOffice = officeId => () => {
-    api.delete(`/offices/delete/${officeId}`).then(response => {
-      if (response.status === 200) {
-        this.props.navigate("offices");
-      }
-    });
-  };
-
-  editOffice = officeId => () => {};
 
   render() {
     const { classes } = this.props;
@@ -231,7 +158,7 @@ class Landlord extends Component {
                   path="/landlord/offices"
                   render={props => (
                     <Office
-                      getOffices={this.getOffices}
+                      getOffices={getOffices}
                       navigate={this.props.navigate}
                     />
                   )}
@@ -241,18 +168,18 @@ class Landlord extends Component {
                   path={["/landlord/offices/add/:id", "/landlord/offices/add"]}
                   render={({ match }) => (
                     <AddNewOffice
-                      getOfficeById={this.getOfficeById}
                       officeId={match.params.id}
                       navigate={this.props.navigate}
-                      uploadFile={this.uploadFile}
-                      createOffice={this.createOffice}
-                      updateOffice={this.updateOffice}
-                      deleteOfficePhoto={this.deleteOfficePhoto}
-                      createOfficeCoverPhotos={this.createOfficeCoverPhotos}
+                      getOfficeById={getOfficeById}
+                      uploadFile={uploadFile}
+                      createOffice={createOffice}
+                      updateOffice={updateOffice}
+                      deleteOfficePhoto={deleteOfficePhoto}
+                      createOfficeCoverPhotos={createOfficeCoverPhotos}
                       createOfficeServicesAmenities={
-                        this.createOfficeServicesAmenities
+                        createOfficeServicesAmenities
                       }
-                      publishOffice={this.publishOffice}
+                      publishOffice={publishOffice}
                       onDeleteOffice={this.handleDeleteOffice}
                       onEditOffice={this.handleEditOffice}
                     />
@@ -266,7 +193,7 @@ class Landlord extends Component {
                       navigate={this.props.navigate}
                       officeId={match.params.id}
                       getOfficeById={this.getOfficeById}
-                      unpublishOffice={this.unpublishOffice}
+                      unpublishOffice={unpublishOffice}
                       onDeleteOffice={this.handleDeleteOffice}
                       onEditOffice={this.handleEditOffice}
                     />
@@ -285,9 +212,9 @@ class Landlord extends Component {
                           this.props.history
                         )
                       }
-                      uploadFile={this.uploadFile}
-                      downloadFile={this.downloadFile}
-                      deleteDocument={this.deleteUserDocument}
+                      uploadFile={uploadFile}
+                      downloadFile={downloadFile}
+                      deleteDocument={deleteUserDocument("landlord")}
                     />
                   )}
                 />

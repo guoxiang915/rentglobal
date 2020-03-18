@@ -288,9 +288,9 @@ class Profile extends Component {
       postalCode
     } = this.state;
 
-    if (avatar && avatar.id) {
+    if (avatar && avatar._id) {
       this.props.updateUser("avatar", {
-        avatarFileId: avatar.id
+        avatarFileId: avatar._id
       });
     }
     this.props.updateUser("profile", {
@@ -373,6 +373,7 @@ class Profile extends Component {
 
   handleSendPhoneVerification = () => {};
 
+  /** Upload avatar image */
   handleUploadAvatar = avatar => {
     this.setState({ uploadingDocument: "avatar" });
     this.props.uploadFile(avatar, "public-read").then(response => {
@@ -380,6 +381,7 @@ class Profile extends Component {
     });
   };
 
+  /** Upload user document */
   handleUploadDocument = docType => docFile => {
     this.setState({ uploadingDocument: docType });
     this.props.uploadFile(docFile).then(response => {
@@ -387,7 +389,7 @@ class Profile extends Component {
         role: this.props.user.role,
         documentInfo: {
           document: docType,
-          documentFileId: response.data.id
+          documentFileId: response.data._id
         }
       });
       this.setState({
@@ -396,6 +398,7 @@ class Profile extends Component {
     });
   };
 
+  /** Delete user document */
   handleDeleteDocument = docType => docFile => {
     this.setState({ uploadingDocument: docType });
     return this.props.deleteDocument(docType, docFile).then(response => {

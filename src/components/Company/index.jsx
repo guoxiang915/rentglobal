@@ -7,7 +7,11 @@ import { Switch, Route, Redirect } from "react-router-dom";
 import { AppSidebar } from "../Layout";
 import { Row, Column } from "../../common/base-components";
 import Profile from "../Layout/Profile";
-import api from "../../api/api";
+import {
+  uploadFile,
+  downloadFile,
+  deleteUserDocument
+} from "../../api/endpoints";
 
 const styleSheet = () => ({
   root: {
@@ -25,54 +29,7 @@ class Company extends Component {
     navigate: PropTypes.func
   };
 
-  /**
-   * Upload file to the api
-   * @param {File} file File object to upload
-   * @param {string} permission "public-read" or "private"
-   */
-  uploadFile = (file, permission) => {
-    const formData = new FormData();
-    formData.append("file", file);
-    if (permission) {
-      formData.append("permission", permission);
-    }
-    const config = {
-      headers: { "Content-Type": undefined }
-    };
-    return api.post("/file/upload", formData, config);
-  };
-
-  /**
-   * Download file from api
-   * @param {string} fileId id of file to download
-   * @param {string} fileName name of file to be downloaded
-   */
-  downloadFile = (fileId, fileName) => {
-    api.get(`/file/${fileId}`, { responseType: "blob" }).then(response => {
-      const url = window.URL.createObjectURL(response.data);
-      const el = document.createElement("a");
-
-      el.href = url;
-      el.download = fileName;
-      el.style.display = "none";
-      document.body.appendChild(el);
-      el.click();
-
-      document.body.removeChild(el);
-      window.URL.revokeObjectURL(url);
-    });
-  };
-
-  /** Call api to delete user document */
-  deleteUserDocument = (document, documentFileId) => {
-    return api.delete(`/users/me/delete/document?role=company`, {
-      data: {
-        document,
-        documentFileId
-      }
-    });
-  };
-
+  /** Render function */
   render() {
     const { classes } = this.props;
     const { user } = this.props.auth;
@@ -106,9 +63,9 @@ class Company extends Component {
                           this.props.history
                         )
                       }
-                      uploadFile={this.uploadFile}
-                      downloadFile={this.downloadFile}
-                      deleteDocument={this.deleteUserDocument}
+                      uploadFile={uploadFile}
+                      downloadFile={downloadFile}
+                      deleteDocument={deleteUserDocument("company")}
                     />
                   )}
                 />
