@@ -6,7 +6,7 @@ import { Hidden } from "@material-ui/core";
 import { Switch, Route, Redirect } from "react-router-dom";
 import { AppSidebar } from "../Layout";
 import { Row, Column } from "../../common/base-components";
-import Profile from "./Profile";
+import Profile from "../Layout/Profile";
 import api from "../../api/api";
 
 const styleSheet = () => ({
@@ -98,6 +98,7 @@ class Company extends Component {
                   render={props => (
                     <Profile
                       {...this.props.auth}
+                      role="company"
                       updateUser={(field, user) =>
                         this.props.mappedupdateUser(
                           field,

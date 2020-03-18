@@ -1,6 +1,6 @@
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
-import PrivateRoute from "../../components/PrivateRoute";
+import PrivateRoute from "../../components/Layout/PrivateRoute";
 import * as authActions from "../../actions/authActions";
 
 PrivateRoute.propTypes = {
@@ -15,7 +15,8 @@ const mapDispatchToProps = dispatch => ({
   mappedAuthenticate: (token, history) =>
     dispatch(authActions.authenticate(token, history)),
   mappedlogout: () => dispatch(authActions.logout()),
-  mappedToggleRole: (role, history) => dispatch(authActions.setUserRole(role, history))
+  mappedToggleRole: (role, history) =>
+    dispatch(authActions.setUserRole(role, history))
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(PrivateRoute);

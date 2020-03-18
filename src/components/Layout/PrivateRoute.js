@@ -3,12 +3,11 @@ import { Switch, Route, withRouter, Redirect } from "react-router-dom";
 import PropTypes from "prop-types";
 import clsx from "clsx";
 import Auth from "../../utils/auth";
-import AppHeader from "../AppHeader";
-import { AppFooter, AppSidebar } from "../Layout";
+import { AppHeader, AppFooter, AppSidebar } from ".";
 // import classes from "*.module.css";
 import { withStyles } from "@material-ui/core";
 import { Column, Spinner } from "../../common/base-components";
-import SendVerificationForm from "../Login/SendVerificationForm";
+import SendVerificationForm from "../Auth/SendVerificationForm";
 
 import HeaderImage from "../../assets/img/img_header@2x.jpg";
 

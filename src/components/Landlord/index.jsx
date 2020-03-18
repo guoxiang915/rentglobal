@@ -14,7 +14,7 @@ import {
   CheckIcon,
   DeleteIcon
 } from "../../common/base-components";
-import Profile from "./Profile";
+import Profile from "../Layout/Profile";
 import Office from "./Office";
 import OfficeDetail from "./Office/OfficeDetail";
 import AddNewOffice from "../../containers/Landlord/Office/AddNewOffice";
@@ -277,6 +277,7 @@ class Landlord extends Component {
                   render={props => (
                     <Profile
                       {...this.props.auth}
+                      role="landlord"
                       updateUser={(field, user) =>
                         this.props.mappedupdateUser(
                           field,
