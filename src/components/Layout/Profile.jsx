@@ -203,6 +203,8 @@ const styleSheet = theme => ({
 
 class Profile extends Component {
   static propTypes = {
+    role: PropTypes.string.isRequired,
+    user: PropTypes.object.isRequired,
     uploadFile: PropTypes.func,
     downloadFile: PropTypes.func,
     updateUser: PropTypes.func,
@@ -231,6 +233,7 @@ class Profile extends Component {
     uploadingDocument: null
   };
 
+  /** landlord/company profile documents */
   documents = {
     landlord: [
       {
@@ -386,7 +389,7 @@ class Profile extends Component {
     this.setState({ uploadingDocument: docType });
     this.props.uploadFile(docFile).then(response => {
       this.props.updateUser("documents", {
-        role: this.props.user.role,
+        role: this.props.role,
         documentInfo: {
           document: docType,
           documentFileId: response.data._id
