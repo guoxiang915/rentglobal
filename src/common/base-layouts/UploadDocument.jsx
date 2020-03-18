@@ -49,7 +49,8 @@ const styleSheet = theme => ({
     overflow: "hidden",
     textOverflow: "ellipsis",
     whiteSpace: "nowrap",
-    width: 110,
+    minWidth: 110,
+    textAlign: "center",
     "&:hover": {
       width: "fit-content",
       overflow: "visible",
