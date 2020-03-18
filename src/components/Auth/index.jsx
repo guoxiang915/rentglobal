@@ -97,14 +97,7 @@ class AuthWrapper extends Component {
       <div>
         <div className={classes.backgroundWrapper}></div>
         <div className={classes.loginWrapper}>
-          {// isLoading ? (
-          //   <Column classes={{ box: classes.loginCard }}>
-          //     <Column paddingTop fullWidth>
-          //       <Spinner />
-          //     </Column>
-          //   </Column>
-          // ) :
-          !isLoggedIn && (
+          {!isLoggedIn ? (
             <Switch>
               {/* login form */}
               <Route
@@ -151,11 +144,13 @@ class AuthWrapper extends Component {
               <Route
                 exact
                 path="/auth/register/verify-email/:token"
-                render={({ match }) => {
-                  this.props.mappedVerifyEmail(
-                    { token: match.params["token"] },
-                    this.props.history
-                  );
+                component={({ match }) => {
+                  React.useEffect(() => {
+                    this.props.mappedVerifyEmail(
+                      { token: match.params["token"] },
+                      this.props.history
+                    );
+                  });
                   return (
                     <Column classes={{ box: classes.loginCard }}>
                       <Column paddingTop fullWidth>
@@ -246,6 +241,8 @@ class AuthWrapper extends Component {
               />
               <Route render={() => <Redirect to="/auth/login" />} />
             </Switch>
+          ) : (
+            <Redirect to="/" />
           )}
         </div>
       </div>
