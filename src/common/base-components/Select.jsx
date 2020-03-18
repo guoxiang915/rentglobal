@@ -90,6 +90,11 @@ const styleSheet = theme => ({
 
 export const Select = withStyles(styleSheet, { name: "Select" })(
   class Select extends PureComponent {
+    state = {
+      error: false,
+      helperText: undefined
+    };
+
     static propTypes = {
       options: PropTypes.array,
       value: PropTypes.any,
@@ -120,11 +125,29 @@ export const Select = withStyles(styleSheet, { name: "Select" })(
     };
 
     handleChange = event => {
-      const { options, getKey, onChange } = this.props;
-      const key = event.target.value;
-      const value = options.find(option => getKey(option) === key);
-      onChange && onChange(value, event);
+      const { onChange } = this.props;
+      this.setState({ error: false, helperText: undefined });
+      onChange && onChange(event);
     };
+
+    componentDidUpdate(prevProps) {
+      let fieldState = {};
+      if (prevProps.error !== this.props.error) {
+        fieldState = {
+          ...fieldState,
+          error: this.props.error
+        };
+      }
+      if (prevProps.helperText !== this.props.helperText) {
+        fieldState = {
+          ...fieldState,
+          helperText: this.props.helperText
+        };
+      }
+      if (Object.keys(fieldState).length > 0) {
+        this.setState(fieldState);
+      }
+    }
 
     render() {
       const {
@@ -138,9 +161,12 @@ export const Select = withStyles(styleSheet, { name: "Select" })(
         variant,
         classes: s,
         className,
-        helperText,
+        error: errorProps,
+        helperText: helperTextProps,
+        onChange,
         ...props
       } = this.props;
+      const { error, helperText } = this.state;
 
       return (
         <MUIFormControl className={className}>
@@ -164,6 +190,7 @@ export const Select = withStyles(styleSheet, { name: "Select" })(
               </div>
             )}
             renderValue={value => renderOption(value)}
+            error={error}
             {...props}
           >
             {native && displayEmpty && (
