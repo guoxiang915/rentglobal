@@ -46,6 +46,11 @@ const styleSheet = theme => ({
 });
 
 class TextField extends Component {
+  state = {
+    error: this.props.error,
+    helperText: this.props.helperText
+  }
+
   static propTypes = {
     value: PropTypes.any,
     onChange: PropTypes.func,
@@ -64,6 +69,30 @@ class TextField extends Component {
     variant: "outlined"
   };
 
+  handleChange = e => {
+    this.setState({ error: false, helperText: undefined });
+    this.props.onChange(e);
+  }
+
+  componentDidUpdate(prevProps) {
+    let fieldState = {};
+    if (prevProps.error !== this.props.error) {
+      fieldState = {
+        ...fieldState,
+        error: this.props.error
+      };
+    }
+    if (prevProps.helperText !== this.props.helperText) {
+      fieldState = {
+        ...fieldState,
+        helperText: this.props.helperText
+      };
+    }
+    if (Object.keys(fieldState).length > 0) {
+      this.setState(fieldState);
+    }
+  }
+
   render() {
     let {
       value,
@@ -81,13 +110,14 @@ class TextField extends Component {
       styles,
       ...props
     } = this.props;
+    const { error, helperText } = this.state;
 
     return (
       <MUITextField
         // defaultValue={type === "number" ? 0 : ""}
         // fix bug of default value
         value={value || ""}
-        onChange={onChange}
+        onChange={this.handleChange}
         type={type}
         label={label}
         InputProps={{
@@ -115,6 +145,8 @@ class TextField extends Component {
         })}
         variant={variant}
         {...props}
+        error={error}
+        helperText={helperText}
       />
     );
   }
