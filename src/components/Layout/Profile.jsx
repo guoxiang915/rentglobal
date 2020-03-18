@@ -117,7 +117,7 @@ const styleSheet = theme => ({
     }
   },
 
-  landlordInfoForm: {
+  generalInfoForm: {
     width: "100%"
   },
 
@@ -131,6 +131,7 @@ const styleSheet = theme => ({
     display: "flex",
     justifyContent: "center",
     alignItems: "center",
+    overflow: "hidden",
     position: "relative",
     backgroundSize: "contain",
     backgroundPosition: "center",
@@ -138,6 +139,10 @@ const styleSheet = theme => ({
       backgroundColor: theme.colors.primary.grey,
       backgroundBlendMode: "screen"
     }
+  },
+
+  companyAvatarCard: {
+    borderRadius: "50%"
   },
 
   dropzone: {
@@ -148,6 +153,10 @@ const styleSheet = theme => ({
     top: "5%",
     left: "5%",
     filter: "grayscale(1)"
+  },
+
+  companyDropzone: {
+    borderRadius: "50%"
   },
 
   uploadIcon: {
@@ -201,7 +210,7 @@ class Profile extends Component {
   };
 
   state = {
-    userImage: null,
+    avatar: null,
     username: "",
     email: "",
     phoneNumber: "",
@@ -210,13 +219,40 @@ class Profile extends Component {
     legalStatusDocuments: [],
     checkSpecimen: [],
     leases: [],
+    copyOfPhotoIds: [],
+    lastThreeBalances: [],
+    commercialBrochures: [],
     password: "",
     passwordError: "",
     confirmPassword: "",
 
-    editTab: "landlordInfo",
-    openedTab: "landlordInfo",
+    editTab: "generalInfo",
+    openedTab: "generalInfo",
     uploadingDocument: null
+  };
+
+  documents = {
+    landlord: [
+      {
+        value: "legalStatusDocuments",
+        title: this.props.t("legalStatusDocument")
+      },
+      { value: "checkSpecimen", title: this.props.t("checkSpecimen") },
+      { value: "leases", title: this.props.t("lease") }
+    ],
+    company: [
+      {
+        value: "legalStatusDocuments",
+        title: this.props.t("legalStatusDocument")
+      },
+      { value: "checkSpecimen", title: this.props.t("checkSpecimen") },
+      { value: "copyOfPhotoIds", title: this.props.t("copyOfID") },
+      { value: "lastThreeBalances", title: this.props.t("lastThreeBalance") },
+      {
+        value: "commercialBrochures",
+        title: this.props.t("commercialBrochure")
+      }
+    ]
   };
 
   UNSAFE_componentWillReceiveProps(newProps) {
@@ -240,24 +276,33 @@ class Profile extends Component {
   };
 
   /**
-   * Save landlord info
+   * Save general info
    */
-  handleSaveLandlordInfo = () => {
-    if (this.state.userImage && this.state.userImage.id) {
+  handleSaveGeneralInfo = () => {
+    const {
+      avatar,
+      email,
+      username,
+      phoneNumber,
+      address,
+      postalCode
+    } = this.state;
+
+    if (avatar && avatar.id) {
       this.props.updateUser("avatar", {
-        avatarFileId: this.state.userImage.id
+        avatarFileId: avatar.id
       });
     }
     this.props.updateUser("profile", {
       role: this.props.user.role,
       profile: {
-        email: this.state.email,
+        email: email,
         profile: {
-          username: this.state.username,
-          phoneNumber: this.state.phoneNumber,
+          username,
+          phoneNumber,
           address: {
-            fullAddress: this.state.address,
-            postalCode: this.state.postalCode
+            fullAddress: address,
+            postalCode
           }
         }
       }
@@ -266,9 +311,10 @@ class Profile extends Component {
   };
 
   handleSaveSecurityInfo = e => {
-    if (this.state.password === this.state.confirmPassword) {
+    const { password, confirmPassword } = this.state;
+    if (password === confirmPassword) {
       this.props.updateUser("password", {
-        password: this.state.password,
+        password,
         passwordLastUpdated: new Date().getTime()
       });
     }
@@ -289,21 +335,23 @@ class Profile extends Component {
    * @param {string} props props from parent
    */
   handleResetProfileInfo = props => {
-    const { user } = props;
-    if (!user.landlordProfile) {
-      user.landlordProfile = {};
+    const { user, role } = props;
+    let profile =
+      role === "landlord" ? user.landlordProfile : user.companyProfile;
+    if (!profile) {
+      profile = {};
     }
-    if (!user.landlordProfile.address) {
-      user.landlordProfile.address = {};
+    if (!profile.address) {
+      profile.address = {};
     }
 
     this.setState({
-      username: user.landlordProfile.username || "",
+      username: profile.username || "",
       email: user.email || "",
-      phoneNumber: user.landlordProfile.phoneNumber || "",
-      address: user.landlordProfile.address.fullAddress || "",
-      postalCode: user.landlordProfile.address.postalCode || "",
-      userImage: user.avatar || null
+      phoneNumber: profile.phoneNumber || "",
+      address: profile.address.fullAddress || "",
+      postalCode: profile.address.postalCode || "",
+      avatar: user.avatar || null
     });
   };
 
@@ -325,10 +373,10 @@ class Profile extends Component {
 
   handleSendPhoneVerification = () => {};
 
-  handleUploadUserImage = userImage => {
+  handleUploadAvatar = avatar => {
     this.setState({ uploadingDocument: "avatar" });
-    this.props.uploadFile(userImage, "public-read").then(response => {
-      this.setState({ userImage: response.data, uploadingDocument: null });
+    this.props.uploadFile(avatar, "public-read").then(response => {
+      this.setState({ avatar: response.data, uploadingDocument: null });
     });
   };
 
@@ -357,9 +405,33 @@ class Profile extends Component {
     });
   };
 
+  /**
+   * Render function
+   */
   render() {
-    const { user, isUpdating: updatingTab, width, classes, t } = this.props;
+    const {
+      user,
+      isUpdating: updatingTab,
+      role,
+      width,
+      classes: s,
+      t
+    } = this.props;
     const { openedTab, editTab, uploadingDocument } = this.state;
+    const profile =
+      role === "landlord" ? user.landlordProfile : user.companyProfile;
+
+    const {
+      avatar,
+      username,
+      email,
+      phoneNumber,
+      address,
+      postalCode,
+      password,
+      passwordError,
+      confirmPassword
+    } = this.state;
 
     let passwordLastUpdated = "-";
     if (user.updatedAt) {
@@ -374,7 +446,7 @@ class Profile extends Component {
 
     return (
       <Column
-        classes={{ box: classes.root }}
+        classes={{ box: s.root }}
         fullWidth
         alignChildrenStart
         paddingTopDouble
@@ -385,53 +457,55 @@ class Profile extends Component {
           {t("profileAndAccount")}
         </Typography>
 
-        {/* landlord info tab */}
-        <Row fullWidth classes={{ box: classes.profileTabWrapper }}>
+        {/* general info tab */}
+        <Row fullWidth classes={{ box: s.profileTabWrapper }}>
           <TabWrapper
-            title={t("landlordInfo")}
-            open={openedTab === "landlordInfo"}
-            onToggleOpen={this.handleToggleOpen("landlordInfo")}
-            isEdit={editTab === "landlordInfo" || updatingTab === "profile"}
+            title={t(role === "landlord" ? "landlordInfo" : "companyInfo")}
+            open={openedTab === "generalInfo"}
+            onToggleOpen={this.handleToggleOpen("generalInfo")}
+            isEdit={editTab === "generalInfo" || updatingTab === "profile"}
             isEditable={editTab === null}
-            onToggleEdit={this.handleToggleEdit("landlordInfo")}
+            onToggleEdit={this.handleToggleEdit("generalInfo")}
           >
             <Row fullWidth>
-              <form
-                // onSubmit={this.handleSaveLandlordInfo}
-                noValidate
-                autoComplete="off"
-                className={classes.landlordInfoForm}
-              >
+              <form noValidate autoComplete="off" className={s.generalInfoForm}>
                 <Grid container direction="row-reverse">
                   <Grid item xs={12} sm={6}>
                     <Column fullWidth paddingTop>
-                      <Row classes={{ box: classes.imageWrapper }}>
+                      <Row classes={{ box: s.imageWrapper }}>
                         <Card
                           variant="outlined"
                           style={{
-                            backgroundImage: this.state.userImage
-                              ? `url("${this.state.userImage.bucketPath}")`
+                            backgroundImage: avatar
+                              ? `url("${avatar.bucketPath}")`
                               : "none"
                           }}
-                          className={classes.avatarCard}
+                          className={clsx(
+                            s.avatarCard,
+                            role === "company" && s.companyAvatarCard
+                          )}
                         >
-                          {!this.state.userImage &&
-                            editTab !== "landlordInfo" && (
-                              <UserIcon
-                                fontSize="large"
-                                className={classes.outlineIcon}
-                              />
-                            )}
-                          {editTab === "landlordInfo" && (
+                          {!avatar && editTab !== "generalInfo" && (
+                            <UserIcon
+                              fontSize="large"
+                              className={s.outlineIcon}
+                            />
+                          )}
+                          {editTab === "generalInfo" && (
                             <Dropzone
                               multiple={false}
                               onDrop={files =>
-                                this.handleUploadUserImage(files[0])
+                                this.handleUploadAvatar(files[0])
                               }
                             >
                               {({ getRootProps, getInputProps }) => (
                                 <Box
-                                  classes={{ box: classes.dropzone }}
+                                  classes={{
+                                    box: clsx(
+                                      s.dropzone,
+                                      role === "company" && s.companyDropzone
+                                    )
+                                  }}
                                   justifyChildrenCenter
                                   alignChildrenCenter
                                   {...getRootProps()}
@@ -443,10 +517,8 @@ class Profile extends Component {
                                     <UploadIcon
                                       fontSize="large"
                                       className={clsx({
-                                        [classes.uploadIcon]: this.state
-                                          .userImage,
-                                        [classes.outlineIcon]: !this.state
-                                          .userImage
+                                        [s.uploadIcon]: avatar,
+                                        [s.outlineIcon]: !avatar
                                       })}
                                     />
                                   )}
@@ -462,14 +534,14 @@ class Profile extends Component {
                     <Row paddingTop>
                       <TextField
                         variant="outlined"
-                        placeholder={t("landlordName")}
+                        placeholder={t(
+                          role === "landlord" ? "landlordName" : "companyName"
+                        )}
                         onChange={this.handleStateChangeByInput("username")}
-                        value={this.state.username}
-                        className={classes.profileInput}
-                        startAdornment={
-                          <UserIcon className={classes.outlineIcon} />
-                        }
-                        readOnly={editTab !== "landlordInfo"}
+                        value={username}
+                        className={s.profileInput}
+                        startAdornment={<UserIcon className={s.outlineIcon} />}
+                        readOnly={editTab !== "generalInfo"}
                       />
                     </Row>
                     <Row paddingTopHalf>
@@ -478,11 +550,9 @@ class Profile extends Component {
                         variant="outlined"
                         placeholder={t("emailAddress")}
                         onChange={this.handleStateChangeByInput("email")}
-                        value={this.state.email}
-                        className={classes.profileInput}
-                        startAdornment={
-                          <EmailIcon className={classes.outlineIcon} />
-                        }
+                        value={email}
+                        className={s.profileInput}
+                        startAdornment={<EmailIcon className={s.outlineIcon} />}
                         endAdornment={
                           <Tooltip
                             placement={
@@ -502,12 +572,12 @@ class Profile extends Component {
                             }
                             interactive
                           >
-                            <div className={classes.approveIcon}>
+                            <div className={s.approveIcon}>
                               <CheckIcon style={{ width: 11, height: 8 }} />
                             </div>
                           </Tooltip>
                         }
-                        readOnly={editTab !== "landlordInfo"}
+                        readOnly={editTab !== "generalInfo"}
                       />
                     </Row>
                     <Row paddingTopHalf>
@@ -515,11 +585,9 @@ class Profile extends Component {
                         variant="outlined"
                         placeholder={t("phoneNumber")}
                         onChange={this.handleStateChangeByInput("phoneNumber")}
-                        value={this.state.phoneNumber}
-                        className={classes.profileInput}
-                        startAdornment={
-                          <PhoneIcon className={classes.outlineIcon} />
-                        }
+                        value={phoneNumber}
+                        className={s.profileInput}
+                        startAdornment={<PhoneIcon className={s.outlineIcon} />}
                         endAdornment={
                           <Tooltip
                             placement={
@@ -549,10 +617,10 @@ class Profile extends Component {
                             }
                             interactive
                           >
-                            <div className={classes.errorIcon}>!</div>
+                            <div className={s.errorIcon}>!</div>
                           </Tooltip>
                         }
-                        readOnly={editTab !== "landlordInfo"}
+                        readOnly={editTab !== "generalInfo"}
                       />
                     </Row>
                     <Row paddingTopHalf>
@@ -560,12 +628,12 @@ class Profile extends Component {
                         variant="outlined"
                         placeholder={t("currentAddress")}
                         onChange={this.handleStateChangeByInput("address")}
-                        value={this.state.address}
-                        className={classes.profileInput}
+                        value={address}
+                        className={s.profileInput}
                         startAdornment={
-                          <AddressIcon className={classes.outlineIcon} />
+                          <AddressIcon className={s.outlineIcon} />
                         }
-                        readOnly={editTab !== "landlordInfo"}
+                        readOnly={editTab !== "generalInfo"}
                       />
                     </Row>
                     <Row paddingTopHalf>
@@ -573,21 +641,21 @@ class Profile extends Component {
                         variant="outlined"
                         placeholder={t("postalCode")}
                         onChange={this.handleStateChangeByInput("postalCode")}
-                        value={this.state.postalCode}
-                        className={classes.profileInput}
+                        value={postalCode}
+                        className={s.profileInput}
                         startAdornment={
-                          <MapPointerIcon className={classes.outlineIcon} />
+                          <MapPointerIcon className={s.outlineIcon} />
                         }
-                        readOnly={editTab !== "landlordInfo"}
+                        readOnly={editTab !== "generalInfo"}
                       />
                     </Row>
-                    {(editTab === "landlordInfo" ||
+                    {(editTab === "generalInfo" ||
                       updatingTab === "profile") && (
                       // buttons for save
                       <Row paddingTopHalf>
                         <SaveButtons
                           isUpdating={updatingTab === "profile"}
-                          onSave={this.handleSaveLandlordInfo}
+                          onSave={this.handleSaveGeneralInfo}
                           onCancel={this.handleCancelEditProfile}
                           t={t}
                         />
@@ -597,13 +665,15 @@ class Profile extends Component {
                 </Grid>
               </form>
             </Row>
-            <Row classes={{ box: classes.panelWrapper }} fullWidth>
+            <Row classes={{ box: s.panelWrapper }} fullWidth>
               <Typography
                 fontSizeS
                 textMediumGrey
-                classes={{ box: classes.panelDivider }}
+                classes={{ box: s.panelDivider }}
               >
-                {t("landlordDocuments")}
+                {t(
+                  role === "landlord" ? "landlordDocuments" : "companyDocuments"
+                )}
               </Typography>
             </Row>
             <Typography fontSizeS textSecondary paddingTop>
@@ -613,23 +683,14 @@ class Profile extends Component {
               fullWidth
               paddingTop
               paddingBottom
-              classes={{ box: classes.documentsWrapper }}
+              classes={{ box: s.documentsWrapper }}
             >
-              {[
-                {
-                  value: "legalStatusDocuments",
-                  title: t("legalStatusDocument")
-                },
-                { value: "checkSpecimen", title: t("checkSpecimen") },
-                { value: "leases", title: t("lease") }
-              ].map(item => (
+              {this.documents[role].map(item => (
                 <React.Fragment key={item.value}>
                   <Box paddingRightHalf paddingBottomHalf>
                     <UploadDocument
                       title={item.title}
-                      documents={
-                        user.landlordProfile && user.landlordProfile[item.value]
-                      }
+                      documents={profile && profile[item.value]}
                       uploading={uploadingDocument === item.value}
                       onUpload={this.handleUploadDocument(item.value)}
                       onDownload={this.props.downloadFile}
@@ -643,7 +704,7 @@ class Profile extends Component {
         </Row>
 
         {/* login and security tab */}
-        <Row fullWidth classes={{ box: classes.profileTabWrapper }}>
+        <Row fullWidth classes={{ box: s.profileTabWrapper }}>
           <TabWrapper
             title={t("loginAndSecurity")}
             open={openedTab === "loginAndSecurity"}
@@ -656,10 +717,10 @@ class Profile extends Component {
           >
             <Row fullWidth>
               <form
-                // onSubmit={this.handleSaveLandlordInfo}
+                // onSubmit={this.handleSaveGeneralInfo}
                 noValidate
                 autoComplete="off"
-                className={classes.landlordInfoForm}
+                className={s.generalInfoForm}
               >
                 <Grid container direction="row">
                   <Grid item xs={12} sm={6}>
@@ -669,14 +730,12 @@ class Profile extends Component {
                         variant="outlined"
                         placeholder={t("password")}
                         onChange={this.handleStateChangeByInput("password")}
-                        value={this.state.password}
-                        className={classes.profileInput}
-                        startAdornment={
-                          <LockIcon className={classes.outlineIcon} />
-                        }
+                        value={password}
+                        className={s.profileInput}
+                        startAdornment={<LockIcon className={s.outlineIcon} />}
                         readOnly={editTab !== "loginAndSecurity"}
-                        error={!!this.state.passwordError}
-                        helperText={this.state.passwordError}
+                        error={!!passwordError}
+                        helperText={passwordError}
                       />
                     </Row>
                     <Row paddingTopHalf>
@@ -687,11 +746,9 @@ class Profile extends Component {
                         onChange={this.handleStateChangeByInput(
                           "confirmPassword"
                         )}
-                        value={this.state.confirmPassword}
-                        className={classes.profileInput}
-                        startAdornment={
-                          <LockIcon className={classes.outlineIcon} />
-                        }
+                        value={confirmPassword}
+                        className={s.profileInput}
+                        startAdornment={<LockIcon className={s.outlineIcon} />}
                         readOnly={editTab !== "loginAndSecurity"}
                       />
                     </Row>
@@ -705,8 +762,7 @@ class Profile extends Component {
                           onCancel={this.handleCancelEditProfile}
                           t={t}
                           disabled={
-                            !!this.state.passwordError ||
-                            this.state.password !== this.state.confirmPassword
+                            !!passwordError || password !== confirmPassword
                           }
                         />
                       ) : (
@@ -724,13 +780,13 @@ class Profile extends Component {
                 </Grid>
               </form>
             </Row>
-            <Row classes={{ box: classes.panelWrapper }} fullWidth>
+            <Row classes={{ box: s.panelWrapper }} fullWidth>
               <Typography
                 fontSizeS
                 textMediumGrey
-                classes={{ box: classes.panelDivider }}
+                classes={{ box: s.panelDivider }}
               >
-                {t("landlordDocuments")}
+                {t("securityOptions")}
               </Typography>
             </Row>
             <Row fullWidth paddingTopDouble paddingBottom>
@@ -757,7 +813,7 @@ class Profile extends Component {
         </Row>
 
         {/* payments and payouts tab */}
-        <Row fullWidth classes={{ box: classes.profileTabWrapper }}>
+        <Row fullWidth classes={{ box: s.profileTabWrapper }}>
           <TabWrapper
             title={t("paymentsAndPayouts")}
             open={openedTab === "paymentsAndPayouts"}
@@ -772,7 +828,7 @@ class Profile extends Component {
         </Row>
 
         {/* privacy & sharing tab */}
-        <Row fullWidth classes={{ box: classes.profileTabWrapper }}>
+        <Row fullWidth classes={{ box: s.profileTabWrapper }}>
           <TabWrapper
             title={t("privacyAndSharing")}
             open={openedTab === "privacyAndSharing"}
