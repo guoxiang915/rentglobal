@@ -55,17 +55,17 @@ class AppFooter extends Component {
             </Typography>
             <Typography fontSizeXS>
               <Box paddingRight span>
-                <Link variant="normalLight" to="/terms">
+                <Link variant="normalLight" to="#">
                   {t("terms")}
                 </Link>
               </Box>
               <Box paddingRight span>
-                <Link variant="normalLight" to="/privacy">
+                <Link variant="normalLight" to="#">
                   {t("privacy")}
                 </Link>
               </Box>
               <Box span>
-                <Link variant="normalLight" to="/sitemap">
+                <Link variant="normalLight" to="#">
                   {t("siteMap")}
                 </Link>
               </Box>
