@@ -44,6 +44,7 @@ import gallery3 from "../../assets/img/img_gallery_03@2x.png";
 
 // import mock data
 import { offices } from "../../common/mock/officeMockData";
+import { emailValidation } from "../../utils/validators";
 
 const styleSheet = theme => ({
   root: {
@@ -443,6 +444,7 @@ class Home extends Component {
   state = {
     tessiQuery: "",
     receiveNewsletter: "",
+    receiveNewsletterError: null,
     activeLandingBlock: 0,
     activeHelpStep: 0
   };
@@ -595,6 +597,19 @@ class Home extends Component {
    */
   handleChangeByEvent = field => e => {
     this.setState({ [field]: e.target.value });
+  };
+
+  /** Click submit button of news letter input box */
+  handleReceiveNewsLetter = () => {
+    if (this.state.receiveNewsletter) {
+      if (!emailValidation(this.state.receiveNewsletter)) {
+        this.setState({
+          receiveNewsletterError: this.props.t("invalidEmailAddress")
+        });
+      } else {
+        console.log("Submit receive news letter!");
+      }
+    }
   };
 
   landingBlocks = [
@@ -1248,6 +1263,8 @@ class Home extends Component {
                     type="email"
                     value={receiveNewsletter}
                     onChange={this.handleChangeByEvent("receiveNewsletter")}
+                    error={!!this.state.receiveNewsletterError}
+                    helperText={this.state.receiveNewsletterError}
                     endAdornment={
                       <Button
                         variant="icon"
@@ -1257,6 +1274,8 @@ class Home extends Component {
                           receiveNewsletter ? "primary" : "borderLight"
                         }
                         shadow={!!receiveNewsletter}
+                        onClick={this.handleReceiveNewsLetter}
+                        disabled={!receiveNewsletter}
                       >
                         <CheckIcon
                           style={{
