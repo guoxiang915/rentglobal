@@ -196,7 +196,7 @@ class Landlord extends Component {
                     <OfficeDetail
                       navigate={this.props.navigate}
                       officeId={match.params.id}
-                      getOfficeById={this.getOfficeById}
+                      getOfficeById={getOfficeById}
                       unpublishOffice={unpublishOffice}
                       onDeleteOffice={this.handleDeleteOffice}
                       onEditOffice={this.handleEditOffice}
