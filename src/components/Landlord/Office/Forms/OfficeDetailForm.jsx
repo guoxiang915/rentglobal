@@ -114,8 +114,9 @@ const styleSheet = theme => ({
   },
 
   infoLabel: {
-    minWidth: 210,
-    width: "45%",
+    // minWidth: 210,
+    // width: "45%",
+    width: 210,
     fontSize: "15px",
     lineHeight: "20px",
     minHeight: 20,
@@ -125,7 +126,8 @@ const styleSheet = theme => ({
   },
 
   infoValue: {
-    width: "54%",
+    // width: "54%",
+    width: "calc(100% - 210px)",
     fontSize: "19px",
     lineHeight: "26px",
     minHeight: 26,
