@@ -1,7 +1,14 @@
 import React, { useState } from "react";
 import { withStyles } from "@material-ui/core";
 import { withTranslation } from "react-i18next";
-import { Typography, Row, Column, Box, StarIcon } from "../base-components";
+import {
+  Typography,
+  Row,
+  Column,
+  Box,
+  StarIcon,
+  ImageIcon
+} from "../base-components";
 import {
   FavoriteOutlined,
   FavoriteBorderOutlined,
@@ -81,6 +88,14 @@ const styleSheet = theme => ({
   },
 
   officeImage: {
+    width: 235,
+    height: 175,
+    borderRadius: 8
+  },
+
+  officeEmptyImage: {
+    background: theme.colors.primary.whiteGrey,
+    color: theme.colors.primary.borderGrey,
     width: 235,
     height: 175
   },
@@ -222,11 +237,21 @@ const OfficeItem = ({
               {office.coverPhotos.map((photo, index) => (
                 <React.Fragment key={index}>
                   {/* <Box fullWidth> */}
-                  <img
-                    src={photo.bucketPath}
-                    alt=""
-                    className={s.officeImage}
-                  />
+                  {photo.bucketPath ? (
+                    <img
+                      src={photo.bucketPath}
+                      alt=""
+                      className={s.officeImage}
+                    />
+                  ) : (
+                    <Box
+                      classes={{ box: s.officeEmptyImage }}
+                      justifyChildrenCenter
+                      alignChildrenCenter
+                    >
+                      <ImageIcon style={{ width: 31, height: 26 }} />
+                    </Box>
+                  )}
                   {/* </Box> */}
                 </React.Fragment>
               ))}
