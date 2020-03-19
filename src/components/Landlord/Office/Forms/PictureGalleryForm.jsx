@@ -132,18 +132,16 @@ class PictureGalleryForm extends Component {
 
   /** Remove selected picture */
   handleRemoveSelectedPicture = () => {
-    this.setState({ isLoading: true });
-    this.props
-      .deletePhoto(this.props.office._id, this.state.selectedPicture)
-      .then(
-        response => {
-          this.setState({ isLoading: false, selectedPicture: null });
-          this.props.onChangeField("coverPhotos", response.data.coverPhotos);
-        },
-        error => {
-          this.setState({ isLoading: false });
-        }
-      );
+    const { office = {} }= this.props;
+    const { coverPhotos = [] } = office;
+    const { selectedPicture } = this.state;
+    const selectedPictureIndex = coverPhotos.findIndex(photo => photo._id === selectedPicture._id);
+    if (selectedPictureIndex >= 0) {
+      coverPhotos.splice(selectedPictureIndex, 1);
+    }
+    this.setState({ selectedPicture: null }, () => {
+      this.props.onChangeField("coverPhotos", coverPhotos);
+    });
   };
 
   /**

@@ -288,7 +288,7 @@ class OfficeDetailForm extends Component {
           {t(office.officeType)}
         </Row>
         <Row paddingTopHalf fontSizeS textPrimary>
-          {t("dollarPerMonth", { dollar: office.priceMonthly })}
+          {t("dollarPerMonth", { dollar: office.priceMonthly | 0 })}
         </Row>
         {office.rating && (
           <Row paddingTopHalf>
@@ -343,8 +343,8 @@ class OfficeDetailForm extends Component {
                   {t("businessHours")}
                 </Column>
                 <Column classes={{ box: s.infoValue }}>
-                  {`${office.businessHoursFrom ||
-                    ""} - ${office.businessHoursTo || ""}`}
+                  {`${`${office.businessHours?.from} AM` ||
+                    ""} - ${`${office.businessHours?.to} PM` || ""}`}
                 </Column>
               </Row>
               <Row classes={{ box: s.infoRow }}>
