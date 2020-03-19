@@ -137,7 +137,9 @@ const styleSheet = theme => ({
     color: theme.colors.primary.darkGrey
   },
 
-  description: {},
+  description: {
+    marginTop: 45
+  },
 
   statisticWrapper: {
     width: 192,
