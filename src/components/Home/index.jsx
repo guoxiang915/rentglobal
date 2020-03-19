@@ -50,7 +50,8 @@ const styleSheet = theme => ({
     // flexGrow: 1,
     display: "block",
     width: "100%",
-    height: "100%"
+    height: "100%",
+    background: theme.colors.primary.white
   },
 
   landingBoardWrapper: {
@@ -369,6 +370,7 @@ const styleSheet = theme => ({
     height: 56,
     position: "absolute",
     top: "calc(50% - 12px)",
+    cursor: "pointer",
     [theme.breakpoints.down("sm")]: {
       width: 48,
       height: 48
@@ -401,6 +403,10 @@ const styleSheet = theme => ({
       width: 27,
       height: 27
     }
+  },
+
+  newsLetterWrapper: {
+    background: theme.colors.primary.whiteGrey
   },
 
   receiveNewsletter: {
@@ -613,7 +619,7 @@ class Home extends Component {
   ];
 
   render() {
-    const { recommendedOffices, width, classes, t } = this.props;
+    const { recommendedOffices, width, classes: s, t } = this.props;
     const {
       activeHelpStep,
       activeLandingBlock,
@@ -626,9 +632,9 @@ class Home extends Component {
     const landingBlock = this.landingBlocks[activeLandingBlock];
 
     return (
-      <Column className={classes.root}>
+      <Column classes={{ box: s.root }}>
         {/* Landing image block */}
-        <div className={classes.landingBoardWrapper}>
+        <div className={s.landingBoardWrapper}>
           {this.landingBlocks.map((block, index) => (
             <img
               key={index}
@@ -636,8 +642,8 @@ class Home extends Component {
               src={block.img}
               alt=""
               className={clsx(
-                classes.landingBoardImage,
-                index !== activeLandingBlock && classes.landingBoardImageHidden
+                s.landingBoardImage,
+                index !== activeLandingBlock && s.landingBoardImageHidden
               )}
             />
           ))}
@@ -653,15 +659,15 @@ class Home extends Component {
               }}
               alignChildrenStart
             >
-              <Column classes={{ box: classes.landingBoard }}>
+              <Column classes={{ box: s.landingBoard }}>
                 <Row>
-                  <Card className={classes.searchWrapper}>
+                  <Card className={s.searchWrapper}>
                     <Column alignChildrenStart>
                       <Typography
                         // fontSizeXL
                         textSecondary
                         fontWeightBold
-                        classes={{ box: classes.landingTitle }}
+                        classes={{ box: s.landingTitle }}
                         block
                       >
                         <Trans i18nKey="dashboardLandingTitle">
@@ -669,7 +675,7 @@ class Home extends Component {
                             // fontSizeXL
                             textPrimary
                             fontWeightBold
-                            classes={{ box: classes.landingTitle }}
+                            classes={{ box: s.landingTitle }}
                             span
                           >
                             {{ name: "TESSI" }}
@@ -680,7 +686,7 @@ class Home extends Component {
                       <Typography
                         textMediumGrey
                         // fontSizeS
-                        className={{ box: classes.landingSubtitle }}
+                        className={{ box: s.landingSubtitle }}
                       >
                         {t("dashboardLandingSubtitle")}
                       </Typography>
@@ -690,15 +696,15 @@ class Home extends Component {
                         value={tessiQuery}
                         onChange={this.handleChangeByEvent("tessiQuery")}
                         placeholder={t("sayHiOrSearch")}
-                        className={classes.searchInput}
+                        className={s.searchInput}
                         endAdornment={
                           <Button
                             variant="icon"
                             background="primary"
                             style={{ margin: 0 }}
                             className={clsx(
-                              tessiQuery && classes.landingButton,
-                              classes.searchInputIcon
+                              tessiQuery && s.landingButton,
+                              s.searchInputIcon
                             )}
                             shadow
                           >
@@ -796,9 +802,9 @@ class Home extends Component {
                           position="static"
                           activeStep={activeLandingBlock}
                           classes={{
-                            root: classes.dotStepperLandingBlock,
-                            dot: classes.dotLandingBlockStyle,
-                            dotActive: classes.dotActiveStyle
+                            root: s.dotStepperLandingBlock,
+                            dot: s.dotLandingBlockStyle,
+                            dotActive: s.dotActiveStyle
                           }}
                         />
                       </Column>
@@ -806,7 +812,7 @@ class Home extends Component {
                     </>
                   )}
                   <Grid
-                    className={classes.landingButtonsWrapper}
+                    className={s.landingButtonsWrapper}
                     container
                     direction="row-reverse"
                     justify={
@@ -814,7 +820,7 @@ class Home extends Component {
                     }
                   >
                     <Grid item>
-                      <Button className={classes.landingButton}>
+                      <Button className={s.landingButton}>
                         <Typography
                           fontSizeS
                           fontWeightBold
@@ -829,7 +835,7 @@ class Home extends Component {
                       </Button>
                     </Grid>
                     <Grid item>
-                      <Button className={classes.landingButton}>
+                      <Button className={s.landingButton}>
                         <Typography
                           fontSizeS
                           fontWeightBold
@@ -851,29 +857,19 @@ class Home extends Component {
         </div>
 
         {/* RENTGLOBAL helper block */}
-        <Column
-          classes={{ box: clsx(classes.fixedWith, classes.blockWrapper) }}
-        >
-          <Row classes={{ box: classes.blockTitleWrapper }}>
-            <Typography
-              classes={{ box: classes.blockTitle }}
-              textSecondary
-              block
-            >
+        <Column classes={{ box: clsx(s.fixedWith, s.blockWrapper) }}>
+          <Row classes={{ box: s.blockTitleWrapper }}>
+            <Typography classes={{ box: s.blockTitle }} textSecondary block>
               <Trans i18nKey="howHelpFind">
-                <Typography
-                  classes={{ box: classes.blockTitle }}
-                  textPrimary
-                  span
-                >
+                <Typography classes={{ box: s.blockTitle }} textPrimary span>
                   {{ name: "RENTGLOBAL" }}
                 </Typography>
               </Trans>
             </Typography>
           </Row>
-          <Row classes={{ box: classes.blockContentWrapper }}>
+          <Row classes={{ box: s.blockContentWrapper }}>
             <Grid container direction="row">
-              <Grid item className={classes.textHelpStepper} md={6} sm={12}>
+              <Grid item className={s.textHelpStepper} md={6} sm={12}>
                 <TextStepComponent
                   index="1"
                   label={t("howHelpFind1_title")}
@@ -896,9 +892,9 @@ class Home extends Component {
                   onClick={this.handleSelectActiveStep(2)}
                 />
               </Grid>
-              <Grid item className={classes.imgHelpStepper} md={6} sm={12}>
+              <Grid item className={s.imgHelpStepper} md={6} sm={12}>
                 <Hidden smDown>
-                  <Box classes={{ box: classes.imgHelpStepWrapper }}>
+                  <Box classes={{ box: s.imgHelpStepWrapper }}>
                     <ImgStepComponent
                       active={activeHelpStep === 0}
                       imgSrc={gallery1}
@@ -912,17 +908,17 @@ class Home extends Component {
                       imgSrc={gallery3}
                     />
                   </Box>
-                  <Box classes={{ box: classes.imgHelpBkWrapper }}>
-                    <Box classes={{ box: classes.imgHelpBk }}>
+                  <Box classes={{ box: s.imgHelpBkWrapper }}>
+                    <Box classes={{ box: s.imgHelpBk }}>
                       <MobileStepper
                         variant="dots"
                         steps={3}
                         position="static"
                         activeStep={activeHelpStep}
                         classes={{
-                          root: classes.dotStepper,
-                          dot: classes.dotStyle,
-                          dotActive: classes.dotActiveStyle
+                          root: s.dotStepper,
+                          dot: s.dotStyle,
+                          dotActive: s.dotActiveStyle
                         }}
                       />
                     </Box>
@@ -934,27 +930,25 @@ class Home extends Component {
         </Column>
 
         <Hidden smUp>
-          <Divider className={classes.divider} half />
+          <Divider className={s.divider} half />
         </Hidden>
 
         {/* Office list block */}
-        <Column
-          classes={{ box: clsx(classes.fixedWith, classes.blockWrapper) }}
-        >
+        <Column classes={{ box: clsx(s.fixedWith, s.blockWrapper) }}>
           <Row
-            classes={{ box: classes.blockTitleWrapper }}
+            classes={{ box: s.blockTitleWrapper }}
             style={
               isWidthDown("sm", width)
                 ? { paddingBottom: 24, paddingTop: 0 }
                 : { paddingTop: 0 }
             }
           >
-            <Typography classes={{ box: classes.blockTitle }} textSecondary>
+            <Typography classes={{ box: s.blockTitle }} textSecondary>
               {t("latestRecommendOffice")}
             </Typography>
           </Row>
           <Row
-            classes={{ box: classes.blockContentWrapper }}
+            classes={{ box: s.blockContentWrapper }}
             style={{ overflowX: "hidden" }}
             fullWidth
           >
@@ -984,7 +978,7 @@ class Home extends Component {
             </div>
             {/* </Box> */}
           </Row>
-          <Row classes={{ box: classes.allLatestButton }}>
+          <Row classes={{ box: s.allLatestButton }}>
             <Button variant="secondary" shadow>
               <Typography fontSizeS fontWeightBold textSecondary>
                 {t("allLatest", { count: "50+" })}
@@ -995,16 +989,14 @@ class Home extends Component {
 
         {/* Register block */}
         <Column backgroundPrimary fullWidth>
-          <Column
-            classes={{ box: clsx(classes.fixedWith, classes.blockWrapper) }}
-          >
-            <Row classes={{ box: classes.homeRegisterTitle }}>
-              <Typography classes={{ box: classes.blockTitle }} textWhite>
+          <Column classes={{ box: clsx(s.fixedWith, s.blockWrapper) }}>
+            <Row classes={{ box: s.homeRegisterTitle }}>
+              <Typography classes={{ box: s.blockTitle }} textWhite>
                 {t("homeRegisterTitle")}
               </Typography>
             </Row>
             <Row
-              classes={{ box: classes.homeRegisterContent }}
+              classes={{ box: s.homeRegisterContent }}
               fullWidth
               textWhite
               textCenter
@@ -1020,10 +1012,10 @@ class Home extends Component {
                       style={{
                         left: isWidthDown("sm", width) ? "-60px" : "-124px"
                       }}
-                      classes={{ box: this.props.classes.homeRegisterArrow }}
+                      classes={{ box: s.homeRegisterArrow }}
                     >
                       <KeyboardArrowLeft
-                        className={this.props.classes.homeRegisterArrowButton}
+                        className={s.homeRegisterArrowButton}
                       />
                     </Box>
                   }
@@ -1032,10 +1024,10 @@ class Home extends Component {
                       style={{
                         right: isWidthDown("sm", width) ? "-60px" : "-124px"
                       }}
-                      classes={{ box: this.props.classes.homeRegisterArrow }}
+                      classes={{ box: s.homeRegisterArrow }}
                     >
                       <KeyboardArrowRight
-                        className={this.props.classes.homeRegisterArrowButton}
+                        className={s.homeRegisterArrowButton}
                       />
                     </Box>
                   }
@@ -1069,7 +1061,7 @@ class Home extends Component {
             <Row>
               <Button
                 // variant="secondary"
-                className={classes.whiteShadowButton}
+                className={s.whiteShadowButton}
                 onClick={() =>
                   this.props.history.push("/auth/register/landlord")
                 }
@@ -1089,15 +1081,13 @@ class Home extends Component {
         </Column>
 
         {/* RENTGLOBAL pros block */}
-        <Column
-          classes={{ box: clsx(classes.fixedWith, classes.blockWrapper) }}
-        >
-          <Grid container direction="row" className={classes.prosWrapper}>
+        <Column classes={{ box: clsx(s.fixedWith, s.blockWrapper) }}>
+          <Grid container direction="row" className={s.prosWrapper}>
             <Grid item xs={12} md={4}>
               {isWidthDown("sm", width) ? (
                 <Row>
                   <Column>
-                    <EmojiIcon className={classes.prosIcon} />
+                    <EmojiIcon className={s.prosIcon} />
                   </Column>
                   <Column paddingLeft alignChildrenStart>
                     <Row>
@@ -1120,7 +1110,7 @@ class Home extends Component {
               ) : (
                 <Column>
                   <Row>
-                    <EmojiIcon className={classes.prosIcon} />
+                    <EmojiIcon className={s.prosIcon} />
                   </Row>
                   <Row paddingTop>
                     <Typography
@@ -1144,7 +1134,7 @@ class Home extends Component {
               {isWidthDown("sm", width) ? (
                 <Row paddingTopDouble>
                   <Column>
-                    <CalendarIcon className={classes.prosIcon} />
+                    <CalendarIcon className={s.prosIcon} />
                   </Column>
                   <Column paddingLeft alignChildrenStart>
                     <Row>
@@ -1167,7 +1157,7 @@ class Home extends Component {
               ) : (
                 <Column>
                   <Row>
-                    <CalendarIcon className={classes.prosIcon} />
+                    <CalendarIcon className={s.prosIcon} />
                   </Row>
                   <Row paddingTop>
                     <Typography
@@ -1191,7 +1181,7 @@ class Home extends Component {
               {isWidthDown("sm", width) ? (
                 <Row paddingTopDouble>
                   <Column>
-                    <HeartIcon className={classes.prosIcon} />
+                    <HeartIcon className={s.prosIcon} />
                   </Column>
                   <Column paddingLeft alignChildrenStart>
                     <Row>
@@ -1214,7 +1204,7 @@ class Home extends Component {
               ) : (
                 <Column>
                   <Row>
-                    <HeartIcon className={classes.prosIcon} />
+                    <HeartIcon className={s.prosIcon} />
                   </Row>
                   <Row paddingTop>
                     <Typography
@@ -1239,7 +1229,7 @@ class Home extends Component {
 
         {/* Following block */}
         <Column
-          classes={{ box: clsx(classes.fixedWith) }}
+          classes={{ box: clsx(s.fixedWith, s.newsLetterWrapper) }}
           paddingTop
           paddingBottom
         >
@@ -1253,7 +1243,7 @@ class Home extends Component {
                   <TextField
                     variant="outlined"
                     placeholder={t("yourEmailAddress")}
-                    className={classes.receiveNewsletter}
+                    className={s.receiveNewsletter}
                     type="email"
                     value={receiveNewsletter}
                     onChange={this.handleChangeByEvent("receiveNewsletter")}
@@ -1261,11 +1251,12 @@ class Home extends Component {
                       <Button
                         variant="icon"
                         style={{ margin: 0 }}
-                        className={clsx(classes.searchInputIcon)}
+                        className={clsx(s.searchInputIcon)}
                         background={
                           receiveNewsletter ? "primary" : "borderLight"
                         }
-                        shadow
+                        style={{ "&:hover": "" }}
+                        shadow={!!receiveNewsletter}
                       >
                         <CheckIcon
                           style={{
@@ -1285,10 +1276,7 @@ class Home extends Component {
                 <Typography fontSizeS textSecondary>
                   {t("followUpSocials")}
                 </Typography>
-                <Row
-                  paddingTopHalf
-                  classes={{ box: classes.socialIconsWrapper }}
-                >
+                <Row paddingTopHalf classes={{ box: s.socialIconsWrapper }}>
                   <Box paddingLeft paddingRight>
                     <Link to="#" variant="normalXLight">
                       <Twitter fontSize="large" />
@@ -1316,13 +1304,11 @@ class Home extends Component {
         </Column>
 
         {/* Contact info block */}
-        <Column
-          classes={{ box: clsx(classes.fixedWith, classes.blockWrapper) }}
-        >
+        <Column classes={{ box: clsx(s.fixedWith, s.blockWrapper) }}>
           <Grid
             container
             justify="space-between"
-            className={classes.contactInfoWrapper}
+            className={s.contactInfoWrapper}
           >
             <Grid item xs={6} sm={3}>
               <Column paddingTopDouble paddingBottomDouble alignChildrenStart>
