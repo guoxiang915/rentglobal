@@ -60,7 +60,12 @@ export function* watchUpdateUser() {
 
 export function* watchSetUserRole() {
   yield takeLatest("SET_USER_ROLE", function* setUserRole(action) {
-    action.history.push(`/${action.role}`);
+    let pathname = action.history && action.history.location.pathname;
+    if (pathname.startsWith("/company"))
+      pathname = "/" + action.role + pathname.substring("/company".length);
+    if (pathname.startsWith("/landlord"))
+      pathname = "/" + action.role + pathname.substring("/landlord".length);
+    action.history.push(pathname);
     yield call(flushMessage);
   });
 }

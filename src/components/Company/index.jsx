@@ -34,8 +34,12 @@ class Company extends Component {
     const { classes } = this.props;
     const { user } = this.props.auth;
 
-    if (user.role !== "company") {
+    if (user.roles.indexOf("company") === -1) {
       return <Redirect to="/" />;
+    }
+
+    if (user.role !== "company") {
+      this.props.onToggleRole();
     }
 
     return (

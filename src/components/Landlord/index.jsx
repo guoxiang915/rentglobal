@@ -137,8 +137,12 @@ class Landlord extends Component {
     const { user } = this.props.auth;
     const { dialog } = this.state;
 
-    if (user.role !== "landlord") {
+    if (user.roles.indexOf("landlord") === -1) {
       return <Redirect to="/" />;
+    }
+
+    if (user.role !== "landlord") {
+      this.props.onToggleRole();
     }
 
     return (

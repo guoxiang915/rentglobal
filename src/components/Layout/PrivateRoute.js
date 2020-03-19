@@ -169,8 +169,8 @@ class PrivateRoute extends React.Component {
     this.handleToggleSidebar(false);
   };
 
+  /** Toggle user role between landlord/company */
   handleToggleRole = () => {
-    // this.props.history.push(`/${role}`);
     const { user } = this.props.auth;
     this.props.mappedToggleRole(
       user.role === "landlord" ? "company" : "landlord",
@@ -179,6 +179,7 @@ class PrivateRoute extends React.Component {
     this.handleToggleSidebar(false);
   };
 
+  /** Toggle sidebar */
   handleToggleSidebar = sidebarOpened => {
     this.setState({ sidebarOpened });
   };
@@ -248,7 +249,7 @@ class PrivateRoute extends React.Component {
                       {/* show content wrapper */}
                       <div className={classes.contentWrapper}>
                         {isLoggedIn && !user.active ? (
-                          // for not activated user, show send-verification page
+                          /** for not activated user, show send-verification page */
                           <Switch>
                             <Route
                               path="/auth/send-verification"
@@ -277,7 +278,11 @@ class PrivateRoute extends React.Component {
                             />
                           </Switch>
                         ) : (
-                          <Component navigate={this.navigate} {...props} />
+                          <Component
+                            navigate={this.navigate}
+                            {...props}
+                            onToggleRole={this.handleToggleRole}
+                          />
                         )}
                       </div>
 
