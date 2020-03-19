@@ -89,8 +89,7 @@ const styleSheet = theme => ({
 
   officeImage: {
     width: 235,
-    height: 175,
-    borderRadius: 8
+    height: 175
   },
 
   officeEmptyImage: {

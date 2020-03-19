@@ -1055,11 +1055,13 @@ class Home extends Component {
                   ].map((val, index) => (
                     <React.Fragment key={index}>
                       <Column>
-                        {!isWidthDown("sm", width) && (
-                          <Typography paddingBottom fontSizeL>
+                        <Typography
+                          paddingBottom
+                          fontSizeM={isWidthDown("sm", width)}
+                          fontSizeL={!isWidthDown("sm", width)}
+                        >
                             {val.title}
                           </Typography>
-                        )}
                         <Typography
                           fontSizeXS={isWidthDown("sm", width)}
                           fontSizeS={!isWidthDown("sm", width)}
