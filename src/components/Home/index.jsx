@@ -247,6 +247,7 @@ const styleSheet = theme => ({
 
   imgHelpStepper: {
     position: "relative",
+    height: 556,
     zIndex: 1
   },
 
@@ -892,8 +893,8 @@ class Home extends Component {
                   onClick={this.handleSelectActiveStep(2)}
                 />
               </Grid>
-              <Grid item className={s.imgHelpStepper} md={6} sm={12}>
-                <Hidden smDown>
+              <Hidden smDown>
+                <Grid item className={s.imgHelpStepper} md={6} sm={12}>
                   <Box classes={{ box: s.imgHelpStepWrapper }}>
                     <ImgStepComponent
                       active={activeHelpStep === 0}
@@ -923,8 +924,8 @@ class Home extends Component {
                       />
                     </Box>
                   </Box>
-                </Hidden>
-              </Grid>
+                </Grid>
+              </Hidden>
             </Grid>
           </Row>
         </Column>
@@ -1255,7 +1256,6 @@ class Home extends Component {
                         background={
                           receiveNewsletter ? "primary" : "borderLight"
                         }
-                        style={{ "&:hover": "" }}
                         shadow={!!receiveNewsletter}
                       >
                         <CheckIcon
