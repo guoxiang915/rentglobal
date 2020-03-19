@@ -59,26 +59,8 @@ export function* watchUpdateUser() {
 }
 
 export function* watchSetUserRole() {
-  yield takeLatest("SET_USER_ROLE", async function* setUserRole(action) {
+  yield takeLatest("SET_USER_ROLE", function* setUserRole(action) {
     action.history.push(`/${action.role}`);
-    let resp = null;
-    try {
-      resp = await api.put(`/users/me/edit/role`, { role: action.role });
-    } catch (error) {
-      console.log(error);
-      resp = error.response;
-    }
-    if (resp.status === 200) {
-      yield put({
-        type: "UPDATE_USER_SUCCESS",
-        resp: resp.data
-      });
-    } else {
-      yield put({
-        type: "UPDATE_USER_FAILED",
-        resp: resp.data
-      });
-    }
     yield call(flushMessage);
   });
 }

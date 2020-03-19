@@ -265,9 +265,12 @@ class AppHeader extends Component {
   };
 
   /** Toggle role when user selects another role in Account Info panel */
-  handleAccountInfoToggleRole = () => {
+  handleAccountInfoToggleRole = role => () => {
     this.handleCloseMenu("accountInfoEl")();
-    this.props.onToggleRole();
+    const userRole = this.props.auth.user.role;
+    if (role !== userRole) {
+      this.props.onToggleRole();
+    }
   };
 
   /**
@@ -419,7 +422,7 @@ class AppHeader extends Component {
         <Box padding2 />
         <Divider className={classes.divider} />
         <NavItem
-          onClick={onToggleRole}
+          onClick={onToggleRole(role === "company" ? "landlord" : "company")}
           icon={role === "company" ? BuildingsIcon : UsersIcon}
           text={role === "company" ? t("landlordPanel") : t("companyPanel")}
           classes={classes}
@@ -427,7 +430,7 @@ class AppHeader extends Component {
         {/** When both profile exists, then show both navigators */}
         {user.landlordProfile && user.companyProfile && (
           <NavItem
-            onClick={onToggleRole}
+            onClick={onToggleRole(role === "company" ? "company" : "landlord")}
             icon={role === "company" ? UsersIcon : BuildingsIcon}
             text={role === "company" ? t("companyPanel") : t("landlordPanel")}
             classes={classes}
