@@ -222,34 +222,32 @@ class AddNewOffice extends Component {
           const office = response.data;
           let currentStep = 0;
           if (
-            !office.title ||
-            !office.officeType ||
-            !office.pricemonthly ||
-            !office.location ||
-            !office.numberOfEmployees
-          ) {
-            currentStep = 0;
-          } else if (
-            !office.coverPhotos ||
-            office.coverPhotos.length < 3 ||
-            office.coverPhotos.length > 15
+            office.title &&
+            office.officeType &&
+            office.pricemonthly &&
+            office.location &&
+            office.numberOfEmployees
           ) {
             currentStep = 1;
-          } else if (
-            !office.servicesAndAmenities ||
-            !(
-              office.servicesAndAmenities.category1.length ||
+          }
+          if (
+            office.coverPhotos &&
+            office.coverPhotos.length >= 3 &&
+            office.coverPhotos.length <= 15
+          ) {
+            currentStep = 2;
+          }
+          if (
+            office.servicesAndAmenities &&
+            (office.servicesAndAmenities.category1.length ||
               office.servicesAndAmenities.category2.length ||
               office.servicesAndAmenities.category3.length ||
               office.servicesAndAmenities.category4.length ||
               office.servicesAndAmenities.category5.length ||
               office.servicesAndAmenities.category6.length ||
               office.servicesAndAmenities.category7.length ||
-              office.servicesAndAmenities.customFeatures.length
-            )
+              office.servicesAndAmenities.customFeatures.length)
           ) {
-            currentStep = 2;
-          } else {
             currentStep = 3;
           }
           this.setState({ office, currentStep });
