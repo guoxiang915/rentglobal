@@ -168,13 +168,13 @@ class AppSidebar extends Component {
 
   menus = {
     "": [
-      { text: "home", link: "", icon: HomeIcon, exact: true },
+      { text: "home", link: "", role: false, icon: HomeIcon, exact: true },
       { text: "chatWithTessi", link: "chat", icon: TessiIcon },
       { text: "login", link: "login", icon: UserIcon },
       { text: "register", link: "register", icon: EditDocumentIcon }
     ],
     landlord: [
-      { text: "home", link: "", icon: HomeIcon, exact: true },
+      { text: "home", link: "", role: false, icon: HomeIcon, exact: true },
       { text: "dashboard", link: "dashboard", icon: DashboardIcon },
       { text: "offices", link: "offices", icon: OfficeIcon },
       { text: "contracts", link: "contracts", icon: NoteIcon },
@@ -190,7 +190,7 @@ class AppSidebar extends Component {
       { text: "setting", link: "settings", icon: SettingIcon }
     ],
     company: [
-      { text: "home", link: "", icon: HomeIcon, exact: true },
+      { text: "home", link: "", role: false, icon: HomeIcon, exact: true },
       { text: "dashboard", link: "dashboard", icon: DashboardIcon },
       { text: "offices", link: "offices", icon: OfficeIcon },
       { text: "contracts", link: "contracts", icon: NoteIcon },
@@ -278,16 +278,20 @@ class AppSidebar extends Component {
 
     /** Get active item */
     const activeItem = this.menus[role].find(item => {
-      let link = `${role && "/" + role}/${item.link}`;
+      let link = `${role && item.role !== false ? "/" + role : ""}/${
+        item.link
+      }`;
       if (item.link === "login") {
-        link = "/auth/login";
+        link = "login";
       } else if (item.link === "register") {
-        link = "/auth/register";
+        link = "register";
       }
       return item.exact
-        ? this.props.location.pathname === link
+        ? this.props.location.pathname === link ||
+            this.props.location.pathname === link + "/"
         : this.props.location.pathname.startsWith(link);
     });
+    console.log(activeItem);
 
     return (
       <div className={classes.sidebarWrapper}>
