@@ -133,12 +133,40 @@ const styleSheet = theme => ({
     }
   },
 
-  searchInputIcon: {
-    minWidth: 39,
-    height: 39,
+  searchInputProps: {
+    fontSize: "19px",
+    lineHeight: "26px",
+    fontWeight: 500,
+    fontStyle: "normal",
+    color: theme.colors.primary.darkGrey,
+    [theme.breakpoints.down("xs")]: {
+      fontSize: "15px",
+      lineHeight: "20px"
+    }
+  },
+
+  limitedSearchInputProps: {
+    marginRight: 178,
+    [theme.breakpoints.down("sm")]: {
+      marginBottom: 37,
+      marginRight: -16
+    }
+  },
+
+  inputButtonIcon: {
+    minWidth: 37,
+    height: 37,
     position: "absolute",
-    right: 6,
+    right: 5,
+    bottom: 5,
     margin: 0
+  },
+
+  searchInputIcon: {
+    [theme.breakpoints.up("sm")]: {
+      minWidth: 43,
+      height: 43
+    }
   },
 
   actionButtonsWrapper: {},
@@ -204,7 +232,7 @@ const styleSheet = theme => ({
     width: 45,
     height: 45,
     color: theme.colors.primary.grey,
-    background: "none",
+    background: theme.colors.primary.whiteGrey,
     fontSize: "20px",
     borderRadius: "50%",
     [theme.breakpoints.down("sm")]: {
@@ -712,15 +740,22 @@ class Home extends Component {
                         value={tessiQuery}
                         onChange={this.handleChangeByEvent("tessiQuery")}
                         placeholder={t("sayHiOrSearch")}
-                        className={s.searchInput}
+                        className={clsx(s.searchInput)}
+                        styles={{
+                          input: clsx(
+                            s.searchInputProps,
+                            tessiQuery && s.limitedSearchInputProps
+                          )
+                        }}
                         endAdornment={
                           <Button
                             variant="icon"
                             background="primary"
                             style={{ margin: 0 }}
                             className={clsx(
-                              tessiQuery && s.landingButton,
-                              s.searchInputIcon
+                              s.inputButtonIcon,
+                              s.searchInputIcon,
+                              tessiQuery && s.landingButton
                             )}
                             shadow
                           >
@@ -873,135 +908,126 @@ class Home extends Component {
         </div>
 
         {/* RENTGLOBAL helper block */}
-        <Column classes={{ box: clsx(s.fixedWith, s.blockWrapper) }}>
-          <Row classes={{ box: s.blockTitleWrapper }}>
-            <Typography classes={{ box: s.blockTitle }} textSecondary block>
-              <Trans i18nKey="howHelpFind">
-                <Typography classes={{ box: s.blockTitle }} textPrimary span>
-                  {{ name: "RENTGLOBAL" }}
-                </Typography>
-              </Trans>
-            </Typography>
-          </Row>
-          <Row classes={{ box: s.blockContentWrapper }}>
-            <Grid container direction="row">
-              <Grid item className={s.textHelpStepper} md={6} sm={12}>
-                <TextStepComponent
-                  index="1"
-                  label={t("howHelpFind1_title")}
-                  content={t("howHelpFind1_content")}
-                  active={activeHelpStep === 0}
-                  onClick={this.handleSelectActiveStep(0)}
-                />
-                <TextStepComponent
-                  index="2"
-                  label={t("howHelpFind2_title")}
-                  content={t("howHelpFind2_content")}
-                  active={activeHelpStep === 1}
-                  onClick={this.handleSelectActiveStep(1)}
-                />
-                <TextStepComponent
-                  index="3"
-                  label={t("howHelpFind3_title")}
-                  content={t("howHelpFind3_content")}
-                  active={activeHelpStep === 2}
-                  onClick={this.handleSelectActiveStep(2)}
-                />
-              </Grid>
-              <Hidden smDown>
-                <Grid item className={s.imgHelpStepper} md={6} sm={12}>
-                  <Box classes={{ box: s.imgHelpStepWrapper }}>
-                    <ImgStepComponent
-                      active={activeHelpStep === 0}
-                      imgSrc={gallery1}
-                    />
-                    <ImgStepComponent
-                      active={activeHelpStep === 1}
-                      imgSrc={gallery2}
-                    />
-                    <ImgStepComponent
-                      active={activeHelpStep === 2}
-                      imgSrc={gallery3}
-                    />
-                  </Box>
-                  <Box classes={{ box: s.imgHelpBkWrapper }}>
-                    <Box classes={{ box: s.imgHelpBk }}>
-                      <MobileStepper
-                        variant="dots"
-                        steps={3}
-                        position="static"
-                        activeStep={activeHelpStep}
-                        classes={{
-                          root: s.dotStepper,
-                          dot: s.dotStyle,
-                          dotActive: s.dotActiveStyle
-                        }}
+        <Row fullWidth justifyChildrenCenter>
+          <Column classes={{ box: clsx(s.fixedWith, s.blockWrapper) }}>
+            <Row classes={{ box: s.blockTitleWrapper }}>
+              <Typography classes={{ box: s.blockTitle }} textSecondary block>
+                <Trans i18nKey="howHelpFind">
+                  <Typography classes={{ box: s.blockTitle }} textPrimary span>
+                    {{ name: "RENTGLOBAL" }}
+                  </Typography>
+                </Trans>
+              </Typography>
+            </Row>
+            <Row classes={{ box: s.blockContentWrapper }}>
+              <Grid container direction="row">
+                <Grid item className={s.textHelpStepper} md={6} sm={12}>
+                  <TextStepComponent
+                    index="1"
+                    label={t("howHelpFind1_title")}
+                    content={t("howHelpFind1_content")}
+                    active={activeHelpStep === 0}
+                    onClick={this.handleSelectActiveStep(0)}
+                  />
+                  <TextStepComponent
+                    index="2"
+                    label={t("howHelpFind2_title")}
+                    content={t("howHelpFind2_content")}
+                    active={activeHelpStep === 1}
+                    onClick={this.handleSelectActiveStep(1)}
+                  />
+                  <TextStepComponent
+                    index="3"
+                    label={t("howHelpFind3_title")}
+                    content={t("howHelpFind3_content")}
+                    active={activeHelpStep === 2}
+                    onClick={this.handleSelectActiveStep(2)}
+                  />
+                </Grid>
+                <Hidden smDown>
+                  <Grid item className={s.imgHelpStepper} md={6} sm={12}>
+                    <Box classes={{ box: s.imgHelpStepWrapper }}>
+                      <ImgStepComponent
+                        active={activeHelpStep === 0}
+                        imgSrc={gallery1}
+                      />
+                      <ImgStepComponent
+                        active={activeHelpStep === 1}
+                        imgSrc={gallery2}
+                      />
+                      <ImgStepComponent
+                        active={activeHelpStep === 2}
+                        imgSrc={gallery3}
                       />
                     </Box>
-                  </Box>
-                </Grid>
-              </Hidden>
-            </Grid>
-          </Row>
-        </Column>
+                    <Box classes={{ box: s.imgHelpBkWrapper }}>
+                      <Box classes={{ box: s.imgHelpBk }}>
+                        <MobileStepper
+                          variant="dots"
+                          steps={3}
+                          position="static"
+                          activeStep={activeHelpStep}
+                          classes={{
+                            root: s.dotStepper,
+                            dot: s.dotStyle,
+                            dotActive: s.dotActiveStyle
+                          }}
+                        />
+                      </Box>
+                    </Box>
+                  </Grid>
+                </Hidden>
+              </Grid>
+            </Row>
+          </Column>
+        </Row>
 
         <Hidden smUp>
           <Divider className={s.divider} half />
         </Hidden>
 
         {/* Office list block */}
-        <Column classes={{ box: clsx(s.fixedWith, s.blockWrapper) }}>
-          <Row
-            classes={{ box: s.blockTitleWrapper }}
-            style={
-              isWidthDown("sm", width)
-                ? { paddingBottom: 24, paddingTop: 0 }
-                : { paddingTop: 0 }
-            }
-          >
-            <Typography classes={{ box: s.blockTitle }} textSecondary>
-              {t("latestRecommendOffice")}
-            </Typography>
-          </Row>
-          <Row
-            classes={{ box: s.blockContentWrapper }}
-            style={{ overflowX: "hidden" }}
-            fullWidth
-          >
-            {/* <Box alignChildrenStart> */}
-            <div style={{ width: "100%", height: "100%" }}>
-              <Carousel
-                slidesPerPage={
-                  isWidthDown("xs", width)
-                    ? 1.3
-                    : isWidthDown("sm", width)
-                    ? 2
-                    : isWidthDown("md", width)
-                    ? 3
-                    : 4
-                }
-                keepDirectionWhenDragging
-              >
-                {recommendedOffices.map((office, index) => (
-                  <div style={{ position: "relative" }} key={index}>
-                    <OfficeItem
-                      office={office}
-                      setFavorite={() => (office.favorite = !office.favorite)}
-                    />
-                  </div>
-                ))}
-              </Carousel>
-            </div>
-            {/* </Box> */}
-          </Row>
-          <Row classes={{ box: s.allLatestButton }}>
-            <Button variant="secondary" shadow>
-              <Typography fontSizeS fontWeightBold textSecondary>
-                {t("allLatest", { count: "50+" })}
+        <Row fullWidth justifyChildrenCenter>
+          <Column classes={{ box: clsx(s.fixedWith, s.blockWrapper) }}>
+            <Row
+              classes={{ box: s.blockTitleWrapper }}
+              style={
+                isWidthDown("sm", width)
+                  ? { paddingBottom: 24, paddingTop: 0 }
+                  : { paddingTop: 0 }
+              }
+            >
+              <Typography classes={{ box: s.blockTitle }} textSecondary>
+                {t("latestRecommendOffice")}
               </Typography>
-            </Button>
-          </Row>
-        </Column>
+            </Row>
+            <Row
+              classes={{ box: s.blockContentWrapper }}
+              style={{ overflowX: "hidden" }}
+              fullWidth
+            >
+              <div style={{ width: "100%", height: "100%" }}>
+                <Carousel itemWidth={255} offset={20} keepDirectionWhenDragging>
+                  {recommendedOffices.map((office, index) => (
+                    <div style={{ position: "relative" }} key={index}>
+                      <OfficeItem
+                        office={office}
+                        setFavorite={() => (office.favorite = !office.favorite)}
+                      />
+                    </div>
+                  ))}
+                </Carousel>
+              </div>
+            </Row>
+            <Row classes={{ box: s.allLatestButton }}>
+              <Button variant="secondary" shadow>
+                <Typography fontSizeS fontWeightBold textSecondary>
+                  {t("allLatest", { count: "50+" })}
+                </Typography>
+              </Button>
+            </Row>
+          </Column>
+        </Row>
 
         {/* Register block */}
         <Column backgroundPrimary fullWidth>
@@ -1060,8 +1086,8 @@ class Home extends Component {
                           fontSizeM={isWidthDown("sm", width)}
                           fontSizeL={!isWidthDown("sm", width)}
                         >
-                            {val.title}
-                          </Typography>
+                          {val.title}
+                        </Typography>
                         <Typography
                           fontSizeXS={isWidthDown("sm", width)}
                           fontSizeS={!isWidthDown("sm", width)}
@@ -1099,18 +1125,41 @@ class Home extends Component {
         </Column>
 
         {/* RENTGLOBAL pros block */}
-        <Column classes={{ box: clsx(s.fixedWith, s.blockWrapper) }}>
-          <Grid container direction="row" className={s.prosWrapper}>
-            <Grid item xs={12} md={4}>
-              {isWidthDown("sm", width) ? (
-                <Row>
+        <Row fullWidth justifyChildrenCenter>
+          <Column classes={{ box: clsx(s.fixedWith, s.blockWrapper) }}>
+            <Grid container direction="row" className={s.prosWrapper}>
+              <Grid item xs={12} md={4}>
+                {isWidthDown("sm", width) ? (
+                  <Row>
+                    <Column>
+                      <EmojiIcon className={s.prosIcon} />
+                    </Column>
+                    <Column paddingLeft alignChildrenStart>
+                      <Row>
+                        <Typography
+                          fontSizeS
+                          uppercase
+                          textSecondary
+                          fontWeightBold
+                        >
+                          {t("flexibility")}
+                        </Typography>
+                      </Row>
+                      <Row>
+                        <Typography fontSizeXS uppercase textSecondary>
+                          {t("minimumCommitment")}
+                        </Typography>
+                      </Row>
+                    </Column>
+                  </Row>
+                ) : (
                   <Column>
-                    <EmojiIcon className={s.prosIcon} />
-                  </Column>
-                  <Column paddingLeft alignChildrenStart>
                     <Row>
+                      <EmojiIcon className={s.prosIcon} />
+                    </Row>
+                    <Row paddingTop>
                       <Typography
-                        fontSizeS
+                        fontSizeM
                         uppercase
                         textSecondary
                         fontWeightBold
@@ -1119,45 +1168,45 @@ class Home extends Component {
                       </Typography>
                     </Row>
                     <Row>
-                      <Typography fontSizeXS uppercase textSecondary>
+                      <Typography fontSizeS uppercase textSecondary>
                         {t("minimumCommitment")}
                       </Typography>
                     </Row>
                   </Column>
-                </Row>
-              ) : (
-                <Column>
-                  <Row>
-                    <EmojiIcon className={s.prosIcon} />
+                )}
+              </Grid>
+              <Grid item xs={12} md={4}>
+                {isWidthDown("sm", width) ? (
+                  <Row paddingTopDouble>
+                    <Column>
+                      <CalendarIcon className={s.prosIcon} />
+                    </Column>
+                    <Column paddingLeft alignChildrenStart>
+                      <Row>
+                        <Typography
+                          fontSizeS
+                          uppercase
+                          textSecondary
+                          fontWeightBold
+                        >
+                          {t("confiance")}
+                        </Typography>
+                      </Row>
+                      <Row>
+                        <Typography fontSizeXS uppercase textSecondary>
+                          {t("personalMonitoring")}
+                        </Typography>
+                      </Row>
+                    </Column>
                   </Row>
-                  <Row paddingTop>
-                    <Typography
-                      fontSizeM
-                      uppercase
-                      textSecondary
-                      fontWeightBold
-                    >
-                      {t("flexibility")}
-                    </Typography>
-                  </Row>
-                  <Row>
-                    <Typography fontSizeS uppercase textSecondary>
-                      {t("minimumCommitment")}
-                    </Typography>
-                  </Row>
-                </Column>
-              )}
-            </Grid>
-            <Grid item xs={12} md={4}>
-              {isWidthDown("sm", width) ? (
-                <Row paddingTopDouble>
+                ) : (
                   <Column>
-                    <CalendarIcon className={s.prosIcon} />
-                  </Column>
-                  <Column paddingLeft alignChildrenStart>
                     <Row>
+                      <CalendarIcon className={s.prosIcon} />
+                    </Row>
+                    <Row paddingTop>
                       <Typography
-                        fontSizeS
+                        fontSizeM
                         uppercase
                         textSecondary
                         fontWeightBold
@@ -1166,45 +1215,45 @@ class Home extends Component {
                       </Typography>
                     </Row>
                     <Row>
-                      <Typography fontSizeXS uppercase textSecondary>
+                      <Typography fontSizeS uppercase textSecondary>
                         {t("personalMonitoring")}
                       </Typography>
                     </Row>
                   </Column>
-                </Row>
-              ) : (
-                <Column>
-                  <Row>
-                    <CalendarIcon className={s.prosIcon} />
+                )}
+              </Grid>
+              <Grid item xs={12} md={4}>
+                {isWidthDown("sm", width) ? (
+                  <Row paddingTopDouble>
+                    <Column>
+                      <HeartIcon className={s.prosIcon} />
+                    </Column>
+                    <Column paddingLeft alignChildrenStart>
+                      <Row>
+                        <Typography
+                          fontSizeS
+                          uppercase
+                          textSecondary
+                          fontWeightBold
+                        >
+                          {t("simplicity")}
+                        </Typography>
+                      </Row>
+                      <Row>
+                        <Typography fontSizeXS uppercase textSecondary>
+                          {t("turnkeySolution")}
+                        </Typography>
+                      </Row>
+                    </Column>
                   </Row>
-                  <Row paddingTop>
-                    <Typography
-                      fontSizeM
-                      uppercase
-                      textSecondary
-                      fontWeightBold
-                    >
-                      {t("confiance")}
-                    </Typography>
-                  </Row>
-                  <Row>
-                    <Typography fontSizeS uppercase textSecondary>
-                      {t("personalMonitoring")}
-                    </Typography>
-                  </Row>
-                </Column>
-              )}
-            </Grid>
-            <Grid item xs={12} md={4}>
-              {isWidthDown("sm", width) ? (
-                <Row paddingTopDouble>
+                ) : (
                   <Column>
-                    <HeartIcon className={s.prosIcon} />
-                  </Column>
-                  <Column paddingLeft alignChildrenStart>
                     <Row>
+                      <HeartIcon className={s.prosIcon} />
+                    </Row>
+                    <Row paddingTop>
                       <Typography
-                        fontSizeS
+                        fontSizeM
                         uppercase
                         textSecondary
                         fontWeightBold
@@ -1213,210 +1262,199 @@ class Home extends Component {
                       </Typography>
                     </Row>
                     <Row>
-                      <Typography fontSizeXS uppercase textSecondary>
+                      <Typography fontSizeS uppercase textSecondary>
                         {t("turnkeySolution")}
                       </Typography>
                     </Row>
                   </Column>
-                </Row>
-              ) : (
-                <Column>
-                  <Row>
-                    <HeartIcon className={s.prosIcon} />
-                  </Row>
-                  <Row paddingTop>
-                    <Typography
-                      fontSizeM
-                      uppercase
-                      textSecondary
-                      fontWeightBold
-                    >
-                      {t("simplicity")}
-                    </Typography>
-                  </Row>
-                  <Row>
-                    <Typography fontSizeS uppercase textSecondary>
-                      {t("turnkeySolution")}
-                    </Typography>
-                  </Row>
-                </Column>
-              )}
+                )}
+              </Grid>
             </Grid>
-          </Grid>
-        </Column>
+          </Column>
+        </Row>
 
         {/* Following block */}
-        <Column
-          classes={{ box: clsx(s.fixedWith, s.newsLetterWrapper) }}
-          paddingTop
-          paddingBottom
+        <Row
+          fullWidth
+          justifyChildrenCenter
+          classes={{ box: s.newsLetterWrapper }}
         >
-          <Grid container justify="space-between">
-            <Grid item xs={12} sm={6}>
-              <Column paddingTop paddingBottom>
-                <Typography fontSizeS textSecondary>
-                  {t("receiveNewsletter")}
-                </Typography>
-                <Row paddingTopHalf fullWidth justifyChildrenCenter>
-                  <TextField
-                    variant="outlined"
-                    placeholder={t("yourEmailAddress")}
-                    className={s.receiveNewsletter}
-                    type="email"
-                    value={receiveNewsletter}
-                    onChange={this.handleChangeByEvent("receiveNewsletter")}
-                    error={!!this.state.receiveNewsletterError}
-                    helperText={this.state.receiveNewsletterError}
-                    endAdornment={
-                      <Button
-                        variant="icon"
-                        style={{ margin: 0 }}
-                        className={clsx(s.searchInputIcon)}
-                        background={
-                          receiveNewsletter ? "primary" : "borderLight"
-                        }
-                        shadow={!!receiveNewsletter}
-                        onClick={this.handleReceiveNewsLetter}
-                        disabled={!receiveNewsletter}
-                      >
-                        <CheckIcon
-                          style={{
-                            color: "white",
-                            width: 18,
-                            height: 18
-                          }}
-                        />
-                      </Button>
-                    }
-                  />
-                </Row>
-              </Column>
+          <Column
+            style={{ paddingTop: isWidthDown("xs", width) ? 30 : 16 }}
+            classes={{ box: clsx(s.fixedWith) }}
+            paddingBottom
+          >
+            <Grid container justify="space-between">
+              <Grid item xs={12} sm={6}>
+                <Column paddingTop paddingBottom>
+                  <Typography fontSizeS textSecondary>
+                    {t("receiveNewsletter")}
+                  </Typography>
+                  <Row paddingTopHalf fullWidth justifyChildrenCenter>
+                    <TextField
+                      variant="outlined"
+                      placeholder={t("yourEmailAddress")}
+                      className={s.receiveNewsletter}
+                      type="email"
+                      value={receiveNewsletter}
+                      onChange={this.handleChangeByEvent("receiveNewsletter")}
+                      error={!!this.state.receiveNewsletterError}
+                      helperText={this.state.receiveNewsletterError}
+                      endAdornment={
+                        <Button
+                          variant="icon"
+                          style={{ margin: 0 }}
+                          className={clsx(s.inputButtonIcon)}
+                          background={
+                            receiveNewsletter ? "primary" : "borderLight"
+                          }
+                          shadow={!!receiveNewsletter}
+                          onClick={this.handleReceiveNewsLetter}
+                          disabled={!receiveNewsletter}
+                        >
+                          <CheckIcon
+                            style={{
+                              color: "white",
+                              width: 18,
+                              height: 18
+                            }}
+                          />
+                        </Button>
+                      }
+                    />
+                  </Row>
+                </Column>
+              </Grid>
+              <Grid item xs={12} sm={6}>
+                <Column paddingTop paddingBottom>
+                  <Typography fontSizeS textSecondary>
+                    {t("followUpSocials")}
+                  </Typography>
+                  <Row paddingTopHalf classes={{ box: s.socialIconsWrapper }}>
+                    <Box paddingLeft paddingRight>
+                      <Link to="#" variant="normalXLight">
+                        <Twitter fontSize="large" />
+                      </Link>
+                    </Box>
+                    <Box paddingLeft paddingRight>
+                      <Link to="#" variant="normalXLight">
+                        <Facebook fontSize="large" />
+                      </Link>
+                    </Box>
+                    <Box paddingLeft paddingRight>
+                      <Link to="#" variant="normalXLight">
+                        <Instagram fontSize="large" />
+                      </Link>
+                    </Box>
+                    <Box paddingLeft paddingRight>
+                      <Link to="#" variant="normalXLight">
+                        <LinkedIn fontSize="large" />
+                      </Link>
+                    </Box>
+                  </Row>
+                </Column>
+              </Grid>
             </Grid>
-            <Grid item xs={12} sm={6}>
-              <Column paddingTop paddingBottom>
-                <Typography fontSizeS textSecondary>
-                  {t("followUpSocials")}
-                </Typography>
-                <Row paddingTopHalf classes={{ box: s.socialIconsWrapper }}>
-                  <Box paddingLeft paddingRight>
-                    <Link to="#" variant="normalXLight">
-                      <Twitter fontSize="large" />
-                    </Link>
-                  </Box>
-                  <Box paddingLeft paddingRight>
-                    <Link to="#" variant="normalXLight">
-                      <Facebook fontSize="large" />
-                    </Link>
-                  </Box>
-                  <Box paddingLeft paddingRight>
-                    <Link to="#" variant="normalXLight">
-                      <Instagram fontSize="large" />
-                    </Link>
-                  </Box>
-                  <Box paddingLeft paddingRight>
-                    <Link to="#" variant="normalXLight">
-                      <LinkedIn fontSize="large" />
-                    </Link>
-                  </Box>
-                </Row>
-              </Column>
-            </Grid>
-          </Grid>
-        </Column>
+          </Column>
+        </Row>
 
         {/* Contact info block */}
-        <Column classes={{ box: clsx(s.fixedWith, s.blockWrapper) }}>
-          <Grid
-            container
-            justify="space-between"
-            className={s.contactInfoWrapper}
-          >
-            <Grid item xs={6} sm={3}>
-              <Column paddingTopDouble paddingBottomDouble alignChildrenStart>
-                <Typography fontSizeM fontWeightBold textSecondary>
-                  {t("rentglobal")}
-                </Typography>
-                <Column paddingTop alignChildrenStart>
-                  <Link to="/">
-                    <Typography fontSizeS>{t("aboutUs")}</Typography>
-                  </Link>
-                  <Link to="/">
-                    <Typography fontSizeS>{t("news")}</Typography>
-                  </Link>
-                  <Link to="/">
-                    <Typography fontSizeS>{t("careers")}</Typography>
-                  </Link>
-                  <Link to="/">
-                    <Typography fontSizeS>{t("contactUs")}</Typography>
-                  </Link>
-                </Column>
-              </Column>
-            </Grid>
-            <Grid item xs={6} sm={3}>
-              <Column paddingTopDouble paddingBottomDouble alignChildrenStart>
-                <Typography fontSizeM fontWeightBold textSecondary>
-                  {t("discover")}
-                </Typography>
-                <Column paddingTop alignChildrenStart>
-                  <Link to="/">
-                    <Typography fontSizeS>{t("howItWorks")}</Typography>
-                  </Link>
-                  <Link to="/">
-                    <Typography fontSizeS>{t("legalNotice")}</Typography>
-                  </Link>
-                  <Link to="/">
-                    <Typography fontSizeS>{t("privacyPolicy")}</Typography>
-                  </Link>
-                  <Link to="/">
-                    <Typography fontSizeS>{t("termsAndConditions")}</Typography>
-                  </Link>
-                </Column>
-              </Column>
-            </Grid>
-            <Grid item xs={6} sm={3}>
-              <Column paddingTopDouble paddingBottomDouble alignChildrenStart>
-                <Typography fontSizeM fontWeightBold textSecondary>
-                  {t("support")}
-                </Typography>
-                <Column paddingTop alignChildrenStart>
-                  <Link to="/">
-                    <Typography fontSizeS>{t("help")}</Typography>
-                  </Link>
-                  <Link to="/auth/login">
-                    <Typography fontSizeS>{t("login")}</Typography>
-                  </Link>
-                  <Link to="/auth/register">
-                    <Typography fontSizeS>{t("register")}</Typography>
-                  </Link>
-                  <Link to="/">
-                    <Typography fontSizeS>{t("support")}</Typography>
-                  </Link>
-                </Column>
-              </Column>
-            </Grid>
-            <Grid item xs={6} sm={3}>
-              <Column paddingTopDouble paddingBottomDouble alignChildrenStart>
-                <Typography fontSizeM fontWeightBold textSecondary>
-                  {t("contact")}
-                </Typography>
-                <Column paddingTop alignChildrenStart>
-                  <Typography fontSizeS textSecondary>
-                    1176, street Bishop, Montreal,
+        <Row fullWidth justifyChildrenCenter>
+          <Column classes={{ box: clsx(s.fixedWith, s.blockWrapper) }}>
+            <Grid
+              container
+              justify="space-between"
+              className={s.contactInfoWrapper}
+            >
+              <Grid item xs={6} sm={3}>
+                <Column paddingTopDouble paddingBottomDouble alignChildrenStart>
+                  <Typography fontSizeM fontWeightBold textSecondary>
+                    {t("rentglobal")}
                   </Typography>
-                  <Typography fontSizeS textSecondary>
-                    QC H3G 2E3
-                  </Typography>
-                  <Typography fontSizeS textSecondary>
-                    info@dokstation.ca
-                  </Typography>
-                  <Typography fontSizeS textSecondary>
-                    Phone: (514) 461-3030
-                  </Typography>
+                  <Column paddingTop alignChildrenStart>
+                    <Link to="/">
+                      <Typography fontSizeS>{t("aboutUs")}</Typography>
+                    </Link>
+                    <Link to="/">
+                      <Typography fontSizeS>{t("news")}</Typography>
+                    </Link>
+                    <Link to="/">
+                      <Typography fontSizeS>{t("careers")}</Typography>
+                    </Link>
+                    <Link to="/">
+                      <Typography fontSizeS>{t("contactUs")}</Typography>
+                    </Link>
+                  </Column>
                 </Column>
-              </Column>
+              </Grid>
+              <Grid item xs={6} sm={3}>
+                <Column paddingTopDouble paddingBottomDouble alignChildrenStart>
+                  <Typography fontSizeM fontWeightBold textSecondary>
+                    {t("discover")}
+                  </Typography>
+                  <Column paddingTop alignChildrenStart>
+                    <Link to="/">
+                      <Typography fontSizeS>{t("howItWorks")}</Typography>
+                    </Link>
+                    <Link to="/">
+                      <Typography fontSizeS>{t("legalNotice")}</Typography>
+                    </Link>
+                    <Link to="/">
+                      <Typography fontSizeS>{t("privacyPolicy")}</Typography>
+                    </Link>
+                    <Link to="/">
+                      <Typography fontSizeS>
+                        {t("termsAndConditions")}
+                      </Typography>
+                    </Link>
+                  </Column>
+                </Column>
+              </Grid>
+              <Grid item xs={6} sm={3}>
+                <Column paddingTopDouble paddingBottomDouble alignChildrenStart>
+                  <Typography fontSizeM fontWeightBold textSecondary>
+                    {t("support")}
+                  </Typography>
+                  <Column paddingTop alignChildrenStart>
+                    <Link to="/">
+                      <Typography fontSizeS>{t("help")}</Typography>
+                    </Link>
+                    <Link to="/auth/login">
+                      <Typography fontSizeS>{t("login")}</Typography>
+                    </Link>
+                    <Link to="/auth/register">
+                      <Typography fontSizeS>{t("register")}</Typography>
+                    </Link>
+                    <Link to="/">
+                      <Typography fontSizeS>{t("support")}</Typography>
+                    </Link>
+                  </Column>
+                </Column>
+              </Grid>
+              <Grid item xs={6} sm={3}>
+                <Column paddingTopDouble paddingBottomDouble alignChildrenStart>
+                  <Typography fontSizeM fontWeightBold textSecondary>
+                    {t("contact")}
+                  </Typography>
+                  <Column paddingTop alignChildrenStart>
+                    <Typography fontSizeS textSecondary>
+                      1176, street Bishop, Montreal,
+                    </Typography>
+                    <Typography fontSizeS textSecondary>
+                      QC H3G 2E3
+                    </Typography>
+                    <Typography fontSizeS textSecondary>
+                      info@dokstation.ca
+                    </Typography>
+                    <Typography fontSizeS textSecondary>
+                      Phone: (514) 461-3030
+                    </Typography>
+                  </Column>
+                </Column>
+              </Grid>
             </Grid>
-          </Grid>
-        </Column>
+          </Column>
+        </Row>
       </Column>
     );
   }
