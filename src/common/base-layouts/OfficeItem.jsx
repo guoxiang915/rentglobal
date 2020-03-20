@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import { withStyles } from "@material-ui/core";
 import { withTranslation } from "react-i18next";
-import clsx from "clsx";
 import {
   Typography,
   Row,
@@ -13,8 +12,6 @@ import {
   FavoriteOutlinedIcon
 } from "../base-components";
 import {
-  FavoriteOutlined,
-  FavoriteBorderOutlined,
   KeyboardArrowLeft,
   KeyboardArrowRight
 } from "@material-ui/icons";
@@ -201,12 +198,6 @@ const OfficeItem = ({
               ) : (
                 <FavoriteOutlinedIcon className={s.favoriteIcon} />
               )}
-              {/* {office.favorite ? (
-                <FavoriteIcon />
-                // <FavoriteOutlined />
-              ) : (
-                <FavoriteBorderOutlined />
-              )} */}
             </Box>
           )}
 
