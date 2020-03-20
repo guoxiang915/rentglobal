@@ -347,8 +347,10 @@ class OfficeDetailForm extends Component {
                   {t("businessHours")}
                 </Column>
                 <Column classes={{ box: s.infoValue }}>
-                  {`${`${office.businessHours?.from} AM` ||
-                    ""} - ${`${office.businessHours?.to} PM` || ""}`}
+                  {office.businessHours && `${`${office.businessHours?.from} AM` || 
+                    ""} - ${`${office.businessHours?.to} PM` || ""}`
+                  }
+                  {!office.businessHours && "-"}
                 </Column>
               </Row>
               <Row classes={{ box: s.infoRow }}>
