@@ -1,13 +1,16 @@
 import React, { useState } from "react";
 import { withStyles } from "@material-ui/core";
 import { withTranslation } from "react-i18next";
+import clsx from "clsx";
 import {
   Typography,
   Row,
   Column,
   Box,
   StarIcon,
-  ImageIcon
+  ImageIcon,
+  FavoriteFilledIcon,
+  FavoriteOutlinedIcon
 } from "../base-components";
 import {
   FavoriteOutlined,
@@ -74,7 +77,17 @@ const styleSheet = theme => ({
     right: 16,
     zIndex: 1,
     width: 16,
+    height: 16,
+    cursor: "pointer"
+  },
+
+  favoriteIcon: {
+    width: 17,
     height: 16
+  },
+
+  favoriteSelectedIcon: {
+    fill: theme.colors.primary.errorRed
   },
 
   officeLocation: {
@@ -109,6 +122,7 @@ const styleSheet = theme => ({
     borderRadius: "50%",
     zIndex: 1,
     opacity: 0.15,
+    cursor: "pointer",
     "&:hover": {
       opacity: 1
     }
@@ -149,11 +163,18 @@ const OfficeItem = ({
   errorMsg,
   autoPlay
 }) => {
+  /** Changing position of carousel */
   const [pos, setPos] = useState(0);
   const prev = () =>
     setPos(pos === 0 ? office.coverPhotos.length - 1 : pos - 1);
   const next = () =>
     setPos(pos === office.coverPhotos.length - 1 ? 0 : pos + 1);
+  /** Set favorite */
+  const handleSetFavorite = e => {
+    e.stopPropagation();
+    setFavorite();
+  };
+  /** Carousel dots */
   const dots = React.useMemo(() => {
     return office.coverPhotos
       ? office.coverPhotos.map(() => <Dot classes={s} />)
@@ -171,15 +192,21 @@ const OfficeItem = ({
           {setFavorite && (
             <Box
               classes={{ box: s.favorite }}
-              onClick={setFavorite}
-              textErrorRed={office.favorite}
-              textWhite={!office.favorite}
+              onClick={handleSetFavorite}
+              // textErrorRed={office.favorite}
+              // textWhite={!office.favorite}
             >
               {office.favorite ? (
-                <FavoriteOutlined />
+                <FavoriteFilledIcon className={s.favoriteIcon} />
+              ) : (
+                <FavoriteOutlinedIcon className={s.favoriteIcon} />
+              )}
+              {/* {office.favorite ? (
+                <FavoriteIcon />
+                // <FavoriteOutlined />
               ) : (
                 <FavoriteBorderOutlined />
-              )}
+              )} */}
             </Box>
           )}
 

@@ -43,6 +43,8 @@ import { ReactComponent as BackSvg } from "../../assets/icon/icon_back_white.svg
 import { ReactComponent as CancelSvg } from "../../assets/icon/icon_cancel_white.svg";
 import { ReactComponent as DeleteSvg } from "../../assets/icon/icon_delete_white.svg";
 import { ReactComponent as FavSvg } from "../../assets/icon/icon_fav_white.svg";
+import { ReactComponent as FavOutlinedSvg } from "../../assets/icon/icon_fav_white.svg";
+import { ReactComponent as FavFilledSvg } from "../../assets/icon/icon_fav_gray.svg";
 import { ReactComponent as MapSvg } from "../../assets/icon/icon_map_white.svg";
 import { ReactComponent as PhoneSvg } from "../../assets/icon/icon_phone_white.svg";
 import { ReactComponent as RegisterSvg } from "../../assets/icon/icon_register_white.svg";
@@ -139,6 +141,8 @@ export const BackIcon = props => <SvgIcon src={BackSvg} {...props} />;
 export const CancelIcon = props => <SvgIcon src={CancelSvg} {...props} />;
 export const DeleteIcon = props => <SvgIcon src={DeleteSvg} {...props} />;
 export const FavoriteIcon = props => <SvgIcon src={FavSvg} {...props} />;
+export const FavoriteOutlinedIcon = props => <SvgIcon src={FavOutlinedSvg} {...props} />;
+export const FavoriteFilledIcon = props => <SvgIcon src={FavFilledSvg} {...props} />;
 export const MapIcon = props => <SvgIcon src={MapSvg} {...props} />;
 export const PhoneIcon = props => <SvgIcon src={PhoneSvg} {...props} />;
 export const RegisterIcon = props => <SvgIcon src={RegisterSvg} {...props} />;

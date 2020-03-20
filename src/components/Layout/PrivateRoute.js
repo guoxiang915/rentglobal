@@ -50,8 +50,8 @@ const styleSheet = theme => ({
   },
 
   contentWrapper: {
-    minHeight: "calc(100vh - 250px)",
     background: theme.colors.primary.whiteGrey,
+    minHeight: "calc(100vh - 250px)",
     [theme.breakpoints.down("sm")]: {
       minHeight: "calc(100vh - 166px)"
     }
@@ -62,6 +62,14 @@ const styleSheet = theme => ({
     background: "white",
     [theme.breakpoints.down("sm")]: {
       height: 100
+    }
+  },
+
+  sendVerificationWrapper: {
+    background: theme.colors.primary.white,
+    minHeight: "calc(100vh - 250px)",
+    [theme.breakpoints.down("sm")]: {
+      minHeight: "calc(100vh - 166px)"
     }
   },
 
@@ -254,7 +262,9 @@ class PrivateRoute extends React.Component {
                             <Route
                               path="/auth/send-verification"
                               render={() => (
-                                <div>
+                                <div
+                                  className={classes.sendVerificationWrapper}
+                                >
                                   <div
                                     className={classes.backgroundWrapper}
                                   ></div>

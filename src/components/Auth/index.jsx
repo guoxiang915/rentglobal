@@ -18,6 +18,15 @@ import HeaderImage from "../../assets/img/img_header@2x.jpg";
 import "./Login.css";
 
 const styleSheet = theme => ({
+  root: {
+    height: "100%",
+    background: theme.colors.primary.white,
+    minHeight: "calc(100vh - 250px)",
+    [theme.breakpoints.down("sm")]: {
+      minHeight: "calc(100vh - 166px)"
+    }
+  },
+
   backgroundWrapper: {
     width: "100%",
     height: theme.spacing(6),
@@ -90,13 +99,13 @@ class AuthWrapper extends Component {
   };
 
   render() {
-    const { classes } = this.props;
+    const { classes: s } = this.props;
     const { isLoggedIn, isLoading, error } = this.props.auth;
 
     return (
-      <div>
-        <div className={classes.backgroundWrapper}></div>
-        <div className={classes.loginWrapper}>
+      <div className={s.root}>
+        <div className={s.backgroundWrapper}></div>
+        <div className={s.loginWrapper}>
           {!isLoggedIn ? (
             <Switch>
               {/* login form */}
@@ -104,7 +113,7 @@ class AuthWrapper extends Component {
                 exact
                 path="/auth/login"
                 render={() => (
-                  <Column classes={{ box: classes.loginCard }}>
+                  <Column classes={{ box: s.loginCard }}>
                     <LoginForm
                       email={this.state.email}
                       mappedLogin={payload =>
@@ -127,7 +136,7 @@ class AuthWrapper extends Component {
                 exact
                 path="/auth/register/:registerMode"
                 render={({ match }) => (
-                  <Column classes={{ box: classes.loginCard }}>
+                  <Column classes={{ box: s.loginCard }}>
                     <RegisterForm
                       email={this.state.email}
                       mappedRegister={payload =>
@@ -152,7 +161,7 @@ class AuthWrapper extends Component {
                     );
                   });
                   return (
-                    <Column classes={{ box: classes.loginCard }}>
+                    <Column classes={{ box: s.loginCard }}>
                       <Column paddingTop fullWidth>
                         <Spinner />
                       </Column>
@@ -166,7 +175,7 @@ class AuthWrapper extends Component {
                 path="/auth/verify-email-success"
                 render={({ location }) =>
                   location.state && location.state.success ? (
-                    <Column classes={{ box: classes.loginCard }}>
+                    <Column classes={{ box: s.loginCard }}>
                       <VerifyEmailSuccessForm navigate={this.navigate} />
                     </Column>
                   ) : (
@@ -180,7 +189,7 @@ class AuthWrapper extends Component {
                 path="/auth/verify-email-failed"
                 render={({ location }) =>
                   location.state && location.state.failed ? (
-                    <Column classes={{ box: classes.loginCard }}>
+                    <Column classes={{ box: s.loginCard }}>
                       <VerifyEmailFailedForm navigate={this.navigate} />
                     </Column>
                   ) : (
@@ -193,7 +202,7 @@ class AuthWrapper extends Component {
                 exact
                 path="/auth/reset-password"
                 render={() => (
-                  <Column classes={{ box: classes.loginCard }}>
+                  <Column classes={{ box: s.loginCard }}>
                     <ForgotPasswordForm
                       email={this.state.email}
                       mappedForgotPassword={payload =>
@@ -211,7 +220,7 @@ class AuthWrapper extends Component {
                 path="/auth/reset-password/confirm"
                 render={({ location }) =>
                   location.state && location.state.email ? (
-                    <Column classes={{ box: classes.loginCard }}>
+                    <Column classes={{ box: s.loginCard }}>
                       <SendPasswordVerificationForm
                         email={location.state.email}
                         navigate={this.navigate}
@@ -226,7 +235,7 @@ class AuthWrapper extends Component {
               <Route
                 path="/auth/reset-password/update/:token"
                 render={({ match }) => (
-                  <Column classes={{ box: classes.loginCard }}>
+                  <Column classes={{ box: s.loginCard }}>
                     <SetNewPasswordForm
                       token={match.params["token"]}
                       mappedResetPassword={payload =>

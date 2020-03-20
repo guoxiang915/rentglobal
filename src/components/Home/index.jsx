@@ -52,7 +52,11 @@ const styleSheet = theme => ({
     display: "block",
     width: "100%",
     height: "100%",
-    background: theme.colors.primary.white
+    background: theme.colors.primary.white,
+    minHeight: "calc(100vh - 250px)",
+    [theme.breakpoints.down("sm")]: {
+      minHeight: "calc(100vh - 166px)"
+    }
   },
 
   landingBoardWrapper: {
@@ -479,6 +483,28 @@ class Home extends Component {
 
   intervalId = null;
 
+  landingBlocks = [
+    {
+      img: headerimg,
+      imgL: headerimgL,
+      title: this.props.t("needSpaceForBusiness"),
+      subtitle: this.props.t("needSpaceForBusinessSub")
+    },
+    {
+      img: headerimg,
+      imgL: headerimgL,
+      title: this.props.t("havePlaceAsOffice"),
+      subtitle: this.props.t("havePlaceAsOfficeSub")
+    },
+    {
+      img: headerimg,
+      imgL: headerimgL,
+      title: this.props.t("consultant"),
+      subtitle: this.props.t("consultantSub")
+    }
+    // {img: headerimg, imgL: headerimgL, title: this.props.t("needSpaceForBusiness"), subtitle: this.props.t("needSpaceForBusinessSub")}
+  ];
+
   UNSAFE_componentWillMount() {
     /* set timer for active landing block (every 5 seconds) */
     this.intervalId = setInterval(
@@ -495,6 +521,14 @@ class Home extends Component {
       clearInterval(this.intervalId);
     }
   }
+
+  /** Set favorite of office */
+  handleSetFavoriteOffice = office => () => {
+    // TODO: call backend api to set favorite
+    // TODO: show login modal if auth.user.isLoggedIn === false
+    office.favorite = !office.favorite;
+    this.setState({});
+  };
 
   /**
    * Text stepper component
@@ -639,28 +673,6 @@ class Home extends Component {
       }
     }
   };
-
-  landingBlocks = [
-    {
-      img: headerimg,
-      imgL: headerimgL,
-      title: this.props.t("needSpaceForBusiness"),
-      subtitle: this.props.t("needSpaceForBusinessSub")
-    },
-    {
-      img: headerimg,
-      imgL: headerimgL,
-      title: this.props.t("havePlaceAsOffice"),
-      subtitle: this.props.t("havePlaceAsOfficeSub")
-    },
-    {
-      img: headerimg,
-      imgL: headerimgL,
-      title: this.props.t("consultant"),
-      subtitle: this.props.t("consultantSub")
-    }
-    // {img: headerimg, imgL: headerimgL, title: this.props.t("needSpaceForBusiness"), subtitle: this.props.t("needSpaceForBusinessSub")}
-  ];
 
   render() {
     const { recommendedOffices, width, classes: s, t } = this.props;
@@ -1012,7 +1024,7 @@ class Home extends Component {
                     <div style={{ position: "relative" }} key={index}>
                       <OfficeItem
                         office={office}
-                        setFavorite={() => (office.favorite = !office.favorite)}
+                        setFavorite={this.handleSetFavoriteOffice(office)}
                       />
                     </div>
                   ))}

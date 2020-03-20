@@ -2,7 +2,9 @@ import { connect } from "react-redux";
 import Home from "../../components/Home";
 
 const mapStateToProps = state => {
-  return {};
+  return {
+    auth: state.authState
+  };
 };
 
 const mapDispatchToprops = dispatch => {
