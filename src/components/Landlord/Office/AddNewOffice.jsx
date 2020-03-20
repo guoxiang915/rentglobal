@@ -148,6 +148,7 @@ class AddNewOffice extends Component {
     updateOffice: PropTypes.func,
     createOfficeCoverPhotos: PropTypes.func,
     createOfficeServicesAmenities: PropTypes.func,
+    editMode: PropTypes.bool,
     onEditOffice: PropTypes.func,
     onDeleteOffice: PropTypes.func,
     classes: PropTypes.object,
@@ -216,12 +217,15 @@ class AddNewOffice extends Component {
   ];
 
   componentDidMount() {
-    if (this.props.officeId) {
-      this.props.getOfficeById(this.props.officeId).then(response => {
+    const { officeId, editMode = false, getOfficeById } = this.props;
+    if (officeId) {
+      getOfficeById(officeId).then(response => {
         if (response.status === 200) {
           const office = response.data;
           let currentStep = 0;
-          if (
+          if (editMode) {
+            currentStep = 0;
+          } else if (
             office.title &&
             office.officeType &&
             office.pricemonthly &&
@@ -229,15 +233,13 @@ class AddNewOffice extends Component {
             office.numberOfEmployees
           ) {
             currentStep = 1;
-          }
-          if (
+          } else if (
             office.coverPhotos &&
             office.coverPhotos.length >= 3 &&
             office.coverPhotos.length <= 15
           ) {
             currentStep = 2;
-          }
-          if (
+          } else if (
             office.servicesAndAmenities &&
             (office.servicesAndAmenities.category1.length ||
               office.servicesAndAmenities.category2.length ||
@@ -445,7 +447,7 @@ class AddNewOffice extends Component {
    * Renderer function
    */
   render() {
-    const { classes: s, t, width } = this.props;
+    const { classes: s, t, width, editMode = false } = this.props;
     const {
       office,
       error,
@@ -468,7 +470,7 @@ class AddNewOffice extends Component {
         <Row fullWidth paddingBottom>
           {/** title */}
           <Typography fontSizeM textSecondary>
-            {currentStep === 3 ? t("preview") : t("addNewOffice")}
+            {currentStep === 3 ? t("preview") : editMode ? t("editOffice") : t("addNewOffice")}
           </Typography>
           <Stretch />
           <Button
@@ -517,20 +519,22 @@ class AddNewOffice extends Component {
             <Box paddingLeft />
 
             {/** Show edit button */}
-            <Button
-              link="primary"
-              background="normalLight"
-              inverse
-              onClick={this.handleEditOffice}
-              variant={isWidthDown("xs", width) && "icon"}
-            >
-              <EditIcon style={{ width: 20, height: 18 }} />
-              {!isWidthDown("xs", width) && (
-                <Typography paddingLeft fontSizeS>
-                  {t("edit")}
-                </Typography>
-              )}
-            </Button>
+            {!editMode  &&
+              <Button
+                link="primary"
+                background="normalLight"
+                inverse
+                onClick={this.handleEditOffice}
+                variant={isWidthDown("xs", width) && "icon"}
+              >
+                <EditIcon style={{ width: 20, height: 18 }} />
+                {!isWidthDown("xs", width) && (
+                  <Typography paddingLeft fontSizeS>
+                    {t("edit")}
+                  </Typography>
+                )}
+              </Button>
+            }
           </Row>
         ) : (
           /** stepper */
@@ -598,6 +602,7 @@ class AddNewOffice extends Component {
               onChangeField={this.handleChangeOfficeField}
               uploadFile={this.props.uploadFile}
               deletePhoto={this.props.deleteOfficePhoto}
+              editMode={editMode}
             />
           </Row>
 

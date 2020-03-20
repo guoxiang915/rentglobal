@@ -79,7 +79,7 @@ class Offices extends Component {
     if (office.published === true) {
       this.props.navigate("offices", office._id);
     } else {
-      this.props.navigate("offices/add", office._id);
+      this.props.navigate("offices", `${office._id}/edit`);
     }
   };
 
