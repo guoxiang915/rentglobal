@@ -73,7 +73,11 @@ class Landlord extends Component {
    * Edit office
    * @deprecated
    */
-  editOffice = officeId => () => {};
+  editOffice = officeId => () => {
+    this.setState({ dialog: null }, () => {
+      this.props.navigate("offices", `${officeId}/edit`);
+    });
+  };
 
   /** Event handler for edit office */
   handleEditOffice = officeId => {
@@ -200,6 +204,29 @@ class Landlord extends Component {
                       unpublishOffice={unpublishOffice}
                       onDeleteOffice={this.handleDeleteOffice}
                       onEditOffice={this.handleEditOffice}
+                    />
+                  )}
+                />
+                <Route
+                  exact
+                  path="/landlord/offices/:id/edit"
+                  render={({ match }) => (
+                    <AddNewOffice
+                      officeId={match.params.id}
+                      navigate={this.props.navigate}
+                      getOfficeById={getOfficeById}
+                      uploadFile={uploadFile}
+                      createOffice={createOffice}
+                      updateOffice={updateOffice}
+                      deleteOfficePhoto={deleteOfficePhoto}
+                      createOfficeCoverPhotos={createOfficeCoverPhotos}
+                      createOfficeServicesAmenities={
+                        createOfficeServicesAmenities
+                      }
+                      publishOffice={publishOffice}
+                      onDeleteOffice={this.handleDeleteOffice}
+                      onEditOffice={this.handleEditOffice}
+                      editMode={true}
                     />
                   )}
                 />
