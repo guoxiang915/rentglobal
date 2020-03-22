@@ -327,8 +327,10 @@ const styleSheet = theme => ({
   },
 
   dotStepperLandingBlock: {
-    position: "absolute",
-    width: "100%",
+    position: "relative",
+    width: "fit-content",
+    height: "100%",
+    left: -8,
     background: "transparent"
   },
 
@@ -350,6 +352,11 @@ const styleSheet = theme => ({
 
   dotActiveStyle: {
     opacity: 1
+  },
+
+  mobileHeaderSlider: {
+    paddingTop: 20,
+    paddingBottom: 20
   },
 
   textMedium: {
@@ -689,7 +696,7 @@ class Home extends Component {
 
     return (
       <Column classes={{ box: s.root }}>
-        {/* Landing image block */}
+        {/** Landing image block */}
         <div className={s.landingBoardWrapper}>
           {this.landingBlocks.map((block, index) => (
             <img
@@ -862,7 +869,6 @@ class Home extends Component {
                         <MobileStepper
                           variant="dots"
                           steps={this.landingBlocks.length}
-                          position="static"
                           activeStep={activeLandingBlock}
                           classes={{
                             root: s.dotStepperLandingBlock,
@@ -918,6 +924,38 @@ class Home extends Component {
             </Row>
           </Column>
         </div>
+
+        {/** header slider for mobile */}
+        {isWidthDown("sm", width) && (
+          <Row fullWidth>
+            <Column
+              style={{ paddingBottom: 20 }}
+              classes={{ box: clsx(s.fixedWith, s.blockWrapper) }}
+              alignChildrenCenter={!isWidthDown("xs", width)}
+              alignChildrenStart={isWidthDown("xs", width)}
+            >
+              <Typography textSecondary fontWeightBold fontSizeM>
+                {landingBlock.title}
+              </Typography>
+              <Typography textSecondary fontSizeXS paddingTopHalf>
+                {landingBlock.subtitle}
+              </Typography>
+              <Row fullWidth justifyChildrenCenter>
+                <MobileStepper
+                  variant="dots"
+                  steps={this.landingBlocks.length}
+                  activeStep={activeLandingBlock}
+                  style={{ padding: 10 }}
+                  classes={{
+                    root: s.dotStepperLandingBlock,
+                    dot: s.dotLandingBlockStyle,
+                    dotActive: s.dotActiveStyle
+                  }}
+                />
+              </Row>
+            </Column>
+          </Row>
+        )}
 
         {/* RENTGLOBAL helper block */}
         <Row fullWidth justifyChildrenCenter>
