@@ -127,6 +127,7 @@ const styleSheet = theme => ({
 
   infoValue: {
     // width: "54%",
+    minWidth: 210,
     width: "calc(100% - 210px)",
     fontSize: "19px",
     lineHeight: "26px",
@@ -347,9 +348,9 @@ class OfficeDetailForm extends Component {
                   {t("businessHours")}
                 </Column>
                 <Column classes={{ box: s.infoValue }}>
-                  {office.businessHours && `${`${office.businessHours?.from} AM` || 
-                    ""} - ${`${office.businessHours?.to} PM` || ""}`
-                  }
+                  {office.businessHours &&
+                    `${`${office.businessHours?.from} AM` ||
+                      ""} - ${`${office.businessHours?.to} PM` || ""}`}
                   {!office.businessHours && "-"}
                 </Column>
               </Row>
