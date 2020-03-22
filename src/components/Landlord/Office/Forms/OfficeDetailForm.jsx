@@ -24,7 +24,9 @@ const styleSheet = theme => ({
   imageWrapper: {
     width: "calc(100% - 188px)",
     [theme.breakpoints.down("xs")]: {
-      width: "100%"
+      width: "100%",
+      position: "relative",
+      left: -10
     }
   },
 
@@ -214,7 +216,7 @@ class OfficeDetailForm extends Component {
         {/** Show office coverPhotos */}
         {isWidthDown("xs", width) ? (
           <div className={s.imageWrapper}>
-            <Carousel slidesPerPage={1.2} keepDirectionWhenDragging>
+            <Carousel keepDirectionWhenDragging itemWidth={285} offset={20}>
               {office.coverPhotos &&
                 office.coverPhotos.map(photo => (
                   <div className={s.coverPhotoWrapper}>
