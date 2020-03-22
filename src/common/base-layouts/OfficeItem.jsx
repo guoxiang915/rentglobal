@@ -11,10 +11,7 @@ import {
   FavoriteFilledIcon,
   FavoriteOutlinedIcon
 } from "../base-components";
-import {
-  KeyboardArrowLeft,
-  KeyboardArrowRight
-} from "@material-ui/icons";
+import { KeyboardArrowLeft, KeyboardArrowRight } from "@material-ui/icons";
 import Carousel, { Dots } from "@brainhubeu/react-carousel";
 
 const styleSheet = theme => ({
@@ -162,10 +159,16 @@ const OfficeItem = ({
 }) => {
   /** Changing position of carousel */
   const [pos, setPos] = useState(0);
-  const prev = () =>
+  /** Previous image */
+  const prev = e => {
+    e.stopPropagation();
     setPos(pos === 0 ? office.coverPhotos.length - 1 : pos - 1);
-  const next = () =>
+  };
+  /** Next image */
+  const next = e => {
+    e.stopPropagation();
     setPos(pos === office.coverPhotos.length - 1 ? 0 : pos + 1);
+  };
   /** Set favorite */
   const handleSetFavorite = e => {
     e.stopPropagation();
