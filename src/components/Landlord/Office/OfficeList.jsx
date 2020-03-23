@@ -99,14 +99,14 @@ class OfficeDetail extends Component {
   render() {
     const { classes: s, t, width } = this.props;
     const { offices, currentTab } = this.state;
-    const leasedOffices = offices.filter(item => item.status === "leased");
-    const availableOffices = offices.filter(item => item.status !== "leased");
+    const leasedOffices = offices.filter(item => !!item.leasedBy);
+    const availableOffices = offices.filter(item => !item.leasedBy);
 
     const filteredOffices = offices.filter(
       item =>
         currentTab === 0 ||
-        (currentTab === 1 && item.status === "leased") ||
-        (currentTab === 2 && item.status !== "leased")
+        (currentTab === 1 && !!item.leasedBy) ||
+        (currentTab === 2 && !item.leasedBy)
     );
 
     return (

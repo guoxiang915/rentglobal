@@ -19,8 +19,8 @@ import {
   Stretch,
   Column,
   VideoPlayer
-} from "../../common/base-components";
-import { CloseIcon } from "../../common/base-components/Icons";
+} from "../../../common/base-components";
+import { CloseIcon } from "../../../common/base-components/Icons";
 
 const styleSheet = theme => ({
   root: {

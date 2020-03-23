@@ -13,6 +13,7 @@ import {
   UsersIcon,
   Button
 } from "../base-components";
+import { ContactInfoDialog } from "../../components/Layout/Dialogs";
 import Carousel from "@brainhubeu/react-carousel";
 import { formatDate } from "../../utils/formatters";
 
@@ -117,7 +118,23 @@ const styleSheet = theme => ({
  * @property  {number} autoPlay Duration of autoplay for carousel (default: 4000)
  */
 const OfficeListItem = ({ classes: s, t, autoPlay, office }) => {
-  const handleContactInfo = () => {};
+  const [dialog, setDialog] = React.useState(null);
+  const handleCloseDialog = () => {
+    setDialog(null);
+  };
+  const handleContactInfo = () => {
+    setDialog(
+      <ContactInfoDialog
+        contact={{
+          username: "Name Family",
+          type: "Consultant",
+          phoneNumber: "(123) 123-4567",
+          email: "consultantname@domainanme.com"
+        }}
+        onClose={handleCloseDialog}
+      />
+    );
+  };
   const handleListen = () => {};
   const handleCalendar = () => {};
 
@@ -286,6 +303,9 @@ const OfficeListItem = ({ classes: s, t, autoPlay, office }) => {
           </>
         )}
       </Column>
+
+      {/** show dialog */}
+      {dialog}
     </Row>
   );
 };
