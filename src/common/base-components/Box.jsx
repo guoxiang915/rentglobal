@@ -114,6 +114,9 @@ const styleSheet = theme => {
     backgroundHighlight: {
       backgroundColor: theme.colors.primary.backgroundGrey
     },
+    backgroundErrorRed: {
+      backgroundColor: theme.colors.primary.errorRed
+    },
 
     /* borders */
     borderHalf: {

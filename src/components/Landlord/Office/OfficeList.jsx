@@ -11,13 +11,11 @@ import {
   Box,
   Typography,
   Button,
-  EyeDisIcon,
-  DeleteIcon,
-  EditIcon
+  Divider
 } from "../../../common/base-components";
+import { OfficeListItem } from "../../../common/base-layouts";
 import { KeyboardBackspace } from "@material-ui/icons";
-import { OfficeDetailForm } from "./Forms";
-import { Tabs } from "@material-ui/core";
+import { Tabs, Tab } from "@material-ui/core";
 
 const styleSheet = theme => ({
   root: {
@@ -29,8 +27,35 @@ const styleSheet = theme => ({
     }
   },
 
-  fullWidth: {
-    width: "100%"
+  addButton: {
+    width: "100%",
+    marginTop: 25
+  },
+
+  tabs: {
+    marginTop: 12,
+    width: "100%",
+    borderBottom: `1px solid ${theme.colors.primary.borderGrey}`
+  },
+
+  indicator: {
+    borderRadius: 2,
+    height: 4
+  },
+
+  tab: {
+    textTransform: "none",
+    minWidth: 0,
+    padding: "25px 0px",
+    marginRight: 70,
+    [theme.breakpoints.down("xs")]: {
+      marginRight: 30
+    }
+  },
+
+  officeList: {
+    paddingTop: 28,
+    paddingBottom: 60
   }
 });
 
@@ -52,13 +77,19 @@ class OfficeDetail extends Component {
     );
   }
 
+  /** Navigation function */
+  navigate = path => () => {
+    this.props.navigate(path);
+  };
+
   /** Goto previous step */
   handleBack = () => {
     this.props.navigate("back");
   };
 
   /** Change tab value */
-  handleChangeTab = currentTab => {
+  handleChangeTab = (e, currentTab) => {
+    console.log(currentTab);
     this.setState({ currentTab });
   };
 
@@ -71,12 +102,17 @@ class OfficeDetail extends Component {
     const leasedOffices = offices.filter(item => item.status === "leased");
     const availableOffices = offices.filter(item => item.status !== "leased");
 
-    const filteredOffices = offices.filter(
-      item =>
-        currentTab === 0 ||
-        (currentTab === 1 && item.status === "leased") ||
-        (currentTab === 2 && item.status !== "leased")
-    );
+    const filteredOffices = offices
+      .filter(
+        item =>
+          currentTab === 0 ||
+          (currentTab === 1 && item.status === "leased") ||
+          (currentTab === 2 && item.status !== "leased")
+      )
+      .map(item => ({
+        ...item,
+        leasedBy: { overduePayment: true, name: "Company", date: new Date() }
+      }));
 
     return (
       <Column
@@ -107,7 +143,7 @@ class OfficeDetail extends Component {
             variant="secondary"
             shadow
             onClick={this.navigate("offices/add")}
-            className={clsx(isWidthDown("xs", width) && s.fullWidth)}
+            className={clsx(isWidthDown("xs", width) && s.addButton)}
           >
             {t("addNewOffice")}
           </Button>
@@ -116,28 +152,31 @@ class OfficeDetail extends Component {
         {/** Tabs */}
         <Tabs
           value={currentTab}
-          onChange={handleChangeTab}
+          onChange={this.handleChangeTab}
           aria-label="wrapped label tabs"
           indicatorColor="primary"
           textColor="primary"
-          className={s.tabs}
+          classes={{ root: s.tabs, indicator: s.indicator }}
         >
           <Tab
             value={0}
             label={t("allOfficesList") + " (" + offices.length + ")"}
+            classes={{ root: s.tab }}
           />
           <Tab
             value={1}
             label={t("leased") + " (" + leasedOffices.length + ")"}
+            classes={{ root: s.tab }}
           />
           <Tab
             value={2}
             label={t("available") + " (" + availableOffices.length + ")"}
+            classes={{ root: s.tab }}
           />
         </Tabs>
 
         {/** All offices tab panel */}
-        <Column classes={{ box: s.officeList }}>
+        <Column classes={{ box: s.officeList }} fullWidth>
           {filteredOffices.map((item, index) => (
             <React.Fragment key={index}>
               {index > 0 && <Divider />}
