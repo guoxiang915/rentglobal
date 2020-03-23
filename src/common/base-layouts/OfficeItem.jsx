@@ -185,19 +185,14 @@ const OfficeItem = ({
     <Column classes={{ box: s.officeWrapper }} alignChildrenStart>
       <Box classes={{ box: s.officeCarousel }}>
         <div className={s.hoverWrapper}>
-          {/**
-           * favorite icon
-           * NOTE: should use self-defined icons
-           */}
+          {/** favorite icon */}
           {setFavorite && (
-            <Box
-              classes={{ box: s.favorite }}
-              onClick={handleSetFavorite}
-              // textErrorRed={office.favorite}
-              // textWhite={!office.favorite}
-            >
+            <Box classes={{ box: s.favorite }} onClick={handleSetFavorite}>
               {office.favorite ? (
-                <FavoriteFilledIcon className={s.favoriteIcon} />
+                <FavoriteFilledIcon
+                  className={s.favoriteIcon}
+                  style={{ opacity: 1 }}
+                />
               ) : (
                 <FavoriteOutlinedIcon className={s.favoriteIcon} />
               )}

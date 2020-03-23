@@ -44,7 +44,7 @@ import { ReactComponent as CancelSvg } from "../../assets/icon/icon_cancel_white
 import { ReactComponent as DeleteSvg } from "../../assets/icon/icon_delete_white.svg";
 import { ReactComponent as FavSvg } from "../../assets/icon/icon_fav_white.svg";
 import { ReactComponent as FavOutlinedSvg } from "../../assets/icon/icon_fav_white.svg";
-import { ReactComponent as FavFilledSvg } from "../../assets/icon/icon_fav_gray.svg";
+import { ReactComponent as FavFilledSvg } from "../../assets/icon/icon_fav_favorite.svg";
 import { ReactComponent as MapSvg } from "../../assets/icon/icon_map_white.svg";
 import { ReactComponent as PhoneSvg } from "../../assets/icon/icon_phone_white.svg";
 import { ReactComponent as RegisterSvg } from "../../assets/icon/icon_register_white.svg";
