@@ -223,7 +223,8 @@ class AppHeader extends Component {
   state = {
     locationEl: null,
     languageEl: null,
-    accountInfoEl: null
+    accountInfoEl: null,
+    dialog: null
   };
 
   handleNavigate = path => () => {
@@ -252,7 +253,13 @@ class AppHeader extends Component {
     this.handleCloseMenu("languageEl")();
   };
 
-  handleHelp = () => {};
+  handleHelp = () => {
+    this.props.navigate("help");
+  };
+
+  handleCloseDialog = () => {
+    this.setState({ dialog: null });
+  };
 
   handleToggleSidebar = value => () => {
     this.props.onToggleSidebar(value);
@@ -462,7 +469,7 @@ class AppHeader extends Component {
       t
     } = this.props;
     const { isLoggedIn, user } = this.props.auth;
-    const { locationEl, languageEl, accountInfoEl } = this.state;
+    const { locationEl, languageEl, accountInfoEl, dialog } = this.state;
     const role = isLoggedIn ? user.role : "";
 
     const AccountInfo = this.renderAccountInfo;
@@ -843,6 +850,9 @@ class AppHeader extends Component {
 
         {/* thin bar at the bottom of header */}
         {isLoggedIn && <div className={classes.stickyBar}></div>}
+
+        {/** dialog */}
+        {dialog}
       </div>
     );
   }

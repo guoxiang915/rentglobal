@@ -1,137 +1,128 @@
-import React, { useState } from "react";
+import React from "react";
 import { withStyles } from "@material-ui/core";
 import { withTranslation } from "react-i18next";
-import { Typography, Row, Column, Box, StarIcon } from "../base-components";
 import {
-  FavoriteOutlined,
-  FavoriteBorderOutlined,
-  KeyboardArrowLeft,
-  KeyboardArrowRight
-} from "@material-ui/icons";
-import Carousel, { Dots } from "@brainhubeu/react-carousel";
+  Typography,
+  Row,
+  Column,
+  Stretch,
+  Box,
+  StarIcon,
+  HeadsetIcon,
+  CalendarIcon,
+  UsersIcon,
+  Button
+} from "../base-components";
+import Carousel from "@brainhubeu/react-carousel";
 import { formatDate } from "../../utils/formatters";
 
 const styleSheet = theme => ({
   officeWrapper: {
-    width: 235,
-    marginRight: 20
+    width: "100%",
+    marginTop: 30,
+    marginBottom: 27
   },
 
   officeCarousel: {
-    width: "100%",
+    width: 235,
     height: 175,
     borderRadius: 8,
     border: `1px solid ${theme.colors.primary.borderGrey}`,
     position: "relative",
-    overflow: "hidden"
-  },
-
-  hoverWrapper: {
-    position: "absolute",
-    width: "100%",
-    height: "100%",
-    top: 0,
-    left: 0,
-    zIndex: 1,
-    // visibility: "hidden",
-    opacity: 0,
-    "&::before": {
-      content: '" "',
-      background: `transparent linear-gradient(0deg, ${theme.colors.primary.whiteGrey}00 0%, ${theme.colors.primary.darkGrey} 100%) 0% 0% no-repeat padding-box`,
-      width: "100%",
-      height: 34,
-      position: "absolute",
-      top: 0,
-      left: 0,
-      opacity: 0.3,
-      zIndex: 1
-    },
-    "&::after": {
-      content: '" "',
-      background: `transparent linear-gradient(180deg, ${theme.colors.primary.whiteGrey}00 0%, ${theme.colors.primary.darkGrey} 100%) 0% 0% no-repeat padding-box`,
-      width: "100%",
-      height: 34,
-      position: "absolute",
-      bottom: 0,
-      right: 0,
-      opacity: 0.3,
-      zIndex: 1
-    },
-    "&:hover": {
-      opacity: 1
-    }
-  },
-
-  favorite: {
-    position: "absolute",
-    top: 8,
-    right: 16,
-    zIndex: 1,
-    width: 16,
-    height: 16
-  },
-
-  officeLocation: {
-    position: "absolute",
-    left: 14,
-    right: 14,
-    bottom: 8,
-    whiteSpace: "nowrap",
     overflow: "hidden",
-    zIndex: 1
+    [theme.breakpoints.down("sm")]: {
+      width: "100%"
+    }
   },
 
   officeImage: {
     width: 235,
-    height: 175
-  },
-
-  carouselArrow: {
-    width: 24,
-    height: 24,
-    position: "absolute",
-    top: "calc(50% - 12px)",
-    background: theme.colors.primary.white,
-    boxShadow: `0px 2px 4px ${theme.colors.primary.darkGrey}1A`,
-    borderRadius: "50%",
-    zIndex: 1,
-    opacity: 0.15,
-    "&:hover": {
-      opacity: 1
+    height: 175,
+    objectFit: "cover",
+    [theme.breakpoints.down("sm")]: {
+      width: "100%"
     }
   },
 
-  dots: {
+  officeGeneralInfo: {
+    paddingLeft: 27,
+    paddingTop: 0,
+    [theme.breakpoints.down("sm")]: {
+      paddingLeft: 0,
+      paddingTop: 16
+    },
+    [theme.breakpoints.down("xs")]: {
+      width: "100%"
+    }
+  },
+
+  officeLeaseInfo: {
+    [theme.breakpoints.down("sm")]: {
+      paddingTop: 16
+    }
+  },
+
+  tipOverWrapper: {
     position: "absolute",
+    top: 0,
     left: 0,
-    bottom: 25,
     width: "100%",
+    height: 44,
     zIndex: 1
   },
 
-  dot: {
-    borderRadius: "50%",
-    background: theme.colors.primary.white,
-    width: 7,
-    height: 7,
-    margin: -4
+  primaryTipOver: {
+    width: 36,
+    height: 36,
+    color: theme.colors.primary.white,
+    background: theme.colors.primary.mainColor,
+    marginLeft: 10,
+    position: "relative",
+    "&::after": {
+      content: "' '",
+      position: "absolute",
+      bottom: -8,
+      width: "100%",
+      borderTop: `8px solid ${theme.colors.primary.mainColor}`,
+      borderLeft: `18px solid transparent`,
+      borderRight: `18px solid transparent`,
+      borderBottom: "none"
+    }
+  },
+
+  errorRedTipOver: {
+    width: 36,
+    height: 36,
+    color: theme.colors.primary.white,
+    background: theme.colors.primary.errorRed,
+    marginLeft: 6,
+    position: "relative",
+    "&::after": {
+      content: "' '",
+      position: "absolute",
+      bottom: -8,
+      width: "100%",
+      borderTop: `8px solid ${theme.colors.primary.errorRed}`,
+      borderLeft: `18px solid transparent`,
+      borderRight: `18px solid transparent`,
+      borderBottom: "none"
+    }
   }
 });
-
-/** Dot component */
-const Dot = ({ classes }) => <div className={classes.dot}></div>;
 
 /**
  * Function component for uploading document
  * @typeof Props
  * @property  {object} office Office information
- * @property  {function} setFavorite Event handler for set favorite office
  * @property  {number} autoPlay Duration of autoplay for carousel (default: 4000)
  */
-const OfficeListItem = ({ classes: s, t, office }) => {
+const OfficeListItem = ({ classes: s, t, autoPlay, office }) => {
   const handleContactInfo = () => {};
+  const handleListen = () => {};
+  const handleCalendar = () => {};
+
   return (
-    <Row classes={{ box: s.officeWrapper }}>
+    <Row classes={{ box: s.officeWrapper }} wrap alignChildrenStretch>
       <Box classes={{ box: s.officeCarousel }}>
         {/** office images */}
         <div style={{ width: "100%", height: "100%" }}>
@@ -157,12 +148,34 @@ const OfficeListItem = ({ classes: s, t, office }) => {
             </Carousel>
           )}
         </div>
+
+        {/** show mark for leased, overdue payment office */}
+        {office.leasedBy && (
+          <Row classes={{ box: s.tipOverWrapper }} alignChildrenStart>
+            <Box
+              classes={{ box: s.primaryTipOver }}
+              alignChildrenCenter
+              justifyChildrenCenter
+            >
+              <UsersIcon style={{ width: 19, height: 17 }} />
+            </Box>
+            {office.leasedBy.overduePayment && (
+              <Box
+                classes={{ box: s.errorRedTipOver }}
+                alignChildrenCenter
+                justifyChildrenCenter
+              >
+                !
+              </Box>
+            )}
+          </Row>
+        )}
       </Box>
 
       {/** show office general info */}
       <Column classes={{ box: s.officeGeneralInfo }} alignChildrenStart>
         {/** office title */}
-        <Box paddingTopHalf>
+        <Box>
           <Typography fontSizeM textBlackGrey fontWeightBold>
             {office.title}
           </Typography>
@@ -194,52 +207,83 @@ const OfficeListItem = ({ classes: s, t, office }) => {
 
         {/** show office action buttons */}
         <Stretch />
-        <Row></Row>
+        <Row paddingTopHalf alignChildrenStart>
+          {/** Show microphone button */}
+          <Button
+            link="normalLight"
+            background="normalLight"
+            inverse
+            onClick={handleListen}
+            variant="icon"
+          >
+            <HeadsetIcon style={{ width: 19, height: 19 }} />
+          </Button>
+          <Box paddingLeftHalf />
+
+          {/** Show calendar button */}
+          <Button
+            link="normalLight"
+            background="normalLight"
+            inverse
+            onClick={handleCalendar}
+            variant="icon"
+          >
+            <CalendarIcon style={{ width: 17, height: 16 }} />
+          </Button>
+        </Row>
       </Column>
 
       {/** office more information */}
-      <Stretch />
-      <Column alignChildrenEnd>
+      <Stretch style={{ minWidth: 1 }} />
+      <Column classes={{ box: s.officeLeaseInfo }} alignChildrenEnd>
         {/** last updated date */}
-        <Typography textMediumGrey fontSizeXS>
+        <Typography textMediumGrey fontSizeXS style={{ lineHeight: "26px" }}>
           {t("lastUpdate")}: {formatDate(office.updatedAt)}
         </Typography>
 
         {/** leased by */}
-        <Row paddingTopHalf>
-          {office.leasedBy ? (
-            <>
+        {!office.leasedBy ? (
+          <Typography
+            textPrimary
+            fontSizeS
+            paddingTopHalf
+            style={{ lineHeight: "26px" }}
+          >
+            {t("available")}
+          </Typography>
+        ) : (
+          <>
+            <Row paddingTopHalf style={{ lineHeight: "26px" }}>
               <Typography textMediumGrey fontSizeS>
-                {t("leasedBy")}
-                {": "}
+                {t("leasedBy")}:&nbsp;
               </Typography>
               <Typography textSecondary fontSizeS>
                 {office.leasedBy.name}
               </Typography>
               <Typography textMediumGrey fontSizeS>
-                {" ("}
-                {formatDate(office.leasedBy.date)}
-                {")"}
+                &nbsp;({formatDate(office.leasedBy.date)})
               </Typography>
-            </>
-          ) : (
-            <Typography textPrimary fontSizeS>
-              {t("available")}
-            </Typography>
-          )}
-        </Row>
+            </Row>
 
-        {/** overdue payment */}
-        {office.leasedBy && office.leasedBy.overduePayment && (
-          <Typography paddingTopHalf fontSizeS textErrorRed>
-            {t("overduePayment")}
-          </Typography>
-        )}
+            {/** overdue payment */}
+            {office.leasedBy.overduePayment && (
+              <Typography
+                paddingTopHalf
+                fontSizeS
+                textErrorRed
+                style={{ lineHeight: "26px" }}
+              >
+                {t("overduePayment")}
+              </Typography>
+            )}
 
-        {/** contact info */}
-        <Stretch />
-        {office.leasedBy && (
-          <Button variant="secondary" onClick={handleContactInfo}>{t("contactInfo")}</Button>
+            {/** contact info */}
+            <Stretch />
+            <Box paddingTopHalf />
+            <Button variant="secondary" onClick={handleContactInfo} shadow>
+              {t("contactInfo")}
+            </Button>
+          </>
         )}
       </Column>
     </Row>

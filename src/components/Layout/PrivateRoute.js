@@ -3,7 +3,7 @@ import { Switch, Route, withRouter, Redirect } from "react-router-dom";
 import PropTypes from "prop-types";
 import clsx from "clsx";
 import Auth from "../../utils/auth";
-import { AppHeader, AppFooter, AppSidebar } from ".";
+import { AppHeader, AppFooter, AppSidebar, HelpDialog } from ".";
 // import classes from "*.module.css";
 import { withStyles } from "@material-ui/core";
 import { Column, Spinner } from "../../common/base-components";
@@ -116,7 +116,8 @@ class PrivateRoute extends React.Component {
   };
 
   state = {
-    sidebarOpened: false
+    sidebarOpened: false,
+    dialog: null
   };
 
   UNSAFE_componentWillMount() {
@@ -142,6 +143,10 @@ class PrivateRoute extends React.Component {
         this.props.history.push("/");
         break;
 
+      case "help":
+        this.showHelpDialog();
+        break;
+
       case "login":
       case "register":
       case "register/landlord":
@@ -160,6 +165,7 @@ class PrivateRoute extends React.Component {
       case "profile":
       case "offices":
       case "offices/add":
+      case "offices/all":
       case "contracts":
       case "optimization":
         if (isLoggedIn) {
@@ -192,6 +198,18 @@ class PrivateRoute extends React.Component {
     this.setState({ sidebarOpened });
   };
 
+  /** Show help dialog */
+  showHelpDialog = () => {
+    this.setState({
+      dialog: <HelpDialog onClose={this.handleCloseDialog} />
+    });
+  };
+
+  /** Close dialog */
+  handleCloseDialog = () => {
+    this.setState({ dialog: null });
+  };
+
   render() {
     const {
       classes,
@@ -202,6 +220,7 @@ class PrivateRoute extends React.Component {
       ...rest
     } = this.props;
     const { isLoggedIn, user, loaded } = this.props.auth;
+    const { dialog } = this.state;
 
     if (!loaded) {
       return <Spinner />;
@@ -304,6 +323,9 @@ class PrivateRoute extends React.Component {
                       )}
                     </div>
                   </div>
+
+                  {/* show dialog */}
+                  {dialog}
                 </div>
               )}
             </>

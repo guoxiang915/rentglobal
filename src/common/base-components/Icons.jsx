@@ -57,6 +57,7 @@ import { ReactComponent as UploadSvg } from "../../assets/icon/icon_upload_gray.
 import { ReactComponent as EyeSvg } from "../../assets/icon/icon_eye.svg";
 import { ReactComponent as EyeDisSvg } from "../../assets/icon/icon_eye_dis.svg";
 import { ReactComponent as PinGeneralSvg } from "../../assets/icon/icon_pin_general.svg";
+import { ReactComponent as HeadsetSvg } from "../../assets/icon/icon_consultant_gray.svg";
 
 const styleSheet = theme => ({
   primary: {
@@ -142,8 +143,12 @@ export const BackIcon = props => <SvgIcon src={BackSvg} {...props} />;
 export const CancelIcon = props => <SvgIcon src={CancelSvg} {...props} />;
 export const DeleteIcon = props => <SvgIcon src={DeleteSvg} {...props} />;
 export const FavoriteIcon = props => <SvgIcon src={FavSvg} {...props} />;
-export const FavoriteOutlinedIcon = props => <SvgIcon src={FavOutlinedSvg} {...props} />;
-export const FavoriteFilledIcon = props => <SvgIcon src={FavFilledSvg} {...props} />;
+export const FavoriteOutlinedIcon = props => (
+  <SvgIcon src={FavOutlinedSvg} {...props} />
+);
+export const FavoriteFilledIcon = props => (
+  <SvgIcon src={FavFilledSvg} {...props} />
+);
 export const MapIcon = props => <SvgIcon src={MapSvg} {...props} />;
 export const PhoneIcon = props => <SvgIcon src={PhoneSvg} {...props} />;
 export const RegisterIcon = props => <SvgIcon src={RegisterSvg} {...props} />;
@@ -153,6 +158,7 @@ export const PowerIcon = props => <SvgIcon src={SignoutSvg} {...props} />;
 export const EyeIcon = props => <SvgIcon src={EyeSvg} {...props} />;
 export const EyeDisIcon = props => <SvgIcon src={EyeDisSvg} {...props} />;
 export const PinGeneralIcon = props => <SvgIcon src={PinGeneralSvg} {...props} />;
+export const HeadsetIcon = props => <SvgIcon src={HeadsetSvg} {...props} />;
 export const UsersIcon = props => (
   <SvgIcon src={CompanyRegisterSvg} {...props} />
 );

@@ -24,7 +24,9 @@ const styleSheet = theme => ({
   imageWrapper: {
     width: "calc(100% - 188px)",
     [theme.breakpoints.down("xs")]: {
-      width: "100%"
+      width: "100%",
+      position: "relative",
+      left: -10
     }
   },
 
@@ -127,6 +129,7 @@ const styleSheet = theme => ({
 
   infoValue: {
     // width: "54%",
+    minWidth: 210,
     width: "calc(100% - 210px)",
     fontSize: "19px",
     lineHeight: "26px",
@@ -213,7 +216,7 @@ class OfficeDetailForm extends Component {
         {/** Show office coverPhotos */}
         {isWidthDown("xs", width) ? (
           <div className={s.imageWrapper}>
-            <Carousel slidesPerPage={1.2} keepDirectionWhenDragging>
+            <Carousel keepDirectionWhenDragging itemWidth={285} offset={20}>
               {office.coverPhotos &&
                 office.coverPhotos.map(photo => (
                   <div className={s.coverPhotoWrapper}>
@@ -347,9 +350,9 @@ class OfficeDetailForm extends Component {
                   {t("businessHours")}
                 </Column>
                 <Column classes={{ box: s.infoValue }}>
-                  {office.businessHours && `${`${office.businessHours?.from} AM` || 
-                    ""} - ${`${office.businessHours?.to} PM` || ""}`
-                  }
+                  {office.businessHours &&
+                    `${`${office.businessHours?.from} AM` ||
+                      ""} - ${`${office.businessHours?.to} PM` || ""}`}
                   {!office.businessHours && "-"}
                 </Column>
               </Row>

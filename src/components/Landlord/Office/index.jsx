@@ -88,7 +88,7 @@ class Offices extends Component {
     // TODO: call backend api to set favorite
     office.favorite = !office.favorite;
     this.setState({});
-  }
+  };
 
   /**
    * Renderer function
@@ -166,7 +166,7 @@ class Offices extends Component {
                 link="primary"
                 background="normalLight"
                 inverse
-                onClick={this.navigate("allOfficesList")}
+                onClick={this.navigate("offices/all")}
               >
                 <Typography paddingLeft fontSizeS>
                   {t("allOfficesList")}

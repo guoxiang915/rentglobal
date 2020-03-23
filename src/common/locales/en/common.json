@@ -78,6 +78,7 @@
     "privacyPolicy": "Privacy policy",
     "termsAndConditions": "Terms & Conditions",
     "help": "Help",
+    "userGuide": "User guide",
     "contact": "Contact",
     "amLandlord": "I am a Landlord",
     "iHavePlaceToRent": "I have a place & I want to rent as a office",
@@ -295,5 +296,9 @@
     "photoCountMaxLimitError": "You cannot add more than 15 images for an office!",
     "photoCountMinLimitError": "You should add at least 3 images for an office!",
     "photoCountLimitError": "You should add 3 - 15 images for an office!",
-    "office": "Office"
+    "office": "Office",
+    "available": "Available",
+    "leasedBy": "Leased by",
+    "overduePayment": "Overdue payment",
+    "contactInfo": "Contact info"
 }

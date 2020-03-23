@@ -33,6 +33,7 @@ import {
   deleteOfficePhoto,
   deleteOffice
 } from "../../api/endpoints";
+import OfficeList from "./Office/OfficeList";
 
 const styleSheet = theme => ({
   root: {
@@ -136,6 +137,7 @@ class Landlord extends Component {
     this.setState({ dialog: null });
   };
 
+  /** Render function */
   render() {
     const { classes } = this.props;
     const { user } = this.props.auth;
@@ -190,6 +192,16 @@ class Landlord extends Component {
                       publishOffice={publishOffice}
                       onDeleteOffice={this.handleDeleteOffice}
                       onEditOffice={this.handleEditOffice}
+                    />
+                  )}
+                />
+                <Route
+                  exact
+                  path="/landlord/offices/all"
+                  render={({ match }) => (
+                    <OfficeList
+                      getOffices={getOffices}
+                      navigate={this.props.navigate}
                     />
                   )}
                 />
