@@ -102,17 +102,12 @@ class OfficeDetail extends Component {
     const leasedOffices = offices.filter(item => item.status === "leased");
     const availableOffices = offices.filter(item => item.status !== "leased");
 
-    const filteredOffices = offices
-      .filter(
-        item =>
-          currentTab === 0 ||
-          (currentTab === 1 && item.status === "leased") ||
-          (currentTab === 2 && item.status !== "leased")
-      )
-      .map(item => ({
-        ...item,
-        leasedBy: { overduePayment: true, name: "Company", date: new Date() }
-      }));
+    const filteredOffices = offices.filter(
+      item =>
+        currentTab === 0 ||
+        (currentTab === 1 && item.status === "leased") ||
+        (currentTab === 2 && item.status !== "leased")
+    );
 
     return (
       <Column
