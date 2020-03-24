@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React, { Component, forwardRef } from "react";
 import PropTypes from "prop-types";
 import clsx from "clsx";
 import { TextField as MUITextField, withStyles } from "@material-ui/core";
@@ -152,4 +152,4 @@ class TextField extends Component {
   }
 }
 
-export default withStyles(styleSheet, { name: "TextField" })(TextField);
+export default withStyles(styleSheet, { name: "TextField" })(forwardRef((props, ref) => <TextField innerRef={ref} {...props} />));
