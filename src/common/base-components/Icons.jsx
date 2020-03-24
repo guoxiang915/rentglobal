@@ -56,7 +56,7 @@ import { ReactComponent as LandlordRegisterSvg } from "../../assets/icon/icon_la
 import { ReactComponent as UploadSvg } from "../../assets/icon/icon_upload_gray.svg";
 import { ReactComponent as EyeSvg } from "../../assets/icon/icon_eye.svg";
 import { ReactComponent as EyeDisSvg } from "../../assets/icon/icon_eye_dis.svg";
-import { ReactComponent as PinGeneralSvg } from "../../assets/icon/icon_pin_general.svg";
+import { ReactComponent as PinGeneralSvg } from "../../assets/mini-logo-gray.svg";
 import { ReactComponent as HeadsetSvg } from "../../assets/icon/icon_consultant_gray.svg";
 
 const styleSheet = theme => ({

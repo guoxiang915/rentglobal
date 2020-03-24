@@ -1,36 +1,43 @@
-import React, { useState } from "react";
+import React from "react";
 import GoogleMapReact from 'google-map-react';
 import { PinGeneralIcon } from "./";
-import { withStyles } from "@material-ui/core";
+import { makeStyles } from "@material-ui/styles";
 
-export const markerStylesheet = theme => ({
+const useStyles = makeStyles({
   marker: {
-    width: 50,
-    height: 50
+    width: 40,
+    height: 40,
+    marginLeft: -20,
+    marginTop: -20,
+    backgroundColor: "#525252",
+    padding: 10,
+    borderRadius: 20,
+    boxShadow: props => `0 0 0 ${props.shadowWidth}px rgba(0, 0, 0, 0.2)`
   }
 });
 
-const Marker = withStyles(markerStylesheet, {
-  name: "Marker"
-})(({ classes }) => (
+const Marker = (({ classes }) => (
   <PinGeneralIcon
     className={ classes.marker }
   />
 ));
 
-const SimpleMap = (props) => {
-    const [center, setCenter] = useState({lat: 11.0168, lng: 76.9558 });
-    const [zoom, setZoom] = useState(11);
+const SimpleMap = ({ coordinates = { lat: 45.5017, lng: -73.5673 }, shadowWidth = 5 }) => {
+    const zoom = 11;
+    const classes = useStyles({ shadowWidth });
+
     return (
         <div style={{ height: '100%', width: '100%' }}>
         <GoogleMapReact
-          bootstrapURLKeys={{ key: 'replace your api' }}
-          defaultCenter={center}
+          bootstrapURLKeys={{ key: 'AIzaSyCFjI4tzrBQzlNgWorViS48057MOvcn_VY' }}
+          defaultCenter={{ lat: 45.5017, lng: -73.5673 }}
           defaultZoom={zoom}
+          center={coordinates}
         >
           <Marker
-            lat={11.0168}
-            lng={76.9558}
+            lat={coordinates.lat}
+            lng={coordinates.lng}
+            classes={classes}
           />
         </GoogleMapReact>
       </div>

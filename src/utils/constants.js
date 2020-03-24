@@ -19,13 +19,21 @@ const officeTypes = [
   "unassignedWorkstation"
 ];
 const contractTypes = [
-  "3 months Lease",
-  "6 months Lease",
-  "9 months Lease",
-  "Sublease"
+  ["months", { months: 3 }],
+  ["months", { months: 6 }],
+  ["months", { months: 9 }],
+  "sublease"
 ];
-const guarantees = ["1 month", "2 month", "3 month"];
-const checkOutNotices = ["1 month", "2 month", "3 month"];
+const guarantees = [
+  ["months", { months: 1 }],
+  ["months", { months: 2 }],
+  ["months", { months: 3 }]
+];
+const checkOutNotices = [
+  ["months", { months: 1 }],
+  ["months", { months: 2 }],
+  ["months", { months: 3 }]
+];
 
 /** Categories */
 const servicesCategories = [
@@ -113,6 +121,7 @@ const servicesCategories = [
 
 export {
   API,
+  GOOGLE_API_KEY,
   officeTypes,
   contractTypes,
   guarantees,

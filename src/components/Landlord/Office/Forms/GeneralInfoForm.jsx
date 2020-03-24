@@ -16,7 +16,8 @@ import {
   Divider,
   Chip,
   GooglePlaceField,
-  GoogleMap
+  GoogleMap,
+  EditIcon
 } from "../../../../common/base-components";
 import { TabWrapper } from "../../../../common/base-layouts";
 import { Grid } from "@material-ui/core";
@@ -82,7 +83,7 @@ const styleSheet = theme => ({
   },
 
   googleMap: {
-    maxHeight: 215,
+    height: 215,
     paddingBottom: 8
   }
 });
@@ -144,10 +145,22 @@ class GeneralInfoForm extends Component {
     this.props.onChangeField(field, value);
   };
 
+  /** Toggle edit address mode */
+  handleEditAddress = () => {
+    this.setState({ editAddressMode: !this.state.editAddressMode });
+  };
+
   /** Change location fields */
   handleChangeLocation = field => e => {
     const location = { ...this.props.office.location, [field]: e.target.value };
     this.handleChangeProps("location")(location);
+  };
+
+  handleSelectLocation = value => {
+    const location = { ...this.props.office.location, ...value };
+    this.setState({ editAddressMode: false }, () => {
+      this.handleChangeProps("location")(location);
+    });
   };
 
   /** Add/Delete spoken languages */
@@ -181,9 +194,9 @@ class GeneralInfoForm extends Component {
   /**
    * Render grid row
    */
-  renderGridRow = ({ classes: s, title, required, children }) => {
+  renderGridRow = ({ classes: s, title, required, children, ...props }) => {
     return (
-      <Grid container className={s.gridRow}>
+      <Grid container className={s.gridRow} {...props}>
         <Grid item md={4} sm={6} xs={12}>
           <Typography
             fullHeight
@@ -240,7 +253,7 @@ class GeneralInfoForm extends Component {
         return (
           <Select
             options={["", ...options]}
-            renderOption={item => (!item ? t("selectOne") : t(item))}
+            renderOption={item => (!item ? t("selectOne") : typeof item === 'object' ? t(...item) : t(item))}
             displayEmpty
             value={office[field] || ""}
             onChange={this.handleChangePropsByEventValue(field)}
@@ -348,7 +361,7 @@ class GeneralInfoForm extends Component {
           />
         </GridRow>
         {/** business / other fees */}
-        <GridRow classes={s} title={t("businessOtherFees")}>
+        <GridRow classes={s} title={t("businessOrOtherFees")}>
           <NormalFormField
             tag="textfield"
             className={s.textField350}
@@ -533,6 +546,7 @@ class GeneralInfoForm extends Component {
                     required
                     value={office.location && office.location.fullAddress}
                     onChange={this.handleChangeLocation("fullAddress")}
+                    onSelect={this.handleSelectLocation}
                   />
                 </GridRow>
               </>
@@ -543,9 +557,9 @@ class GeneralInfoForm extends Component {
                 <GridRow classes={s} title={t("streetAddress")}>
                   <NormalFormField
                     tag="textfield"
-                    field="streetAddress"
+                    field="streetName"
                     fullWidth
-                    value={office.location && office.location.streetAddress}
+                    value={office.location && office.location.streetName}
                   />
                 </GridRow>
                 {/** city */}
@@ -584,12 +598,32 @@ class GeneralInfoForm extends Component {
                     value={office.location && office.location.country}
                   />
                 </GridRow>
+                {/** edit button */}
+                <Grid container className={s.gridRow} justify="flex-end">
+                  <Row>
+                    <Button
+                      link="primary"
+                      background="normalLight"
+                      inverse
+                      onClick={this.handleEditAddress}
+                      variant={isWidthDown("xs", width) ? "icon" : null}
+                      justify="flex-end"
+                    >
+                      <EditIcon style={{ width: 20, height: 18 }} />
+                      {!isWidthDown("xs", width) && (
+                        <Typography paddingLeft fontSizeS>
+                          {t("edit")}
+                        </Typography>
+                      )}
+                    </Button>
+                  </Row>
+                </Grid>
               </>
             }
           </Grid>
           {!editAddressMode && 
             <Grid item md={editAddressMode ? 12 : 4} sm={editAddressMode ? 12 : 6} xs={12} className={s.googleMap}>
-              <GoogleMap />
+              <GoogleMap coordinates={office.location && office.location.coordinates} />
             </Grid>
           }
         </Grid>
