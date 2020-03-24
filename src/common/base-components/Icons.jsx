@@ -56,6 +56,7 @@ import { ReactComponent as LandlordRegisterSvg } from "../../assets/icon/icon_la
 import { ReactComponent as UploadSvg } from "../../assets/icon/icon_upload_gray.svg";
 import { ReactComponent as EyeSvg } from "../../assets/icon/icon_eye.svg";
 import { ReactComponent as EyeDisSvg } from "../../assets/icon/icon_eye_dis.svg";
+import { ReactComponent as PinGeneralSvg } from "../../assets/mini-logo-gray.svg";
 import { ReactComponent as HeadsetSvg } from "../../assets/icon/icon_consultant_gray.svg";
 import { ReactComponent as TwitterBorderSvg } from "../../assets/icon/icon_twitter.svg";
 import { ReactComponent as FacebookBorderSvg } from "../../assets/icon/icon_facebook.svg";
@@ -161,6 +162,7 @@ export const ShareIcon = props => <SvgIcon src={ShareSvg} {...props} />;
 export const PowerIcon = props => <SvgIcon src={SignoutSvg} {...props} />;
 export const EyeIcon = props => <SvgIcon src={EyeSvg} {...props} />;
 export const EyeDisIcon = props => <SvgIcon src={EyeDisSvg} {...props} />;
+export const PinGeneralIcon = props => <SvgIcon src={PinGeneralSvg} {...props} />;
 export const HeadsetIcon = props => <SvgIcon src={HeadsetSvg} {...props} />;
 export const TwitterBorderIcon = props => (
   <SvgIcon src={TwitterBorderSvg} {...props} />

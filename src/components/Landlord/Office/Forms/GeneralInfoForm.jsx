@@ -14,7 +14,10 @@ import {
   Select,
   ArrowDownIcon,
   Divider,
-  Chip
+  Chip,
+  GooglePlaceField,
+  GoogleMap,
+  EditIcon
 } from "../../../../common/base-components";
 import { TabWrapper } from "../../../../common/base-layouts";
 import { Grid } from "@material-ui/core";
@@ -77,6 +80,11 @@ const styleSheet = theme => ({
     marginRight: theme.spacing(1.5),
     marginTop: theme.spacing(0.5),
     marginBottom: theme.spacing(0.5)
+  },
+
+  googleMap: {
+    height: 215,
+    paddingBottom: 8
   }
 });
 
@@ -89,7 +97,7 @@ class GeneralInfoForm extends Component {
     t: PropTypes.func
   };
 
-  state = { importOfficeUrl: "", spokenLanguage: "" };
+  state = { importOfficeUrl: "", spokenLanguage: "", editAddressMode: false };
 
   /**
    * Update state
@@ -137,10 +145,22 @@ class GeneralInfoForm extends Component {
     this.props.onChangeField(field, value);
   };
 
+  /** Toggle edit address mode */
+  handleEditAddress = () => {
+    this.setState({ editAddressMode: !this.state.editAddressMode });
+  };
+
   /** Change location fields */
   handleChangeLocation = field => e => {
     const location = { ...this.props.office.location, [field]: e.target.value };
     this.handleChangeProps("location")(location);
+  };
+
+  handleSelectLocation = value => {
+    const location = { ...this.props.office.location, ...value };
+    this.setState({ editAddressMode: false }, () => {
+      this.handleChangeProps("location")(location);
+    });
   };
 
   /** Add/Delete spoken languages */
@@ -174,9 +194,9 @@ class GeneralInfoForm extends Component {
   /**
    * Render grid row
    */
-  renderGridRow = ({ classes: s, title, required, children }) => {
+  renderGridRow = ({ classes: s, title, required, children, ...props }) => {
     return (
-      <Grid container className={s.gridRow}>
+      <Grid container className={s.gridRow} {...props}>
         <Grid item md={4} sm={6} xs={12}>
           <Typography
             fullHeight
@@ -233,9 +253,20 @@ class GeneralInfoForm extends Component {
         return (
           <Select
             options={["", ...options]}
-            renderOption={item => (!item ? t("selectOne") : t(item))}
+            renderOption={item => (!item ? t("selectOne") : typeof item === 'object' ? t(...item) : t(item))}
             displayEmpty
             value={office[field] || ""}
+            onChange={this.handleChangePropsByEventValue(field)}
+            error={!!validation}
+            helperText={validation && validation.msg}
+            {...props}
+          />
+        );
+      case "address":
+        return (
+          <GooglePlaceField
+            variant="outlined"
+            value={office[field]}
             onChange={this.handleChangePropsByEventValue(field)}
             error={!!validation}
             helperText={validation && validation.msg}
@@ -252,7 +283,7 @@ class GeneralInfoForm extends Component {
    */
   render() {
     const { office, classes: s, t, width } = this.props;
-    const { importOfficeUrl } = this.state;
+    const { importOfficeUrl, editAddressMode } = this.state;
     const GridRow = this.renderGridRow;
     const NormalFormField = this.renderFormField;
 
@@ -330,7 +361,7 @@ class GeneralInfoForm extends Component {
           />
         </GridRow>
         {/** business / other fees */}
-        <GridRow classes={s} title={t("businessOtherFees")}>
+        <GridRow classes={s} title={t("businessOrOtherFees")}>
           <NormalFormField
             tag="textfield"
             className={s.textField350}
@@ -481,38 +512,121 @@ class GeneralInfoForm extends Component {
         <Divider />
         <Row paddingTop />
 
-        {/** office number */}
-        <GridRow classes={s} title={t("officeNumber")}>
-          <NormalFormField
-            tag="textfield"
-            type="number"
-            placeholder={t("number")}
-            className={s.textField350}
-            field="officeNumber"
-          />
-        </GridRow>
-        {/** office floor */}
-        <GridRow classes={s} title={t("officeFloor")}>
-          <NormalFormField
-            tag="textfield"
-            type="number"
-            placeholder={t("floor")}
-            className={s.textField350}
-            field="officeFloor"
-          />
-        </GridRow>
-        {/** location */}
-        <GridRow classes={s} title={t("location")} required>
-          <NormalFormField
-            tag="textfield"
-            field="location"
-            placeholder={t("officeAddress") + " (" + t("autocomplete") + ")"}
-            fullWidth
-            required
-            value={office.location && office.location.fullAddress}
-            onChange={this.handleChangeLocation("fullAddress")}
-          />
-        </GridRow>
+        <Grid container spacing={1}>
+          <Grid item md={editAddressMode ? 12 : 8} sm={editAddressMode ? 12 : 6} xs={12}>
+            {/** office number */}
+            <GridRow classes={s} title={t("officeNumber")}>
+              <NormalFormField
+                tag="textfield"
+                type="number"
+                placeholder={t("number")}
+                className={s.textField350}
+                field="officeNumber"
+              />
+            </GridRow>
+            {/** office floor */}
+            <GridRow classes={s} title={t("officeFloor")}>
+              <NormalFormField
+                tag="textfield"
+                type="number"
+                placeholder={t("floor")}
+                className={s.textField350}
+                field="officeFloor"
+              />
+            </GridRow>
+            {editAddressMode && 
+              <>
+                {/** location */}
+                <GridRow classes={s} title={t("location")} required>
+                  <NormalFormField
+                    tag="address"
+                    field="location"
+                    placeholder={t("officeAddress") + " (" + t("autocomplete") + ")"}
+                    fullWidth
+                    required
+                    value={office.location && office.location.fullAddress}
+                    onChange={this.handleChangeLocation("fullAddress")}
+                    onSelect={this.handleSelectLocation}
+                  />
+                </GridRow>
+              </>
+            }
+            {!editAddressMode &&
+              <>
+                {/** street address */}
+                <GridRow classes={s} title={t("streetAddress")}>
+                  <NormalFormField
+                    tag="textfield"
+                    field="streetName"
+                    fullWidth
+                    value={office.location && office.location.streetName}
+                  />
+                </GridRow>
+                {/** city */}
+                <GridRow classes={s} title={t("city")}>
+                  <NormalFormField
+                    tag="textfield"
+                    field="city"
+                    fullWidth
+                    value={office.location && office.location.city}
+                  />
+                </GridRow>
+                {/** state */}
+                <GridRow classes={s} title={t("state")}>
+                  <NormalFormField
+                    tag="textfield"
+                    field="state"
+                    fullWidth
+                    value={office.location && office.location.state}
+                  />
+                </GridRow>
+                {/** zipCode */}
+                <GridRow classes={s} title={t("zipCode")}>
+                  <NormalFormField
+                    tag="textfield"
+                    field="zipCode"
+                    fullWidth
+                    value={office.location && office.location.zipCode}
+                  />
+                </GridRow>
+                {/** country */}
+                <GridRow classes={s} title={t("country")}>
+                  <NormalFormField
+                    tag="textfield"
+                    field="country"
+                    fullWidth
+                    value={office.location && office.location.country}
+                  />
+                </GridRow>
+                {/** edit button */}
+                <Grid container className={s.gridRow} justify="flex-end">
+                  <Row>
+                    <Button
+                      link="primary"
+                      background="normalLight"
+                      inverse
+                      onClick={this.handleEditAddress}
+                      variant={isWidthDown("xs", width) ? "icon" : null}
+                      justify="flex-end"
+                    >
+                      <EditIcon style={{ width: 20, height: 18 }} />
+                      {!isWidthDown("xs", width) && (
+                        <Typography paddingLeft fontSizeS>
+                          {t("edit")}
+                        </Typography>
+                      )}
+                    </Button>
+                  </Row>
+                </Grid>
+              </>
+            }
+          </Grid>
+          {!editAddressMode && 
+            <Grid item md={editAddressMode ? 12 : 4} sm={editAddressMode ? 12 : 6} xs={12} className={s.googleMap}>
+              <GoogleMap coordinates={office.location && office.location.coordinates} />
+            </Grid>
+          }
+        </Grid>
         {/** description */}
         <GridRow classes={s} title={t("description")}>
           <NormalFormField

@@ -16,3 +16,5 @@ export { default as Spinner } from "./Spinner";
 export { default as Divider } from "./Divider";
 export { default as Chip } from "./Chip";
 export { default as HorizontalDivider } from "./HorizontalDivider";
+export { default as GooglePlaceField } from "./GooglePlaceField";
+export { default as GoogleMap } from "./GoogleMap";

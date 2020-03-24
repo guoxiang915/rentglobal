@@ -301,6 +301,8 @@
     "leasedBy": "Leased by",
     "overduePayment": "Overdue payment",
     "contactInfo": "Contact info",
+    "months": "{{months}} months",
+    "sublease": "Sublease",
     "favorite": "Favorite",
     "followUp": "Follow Up",
     "share": "Share"
