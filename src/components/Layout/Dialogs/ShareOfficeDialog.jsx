@@ -15,13 +15,17 @@ import {
   Typography,
   Row,
   Box,
-  Stretch,
-  Column
+  Stretch
+  // Column
 } from "../../../common/base-components";
+import { OfficeItem } from "../../../common/base-layouts";
 import {
   CloseIcon,
-  EmailIcon,
-  PhoneIcon
+  InstagramBorderIcon,
+  TwitterBorderIcon,
+  FacebookBorderIcon,
+  LinkedinBorderIcon,
+  NetworkIcon
 } from "../../../common/base-components/Icons";
 
 const styleSheet = theme => ({
@@ -41,26 +45,27 @@ const styleSheet = theme => ({
   },
 
   content: {
-    padding: "82px 120px"
+    padding: "24px 40px 30px"
   },
 
-  icon: {
-    color: theme.colors.primary.borderGrey
+  socialIcon: {
+    width: 39,
+    height: 39
   },
 
   footer: {
     width: "100%",
-    padding: "12px 40px",
+    padding: "32px 40px 37px",
     borderTop: `1px solid ${theme.colors.primary.borderGrey}`
   }
 });
 
-class ContactInfoDialog extends Component {
+class ShareOfficeDialog extends Component {
   static propTypes = {
     /** Title of dialog */
     title: PropTypes.string,
-    /** Contact info */
-    contact: PropTypes.object,
+    /** Office info */
+    office: PropTypes.object,
     /** Style of dialog */
     className: PropTypes.string,
     /** Boolean for dialog is opened/closed */
@@ -70,7 +75,7 @@ class ContactInfoDialog extends Component {
   };
 
   /**
-   * Event handler for closing dialog 
+   * Event handler for closing dialog
    * @description Call props.onClose() to close dialog
    */
   handleClose = () => {
@@ -79,9 +84,12 @@ class ContactInfoDialog extends Component {
     }
   };
 
+  /** Share office via social */
+  handleShareSocial = social => () => {};
+
   /** Render function */
   render() {
-    const { title, contact, className, classes: s, t } = this.props;
+    const { title, office, className, classes: s, t } = this.props;
 
     return (
       <Dialog
@@ -95,7 +103,7 @@ class ContactInfoDialog extends Component {
           <Row fullWidth>
             {/** header title */}
             <Typography fontSizeM textSecondary fontWeightBold>
-              {title ? title : t("contactInfo")}
+              {title ? title : t("share")}
             </Typography>
             <Stretch />
             {/** close button */}
@@ -114,52 +122,50 @@ class ContactInfoDialog extends Component {
 
         {/** dialog content */}
         <DialogContent className={s.content}>
-          <Column alignChildrenStart>
-            <Typography
-              fontSizeM
-              fontWeightBold
-              textSecondary
-              style={{ paddingLeft: 42 }}
-            >
-              {contact.username}
-            </Typography>
-            <Typography
-              fontSizeS
-              textPrimary
-              paddingTopHalf
-              style={{ paddingLeft: 42 }}
-            >
-              {t(contact.type)}
-            </Typography>
-            <Box paddingTopHalf alignChildrenCenter>
-              <PhoneIcon className={s.icon} style={{ width: 18, height: 18 }} />
-              <Typography fontSizeS textSecondary style={{ paddingLeft: 24 }}>
-                {contact.phoneNumber}
-              </Typography>
-            </Box>
-            <Box paddingTopHalf alignChildrenCenter>
-              <EmailIcon className={s.icon} style={{ width: 16, height: 14 }} />
-              <Typography fontSizeS textSecondary style={{ paddingLeft: 24 }}>
-                {contact.email}
-              </Typography>
-            </Box>
-          </Column>
+          <OfficeItem office={office} horizontal />
         </DialogContent>
 
         {/** dialog footer */}
         <DialogActions className={s.footer}>
-          {/** close button */}
-          <Row fullWidth>
-            <Stretch />
+          <Row fullWidth justifyChildrenCenter>
             <Button
-              link="errorRed"
-              background="secondaryLight"
-              onClick={this.handleClose}
+              variant="icon"
+              onClick={this.handleShareSocial("twitter")}
+              className={s.socialIcon}
             >
-              <Typography fontSizeS alignChildrenCenter>
-                <CloseIcon style={{ width: 10, height: 10 }} />
-                <Typography paddingLeft>{t("cancel")}</Typography>
-              </Typography>
+              <TwitterBorderIcon style={{ width: 17, height: 14 }} />
+            </Button>
+            <Box paddingLeftHalf />
+            <Button
+              variant="icon"
+              onClick={this.handleShareSocial("facebook")}
+              className={s.socialIcon}
+            >
+              <FacebookBorderIcon style={{ width: 10, height: 17 }} />
+            </Button>
+            <Box paddingLeftHalf />
+            <Button
+              variant="icon"
+              onClick={this.handleShareSocial("instagram")}
+              className={s.socialIcon}
+            >
+              <InstagramBorderIcon style={{ width: 17, height: 17 }} />
+            </Button>
+            <Box paddingLeftHalf />
+            <Button
+              variant="icon"
+              onClick={this.handleShareSocial("linkedin")}
+              className={s.socialIcon}
+            >
+              <LinkedinBorderIcon style={{ width: 15, height: 17 }} />
+            </Button>
+            <Box paddingLeftHalf />
+            <Button
+              variant="icon"
+              onClick={this.handleShareSocial("network")}
+              className={s.socialIcon}
+            >
+              <NetworkIcon style={{ width: 19, height: 16 }} />
             </Button>
           </Row>
         </DialogActions>
@@ -168,6 +174,6 @@ class ContactInfoDialog extends Component {
   }
 }
 
-export default withStyles(styleSheet, { name: "ContactInfoDialog" })(
-  withTranslation("common")(withWidth()(ContactInfoDialog))
+export default withStyles(styleSheet, { name: "ShareOfficeDialog" })(
+  withTranslation("common")(withWidth()(ShareOfficeDialog))
 );

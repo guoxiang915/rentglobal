@@ -12,11 +12,15 @@ import {
   ArrowDownIcon,
   StarIcon,
   MapPointerIcon,
-  Link
-} from "../../../../common/base-components";
-import { TabWrapper, StatisticBox } from "../../../../common/base-layouts";
-import { servicesCategories } from "../../../../utils/constants";
+  Link,
+  FavoriteIcon,
+  ShareIcon,
+  Button
+} from "../../common/base-components";
+import { TabWrapper, StatisticBox } from "../../common/base-layouts";
+import { servicesCategories } from "../../utils/constants";
 import Carousel from "@brainhubeu/react-carousel";
+import { ContactInfoDialog, LoginDialog, ShareOfficeDialog } from "./Dialogs";
 
 const styleSheet = theme => ({
   root: {},
@@ -183,18 +187,23 @@ const styleSheet = theme => ({
 
 class OfficeDetailForm extends Component {
   static propTypes = {
+    /** Office info */
     office: PropTypes.object.isRequired,
+    /** Auth info */
+    auth: PropTypes.object,
+    /** Login function */
+    mappedLogin: PropTypes.func,
+
     classes: PropTypes.object,
     t: PropTypes.func
   };
 
-  state = { currentPhoto: 0 };
+  state = { currentPhoto: 0, dialog: null };
 
   /** Prev/Next current photo */
   handlePrevPhoto = () => {
     this.setState({ currentPhoto: Math.max(this.state.currentPhoto - 1, 0) });
   };
-
   handleNextPhoto = () => {
     this.setState({
       currentPhoto: Math.min(
@@ -204,12 +213,63 @@ class OfficeDetailForm extends Component {
     });
   };
 
+  /** Favorite office */
+  handleFavorite = () => {
+    const { isLoggedIn } = this.props.auth;
+    if (!isLoggedIn) {
+      this.setState({
+        dialog: (
+          <LoginDialog
+            auth={this.props.auth}
+            mappedLogin={this.props.mappedLogin}
+            onClose={this.handleCloseDialog}
+          />
+        )
+      });
+    }
+  };
+
+  /** Share office */
+  handleShare = () => {
+    this.setState({
+      dialog: (
+        <ShareOfficeDialog
+          office={this.props.office}
+          onClose={this.handleCloseDialog}
+        />
+      )
+    });
+  };
+
+  /** Follow up office */
+  handleFollowUp = () => {
+    this.setState({
+      dialog: (
+        <ContactInfoDialog
+          title={this.props.t("followUp")}
+          contact={{
+            username: "Name Family",
+            type: "Consultant",
+            phoneNumber: "(123) 123-4567",
+            email: "consultantname@domainanme.com"
+          }}
+          onClose={this.handleCloseDialog}
+        />
+      )
+    });
+  };
+
+  /** Close dialog */
+  handleCloseDialog = () => {
+    this.setState({ dialog: null });
+  };
+
   /**
    * Renderer function
    */
   render() {
     const { office, classes: s, t, width } = this.props;
-    const { currentPhoto } = this.state;
+    const { dialog, currentPhoto } = this.state;
 
     return (
       <Column classes={{ box: s.root }} fullWidth alignChildrenStart>
@@ -287,26 +347,75 @@ class OfficeDetailForm extends Component {
 
         <Row paddingTop />
 
-        {/** Show office main info (title, type, priceMonthly, rating) */}
-        <Row paddingTopHalf fontSizeM textBlackGrey fontWeightBold>
-          {office.title}
+        <Row
+          paddingTopHalf
+          fullWidth
+          wrap
+          style={{ flexDirection: "row-reverse" }}
+          alignChildrenStart
+        >
+          {/** Show favorite, share, follow up buttons */}
+          <Column alignChildrenEnd fullWidth={isWidthDown("xs", width)}>
+            <Row style={{ float: "right" }} paddingTopHalf>
+              <Button
+                link="secondary"
+                background="secondaryLight"
+                onClick={this.handleFavorite}
+              >
+                <FavoriteIcon style={{ width: 16, height: 15 }} />
+                {!isWidthDown("xs", width) && (
+                  <Typography paddingLeft fontSizeS fontWeightBold>
+                    {t("favorite")}
+                  </Typography>
+                )}
+              </Button>
+
+              <Box paddingLeftHalf />
+
+              <Button
+                link="secondary"
+                background="secondaryLight"
+                onClick={this.handleShare}
+              >
+                <ShareIcon style={{ width: 13, height: 15 }} />
+                {!isWidthDown("xs", width) && (
+                  <Typography paddingLeft fontSizeS fontWeightBold>
+                    {t("share")}
+                  </Typography>
+                )}
+              </Button>
+
+              <Box paddingLeftHalf />
+
+              <Button variant="primary" onClick={this.handleFollowUp} shadow>
+                {t("followUp")}
+              </Button>
+            </Row>
+          </Column>
+
+          {/** Show office main info (title, type, priceMonthly, rating) */}
+          <Column alignChildrenStart stretch>
+            <Row paddingTopHalf fontSizeM textBlackGrey fontWeightBold>
+              {office.title}
+            </Row>
+            <Row paddingTopHalf fontSizeM textSecondary>
+              {t(office.officeType)}
+            </Row>
+            <Row paddingTopHalf fontSizeS textPrimary>
+              {t("dollarPerMonth", { dollar: office.priceMonthly | 0 })}
+            </Row>
+            {office.rating && (
+              <Row paddingTopHalf>
+                <Typography textPrimary>
+                  <StarIcon style={{ width: 12, height: 12 }} />
+                </Typography>
+                <Typography fontSizeS textMediumGrey paddingLeftHalf>
+                  {office.rating}
+                </Typography>
+              </Row>
+            )}
+          </Column>
         </Row>
-        <Row paddingTopHalf fontSizeM textSecondary>
-          {t(office.officeType)}
-        </Row>
-        <Row paddingTopHalf fontSizeS textPrimary>
-          {t("dollarPerMonth", { dollar: office.priceMonthly | 0 })}
-        </Row>
-        {office.rating && (
-          <Row paddingTopHalf>
-            <Typography textPrimary>
-              <StarIcon style={{ width: 12, height: 12 }} />
-            </Typography>
-            <Typography fontSizeS textMediumGrey paddingLeftHalf>
-              {office.rating}
-            </Typography>
-          </Row>
-        )}
 
         {/** Show office details */}
         <Row classes={{ box: s.detailsWrapper }} alignChildrenStart>
@@ -568,6 +677,9 @@ class OfficeDetailForm extends Component {
               )}
           </Column>
         </Row>
+
+        {/** Show dialog */}
+        {dialog}
       </Column>
     );
   }

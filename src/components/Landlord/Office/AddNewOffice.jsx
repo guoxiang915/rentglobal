@@ -30,9 +30,9 @@ import { Alert } from "@material-ui/lab";
 import {
   GeneralInfoForm,
   PictureGalleryForm,
-  ServicesAmenitiesForm,
-  OfficeDetailForm
+  ServicesAmenitiesForm
 } from "./Forms";
+import OfficeDetailForm from "../../../containers/Layout/OfficeDetailForm";
 
 const styleSheet = theme => ({
   root: {
@@ -470,7 +470,11 @@ class AddNewOffice extends Component {
         <Row fullWidth paddingBottom>
           {/** title */}
           <Typography fontSizeM textSecondary>
-            {currentStep === 3 ? t("preview") : editMode ? t("editOffice") : t("addNewOffice")}
+            {currentStep === 3
+              ? t("preview")
+              : editMode
+              ? t("editOffice")
+              : t("addNewOffice")}
           </Typography>
           <Stretch />
           <Button
@@ -519,7 +523,7 @@ class AddNewOffice extends Component {
             <Box paddingLeft />
 
             {/** Show edit button */}
-            {!editMode  &&
+            {!editMode && (
               <Button
                 link="primary"
                 background="normalLight"
@@ -534,7 +538,7 @@ class AddNewOffice extends Component {
                   </Typography>
                 )}
               </Button>
-            }
+            )}
           </Row>
         ) : (
           /** stepper */

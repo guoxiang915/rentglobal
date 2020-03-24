@@ -125,6 +125,7 @@ const OfficeListItem = ({ classes: s, t, autoPlay, office }) => {
   const handleContactInfo = () => {
     setDialog(
       <ContactInfoDialog
+        title={t("contactInfo")}
         contact={{
           username: "Name Family",
           type: "Consultant",

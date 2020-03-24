@@ -42,7 +42,7 @@ import { ReactComponent as TwitterSvg } from "../../assets/icon/icon_social_twit
 import { ReactComponent as BackSvg } from "../../assets/icon/icon_back_white.svg";
 import { ReactComponent as CancelSvg } from "../../assets/icon/icon_cancel_white.svg";
 import { ReactComponent as DeleteSvg } from "../../assets/icon/icon_delete_white.svg";
-import { ReactComponent as FavSvg } from "../../assets/icon/icon_fav_white.svg";
+import { ReactComponent as FavSvg } from "../../assets/icon/icon_fav.svg";
 import { ReactComponent as FavOutlinedSvg } from "../../assets/icon/icon_fav_white.svg";
 import { ReactComponent as FavFilledSvg } from "../../assets/icon/icon_fav_favorite.svg";
 import { ReactComponent as MapSvg } from "../../assets/icon/icon_map_white.svg";
@@ -57,6 +57,11 @@ import { ReactComponent as UploadSvg } from "../../assets/icon/icon_upload_gray.
 import { ReactComponent as EyeSvg } from "../../assets/icon/icon_eye.svg";
 import { ReactComponent as EyeDisSvg } from "../../assets/icon/icon_eye_dis.svg";
 import { ReactComponent as HeadsetSvg } from "../../assets/icon/icon_consultant_gray.svg";
+import { ReactComponent as TwitterBorderSvg } from "../../assets/icon/icon_twitter.svg";
+import { ReactComponent as FacebookBorderSvg } from "../../assets/icon/icon_facebook.svg";
+import { ReactComponent as InstagramBorderSvg } from "../../assets/icon/icon_instagram.svg";
+import { ReactComponent as LinkedinBorderSvg } from "../../assets/icon/icon_linkedin.svg";
+import { ReactComponent as NetworkSvg } from "../../assets/icon/icon_network.svg";
 
 const styleSheet = theme => ({
   primary: {
@@ -157,6 +162,19 @@ export const PowerIcon = props => <SvgIcon src={SignoutSvg} {...props} />;
 export const EyeIcon = props => <SvgIcon src={EyeSvg} {...props} />;
 export const EyeDisIcon = props => <SvgIcon src={EyeDisSvg} {...props} />;
 export const HeadsetIcon = props => <SvgIcon src={HeadsetSvg} {...props} />;
+export const TwitterBorderIcon = props => (
+  <SvgIcon src={TwitterBorderSvg} {...props} />
+);
+export const FacebookBorderIcon = props => (
+  <SvgIcon src={FacebookBorderSvg} {...props} />
+);
+export const InstagramBorderIcon = props => (
+  <SvgIcon src={InstagramBorderSvg} {...props} />
+);
+export const LinkedinBorderIcon = props => (
+  <SvgIcon src={LinkedinBorderSvg} {...props} />
+);
+export const NetworkIcon = props => <SvgIcon src={NetworkSvg} {...props} />;
 export const UsersIcon = props => (
   <SvgIcon src={CompanyRegisterSvg} {...props} />
 );

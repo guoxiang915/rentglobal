@@ -16,12 +16,12 @@ import Carousel, { Dots } from "@brainhubeu/react-carousel";
 
 const styleSheet = theme => ({
   officeWrapper: {
-    width: 235,
+    // width: 235,
     marginRight: 20
   },
 
   officeCarousel: {
-    width: "100%",
+    width: 235,
     height: 175,
     borderRadius: 8,
     border: `1px solid ${theme.colors.primary.borderGrey}`,
@@ -148,6 +148,7 @@ const Dot = ({ classes }) => <div className={classes.dot}></div>;
  * @property  {object} office Office information
  * @property  {function} setFavorite Event handler for set favorite office
  * @property  {number} autoPlay Duration of autoplay for carousel (default: 4000)
+ * @property  {bool} horizontal Show item horizontally or not (default: false)
  */
 const OfficeItem = ({
   classes: s,
@@ -155,7 +156,8 @@ const OfficeItem = ({
   office,
   setFavorite,
   errorMsg,
-  autoPlay
+  autoPlay,
+  horizontal
 }) => {
   /** Changing position of carousel */
   const [pos, setPos] = useState(0);
@@ -182,7 +184,12 @@ const OfficeItem = ({
   }, [office, s]);
 
   return (
-    <Column classes={{ box: s.officeWrapper }} alignChildrenStart>
+    <Box
+      classes={{ box: s.officeWrapper }}
+      alignChildrenStart
+      row={!!horizontal}
+      column={!horizontal}
+    >
       <Box classes={{ box: s.officeCarousel }}>
         <div className={s.hoverWrapper}>
           {/** favorite icon */}
@@ -275,46 +282,48 @@ const OfficeItem = ({
         </div>
       </Box>
 
-      {/** show office title */}
-      <Box paddingTopHalf>
-        <Typography fontSizeM textBlackGrey fontWeightBold>
-          {office.title}
-        </Typography>
-      </Box>
-
-      {/** show office property */}
-      <Row paddingTopHalf>
-        <Typography fontSizeM textSecondary>
-          {t(office.officeType)}
-        </Typography>
-      </Row>
-
-      {/** show office price */}
-      <Row paddingTopHalf>
-        <Typography fontSizeS textPrimary>
-          {t("dollarPerMonth", { dollar: office.priceMonthly })}
-        </Typography>
-      </Row>
-
-      {/** show office ratings */}
-      <Row paddingTopHalf>
-        <Typography textPrimary>
-          <StarIcon style={{ width: 12, height: 12 }} />
-        </Typography>
-        <Typography fontSizeS textMediumGrey paddingLeftHalf>
-          3.5 {/* office.rating */}
-        </Typography>
-      </Row>
-
-      {/** show error msg */}
-      {errorMsg && (
-        <Row paddingTopHalf>
-          <Typography fontSizeS textErrorRed>
-            {t(errorMsg)}
+      <Column paddingTopHalf={!horizontal} paddingLeft={!!horizontal} alignChildrenStart>
+        {/** show office title */}
+        <Row>
+          <Typography fontSizeM textBlackGrey fontWeightBold>
+            {office.title}
           </Typography>
         </Row>
-      )}
-    </Column>
+
+        {/** show office property */}
+        <Row paddingTopHalf>
+          <Typography fontSizeM textSecondary>
+            {t(office.officeType)}
+          </Typography>
+        </Row>
+
+        {/** show office price */}
+        <Row paddingTopHalf>
+          <Typography fontSizeS textPrimary>
+            {t("dollarPerMonth", { dollar: office.priceMonthly })}
+          </Typography>
+        </Row>
+
+        {/** show office ratings */}
+        <Row paddingTopHalf>
+          <Typography textPrimary>
+            <StarIcon style={{ width: 12, height: 12 }} />
+          </Typography>
+          <Typography fontSizeS textMediumGrey paddingLeftHalf>
+            3.5 {/* office.rating */}
+          </Typography>
+        </Row>
+
+        {/** show error msg */}
+        {errorMsg && (
+          <Row paddingTopHalf>
+            <Typography fontSizeS textErrorRed>
+              {t(errorMsg)}
+            </Typography>
+          </Row>
+        )}
+      </Column>
+    </Box>
   );
 };
 

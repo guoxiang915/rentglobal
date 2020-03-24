@@ -16,7 +16,7 @@ import {
   EditIcon
 } from "../../../common/base-components";
 import { KeyboardBackspace } from "@material-ui/icons";
-import { OfficeDetailForm } from "./Forms";
+import OfficeDetailForm from "../../../containers/Layout/OfficeDetailForm";
 
 const styleSheet = theme => ({
   root: {
