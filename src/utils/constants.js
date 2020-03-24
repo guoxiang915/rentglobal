@@ -121,7 +121,6 @@ const servicesCategories = [
 
 export {
   API,
-  GOOGLE_API_KEY,
   officeTypes,
   contractTypes,
   guarantees,
