@@ -402,7 +402,7 @@ class OfficeDetailForm extends Component {
               {t(office.officeType)}
             </Row>
             <Row paddingTopHalf fontSizeS textPrimary>
-              {t("dollarPerMonth", { dollar: office.priceMonthly | 0 })}
+              {t("dollarPerMonth", { dollar: office.priceMonthly || 0 })}
             </Row>
             {office.rating && (
               <Row paddingTopHalf>

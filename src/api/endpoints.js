@@ -102,3 +102,24 @@ export const deleteOfficePhoto = (officeId, photoId) => {
 export const deleteOffice = officeId => {
   return api.delete(`/offices/delete/${officeId}`);
 };
+
+/** Call api to get all published offices */
+export const getPublishedOffices = () => {
+  return api.get("/offices");
+};
+
+/**
+ * Call api to get all approved offices
+ * @deprecated for now, admin doesn't exist, and call api for getting published offices
+ */
+export const getApprovedOffices = () => {
+  return getPublishedOffices();
+};
+
+/**
+ * Call api to get recommended offices
+ * @deprecated for now, call api for getting all published offices
+ */
+export const getRecommendedOffices = () => {
+  return getPublishedOffices();
+};

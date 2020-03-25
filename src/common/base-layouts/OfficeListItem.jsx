@@ -209,7 +209,7 @@ const OfficeListItem = ({ classes: s, t, autoPlay, office }) => {
         {/** show office price */}
         <Row paddingTopHalf>
           <Typography fontSizeS textPrimary>
-            {t("dollarPerMonth", { dollar: office.priceMonthly })}
+            {t("dollarPerMonth", { dollar: office.priceMonthly || 0 })}
           </Typography>
         </Row>
 

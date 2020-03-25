@@ -11,6 +11,7 @@ import SendVerificationForm from "../Auth/SendVerificationForm";
 
 import HeaderImage from "../../assets/img/img_header@2x.jpg";
 
+/** Token-based auth object */
 const authObj = new Auth();
 
 const styleSheet = theme => ({
@@ -109,10 +110,19 @@ const styleSheet = theme => ({
 class PrivateRoute extends React.Component {
   static propTypes = {
     classes: PropTypes.object,
+    /** Component to show */
     component: PropTypes.any,
+    /** AppHeader exists or not */
     noHeader: PropTypes.bool,
+    /** AppFooter exists or not */
     noFooter: PropTypes.bool,
-    noSidebar: PropTypes.bool
+    /** AppSidebar exists or not */
+    noSidebar: PropTypes.bool,
+    /**
+     * Auth required or not
+     * @deprecated
+     */
+    authRequired: PropTypes.bool
   };
 
   state = {
@@ -163,7 +173,6 @@ class PrivateRoute extends React.Component {
 
       case "dashboard":
       case "profile":
-      case "offices":
       case "offices/add":
       case "offices/all":
       case "contracts":
@@ -174,6 +183,12 @@ class PrivateRoute extends React.Component {
           break;
         }
         this.props.history.push("/");
+        break;
+      case "offices":
+        {
+          const role = isLoggedIn ? `/${user.role}` : "";
+          this.props.history.push(`${role}/${path}/${payload ? payload : ""}`);
+        }
         break;
 
       default:

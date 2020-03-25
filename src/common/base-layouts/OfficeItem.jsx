@@ -282,7 +282,11 @@ const OfficeItem = ({
         </div>
       </Box>
 
-      <Column paddingTopHalf={!horizontal} paddingLeft={!!horizontal} alignChildrenStart>
+      <Column
+        paddingTopHalf={!horizontal}
+        paddingLeft={!!horizontal}
+        alignChildrenStart
+      >
         {/** show office title */}
         <Row>
           <Typography fontSizeM textBlackGrey fontWeightBold>
@@ -300,7 +304,7 @@ const OfficeItem = ({
         {/** show office price */}
         <Row paddingTopHalf>
           <Typography fontSizeS textPrimary>
-            {t("dollarPerMonth", { dollar: office.priceMonthly })}
+            {t("dollarPerMonth", { dollar: office.priceMonthly || 0 })}
           </Typography>
         </Row>
 

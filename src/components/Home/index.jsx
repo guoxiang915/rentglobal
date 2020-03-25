@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import { withStyles } from "@material-ui/core/styles";
 import clsx from "clsx";
+import PropTypes from "prop-types";
 import { Trans, withTranslation } from "react-i18next";
 import withWidth, { isWidthDown } from "@material-ui/core/withWidth";
 import { Grid, Card, Hidden, MobileStepper, Collapse } from "@material-ui/core";
@@ -34,6 +35,8 @@ import {
 } from "../../common/base-components";
 import { OfficeItem } from "../../common/base-layouts";
 import Carousel from "@brainhubeu/react-carousel";
+import { emailValidation } from "../../utils/validators";
+import { getRecommendedOffices } from "../../api/endpoints";
 
 // load assets
 import headerimg from "../../assets/img/img_header.jpg";
@@ -41,10 +44,6 @@ import headerimgL from "../../assets/img/img_header@2x.jpg";
 import gallery1 from "../../assets/img/img_gallery_01@2x.png";
 import gallery2 from "../../assets/img/img_gallery_02@2x.png";
 import gallery3 from "../../assets/img/img_gallery_03@2x.png";
-
-// import mock data
-import { offices } from "../../common/mock/officeMockData";
-import { emailValidation } from "../../utils/validators";
 
 const styleSheet = theme => ({
   root: {
@@ -476,8 +475,9 @@ const styleSheet = theme => ({
 });
 
 class Home extends Component {
-  static defaultProps = {
-    recommendedOffices: offices
+  static propTypes = {
+    classes: PropTypes.object,
+    t: PropTypes.func
   };
 
   state = {
@@ -485,7 +485,8 @@ class Home extends Component {
     receiveNewsletter: "",
     receiveNewsletterError: null,
     activeLandingBlock: 0,
-    activeHelpStep: 0
+    activeHelpStep: 0,
+    recommendedOffices: []
   };
 
   intervalId = null;
@@ -513,7 +514,7 @@ class Home extends Component {
   ];
 
   UNSAFE_componentWillMount() {
-    /* set timer for active landing block (every 5 seconds) */
+    /** Set timer for active landing block (every 5 seconds) */
     this.intervalId = setInterval(
       () =>
         this.setState({
@@ -521,6 +522,15 @@ class Home extends Component {
         }),
       5000
     );
+
+    /** Get recommended offices */
+    if (getRecommendedOffices) {
+      getRecommendedOffices().then(response => {
+        if (response.status === 200) {
+          this.setState({ recommendedOffices: response.data.data.offices });
+        }
+      });
+    }
   }
 
   componentWillUnmount() {
@@ -682,8 +692,9 @@ class Home extends Component {
   };
 
   render() {
-    const { recommendedOffices, width, classes: s, t } = this.props;
+    const { width, classes: s, t } = this.props;
     const {
+      recommendedOffices,
       activeHelpStep,
       activeLandingBlock,
       tessiQuery,
