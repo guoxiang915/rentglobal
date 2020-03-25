@@ -65,7 +65,7 @@ class Landlord extends Component {
   deleteOffice = officeId => () => {
     deleteOffice(officeId).then(response => {
       if (response.status === 200) {
-        this.props.navigate("offices");
+        this.props.navigate("landlord/offices");
       }
     });
   };
@@ -76,7 +76,7 @@ class Landlord extends Component {
    */
   editOffice = officeId => () => {
     this.setState({ dialog: null }, () => {
-      this.props.navigate("offices", `${officeId}/edit`);
+      this.props.navigate("landlord/offices", `${officeId}/edit`);
     });
   };
 

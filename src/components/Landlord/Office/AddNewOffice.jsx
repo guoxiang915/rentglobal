@@ -346,18 +346,18 @@ class AddNewOffice extends Component {
         break;
       case 1:
         if (this.state.office) {
-          result = this.props.createOfficeCoverPhotos({
-            officeId: this.state.office._id,
-            coverPhotos: this.state.office.coverPhotos.map(photo => photo._id)
-          });
+          result = this.props.createOfficeCoverPhotos(
+            this.state.office._id,
+            this.state.office.coverPhotos.map(photo => photo._id)
+          );
         }
         break;
       case 2:
         if (this.state.office)
-          result = this.props.createOfficeServicesAmenities({
-            officeId: this.state.office._id,
-            servicesAndAmenities: this.state.office.servicesAndAmenities
-          });
+          result = this.props.createOfficeServicesAmenities(
+            this.state.office._id,
+            this.state.office.servicesAndAmenities
+          );
         break;
       case 3:
         if (this.state.office)

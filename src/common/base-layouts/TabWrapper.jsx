@@ -49,6 +49,7 @@ const TabWrapper = props => {
     onToggleEdit,
     onToggleOpen,
     insideOpen,
+    color,
     t,
     title
   } = props;
@@ -66,16 +67,22 @@ const TabWrapper = props => {
 
   /** Renderer */
   return (
-    <Column fullWidth alignChildrenStart classes={{box: clsx(className)}}>
-      <Row fullWidth classes={{box:clsx(headerClass, classes.headerClass)}}>
-        <Box onClick={handleToggleOpen} pointer alignChildrenCenter>
-          <Typography fontSizeS textMediumGrey paddingRight>
+    <Column fullWidth alignChildrenStart classes={{ box: clsx(className) }}>
+      <Row fullWidth classes={{ box: clsx(headerClass, classes.headerClass) }}>
+        <Box
+          onClick={handleToggleOpen}
+          pointer
+          alignChildrenCenter
+          textMediumGrey={!color}
+          {...color}
+        >
+          <Typography fontSizeS paddingRight>
             {title}
           </Typography>
           {opened ? (
-            <ArrowUpIcon color="secondary" style={{ width: 12, height: 7 }} />
+            <ArrowUpIcon style={{ width: 12, height: 7 }} />
           ) : (
-            <ArrowDownIcon color="secondary" style={{ width: 12, height: 7 }} />
+            <ArrowDownIcon style={{ width: 12, height: 7 }} />
           )}
         </Box>
         <Stretch />
@@ -108,7 +115,11 @@ const TabWrapper = props => {
         {actionButton}
       </Row>
       <Collapse in={opened} className={classes.fullWidth}>
-        <Column paddingTopHalf alignChildrenStart classes={{box: clsx(bodyClass)}}>
+        <Column
+          paddingTopHalf
+          alignChildrenStart
+          classes={{ box: clsx(bodyClass) }}
+        >
           {children}
         </Column>
       </Collapse>

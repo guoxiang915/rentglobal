@@ -13,3 +13,27 @@ export function formatDate(date) {
 
   return [year, month, day].join("-");
 }
+
+export function formatDate1(date) {
+  // TODO: define this constants from i18n
+  const months = [
+    "Jan",
+    "Feb",
+    "Mar",
+    "Apr",
+    "May",
+    "Jun",
+    "Jul",
+    "Aug",
+    "Sep",
+    "Oct",
+    "Nov",
+    "Dec"
+  ];
+  let d = new Date(date);
+  let year = d.getFullYear();
+  let day = "" + d.getDate();
+  if (day.length < 2) day = "0" + day;
+
+  return [year, months[d.getMonth()], day].join(" ");
+}

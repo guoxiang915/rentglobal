@@ -305,5 +305,8 @@
     "sublease": "Sublease",
     "favorite": "Favorite",
     "followUp": "Follow Up",
-    "share": "Share"
+    "share": "Share",
+
+    "loadMore": "Load more ...",
+    "similarOffice": "Similar Office"
 }

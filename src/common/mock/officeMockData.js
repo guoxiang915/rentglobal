@@ -47,3 +47,42 @@ export const offices = [
     published: false
   }
 ];
+
+export const reviews = [
+  {
+    company: {
+      avatar: {},
+      username: "Company Name"
+    },
+    createdAt: new Date(2019, 1, 21),
+    content:
+      "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
+  },
+  {
+    company: {
+      avatar: {},
+      username: "Company Name"
+    },
+    createdAt: new Date(2018, 6, 13),
+    content:
+      "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat."
+  },
+  {
+    company: {
+      avatar: {},
+      username: "Company Name"
+    },
+    createdAt: new Date(2019, 1, 21),
+    content:
+      "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
+  },
+  {
+    company: {
+      avatar: {},
+      username: "Company Name"
+    },
+    createdAt: new Date(2018, 6, 13),
+    content:
+      "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat."
+  }
+];

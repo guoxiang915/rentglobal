@@ -691,6 +691,11 @@ class Home extends Component {
     }
   };
 
+  /** Navigate to office detail page */
+  handleOfficeDetail = officeId => () => {
+    this.props.navigate("offices", officeId);
+  };
+
   render() {
     const { width, classes: s, t } = this.props;
     const {
@@ -1070,7 +1075,11 @@ class Home extends Component {
               <div style={{ width: "100%", height: "100%" }}>
                 <Carousel itemWidth={255} offset={20} keepDirectionWhenDragging>
                   {recommendedOffices.map((office, index) => (
-                    <div style={{ position: "relative" }} key={index}>
+                    <div
+                      style={{ position: "relative", cursor: "pointer" }}
+                      key={index}
+                      onClick={this.handleOfficeDetail(office._id)}
+                    >
                       <OfficeItem
                         office={office}
                         setFavorite={this.handleSetFavoriteOffice(office)}

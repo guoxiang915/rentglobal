@@ -144,6 +144,8 @@ class PrivateRoute extends React.Component {
   navigate = (path, payload) => {
     const { isLoggedIn, user } = this.props.auth;
 
+    console.log(path);
+
     switch (path) {
       case "back":
         this.props.history.goBack();
@@ -184,11 +186,9 @@ class PrivateRoute extends React.Component {
         }
         this.props.history.push("/");
         break;
+      case "landlord/offices":
       case "offices":
-        {
-          const role = isLoggedIn ? `/${user.role}` : "";
-          this.props.history.push(`${role}/${path}/${payload ? payload : ""}`);
-        }
+        this.props.history.push(`/${path}/${payload ? payload : ""}`);
         break;
 
       default:
