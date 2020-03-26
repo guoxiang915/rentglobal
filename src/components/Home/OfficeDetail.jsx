@@ -171,7 +171,7 @@ class OfficeDetail extends Component {
     getApprovedOfficeById(officeId).then(response => {
       if (response.status === 200) {
         console.log(response);
-        this.setState({ office: response.data.data.office });
+        this.setState({ office: response.data });
       }
     });
 
