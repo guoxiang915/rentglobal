@@ -29,11 +29,24 @@ import Carousel from "@brainhubeu/react-carousel";
 
 const styleSheet = theme => ({
   root: {
-    paddingLeft: theme.spacing(5),
-    paddingRight: theme.spacing(5),
+    width: "100%",
+    height: "100%",
+    background: theme.colors.primary.white,
+    minHeight: "calc(100vh - 250px)",
     [theme.breakpoints.down("sm")]: {
-      paddingLeft: 27,
-      paddingRight: 27
+      minHeight: "calc(100vh - 166px)"
+    }
+  },
+
+  fixedWidth: {
+    maxWidth: 1024 + 44,
+    width: "100%",
+    paddingLeft: 22,
+    paddingRight: 22,
+    overflow: "hidden",
+    [theme.breakpoints.down("sm")]: {
+      paddingLeft: 22,
+      paddingRight: 22
     }
   },
 
@@ -43,10 +56,10 @@ const styleSheet = theme => ({
 
   addOfficeTabWrapper: {
     paddingTop: 20,
-    paddingBottom: 56,
+    paddingBottom: 106,
     [theme.breakpoints.down("xs")]: {
       paddingTop: 8,
-      paddingBottom: 24
+      paddingBottom: 50
     }
   },
 
@@ -119,6 +132,10 @@ const styleSheet = theme => ({
     width: 39,
     height: 39,
     objectFit: "contain"
+  },
+
+  divider: {
+    height: 1
   }
 });
 
@@ -259,131 +276,154 @@ class OfficeDetail extends Component {
     const Review = this.renderReview;
 
     return (
-      <Column
-        classes={{ box: s.root }}
-        fullWidth
-        alignChildrenStart
-        paddingTopDouble
-        paddingBottomDouble
-      >
-        <Row fullWidth paddingBottom>
-          <Stretch />
-          <Button
-            link="secondary"
-            background="secondaryLight"
-            onClick={this.handleBack}
-          >
-            <KeyboardBackspace />
-            <Typography paddingLeft fontSizeS>
-              {t("back")}
-            </Typography>
-          </Button>
-        </Row>
-
-        <Row fullWidth classes={{ box: clsx(s.addOfficeTabWrapper) }}>
-          {office && <OfficeDetailForm office={office} />}
-        </Row>
-
-        {/** Show office created landlord info */}
-        <Divider />
-        <Column classes={{ box: s.landlordInfo }}>
-          <Row fullWidth alignChildrenStart>
-            {/** Show landlord avatar, name, description */}
-            <Box classes={{ box: s.landlordAvatarWrapper }}>
-              {landlord.avatar && landlord.avatar.bucketPath ? (
-                <img
-                  src={landlord.avatar.bucketPath}
-                  alt=""
-                  className={s.landlordAvatar}
-                />
-              ) : (
-                <UserIcon color="secondary" style={{ width: 27, height: 35 }} />
-              )}
-            </Box>
-            <Column
-              classes={{ box: s.landlordName }}
-              alignChildrenStart
-              stretch
+      <Row justifyChildrenCenter classes={{ box: s.root }}>
+        <Column
+          classes={{ box: s.fixedWidth }}
+          fullWidth
+          alignChildrenStart
+          paddingTopDouble
+          paddingBottomDouble
+        >
+          <Row fullWidth paddingBottom>
+            <Stretch />
+            <Button
+              link="secondary"
+              background="secondaryLight"
+              onClick={this.handleBack}
             >
-              <Typography fontSizeM fontWeightBold textSecondary>
-                {landlord.username}
+              <KeyboardBackspace />
+              <Typography paddingLeft fontSizeS>
+                {t("back")}
               </Typography>
-              <Typography fontSizeS textSecondary paddingTopHalf>
-                {landlord.description}
+            </Button>
+          </Row>
+
+          <Row fullWidth classes={{ box: clsx(s.addOfficeTabWrapper) }}>
+            {office && <OfficeDetailForm office={office} />}
+          </Row>
+
+          {/** Show office created landlord info */}
+          <Divider className={s.divider} />
+
+          <Column classes={{ box: s.landlordInfo }}>
+            <Row fullWidth alignChildrenStart>
+              {/** Show landlord avatar, name, description */}
+              <Box classes={{ box: s.landlordAvatarWrapper }}>
+                {landlord.avatar && landlord.avatar.bucketPath ? (
+                  <img
+                    src={landlord.avatar.bucketPath}
+                    alt=""
+                    className={s.landlordAvatar}
+                  />
+                ) : (
+                  <UserIcon
+                    color="secondary"
+                    style={{ width: 27, height: 35 }}
+                  />
+                )}
+              </Box>
+              <Column
+                classes={{ box: s.landlordName }}
+                alignChildrenStart
+                stretch
+              >
+                <Typography fontSizeM fontWeightBold textSecondary>
+                  {landlord.username}
+                </Typography>
+                <Typography fontSizeS textSecondary paddingTopHalf>
+                  {landlord.description}
+                </Typography>
+              </Column>
+            </Row>
+
+            <Row
+              fullWidth
+              paddingTopDouble
+              justifyChildrenEnd
+              classes={{ box: s.landlordMoreInfo }}
+              wrap
+            >
+              {/** Show landlord request buttons */}
+              <Button
+                variant="secondary"
+                onClick={this.handleContactReq}
+                shadow
+              >
+                {t("contactReq")}
+              </Button>
+              <Box paddingLeftHalf />
+              <Button
+                variant="secondary"
+                onClick={this.handleMoreInfoReq}
+                shadow
+              >
+                {t("moreInfoReq")}
+              </Button>
+              <Box paddingLeftHalf />
+              <Button variant="primary" onClick={this.handleFollowUp} shadow>
+                {t("followUp")}
+              </Button>
+            </Row>
+          </Column>
+
+          {/** Show reviews */}
+          <Divider />
+
+          <Row fullWidth classes={{ box: s.reviewsWrapper }}>
+            <TabWrapper
+              title={t("reviews") + ` (${reviews.length})`}
+              open={true}
+              insideOpen
+            >
+              {reviews.map((review, index) => (
+                <React.Fragment key={index}>
+                  <Row fullWidth paddingTopHalf paddingBottom>
+                    <Review review={review} classes={s} t={t} />
+                  </Row>
+                </React.Fragment>
+              ))}
+              <Link
+                to="#"
+                onClick={this.handleMoreReviews}
+                variant="normalLight"
+              >
+                <Typography fontSizeS>{t("loadMore")}</Typography>
+              </Link>
+            </TabWrapper>
+          </Row>
+
+          {/** Show similar offices */}
+          <Divider />
+          <Row fullWidth classes={{ box: s.similarOfficesWrapper }}>
+            <Column fullWidth alignChildrenStart>
+              <Typography fontSizeM textBlackGrey fontWeightBold>
+                {t("similarOffice")}
               </Typography>
+              <Row fullWidth classes={{ box: s.similarOffices }}>
+                <div style={{ width: "100%", height: "100%" }}>
+                  <Carousel
+                    itemWidth={255}
+                    offset={20}
+                    keepDirectionWhenDragging
+                  >
+                    {similarOffices.map((office, index) => (
+                      <div style={{ position: "relative" }} key={index}>
+                        <OfficeItem
+                          office={office}
+                          setFavorite={this.handleSetFavoriteOffice(office)}
+                        />
+                      </div>
+                    ))}
+                  </Carousel>
+                </div>
+              </Row>
             </Column>
           </Row>
 
-          <Row
-            fullWidth
-            paddingTopDouble
-            justifyChildrenEnd
-            classes={{ box: s.landlordMoreInfo }}
-            wrap
-          >
-            {/** Show landlord request buttons */}
-            <Button variant="secondary" onClick={this.handleContactReq} shadow>
-              {t("contactReq")}
-            </Button>
-            <Box paddingLeftHalf />
-            <Button variant="secondary" onClick={this.handleMoreInfoReq} shadow>
-              {t("moreInfoReq")}
-            </Button>
-            <Box paddingLeftHalf />
-            <Button variant="primary" onClick={this.handleFollowUp} shadow>
-              {t("followUp")}
-            </Button>
-          </Row>
+          {/** Show dialog */}
+          {dialog}
         </Column>
-
-        {/** Show reviews */}
-        <Divider />
-        <Row fullWidth classes={{ box: s.reviewsWrapper }}>
-          <TabWrapper
-            title={t("reviews") + ` (${reviews.length})`}
-            open={true}
-            insideOpen
-          >
-            {reviews.map((review, index) => (
-              <React.Fragment key={index}>
-                <Row fullWidth paddingTopHalf paddingBottom>
-                  <Review review={review} classes={s} t={t} />
-                </Row>
-              </React.Fragment>
-            ))}
-            <Link to="#" onClick={this.handleMoreReviews} variant="normalLight">
-              <Typography fontSizeS>{t("loadMore")}</Typography>
-            </Link>
-          </TabWrapper>
-        </Row>
-
-        {/** Show similar offices */}
-        <Divider />
-        <Row fullWidth classes={{ box: s.similarOfficesWrapper }}>
-          <Column fullWidth alignChildrenStart>
-            <Typography fontSizeM textBlackGrey fontWeightBold>
-              {t("similarOffice")}
-            </Typography>
-            <Row fullWidth classes={{ box: s.similarOffices }}>
-              <div style={{ width: "100%", height: "100%" }}>
-                <Carousel itemWidth={255} offset={20} keepDirectionWhenDragging>
-                  {similarOffices.map((office, index) => (
-                    <div style={{ position: "relative" }} key={index}>
-                      <OfficeItem
-                        office={office}
-                        setFavorite={this.handleSetFavoriteOffice(office)}
-                      />
-                    </div>
-                  ))}
-                </Carousel>
-              </div>
-            </Row>
-          </Column>
-        </Row>
-
-        {/** Show dialog */}
-        {dialog}
-      </Column>
+      </Row>
     );
   }
 }

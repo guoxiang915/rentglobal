@@ -3,7 +3,7 @@ import clsx from "clsx";
 import { withStyles } from "@material-ui/core";
 
 const styleSheet = theme => {
-  let unit = 1;
+  let unit = 1.1;
   return {
     divider: {
       width: "100%",
@@ -40,15 +40,18 @@ const Divider = ({
   ...props
 }) => (
   <div
-    className={clsx({
-      [classes.divider]: true,
-      [classes.half]: half,
-      [classes.single]: single,
-      [classes.double]: double,
-      [classes.light]: light,
-      [classes.dark]: dark,
-      [styles]: styles,
-    }, className)}
+    className={clsx(
+      {
+        [classes.divider]: true,
+        [classes.half]: half,
+        [classes.single]: single,
+        [classes.double]: double,
+        [classes.light]: light,
+        [classes.dark]: dark,
+        [styles]: styles
+      },
+      className
+    )}
   />
 );
 
