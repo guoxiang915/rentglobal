@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import { withStyles } from "@material-ui/core/styles";
 import { withTranslation } from "react-i18next";
 import PropTypes from "prop-types";
+import clsx from "clsx";
 import withWidth, { isWidthDown } from "@material-ui/core/withWidth";
 import {
   Row,
@@ -41,6 +42,7 @@ const styleSheet = theme => ({
   },
 
   gridRowValues: {
+    flex: 1,
     [theme.breakpoints.down("xs")]: {
       marginLeft: -15,
       marginRight: -15,
@@ -85,6 +87,10 @@ const styleSheet = theme => ({
   googleMap: {
     height: 215,
     paddingBottom: 8
+  },
+
+  fullWidth: {
+    width: "100%"
   }
 });
 
@@ -194,10 +200,19 @@ class GeneralInfoForm extends Component {
   /**
    * Render grid row
    */
-  renderGridRow = ({ classes: s, title, required, children, ...props }) => {
+  renderGridRow = ({
+    classes: s,
+    title,
+    required,
+    children,
+    labelMd,
+    labelSm,
+    labelXs,
+    ...props
+  }) => {
     return (
       <Grid container className={s.gridRow} {...props}>
-        <Grid item md={4} sm={6} xs={12}>
+        <Grid item md={labelMd || 4} sm={labelSm || 6} xs={labelXs || 12}>
           <Typography
             fullHeight
             paddingTopHalf
@@ -213,7 +228,7 @@ class GeneralInfoForm extends Component {
             )}
           </Typography>
         </Grid>
-        <Grid item md={8} sm={6} xs={12} className={s.gridRowValues}>
+        <Grid item className={s.gridRowValues}>
           {children}
         </Grid>
       </Grid>
@@ -253,7 +268,13 @@ class GeneralInfoForm extends Component {
         return (
           <Select
             options={["", ...options]}
-            renderOption={item => (!item ? t("selectOne") : typeof item === 'object' ? t(...item) : t(item))}
+            renderOption={item =>
+              !item
+                ? t("selectOne")
+                : typeof item === "object"
+                ? t(...item)
+                : t(item)
+            }
             displayEmpty
             value={office[field] || ""}
             onChange={this.handleChangePropsByEventValue(field)}
@@ -513,48 +534,57 @@ class GeneralInfoForm extends Component {
         <Row paddingTop />
 
         <Grid container spacing={1}>
-          <Grid item md={editAddressMode ? 12 : 8} sm={editAddressMode ? 12 : 6} xs={12}>
+          <Grid item md={editAddressMode ? 12 : 8} sm={12} xs={12}>
             {/** office number */}
-            <GridRow classes={s} title={t("officeNumber")}>
+            <GridRow
+              classes={s}
+              title={t("officeNumber")}
+              labelMd={editAddressMode ? 4 : 6}
+            >
               <NormalFormField
                 tag="textfield"
                 type="number"
                 placeholder={t("number")}
-                className={s.textField350}
+                className={clsx(editAddressMode ? s.textField350 : s.fullWidth)}
                 field="officeNumber"
               />
             </GridRow>
             {/** office floor */}
-            <GridRow classes={s} title={t("officeFloor")}>
+            <GridRow
+              classes={s}
+              title={t("officeFloor")}
+              labelMd={editAddressMode ? 4 : 6}
+            >
               <NormalFormField
                 tag="textfield"
                 type="number"
                 placeholder={t("floor")}
-                className={s.textField350}
+                className={clsx(editAddressMode ? s.textField350 : s.fullWidth)}
                 field="officeFloor"
               />
             </GridRow>
-            {editAddressMode && 
+            {editAddressMode ? (
               <>
                 {/** location */}
                 <GridRow classes={s} title={t("location")} required>
                   <NormalFormField
                     tag="address"
                     field="location"
-                    placeholder={t("officeAddress") + " (" + t("autocomplete") + ")"}
-                    fullWidth
+                    placeholder={
+                      t("officeAddress") + " (" + t("autocomplete") + ")"
+                    }
                     required
+                    fullWidth
                     value={office.location && office.location.fullAddress}
                     onChange={this.handleChangeLocation("fullAddress")}
                     onSelect={this.handleSelectLocation}
                   />
                 </GridRow>
               </>
-            }
-            {!editAddressMode &&
+            ) : (
               <>
                 {/** street address */}
-                <GridRow classes={s} title={t("streetAddress")}>
+                <GridRow classes={s} title={t("streetAddress")} labelMd={6}>
                   <NormalFormField
                     tag="textfield"
                     field="streetName"
@@ -563,7 +593,7 @@ class GeneralInfoForm extends Component {
                   />
                 </GridRow>
                 {/** city */}
-                <GridRow classes={s} title={t("city")}>
+                <GridRow classes={s} title={t("city")} labelMd={6}>
                   <NormalFormField
                     tag="textfield"
                     field="city"
@@ -572,7 +602,7 @@ class GeneralInfoForm extends Component {
                   />
                 </GridRow>
                 {/** state */}
-                <GridRow classes={s} title={t("state")}>
+                <GridRow classes={s} title={t("state")} labelMd={6}>
                   <NormalFormField
                     tag="textfield"
                     field="state"
@@ -581,7 +611,7 @@ class GeneralInfoForm extends Component {
                   />
                 </GridRow>
                 {/** zipCode */}
-                <GridRow classes={s} title={t("zipCode")}>
+                <GridRow classes={s} title={t("zipCode")} labelMd={6}>
                   <NormalFormField
                     tag="textfield"
                     field="zipCode"
@@ -590,7 +620,7 @@ class GeneralInfoForm extends Component {
                   />
                 </GridRow>
                 {/** country */}
-                <GridRow classes={s} title={t("country")}>
+                <GridRow classes={s} title={t("country")} labelMd={6}>
                   <NormalFormField
                     tag="textfield"
                     field="country"
@@ -619,13 +649,17 @@ class GeneralInfoForm extends Component {
                   </Row>
                 </Grid>
               </>
-            }
+            )}
           </Grid>
-          {!editAddressMode && 
-            <Grid item md={editAddressMode ? 12 : 4} sm={editAddressMode ? 12 : 6} xs={12} className={s.googleMap}>
-              <GoogleMap coordinates={office.location && office.location.coordinates} />
+          {!editAddressMode && (
+            <Grid item md={4} sm={12} xs={12}>
+              <Row fullWidth classes={{ box: s.googleMap }}>
+                <GoogleMap
+                  coordinates={office.location && office.location.coordinates}
+                />
+              </Row>
             </Grid>
-          }
+          )}
         </Grid>
         {/** description */}
         <GridRow classes={s} title={t("description")}>

@@ -176,7 +176,7 @@ class AppSidebar extends Component {
     landlord: [
       { text: "home", link: "", role: false, icon: HomeIcon, exact: true },
       { text: "dashboard", link: "dashboard", icon: DashboardIcon },
-      { text: "offices", link: "offices", icon: OfficeIcon },
+      { text: "offices", link: "landlord/offices", icon: OfficeIcon },
       { text: "contracts", link: "contracts", icon: NoteIcon },
       {
         text: "optimization",

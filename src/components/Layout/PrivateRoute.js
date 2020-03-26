@@ -144,8 +144,6 @@ class PrivateRoute extends React.Component {
   navigate = (path, payload) => {
     const { isLoggedIn, user } = this.props.auth;
 
-    console.log(path);
-
     switch (path) {
       case "back":
         this.props.history.goBack();
