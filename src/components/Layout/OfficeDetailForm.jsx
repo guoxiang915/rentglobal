@@ -20,7 +20,12 @@ import {
 import { TabWrapper, StatisticBox } from "../../common/base-layouts";
 import { servicesCategories } from "../../utils/constants";
 import Carousel from "@brainhubeu/react-carousel";
-import { ContactInfoDialog, LoginDialog, ShareOfficeDialog } from "./Dialogs";
+import {
+  ContactInfoDialog,
+  LoginDialog,
+  ShareOfficeDialog,
+  LocationDialog
+} from "./Dialogs";
 
 const styleSheet = theme => ({
   root: {},
@@ -263,6 +268,20 @@ class OfficeDetailForm extends Component {
               phoneNumber: "(123) 123-4567",
               email: "consultantname@domainanme.com"
             }}
+            onClose={this.handleCloseDialog}
+          />
+        )
+      });
+    }
+  };
+
+  /** Show location dialog */
+  handleShowLocationOnMap = () => {
+    if (this.passLoginDialog()) {
+      this.setState({
+        dialog: (
+          <LocationDialog
+            location={this.props.office.location}
             onClose={this.handleCloseDialog}
           />
         )
@@ -555,7 +574,7 @@ class OfficeDetailForm extends Component {
                 <Column classes={{ box: s.infoLabel }}>{t("location")}</Column>
                 <Row classes={{ box: s.infoValue }} paddingTopHalf>
                   <Link
-                    to=""
+                    to="#"
                     onClick={this.handleShowLocationOnMap}
                     variant="primary"
                   >
