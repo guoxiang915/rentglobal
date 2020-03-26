@@ -527,7 +527,7 @@ class Home extends Component {
     if (getRecommendedOffices) {
       getRecommendedOffices().then(response => {
         if (response.status === 200) {
-          this.setState({ recommendedOffices: response.data.data.offices });
+          this.setState({ recommendedOffices: response.data });
         }
       });
     }
