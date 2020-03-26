@@ -23,7 +23,8 @@ import {
   CheckIcon,
   LockIcon,
   UploadIcon,
-  ProgressIcon
+  ProgressIcon,
+  GooglePlaceField
 } from "../../common/base-components";
 import {
   UploadDocument,
@@ -216,7 +217,7 @@ class Profile extends Component {
     username: "",
     email: "",
     phoneNumber: "",
-    address: "",
+    address: {},
     postalCode: "",
     legalStatusDocuments: [],
     checkSpecimen: [],
@@ -303,10 +304,7 @@ class Profile extends Component {
         profile: {
           username,
           phoneNumber,
-          address: {
-            fullAddress: address,
-            postalCode
-          }
+          address: { ...address, postalCode }
         }
       }
     });
@@ -352,7 +350,7 @@ class Profile extends Component {
       username: profile.username || "",
       email: user.email || "",
       phoneNumber: profile.phoneNumber || "",
-      address: profile.address.fullAddress || "",
+      address: profile.address || {},
       postalCode: profile.address.postalCode || "",
       avatar: user.avatar || null
     });
@@ -409,6 +407,18 @@ class Profile extends Component {
         uploadingDocument: null
       });
     });
+  };
+
+  /** Change/Select address */
+  handleChangeAddress = field => e => {
+    const address = { ...this.state.address, [field]: e.target.value };
+    this.setState({ address });
+  };
+
+  handleSelectAddress = value => {
+    const address = { ...this.state.address, ...value };
+    const postalCode = value.zipCode || "";
+    this.setState({ address, postalCode });
   };
 
   /**
@@ -630,17 +640,24 @@ class Profile extends Component {
                       />
                     </Row>
                     <Row paddingTopHalf>
-                      <TextField
-                        variant="outlined"
-                        placeholder={t("currentAddress")}
-                        onChange={this.handleStateChangeByInput("address")}
-                        value={address}
-                        className={s.profileInput}
-                        startAdornment={
-                          <AddressIcon className={s.outlineIcon} />
-                        }
-                        readOnly={editTab !== "generalInfo"}
-                      />
+                      <div className={s.profileInput}>
+                        <GooglePlaceField
+                          variant="outlined"
+                          value={address.fullAddress}
+                          onChange={this.handleChangeAddress("fullAddress")}
+                          onSelect={this.handleSelectAddress}
+                          inputProps={{
+                            startAdornment: (
+                              <AddressIcon className={s.outlineIcon} />
+                            ),
+                            readOnly: editTab !== "generalInfo",
+                            fullWidth: true,
+                            placeholder: t("currentAddress")
+                            // error: !!validation
+                            // helperText: validation && validation.msg
+                          }}
+                        />
+                      </div>
                     </Row>
                     <Row paddingTopHalf>
                       <TextField

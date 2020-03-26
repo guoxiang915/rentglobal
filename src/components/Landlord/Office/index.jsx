@@ -216,7 +216,9 @@ class Offices extends Component {
                 link="primary"
                 background="normalLight"
                 inverse
-                onClick={this.navigate("allUnpublish")}
+                // TODO: Show unpublish offices
+                // onClick={this.navigate("allUnpublish")}
+                onClick={this.navigate("offices/all")}
               >
                 <Typography paddingLeft fontSizeS>
                   {t("allUnpublish")}

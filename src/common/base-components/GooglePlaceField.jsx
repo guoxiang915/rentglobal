@@ -39,12 +39,12 @@ class GooglePlaceField extends Component {
     label: PropTypes.string,
     startAdornment: PropTypes.any,
     endAdornment: PropTypes.any,
-    fullWidth: PropTypes.bool,
     className: PropTypes.string,
     classes: PropTypes.any.isRequired,
     errorHelper: PropTypes.bool,
     type: PropTypes.string,
-    variant: PropTypes.string
+    variant: PropTypes.string,
+    inputProps: PropTypes.object
   };
 
   static defaultProps = {
@@ -102,7 +102,7 @@ class GooglePlaceField extends Component {
   }
 
   render() {
-    const { classes: s, className, fullWidth } = this.props;
+    const { classes: s, className, inputProps: InputProps } = this.props;
     const { address } = this.state;
     return (
       <>
@@ -113,11 +113,7 @@ class GooglePlaceField extends Component {
             this.setState({ address: description });
           }}
           renderInput={inputProps => (
-            <TextField
-              {...inputProps}
-              fullWidth={fullWidth}
-              innerRef={this.mapRef}
-            />
+            <TextField {...inputProps} {...InputProps} innerRef={this.mapRef} />
           )}
           renderSuggestions={(active, suggestions, onSelectSuggestion) => {
             return (

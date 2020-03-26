@@ -289,8 +289,11 @@ class GeneralInfoForm extends Component {
             variant="outlined"
             value={office[field]}
             onChange={this.handleChangePropsByEventValue(field)}
-            error={!!validation}
-            helperText={validation && validation.msg}
+            inputProps={{
+              ...props.inputProps,
+              error: !!validation,
+              helperText: validation && validation.msg
+            }}
             {...props}
           />
         );
@@ -570,14 +573,14 @@ class GeneralInfoForm extends Component {
                   <NormalFormField
                     tag="address"
                     field="location"
-                    placeholder={
-                      t("officeAddress") + " (" + t("autocomplete") + ")"
-                    }
-                    required
-                    fullWidth
                     value={office.location && office.location.fullAddress}
                     onChange={this.handleChangeLocation("fullAddress")}
                     onSelect={this.handleSelectLocation}
+                    inputProps={{
+                      placeholder: t("officeAddress"),
+                      required: true,
+                      fullWidth: true
+                    }}
                   />
                 </GridRow>
               </>
