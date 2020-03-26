@@ -213,8 +213,8 @@ class OfficeDetailForm extends Component {
     });
   };
 
-  /** Favorite office */
-  handleFavorite = () => {
+  /** Show login dialog */
+  passLoginDialog = () => {
     const { isLoggedIn } = this.props.auth;
     if (!isLoggedIn) {
       this.setState({
@@ -227,36 +227,47 @@ class OfficeDetailForm extends Component {
         )
       });
     }
+    return isLoggedIn;
+  };
+
+  /** Favorite office */
+  handleFavorite = () => {
+    if (this.passLoginDialog()) {
+    }
   };
 
   /** Share office */
   handleShare = () => {
-    this.setState({
-      dialog: (
-        <ShareOfficeDialog
-          office={this.props.office}
-          onClose={this.handleCloseDialog}
-        />
-      )
-    });
+    if (this.passLoginDialog()) {
+      this.setState({
+        dialog: (
+          <ShareOfficeDialog
+            office={this.props.office}
+            onClose={this.handleCloseDialog}
+          />
+        )
+      });
+    }
   };
 
   /** Follow up office */
   handleFollowUp = () => {
-    this.setState({
-      dialog: (
-        <ContactInfoDialog
-          title={this.props.t("followUp")}
-          contact={{
-            username: "Name Family",
-            type: "Consultant",
-            phoneNumber: "(123) 123-4567",
-            email: "consultantname@domainanme.com"
-          }}
-          onClose={this.handleCloseDialog}
-        />
-      )
-    });
+    if (this.passLoginDialog()) {
+      this.setState({
+        dialog: (
+          <ContactInfoDialog
+            title={this.props.t("followUp")}
+            contact={{
+              username: "Name Family",
+              type: "Consultant",
+              phoneNumber: "(123) 123-4567",
+              email: "consultantname@domainanme.com"
+            }}
+            onClose={this.handleCloseDialog}
+          />
+        )
+      });
+    }
   };
 
   /** Close dialog */

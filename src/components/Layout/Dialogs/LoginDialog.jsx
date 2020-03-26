@@ -15,11 +15,11 @@ import LoginForm from "../../Auth/LoginForm";
 
 const styleSheet = theme => ({
   root: {
-    maxWidth: 1056,
-    maxHeight: 512,
+    maxWidth: 1024,
+    maxHeight: 600,
     padding: 0,
-    minWidth: 565,
-    minHeight: 395,
+    minWidth: 400,
+    minHeight: 400,
     borderRadius: 8
   },
 
@@ -46,6 +46,14 @@ class LoginDialog extends Component {
     open: PropTypes.bool,
     /** Event handler for closing dialog */
     onClose: PropTypes.func
+  };
+
+  /**
+   * Event handler for login
+   */
+  handleLogin = payload => {
+    this.props.mappedLogin(payload, this.props.history);
+    this.handleClose();
   };
 
   /**
@@ -83,9 +91,8 @@ class LoginDialog extends Component {
         {/** dialog content */}
         <DialogContent className={s.content}>
           <LoginForm
-            mappedLogin={payload =>
-              this.props.mappedLogin(payload, this.props.history)
-            }
+            noTitle
+            mappedLogin={this.handleLogin}
             error={error}
             isLoading={isLoading}
           />

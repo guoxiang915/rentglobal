@@ -56,6 +56,7 @@ class LoginForm extends Component {
    */
   static propTypes = {
     email: PropTypes.string,
+    noTitle: PropTypes.bool,
     error: PropTypes.any,
     isLoading: PropTypes.bool,
     mappedLogin: PropTypes.func.isRequired,
@@ -71,7 +72,7 @@ class LoginForm extends Component {
     emailError: null,
     password: "",
     passwordError: null,
-    isRemember: authObj.getRememberUser() === 'true'
+    isRemember: authObj.getRememberUser() === "true"
   };
 
   /**
@@ -169,26 +170,24 @@ class LoginForm extends Component {
    * Renderer function
    */
   render() {
-    const { classes, t } = this.props;
+    const { noTitle, classes, t } = this.props;
     const { error, isLoading } = this.props;
 
     return (
-      <form
-        noValidate
-        autoComplete="off"
-        className={classes.formWrapper}
-      >
+      <form noValidate autoComplete="off" className={classes.formWrapper}>
         {/* title */}
-        <Typography
-          fontSizeM
-          fontWeightBold
-          textSecondary
-          fullWidth
-          paddingTopHalf
-          justifyChildrenCenter
-        >
-          {t("loginToRENTGLOBAL")}
-        </Typography>
+        {!noTitle && (
+          <Typography
+            fontSizeM
+            fontWeightBold
+            textSecondary
+            fullWidth
+            paddingTopHalf
+            justifyChildrenCenter
+          >
+            {t("loginToRENTGLOBAL")}
+          </Typography>
+        )}
 
         {/* email */}
         <Box paddingTop>
@@ -223,7 +222,13 @@ class LoginForm extends Component {
 
         {/* error message */}
         {error && error.type === "login" && (
-          <Typography fontSizeS textErrorRed justifyChildrenEnd paddingTopHalf paddingRightHalf>
+          <Typography
+            fontSizeS
+            textErrorRed
+            justifyChildrenEnd
+            paddingTopHalf
+            paddingRightHalf
+          >
             {t(`loginError_${error.msg}`)}
           </Typography>
         )}
