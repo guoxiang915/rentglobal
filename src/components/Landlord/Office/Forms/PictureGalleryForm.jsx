@@ -17,6 +17,7 @@ import {
   CloseIcon
 } from "../../../../common/base-components";
 import Dropzone from "react-dropzone";
+import { CropperDialog } from "../../../Layout";
 
 const styleSheet = theme => ({
   root: {},
@@ -85,7 +86,7 @@ class PictureGalleryForm extends Component {
     t: PropTypes.func
   };
 
-  state = { isLoading: false, selectedPicture: null };
+  state = { isLoading: false, selectedPicture: null, dialog: null };
 
   dropzoneRef = React.createRef();
 
@@ -107,10 +108,33 @@ class PictureGalleryForm extends Component {
     this.setState({ [field]: value });
   };
 
+  /** Set and crop/resize photo */
+  handleCropPhoto = file => {
+    const reader = new FileReader();
+    reader.addEventListener("load", () =>
+      this.setState({
+        dialog: (
+          <CropperDialog
+            fileName={file.name}
+            src={reader.result}
+            onClose={this.handleCloseDialog}
+            onSave={this.handleUploadPhoto}
+          />
+        )
+      })
+    );
+    reader.readAsDataURL(file);
+  };
+
+  /** Close dialog */
+  handleCloseDialog = () => {
+    this.setState({ dialog: null });
+  };
+
   /**
    * Upload photos
    */
-  handleUploadPhotos = file => {
+  handleUploadPhoto = file => {
     this.setState({ isLoading: true });
     this.props.uploadFile(file, "public-read").then(response => {
       this.setState({ isLoading: false });
@@ -132,10 +156,12 @@ class PictureGalleryForm extends Component {
 
   /** Remove selected picture */
   handleRemoveSelectedPicture = () => {
-    const { office = {} }= this.props;
+    const { office = {} } = this.props;
     const { coverPhotos = [] } = office;
     const { selectedPicture } = this.state;
-    const selectedPictureIndex = coverPhotos.findIndex(photo => photo._id === selectedPicture._id);
+    const selectedPictureIndex = coverPhotos.findIndex(
+      photo => photo._id === selectedPicture._id
+    );
     if (selectedPictureIndex >= 0) {
       coverPhotos.splice(selectedPictureIndex, 1);
     }
@@ -149,7 +175,7 @@ class PictureGalleryForm extends Component {
    */
   render() {
     const { office, classes: s, t } = this.props;
-    const { isLoading, selectedPicture } = this.state;
+    const { isLoading, selectedPicture, dialog } = this.state;
 
     return (
       <Column classes={{ box: s.root }} fullWidth alignChildrenStart>
@@ -157,7 +183,7 @@ class PictureGalleryForm extends Component {
         <Dropzone
           multiple={false}
           ref={this.dropzoneRef}
-          onDrop={files => this.handleUploadPhotos(files[0])}
+          onDrop={files => this.handleCropPhoto(files[0])}
           noClick
         >
           {({ getRootProps, getInputProps }) => (
@@ -271,6 +297,9 @@ class PictureGalleryForm extends Component {
               </React.Fragment>
             ))}
         </Row>
+
+        {/* show dialog */}
+        {dialog}
       </Column>
     );
   }

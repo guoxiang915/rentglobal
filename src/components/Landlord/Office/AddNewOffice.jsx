@@ -415,7 +415,7 @@ class AddNewOffice extends Component {
       this.saveCurrentStep().then(() => {
         if (currentStep === 3) {
           // navigate to office detail page
-          this.props.navigate(`offices`, this.state.office._id);
+          this.props.navigate(`landlord/offices`, this.state.office._id);
         } else {
           this.setState({ currentStep: currentStep + 1 });
         }
