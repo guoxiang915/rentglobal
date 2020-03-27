@@ -135,6 +135,7 @@ const styleSheet = theme => ({
     alignItems: "center",
     overflow: "hidden",
     position: "relative",
+    backgroundRepeat: "no-repeat",
     backgroundSize: "contain",
     backgroundPosition: "center",
     "&:hover": {
@@ -377,21 +378,38 @@ class Profile extends Component {
 
   handleSendPhoneVerification = () => {};
 
-  /** Upload avatar image */
-  handleUploadAvatar = avatar => {
-    this.setState({ uploadingDocument: "avatar" });
-    this.props.uploadFile(avatar, "public-read").then(response => {
+  /** Set and resize avatar image */
+  handleClickAvatar = avatar => {
+    const reader = new FileReader();
+    reader.addEventListener("load", () =>
       this.setState({
-        avatar: response.data,
-        uploadingDocument: null,
         dialog: (
           <CropperDialog
-            src={response.data.bucketPath}
+            fileName={avatar.name}
+            src={reader.result}
             onClose={this.handleCloseDialog}
+            onSave={this.handleUploadAvatar}
           />
         )
-      });
-    });
+      })
+    );
+    reader.readAsDataURL(avatar);
+  };
+
+  /** Upload avatar from cropper dialog */
+  handleUploadAvatar = avatar => {
+    this.setState({ uploadingDocument: "avatar" });
+    this.props.uploadFile(avatar, "public-read").then(
+      response => {
+        this.setState({
+          avatar: response.data,
+          uploadingDocument: null
+        });
+      },
+      error => {
+        this.setState({ uploadingDocument: null });
+      }
+    );
   };
 
   /** Close dialog */
@@ -527,9 +545,7 @@ class Profile extends Component {
                           {editTab === "generalInfo" && (
                             <Dropzone
                               multiple={false}
-                              onDrop={files =>
-                                this.handleUploadAvatar(files[0])
-                              }
+                              onDrop={files => this.handleClickAvatar(files[0])}
                             >
                               {({ getRootProps, getInputProps }) => (
                                 <Box

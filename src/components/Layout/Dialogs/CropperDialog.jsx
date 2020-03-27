@@ -15,19 +15,17 @@ import {
   Row,
   Box,
   Stretch,
-  //   Column,
+  Column,
   CheckIcon,
   CloseIcon
 } from "../../../common/base-components";
-import Cropper from "react-cropper";
-import "cropperjs/dist/cropper.css";
-
-// const cropper = React.createRef(null);
+import ReactCrop from "react-image-crop";
+import "react-image-crop/dist/ReactCrop.css";
 
 const styleSheet = theme => ({
   root: {
     maxWidth: 1056,
-    maxHeight: 512,
+    maxHeight: "80%",
     padding: 0,
     minWidth: 565,
     minHeight: 395,
@@ -51,9 +49,11 @@ const styleSheet = theme => ({
 
   cropper: {
     width: "100%",
-    // height: "100%",
-    height: 300,
-    minHeight: 300
+    minWidth: 300,
+    minHeight: 300,
+    maxWidth: 400,
+    maxHeight: 400,
+    overflow: "auto"
   },
 
   icon: {
@@ -71,6 +71,8 @@ class CropperDialog extends Component {
   static propTypes = {
     /** Title of dialog */
     title: PropTypes.string,
+    /** Image name */
+    fileName: PropTypes.string,
     /** Image source */
     src: PropTypes.oneOfType([PropTypes.string, PropTypes.object]).isRequired,
     /** Style of dialog */
@@ -83,7 +85,42 @@ class CropperDialog extends Component {
     onClose: PropTypes.func
   };
 
-  cropper = React.createRef(null);
+  state = { crop: { unit: "%", width: 100, height: 100 } };
+
+  imageRef = React.createRef(null);
+
+  /** Get cropped image from crop config */
+  getCroppedImage = (image, crop, fileName) => {
+    const canvas = document.createElement("canvas");
+    const scaleX = image.naturalWidth / image.width;
+    const scaleY = image.naturalHeight / image.height;
+    canvas.width = crop.width;
+    canvas.height = crop.height;
+    const ctx = canvas.getContext("2d");
+
+    ctx.drawImage(
+      image,
+      crop.x * scaleX,
+      crop.y * scaleY,
+      crop.width * scaleX,
+      crop.height * scaleY,
+      0,
+      0,
+      crop.width,
+      crop.height
+    );
+
+    return new Promise((resolve, reject) => {
+      canvas.toBlob(blob => {
+        if (!blob) {
+          reject(new Error("Canvas is empty"));
+          return;
+        }
+        blob.name = fileName;
+        resolve(blob);
+      }, "image/jpeg");
+    });
+  };
 
   /**
    * Event handler for saving cropped image
@@ -91,9 +128,11 @@ class CropperDialog extends Component {
    */
   handleSave = () => {
     if (this.props.onSave) {
-      this.props.onSave(
-        this.cropper.current && this.cropper.current.getCroppedCanvas()
-      );
+      this.getCroppedImage(
+        this.imageRef,
+        this.state.crop,
+        this.props.fileName || "image.jpg"
+      ).then(imageUrl => this.props.onSave(imageUrl));
     }
     this.handleClose();
   };
@@ -108,11 +147,22 @@ class CropperDialog extends Component {
     }
   };
 
+  /** Event handler for image loaded */
+  handleImageLoaded = image => {
+    this.imageRef = image;
+  };
+
+  /** Event handler for crop change */
+  handleCropChange = crop => {
+    this.setState({ crop });
+  };
+
   /**
    * Render
    */
   render() {
     const { title, src, className, classes: s, t } = this.props;
+    const { crop } = this.state;
 
     return (
       <Dialog
@@ -145,17 +195,15 @@ class CropperDialog extends Component {
 
         {/** dialog content */}
         <DialogContent className={s.content}>
-          <Box classes={{ box: s.cropperWrapper }}>
-            <Cropper
-              ref={this.cropper}
+          <Column classes={{ box: s.cropperWrapper }}>
+            <ReactCrop
               src={src}
+              crop={crop}
+              onImageLoaded={this.handleImageLoaded}
+              onChange={this.handleCropChange}
               className={s.cropper}
-              // Cropper.js options
-            //   aspectRatio={16 / 9}
-            //   guides={false}
-              crop={this.handleCrop}
             />
-          </Box>
+          </Column>
         </DialogContent>
 
         {/** dialog footer */}
