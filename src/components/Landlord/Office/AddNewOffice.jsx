@@ -248,7 +248,7 @@ class AddNewOffice extends Component {
               office.servicesAndAmenities.category5.length ||
               office.servicesAndAmenities.category6.length ||
               office.servicesAndAmenities.category7.length ||
-              office.servicesAndAmenities.customFeatures.length)
+              office.servicesAndAmenities.custom.length)
           ) {
             currentStep = 3;
           }
