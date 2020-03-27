@@ -47,6 +47,11 @@ const styleSheet = theme => ({
 
   outlineIcon: {
     color: theme.colors.primary.borderGrey
+  },
+
+  recaptcha: {
+    width: 200,
+    height: 50
   }
 });
 
@@ -167,14 +172,26 @@ class LoginForm extends Component {
   handleLoginGoogle = () => {};
 
   /**
+   * Verify recaptcha callback
+   * @ignore
+   */
+  recaptchaVerifyCallback = () => {};
+
+  /**
+   * Load recaptcha callback
+   * @ignore
+   */
+  recaptchaLoadCallback = () => {};
+
+  /**
    * Renderer function
    */
   render() {
-    const { noTitle, classes, t } = this.props;
+    const { noTitle, classes: s, t } = this.props;
     const { error, isLoading } = this.props;
 
     return (
-      <form noValidate autoComplete="off" className={classes.formWrapper}>
+      <form noValidate autoComplete="off" className={s.formWrapper}>
         {/* title */}
         {!noTitle && (
           <Typography
@@ -197,7 +214,7 @@ class LoginForm extends Component {
             value={this.state.email}
             onChange={this.handleChange("email")}
             variant="outlined"
-            startAdornment={<EmailIcon className={classes.outlineIcon} />}
+            startAdornment={<EmailIcon className={s.outlineIcon} />}
             error={!!this.state.emailError}
             helperText={this.state.emailError}
             fullWidth
@@ -213,7 +230,7 @@ class LoginForm extends Component {
             onChange={this.handleChange("password")}
             type="password"
             variant="outlined"
-            startAdornment={<LockIcon className={classes.outlineIcon} />}
+            startAdornment={<LockIcon className={s.outlineIcon} />}
             error={!!this.state.passwordError}
             helperText={this.state.passwordError}
             fullWidth
@@ -238,11 +255,23 @@ class LoginForm extends Component {
           <Checkbox
             variant="outlined"
             label={t("rememberMe")}
-            className={classes.fixedWidthButton}
+            className={s.fixedWidthButton}
             isChecked={this.state.isRemember}
             onChange={this.handleToggleRememberUser}
           />
         </Box>
+
+        {/* TODO: recaptcha */}
+        {/* <Box paddingTopHalf justifyChildrenEnd fullWidth>
+          <div>
+            <Recaptcha
+              sitekey="6LeGjOQUAAAAAFd98e-aWPK0uNxQaoKOUNizoplv"
+              verifyCallback={this.recaptchaVerifyCallback}
+              onloadCallback={this.recaptchaLoadCallback}
+              style={{ width: "100%", height: "100%" }}
+            />
+          </div>
+        </Box> */}
 
         {/* submit login */}
         <Box paddingTopHalf justifyChildrenEnd fullWidth>
@@ -250,7 +279,7 @@ class LoginForm extends Component {
             type="submit"
             variant="contained"
             size="medium"
-            className={classes.fixedWidthButton}
+            className={s.fixedWidthButton}
             onClick={this.handleLogin}
             loading={isLoading}
           >
@@ -260,7 +289,7 @@ class LoginForm extends Component {
           </Button>
         </Box>
 
-        <Column classes={{ box: classes.moreWrapper }}>
+        <Column classes={{ box: s.moreWrapper }}>
           <Divider light />
 
           {/* forgot password */}
@@ -280,7 +309,7 @@ class LoginForm extends Component {
               type="submit"
               variant="secondary"
               size="medium"
-              className={classes.fullWidth}
+              className={s.fullWidth}
               onClick={this.handleLoginFacebook}
             >
               {t("loginWith")}&nbsp;
@@ -296,7 +325,7 @@ class LoginForm extends Component {
               type="submit"
               variant="secondary"
               size="medium"
-              className={classes.fullWidth}
+              className={s.fullWidth}
               onClick={this.handleLoginGoogle}
             >
               {t("loginWith")}&nbsp;

@@ -31,6 +31,7 @@ import {
   TabWrapper,
   StatisticBox
 } from "../../common/base-layouts";
+import { CropperDialog } from "../Layout";
 import { Grid, Card } from "@material-ui/core";
 import { CheckCircle } from "@material-ui/icons";
 import Dropzone from "react-dropzone";
@@ -231,7 +232,9 @@ class Profile extends Component {
 
     editTab: "generalInfo",
     openedTab: "generalInfo",
-    uploadingDocument: null
+    uploadingDocument: null,
+
+    dialog: null
   };
 
   /** landlord/company profile documents */
@@ -378,8 +381,22 @@ class Profile extends Component {
   handleUploadAvatar = avatar => {
     this.setState({ uploadingDocument: "avatar" });
     this.props.uploadFile(avatar, "public-read").then(response => {
-      this.setState({ avatar: response.data, uploadingDocument: null });
+      this.setState({
+        avatar: response.data,
+        uploadingDocument: null,
+        dialog: (
+          <CropperDialog
+            src={response.data.bucketPath}
+            onClose={this.handleCloseDialog}
+          />
+        )
+      });
     });
+  };
+
+  /** Close dialog */
+  handleCloseDialog = () => {
+    this.setState({ dialog: null });
   };
 
   /** Upload user document */
@@ -433,7 +450,7 @@ class Profile extends Component {
       classes: s,
       t
     } = this.props;
-    const { openedTab, editTab, uploadingDocument } = this.state;
+    const { openedTab, editTab, uploadingDocument, dialog } = this.state;
     const profile =
       role === "landlord" ? user.landlordProfile : user.companyProfile;
 
@@ -864,6 +881,9 @@ class Profile extends Component {
             onToggleEdit={this.handleToggleEdit("privacyAndSharing")}
           ></TabWrapper>
         </Row>
+
+        {/* Show dialog */}
+        {dialog}
       </Column>
     );
   }
