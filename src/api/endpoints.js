@@ -69,7 +69,7 @@ export const getOfficeById = officeId => {
 
 /** Call api to create office */
 export const createOffice = office => {
-  return api.post("/offices/create/", office);
+  return api.post("/offices/", office);
 };
 
 /** Call api to update office */

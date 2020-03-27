@@ -103,7 +103,7 @@ class GeneralInfoForm extends Component {
     t: PropTypes.func
   };
 
-  state = { importOfficeUrl: "", spokenLanguage: "", editAddressMode: false };
+  state = { importOfficeUrl: "", spokenLanguage: "", editAddressMode: !(this.props.office && this.props.office.location && this.props.office.location.fullAddress) };
 
   /**
    * Update state
@@ -301,6 +301,19 @@ class GeneralInfoForm extends Component {
         return null;
     }
   };
+
+  componentDidUpdate(prevProps) {
+    let state = {};
+    if (JSON.stringify(prevProps.office) !== JSON.stringify(this.props.office)) {
+      state = {
+        ...state,
+        editAddressMode: !(this.props.office && this.props.office.location && this.props.office.location.fullAddress)
+      }
+    }
+    if (Object.keys(state).length > 0) {
+      this.setState(state);
+    }
+  }
 
   /**
    * Renderer function

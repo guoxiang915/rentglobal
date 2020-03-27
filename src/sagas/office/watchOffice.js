@@ -5,7 +5,7 @@ import flushMessage from "../flushMessages";
 const sendRequest = async office => {
   let resp = null;
   try {
-    resp = await api.post("offices/create", office);
+    resp = await api.post("offices/", office);
   } catch (error) {
     resp = error.response;
   } finally {
@@ -17,7 +17,7 @@ function* createOffice(action) {
   try {
     console.log(action);
     let response = yield call(sendRequest, action.office);
-    // let response = await api.post('/offices/create', action.office);
+    // let response = await api.post('/offices/', action.office);
     if (response.status === 200) {
       yield put({
         type: "CREATE_OFFICE_SUCCESS",
