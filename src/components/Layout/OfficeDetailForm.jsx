@@ -388,41 +388,43 @@ class OfficeDetailForm extends Component {
         >
           {/** Show favorite, share, follow up buttons */}
           <Column alignChildrenEnd fullWidth={isWidthDown("xs", width)}>
-            <Row style={{ float: "right" }} paddingTopHalf>
-              <Button
-                link="secondary"
-                background="secondaryLight"
-                onClick={this.handleFavorite}
-              >
-                <FavoriteIcon style={{ width: 16, height: 15 }} />
-                {!isWidthDown("xs", width) && (
-                  <Typography paddingLeft fontSizeS fontWeightBold>
-                    {t("favorite")}
-                  </Typography>
-                )}
-              </Button>
+            {office.published && (
+              <Row style={{ float: "right" }} paddingTopHalf>
+                <Button
+                  link="secondary"
+                  background="secondaryLight"
+                  onClick={this.handleFavorite}
+                >
+                  <FavoriteIcon style={{ width: 16, height: 15 }} />
+                  {!isWidthDown("xs", width) && (
+                    <Typography paddingLeft fontSizeS fontWeightBold>
+                      {t("favorite")}
+                    </Typography>
+                  )}
+                </Button>
 
-              <Box paddingLeftHalf />
+                <Box paddingLeftHalf />
 
-              <Button
-                link="secondary"
-                background="secondaryLight"
-                onClick={this.handleShare}
-              >
-                <ShareIcon style={{ width: 13, height: 15 }} />
-                {!isWidthDown("xs", width) && (
-                  <Typography paddingLeft fontSizeS fontWeightBold>
-                    {t("share")}
-                  </Typography>
-                )}
-              </Button>
+                <Button
+                  link="secondary"
+                  background="secondaryLight"
+                  onClick={this.handleShare}
+                >
+                  <ShareIcon style={{ width: 13, height: 15 }} />
+                  {!isWidthDown("xs", width) && (
+                    <Typography paddingLeft fontSizeS fontWeightBold>
+                      {t("share")}
+                    </Typography>
+                  )}
+                </Button>
 
-              <Box paddingLeftHalf />
+                <Box paddingLeftHalf />
 
-              <Button variant="primary" onClick={this.handleFollowUp} shadow>
-                {t("followUp")}
-              </Button>
-            </Row>
+                <Button variant="primary" onClick={this.handleFollowUp} shadow>
+                  {t("followUp")}
+                </Button>
+              </Row>
+            )}
           </Column>
 
           {/** Show office main info (title, type, priceMonthly, rating) */}
@@ -436,13 +438,14 @@ class OfficeDetailForm extends Component {
             <Row paddingTopHalf fontSizeS textPrimary>
               {t("dollarPerMonth", { dollar: office.priceMonthly || 0 })}
             </Row>
-            {office.rating && (
+            {office.published && (
+              // office.rating &&
               <Row paddingTopHalf>
                 <Typography textPrimary>
                   <StarIcon style={{ width: 12, height: 12 }} />
                 </Typography>
                 <Typography fontSizeS textMediumGrey paddingLeftHalf>
-                  {office.rating}
+                  3.5 {/* office.rating */}
                 </Typography>
               </Row>
             )}

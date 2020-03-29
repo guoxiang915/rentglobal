@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import { withStyles } from "@material-ui/core/styles";
 import { withTranslation } from "react-i18next";
+import withWidth, { isWidthDown } from "@material-ui/core/withWidth";
 import PropTypes from "prop-types";
 import {
   Row,
@@ -54,20 +55,15 @@ class Offices extends Component {
     t: PropTypes.func
   };
 
-  state = { sliderCnt: 1, offices: [] };
-
-  /** Element Ref to get element width */
-  carouselRef = React.createRef();
+  state = { offices: [] };
 
   /** Navigation */
   navigate = path => () => {
     this.props.navigate(path);
   };
 
+  /** Get landlord offices */
   componentDidMount() {
-    this.setState({
-      sliderCnt: this.carouselRef.current.getBoundingClientRect().width / 255
-    });
     this.props.getOffices().then(
       response => this.setState({ offices: response.data }),
       error => {}
@@ -94,8 +90,8 @@ class Offices extends Component {
    * Renderer function
    */
   render() {
-    const { classes, t } = this.props;
-    const { offices, sliderCnt } = this.state;
+    const { width, classes, t } = this.props;
+    const { offices } = this.state;
 
     return (
       <Column
@@ -175,11 +171,14 @@ class Offices extends Component {
             }
           >
             <Row paddingTopDouble fullWidth noOverflow>
-              <div
-                style={{ width: "100%", height: "100%" }}
-                ref={this.carouselRef}
-              >
-                <Carousel slidesPerPage={sliderCnt} keepDirectionWhenDragging>
+              <div style={{ width: "100%", height: "100%" }}>
+                <Carousel
+                  itemWidth={
+                    isWidthDown("xs", width) ? "calc(100% + 20px)" : 255
+                  }
+                  offset={20}
+                  keepDirectionWhenDragging
+                >
                   {offices
                     .filter(item => item.published === true)
                     .map((office, index) => (
@@ -228,7 +227,13 @@ class Offices extends Component {
           >
             <Row paddingTopDouble fullWidth noOverflow>
               <div style={{ width: "100%", height: "100%" }}>
-                <Carousel slidesPerPage={sliderCnt} keepDirectionWhenDragging>
+                <Carousel
+                  itemWidth={
+                    isWidthDown("xs", width) ? "calc(100% + 20px)" : 255
+                  }
+                  offset={20}
+                  keepDirectionWhenDragging
+                >
                   {offices
                     .filter(item => item.published === false)
                     .map((office, index) => (
@@ -254,4 +259,6 @@ class Offices extends Component {
   }
 }
 
-export default withStyles(styleSheet)(withTranslation("common")(Offices));
+export default withWidth()(
+  withStyles(styleSheet)(withTranslation("common")(Offices))
+);

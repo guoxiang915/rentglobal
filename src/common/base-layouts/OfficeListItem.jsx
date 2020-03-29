@@ -214,14 +214,17 @@ const OfficeListItem = ({ classes: s, t, autoPlay, office }) => {
         </Row>
 
         {/** show office ratings */}
-        <Row paddingTopHalf>
-          <Typography textPrimary>
-            <StarIcon style={{ width: 12, height: 12 }} />
-          </Typography>
-          <Typography fontSizeS textMediumGrey paddingLeftHalf>
-            3.5 {/* office.rating */}
-          </Typography>
-        </Row>
+        {office.published && (
+          // office.rating &&
+          <Row paddingTopHalf>
+            <Typography textPrimary>
+              <StarIcon style={{ width: 12, height: 12 }} />
+            </Typography>
+            <Typography fontSizeS textMediumGrey paddingLeftHalf>
+              3.5 {/* office.rating */}
+            </Typography>
+          </Row>
+        )}
 
         {/** show office action buttons */}
         <Stretch />
