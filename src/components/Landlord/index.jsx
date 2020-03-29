@@ -3,7 +3,7 @@ import { withStyles } from "@material-ui/core/styles";
 import { withTranslation } from "react-i18next";
 import PropTypes from "prop-types";
 import { Hidden } from "@material-ui/core";
-import { Switch, Route, Redirect } from "react-router-dom";
+import { Switch, Route, Redirect, withRouter } from "react-router-dom";
 import { AppSidebar } from "../Layout";
 import {
   Row,
@@ -139,12 +139,16 @@ class Landlord extends Component {
 
   /** Render function */
   render() {
-    const { classes } = this.props;
+    const { classes, location } = this.props;
     const { user } = this.props.auth;
     const { dialog } = this.state;
 
-    if (user.roles.indexOf("landlord") === -1) {
-      return <Redirect to="/" />;
+    // TODO: requirements not specified when toggling roles
+    if (
+      user.roles.indexOf("landlord") === -1 &&
+      location.pathname !== "/landlord/profile"
+    ) {
+      return <Redirect to="/landlord/profile/" />;
     }
 
     if (user.role !== "landlord") {
@@ -274,4 +278,6 @@ class Landlord extends Component {
   }
 }
 
-export default withStyles(styleSheet)(withTranslation("common")(Landlord));
+export default withRouter(
+  withStyles(styleSheet)(withTranslation("common")(Landlord))
+);

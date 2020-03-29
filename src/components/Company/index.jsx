@@ -3,7 +3,7 @@ import { withStyles } from "@material-ui/core/styles";
 import { withTranslation } from "react-i18next";
 import PropTypes from "prop-types";
 import { Hidden } from "@material-ui/core";
-import { Switch, Route, Redirect } from "react-router-dom";
+import { Switch, Route, Redirect, withRouter } from "react-router-dom";
 import { AppSidebar } from "../Layout";
 import { Row, Column } from "../../common/base-components";
 import Profile from "../Layout/Profile";
@@ -31,11 +31,15 @@ class Company extends Component {
 
   /** Render function */
   render() {
-    const { classes } = this.props;
+    const { classes, location } = this.props;
     const { user } = this.props.auth;
 
-    if (user.roles.indexOf("company") === -1) {
-      return <Redirect to="/" />;
+    // TODO: requirements not specified when toggling roles
+    if (
+      user.roles.indexOf("company") === -1 &&
+      location.pathname !== "/company/profile"
+    ) {
+      return <Redirect to="/company/profile" />;
     }
 
     if (user.role !== "company") {
@@ -83,4 +87,6 @@ class Company extends Component {
   }
 }
 
-export default withStyles(styleSheet)(withTranslation("common")(Company));
+export default withRouter(
+  withStyles(styleSheet)(withTranslation("common")(Company))
+);

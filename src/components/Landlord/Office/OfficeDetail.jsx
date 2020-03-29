@@ -144,7 +144,7 @@ class OfficeDetail extends Component {
             background="errorRedLight"
             inverse
             onClick={this.handleUnpublish}
-            variant={isWidthDown("xs", width) && "icon"}
+            variant={isWidthDown("xs", width) ? "icon" : ""}
           >
             <EyeDisIcon style={{ width: 16, height: 16 }} />
             <Typography fontSizeS paddingLeft>
