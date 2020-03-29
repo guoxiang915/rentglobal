@@ -38,82 +38,139 @@ const checkOutNotices = [
 /** Categories */
 const servicesCategories = [
   {
-    name: "categoryName1",
-    value: "category1",
+    name: "basics",
+    value: "basics",
     icon: UserIcon,
     options: [
-      { name: "wifi", value: "wifi" },
+      { name: "highSpeedWifi", value: "highSpeedWifi" },
       { name: "privateWifi", value: "privateWifi" },
       { name: "rj45Cable", value: "rj45Cable" },
+      { name: "reception", value: "reception" },
+      { name: "mailReception", value: "mailReception" },
+      { name: "meetingRoom", value: "meetingRoom" },
+      { name: "privateMeetingRoom", value: "privateMeetingRoom" },
+      { name: "securitySystem", value: "securitySystem" },
       { name: "cleaningService", value: "cleaningService" },
       { name: "furniture", value: "furniture" },
-      { name: "coffeeAndTea", value: "coffeeAndTea" }
+      { name: "heating", value: "heating" },
+      { name: "airConditioning", value: "airConditioning" }
     ]
   },
   {
-    name: "categoryName2",
-    value: "category2",
+    name: "community",
+    value: "community",
     icon: UserIcon,
     options: [
-      { name: "airConditioner", value: "airConditioner" },
-      { name: "shower", value: "shower" },
-      { name: "reception", value: "reception" },
-      { name: "cateringFacilities", value: "cateringFacilities" },
-      { name: "meetingRoom", value: "meetingRoom" }
+      { name: "events", value: "events" },
+      { name: "workshops", value: "workshops" },
+      { name: "communityLunches", value: "communityLunches" },
+      { name: "communityDrinks", value: "communityDrinks" },
+      { name: "mentorshipPrograms", value: "mentorshipPrograms" },
+      { name: "pitchingEvents", value: "pitchingEvents" },
+      { name: "incubatorPrograms", value: "incubatorPrograms" },
+      { name: "acceleratorPrograms", value: "acceleratorPrograms" },
+      { name: "toastmasters", value: "toastmasters" }
     ]
   },
   {
-    name: "categoryName3",
-    value: "category3",
+    name: "zones",
+    value: "zones",
     icon: UserIcon,
     options: [
-      { name: "receptionist", value: "receptionist" },
-      { name: "mailReception", value: "mailReception" },
-      { name: "privateMeetingRoom", value: "privateMeetingRoom" },
-      { name: "residency", value: "residency" },
-      { name: "accessByBadge", value: "accessByBadge" },
-      { name: "petsAllowed", value: "petsAllowed" },
+      { name: "outdoorTerrace", value: "outdoorTerrace" },
+      { name: "swimmingPool", value: "swimmingPool" },
+      { name: "longueChilloutArea", value: "longueChilloutArea" },
+      { name: "napRoom", value: "napRoom" },
+      { name: "meditationRoom", value: "meditationRoom" }
+    ]
+  },
+  {
+    name: "facilities",
+    value: "facilities",
+    icon: UserIcon,
+    options: [
       { name: "kitchen", value: "kitchen" },
-      { name: "alarm", value: "alarm" },
+      { name: "coLivingAccommodation", value: "coLivingAccommodation" },
+      { name: "childcare", value: "childcare" },
+      { name: "makerspace", value: "makerspace" },
       { name: "storage", value: "storage" },
-      { name: "privateStorage", value: "privateStorage" },
-      { name: "disabledAccess", value: "disabledAccess" },
-      { name: "parking", value: "parking" },
-      { name: "bikeParking", value: "bikeParking" },
-      { name: "elevator", value: "elevator" }
+      { name: "personalLockers", value: "personalLockers" },
+      { name: "showers", value: "showers" },
+      { name: "phoneBooth", value: "phoneBooth" },
+      { name: "eventSpaceForRent", value: "eventSpaceForRent" }
     ]
   },
   {
-    name: "categoryName4",
-    value: "category4",
+    name: "transportation",
+    value: "transportation",
     icon: UserIcon,
     options: [
-      { name: "rooftop", value: "rooftop" },
-      { name: "gym", value: "gym" },
-      { name: "restRoom", value: "restRoom" }
+      { name: "freeParkingOnPremise", value: "freeParkingOnPremise" },
+      { name: "paidParkingOffPremise", value: "paidParkingOffPremise" },
+      { name: "bikeParking", value: "bikeParking" },
+      { name: "bikeStorage", value: "bikeStorage" },
+      { name: "carShare", value: "carShare" },
+      { name: "fiveMinuteWalkFromPublicTransit", value: "fiveMinuteWalkFromPublicTransit" },
+      { name: "tenMinuteWalkFromPublicTransit", value: "tenMinuteWalkFromPublicTransit" },
+      { name: "pluginForElectricCars", value: "pluginForElectricCars" }
     ]
   },
   {
-    name: "categoryName5",
-    value: "category5",
+    name: "catering",
+    value: "catering",
     icon: UserIcon,
-    options: [{ name: "wifi", value: "wifi" }]
+    options: [
+      { name: "freeDrinkingWater", value: "freeDrinkingWater" },
+      { name: "freeCoffee", value: "freeCoffee" },
+      { name: "microwave", value: "microwave" },
+      { name: "refrigerator", value: "refrigerator" }
+    ]
   },
   {
-    name: "categoryName6",
-    value: "category6",
+    name: "equipment",
+    value: "equipment",
     icon: UserIcon,
-    options: [{ name: "wifi", value: "wifi" }]
+    options: [
+      { name: "printer", value: "printer" },
+      { name: "scanner", value: "scanner" },
+      { name: "photocopier", value: "photocopier" },
+      { name: "computersPcs", value: "computersPcs" },
+      { name: "computersMacs", value: "computersMacs" },
+      { name: "projector", value: "projector" }
+    ]
   },
   {
-    name: "categoryName7",
-    value: "category7",
+    name: "coolStuff",
+    value: "coolStuff",
     icon: UserIcon,
-    options: [{ name: "wifi", value: "wifi" }]
+    options: [
+      { name: "poolTable", value: "poolTable" },
+      { name: "pingPongTable", value: "pingPongTable" },
+      { name: "library", value: "library" },
+      { name: "dogFriendly", value: "dogFriendly" },
+      { name: "catFriendly", value: "catFriendly" },
+      { name: "gym", value: "gym" },
+      { name: "boardGames", value: "boardGames" },
+      { name: "darts", value: "darts" },
+      { name: "arcadeGames", value: "arcadeGames" },
+      { name: "laundryService", value: "laundryService" }
+    ]
   },
   {
-    name: "customFeatures",
-    value: "customFeatures",
+    name: "rules",
+    value: "rules",
+    icon: UserIcon,
+    options: [
+      { name: "noSmoking", value: "noSmoking" },
+      { name: "noPets", value: "noPets" },
+      { name: "noParties", value: "noParties" },
+      { name: "mustClimbStairs", value: "mustClimbStairs" },
+      { name: "securityDeposit", value: "securityDeposit" }
+    ]
+  },
+  {
+    name: "custom",
+    value: "custom",
     icon: UserIcon,
     options: []
   }
