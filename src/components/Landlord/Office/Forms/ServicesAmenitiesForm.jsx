@@ -99,13 +99,13 @@ class ServicesAmenitiesForm extends Component {
   /** Add/Delete custom feature */
   handleAddCustomFeature = e => {
     if (e.key === "Enter") {
-      this.handleToggleOption("customFeatures", e.target.value, false)();
+      this.handleToggleOption("custom", e.target.value, false)();
       this.setState({ customFeature: "" });
     }
   };
 
   handleDeleteCustomFeature = feature => () => {
-    this.handleToggleOption("customFeatures", feature)();
+    this.handleToggleOption("custom", feature)();
   };
 
   /**
@@ -187,8 +187,8 @@ class ServicesAmenitiesForm extends Component {
               />
               <Row paddingTopHalf />
               {office.servicesAndAmenities &&
-                office.servicesAndAmenities.customFeatures &&
-                office.servicesAndAmenities.customFeatures.map(
+                office.servicesAndAmenities.custom &&
+                office.servicesAndAmenities.custom.map(
                   (feature, index) => (
                     <React.Fragment key={index}>
                       <Chip

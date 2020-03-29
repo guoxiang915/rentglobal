@@ -100,7 +100,9 @@ const styleSheet = theme => ({
   detailsWrapper: {
     width: "100%",
     paddingTop: 50,
-    flexWrap: "wrap"
+    [theme.breakpoints.down("sm")]: {
+      flexWrap: "wrap"
+    }
   },
 
   mainDetailsWrapper: {
@@ -110,7 +112,7 @@ const styleSheet = theme => ({
   detailsTabWrapper: {
     width: "100%",
     paddingBottom: 60,
-    [theme.breakpoints.down("xs")]: {
+    [theme.breakpoints.down("sm")]: {
       paddingBottom: 45
     }
   },
@@ -163,7 +165,7 @@ const styleSheet = theme => ({
     padding: "0px 22px",
     borderLeft: `1px solid ${theme.colors.primary.borderGrey}`,
     marginLeft: 37,
-    [theme.breakpoints.down("xs")]: {
+    [theme.breakpoints.down("sm")]: {
       border: "none",
       borderTop: `1px solid ${theme.colors.primary.borderGrey}`,
       padding: "42px 0px 0px",
@@ -667,7 +669,7 @@ class OfficeDetailForm extends Component {
                   const category = servicesCategories.find(
                     item => item.value === key
                   );
-                  return (
+                  return category ? (
                     <React.Fragment key={key}>
                       <TabWrapper
                         title={
@@ -702,7 +704,7 @@ class OfficeDetailForm extends Component {
                         ))}
                       </TabWrapper>
                     </React.Fragment>
-                  );
+                  ) : null;
                 }
               )}
           </Column>
