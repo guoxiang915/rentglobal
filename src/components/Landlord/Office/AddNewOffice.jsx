@@ -33,6 +33,7 @@ import {
   ServicesAmenitiesForm
 } from "./Forms";
 import OfficeDetailForm from "../../../containers/Layout/OfficeDetailForm";
+import { servicesCategories } from "../../../utils/constants";
 
 const styleSheet = theme => ({
   root: {
@@ -157,50 +158,7 @@ class AddNewOffice extends Component {
 
   state = {
     snackMsg: null,
-    office: {
-      // _id: "5e694f16f18e30286c952119",
-      // title: "New Office",
-      // officeType: "privateOffice",
-      // priceMonthly: 4500,
-      // businessOtherFees: 123,
-      // area: 74,
-      // rooms: 2,
-      // numberOfEmployees: 6,
-      // businessHoursFrom: 8,
-      // businessHoursTo: 5,
-      // location: { fullAddress: "Location Full Address" },
-      // coverPhotos: [
-      //   {
-      //     id: "5e6f4b60af2f21061071ce1a",
-      //     bucketPath:
-      //       "https://rentglobal.s3.us-east-2.amazonaws.com/2020/2/167fe56cc08fb476d5/RENTGLOBAL_Logo_Preview_06.png",
-      //     fileName: "RENTGLOBAL_Logo_Preview_06.png"
-      //   },
-      //   {
-      //     id: "5e59d4661d43b820dc261c92",
-      //     bucketPath:
-      //       "https://rentglobal.s3.us-east-2.amazonaws.com/2020/1/297afdba1c39dc5c26/RENTGLOBAL_Logo_Preview_01.jpg",
-      //     fileName: "RENTGLOBAL_Logo_Preview_01.jpg"
-      //   },
-      //   {
-      //     id: "5e5bda2b6250430a502d8e89",
-      //     bucketPath:
-      //       "https://rentglobal.s3.us-east-2.amazonaws.com/2020/2/1d724cc9179a2799d/RENTGLOBAL_Logo_Preview_03.jpg",
-      //     fileName: "RENTGLOBAL_Logo_Preview_03.jpg"
-      //   }
-      // ],
-      // servicesAndAmenities: {
-      //   category1: ["cleaningService", "privateWifi", "rj45Cable", "furniture"],
-      //   category2: ["shower", "reception"],
-      //   category3: ["alarm", "disabledAccess"],
-      //   category4: [],
-      //   category5: [],
-      //   category6: [],
-      //   category7: [],
-      //   customFeatures: ["Custom Feature 1", "Custom Feature 2"]
-      // },
-      // spokenLanguages: []
-    },
+    office: {},
     error: null,
     isLoading: false,
     currentStep: 0,
@@ -216,6 +174,10 @@ class AddNewOffice extends Component {
     }
   ];
 
+  /**
+   * Get office info from api and navigate the appropriate step
+   * @member
+   */
   componentDidMount() {
     const { officeId, editMode = false, getOfficeById } = this.props;
     if (officeId) {
@@ -239,18 +201,15 @@ class AddNewOffice extends Component {
             office.coverPhotos.length <= 15
           ) {
             currentStep = 2;
-          } else if (
-            office.servicesAndAmenities &&
-            (office.servicesAndAmenities.category1.length ||
-              office.servicesAndAmenities.category2.length ||
-              office.servicesAndAmenities.category3.length ||
-              office.servicesAndAmenities.category4.length ||
-              office.servicesAndAmenities.category5.length ||
-              office.servicesAndAmenities.category6.length ||
-              office.servicesAndAmenities.category7.length ||
-              office.servicesAndAmenities.customFeatures.length)
-          ) {
-            currentStep = 3;
+          } else if (office.servicesAndAmenities) {
+            servicesCategories.forEach(cat => {
+              if (
+                office.servicesAndAmenities[cat.name] &&
+                office.servicesAndAmenities[cat.name].length
+              ) {
+                currentStep = 3;
+              }
+            });
           }
           this.setState({ office, currentStep });
         }
