@@ -3,7 +3,7 @@ import { withStyles } from "@material-ui/core/styles";
 import { withTranslation } from "react-i18next";
 import PropTypes from "prop-types";
 import clsx from "clsx";
-import withWidth from "@material-ui/core/withWidth";
+import withWidth, { isWidthDown } from "@material-ui/core/withWidth";
 import { Hidden } from "@material-ui/core";
 import {
   Box,
@@ -34,9 +34,14 @@ const styleSheet = theme => ({
   coverPhotos: {
     width: 145,
     height: 108,
+    marginBottom: 28,
+    marginRight: 13,
     borderRadius: 8,
     border: `1px solid ${theme.colors.primary.borderGrey}`,
-    position: "relative"
+    position: "relative",
+    [theme.breakpoints.down("xs")]: {
+      marginRight: 0
+    }
   },
 
   coverPhotosSelected: {
@@ -174,7 +179,7 @@ class PictureGalleryForm extends Component {
    * Renderer function
    */
   render() {
-    const { office, classes: s, t } = this.props;
+    const { office, width, classes: s, t } = this.props;
     const { isLoading, selectedPicture, dialog } = this.state;
 
     return (
@@ -260,7 +265,12 @@ class PictureGalleryForm extends Component {
         </Dropzone>
 
         {/** uploaded coverPhotos */}
-        <Row fullWidth paddingTop>
+        <Row
+          fullWidth
+          paddingTop
+          wrap
+          justifyChildrenSpaceBetween={isWidthDown("xs", width)}
+        >
           {office &&
             office.coverPhotos &&
             office.coverPhotos.map((picture, index) => (
@@ -293,7 +303,6 @@ class PictureGalleryForm extends Component {
                     </Typography>
                   )}
                 </Box>
-                <Box paddingRight />
               </React.Fragment>
             ))}
         </Row>
