@@ -133,10 +133,17 @@ const styleSheet = theme => ({
   },
 
   accountInfoContent: {
-    paddingTop: 30,
-    paddingBottom: 6,
-    paddingLeft: 18,
-    paddingRight: 14
+    paddingTop: 30
+  },
+
+  profileCompletenessWrapper: {
+    background: theme.colors.primary.whiteGrey
+  },
+
+  accountBlockWrapper: {
+    width: "100%",
+    padding: 14,
+    paddingLeft: 18
   },
 
   accountAvatar: {
@@ -146,7 +153,8 @@ const styleSheet = theme => ({
 
   profileProgress: {
     width: "100%",
-    background: theme.colors.primary.borderGrey
+    background: theme.colors.primary.borderGrey,
+    marginBottom: 10
   },
 
   bar2Buffer: {
@@ -328,7 +336,7 @@ class AppHeader extends Component {
     profileProgress,
     navigate,
     onToggleRole,
-    classes,
+    classes: s,
     t
   }) => {
     const NavItem = this.renderAccountNavItem;
@@ -340,7 +348,7 @@ class AppHeader extends Component {
     const profile = user[`${role}Profile`];
 
     return (
-      <Column alignChildrenStart classes={{ box: classes.accountInfoContent }}>
+      <Column alignChildrenStart classes={{ box: s.accountInfoContent }}>
         {/* user avatar */}
         <Row justifyChildrenCenter fullWidth>
           <Box
@@ -348,7 +356,6 @@ class AppHeader extends Component {
             justifyChildrenCenter
             style={{
               borderRadius: role === "landlord" ? 8 : "50%",
-
               backgroundImage: user.avatar
                 ? `url("${user.avatar.bucketPath}")`
                 : "none",
@@ -357,101 +364,112 @@ class AppHeader extends Component {
             }}
             border
             classes={{
-              box: clsx(classes.accountAvatar)
+              box: clsx(s.accountAvatar)
             }}
           >
             {!user.avatar &&
               (role === "landlord" ? (
-                <ImageIcon className={classes.smallIcon} variant="normal" />
+                <ImageIcon className={s.smallIcon} variant="normal" />
               ) : (
-                <UserIcon className={classes.smallIcon} variant="normal" />
+                <UserIcon className={s.smallIcon} variant="normal" />
               ))}
           </Box>
         </Row>
 
         {/* username */}
-        <Row paddingTop fullWidth justifyChildrenCenter>
+        <Row
+          paddingTop
+          classes={{ box: s.accountBlockWrapper }}
+          justifyChildrenCenter
+        >
           <Typography fontSizeS textSecondary>
             {profile ? profile.username : "Unknown"}
           </Typography>
         </Row>
 
-        {/* profile completeness linearprogress */}
-        <Row paddingTopDouble fullWidth>
-          <LinearProgress
-            color="primary"
-            value={profileCompleted}
-            valueBuffer={profileCharged}
-            variant="buffer"
-            classes={{
-              root: classes.profileProgress,
-              bar2Buffer: classes.bar2Buffer,
-              dashed: classes.dashedBuffer
-            }}
-          />
-        </Row>
-
-        {/* profile completeness text */}
-        <Row paddingTopHalf fullWidth>
-          <Link to="#" onClick={navigate("profile")}>
-            <Box
-              fullWidth
-              textPrimary={profileCompleteness === "profileCompleted"}
-              textMediumGrey={profileCompleteness === "profileNotComplete"}
-              textErrorRed={profileCompleteness === "profileNeedAttention"}
-            >
-              <Typography fontSizeXS>{t(profileCompleteness)}</Typography>
-              <Stretch />
-              <Typography fontSizeS alignChildrenCenter>
-                <ArrowRightAltIcon
-                  className={classes.attentionIcon}
-                  variant={profileCompleted < 100 ? "errorRed" : "normal"}
-                />
-              </Typography>
-            </Box>
-          </Link>
+        {/* profile completeness */}
+        <Row classes={{ box: s.profileCompletenessWrapper }} fullWidth>
+          <Column classes={{ box: s.accountBlockWrapper }}>
+            <LinearProgress
+              color="primary"
+              value={profileCompleted}
+              valueBuffer={profileCharged}
+              variant="buffer"
+              classes={{
+                root: s.profileProgress,
+                bar2Buffer: s.bar2Buffer,
+                dashed: s.dashedBuffer
+              }}
+            />
+            <Link to="#" onClick={navigate("profile")}>
+              <Box
+                fullWidth
+                textPrimary={profileCompleteness === "profileCompleted"}
+                textMediumGrey={profileCompleteness === "profileNotComplete"}
+                textErrorRed={profileCompleteness === "profileNeedAttention"}
+              >
+                <Typography fontSizeXS>{t(profileCompleteness)}</Typography>
+                <Stretch />
+                <Typography fontSizeS alignChildrenCenter>
+                  <ArrowRightAltIcon
+                    className={s.attentionIcon}
+                    variant={profileCompleted < 100 ? "errorRed" : "normal"}
+                  />
+                </Typography>
+              </Box>
+            </Link>
+          </Column>
         </Row>
 
         {/* links */}
-        <Box paddingTopDouble />
-        <NavItem
-          onClick={navigate("home")}
-          icon={HomeIcon}
-          text={t("home")}
-          classes={classes}
-        />
-        <NavItem
-          onClick={navigate("dashboard")}
-          icon={DashboardIcon}
-          text={t("dashboard")}
-          classes={classes}
-        />
-        <Box padding2 />
-        <Divider className={classes.divider} />
-        <NavItem
-          onClick={onToggleRole(role === "company" ? "landlord" : "company")}
-          icon={role === "company" ? BuildingsIcon : UsersIcon}
-          text={role === "company" ? t("landlordPanel") : t("companyPanel")}
-          classes={classes}
-        />
-        {/** When both profile exists, then show both navigators */}
-        {user.landlordProfile && user.companyProfile && (
-          <NavItem
-            onClick={onToggleRole(role === "company" ? "company" : "landlord")}
-            icon={role === "company" ? UsersIcon : BuildingsIcon}
-            text={role === "company" ? t("companyPanel") : t("landlordPanel")}
-            classes={classes}
-          />
-        )}
-        <Divider className={classes.divider} />
-        <Box padding2 />
-        <NavItem
-          onClick={navigate("logout")}
-          icon={PowerIcon}
-          text={t("signOut")}
-          classes={classes}
-          errorRed
-        />
+        <Row fullWidth>
+          <Column classes={{ box: s.accountBlockWrapper }} alignChildrenStart>
+            <NavItem
+              onClick={navigate("home")}
+              icon={HomeIcon}
+              text={t("home")}
+              classes={s}
+            />
+            <NavItem
+              onClick={navigate("dashboard")}
+              icon={DashboardIcon}
+              text={t("dashboard")}
+              classes={s}
+            />
+            <Box padding2 />
+            <Divider className={s.divider} />
+            <NavItem
+              onClick={onToggleRole(
+                role === "company" ? "landlord" : "company"
+              )}
+              icon={role === "company" ? BuildingsIcon : UsersIcon}
+              text={role === "company" ? t("landlordPanel") : t("companyPanel")}
+              classes={s}
+            />
+            {/** When both profile exists, then show both navigators */}
+            {user.landlordProfile && user.companyProfile && (
+              <NavItem
+                onClick={onToggleRole(
+                  role === "company" ? "company" : "landlord"
+                )}
+                icon={role === "company" ? UsersIcon : BuildingsIcon}
+                text={
+                  role === "company" ? t("companyPanel") : t("landlordPanel")
+                }
+                classes={s}
+              />
+            )}
+            <Divider className={s.divider} />
+            <Box padding2 />
+            <NavItem
+              onClick={navigate("logout")}
+              icon={PowerIcon}
+              text={t("signOut")}
+              classes={s}
+              errorRed
+            />
+          </Column>
+        </Row>
       </Column>
     );
   };
