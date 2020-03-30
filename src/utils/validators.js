@@ -47,7 +47,7 @@ export function getOfficeStatus(office) {
   if (!servicesAndAmenities)
     return { status: "incompleteServicesAndAmenities", progress: 60 };
 
-  return { status: "unpublished", progress: 80 };
+  return { status: "unpublish", progress: 80 };
 }
 
 /**

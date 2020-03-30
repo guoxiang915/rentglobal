@@ -11,11 +11,13 @@ import {
   HeadsetIcon,
   CalendarIcon,
   UsersIcon,
-  Button
+  Button,
+  LinearProgress
 } from "../base-components";
 import { ContactInfoDialog } from "../../components/Layout/Dialogs";
 import Carousel from "@brainhubeu/react-carousel";
 import { formatDate } from "../../utils/formatters";
+import { getOfficeStatus } from "../../utils/validators";
 
 const styleSheet = theme => ({
   officeWrapper: {
@@ -108,6 +110,12 @@ const styleSheet = theme => ({
       borderRight: `18px solid transparent`,
       borderBottom: "none"
     }
+  },
+
+  progressbar: {
+    width: 200,
+    marginTop: 20,
+    marginBottom: 10
   }
 });
 
@@ -138,6 +146,23 @@ const OfficeListItem = ({ classes: s, t, autoPlay, office }) => {
   };
   const handleListen = () => {};
   const handleCalendar = () => {};
+
+  const officeStatus = getOfficeStatus(office);
+  let status = officeStatus ? officeStatus.status : null;
+  status =
+    status === "approved"
+      ? null
+      : status === "rejected"
+      ? "rejectedByConsultant"
+      : status === "unpublished"
+      ? "unpublished"
+      : status === "incompleteGeneralInfo" ||
+        status === "incompleteCoverPhotos" ||
+        status === "incompleteServicesAndAmenities"
+      ? "mustCompleteData"
+      : null;
+  const progress =
+    officeStatus && officeStatus.progress < 100 ? officeStatus.progress : null;
 
   return (
     <Row classes={{ box: s.officeWrapper }} wrap alignChildrenStretch>
@@ -249,7 +274,7 @@ const OfficeListItem = ({ classes: s, t, autoPlay, office }) => {
             onClick={handleCalendar}
             variant="icon"
           >
-            <CalendarIcon style={{ width: 17, height: 16 }} />
+            <CalendarIcon style={{ width: 19, height: 19 }} />
           </Button>
         </Row>
       </Column>
@@ -263,47 +288,68 @@ const OfficeListItem = ({ classes: s, t, autoPlay, office }) => {
         </Typography>
 
         {/** leased by */}
-        {!office.leasedBy ? (
-          <Typography
-            textPrimary
-            fontSizeS
-            paddingTopHalf
-            style={{ lineHeight: "26px" }}
-          >
-            {t("available")}
-          </Typography>
+        {office.approved ? (
+          !office.leasedBy ? (
+            <Typography
+              textPrimary
+              fontSizeS
+              paddingTopHalf
+              style={{ lineHeight: "26px" }}
+            >
+              {t("available")}
+            </Typography>
+          ) : (
+            <>
+              <Row paddingTopHalf style={{ lineHeight: "26px" }}>
+                <Typography textMediumGrey fontSizeS>
+                  {t("leasedBy")}:&nbsp;
+                </Typography>
+                <Typography textSecondary fontSizeS>
+                  {office.leasedBy.name}
+                </Typography>
+                <Typography textMediumGrey fontSizeS>
+                  &nbsp;({formatDate(office.leasedBy.date)})
+                </Typography>
+              </Row>
+
+              {/** overdue payment */}
+              {office.leasedBy.overduePayment && (
+                <Typography
+                  paddingTopHalf
+                  fontSizeS
+                  textErrorRed
+                  style={{ lineHeight: "26px" }}
+                >
+                  {t("overduePayment")}
+                </Typography>
+              )}
+
+              {/** contact info */}
+              <Stretch />
+              <Box paddingTopHalf />
+              <Button variant="secondary" onClick={handleContactInfo} shadow>
+                {t("contactInfo")}
+              </Button>
+            </>
+          )
         ) : (
           <>
-            <Row paddingTopHalf style={{ lineHeight: "26px" }}>
-              <Typography textMediumGrey fontSizeS>
-                {t("leasedBy")}:&nbsp;
-              </Typography>
-              <Typography textSecondary fontSizeS>
-                {office.leasedBy.name}
-              </Typography>
-              <Typography textMediumGrey fontSizeS>
-                &nbsp;({formatDate(office.leasedBy.date)})
-              </Typography>
-            </Row>
-
-            {/** overdue payment */}
-            {office.leasedBy.overduePayment && (
+            {status && (
               <Typography
-                paddingTopHalf
-                fontSizeS
                 textErrorRed
+                fontSizeS
+                paddingTopHalf
                 style={{ lineHeight: "26px" }}
               >
-                {t("overduePayment")}
+                {t(status)}
               </Typography>
             )}
-
-            {/** contact info */}
-            <Stretch />
-            <Box paddingTopHalf />
-            <Button variant="secondary" onClick={handleContactInfo} shadow>
-              {t("contactInfo")}
-            </Button>
+            {progress && (
+              <LinearProgress
+                styles={{ root: s.progressbar }}
+                value={progress}
+              />
+            )}
           </>
         )}
       </Column>
