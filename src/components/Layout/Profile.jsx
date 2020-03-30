@@ -31,9 +31,10 @@ import {
   TabWrapper,
   StatisticBox
 } from "../../common/base-layouts";
+import { withCarousel } from "../../common/base-services";
+import { ConditionalWrapper } from "../../utils/helpers";
 import { CropperDialog } from "../Layout";
 import { Grid, Card } from "@material-ui/core";
-import { CheckCircle } from "@material-ui/icons";
 import Dropzone from "react-dropzone";
 
 const SaveButtons = ({ isUpdating, onSave, onCancel, disabled, t }) => (
@@ -115,7 +116,7 @@ const styleSheet = theme => ({
     flexWrap: "wrap",
     [theme.breakpoints.down("sm")]: {
       flexWrap: "nowrap",
-      overflowY: "auto"
+      overflow: "hidden"
     }
   },
 
@@ -469,6 +470,7 @@ class Profile extends Component {
       t
     } = this.props;
     const { openedTab, editTab, uploadingDocument, dialog } = this.state;
+    const CarouselWrapper = withCarousel;
     const profile =
       role === "landlord" ? user.landlordProfile : user.companyProfile;
 
@@ -741,20 +743,28 @@ class Profile extends Component {
               paddingBottom
               classes={{ box: s.documentsWrapper }}
             >
-              {this.documents[role].map(item => (
-                <React.Fragment key={item.value}>
-                  <Box paddingRightHalf paddingBottomHalf>
-                    <UploadDocument
-                      title={item.title}
-                      documents={profile && profile[item.value]}
-                      uploading={uploadingDocument === item.value}
-                      onUpload={this.handleUploadDocument(item.value)}
-                      onDownload={this.props.downloadFile}
-                      onDelete={this.handleDeleteDocument(item.value)}
-                    />
-                  </Box>
-                </React.Fragment>
-              ))}
+              <ConditionalWrapper
+                condition={isWidthDown("sm", width)}
+                wrapper={children => (
+                  <CarouselWrapper itemWidth={200} itemOffset={10}>
+                    {children}
+                  </CarouselWrapper>
+                )}
+                children={this.documents[role].map(item => (
+                  <React.Fragment key={item.value}>
+                    <Box paddingRightHalf paddingBottomHalf>
+                      <UploadDocument
+                        title={item.title}
+                        documents={profile && profile[item.value]}
+                        uploading={uploadingDocument === item.value}
+                        onUpload={this.handleUploadDocument(item.value)}
+                        onDownload={this.props.downloadFile}
+                        onDelete={this.handleDeleteDocument(item.value)}
+                      />
+                    </Box>
+                  </React.Fragment>
+                ))}
+              />
             </Row>
           </TabWrapper>
         </Row>
@@ -849,7 +859,19 @@ class Profile extends Component {
               <Box>
                 <StatisticBox
                   title={t("securityQuestion")}
-                  statistics={[{ value: <CheckCircle />, variant: "primary" }]}
+                  statistics={[
+                    {
+                      value: (
+                        <div
+                          style={{ width: 24, height: 24 }}
+                          className={s.approveIcon}
+                        >
+                          <CheckIcon style={{ width: 11, height: 8 }} />
+                        </div>
+                      ),
+                      variant: "primary"
+                    }
+                  ]}
                 />
               </Box>
               <Box paddingLeftHalf>
