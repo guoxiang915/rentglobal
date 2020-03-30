@@ -368,5 +368,9 @@
 
     "loadMore": "Load more ...",
     "similarOffice": "Similar Office",
-    "resizeCropImage": "Resize / Crop image"
+    "resizeCropImage": "Resize / Crop image",
+
+    "mustCompleteData": "Must complete data",
+    "pendingForApprove": "Pending for approve",
+    "rejectedByConsultant": "Rejected by consultant"
 }

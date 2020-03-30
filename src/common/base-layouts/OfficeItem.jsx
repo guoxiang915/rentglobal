@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { withStyles } from "@material-ui/core";
+import { LinearProgress, withStyles } from "@material-ui/core";
 import { withTranslation } from "react-i18next";
 import {
   Typography,
@@ -13,6 +13,7 @@ import {
 } from "../base-components";
 import { KeyboardArrowLeft, KeyboardArrowRight } from "@material-ui/icons";
 import Carousel, { Dots } from "@brainhubeu/react-carousel";
+import { getOfficeStatus } from "../../utils/validators";
 
 const styleSheet = theme => ({
   officeWrapper: {
@@ -136,6 +137,21 @@ const styleSheet = theme => ({
     width: 7,
     height: 7,
     margin: -4
+  },
+
+  progressbar: {
+    width: "100%",
+    background: theme.colors.primary.borderGrey,
+    marginBottom: 10
+  },
+
+  bar1Determinate: {
+    color: theme.colors.primary.errorRed,
+    background: theme.colors.primary.errorRed
+  },
+
+  dashedBuffer: {
+    background: "none"
   }
 });
 
@@ -155,7 +171,7 @@ const OfficeItem = ({
   t,
   office,
   setFavorite,
-  errorMsg,
+  // errorMsg,
   autoPlay,
   horizontal
 }) => {
@@ -182,6 +198,23 @@ const OfficeItem = ({
       ? office.coverPhotos.map(() => <Dot classes={s} />)
       : [];
   }, [office, s]);
+  /** Get status of office */
+  const officeStatus = getOfficeStatus(office);
+  let status = officeStatus ? officeStatus.status : null;
+  status =
+    status === "approved"
+      ? null
+      : status === "rejected"
+      ? "rejectedByConsultant"
+      : status === "unpublished"
+      ? "unpublished"
+      : status === "incompleteGeneralInfo" ||
+        status === "incompleteCoverPhotos" ||
+        status === "incompleteServicesAndAmenities"
+      ? "mustCompleteData"
+      : null;
+  const progress =
+    officeStatus && officeStatus.progress < 100 ? officeStatus.progress : null;
 
   return (
     <Box
@@ -322,11 +355,35 @@ const OfficeItem = ({
         )}
 
         {/** show error msg */}
-        {errorMsg && (
+        {/* {errorMsg && (
           <Row paddingTopHalf>
             <Typography fontSizeS textErrorRed>
               {t(errorMsg)}
             </Typography>
+          </Row>
+        )} */}
+
+        {/** show status of office if its not published */}
+        {status && (
+          <Row paddingTopHalf>
+            <Typography fontSizeS textErrorRed>
+              {t(status)}
+            </Typography>
+          </Row>
+        )}
+
+        {progress && (
+          <Row paddingTopHalf fullWidth>
+            <LinearProgress
+              color="primary"
+              variant="determinate"
+              value={progress}
+              classes={{
+                root: s.progressbar,
+                bar1Determinate: s.bar1Determinate,
+                dashed: s.dashedBuffer
+              }}
+            />
           </Row>
         )}
       </Column>

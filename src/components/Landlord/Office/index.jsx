@@ -244,7 +244,7 @@ class Offices extends Component {
                       >
                         <OfficeItem
                           office={office}
-                          errorMsg="pending"
+                          // errorMsg="pending"
                           setFavorite={this.handleSetFavorite(office)}
                         />
                       </div>
