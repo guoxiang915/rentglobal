@@ -63,6 +63,15 @@ import { ReactComponent as FacebookBorderSvg } from "../../assets/icon/icon_face
 import { ReactComponent as InstagramBorderSvg } from "../../assets/icon/icon_instagram.svg";
 import { ReactComponent as LinkedinBorderSvg } from "../../assets/icon/icon_linkedin.svg";
 import { ReactComponent as NetworkSvg } from "../../assets/icon/icon_network.svg";
+import { ReactComponent as BasicsSvg } from "../../assets/icon/icon_amenities_basics_gray.svg";
+import { ReactComponent as CateringSvg } from "../../assets/icon/icon_amenities_catering_gray.svg";
+import { ReactComponent as CommunitySvg } from "../../assets/icon/icon_amenities_community_gray.svg";
+import { ReactComponent as CoolStuffSvg } from "../../assets/icon/icon_amenities_coolstuff_gray.svg";
+import { ReactComponent as EquipmentSvg } from "../../assets/icon/icon_amenities_equipment_gray.svg";
+import { ReactComponent as FacilitiesSvg } from "../../assets/icon/icon_amenities_facilities_gray.svg";
+import { ReactComponent as RulesSvg } from "../../assets/icon/icon_amenities_rules_gray.svg";
+import { ReactComponent as TransportationSvg } from "../../assets/icon/icon_amenities_transportation_gray.svg";
+import { ReactComponent as ZonesSvg } from "../../assets/icon/icon_amenities_zones_gray.svg";
 
 const styleSheet = theme => ({
   primary: {
@@ -164,6 +173,15 @@ export const EyeIcon = props => <SvgIcon src={EyeSvg} {...props} />;
 export const EyeDisIcon = props => <SvgIcon src={EyeDisSvg} {...props} />;
 export const PinGeneralIcon = props => <SvgIcon src={PinGeneralSvg} {...props} />;
 export const HeadsetIcon = props => <SvgIcon src={HeadsetSvg} {...props} />;
+export const BasicsServiceIcon = props => <SvgIcon src={BasicsSvg} {...props} />;
+export const CommunityServiceIcon = props => <SvgIcon src={CommunitySvg} {...props} />;
+export const ZonesServiceIcon = props => <SvgIcon src={ZonesSvg} {...props} />;
+export const FacilitiesServiceIcon = props => <SvgIcon src={FacilitiesSvg} {...props} />;
+export const TransportationServiceIcon = props => <SvgIcon src={TransportationSvg} {...props} />;
+export const CateringServiceIcon = props => <SvgIcon src={CateringSvg} {...props} />;
+export const EquipmentServiceIcon = props => <SvgIcon src={EquipmentSvg} {...props} />;
+export const CoolStuffServiceIcon = props => <SvgIcon src={CoolStuffSvg} {...props} />;
+export const RulesServiceIcon = props => <SvgIcon src={RulesSvg} {...props} />;
 export const TwitterBorderIcon = props => (
   <SvgIcon src={TwitterBorderSvg} {...props} />
 );

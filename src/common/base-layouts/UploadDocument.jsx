@@ -30,7 +30,7 @@ const styleSheet = theme => ({
     overflow: "hidden",
     whiteSpace: "nowrap",
     textOverflow: "ellipsis",
-    marginTop: 3
+     marginTop: 3
   },
 
   documents: {

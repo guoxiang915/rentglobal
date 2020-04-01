@@ -62,6 +62,22 @@ export const getOffices = () => {
   return api.get("/users/me/offices/");
 };
 
+/**
+ * Call api to get available office list 
+ * @deprecated
+ */
+export const getAvailableOffices = () => {
+  return getOffices();
+};
+
+/**
+ * Call api to get unpublished office list 
+ * @deprecated
+ */
+export const getUnpublishedOffices = () => {
+  return getOffices();
+};
+
 /** Call api to get office from id */
 export const getOfficeById = officeId => {
   return api.get(`/users/me/offices/${officeId}/`);

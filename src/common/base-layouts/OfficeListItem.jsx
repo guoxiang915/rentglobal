@@ -130,7 +130,8 @@ const OfficeListItem = ({ classes: s, t, autoPlay, office }) => {
   const handleCloseDialog = () => {
     setDialog(null);
   };
-  const handleContactInfo = () => {
+  const handleContactInfo = e => {
+    e.stopPropagation();
     setDialog(
       <ContactInfoDialog
         title={t("contactInfo")}
@@ -144,8 +145,12 @@ const OfficeListItem = ({ classes: s, t, autoPlay, office }) => {
       />
     );
   };
-  const handleListen = () => {};
-  const handleCalendar = () => {};
+  const handleListen = e => {
+    e.stopPropagation();
+  };
+  const handleCalendar = e => {
+    e.stopPropagation();
+  };
 
   const officeStatus = getOfficeStatus(office);
   let status = officeStatus ? officeStatus.status : null;
@@ -156,9 +161,7 @@ const OfficeListItem = ({ classes: s, t, autoPlay, office }) => {
       ? "rejectedByConsultant"
       : status === "unpublished"
       ? "unpublished"
-      : status === "incompleteGeneralInfo" ||
-        status === "incompleteCoverPhotos" ||
-        status === "incompleteServicesAndAmenities"
+      : status === "incomplete"
       ? "mustCompleteData"
       : null;
   const progress =
@@ -267,15 +270,17 @@ const OfficeListItem = ({ classes: s, t, autoPlay, office }) => {
           <Box paddingLeftHalf />
 
           {/** Show calendar button */}
-          <Button
-            link="normalLight"
-            background="normalLight"
-            inverse
-            onClick={handleCalendar}
-            variant="icon"
-          >
-            <CalendarIcon style={{ width: 19, height: 19 }} />
-          </Button>
+          {office.published && (
+            <Button
+              link="normalLight"
+              background="normalLight"
+              inverse
+              onClick={handleCalendar}
+              variant="icon"
+            >
+              <CalendarIcon style={{ width: 19, height: 19 }} />
+            </Button>
+          )}
         </Row>
       </Column>
 

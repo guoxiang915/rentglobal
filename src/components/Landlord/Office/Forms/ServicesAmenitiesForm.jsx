@@ -23,7 +23,8 @@ const styleSheet = theme => ({
   categoryIcon: {
     width: 24,
     height: 24,
-    color: theme.colors.primary.borderGrey
+    color: theme.colors.primary.darkGrey,
+    opacity: 0.15
   },
 
   optionWrapper: {},
@@ -116,49 +117,52 @@ class ServicesAmenitiesForm extends Component {
 
     return (
       <Column classes={{ box: s.root }} fullWidth alignChildrenStart>
-        {servicesCategories.map((category, index) => (
-          <React.Fragment key={index}>
-            <Row fullWidth paddingBottom>
-              <TabWrapper
-                title={
-                  <Typography alignChildrenCenter fontSizeS textMediumGrey>
-                    <category.icon className={s.categoryIcon} />
-                    <Typography paddingLeft>{t(category.name)}</Typography>
-                  </Typography>
-                }
-                open={true}
-                insideOpen
-              >
-                <Row fullWidth wrap paddingTop>
-                  {category.options.map((opt, optIndex) => (
-                    <React.Fragment key={optIndex}>
-                      <Box classes={{ box: s.optionWrapper }}>
-                        <Checkbox
-                          variant="outlined"
-                          label={t(opt.name)}
-                          className={s.textField250Fixed}
-                          isChecked={
-                            !!(
-                              office.servicesAndAmenities &&
-                              office.servicesAndAmenities[category.value] &&
-                              office.servicesAndAmenities[
-                                category.value
-                              ].indexOf(opt.value) !== -1
-                            )
-                          }
-                          onChange={this.handleToggleOption(
-                            category.value,
-                            opt.value
-                          )}
-                        />
-                      </Box>
-                    </React.Fragment>
-                  ))}
+        {servicesCategories.map(
+          (category, index) =>
+            category.value !== "custom" && (
+              <React.Fragment key={index}>
+                <Row fullWidth paddingBottom>
+                  <TabWrapper
+                    title={
+                      <Typography alignChildrenCenter fontSizeS textMediumGrey>
+                        <category.icon className={s.categoryIcon} />
+                        <Typography paddingLeft>{t(category.name)}</Typography>
+                      </Typography>
+                    }
+                    open={true}
+                    insideOpen
+                  >
+                    <Row fullWidth wrap paddingTop>
+                      {category.options.map((opt, optIndex) => (
+                        <React.Fragment key={optIndex}>
+                          <Box classes={{ box: s.optionWrapper }}>
+                            <Checkbox
+                              variant="outlined"
+                              label={t(opt.name)}
+                              className={s.textField250Fixed}
+                              isChecked={
+                                !!(
+                                  office.servicesAndAmenities &&
+                                  office.servicesAndAmenities[category.value] &&
+                                  office.servicesAndAmenities[
+                                    category.value
+                                  ].indexOf(opt.value) !== -1
+                                )
+                              }
+                              onChange={this.handleToggleOption(
+                                category.value,
+                                opt.value
+                              )}
+                            />
+                          </Box>
+                        </React.Fragment>
+                      ))}
+                    </Row>
+                  </TabWrapper>
                 </Row>
-              </TabWrapper>
-            </Row>
-          </React.Fragment>
-        ))}
+              </React.Fragment>
+            )
+        )}
 
         <Row paddingTop />
         <Divider />
@@ -188,17 +192,15 @@ class ServicesAmenitiesForm extends Component {
               <Row paddingTopHalf />
               {office.servicesAndAmenities &&
                 office.servicesAndAmenities.custom &&
-                office.servicesAndAmenities.custom.map(
-                  (feature, index) => (
-                    <React.Fragment key={index}>
-                      <Chip
-                        className={s.textField250Fixed}
-                        label={feature}
-                        onDelete={this.handleDeleteCustomFeature(feature)}
-                      />
-                    </React.Fragment>
-                  )
-                )}
+                office.servicesAndAmenities.custom.map((feature, index) => (
+                  <React.Fragment key={index}>
+                    <Chip
+                      className={s.textField250Fixed}
+                      label={feature}
+                      onDelete={this.handleDeleteCustomFeature(feature)}
+                    />
+                  </React.Fragment>
+                ))}
             </Grid>
           </Grid>
         </Row>

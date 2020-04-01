@@ -23,6 +23,8 @@ import {
   downloadFile,
   deleteUserDocument,
   getOffices,
+  getAvailableOffices,
+  getUnpublishedOffices,
   getOfficeById,
   createOffice,
   updateOffice,
@@ -34,6 +36,7 @@ import {
   deleteOffice
 } from "../../api/endpoints";
 import OfficeList from "./Office/OfficeList";
+import UnpublishedOfficeList from "./Office/UnpublishedOfficeList";
 
 const styleSheet = theme => ({
   root: {
@@ -204,7 +207,17 @@ class Landlord extends Component {
                   path="/landlord/offices/all"
                   render={({ match }) => (
                     <OfficeList
-                      getOffices={getOffices}
+                      getOffices={getAvailableOffices}
+                      navigate={this.props.navigate}
+                    />
+                  )}
+                />
+                <Route
+                  exact
+                  path="/landlord/offices/unpublish"
+                  render={({ match }) => (
+                    <UnpublishedOfficeList
+                      getOffices={getUnpublishedOffices}
                       navigate={this.props.navigate}
                     />
                   )}

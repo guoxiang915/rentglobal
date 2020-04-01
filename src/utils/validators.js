@@ -24,7 +24,7 @@ export function getOfficeStatus(office) {
       office.numberOfEmployees
     )
   )
-    return { status: "incompleteGeneralInfo", progress: 20 };
+    return { status: "incomplete", progress: 20 };
   if (
     !(
       office.coverPhotos &&
@@ -32,7 +32,7 @@ export function getOfficeStatus(office) {
       office.coverPhotos.length <= 15
     )
   )
-    return { status: "incompleteCoverPhotos", progress: 40 };
+    return { status: "incomplete", progress: 40 };
   let servicesAndAmenities = false;
   if (office.servicesAndAmenities) {
     servicesCategories.forEach(cat => {
@@ -44,8 +44,7 @@ export function getOfficeStatus(office) {
       }
     });
   }
-  if (!servicesAndAmenities)
-    return { status: "incompleteServicesAndAmenities", progress: 60 };
+  if (!servicesAndAmenities) return { status: "incomplete", progress: 60 };
 
   return { status: "unpublish", progress: 80 };
 }

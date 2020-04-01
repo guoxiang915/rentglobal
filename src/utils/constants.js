@@ -1,4 +1,15 @@
-import { UserIcon } from "../common/base-components";
+import {
+  UserIcon,
+  BasicsServiceIcon,
+  CommunityServiceIcon,
+  ZonesServiceIcon,
+  FacilitiesServiceIcon,
+  TransportationServiceIcon,
+  CateringServiceIcon,
+  EquipmentServiceIcon,
+  CoolStuffServiceIcon,
+  RulesServiceIcon
+} from "../common/base-components";
 
 /**
  * API url
@@ -40,7 +51,7 @@ const servicesCategories = [
   {
     name: "basics",
     value: "basics",
-    icon: UserIcon,
+    icon: BasicsServiceIcon,
     options: [
       { name: "highSpeedWifi", value: "highSpeedWifi" },
       { name: "privateWifi", value: "privateWifi" },
@@ -59,7 +70,7 @@ const servicesCategories = [
   {
     name: "community",
     value: "community",
-    icon: UserIcon,
+    icon: CommunityServiceIcon,
     options: [
       { name: "events", value: "events" },
       { name: "workshops", value: "workshops" },
@@ -75,7 +86,7 @@ const servicesCategories = [
   {
     name: "zones",
     value: "zones",
-    icon: UserIcon,
+    icon: ZonesServiceIcon,
     options: [
       { name: "outdoorTerrace", value: "outdoorTerrace" },
       { name: "swimmingPool", value: "swimmingPool" },
@@ -87,7 +98,7 @@ const servicesCategories = [
   {
     name: "facilities",
     value: "facilities",
-    icon: UserIcon,
+    icon: FacilitiesServiceIcon,
     options: [
       { name: "kitchen", value: "kitchen" },
       { name: "coLivingAccommodation", value: "coLivingAccommodation" },
@@ -103,22 +114,28 @@ const servicesCategories = [
   {
     name: "transportation",
     value: "transportation",
-    icon: UserIcon,
+    icon: TransportationServiceIcon,
     options: [
       { name: "freeParkingOnPremise", value: "freeParkingOnPremise" },
       { name: "paidParkingOffPremise", value: "paidParkingOffPremise" },
       { name: "bikeParking", value: "bikeParking" },
       { name: "bikeStorage", value: "bikeStorage" },
       { name: "carShare", value: "carShare" },
-      { name: "fiveMinuteWalkFromPublicTransit", value: "fiveMinuteWalkFromPublicTransit" },
-      { name: "tenMinuteWalkFromPublicTransit", value: "tenMinuteWalkFromPublicTransit" },
+      {
+        name: "fiveMinuteWalkFromPublicTransit",
+        value: "fiveMinuteWalkFromPublicTransit"
+      },
+      {
+        name: "tenMinuteWalkFromPublicTransit",
+        value: "tenMinuteWalkFromPublicTransit"
+      },
       { name: "pluginForElectricCars", value: "pluginForElectricCars" }
     ]
   },
   {
     name: "catering",
     value: "catering",
-    icon: UserIcon,
+    icon: CateringServiceIcon,
     options: [
       { name: "freeDrinkingWater", value: "freeDrinkingWater" },
       { name: "freeCoffee", value: "freeCoffee" },
@@ -129,7 +146,7 @@ const servicesCategories = [
   {
     name: "equipment",
     value: "equipment",
-    icon: UserIcon,
+    icon: EquipmentServiceIcon,
     options: [
       { name: "printer", value: "printer" },
       { name: "scanner", value: "scanner" },
@@ -142,7 +159,7 @@ const servicesCategories = [
   {
     name: "coolStuff",
     value: "coolStuff",
-    icon: UserIcon,
+    icon: CoolStuffServiceIcon,
     options: [
       { name: "poolTable", value: "poolTable" },
       { name: "pingPongTable", value: "pingPongTable" },
@@ -159,7 +176,7 @@ const servicesCategories = [
   {
     name: "rules",
     value: "rules",
-    icon: UserIcon,
+    icon: RulesServiceIcon,
     options: [
       { name: "noSmoking", value: "noSmoking" },
       { name: "noPets", value: "noPets" },

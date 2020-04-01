@@ -184,7 +184,8 @@ const styleSheet = theme => ({
   serviceCategoryIcon: {
     width: 24,
     height: 24,
-    color: theme.colors.primary.borderGrey
+    color: theme.colors.primary.darkGrey,
+    opacity: 0.15
   },
 
   serviceOption: {

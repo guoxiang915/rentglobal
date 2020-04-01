@@ -16,6 +16,7 @@ import {
 import { OfficeListItem } from "../../../common/base-layouts";
 import { KeyboardBackspace } from "@material-ui/icons";
 import { Tabs, Tab } from "@material-ui/core";
+import { getOfficeStatus } from "../../../utils/validators";
 
 const styleSheet = theme => ({
   root: {
@@ -59,7 +60,7 @@ const styleSheet = theme => ({
   }
 });
 
-class OfficeList extends Component {
+class UnpublishedOfficeList extends Component {
   static propTypes = {
     getOffices: PropTypes.func.isRequired,
     navigate: PropTypes.func,
@@ -67,12 +68,31 @@ class OfficeList extends Component {
     t: PropTypes.func
   };
 
-  state = { offices: [], dialog: null, currentTab: 0 };
+  state = {
+    offices: [],
+    pendingOffices: [],
+    incompleteOffices: [],
+    unpublishedOffices: [],
+    dialog: null,
+    currentTab: 0
+  };
 
   /** Get office from id */
   componentDidMount() {
     this.props.getOffices().then(
-      response => this.setState({ offices: response.data }),
+      response =>
+        this.setState({
+          offices: response.data,
+          pendingOffices: response.data.filter(
+            office => getOfficeStatus(office).status === "pendingForApprove"
+          ),
+          incompleteOffices: response.data.filter(
+            office => getOfficeStatus(office).status === "incomplete"
+          ),
+          unpublishedOffices: response.data.filter(
+            office => getOfficeStatus(office).status === "unpublish"
+          )
+        }),
       error => {}
     );
   }
@@ -98,16 +118,20 @@ class OfficeList extends Component {
    */
   render() {
     const { classes: s, t, width } = this.props;
-    const { offices, currentTab } = this.state;
-    const leasedOffices = offices.filter(item => !!item.leasedBy);
-    const availableOffices = offices.filter(item => !item.leasedBy);
+    const {
+      offices,
+      pendingOffices,
+      incompleteOffices,
+      unpublishedOffices,
+      currentTab
+    } = this.state;
 
-    const filteredOffices = offices.filter(
-      item =>
-        currentTab === 0 ||
-        (currentTab === 1 && !!item.leasedBy) ||
-        (currentTab === 2 && !item.leasedBy)
-    );
+    const officeTabs = [
+      { name: "allUnpublish", value: offices },
+      { name: "pending", value: pendingOffices },
+      { name: "incomplete", value: incompleteOffices },
+      { name: "unpublish", value: unpublishedOffices }
+    ];
 
     return (
       <Column
@@ -153,26 +177,19 @@ class OfficeList extends Component {
           textColor="primary"
           classes={{ root: s.tabs, indicator: s.indicator }}
         >
-          <Tab
-            value={0}
-            label={t("allOfficesList") + " (" + offices.length + ")"}
-            classes={{ root: s.tab }}
-          />
-          <Tab
-            value={1}
-            label={t("leased") + " (" + leasedOffices.length + ")"}
-            classes={{ root: s.tab }}
-          />
-          <Tab
-            value={2}
-            label={t("available") + " (" + availableOffices.length + ")"}
-            classes={{ root: s.tab }}
-          />
+          {officeTabs.map((tab, index) => (
+            <Tab
+              value={index}
+              key={index}
+              label={t(tab.name) + " (" + tab.value.length + ")"}
+              classes={{ root: s.tab }}
+            />
+          ))}
         </Tabs>
 
         {/** All offices tab panel */}
         <Column classes={{ box: s.officeList }} fullWidth>
-          {filteredOffices.map((item, index) => (
+          {officeTabs[currentTab].value.map((item, index) => (
             <React.Fragment key={index}>
               {index > 0 && <Divider />}
               <Row fullWidth classes={{ box: s.officeItemWrapper }}>
@@ -187,5 +204,5 @@ class OfficeList extends Component {
 }
 
 export default withWidth()(
-  withStyles(styleSheet)(withTranslation("common")(OfficeList))
+  withStyles(styleSheet)(withTranslation("common")(UnpublishedOfficeList))
 );

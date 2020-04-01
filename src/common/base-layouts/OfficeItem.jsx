@@ -208,9 +208,7 @@ const OfficeItem = ({
       ? "rejectedByConsultant"
       : status === "unpublished"
       ? "unpublished"
-      : status === "incompleteGeneralInfo" ||
-        status === "incompleteCoverPhotos" ||
-        status === "incompleteServicesAndAmenities"
+      : status === "incomplete"
       ? "mustCompleteData"
       : null;
   const progress =
