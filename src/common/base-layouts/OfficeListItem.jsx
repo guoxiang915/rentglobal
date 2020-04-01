@@ -155,12 +155,12 @@ const OfficeListItem = ({ classes: s, t, autoPlay, office }) => {
   const officeStatus = getOfficeStatus(office);
   let status = officeStatus ? officeStatus.status : null;
   status =
-    status === "approved"
-      ? null
-      : status === "rejected"
+    status === "rejected"
       ? "rejectedByConsultant"
+      : status === "pendingForApprove"
+      ? "pendingForApprove"
       : status === "unpublished"
-      ? "unpublished"
+      ? "unpublish"
       : status === "incomplete"
       ? "mustCompleteData"
       : null;
@@ -242,7 +242,7 @@ const OfficeListItem = ({ classes: s, t, autoPlay, office }) => {
         </Row>
 
         {/** show office ratings */}
-        {office.published && (
+        {office.approved && (
           // office.rating &&
           <Row paddingTopHalf>
             <Typography textPrimary>
@@ -270,7 +270,7 @@ const OfficeListItem = ({ classes: s, t, autoPlay, office }) => {
           <Box paddingLeftHalf />
 
           {/** Show calendar button */}
-          {office.published && (
+          {office.approved && (
             <Button
               link="normalLight"
               background="normalLight"
@@ -328,13 +328,6 @@ const OfficeListItem = ({ classes: s, t, autoPlay, office }) => {
                   {t("overduePayment")}
                 </Typography>
               )}
-
-              {/** contact info */}
-              <Stretch />
-              <Box paddingTopHalf />
-              <Button variant="secondary" onClick={handleContactInfo} shadow>
-                {t("contactInfo")}
-              </Button>
             </>
           )
         ) : (
@@ -357,6 +350,13 @@ const OfficeListItem = ({ classes: s, t, autoPlay, office }) => {
             )}
           </>
         )}
+
+        {/** contact info */}
+        <Stretch />
+        <Box paddingTopHalf />
+        <Button variant="secondary" onClick={handleContactInfo} shadow>
+          {t("contactInfo")}
+        </Button>
       </Column>
 
       {/** show dialog */}
