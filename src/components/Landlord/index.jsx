@@ -14,10 +14,6 @@ import {
   CheckIcon,
   DeleteIcon
 } from "../../common/base-components";
-import Profile from "../Layout/Profile";
-import Office from "./Office";
-import OfficeDetail from "./Office/OfficeDetail";
-import AddNewOffice from "../../containers/Landlord/Office/AddNewOffice";
 import {
   uploadFile,
   downloadFile,
@@ -35,6 +31,11 @@ import {
   deleteOfficePhoto,
   deleteOffice
 } from "../../api/endpoints";
+import Profile from "../Layout/Profile";
+import Dashboard from "../../containers/Landlord/Dashboard";
+import Office from "./Office";
+import OfficeDetail from "./Office/OfficeDetail";
+import AddNewOffice from "../../containers/Landlord/Office/AddNewOffice";
 import OfficeList from "./Office/OfficeList";
 import UnpublishedOfficeList from "./Office/UnpublishedOfficeList";
 
@@ -169,7 +170,10 @@ class Landlord extends Component {
             </Hidden>
             <Column classes={{ box: classes.contentWrapper }} fullWidth>
               <Switch>
-                <Route path="/landlord/dashboard" render={props => <></>} />
+                <Route
+                  path="/landlord/dashboard"
+                  render={props => <Dashboard getOffices={getOffices} />}
+                />
                 <Route
                   exact
                   path="/landlord/offices"

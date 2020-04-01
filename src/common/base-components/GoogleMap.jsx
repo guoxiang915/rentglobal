@@ -1,7 +1,8 @@
 import React from "react";
-import GoogleMapReact from 'google-map-react';
+import GoogleMapReact from "google-map-react";
 import { PinGeneralIcon } from "./";
 import { makeStyles } from "@material-ui/styles";
+import { fitBounds } from "google-map-react/utils";
 
 const useStyles = makeStyles({
   map: {
@@ -22,32 +23,68 @@ const useStyles = makeStyles({
   }
 });
 
-const Marker = (({ classes }) => (
-  <PinGeneralIcon
-    className={ classes.marker }
-  />
-));
+const Marker = ({ classes }) => <PinGeneralIcon className={classes.marker} />;
 
-const SimpleMap = ({ coordinates = { lat: 45.5017, lng: -73.5673 }, shadowWidth = 5, borderRadius = 5 }) => {
-  const zoom = 11;
+const SimpleMap = ({
+  coordinates = [{ lat: 45.5017, lng: -73.5673 }],
+  shadowWidth = 5,
+  borderRadius = 5,
+  onClick,
+  onClickMarker
+}) => {
   const classes = useStyles({ shadowWidth, borderRadius });
+  const size = { width: 640, height: 640 };
+
+  /** get center of coordinates */
+  let center = { lat: 0, lng: 0 },
+    zoom = 11;
+  if (coordinates) {
+    if (coordinates.length === 1) {
+      center = coordinates[0];
+    } else {
+      const bounds = {
+        ne: { lat: -1000, lng: 1000 },
+        sw: { lat: 1000, lng: -1000 }
+      };
+      coordinates.forEach(coord => {
+        if (coord.lat > bounds.ne.lat) bounds.ne.lat = coord.lat;
+        if (coord.lat < bounds.sw.lat) bounds.sw.lat = coord.lat;
+        if (coord.lng < bounds.ne.lng) bounds.ne.lng = coord.lng;
+        if (coord.lng > bounds.sw.lng) bounds.sw.lng = coord.lng;
+      });
+      const fitBound = fitBounds(bounds, size);
+      center = fitBound.center;
+      zoom = fitBound.zoom;
+    }
+  }
+
+  /** event listeners */
+  const handleClickMarker = coord => () => {
+    if (onClickMarker) onClickMarker(coord);
+  };
 
   return (
     <div className={classes.map}>
       <GoogleMapReact
-        bootstrapURLKeys={{ key: 'AIzaSyCFjI4tzrBQzlNgWorViS48057MOvcn_VY' }}
+        bootstrapURLKeys={{ key: "AIzaSyCFjI4tzrBQzlNgWorViS48057MOvcn_VY" }}
         defaultCenter={{ lat: 45.5017, lng: -73.5673 }}
-        defaultZoom={zoom}
-        center={coordinates}
+        defaultZoom={11}
+        center={center}
+        zoom={zoom}
+        onClick={onClick}
       >
-        <Marker
-          lat={coordinates.lat}
-          lng={coordinates.lng}
-          classes={classes}
-        />
+        {coordinates.map((coord, index) => (
+          <Marker
+            key={index}
+            lat={coord.lat}
+            lng={coord.lng}
+            classes={classes}
+            onClick={handleClickMarker(coord)}
+          />
+        ))}
       </GoogleMapReact>
     </div>
   );
-}
+};
 
 export default SimpleMap;

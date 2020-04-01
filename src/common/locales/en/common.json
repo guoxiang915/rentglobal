@@ -374,5 +374,11 @@
 
     "mustCompleteData": "Must complete data",
     "pendingForApprove": "Pending for approve",
-    "rejectedByConsultant": "Rejected by consultant"
+    "rejectedByConsultant": "Rejected by consultant",
+    "welcomeToLandlord": "Welcome to landlord control panel",
+    "lastLogin": "Last login: {{datetime}}",
+    "favoriteOffice": "Favorite office",
+    "totalContracts": "Total contracts",
+    "totalOptimization": "Total optimization",
+    "calendarEvents": "Calendar events"
 }

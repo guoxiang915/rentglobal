@@ -9,7 +9,6 @@ import {
   Grid,
   Menu,
   Popover,
-  LinearProgress,
   Paper,
   Badge
 } from "@material-ui/core";
@@ -22,6 +21,7 @@ import {
   Stretch,
   Typography,
   Divider,
+  LinearProgress,
   HomeIcon,
   UsersIcon,
   BuildingsIcon,
@@ -36,6 +36,7 @@ import {
   DashboardIcon,
   ImageIcon
 } from "../../common/base-components";
+import { getProfileStatus } from "../../utils/validators";
 
 import "./style.css";
 import Logo from "../../assets/logo.svg";
@@ -152,18 +153,7 @@ const styleSheet = theme => ({
   },
 
   profileProgress: {
-    width: "100%",
-    background: theme.colors.primary.borderGrey,
     marginBottom: 10
-  },
-
-  bar2Buffer: {
-    color: theme.colors.primary.errorRed,
-    background: theme.colors.primary.errorRed
-  },
-
-  dashedBuffer: {
-    background: "none"
   },
 
   attentionIcon: {
@@ -391,14 +381,10 @@ class AppHeader extends Component {
         <Row classes={{ box: s.profileCompletenessWrapper }} fullWidth>
           <Column classes={{ box: s.accountBlockWrapper }}>
             <LinearProgress
-              color="primary"
               value={profileCompleted}
               valueBuffer={profileCharged}
-              variant="buffer"
-              classes={{
-                root: s.profileProgress,
-                bar2Buffer: s.bar2Buffer,
-                dashed: s.dashedBuffer
+              styles={{
+                root: s.profileProgress
               }}
             />
             <Link to="#" onClick={navigate("profile")}>
@@ -493,55 +479,14 @@ class AppHeader extends Component {
     const AccountInfo = this.renderAccountInfo;
 
     // calculate profile completeness
-    const profile = isLoggedIn ? user[`${role}Profile`] : null;
     let profileCompleted = 0;
     let profileCharged = 10;
     let profileCompleteness = null;
     if (isLoggedIn) {
-      const documentTypes = {
-        landlord: ["legalStatusDocuments", "checkSpecimen", "leases"],
-        company: [
-          "legalStatusDocuments",
-          "checkSpecimen",
-          "copyOfPhotoIds",
-          "lastThreeBalances",
-          "commercialBrochures"
-        ]
-      };
-
-      if (profile) {
-        if (profile.username || profile.phoneNumber) {
-          profileCompleted += 30;
-          profileCharged += 30;
-        }
-
-        if (user.avatar) {
-          profileCompleted += 20;
-          profileCharged += 20;
-        }
-
-        documentTypes[role].forEach(docType => {
-          if (profile[docType] && profile[docType].length) {
-            profileCompleted += 10;
-            profileCharged += 15;
-
-            if (profile[docType].find(docItem => docItem.approved === true)) {
-              profileCompleted += 5;
-            }
-          }
-        });
-      }
-
-      if (profileCompleted >= 90) {
-        profileCompleted = 100;
-      }
-
-      profileCompleteness =
-        profileCompleted === 100
-          ? "profileCompleted"
-          : profileCompleted > 60
-          ? "profileNotComplete"
-          : "profileNeedAttention";
+      const profileStatus = getProfileStatus(user, role);
+      profileCompleted = profileStatus.completed;
+      profileCharged = profileStatus.charged;
+      profileCompleteness = profileStatus.completeness;
     }
 
     return (

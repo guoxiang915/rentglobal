@@ -17,6 +17,10 @@ const styleSheet = theme => ({
     height: 116
   },
 
+  container: {
+    padding: "16px 24px"
+  },
+
   title: {
     width: "100%",
     overflow: "hidden",
@@ -40,7 +44,7 @@ const styleSheet = theme => ({
  * @property  {{value:number;variant:string;navigate:function;}[]} statistics  Statistics information
  * @property  {string} title  Title of box
  */
-const StatisticBox = ({ classes, statistics, title, onClick }) => {
+const StatisticBox1 = ({ classes, statistics, title, onClick }) => {
   /** current shown info */
   const [current, setCurrent] = useState(0);
   /** move right the current info */
@@ -88,6 +92,65 @@ const StatisticBox = ({ classes, statistics, title, onClick }) => {
   );
 };
 
-export default withStyles(styleSheet, { name: "StatisticBox" })(
-  withTranslation("common")(StatisticBox)
+export const StatisticBox = withStyles(styleSheet, { name: "StatisticBox" })(
+  withTranslation("common")(StatisticBox1)
 );
+
+/**
+ * Function component for statistic box with icon
+ * @typeof Props
+ * @property  {{value:number;variant:string;navigate:function;}[]} statistics  Statistics information
+ * @property  {string} title  Title of box
+ * @property  {component} icon Icon component
+ */
+const StatisticBox2 = ({ classes, statistics, icon, title, onClick }) => {
+  /** current shown info */
+  const [current, setCurrent] = useState(0);
+  /** move right the current info */
+  const nextCurrent = () =>
+    setCurrent(current === statistics.length - 1 ? 0 : current + 1);
+  /** navigate to selected statistic info */
+  const handleNavigate = () =>
+    statistics[current].navigate && statistics[current].navigate();
+
+  return (
+    <Card variant="outlined" onClick={onClick} className={classes.root}>
+      <Column fullWidth alignChildrenStart classes={{ box: classes.container }}>
+        {icon}
+        <Typography
+          style={{ marginTop: 12 }}
+          classes={{ box: classes.title }}
+          fontSizeS
+          textSecondary
+          fullWidth
+          justifyChildrenStart
+        >
+          {title}
+        </Typography>
+        <Row style={{ paddingTop: 5 }}>
+          {statistics && statistics.length && (
+            <Box style={{ height: 35 }} classes={{ box: classes.infoWrapper }}>
+              <Link
+                to="#"
+                onClick={handleNavigate}
+                variant={statistics[current].variant || "normalLight"}
+              >
+                <Typography fontSizeL>{statistics[current].value}</Typography>
+              </Link>
+            </Box>
+          )}
+          <Stretch />
+          <Box style={{ width: 35, height: 35 }} justifyChildrenStart>
+            <Link to="#" variant="secondaryLight" onClick={nextCurrent}>
+              <KeyboardArrowRight disabled />
+            </Link>
+          </Box>
+        </Row>
+      </Column>
+    </Card>
+  );
+};
+
+export const StatisticIconBox = withStyles(styleSheet, {
+  name: "StatisticIconBox"
+})(withTranslation("common")(StatisticBox2));

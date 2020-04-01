@@ -52,4 +52,60 @@ export function getOfficeStatus(office) {
 /**
  * Check profile status
  */
-export function getProfileStatus(profile) {}
+export function getProfileStatus(user, role) {
+  let profileCompleted = 0;
+  let profileCharged = 10;
+  let profileCompleteness = null;
+
+  const documentTypes = {
+    landlord: ["legalStatusDocuments", "checkSpecimen", "leases"],
+    company: [
+      "legalStatusDocuments",
+      "checkSpecimen",
+      "copyOfPhotoIds",
+      "lastThreeBalances",
+      "commercialBrochures"
+    ]
+  };
+  const profile = user[`${role}Profile`];
+
+  if (profile) {
+    if (profile.username || profile.phoneNumber) {
+      profileCompleted += 30;
+      profileCharged += 30;
+    }
+
+    if (user.avatar) {
+      profileCompleted += 20;
+      profileCharged += 20;
+    }
+
+    documentTypes[role].forEach(docType => {
+      if (profile[docType] && profile[docType].length) {
+        profileCompleted += 10;
+        profileCharged += 15;
+
+        if (profile[docType].find(docItem => docItem.approved === true)) {
+          profileCompleted += 5;
+        }
+      }
+    });
+  }
+
+  if (profileCompleted >= 90) {
+    profileCompleted = 100;
+  }
+
+  profileCompleteness =
+    profileCompleted === 100
+      ? "profileCompleted"
+      : profileCompleted > 60
+      ? "profileNotComplete"
+      : "profileNeedAttention";
+
+  return {
+    completed: profileCompleted,
+    charged: profileCharged,
+    completeness: profileCompleteness
+  };
+}

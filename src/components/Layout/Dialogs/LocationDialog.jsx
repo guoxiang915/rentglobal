@@ -116,7 +116,7 @@ class LocationDialog extends Component {
             {/** location panel */}
             <Box fullWidth fullHeight justifyChildrenCenter alignChildrenCenter>
               <GoogleMap
-                coordinates={location && location.coordinates}
+                coordinates={location && [location.coordinates]}
                 shadowWidth={50}
               />
             </Box>

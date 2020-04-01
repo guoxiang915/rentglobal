@@ -103,7 +103,15 @@ class GeneralInfoForm extends Component {
     t: PropTypes.func
   };
 
-  state = { importOfficeUrl: "", spokenLanguage: "", editAddressMode: !(this.props.office && this.props.office.location && this.props.office.location.fullAddress) };
+  state = {
+    importOfficeUrl: "",
+    spokenLanguage: "",
+    editAddressMode: !(
+      this.props.office &&
+      this.props.office.location &&
+      this.props.office.location.fullAddress
+    )
+  };
 
   /**
    * Update state
@@ -304,11 +312,17 @@ class GeneralInfoForm extends Component {
 
   componentDidUpdate(prevProps) {
     let state = {};
-    if (JSON.stringify(prevProps.office) !== JSON.stringify(this.props.office)) {
+    if (
+      JSON.stringify(prevProps.office) !== JSON.stringify(this.props.office)
+    ) {
       state = {
         ...state,
-        editAddressMode: !(this.props.office && this.props.office.location && this.props.office.location.fullAddress)
-      }
+        editAddressMode: !(
+          this.props.office &&
+          this.props.office.location &&
+          this.props.office.location.fullAddress
+        )
+      };
     }
     if (Object.keys(state).length > 0) {
       this.setState(state);
@@ -671,7 +685,7 @@ class GeneralInfoForm extends Component {
             <Grid item md={4} sm={12} xs={12}>
               <Row fullWidth classes={{ box: s.googleMap }}>
                 <GoogleMap
-                  coordinates={office.location && office.location.coordinates}
+                  coordinates={office.location && [office.location.coordinates]}
                 />
               </Row>
             </Grid>
