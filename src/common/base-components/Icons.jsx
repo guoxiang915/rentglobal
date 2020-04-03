@@ -72,6 +72,7 @@ import { ReactComponent as FacilitiesSvg } from "../../assets/icon/icon_amenitie
 import { ReactComponent as RulesSvg } from "../../assets/icon/icon_amenities_rules_gray.svg";
 import { ReactComponent as TransportationSvg } from "../../assets/icon/icon_amenities_transportation_gray.svg";
 import { ReactComponent as ZonesSvg } from "../../assets/icon/icon_amenities_zones_gray.svg";
+import { ReactComponent as AdjustSvg } from "../../assets/icon/icon_adjust.svg";
 
 const styleSheet = theme => ({
   primary: {
@@ -182,6 +183,7 @@ export const CateringServiceIcon = props => <SvgIcon src={CateringSvg} {...props
 export const EquipmentServiceIcon = props => <SvgIcon src={EquipmentSvg} {...props} />;
 export const CoolStuffServiceIcon = props => <SvgIcon src={CoolStuffSvg} {...props} />;
 export const RulesServiceIcon = props => <SvgIcon src={RulesSvg} {...props} />;
+export const AdjustIcon = props => <SvgIcon src={AdjustSvg} {...props} />;
 export const TwitterBorderIcon = props => (
   <SvgIcon src={TwitterBorderSvg} {...props} />
 );

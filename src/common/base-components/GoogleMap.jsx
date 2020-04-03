@@ -19,11 +19,14 @@ const useStyles = makeStyles({
     backgroundColor: "#525252",
     padding: 10,
     borderRadius: 20,
-    boxShadow: props => `0 0 0 ${props.shadowWidth}px rgba(0, 0, 0, 0.2)`
+    boxShadow: props => `0 0 0 ${props.shadowWidth}px rgba(0, 0, 0, 0.2)`,
+    cursor: "pointer"
   }
 });
 
-const Marker = ({ classes }) => <PinGeneralIcon className={classes.marker} />;
+const Marker = ({ classes, onClick }) => (
+  <PinGeneralIcon className={classes.marker} onClick={onClick} />
+);
 
 const SimpleMap = ({
   coordinates = [{ lat: 45.5017, lng: -73.5673 }],

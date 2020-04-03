@@ -245,6 +245,7 @@
     "reUpload": "Upload again",
 
     "allOfficesList": "All offices list",
+    "allOffices": "All offices",
     "leased": "Leased",
     "allUnpublish": "All unpublished",
     "independentOffice": "Independent office",
@@ -359,6 +360,9 @@
     "photoCountLimitError": "You should add 3 - 15 images for an office!",
     "office": "Office",
     "available": "Available",
+    "independent": "Independent",
+    "assigned": "Assigned",
+    "unassigned": "Unassigned",
     "leasedBy": "Leased by",
     "overduePayment": "Overdue payment",
     "contactInfo": "Contact info",

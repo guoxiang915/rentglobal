@@ -59,7 +59,7 @@ const styleSheet = theme => ({
   },
 
   sidebarBody: {
-    width: 204,
+    width: 150,
     [theme.breakpoints.down("sm")]: {
       width: "100%"
     }

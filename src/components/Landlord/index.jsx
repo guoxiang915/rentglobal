@@ -41,7 +41,9 @@ import UnpublishedOfficeList from "./Office/UnpublishedOfficeList";
 
 const styleSheet = theme => ({
   root: {
-    maxWidth: 1024 + 44
+    maxWidth: 1024 + 44,
+    paddingLeft: 22,
+    paddingRight: 22
   },
 
   sidebarWrapper: {
@@ -50,7 +52,7 @@ const styleSheet = theme => ({
   },
 
   contentWrapper: {
-    width: "calc(100% - 204px)",
+    width: "calc(100% - 151px)",
     overflowX: "hidden",
     [theme.breakpoints.down("sm")]: {
       width: "100%"
