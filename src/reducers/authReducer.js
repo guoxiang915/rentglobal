@@ -6,7 +6,6 @@ const INITIAL_STATE = {
   loaded: false,
   successMsg: null,
   isActivated: false,
-  // loginMode: null,
   isUpdating: null
 };
 

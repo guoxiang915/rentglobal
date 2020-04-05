@@ -12,7 +12,7 @@ import {
   Typography,
   CloseIcon,
   CheckIcon,
-  DeleteIcon
+  DeleteIcon,
 } from "../../common/base-components";
 import {
   uploadFile,
@@ -29,7 +29,7 @@ import {
   publishOffice,
   unpublishOffice,
   deleteOfficePhoto,
-  deleteOffice
+  deleteOffice,
 } from "../../api/endpoints";
 import Profile from "../Layout/Profile";
 import Dashboard from "../../containers/Landlord/Dashboard";
@@ -39,37 +39,37 @@ import AddNewOffice from "../../containers/Landlord/Office/AddNewOffice";
 import OfficeList from "./Office/OfficeList";
 import UnpublishedOfficeList from "./Office/UnpublishedOfficeList";
 
-const styleSheet = theme => ({
+const styleSheet = (theme) => ({
   root: {
     maxWidth: 1024 + 44,
     paddingLeft: 22,
-    paddingRight: 22
+    paddingRight: 22,
   },
 
   sidebarWrapper: {
     position: "sticky",
-    top: 0
+    top: 0,
   },
 
   contentWrapper: {
     width: "calc(100% - 151px)",
     overflowX: "hidden",
     [theme.breakpoints.down("sm")]: {
-      width: "100%"
-    }
-  }
+      width: "100%",
+    },
+  },
 });
 
 class Landlord extends Component {
   static propTypes = {
-    navigate: PropTypes.func
+    navigate: PropTypes.func,
   };
 
   state = { dialog: null };
 
   /** Call api to delete office */
-  deleteOffice = officeId => () => {
-    deleteOffice(officeId).then(response => {
+  deleteOffice = (officeId) => () => {
+    deleteOffice(officeId).then((response) => {
       if (response.status === 200) {
         this.props.navigate("landlord/offices");
       }
@@ -80,14 +80,14 @@ class Landlord extends Component {
    * Edit office
    * @deprecated
    */
-  editOffice = officeId => () => {
+  editOffice = (officeId) => () => {
     this.setState({ dialog: null }, () => {
       this.props.navigate("landlord/offices", `${officeId}/edit`);
     });
   };
 
   /** Event handler for edit office */
-  handleEditOffice = officeId => {
+  handleEditOffice = (officeId) => {
     this.setState({
       dialog: (
         <ConfirmDialog
@@ -108,12 +108,12 @@ class Landlord extends Component {
           onConfirm={this.editOffice(officeId)}
           onClose={this.closeDialog}
         />
-      )
+      ),
     });
   };
 
   /** Event handler for delete office */
-  handleDeleteOffice = officeId => {
+  handleDeleteOffice = (officeId) => {
     this.setState({
       dialog: (
         <ConfirmDialog
@@ -134,7 +134,7 @@ class Landlord extends Component {
           onConfirm={this.deleteOffice(officeId)}
           onClose={this.closeDialog}
         />
-      )
+      ),
     });
   };
 
@@ -158,7 +158,7 @@ class Landlord extends Component {
     }
 
     if (user.role !== "landlord") {
-      this.props.onToggleRole();
+      this.props.onToggleRole("landlord");
     }
 
     return (
@@ -174,12 +174,12 @@ class Landlord extends Component {
               <Switch>
                 <Route
                   path="/landlord/dashboard"
-                  render={props => <Dashboard getOffices={getOffices} />}
+                  render={(props) => <Dashboard getOffices={getOffices} />}
                 />
                 <Route
                   exact
                   path="/landlord/offices"
-                  render={props => (
+                  render={(props) => (
                     <Office
                       getOffices={getOffices}
                       navigate={this.props.navigate}
@@ -267,7 +267,7 @@ class Landlord extends Component {
                 />
                 <Route
                   path="/landlord/profile"
-                  render={props => (
+                  render={(props) => (
                     <Profile
                       {...this.props.auth}
                       role="landlord"

@@ -4,14 +4,8 @@ import { withTranslation } from "react-i18next";
 import PropTypes from "prop-types";
 import clsx from "clsx";
 import withWidth, { isWidthDown } from "@material-ui/core/withWidth";
-import {
-  MenuItem,
-  Grid,
-  Menu,
-  Popover,
-  Paper,
-  Badge
-} from "@material-ui/core";
+import { withRouter } from "react-router-dom";
+import { MenuItem, Grid, Menu, Popover, Paper, Badge } from "@material-ui/core";
 import {
   Button,
   Link,
@@ -34,7 +28,7 @@ import {
   MenuIcon,
   ArrowDownIcon,
   DashboardIcon,
-  ImageIcon
+  ImageIcon,
 } from "../../common/base-components";
 import { getProfileStatus } from "../../utils/validators";
 
@@ -42,7 +36,7 @@ import "./style.css";
 import Logo from "../../assets/logo.svg";
 import MiniLogo from "../../assets/mini-logo.svg";
 
-const styleSheet = theme => ({
+const styleSheet = (theme) => ({
   root: {
     flexGrow: 1,
     // marginTop: 70,
@@ -51,15 +45,15 @@ const styleSheet = theme => ({
     backdropFilter: "blur(10px)",
     boxShadow: "0px 10px 10px #0000000D",
     [theme.breakpoints.down("sm")]: {
-      boxShadow: "0px 10px 10px #0000001A"
-    }
+      boxShadow: "0px 10px 10px #0000001A",
+    },
   },
 
   loggedIn: {
     boxShadow: "0px 14px 14px #15151514",
     [theme.breakpoints.down("sm")]: {
-      boxShadow: "0px 14px 14px #15151514"
-    }
+      boxShadow: "0px 14px 14px #15151514",
+    },
   },
 
   headerWrapper: {
@@ -68,46 +62,46 @@ const styleSheet = theme => ({
     paddingRight: theme.spacing(4) - 2,
     [theme.breakpoints.down("sm")]: {
       paddingLeft: theme.spacing(2),
-      paddingRight: theme.spacing(2)
-    }
+      paddingRight: theme.spacing(2),
+    },
   },
 
   logoWrapper: {
     display: "flex",
     marginRight: theme.spacing(2),
-    height: 38
+    height: 38,
   },
 
   logoNavigator: {
     width: "fit-content",
-    cursor: "pointer"
+    cursor: "pointer",
   },
 
   logo: {
-    height: "100%"
+    height: "100%",
   },
 
   grayButton: {
-    padding: theme.spacing()
+    padding: theme.spacing(),
   },
 
   headerMenu: {
     zIndex: 1500,
     minWidth: 200,
     position: "relative",
-    top: 30
+    top: 30,
   },
 
   stickyBar: {
     width: "100%",
     height: 4,
-    background: `linear-gradient(97deg, ${theme.colors.primary.mainColor} 0%, ${theme.colors.primary.darkColor} 100%)`
+    background: `linear-gradient(97deg, ${theme.colors.primary.mainColor} 0%, ${theme.colors.primary.darkColor} 100%)`,
   },
 
   accountInfoWrapper: {
     background: "transparent",
     boxShadow: "none",
-    overflow: "visible"
+    overflow: "visible",
   },
 
   accountInfoContentWrapper: {
@@ -116,7 +110,7 @@ const styleSheet = theme => ({
     boxShadow: "0px 2px 4px #00000014",
     border: `1px solid ${theme.colors.primary.borderGrey}`,
     [theme.breakpoints.down("sm")]: {
-      right: -29
+      right: -29,
     },
     "&::before": {
       position: "absolute",
@@ -129,75 +123,75 @@ const styleSheet = theme => ({
       border: `1px solid ${theme.colors.primary.borderGrey}`,
       borderBottom: "none",
       borderRight: "none",
-      transform: "rotate(45deg)"
-    }
+      transform: "rotate(45deg)",
+    },
   },
 
   accountInfoContent: {
-    paddingTop: 30
+    paddingTop: 30,
   },
 
   profileCompletenessWrapper: {
-    background: theme.colors.primary.whiteGrey
+    background: theme.colors.primary.whiteGrey,
   },
 
   accountBlockWrapper: {
     width: "100%",
     padding: 14,
-    paddingLeft: 18
+    paddingLeft: 18,
   },
 
   accountAvatar: {
     width: 80,
-    height: 80
+    height: 80,
   },
 
   profileProgress: {
-    marginBottom: 10
+    marginBottom: 10,
   },
 
   attentionIcon: {
     marginLeft: 25,
     width: 11,
-    height: 8
+    height: 8,
   },
 
   menuIcon: {
-    marginRight: 25
+    marginRight: 25,
   },
 
   accountNavItem: {
     paddingTop: 12,
-    paddingBottom: 12
+    paddingBottom: 12,
   },
 
   smallIcon: {
     width: 16,
-    height: 16
+    height: 16,
   },
 
   accountNavIcon: {
     marginRight: 25,
     color: theme.colors.primary.borderGrey,
-    opacity: 1
+    opacity: 1,
   },
 
   errorRedIcon: {
     color: theme.colors.primary.errorRed,
-    opacity: 1
+    opacity: 1,
   },
 
   arrowDownIcon: {
     width: 12,
-    height: 7
+    height: 7,
   },
 
   divider: {
     left: -18,
     right: -14,
     position: "relative",
-    width: "calc(100% + 32px)"
-  }
+    width: "calc(100% + 32px)",
+  },
 });
 
 class AppHeader extends Component {
@@ -215,38 +209,38 @@ class AppHeader extends Component {
 
     width: PropTypes.string.isRequired,
     classes: PropTypes.object.isRequired,
-    t: PropTypes.func.isRequired
+    t: PropTypes.func.isRequired,
   };
 
   state = {
     locationEl: null,
     languageEl: null,
     accountInfoEl: null,
-    dialog: null
+    dialog: null,
   };
 
-  handleNavigate = path => () => {
+  handleNavigate = (path) => () => {
     this.props.navigate(path);
   };
 
-  handleMenu = el => event => {
+  handleMenu = (el) => (event) => {
     const newState = {};
     newState[el] = event.currentTarget;
     this.setState(newState);
   };
 
-  handleCloseMenu = el => () => {
+  handleCloseMenu = (el) => () => {
     const newState = {};
     newState[el] = null;
     this.setState(newState);
   };
 
-  handleSelectLocation = location => () => {
+  handleSelectLocation = (location) => () => {
     this.props.onSelectLocation(location);
     this.handleCloseMenu("locationEl")();
   };
 
-  handleSelectLanguage = language => () => {
+  handleSelectLanguage = (language) => () => {
     this.props.onSelectLanguage(language);
     this.handleCloseMenu("languageEl")();
   };
@@ -259,23 +253,25 @@ class AppHeader extends Component {
     this.setState({ dialog: null });
   };
 
-  handleToggleSidebar = value => () => {
+  handleToggleSidebar = (value) => () => {
     this.props.onToggleSidebar(value);
   };
 
   /** Navigate from Account Info panel */
-  handleAccountInfoNavigate = path => () => {
+  handleAccountInfoNavigate = (path) => () => {
     this.handleCloseMenu("accountInfoEl")();
     this.props.navigate(path);
   };
 
   /** Toggle role when user selects another role in Account Info panel */
-  handleAccountInfoToggleRole = role => () => {
+  handleAccountInfoToggleRole = (role) => () => {
     this.handleCloseMenu("accountInfoEl")();
-    const userRole = this.props.auth.user.role;
-    if (role !== userRole) {
-      this.props.onToggleRole();
-    }
+    // console.log(this.props.auth.user.role);
+    // const userRole = this.props.auth.user.role;
+    // if (role !== userRole) {
+    //   this.props.onToggleRole();
+    // }
+    this.props.onToggleRole(role);
   };
 
   /**
@@ -287,12 +283,24 @@ class AppHeader extends Component {
    * @property  {boolean}   errorRed
    * @property  {object}    classes
    */
-  renderAccountNavItem = ({ onClick, icon, text, errorRed, classes }) => {
+  renderAccountNavItem = ({
+    onClick,
+    icon,
+    text,
+    errorRed,
+    active,
+    classes,
+  }) => {
     const NavIcon = icon;
     return (
       <Row classes={{ box: classes.accountNavItem }}>
         <Link to="#" onClick={onClick}>
-          <Typography fontSizeS textErrorRed={errorRed} alignChildrenCenter>
+          <Typography
+            fontSizeS
+            textErrorRed={errorRed}
+            textPrimary={active}
+            alignChildrenCenter
+          >
             <Box>
               <NavIcon
                 className={clsx(
@@ -326,16 +334,19 @@ class AppHeader extends Component {
     profileProgress,
     navigate,
     onToggleRole,
+    location,
     classes: s,
-    t
+    t,
   }) => {
     const NavItem = this.renderAccountNavItem;
     const {
       profileCompleted,
       profileCharged,
-      profileCompleteness
+      profileCompleteness,
     } = profileProgress;
     const profile = user[`${role}Profile`];
+
+    console.log(role, user.roles);
 
     return (
       <Column alignChildrenStart classes={{ box: s.accountInfoContent }}>
@@ -350,11 +361,11 @@ class AppHeader extends Component {
                 ? `url("${user.avatar.bucketPath}")`
                 : "none",
               backgroundSize: "contain",
-              backgroundPosition: "center"
+              backgroundPosition: "center",
             }}
             border
             classes={{
-              box: clsx(s.accountAvatar)
+              box: clsx(s.accountAvatar),
             }}
           >
             {!user.avatar &&
@@ -384,7 +395,7 @@ class AppHeader extends Component {
               value={profileCompleted}
               valueBuffer={profileCharged}
               styles={{
-                root: s.profileProgress
+                root: s.profileProgress,
               }}
             />
             <Link to="#" onClick={navigate("profile")}>
@@ -410,41 +421,37 @@ class AppHeader extends Component {
         {/* links */}
         <Row fullWidth>
           <Column classes={{ box: s.accountBlockWrapper }} alignChildrenStart>
-            <NavItem
-              onClick={navigate("home")}
-              icon={HomeIcon}
-              text={t("home")}
-              classes={s}
-            />
-            <NavItem
-              onClick={navigate("dashboard")}
-              icon={DashboardIcon}
-              text={t("dashboard")}
-              classes={s}
-            />
-            <Box padding2 />
-            <Divider className={s.divider} />
-            <NavItem
-              onClick={onToggleRole(
-                role === "company" ? "landlord" : "company"
-              )}
-              icon={role === "company" ? BuildingsIcon : UsersIcon}
-              text={role === "company" ? t("landlordPanel") : t("companyPanel")}
-              classes={s}
-            />
-            {/** When both profile exists, then show both navigators */}
-            {user.landlordProfile && user.companyProfile && (
+            {location.pathname !== "/" && (
               <NavItem
-                onClick={onToggleRole(
-                  role === "company" ? "company" : "landlord"
-                )}
-                icon={role === "company" ? UsersIcon : BuildingsIcon}
-                text={
-                  role === "company" ? t("companyPanel") : t("landlordPanel")
-                }
+                onClick={navigate("home")}
+                icon={HomeIcon}
+                text={t("home")}
                 classes={s}
               />
             )}
+            {location.pathname !== `/${role}/dashboard/` && (
+              <NavItem
+                onClick={navigate("dashboard")}
+                icon={DashboardIcon}
+                text={t("dashboard")}
+                classes={s}
+              />
+            )}
+            <Box padding2 />
+            <Divider className={s.divider} />
+            {user.roles.map((r, index) => (
+              <React.Fragment key={index}>
+                <NavItem
+                  onClick={onToggleRole(r)}
+                  icon={r === "company" ? UsersIcon : BuildingsIcon}
+                  text={
+                    r === "company" ? t("companyPanel") : t("landlordPanel")
+                  }
+                  active={role === r}
+                  classes={s}
+                />
+              </React.Fragment>
+            ))}
             <Divider className={s.divider} />
             <Box padding2 />
             <NavItem
@@ -470,13 +477,13 @@ class AppHeader extends Component {
       mails,
       width,
       classes,
-      t
+      t,
     } = this.props;
     const { isLoggedIn, user } = this.props.auth;
     const { locationEl, languageEl, accountInfoEl, dialog } = this.state;
     const role = isLoggedIn ? user.role : "";
 
-    const AccountInfo = this.renderAccountInfo;
+    const AccountInfo = withRouter(this.renderAccountInfo);
 
     // calculate profile completeness
     let profileCompleted = 0;
@@ -628,7 +635,11 @@ class AppHeader extends Component {
                         <Button
                           variant="secondary"
                           shadow
-                          onClick={this.props.onToggleRole}
+                          onClick={() =>
+                            this.props.onToggleRole(
+                              role === "landlord" ? "company" : "landlord"
+                            )
+                          }
                         >
                           <Typography fontSizeS fontWeightBold>
                             {t(
@@ -704,11 +715,11 @@ class AppHeader extends Component {
                       onClose={this.handleCloseMenu("accountInfoEl")}
                       anchorOrigin={{
                         vertical: "bottom",
-                        horizontal: "right"
+                        horizontal: "right",
                       }}
                       transformOrigin={{
                         vertical: "top",
-                        horizontal: "right"
+                        horizontal: "right",
                       }}
                       classes={{ paper: classes.accountInfoWrapper }}
                     >
@@ -719,7 +730,7 @@ class AppHeader extends Component {
                           profileProgress={{
                             profileCompleteness,
                             profileCompleted,
-                            profileCharged
+                            profileCharged,
                           }}
                           navigate={this.handleAccountInfoNavigate}
                           onToggleRole={this.handleAccountInfoToggleRole}

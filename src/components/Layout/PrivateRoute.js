@@ -14,10 +14,10 @@ import HeaderImage from "../../assets/img/img_header@2x.jpg";
 /** Token-based auth object */
 const authObj = new Auth();
 
-const styleSheet = theme => ({
+const styleSheet = (theme) => ({
   root: {
     height: "100vh",
-    width: "100%"
+    width: "100%",
   },
 
   headerWrapper: {
@@ -26,52 +26,52 @@ const styleSheet = theme => ({
     zIndex: 1100,
     height: 100,
     [theme.breakpoints.down("sm")]: {
-      height: 66
-    }
+      height: 66,
+    },
   },
 
   bodyWrapper: {
     height: "100%",
     width: "100%",
     position: "relative",
-    overflow: "hidden"
+    overflow: "hidden",
   },
 
   bodyHeaderOffset: {
     height: "calc(100% - 100px)",
     [theme.breakpoints.down("sm")]: {
-      height: "calc(100% - 66px)"
-    }
+      height: "calc(100% - 66px)",
+    },
   },
 
   bodyContent: {
     width: "100%",
     height: "100%",
-    overflowY: "scroll"
+    overflowY: "scroll",
   },
 
   contentWrapper: {
     background: theme.colors.primary.whiteGrey,
     minHeight: "calc(100vh - 250px)",
     [theme.breakpoints.down("sm")]: {
-      minHeight: "calc(100vh - 166px)"
-    }
+      minHeight: "calc(100vh - 166px)",
+    },
   },
 
   footerWrapper: {
     height: 150,
     background: "white",
     [theme.breakpoints.down("sm")]: {
-      height: 100
-    }
+      height: 100,
+    },
   },
 
   sendVerificationWrapper: {
     background: theme.colors.primary.white,
     minHeight: "calc(100vh - 250px)",
     [theme.breakpoints.down("sm")]: {
-      minHeight: "calc(100vh - 166px)"
-    }
+      minHeight: "calc(100vh - 166px)",
+    },
   },
 
   backgroundWrapper: {
@@ -80,15 +80,15 @@ const styleSheet = theme => ({
     background: `transparent url(${HeaderImage}) 0% 0% no-repeat padding-box`,
     backgroundSize: "cover",
     [theme.breakpoints.down("sm")]: {
-      background: "white"
-    }
+      background: "white",
+    },
   },
 
   loginWrapper: {
     textAlign: "center",
     alignItems: "center",
     padding: "20px 0px",
-    backgroundColor: "white"
+    backgroundColor: "white",
   },
 
   loginCard: {
@@ -102,9 +102,9 @@ const styleSheet = theme => ({
     marginLeft: "auto",
     marginRight: "auto",
     [theme.breakpoints.down("sm")]: {
-      border: "none"
-    }
-  }
+      border: "none",
+    },
+  },
 });
 
 class PrivateRoute extends React.Component {
@@ -122,12 +122,12 @@ class PrivateRoute extends React.Component {
      * Auth required or not
      * @deprecated
      */
-    authRequired: PropTypes.bool
+    authRequired: PropTypes.bool,
   };
 
   state = {
     sidebarOpened: false,
-    dialog: null
+    dialog: null,
   };
 
   UNSAFE_componentWillMount() {
@@ -168,7 +168,7 @@ class PrivateRoute extends React.Component {
         authObj.removeToken();
         authObj.removeRefreshToken();
         this.props.mappedlogout();
-        this.props.history.push("/auth/login");
+        this.props.history.push("/");
         break;
 
       case "dashboard":
@@ -198,24 +198,24 @@ class PrivateRoute extends React.Component {
   };
 
   /** Toggle user role between landlord/company */
-  handleToggleRole = () => {
+  handleToggleRole = (role) => {
     const { user } = this.props.auth;
     this.props.mappedToggleRole(
-      user.role === "landlord" ? "company" : "landlord",
+      role ? role : user.role === "landlord" ? "company" : "landlord",
       this.props.history
     );
     this.handleToggleSidebar(false);
   };
 
   /** Toggle sidebar */
-  handleToggleSidebar = sidebarOpened => {
+  handleToggleSidebar = (sidebarOpened) => {
     this.setState({ sidebarOpened });
   };
 
   /** Show help dialog */
   showHelpDialog = () => {
     this.setState({
-      dialog: <HelpDialog onClose={this.handleCloseDialog} />
+      dialog: <HelpDialog onClose={this.handleCloseDialog} />,
     });
   };
 
@@ -245,7 +245,7 @@ class PrivateRoute extends React.Component {
     return (
       <Route
         {...rest}
-        render={props => {
+        render={(props) => {
           return (
             <>
               {authRequired && !isLoggedIn ? (

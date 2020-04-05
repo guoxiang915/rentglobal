@@ -10,33 +10,33 @@ import Profile from "../Layout/Profile";
 import {
   uploadFile,
   downloadFile,
-  deleteUserDocument
+  deleteUserDocument,
 } from "../../api/endpoints";
 
-const styleSheet = theme => ({
+const styleSheet = (theme) => ({
   root: {
     maxWidth: 1024 + 44,
     paddingLeft: 22,
-    paddingRight: 22
+    paddingRight: 22,
   },
 
   sidebarWrapper: {
     position: "sticky",
-    top: 0
+    top: 0,
   },
 
   contentWrapper: {
     width: "calc(100% - 151px)",
     overflowX: "hidden",
     [theme.breakpoints.down("sm")]: {
-      width: "100%"
-    }
-  }
+      width: "100%",
+    },
+  },
 });
 
 class Company extends Component {
   static propTypes = {
-    navigate: PropTypes.func
+    navigate: PropTypes.func,
   };
 
   /** Render function */
@@ -53,7 +53,7 @@ class Company extends Component {
     }
 
     if (user.role !== "company") {
-      this.props.onToggleRole();
+      this.props.onToggleRole("company");
     }
 
     return (
@@ -67,10 +67,10 @@ class Company extends Component {
             </Hidden>
             <Column classes={{ box: classes.contentWrapper }} fullWidth>
               <Switch>
-                <Route path="/company/dashboard" render={props => <></>} />
+                <Route path="/company/dashboard" render={(props) => <></>} />
                 <Route
                   path="/company/profile"
-                  render={props => (
+                  render={(props) => (
                     <Profile
                       {...this.props.auth}
                       role="company"

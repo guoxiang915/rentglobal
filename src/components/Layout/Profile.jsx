@@ -13,7 +13,8 @@ import {
   TextField,
   Tooltip,
   TooltipContent,
-  Link,
+  GooglePlaceField,
+  ConfirmDialog,
   EmailIcon,
   UserIcon,
   PhoneIcon,
@@ -24,12 +25,11 @@ import {
   LockIcon,
   UploadIcon,
   ProgressIcon,
-  GooglePlaceField
 } from "../../common/base-components";
 import {
   UploadDocument,
   TabWrapper,
-  StatisticBox
+  StatisticBox,
 } from "../../common/base-layouts";
 import { withCarousel } from "../../common/base-services";
 import { ConditionalWrapper } from "../../utils/helpers";
@@ -37,6 +37,7 @@ import { CropperDialog } from "../Layout";
 import { Grid, Card } from "@material-ui/core";
 import Dropzone from "react-dropzone";
 
+/** Show save and cancel buttons for form */
 const SaveButtons = ({ isUpdating, onSave, onCancel, disabled, t }) => (
   <>
     <Box paddingRightDouble>
@@ -67,38 +68,38 @@ const SaveButtons = ({ isUpdating, onSave, onCancel, disabled, t }) => (
   </>
 );
 
-const styleSheet = theme => ({
+const styleSheet = (theme) => ({
   root: {
     paddingLeft: theme.spacing(5),
     paddingRight: theme.spacing(5),
     [theme.breakpoints.down("sm")]: {
       paddingLeft: 27,
-      paddingRight: 27
-    }
+      paddingRight: 27,
+    },
   },
 
   fullWidth: {
-    width: "100%"
+    width: "100%",
   },
 
   profileTabWrapper: {
-    paddingTop: theme.spacing(4)
+    paddingTop: theme.spacing(4),
   },
 
   buttonIcon: {
     width: 20,
-    height: 20
+    height: 20,
   },
 
   profileInput: {
     width: 370,
     [theme.breakpoints.down("sm")]: {
-      width: "100%"
-    }
+      width: "100%",
+    },
   },
 
   panelWrapper: {
-    marginTop: theme.spacing(8)
+    marginTop: theme.spacing(8),
   },
 
   panelDivider: {
@@ -108,24 +109,24 @@ const styleSheet = theme => ({
       top: "50%",
       left: 35,
       right: 0,
-      background: theme.colors.primary.borderGrey
-    }
+      background: theme.colors.primary.borderGrey,
+    },
   },
 
   documentsWrapper: {
     flexWrap: "wrap",
     [theme.breakpoints.down("sm")]: {
       flexWrap: "nowrap",
-      overflow: "hidden"
-    }
+      overflow: "hidden",
+    },
   },
 
   generalInfoForm: {
-    width: "100%"
+    width: "100%",
   },
 
   imageWrapper: {
-    float: "right"
+    float: "right",
   },
 
   avatarCard: {
@@ -137,16 +138,16 @@ const styleSheet = theme => ({
     overflow: "hidden",
     position: "relative",
     backgroundRepeat: "no-repeat",
-    backgroundSize: "contain",
+    backgroundSize: "cover",
     backgroundPosition: "center",
     "&:hover": {
       backgroundColor: theme.colors.primary.grey,
-      backgroundBlendMode: "screen"
-    }
+      backgroundBlendMode: "screen",
+    },
   },
 
   companyAvatarCard: {
-    borderRadius: "50%"
+    borderRadius: "50%",
   },
 
   dropzone: {
@@ -156,26 +157,26 @@ const styleSheet = theme => ({
     position: "absolute",
     top: "5%",
     left: "5%",
-    filter: "grayscale(1)"
+    filter: "grayscale(1)",
   },
 
   companyDropzone: {
-    borderRadius: "50%"
+    borderRadius: "50%",
   },
 
   uploadIcon: {
     color: theme.colors.primary.mainColor,
-    mixBlendMode: "difference"
+    mixBlendMode: "difference",
   },
 
   avatarImage: {
     width: "100%",
     height: "100%",
-    objectFit: "contain"
+    objectFit: "cover",
   },
 
   outlineIcon: {
-    color: theme.colors.primary.borderGrey
+    color: theme.colors.primary.borderGrey,
   },
 
   errorIcon: {
@@ -188,7 +189,7 @@ const styleSheet = theme => ({
     justifyContent: "center",
     alignItems: "center",
     width: 30,
-    height: 24
+    height: 24,
   },
 
   approveIcon: {
@@ -201,8 +202,8 @@ const styleSheet = theme => ({
     justifyContent: "center",
     alignItems: "center",
     width: 30,
-    height: 24
-  }
+    height: 24,
+  },
 });
 
 class Profile extends Component {
@@ -212,7 +213,7 @@ class Profile extends Component {
     uploadFile: PropTypes.func,
     downloadFile: PropTypes.func,
     updateUser: PropTypes.func,
-    deleteDocument: PropTypes.func
+    deleteDocument: PropTypes.func,
   };
 
   state = {
@@ -232,11 +233,11 @@ class Profile extends Component {
     passwordError: "",
     confirmPassword: "",
 
-    editTab: "generalInfo",
+    editTab: null,
     openedTab: "generalInfo",
     uploadingDocument: null,
 
-    dialog: null
+    dialog: null,
   };
 
   /** landlord/company profile documents */
@@ -244,24 +245,24 @@ class Profile extends Component {
     landlord: [
       {
         value: "legalStatusDocuments",
-        title: this.props.t("legalStatusDocument")
+        title: this.props.t("legalStatusDocument"),
       },
       { value: "checkSpecimen", title: this.props.t("checkSpecimen") },
-      { value: "leases", title: this.props.t("lease") }
+      { value: "leases", title: this.props.t("lease") },
     ],
     company: [
       {
         value: "legalStatusDocuments",
-        title: this.props.t("legalStatusDocument")
+        title: this.props.t("legalStatusDocument"),
       },
       { value: "checkSpecimen", title: this.props.t("checkSpecimen") },
       { value: "copyOfPhotoIds", title: this.props.t("copyOfID") },
       { value: "lastThreeBalances", title: this.props.t("lastThreeBalance") },
       {
         value: "commercialBrochures",
-        title: this.props.t("commercialBrochure")
-      }
-    ]
+        title: this.props.t("commercialBrochure"),
+      },
+    ],
   };
 
   UNSAFE_componentWillReceiveProps(newProps) {
@@ -272,11 +273,11 @@ class Profile extends Component {
     this.handleResetProfileInfo(this.props);
   }
 
-  handleStateChange = field => value => {
+  handleStateChange = (field) => (value) => {
     this.setState({ [field]: value });
   };
 
-  handleStateChangeByInput = field => event => {
+  handleStateChangeByInput = (field) => (event) => {
     this.setState({ [field]: event.target.value });
   };
 
@@ -284,9 +285,7 @@ class Profile extends Component {
     this.setState({ [field]: value });
   };
 
-  /**
-   * Save general info
-   */
+  /** Save general info */
   handleSaveGeneralInfo = () => {
     const {
       avatar,
@@ -294,12 +293,12 @@ class Profile extends Component {
       username,
       phoneNumber,
       address,
-      postalCode
+      postalCode,
     } = this.state;
 
     if (avatar && avatar._id) {
       this.props.updateUser("avatar", {
-        avatarFileId: avatar._id
+        avatarFileId: avatar._id,
       });
     }
     this.props.updateUser("profile", {
@@ -309,22 +308,48 @@ class Profile extends Component {
         profile: {
           username,
           phoneNumber,
-          address: { ...address, postalCode }
-        }
-      }
+          address: { ...address, postalCode },
+        },
+      },
     });
     this.setState({ editTab: null });
   };
 
-  handleSaveSecurityInfo = e => {
+  /** Save security information */
+  handleSaveSecurityInfo = (e) => {
+    this.setState({
+      dialog: (
+        <ConfirmDialog
+          variant="error"
+          text={this.props.t("confirmResetPassword")}
+          closeLabel={
+            <>
+              <CloseIcon style={{ width: 10, height: 10 }} />
+              <Typography paddingLeft>{this.props.t("cancel")}</Typography>
+            </>
+          }
+          confirmLabel={
+            <>
+              <CheckIcon style={{ width: 15, height: 12 }} />
+              <Typography paddingLeft>{this.props.t("reset")}</Typography>
+            </>
+          }
+          onClose={this.handleCloseDialog}
+          onConfirm={this.saveSecurityInfo}
+        />
+      ),
+    });
+  };
+
+  saveSecurityInfo = () => {
     const { password, confirmPassword } = this.state;
     if (password === confirmPassword) {
       this.props.updateUser("password", {
         password,
-        passwordLastUpdated: new Date().getTime()
+        passwordLastUpdated: new Date().getTime(),
       });
     }
-    this.setState({ editTab: null });
+    this.setState({ editTab: null, dialog: null });
   };
 
   /**
@@ -340,7 +365,7 @@ class Profile extends Component {
    * Toggle state variables to input new data in edit mode
    * @param {string} props props from parent
    */
-  handleResetProfileInfo = props => {
+  handleResetProfileInfo = (props) => {
     const { user, role } = props;
     let profile =
       role === "landlord" ? user.landlordProfile : user.companyProfile;
@@ -357,11 +382,11 @@ class Profile extends Component {
       phoneNumber: profile.phoneNumber || "",
       address: profile.address || {},
       postalCode: profile.address.postalCode || "",
-      avatar: user.avatar || null
+      avatar: user.avatar || null,
     });
   };
 
-  handleToggleOpen = tab => () => {
+  handleToggleOpen = (tab) => () => {
     if (this.state.openedTab === tab) {
       this.setState({ openedTab: null });
     } else {
@@ -369,7 +394,7 @@ class Profile extends Component {
     }
   };
 
-  handleToggleEdit = tab => () => {
+  handleToggleEdit = (tab) => () => {
     if (this.state.editTab === tab) {
       this.handleCancelEditProfile();
     } else {
@@ -380,7 +405,7 @@ class Profile extends Component {
   handleSendPhoneVerification = () => {};
 
   /** Set and resize avatar image */
-  handleClickAvatar = avatar => {
+  handleClickAvatar = (avatar) => {
     const reader = new FileReader();
     reader.addEventListener("load", () =>
       this.setState({
@@ -391,23 +416,23 @@ class Profile extends Component {
             onClose={this.handleCloseDialog}
             onSave={this.handleUploadAvatar}
           />
-        )
+        ),
       })
     );
     reader.readAsDataURL(avatar);
   };
 
   /** Upload avatar from cropper dialog */
-  handleUploadAvatar = avatar => {
+  handleUploadAvatar = (avatar) => {
     this.setState({ uploadingDocument: "avatar" });
     this.props.uploadFile(avatar, "public-read").then(
-      response => {
+      (response) => {
         this.setState({
           avatar: response.data,
-          uploadingDocument: null
+          uploadingDocument: null,
         });
       },
-      error => {
+      (error) => {
         this.setState({ uploadingDocument: null });
       }
     );
@@ -419,39 +444,39 @@ class Profile extends Component {
   };
 
   /** Upload user document */
-  handleUploadDocument = docType => docFile => {
+  handleUploadDocument = (docType) => (docFile) => {
     this.setState({ uploadingDocument: docType });
-    this.props.uploadFile(docFile).then(response => {
+    this.props.uploadFile(docFile).then((response) => {
       this.props.updateUser("documents", {
         role: this.props.role,
         documentInfo: {
           document: docType,
-          documentFileId: response.data._id
-        }
+          documentFileId: response.data._id,
+        },
       });
       this.setState({
-        uploadingDocument: null
+        uploadingDocument: null,
       });
     });
   };
 
   /** Delete user document */
-  handleDeleteDocument = docType => docFile => {
+  handleDeleteDocument = (docType) => (docFile) => {
     this.setState({ uploadingDocument: docType });
-    return this.props.deleteDocument(docType, docFile).then(response => {
+    return this.props.deleteDocument(docType, docFile).then((response) => {
       this.setState({
-        uploadingDocument: null
+        uploadingDocument: null,
       });
     });
   };
 
   /** Change/Select address */
-  handleChangeAddress = field => e => {
+  handleChangeAddress = (field) => (e) => {
     const address = { ...this.state.address, [field]: e.target.value };
     this.setState({ address });
   };
 
-  handleSelectAddress = value => {
+  handleSelectAddress = (value) => {
     const address = { ...this.state.address, ...value };
     const postalCode = value.zipCode || "";
     this.setState({ address, postalCode });
@@ -467,7 +492,7 @@ class Profile extends Component {
       role,
       width,
       classes: s,
-      t
+      t,
     } = this.props;
     const { openedTab, editTab, uploadingDocument, dialog } = this.state;
     const CarouselWrapper = withCarousel;
@@ -483,7 +508,7 @@ class Profile extends Component {
       postalCode,
       password,
       passwordError,
-      confirmPassword
+      confirmPassword,
     } = this.state;
 
     let passwordLastUpdated = "-";
@@ -531,7 +556,7 @@ class Profile extends Component {
                           style={{
                             backgroundImage: avatar
                               ? `url("${avatar.bucketPath}")`
-                              : "none"
+                              : "none",
                           }}
                           className={clsx(
                             s.avatarCard,
@@ -547,7 +572,9 @@ class Profile extends Component {
                           {editTab === "generalInfo" && (
                             <Dropzone
                               multiple={false}
-                              onDrop={files => this.handleClickAvatar(files[0])}
+                              onDrop={(files) =>
+                                this.handleClickAvatar(files[0])
+                              }
                             >
                               {({ getRootProps, getInputProps }) => (
                                 <Box
@@ -555,7 +582,7 @@ class Profile extends Component {
                                     box: clsx(
                                       s.dropzone,
                                       role === "company" && s.companyDropzone
-                                    )
+                                    ),
                                   }}
                                   justifyChildrenCenter
                                   alignChildrenCenter
@@ -569,7 +596,7 @@ class Profile extends Component {
                                       fontSize="large"
                                       className={clsx({
                                         [s.uploadIcon]: avatar,
-                                        [s.outlineIcon]: !avatar
+                                        [s.outlineIcon]: !avatar,
                                       })}
                                     />
                                   )}
@@ -653,14 +680,17 @@ class Profile extends Component {
                                       {t("phoneMustApproved")}
                                     </Typography>
                                     <Box paddingTop>
-                                      <Link
-                                        to="#"
+                                      <Button
+                                        link="normal"
+                                        background="secondaryLight"
                                         onClick={
                                           this.handleSendPhoneVerification
                                         }
                                       >
-                                        {t("sendVerificationCode")}
-                                      </Link>
+                                        <Typography fontSizeXS>
+                                          {t("sendVerificationCode")}
+                                        </Typography>
+                                      </Button>
                                     </Box>
                                   </Column>
                                 }
@@ -687,7 +717,7 @@ class Profile extends Component {
                             ),
                             readOnly: editTab !== "generalInfo",
                             fullWidth: true,
-                            placeholder: t("currentAddress")
+                            placeholder: t("currentAddress"),
                             // error: !!validation
                             // helperText: validation && validation.msg
                           }}
@@ -710,7 +740,7 @@ class Profile extends Component {
                     {(editTab === "generalInfo" ||
                       updatingTab === "profile") && (
                       // buttons for save
-                      <Row paddingTopHalf>
+                      <Row paddingTopHalf style={{ maxWidth: 370 }}>
                         <SaveButtons
                           isUpdating={updatingTab === "profile"}
                           onSave={this.handleSaveGeneralInfo}
@@ -745,12 +775,12 @@ class Profile extends Component {
             >
               <ConditionalWrapper
                 condition={isWidthDown("sm", width)}
-                wrapper={children => (
+                wrapper={(children) => (
                   <CarouselWrapper itemWidth={200} itemOffset={10}>
                     {children}
                   </CarouselWrapper>
                 )}
-                children={this.documents[role].map(item => (
+                children={this.documents[role].map((item) => (
                   <React.Fragment key={item.value}>
                     <Box paddingRightHalf paddingBottomHalf>
                       <UploadDocument
@@ -818,7 +848,7 @@ class Profile extends Component {
                         readOnly={editTab !== "loginAndSecurity"}
                       />
                     </Row>
-                    <Row paddingTop>
+                    <Row paddingTopHalf style={{ maxWidth: 370 }}>
                       {editTab === "loginAndSecurity" ||
                       updatingTab === "password" ? (
                         // buttons for save
@@ -869,8 +899,8 @@ class Profile extends Component {
                           <CheckIcon style={{ width: 11, height: 8 }} />
                         </div>
                       ),
-                      variant: "primary"
-                    }
+                      variant: "primary",
+                    },
                   ]}
                 />
               </Box>

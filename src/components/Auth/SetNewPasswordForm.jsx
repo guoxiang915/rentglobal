@@ -11,12 +11,12 @@ import {
   Link,
   Divider,
   Typography,
-  LockIcon
+  LockIcon,
 } from "../../common/base-components";
 
-const styleSheet = theme => ({
+const styleSheet = (theme) => ({
   formWrapper: {
-    width: "100%"
+    width: "100%",
   },
 
   formTitle: {
@@ -24,20 +24,20 @@ const styleSheet = theme => ({
     lineHeight: "26px",
     fontSize: "20px",
     marginTop: 8,
-    textAlign: "center"
+    textAlign: "center",
   },
 
   submitButton: {
-    width: 200
+    width: 200,
   },
 
   moreWrapper: {
-    marginTop: 20
+    marginTop: 20,
   },
 
   outlineIcon: {
-    color: theme.colors.primary.borderGrey
-  }
+    color: theme.colors.primary.borderGrey,
+  },
 });
 
 class SetNewPasswordForm extends Component {
@@ -46,24 +46,51 @@ class SetNewPasswordForm extends Component {
     this.state = {
       password: "",
       passwordError: null,
-      error: null
+      confirmPassword: "",
+      confirmPasswordError: null,
+      error: null,
     };
   }
 
-  handleChange = name => event => {
+  /**
+   * Event handler for changing textfields
+   * @param {string} name Field name to update the state
+   * @returns {Function} Event handler
+   */
+  handleChange = (name) => (event) => {
     this.setState({
-      [name]: event.target.value
+      [name]: event.target.value,
     });
   };
 
-  handleSubmit = e => {
+  /**
+   * Check form validations
+   */
+  validateForm = () => {
+    if (this.state.password === "") {
+      this.setState({ passwordError: this.props.t("passwordRequired") });
+      return false;
+    } else if (this.state.password !== this.state.confirmPassword) {
+      this.setState({
+        confirmPasswordError: this.props.t("confirmPasswordDifferent"),
+      });
+      return false;
+    }
+    return true;
+  };
+
+  /**
+   * Submit the login form
+   */
+  handleSubmit = (e) => {
     e.preventDefault();
-    if (this.state.error) {
+    const validForm = this.validateForm();
+    if (!validForm) {
       return;
     }
     const payload = {
       token: this.props.token,
-      password: this.state.password
+      password: this.state.password,
     };
     if (payload.password !== "") {
       this.props.mappedResetPassword(payload);
@@ -74,12 +101,7 @@ class SetNewPasswordForm extends Component {
     const { classes, t } = this.props;
 
     return (
-      <form
-        onSubmit={this.handleSubmit}
-        noValidate
-        autoComplete="off"
-        className={classes.formWrapper}
-      >
+      <form noValidate autoComplete="off" className={classes.formWrapper}>
         <Typography
           fontSizeM
           fontWeightBold
@@ -104,6 +126,20 @@ class SetNewPasswordForm extends Component {
             fullWidth
           />
         </Box>
+        <Box paddingTop>
+          <TextField
+            id="confirmPassword"
+            placeholder={t("confirmPassword")}
+            value={this.state.confirmPassword}
+            onChange={this.handleChange("confirmPassword")}
+            type="password"
+            variant="outlined"
+            startAdornment={<LockIcon className={classes.outlineIcon} />}
+            error={!!this.state.confirmPasswordError}
+            helperText={this.state.confirmPasswordError}
+            fullWidth
+          />
+        </Box>
         <Box paddingTopHalf justifyChildrenEnd fullWidth paddingBottom>
           <Button
             type="submit"
@@ -111,6 +147,7 @@ class SetNewPasswordForm extends Component {
             size="medium"
             className={classes.submitButton}
             disabled={!this.state.password}
+            onClick={this.handleSubmit}
           >
             <Typography fontSizeS fontWeightBold>
               {t("resetPassword")}
@@ -135,7 +172,7 @@ class SetNewPasswordForm extends Component {
 SetNewPasswordForm.propTypes = {
   classes: PropTypes.object.isRequired,
   t: PropTypes.func.isRequired,
-  token: PropTypes.string.isRequired
+  token: PropTypes.string.isRequired,
 };
 
 export default withStyles(styleSheet)(

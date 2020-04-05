@@ -11,6 +11,7 @@
     "invalidEmail": "Invalid email address",
     "password": "Password",
     "confirmPassword": "Confirm password",
+    "confirmPasswordDifferent": "Confirm password different!",
     "createPassword": "Create a password",
     "invalidEmailAddress": "Invalid email address",
     "emailRequired": "Email required",
@@ -156,6 +157,8 @@
     "securityQuestion": "Security question",
     "twoFactorLogin": "Two-factor login",
     "activeSessions": "Active sessions",
+    "confirmResetPassword": "Are you going to reset your password?",
+    "reset": "Reset",
     "paymentsAndPayouts": "Payments & payouts",
     "privacyAndSharing": "Privacy & sharing",
 

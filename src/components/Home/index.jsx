@@ -11,7 +11,7 @@ import {
   Instagram,
   Twitter,
   KeyboardArrowLeft,
-  KeyboardArrowRight
+  KeyboardArrowRight,
 } from "@material-ui/icons";
 import {
   Box,
@@ -31,7 +31,7 @@ import {
   EmojiIcon,
   CalendarIcon,
   ArrowRightAltIcon,
-  CheckIcon
+  CheckIcon,
 } from "../../common/base-components";
 import { OfficeItem } from "../../common/base-layouts";
 import Carousel from "@brainhubeu/react-carousel";
@@ -45,7 +45,7 @@ import gallery1 from "../../assets/img/img_gallery_01@2x.png";
 import gallery2 from "../../assets/img/img_gallery_02@2x.png";
 import gallery3 from "../../assets/img/img_gallery_03@2x.png";
 
-const styleSheet = theme => ({
+const styleSheet = (theme) => ({
   root: {
     // flexGrow: 1,
     display: "block",
@@ -54,8 +54,8 @@ const styleSheet = theme => ({
     background: theme.colors.primary.white,
     minHeight: "calc(100vh - 250px)",
     [theme.breakpoints.down("sm")]: {
-      minHeight: "calc(100vh - 166px)"
-    }
+      minHeight: "calc(100vh - 166px)",
+    },
   },
 
   landingBoardWrapper: {
@@ -63,7 +63,7 @@ const styleSheet = theme => ({
     width: "100%",
     maxHeight: "calc(100vh + 50px)",
     position: "relative",
-    overflow: "hidden"
+    overflow: "hidden",
   },
 
   landingBoardImage: {
@@ -71,14 +71,14 @@ const styleSheet = theme => ({
     [theme.breakpoints.down("xs")]: {
       width: "640px",
       position: "relative",
-      right: "calc(640px - 100vw)"
-    }
+      right: "calc(640px - 100vw)",
+    },
   },
 
   landingBoardImageHidden: {
     opacity: 0,
     position: "absolute",
-    transition: "opacity 1s"
+    transition: "opacity 1s",
   },
 
   landingBoard: {
@@ -86,11 +86,11 @@ const styleSheet = theme => ({
     maxHeight: "calc(100vh - 100px)",
     padding: "168px 16px 16px 16px",
     [theme.breakpoints.down("sm")]: {
-      padding: "96px 16px 16px 16px"
+      padding: "96px 16px 16px 16px",
     },
     [theme.breakpoints.down("xs")]: {
-      padding: "24px 16px 8px 16px"
-    }
+      padding: "24px 16px 8px 16px",
+    },
   },
 
   searchWrapper: {
@@ -100,12 +100,12 @@ const styleSheet = theme => ({
     borderRadius: 8,
     [theme.breakpoints.down("sm")]: {
       boxShadow: "0px 14px 14px #0000001A",
-      padding: `${theme.spacing(3)}px`
+      padding: `${theme.spacing(3)}px`,
     },
     [theme.breakpoints.down("xs")]: {
       boxShadow: "0px 14px 14px #0000001A",
-      padding: `${theme.spacing(2)}px 10px`
-    }
+      padding: `${theme.spacing(2)}px 10px`,
+    },
   },
 
   landingTitle: {
@@ -113,27 +113,27 @@ const styleSheet = theme => ({
     lineHeight: "42px",
     [theme.breakpoints.down("sm")]: {
       fontSize: "25px",
-      lineHeight: "34px"
+      lineHeight: "34px",
     },
     [theme.breakpoints.down("xs")]: {
       fontSize: "19px",
-      lineHeight: "26px"
-    }
+      lineHeight: "26px",
+    },
   },
 
   landingSubtitle: {
     fontSize: "16px",
     [theme.breakpoints.down("sm")]: {
-      fontSize: "14px"
-    }
+      fontSize: "14px",
+    },
   },
 
   searchInput: {
     marginTop: 14,
     position: "relative",
     [theme.breakpoints.down("sm")]: {
-      marginTop: 8
-    }
+      marginTop: 8,
+    },
   },
 
   searchInputProps: {
@@ -144,16 +144,16 @@ const styleSheet = theme => ({
     color: theme.colors.primary.darkGrey,
     [theme.breakpoints.down("xs")]: {
       fontSize: "15px",
-      lineHeight: "20px"
-    }
+      lineHeight: "20px",
+    },
   },
 
   limitedSearchInputProps: {
     marginRight: 178,
     [theme.breakpoints.down("sm")]: {
       marginBottom: 37,
-      marginRight: -16
-    }
+      marginRight: -16,
+    },
   },
 
   inputButtonIcon: {
@@ -162,14 +162,14 @@ const styleSheet = theme => ({
     position: "absolute",
     right: 5,
     bottom: 5,
-    margin: 0
+    margin: 0,
   },
 
   searchInputIcon: {
     [theme.breakpoints.up("sm")]: {
       minWidth: 43,
-      height: 43
-    }
+      height: 43,
+    },
   },
 
   actionButtonsWrapper: {},
@@ -182,8 +182,8 @@ const styleSheet = theme => ({
     overflow: "hidden",
     [theme.breakpoints.down("sm")]: {
       paddingLeft: 22,
-      paddingRight: 22
-    }
+      paddingRight: 22,
+    },
   },
 
   blockWrapper: {
@@ -191,8 +191,8 @@ const styleSheet = theme => ({
     paddingBottom: 87,
     [theme.breakpoints.down("sm")]: {
       paddingTop: 24,
-      paddingBottom: 40
-    }
+      paddingBottom: 40,
+    },
   },
 
   blockTitleWrapper: {
@@ -200,8 +200,8 @@ const styleSheet = theme => ({
     paddingBottom: 40,
     [theme.breakpoints.down("sm")]: {
       paddingTop: 24,
-      paddingBottom: 16
-    }
+      paddingBottom: 16,
+    },
   },
 
   blockTitle: {
@@ -209,26 +209,26 @@ const styleSheet = theme => ({
     ...theme.fonts.weight.fontWeightBold,
     textAlign: "center",
     [theme.breakpoints.down("sm")]: {
-      ...theme.fonts.size.fontSizeS
-    }
+      ...theme.fonts.size.fontSizeS,
+    },
   },
 
   blockContentWrapper: {
     paddingTop: 24,
     [theme.breakpoints.down("sm")]: {
-      paddingTop: 0
-    }
+      paddingTop: 0,
+    },
   },
 
   textStepWrapper: {
     marginBottom: 52,
     [theme.breakpoints.down("sm")]: {
-      marginBottom: 24
-    }
+      marginBottom: 24,
+    },
   },
 
   textStepIconWrapper: {
-    paddingRight: 21
+    paddingRight: 21,
   },
 
   textStepIcon: {
@@ -242,21 +242,21 @@ const styleSheet = theme => ({
       width: 36,
       height: 36,
       marginRight: 12,
-      fontSize: "16px"
-    }
+      fontSize: "16px",
+    },
   },
 
   textStepActiveIcon: {
     color: theme.colors.primary.white,
     background: theme.colors.primary.mainColor,
-    boxShadow: `0px 6px 12px ${theme.colors.primary.mainShadow}`
+    boxShadow: `0px 6px 12px ${theme.colors.primary.mainShadow}`,
   },
 
   textStepTitle: {
     fontSize: "20px",
     [theme.breakpoints.down("sm")]: {
-      fontSize: "16px"
-    }
+      fontSize: "16px",
+    },
   },
 
   textStepExpandIcon: {
@@ -264,7 +264,7 @@ const styleSheet = theme => ({
     color: theme.colors.primary.grey,
     fontWeight: 100,
     width: 12,
-    height: 7
+    height: 7,
   },
 
   textStepContent: {
@@ -273,18 +273,18 @@ const styleSheet = theme => ({
     textOverflow: "ellipsis",
     fontSize: "16px",
     [theme.breakpoints.down("sm")]: {
-      fontSize: "14px"
-    }
+      fontSize: "14px",
+    },
   },
 
   imgHelpStepper: {
     position: "relative",
     height: 556,
-    zIndex: 1
+    zIndex: 1,
   },
 
   imgHelpStepWrapper: {
-    paddingLeft: "calc(100% - 363px - 20px)"
+    paddingLeft: "calc(100% - 363px - 20px)",
   },
 
   imgHelpStep: {
@@ -294,19 +294,19 @@ const styleSheet = theme => ({
     width: 363,
     height: 500,
     opacity: 1,
-    transition: "transform .3s, opacity .4s"
+    transition: "transform .3s, opacity .4s",
   },
 
   imgHelpStepHidden: {
     transform: "translate(50px, 0)",
-    opacity: 0
+    opacity: 0,
   },
 
   imgHelpBkWrapper: {
     top: 56,
     left: "calc(100% - 363px)",
     zIndex: -1,
-    position: "absolute"
+    position: "absolute",
   },
 
   imgHelpBk: {
@@ -314,7 +314,7 @@ const styleSheet = theme => ({
     borderRadius: theme.spacing(),
     width: 363,
     height: 500,
-    position: "relative"
+    position: "relative",
   },
 
   dotStepper: {
@@ -322,7 +322,7 @@ const styleSheet = theme => ({
     width: "100%",
     justifyContent: "center",
     bottom: 10,
-    background: "transparent"
+    background: "transparent",
   },
 
   dotStepperLandingBlock: {
@@ -330,7 +330,7 @@ const styleSheet = theme => ({
     width: "fit-content",
     height: "100%",
     left: -8,
-    background: "transparent"
+    background: "transparent",
   },
 
   dotLandingBlockStyle: {
@@ -338,7 +338,7 @@ const styleSheet = theme => ({
     height: 12,
     margin: 6,
     background: theme.colors.primary.darkGrey,
-    opacity: 0.35
+    opacity: 0.35,
   },
 
   dotStyle: {
@@ -346,24 +346,24 @@ const styleSheet = theme => ({
     height: 12,
     margin: 6,
     background: theme.colors.primary.white,
-    opacity: 0.35
+    opacity: 0.35,
   },
 
   dotActiveStyle: {
-    opacity: 1
+    opacity: 1,
   },
 
   mobileHeaderSlider: {
     paddingTop: 20,
-    paddingBottom: 20
+    paddingBottom: 20,
   },
 
   textMedium: {
-    fontSize: "20px"
+    fontSize: "20px",
   },
 
   divider: {
-    width: "100%"
+    width: "100%",
   },
 
   allLatestButton: {
@@ -371,8 +371,8 @@ const styleSheet = theme => ({
     paddingBottom: 96,
     [theme.breakpoints.down("sm")]: {
       paddingTop: 24,
-      paddingBottom: 0
-    }
+      paddingBottom: 0,
+    },
   },
 
   whiteShadowButton: {
@@ -381,16 +381,16 @@ const styleSheet = theme => ({
     boxShadow: `0px 6px 12px #${theme.colors.primary.white}4D`,
     "&:hover": {
       background: theme.colors.primary.darkColor,
-      color: theme.colors.primary.white
-    }
+      color: theme.colors.primary.white,
+    },
   },
 
   homeRegisterTitle: {
     paddingTop: 0,
     color: "white",
     [theme.breakpoints.down("sm")]: {
-      paddingTop: 8
-    }
+      paddingTop: 8,
+    },
   },
 
   homeRegisterContent: {
@@ -401,8 +401,8 @@ const styleSheet = theme => ({
     [theme.breakpoints.down("sm")]: {
       paddingTop: 24,
       paddingBottom: 24,
-      maxWidth: "80%"
-    }
+      maxWidth: "80%",
+    },
   },
 
   homeRegisterArrow: {
@@ -413,8 +413,8 @@ const styleSheet = theme => ({
     cursor: "pointer",
     [theme.breakpoints.down("sm")]: {
       width: 48,
-      height: 48
-    }
+      height: 48,
+    },
   },
 
   homeRegisterArrowButton: {
@@ -422,8 +422,8 @@ const styleSheet = theme => ({
     height: 56,
     [theme.breakpoints.down("sm")]: {
       width: 48,
-      height: 48
-    }
+      height: 48,
+    },
   },
 
   prosWrapper: {
@@ -431,8 +431,8 @@ const styleSheet = theme => ({
     paddingBottom: 50,
     [theme.breakpoints.down("sm")]: {
       paddingLeft: 40,
-      paddingRight: 40
-    }
+      paddingRight: 40,
+    },
   },
 
   prosIcon: {
@@ -441,43 +441,43 @@ const styleSheet = theme => ({
     color: theme.colors.primary.mainColor,
     [theme.breakpoints.down("sm")]: {
       width: 27,
-      height: 27
-    }
+      height: 27,
+    },
   },
 
   newsLetterWrapper: {
-    background: theme.colors.primary.whiteGrey
+    background: theme.colors.primary.whiteGrey,
   },
 
   receiveNewsletter: {
     maxWidth: 400,
-    width: "100%"
+    width: "100%",
   },
 
   socialIconsWrapper: {
-    height: 55
+    height: 55,
   },
 
   contactInfoWrapper: {
     paddingTop: 58,
-    paddingBottom: 20
+    paddingBottom: 20,
   },
 
   landingButtonsWrapper: {
-    maxWidth: "calc(194px * 2 + 44px)"
+    maxWidth: "calc(194px * 2 + 44px)",
   },
 
   landingButton: {
     width: 194,
     margin: 4,
-    padding: 7
-  }
+    padding: 7,
+  },
 });
 
 class Home extends Component {
   static propTypes = {
     classes: PropTypes.object,
-    t: PropTypes.func
+    t: PropTypes.func,
   };
 
   state = {
@@ -486,7 +486,7 @@ class Home extends Component {
     receiveNewsletterError: null,
     activeLandingBlock: 0,
     activeHelpStep: 0,
-    recommendedOffices: []
+    recommendedOffices: [],
   };
 
   intervalId = null;
@@ -496,20 +496,20 @@ class Home extends Component {
       img: headerimg,
       imgL: headerimgL,
       title: this.props.t("needSpaceForBusiness"),
-      subtitle: this.props.t("needSpaceForBusinessSub")
+      subtitle: this.props.t("needSpaceForBusinessSub"),
     },
     {
       img: headerimg,
       imgL: headerimgL,
       title: this.props.t("havePlaceAsOffice"),
-      subtitle: this.props.t("havePlaceAsOfficeSub")
+      subtitle: this.props.t("havePlaceAsOfficeSub"),
     },
     {
       img: headerimg,
       imgL: headerimgL,
       title: this.props.t("consultant"),
-      subtitle: this.props.t("consultantSub")
-    }
+      subtitle: this.props.t("consultantSub"),
+    },
     // {img: headerimg, imgL: headerimgL, title: this.props.t("needSpaceForBusiness"), subtitle: this.props.t("needSpaceForBusinessSub")}
   ];
 
@@ -518,14 +518,14 @@ class Home extends Component {
     this.intervalId = setInterval(
       () =>
         this.setState({
-          activeLandingBlock: (this.state.activeLandingBlock + 1) % 3
+          activeLandingBlock: (this.state.activeLandingBlock + 1) % 3,
         }),
       5000
     );
 
     /** Get recommended offices */
     if (getRecommendedOffices) {
-      getRecommendedOffices().then(response => {
+      getRecommendedOffices().then((response) => {
         if (response.status === 200) {
           this.setState({ recommendedOffices: response.data });
         }
@@ -540,7 +540,7 @@ class Home extends Component {
   }
 
   /** Set favorite of office */
-  handleSetFavoriteOffice = office => () => {
+  handleSetFavoriteOffice = (office) => () => {
     // TODO: call backend api to set favorite
     // TODO: show login modal if auth.user.isLoggedIn === false
     office.favorite = !office.favorite;
@@ -561,7 +561,7 @@ class Home extends Component {
                   box: clsx(
                     this.props.classes.textStepIcon,
                     active && this.props.classes.textStepActiveIcon
-                  )
+                  ),
                 }}
                 alignChildrenCenter
                 justifyChildrenCenter
@@ -609,7 +609,7 @@ class Home extends Component {
                   box: clsx(
                     this.props.classes.textStepIcon,
                     active && this.props.classes.textStepActiveIcon
-                  )
+                  ),
                 }}
                 alignChildrenCenter
                 justifyChildrenCenter
@@ -655,7 +655,7 @@ class Home extends Component {
         box: clsx(
           this.props.classes.imgHelpStep,
           !active && this.props.classes.imgHelpStepHidden
-        )
+        ),
       }}
     >
       <img src={imgSrc} alt="Gallery" />
@@ -666,7 +666,7 @@ class Home extends Component {
    * Select active step for helpers
    * @param {number} activeHelpStep Index of active helper step
    */
-  handleSelectActiveStep = activeHelpStep => () => {
+  handleSelectActiveStep = (activeHelpStep) => () => {
     this.setState({ activeHelpStep });
   };
 
@@ -674,7 +674,7 @@ class Home extends Component {
    * Change event emitter to update state
    * @param {string} field Name of state field to update
    */
-  handleChangeByEvent = field => e => {
+  handleChangeByEvent = (field) => (e) => {
     this.setState({ [field]: e.target.value });
   };
 
@@ -683,7 +683,7 @@ class Home extends Component {
     if (this.state.receiveNewsletter) {
       if (!emailValidation(this.state.receiveNewsletter)) {
         this.setState({
-          receiveNewsletterError: this.props.t("invalidEmailAddress")
+          receiveNewsletterError: this.props.t("invalidEmailAddress"),
         });
       } else {
         console.log("Submit receive news letter!");
@@ -692,7 +692,7 @@ class Home extends Component {
   };
 
   /** Navigate to office detail page */
-  handleOfficeDetail = officeId => () => {
+  handleOfficeDetail = (officeId) => () => {
     this.props.navigate("offices", officeId);
   };
 
@@ -703,7 +703,7 @@ class Home extends Component {
       activeHelpStep,
       activeLandingBlock,
       tessiQuery,
-      receiveNewsletter
+      receiveNewsletter,
     } = this.state;
     const TextStepComponent = this.textStepper;
     const ImgStepComponent = this.imgStepper;
@@ -734,7 +734,7 @@ class Home extends Component {
             <Row
               style={{
                 width: "fit-content",
-                height: "100%"
+                height: "100%",
               }}
               alignChildrenStart
             >
@@ -780,7 +780,7 @@ class Home extends Component {
                           input: clsx(
                             s.searchInputProps,
                             tessiQuery && s.limitedSearchInputProps
-                          )
+                          ),
                         }}
                         endAdornment={
                           <Button
@@ -799,7 +799,7 @@ class Home extends Component {
                                 style={{
                                   color: "white",
                                   width: 18,
-                                  height: 18
+                                  height: 18,
                                 }}
                               />
                             ) : /hi/i.test(tessiQuery) ? (
@@ -848,7 +848,7 @@ class Home extends Component {
                       fullWidth
                       style={{
                         overflow: "visible",
-                        whiteSpace: "nowrap"
+                        whiteSpace: "nowrap",
                       }}
                       absolute
                     >
@@ -870,7 +870,7 @@ class Home extends Component {
                       fullWidth
                       style={{
                         overflow: "visible",
-                        whiteSpace: "nowrap"
+                        whiteSpace: "nowrap",
                       }}
                       absolute
                     >
@@ -889,7 +889,7 @@ class Home extends Component {
                           classes={{
                             root: s.dotStepperLandingBlock,
                             dot: s.dotLandingBlockStyle,
-                            dotActive: s.dotActiveStyle
+                            dotActive: s.dotActiveStyle,
                           }}
                         />
                       </Column>
@@ -961,11 +961,11 @@ class Home extends Component {
                   variant="dots"
                   steps={this.landingBlocks.length}
                   activeStep={activeLandingBlock}
-                  style={{ padding: 10 }}
+                  style={{ padding: 10, zIndex: 1 }}
                   classes={{
                     root: s.dotStepperLandingBlock,
                     dot: s.dotLandingBlockStyle,
-                    dotActive: s.dotActiveStyle
+                    dotActive: s.dotActiveStyle,
                   }}
                 />
               </Row>
@@ -1036,7 +1036,7 @@ class Home extends Component {
                           classes={{
                             root: s.dotStepper,
                             dot: s.dotStyle,
-                            dotActive: s.dotActiveStyle
+                            dotActive: s.dotActiveStyle,
                           }}
                         />
                       </Box>
@@ -1076,7 +1076,11 @@ class Home extends Component {
                 <Carousel itemWidth={255} offset={20} keepDirectionWhenDragging>
                   {recommendedOffices.map((office, index) => (
                     <div
-                      style={{ position: "relative", cursor: "pointer" }}
+                      style={{
+                        position: "relative",
+                        cursor: "pointer",
+                        height: "100%",
+                      }}
                       key={index}
                       onClick={this.handleOfficeDetail(office._id)}
                     >
@@ -1122,7 +1126,7 @@ class Home extends Component {
                   arrowLeft={
                     <Box
                       style={{
-                        left: isWidthDown("sm", width) ? "-60px" : "-124px"
+                        left: isWidthDown("sm", width) ? "-60px" : "-124px",
                       }}
                       classes={{ box: s.homeRegisterArrow }}
                     >
@@ -1134,7 +1138,7 @@ class Home extends Component {
                   arrowRight={
                     <Box
                       style={{
-                        right: isWidthDown("sm", width) ? "-60px" : "-124px"
+                        right: isWidthDown("sm", width) ? "-60px" : "-124px",
                       }}
                       classes={{ box: s.homeRegisterArrow }}
                     >
@@ -1147,7 +1151,7 @@ class Home extends Component {
                   {[
                     { title: "1.", content: t("homeRegisterContent") },
                     { title: "2.", content: t("homeRegisterContent") },
-                    { title: "3.", content: t("homeRegisterContent") }
+                    { title: "3.", content: t("homeRegisterContent") },
                   ].map((val, index) => (
                     <React.Fragment key={index}>
                       <Column>
@@ -1386,7 +1390,7 @@ class Home extends Component {
                             style={{
                               color: "white",
                               width: 18,
-                              height: 18
+                              height: 18,
                             }}
                           />
                         </Button>

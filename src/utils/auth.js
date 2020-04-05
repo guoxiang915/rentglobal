@@ -1,5 +1,5 @@
 class Auth {
-  setToken = async token => {
+  setToken = async (token) => {
     localStorage.setItem("userToken", token);
   };
 
@@ -12,7 +12,7 @@ class Auth {
     localStorage.removeItem("userToken");
   };
 
-  setRefreshToken = async token => {
+  setRefreshToken = async (token) => {
     localStorage.setItem("refreshToken", token);
   };
 
@@ -25,14 +25,14 @@ class Auth {
     localStorage.removeItem("refreshToken");
   };
 
-  setRememberUser = async rememberUser => {
+  setRememberUser = async (rememberUser) => {
     localStorage.setItem("rememberUser", rememberUser);
   };
 
   getRememberUser = () => {
-    let rememberUser = localStorage.getItem('rememberUser');
+    let rememberUser = localStorage.getItem("rememberUser");
     return rememberUser;
-  }
+  };
 }
 
 export default Auth;
