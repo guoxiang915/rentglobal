@@ -685,7 +685,7 @@ class GeneralInfoForm extends Component {
             <Grid item md={4} sm={12} xs={12}>
               <Row fullWidth classes={{ box: s.googleMap }}>
                 <GoogleMap
-                  coordinates={office.location && [office.location.coordinates]}
+                  coordinates={office.location && office.location.coordinates && [office.location.coordinates]}
                 />
               </Row>
             </Grid>
