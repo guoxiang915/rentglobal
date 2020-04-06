@@ -13,46 +13,46 @@ import {
   HorizontalDivider,
   Typography,
   LockIcon,
-  EmailIcon
+  EmailIcon,
 } from "../../common/base-components";
 import Auth from "../../utils/auth";
 
 const authObj = new Auth();
 
-const styleSheet = theme => ({
+const styleSheet = (theme) => ({
   formWrapper: {
-    width: "100%"
+    width: "100%",
   },
 
   formTitle: {
     marginTop: 8,
-    textAlign: "center"
+    textAlign: "center",
   },
 
   fixedWidthButton: {
-    width: 200
+    width: 200,
   },
 
   moreWrapper: {
-    marginTop: 20
+    marginTop: 20,
   },
 
   fullWidth: {
-    width: "100%"
+    width: "100%",
   },
 
   switchText: {
-    fontSize: "14px"
+    fontSize: "14px",
   },
 
   outlineIcon: {
-    color: theme.colors.primary.borderGrey
+    color: theme.colors.primary.borderGrey,
   },
 
   recaptcha: {
     width: 200,
-    height: 50
-  }
+    height: 50,
+  },
 });
 
 class LoginForm extends Component {
@@ -66,7 +66,7 @@ class LoginForm extends Component {
     isLoading: PropTypes.bool,
     mappedLogin: PropTypes.func.isRequired,
     classes: PropTypes.object.isRequired,
-    t: PropTypes.func.isRequired
+    t: PropTypes.func.isRequired,
   };
 
   /**
@@ -77,7 +77,7 @@ class LoginForm extends Component {
     emailError: null,
     password: "",
     passwordError: null,
-    isRemember: authObj.getRememberUser() === "true"
+    isRemember: authObj.getRememberUser() === "true",
   };
 
   /**
@@ -85,10 +85,10 @@ class LoginForm extends Component {
    * @param {string} name Field name to update the state
    * @returns {Function} Event handler
    */
-  handleChange = name => event => {
+  handleChange = (name) => (event) => {
     this.setState({
       [name]: event.target.value,
-      [`${name}Error`]: null
+      [`${name}Error`]: null,
     });
   };
 
@@ -117,7 +117,7 @@ class LoginForm extends Component {
    * Submit the login form
    * @deprecated
    */
-  handleSubmit = async e => {
+  handleSubmit = async (e) => {
     e.preventDefault();
     const validForm = await this.validateForm();
     if (!validForm) {
@@ -125,7 +125,7 @@ class LoginForm extends Component {
     }
     const payload = {
       email: this.state.email,
-      password: this.state.password
+      password: this.state.password,
     };
     if (payload.email !== "" && payload.password !== "") {
       this.props.mappedLogin(payload);
@@ -144,7 +144,7 @@ class LoginForm extends Component {
   /**
    * Submit the login form
    */
-  handleLogin = async e => {
+  handleLogin = async (e) => {
     e.preventDefault();
     const validForm = await this.validateForm();
     if (!validForm) {
@@ -152,7 +152,7 @@ class LoginForm extends Component {
     }
     const payload = {
       email: this.state.email,
-      password: this.state.password
+      password: this.state.password,
     };
     if (payload.email !== "" && payload.password !== "") {
       this.props.mappedLogin(payload, this.props.history);
@@ -213,6 +213,7 @@ class LoginForm extends Component {
             placeholder={t("email")}
             value={this.state.email}
             onChange={this.handleChange("email")}
+            type="email"
             variant="outlined"
             startAdornment={<EmailIcon className={s.outlineIcon} />}
             error={!!this.state.emailError}

@@ -13,12 +13,12 @@ import {
   UsersIcon,
   BuildingsIcon,
   EmailIcon,
-  LockIcon
+  LockIcon,
 } from "../../common/base-components";
 
-const styleSheet = theme => ({
+const styleSheet = (theme) => ({
   formWrapper: {
-    width: "100%"
+    width: "100%",
   },
 
   formTitle: {
@@ -26,28 +26,28 @@ const styleSheet = theme => ({
     lineHeight: "26px",
     fontSize: "20px",
     marginTop: 8,
-    textAlign: "center"
+    textAlign: "center",
   },
 
   submitButton: {
-    width: 200
+    width: 200,
   },
 
   moreWrapper: {
-    marginTop: 20
+    marginTop: 20,
   },
 
   fullWidth: {
-    width: "100%"
+    width: "100%",
   },
 
   switchText: {
-    fontSize: "14px"
+    fontSize: "14px",
   },
 
   outlineIcon: {
-    color: theme.colors.primary.borderGrey
-  }
+    color: theme.colors.primary.borderGrey,
+  },
 });
 
 class RegisterForm extends Component {
@@ -61,7 +61,7 @@ class RegisterForm extends Component {
     error: PropTypes.any,
     isLoading: PropTypes.bool,
     classes: PropTypes.object.isRequired,
-    t: PropTypes.func.isRequired
+    t: PropTypes.func.isRequired,
   };
 
   /**
@@ -72,7 +72,7 @@ class RegisterForm extends Component {
     emailError: null,
     password: "",
     passwordError: null,
-    isRemember: false
+    isRemember: false,
   };
 
   /**
@@ -80,10 +80,10 @@ class RegisterForm extends Component {
    * @param {string} name Field name to update the state
    * @returns {Function} Event handler
    */
-  handleChange = name => event => {
+  handleChange = (name) => (event) => {
     this.setState({
       [name]: event.target.value,
-      [`${name}Error`]: null
+      [`${name}Error`]: null,
     });
   };
 
@@ -111,7 +111,7 @@ class RegisterForm extends Component {
   /**
    * Submit the register form
    */
-  handleSignup = async e => {
+  handleSignup = async (e) => {
     e.preventDefault();
     const validForm = await this.validateForm();
     if (!validForm) {
@@ -121,7 +121,7 @@ class RegisterForm extends Component {
       email: this.state.email,
       password: this.state.password,
       role: this.props.registerMode,
-      passwordLastUpdated: new Date()
+      passwordLastUpdated: new Date(),
     };
     this.props.mappedRegister(user);
   };
@@ -178,6 +178,7 @@ class RegisterForm extends Component {
             placeholder="Email"
             value={this.state.email}
             onChange={this.handleChange("email")}
+            type="email"
             variant="outlined"
             startAdornment={<EmailIcon className={classes.outlineIcon} />}
             error={!!this.state.emailError}
@@ -286,7 +287,7 @@ class RegisterForm extends Component {
 RegisterForm.propTypes = {
   classes: PropTypes.object.isRequired,
   t: PropTypes.func.isRequired,
-  mappedRegister: PropTypes.func.isRequired
+  mappedRegister: PropTypes.func.isRequired,
 };
 
 export default withStyles(styleSheet)(withTranslation("common")(RegisterForm));

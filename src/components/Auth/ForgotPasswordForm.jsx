@@ -11,12 +11,12 @@ import {
   Link,
   Divider,
   Typography,
-  EmailIcon
+  EmailIcon,
 } from "../../common/base-components";
 
-const styleSheet = theme => ({
+const styleSheet = (theme) => ({
   formWrapper: {
-    width: "100%"
+    width: "100%",
   },
 
   formTitle: {
@@ -24,20 +24,20 @@ const styleSheet = theme => ({
     lineHeight: "26px",
     fontSize: "20px",
     marginTop: 8,
-    textAlign: "center"
+    textAlign: "center",
   },
 
   submitButton: {
-    width: 200
+    width: 200,
   },
 
   moreWrapper: {
-    marginTop: 20
+    marginTop: 20,
   },
 
   outlineIcon: {
-    color: theme.colors.primary.borderGrey
-  }
+    color: theme.colors.primary.borderGrey,
+  },
 });
 
 class ForgotPasswordForm extends Component {
@@ -46,14 +46,14 @@ class ForgotPasswordForm extends Component {
     this.state = {
       email: this.props.email ? this.props.email : "",
       emailError: null,
-      error: null
+      error: null,
     };
   }
 
-  handleChange = name => event => {
+  handleChange = (name) => (event) => {
     this.setState({
       [name]: event.target.value,
-      [`${name}Error`]: null
+      [`${name}Error`]: null,
     });
   };
 
@@ -71,7 +71,7 @@ class ForgotPasswordForm extends Component {
     return true;
   }
 
-  handleResetPassword = async e => {
+  handleResetPassword = async (e) => {
     e.preventDefault();
     if (this.state.error) {
       return;
@@ -81,7 +81,7 @@ class ForgotPasswordForm extends Component {
       return;
     }
     const payload = {
-      email: this.state.email
+      email: this.state.email,
     };
     if (payload.email !== "") {
       this.props.mappedForgotPassword(payload);
@@ -109,6 +109,7 @@ class ForgotPasswordForm extends Component {
             placeholder="Email"
             value={this.state.email}
             onChange={this.handleChange("email")}
+            type="email"
             variant="outlined"
             startAdornment={<EmailIcon className={classes.outlineIcon} />}
             error={!!this.state.emailError}
@@ -147,7 +148,7 @@ class ForgotPasswordForm extends Component {
 
 ForgotPasswordForm.propTypes = {
   classes: PropTypes.object.isRequired,
-  t: PropTypes.func.isRequired
+  t: PropTypes.func.isRequired,
 };
 
 export default withStyles(styleSheet)(
