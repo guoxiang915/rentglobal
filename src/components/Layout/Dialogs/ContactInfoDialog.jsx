@@ -5,7 +5,7 @@ import {
   DialogTitle,
   DialogContent,
   DialogActions,
-  withStyles
+  withStyles,
 } from "@material-ui/core";
 import clsx from "clsx";
 import { withTranslation } from "react-i18next";
@@ -16,43 +16,51 @@ import {
   Row,
   Box,
   Stretch,
-  Column
+  Column,
 } from "../../../common/base-components";
 import {
   CloseIcon,
   EmailIcon,
-  PhoneIcon
+  PhoneIcon,
 } from "../../../common/base-components/Icons";
 
-const styleSheet = theme => ({
+const styleSheet = (theme) => ({
   root: {
     maxWidth: 1056,
     maxHeight: 512,
     padding: 0,
     minWidth: 565,
     minHeight: 395,
-    borderRadius: 8
+    borderRadius: 8,
+
+    [theme.breakpoints.down("sm")]: {
+      minWidth: 320,
+      minHeight: "auto",
+    },
   },
 
   header: {
     width: "100%",
     padding: "12px 40px",
-    borderBottom: `1px solid ${theme.colors.primary.borderGrey}`
+    borderBottom: `1px solid ${theme.colors.primary.borderGrey}`,
   },
 
   content: {
-    padding: "82px 120px"
+    padding: "82px 120px",
+    [theme.breakpoints.down("sm")]: {
+      padding: "40px 16px",
+    },
   },
 
   icon: {
-    color: theme.colors.primary.borderGrey
+    color: theme.colors.primary.borderGrey,
   },
 
   footer: {
     width: "100%",
     padding: "12px 40px",
-    borderTop: `1px solid ${theme.colors.primary.borderGrey}`
-  }
+    borderTop: `1px solid ${theme.colors.primary.borderGrey}`,
+  },
 });
 
 class ContactInfoDialog extends Component {
@@ -66,11 +74,11 @@ class ContactInfoDialog extends Component {
     /** Boolean for dialog is opened/closed */
     open: PropTypes.bool,
     /** Event handler for closing dialog */
-    onClose: PropTypes.func
+    onClose: PropTypes.func,
   };
 
   /**
-   * Event handler for closing dialog 
+   * Event handler for closing dialog
    * @description Call props.onClose() to close dialog
    */
   handleClose = () => {

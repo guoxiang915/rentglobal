@@ -22,7 +22,7 @@ import { favoriteOffice } from "../../api/endpoints";
 const styleSheet = (theme) => ({
   officeWrapper: {
     // width: 235,
-    marginRight: 20,
+    // marginRight: 20,
   },
 
   officeCarousel: {

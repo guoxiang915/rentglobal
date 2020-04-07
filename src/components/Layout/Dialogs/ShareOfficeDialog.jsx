@@ -5,18 +5,17 @@ import {
   DialogTitle,
   DialogContent,
   DialogActions,
-  withStyles
+  withStyles,
 } from "@material-ui/core";
 import clsx from "clsx";
 import { withTranslation } from "react-i18next";
-import withWidth from "@material-ui/core/withWidth";
+import withWidth, { isWidthDown } from "@material-ui/core/withWidth";
 import {
   Button,
   Typography,
   Row,
   Box,
-  Stretch
-  // Column
+  Stretch,
 } from "../../../common/base-components";
 import { OfficeItem } from "../../../common/base-layouts";
 import {
@@ -25,39 +24,49 @@ import {
   TwitterBorderIcon,
   FacebookBorderIcon,
   LinkedinBorderIcon,
-  NetworkIcon
+  NetworkIcon,
 } from "../../../common/base-components/Icons";
 
-const styleSheet = theme => ({
+const styleSheet = (theme) => ({
   root: {
     maxWidth: 1056,
     maxHeight: 512,
     padding: 0,
     minWidth: 565,
     minHeight: 395,
-    borderRadius: 8
+    borderRadius: 8,
+
+    [theme.breakpoints.down("sm")]: {
+      minWidth: 320,
+      minHeight: "auto",
+    },
   },
 
   header: {
     width: "100%",
     padding: "12px 40px",
-    borderBottom: `1px solid ${theme.colors.primary.borderGrey}`
+    borderBottom: `1px solid ${theme.colors.primary.borderGrey}`,
   },
 
   content: {
-    padding: "24px 40px 30px"
+    padding: "24px 40px 30px",
+    [theme.breakpoints.down("xs")]: {
+      display: "flex",
+      flexDirection: "column",
+      alignItems: "center",
+    },
   },
 
   socialIcon: {
     width: 39,
-    height: 39
+    height: 39,
   },
 
   footer: {
     width: "100%",
     padding: "32px 40px 37px",
-    borderTop: `1px solid ${theme.colors.primary.borderGrey}`
-  }
+    borderTop: `1px solid ${theme.colors.primary.borderGrey}`,
+  },
 });
 
 class ShareOfficeDialog extends Component {
@@ -71,7 +80,7 @@ class ShareOfficeDialog extends Component {
     /** Boolean for dialog is opened/closed */
     open: PropTypes.bool,
     /** Event handler for closing dialog */
-    onClose: PropTypes.func
+    onClose: PropTypes.func,
   };
 
   /**
@@ -85,11 +94,11 @@ class ShareOfficeDialog extends Component {
   };
 
   /** Share office via social */
-  handleShareSocial = social => () => {};
+  handleShareSocial = (social) => () => {};
 
   /** Render function */
   render() {
-    const { title, office, className, classes: s, t } = this.props;
+    const { title, office, className, width, classes: s, t } = this.props;
 
     return (
       <Dialog
@@ -122,7 +131,7 @@ class ShareOfficeDialog extends Component {
 
         {/** dialog content */}
         <DialogContent className={s.content}>
-          <OfficeItem office={office} horizontal />
+          <OfficeItem office={office} horizontal={!isWidthDown("xs", width)} />
         </DialogContent>
 
         {/** dialog footer */}

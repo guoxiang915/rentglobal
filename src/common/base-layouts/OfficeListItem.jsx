@@ -132,9 +132,9 @@ const OfficeListItem = ({
   noMoreInfo,
 }) => {
   const [dialog, setDialog] = React.useState(null);
-  const handleCloseDialog = () => {
-    setDialog(null);
-  };
+
+  const handleCloseDialog = () => setDialog(null);
+
   const handleContactInfo = (e) => {
     e.stopPropagation();
     setDialog(
@@ -150,12 +150,10 @@ const OfficeListItem = ({
       />
     );
   };
-  const handleListen = (e) => {
-    e.stopPropagation();
-  };
-  const handleCalendar = (e) => {
-    e.stopPropagation();
-  };
+
+  const handleListen = (e) => e.stopPropagation();
+
+  const handleCalendar = (e) => e.stopPropagation();
 
   const officeStatus = getOfficeStatus(office);
   let status = officeStatus ? officeStatus.status : null;
