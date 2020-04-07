@@ -4,7 +4,6 @@ import { Provider } from "react-redux";
 import { MuiThemeProvider } from "@material-ui/core";
 import configureStore from "./store/configureStore";
 import { createBrowserHistory } from "history";
-import { BrowserRouter as Router } from "react-router-dom";
 import routes from "./routes";
 import { I18nextProvider } from "react-i18next";
 import theme from "./common/config/theme";
@@ -22,15 +21,13 @@ const history = createBrowserHistory();
 class App extends Component {
   render() {
     return (
-      <Router>
-        <MuiThemeProvider theme={theme}>
-          <I18nextProvider i18n={i18n} initialLanguage="en">
-            <Provider store={store}>
-              <Main history={history} />
-            </Provider>
-          </I18nextProvider>
-        </MuiThemeProvider>
-      </Router>
+      <Provider store={store}>
+        <I18nextProvider i18n={i18n} initialLanguage="en">
+          <MuiThemeProvider theme={theme}>
+            <Main history={history} />
+          </MuiThemeProvider>
+        </I18nextProvider>
+      </Provider>
     );
   }
 }

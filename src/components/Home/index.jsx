@@ -385,6 +385,10 @@ const styleSheet = (theme) => ({
     },
   },
 
+  registerBlock: {
+    background: theme.colors.primary.mainColor,
+  },
+
   homeRegisterTitle: {
     paddingTop: 0,
     color: "white",
@@ -1104,7 +1108,7 @@ class Home extends Component {
         </Row>
 
         {/* Register block */}
-        <Column backgroundPrimary fullWidth>
+        <Column fullWidth classes={{ box: s.registerBlock }}>
           <Column classes={{ box: clsx(s.fixedWith, s.blockWrapper) }}>
             <Row classes={{ box: s.homeRegisterTitle }}>
               <Typography classes={{ box: s.blockTitle }} textWhite>

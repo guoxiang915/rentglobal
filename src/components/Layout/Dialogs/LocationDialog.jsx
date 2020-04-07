@@ -12,28 +12,28 @@ import {
   Stretch,
   Column,
   Link,
-  GoogleMap
+  GoogleMap,
 } from "../../../common/base-components";
 import { CloseIcon } from "../../../common/base-components/Icons";
 
-const styleSheet = theme => ({
+const styleSheet = (theme) => ({
   root: {
     maxWidth: 1056,
     maxHeight: 768,
     padding: 0,
     width: "80%",
     height: "80%",
-    borderRadius: 8
+    borderRadius: 8,
   },
 
   header: {
     width: "100%",
-    padding: "12px 12px 12px 40px"
+    padding: "12px 12px 12px 40px",
   },
 
   content: {
     height: "100%",
-    padding: 0
+    padding: 0,
   },
 
   googleMapSide: {
@@ -41,8 +41,8 @@ const styleSheet = theme => ({
     height: "100%",
     minHeight: 150,
     [theme.breakpoints.down("xs")]: {
-      height: 250
-    }
+      height: 250,
+    },
   },
 
   descriptions: {
@@ -52,20 +52,20 @@ const styleSheet = theme => ({
     borderLeft: `0.5px solid ${theme.colors.primary.borderGrey}`,
     [theme.breakpoints.down("xs")]: {
       border: "none",
-      borderUp: `0.5px solid ${theme.colors.primary.borderGrey}`
-    }
+      borderUp: `0.5px solid ${theme.colors.primary.borderGrey}`,
+    },
   },
 
   descriptionsWrapper: {
     padding: "30px 30px 30px 40px",
     height: "100%",
-    overflowY: "auto"
+    overflowY: "auto",
   },
 
   footer: {
     width: "100%",
-    padding: "12px 12px 12px 40px"
-  }
+    padding: "12px 12px 12px 40px",
+  },
 });
 
 class LocationDialog extends Component {
@@ -73,7 +73,7 @@ class LocationDialog extends Component {
     location: PropTypes.object,
     className: PropTypes.string,
     open: PropTypes.bool,
-    onClose: PropTypes.func
+    onClose: PropTypes.func,
   };
 
   /** TODO: show description for this location */
@@ -81,13 +81,13 @@ class LocationDialog extends Component {
     {
       title: "Verdun,H4G2V9, Québec, Canada",
       content:
-        "If you walk, It is so close to green line metro station -Jolicoeur , just 5-6 minutes walking distance to there . If you drive , it is so close to highway 15 (15-20 minutes to Bridge Champlain to the necessary..."
+        "If you walk, It is so close to green line metro station -Jolicoeur , just 5-6 minutes walking distance to there . If you drive , it is so close to highway 15 (15-20 minutes to Bridge Champlain to the necessary...",
     },
     {
       title: "Getting around",
       content:
-        "You can park your car in the private driveway side of house face to boulevard Champlain , but extra parking fee collected by host in cash. Of course , you also can park your car in the street side front of…"
-    }
+        "You can park your car in the private driveway side of house face to boulevard Champlain , but extra parking fee collected by host in cash. Of course , you also can park your car in the street side front of…",
+    },
   ];
 
   /** Close dialog */
@@ -114,9 +114,11 @@ class LocationDialog extends Component {
         <Grid container className={s.content}>
           <Grid item xs={12} sm={6} className={s.googleMapSide}>
             {/** location panel */}
-            <Box fullWidth fullHeight justifyChildrenCenter alignChildrenCenter>
+            <Box fill justifyChildrenCenter alignChildrenCenter>
               <GoogleMap
-                coordinates={location && [location.coordinates]}
+                coordinates={
+                  location && location.coordinates && [location.coordinates]
+                }
                 shadowWidth={50}
               />
             </Box>

@@ -8,34 +8,34 @@ import {
   Row,
   Column,
   Box,
-  Stretch
+  Stretch,
 } from "../base-components";
 import {
   ArrowUpIcon,
   ArrowDownIcon,
   CloseIcon,
-  EditIcon
+  EditIcon,
 } from "../base-components";
 
 /**
  * Stylesheet for TabWrapper component
  * @param {Object} theme
  */
-const styleSheet = theme => ({
+const styleSheet = (theme) => ({
   headerClass: {
-    minHeight: 34
+    minHeight: 34,
   },
 
   fullWidth: {
-    width: "100%"
-  }
+    width: "100%",
+  },
 });
 
 /**
  * Function component for rendering tab wrapper
  * @param {Object} props
  */
-const TabWrapper = props => {
+const TabWrapper = (props) => {
   const {
     children,
     classes,
@@ -51,7 +51,7 @@ const TabWrapper = props => {
     insideOpen,
     color,
     t,
-    title
+    title,
   } = props;
 
   const [openS, setOpenS] = useState(!!open);
@@ -71,9 +71,9 @@ const TabWrapper = props => {
       <Row fullWidth classes={{ box: clsx(headerClass, classes.headerClass) }}>
         <Box
           onClick={handleToggleOpen}
-          pointer
           alignChildrenCenter
           textMediumGrey={!color}
+          style={{ cursor: "pointer" }}
           {...color}
         >
           <Typography fontSizeS paddingRight>
