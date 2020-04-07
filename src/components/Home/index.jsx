@@ -543,14 +543,6 @@ class Home extends Component {
     }
   }
 
-  /** Set favorite of office */
-  handleSetFavoriteOffice = (office) => () => {
-    // TODO: call backend api to set favorite
-    // TODO: show login modal if auth.user.isLoggedIn === false
-    office.favorite = !office.favorite;
-    this.setState({});
-  };
-
   /**
    * Text stepper component
    */
@@ -1088,10 +1080,7 @@ class Home extends Component {
                       key={index}
                       onClick={this.handleOfficeDetail(office._id)}
                     >
-                      <OfficeItem
-                        office={office}
-                        setFavorite={this.handleSetFavoriteOffice(office)}
-                      />
+                      <OfficeItem office={office} setFavorite />
                     </div>
                   ))}
                 </Carousel>

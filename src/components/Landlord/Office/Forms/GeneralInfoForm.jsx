@@ -412,7 +412,7 @@ class GeneralInfoForm extends Component {
           />
         </GridRow>
         {/** business / other fees */}
-        <GridRow classes={s} title={t("businessOrOtherFees")}>
+        <GridRow classes={s} title={t("businessOtherFees")}>
           <NormalFormField
             tag="textfield"
             className={s.textField350}

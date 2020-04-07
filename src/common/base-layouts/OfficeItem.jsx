@@ -1,6 +1,8 @@
 import React, { useState } from "react";
+import { connect } from "react-redux";
 import { LinearProgress, withStyles } from "@material-ui/core";
 import { withTranslation } from "react-i18next";
+import * as authActions from "../../actions/authActions";
 import {
   Typography,
   Row,
@@ -9,16 +11,18 @@ import {
   StarIcon,
   ImageIcon,
   FavoriteFilledIcon,
-  FavoriteOutlinedIcon
+  FavoriteIcon,
 } from "../base-components";
+import { LoginDialog } from "../../components/Layout";
 import { KeyboardArrowLeft, KeyboardArrowRight } from "@material-ui/icons";
 import Carousel, { Dots } from "@brainhubeu/react-carousel";
 import { getOfficeStatus } from "../../utils/validators";
+import { favoriteOffice } from "../../api/endpoints";
 
-const styleSheet = theme => ({
+const styleSheet = (theme) => ({
   officeWrapper: {
     // width: 235,
-    marginRight: 20
+    marginRight: 20,
   },
 
   officeCarousel: {
@@ -27,7 +31,7 @@ const styleSheet = theme => ({
     borderRadius: 8,
     border: `1px solid ${theme.colors.primary.borderGrey}`,
     position: "relative",
-    overflow: "hidden"
+    overflow: "hidden",
   },
 
   hoverWrapper: {
@@ -48,7 +52,7 @@ const styleSheet = theme => ({
       top: 0,
       left: 0,
       opacity: 0.3,
-      zIndex: 1
+      zIndex: 1,
     },
     "&::after": {
       content: '" "',
@@ -59,11 +63,11 @@ const styleSheet = theme => ({
       bottom: 0,
       right: 0,
       opacity: 0.3,
-      zIndex: 1
+      zIndex: 1,
     },
     "&:hover": {
-      opacity: 1
-    }
+      opacity: 1,
+    },
   },
 
   favorite: {
@@ -73,16 +77,18 @@ const styleSheet = theme => ({
     zIndex: 1,
     width: 16,
     height: 16,
-    cursor: "pointer"
+    cursor: "pointer",
   },
 
   favoriteIcon: {
     width: 17,
-    height: 16
+    height: 16,
+    color: theme.colors.primary.white,
+    opacity: 1,
   },
 
   favoriteSelectedIcon: {
-    fill: theme.colors.primary.errorRed
+    fill: theme.colors.primary.errorRed,
   },
 
   officeLocation: {
@@ -92,19 +98,19 @@ const styleSheet = theme => ({
     bottom: 8,
     whiteSpace: "nowrap",
     overflow: "hidden",
-    zIndex: 1
+    zIndex: 1,
   },
 
   officeImage: {
     width: 235,
-    height: 175
+    height: 175,
   },
 
   officeEmptyImage: {
     background: theme.colors.primary.whiteGrey,
     color: theme.colors.primary.borderGrey,
     width: 235,
-    height: 175
+    height: 175,
   },
 
   carouselArrow: {
@@ -119,8 +125,8 @@ const styleSheet = theme => ({
     opacity: 0.15,
     cursor: "pointer",
     "&:hover": {
-      opacity: 1
-    }
+      opacity: 1,
+    },
   },
 
   dots: {
@@ -128,7 +134,7 @@ const styleSheet = theme => ({
     left: 0,
     bottom: 25,
     width: "100%",
-    zIndex: 1
+    zIndex: 1,
   },
 
   dot: {
@@ -136,23 +142,23 @@ const styleSheet = theme => ({
     background: theme.colors.primary.white,
     width: 7,
     height: 7,
-    margin: -4
+    margin: -4,
   },
 
   progressbar: {
     width: "100%",
     background: theme.colors.primary.borderGrey,
-    marginBottom: 10
+    marginBottom: 10,
   },
 
   bar1Determinate: {
     color: theme.colors.primary.errorRed,
-    background: theme.colors.primary.errorRed
+    background: theme.colors.primary.errorRed,
   },
 
   dashedBuffer: {
-    background: "none"
-  }
+    background: "none",
+  },
 });
 
 /** Dot component */
@@ -165,6 +171,7 @@ const Dot = ({ classes }) => <div className={classes.dot}></div>;
  * @property  {function} setFavorite Event handler for set favorite office
  * @property  {number} autoPlay Duration of autoplay for carousel (default: 4000)
  * @property  {bool} horizontal Show item horizontally or not (default: false)
+ * @property  {object}  auth Authentication state
  */
 const OfficeItem = ({
   classes: s,
@@ -173,31 +180,59 @@ const OfficeItem = ({
   setFavorite,
   // errorMsg,
   autoPlay,
-  horizontal
+  horizontal,
+  auth = null,
+  mappedLogin,
 }) => {
   /** Changing position of carousel */
+  const [, setState] = useState();
   const [pos, setPos] = useState(0);
-  /** Previous image */
-  const prev = e => {
+  const [dialog, setDialog] = useState(null);
+
+  const prevImage = (e) => {
     e.stopPropagation();
     setPos(pos === 0 ? office.coverPhotos.length - 1 : pos - 1);
   };
-  /** Next image */
-  const next = e => {
+
+  const nextImage = (e) => {
     e.stopPropagation();
     setPos(pos === office.coverPhotos.length - 1 ? 0 : pos + 1);
   };
-  /** Set favorite */
-  const handleSetFavorite = e => {
-    e.stopPropagation();
-    setFavorite();
+
+  const closeDialog = () => setDialog(null);
+
+  const passLoginDialog = () => {
+    if (!auth || !auth.isLoggedIn) {
+      setDialog(
+        <LoginDialog
+          auth={auth}
+          mappedLogin={mappedLogin}
+          onClose={closeDialog}
+        />
+      );
+    }
+    return !!(auth && auth.isLoggedIn);
   };
+
+  const handleSetFavorite = (e) => {
+    e.stopPropagation();
+    if (passLoginDialog()) {
+      favoriteOffice(office._id).then((response) => {
+        if (response.status === 200) {
+          office.favorite = response.data.favorite;
+          setState({});
+        }
+      });
+    }
+  };
+
   /** Carousel dots */
   const dots = React.useMemo(() => {
     return office.coverPhotos
       ? office.coverPhotos.map(() => <Dot classes={s} />)
       : [];
   }, [office, s]);
+
   /** Get status of office */
   const officeStatus = getOfficeStatus(office);
   let status = officeStatus ? officeStatus.status : null;
@@ -224,18 +259,15 @@ const OfficeItem = ({
       <Box classes={{ box: s.officeCarousel }}>
         <div className={s.hoverWrapper}>
           {/** favorite icon */}
-          {setFavorite && (
+          {setFavorite || (auth && auth.isLoggedIn) ? (
             <Box classes={{ box: s.favorite }} onClick={handleSetFavorite}>
               {office.favorite ? (
-                <FavoriteFilledIcon
-                  className={s.favoriteIcon}
-                  style={{ opacity: 1 }}
-                />
+                <FavoriteFilledIcon className={s.favoriteIcon} />
               ) : (
-                <FavoriteOutlinedIcon className={s.favoriteIcon} />
+                <FavoriteIcon className={s.favoriteIcon} />
               )}
             </Box>
-          )}
+          ) : null}
 
           {/** dots */}
           {office.coverPhotos && office.coverPhotos.length !== 0 && (
@@ -259,7 +291,7 @@ const OfficeItem = ({
             <Box
               classes={{ box: s.carouselArrow }}
               style={{ left: 14 }}
-              onClick={prev}
+              onClick={prevImage}
             >
               <KeyboardArrowLeft />
             </Box>
@@ -268,7 +300,7 @@ const OfficeItem = ({
             <Box
               classes={{ box: s.carouselArrow }}
               style={{ right: 14 }}
-              onClick={next}
+              onClick={nextImage}
             >
               <KeyboardArrowRight />
             </Box>
@@ -379,16 +411,37 @@ const OfficeItem = ({
               classes={{
                 root: s.progressbar,
                 bar1Determinate: s.bar1Determinate,
-                dashed: s.dashedBuffer
+                dashed: s.dashedBuffer,
               }}
             />
           </Row>
         )}
       </Column>
+
+      {/* Show dialog */}
+      {dialog}
     </Box>
   );
 };
 
-export default withStyles(styleSheet, { name: "OfficeItem" })(
-  withTranslation("common")(OfficeItem)
+const mapStateToProps = (state) => {
+  return {
+    auth: state.authState,
+  };
+};
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+    mappedLogin: (credentials, history) =>
+      dispatch(authActions.login(credentials, history)),
+  };
+};
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(
+  withStyles(styleSheet, { name: "OfficeItem" })(
+    withTranslation("common")(OfficeItem)
+  )
 );

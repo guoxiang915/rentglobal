@@ -184,7 +184,7 @@
     "numberOfEmployees": "Number of employees",
     "priceOrMonthly": "Price / Monthly",
     "$/month": "$ / Month",
-    "businessOrOtherFees": "Business / Other fees",
+    "businessOtherFees": "Business / Other fees",
     "spokenLanguage": "Spoken language",
     "leaseDurationPerMonths": "Lease duration / Months",
     "undefineDuration": "Undefine duration",

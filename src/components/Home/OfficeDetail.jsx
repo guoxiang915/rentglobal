@@ -222,9 +222,6 @@ class OfficeDetail extends Component {
   /** Load more reviews */
   handleMoreReviews = () => {};
 
-  /** Set favorite office */
-  handleSetFavoriteOffice = () => {};
-
   /** Render review component */
   renderReview = ({ review, classes: s }) => {
     const company = review.company;
@@ -410,7 +407,7 @@ class OfficeDetail extends Component {
                       <div style={{ position: "relative" }} key={index}>
                         <OfficeItem
                           office={office}
-                          setFavorite={this.handleSetFavoriteOffice(office)}
+                          setFavorite
                         />
                       </div>
                     ))}

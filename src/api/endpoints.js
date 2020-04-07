@@ -1,7 +1,7 @@
 import api from "./api";
 import {
   offices as officesMockData,
-  reviews as reviewsMockData
+  reviews as reviewsMockData,
 } from "../common/mock/officeMockData";
 
 /**
@@ -16,7 +16,7 @@ export const uploadFile = (file, permission) => {
     formData.append("permission", permission);
   }
   const config = {
-    headers: { "Content-Type": undefined }
+    headers: { "Content-Type": undefined },
   };
   return api.post("/file/upload/", formData, config);
 };
@@ -27,7 +27,7 @@ export const uploadFile = (file, permission) => {
  * @param {string} fileName name of file to be downloaded
  */
 export const downloadFile = (fileId, fileName) => {
-  api.get(`/file/${fileId}/`, { responseType: "blob" }).then(response => {
+  api.get(`/file/${fileId}/`, { responseType: "blob" }).then((response) => {
     const url = window.URL.createObjectURL(response.data);
     const el = document.createElement("a");
 
@@ -48,12 +48,12 @@ export const getProfile = () => {
 };
 
 /** Call api to delete user document */
-export const deleteUserDocument = role => (docType, docFile) => {
+export const deleteUserDocument = (role) => (docType, docFile) => {
   return api.delete(`/users/me/delete/document?role=${role}/`, {
     data: {
       document: docType,
-      documentFileId: docFile._id
-    }
+      documentFileId: docFile._id,
+    },
   });
 };
 
@@ -63,7 +63,7 @@ export const getOffices = () => {
 };
 
 /**
- * Call api to get available office list 
+ * Call api to get available office list
  * @deprecated
  */
 export const getAvailableOffices = () => {
@@ -71,7 +71,7 @@ export const getAvailableOffices = () => {
 };
 
 /**
- * Call api to get unpublished office list 
+ * Call api to get unpublished office list
  * @deprecated
  */
 export const getUnpublishedOffices = () => {
@@ -79,17 +79,17 @@ export const getUnpublishedOffices = () => {
 };
 
 /** Call api to get office from id */
-export const getOfficeById = officeId => {
+export const getOfficeById = (officeId) => {
   return api.get(`/users/me/offices/${officeId}/`);
 };
 
 /** Call api to create office */
-export const createOffice = office => {
+export const createOffice = (office) => {
   return api.post("/offices/", office);
 };
 
 /** Call api to update office */
-export const updateOffice = office => {
+export const updateOffice = (office) => {
   return api.put(`/users/me/offices/${office._id}/`, { office });
 };
 
@@ -104,12 +104,12 @@ export const createOfficeServicesAmenities = (officeId, payload) => {
 };
 
 /** Call api to publish office */
-export const publishOffice = officeId => {
+export const publishOffice = (officeId) => {
   return api.put(`/offices/${officeId}/publish/`);
 };
 
 /** Call api to unpublish office */
-export const unpublishOffice = officeId => {
+export const unpublishOffice = (officeId) => {
   return api.put(`/offices/${officeId}/unpublish/`);
 };
 
@@ -119,8 +119,13 @@ export const deleteOfficePhoto = (officeId, photoId) => {
 };
 
 /** Call api to delete office */
-export const deleteOffice = officeId => {
+export const deleteOffice = (officeId) => {
   return api.delete(`/offices/${officeId}/`);
+};
+
+/** Call api to set favorite office */
+export const favoriteOffice = (officeId) => {
+  return api.put(`/offices/${officeId}/favorite/`);
 };
 
 /** Call api to get all published offices */
@@ -147,14 +152,14 @@ export const getRecommendedOffices = () => {
 /**
  * Call api to get office by id
  */
-export const getApprovedOfficeById = officeId => {
+export const getApprovedOfficeById = (officeId) => {
   return api.get(`/offices/${officeId}/`);
 };
 
 /**
  * Call api to get office created landlord by id
  */
-export const getLandlordByOffice = officeId => {
+export const getLandlordByOffice = (officeId) => {
   // For now using mock data
   return Promise.resolve({
     status: 200,
@@ -162,8 +167,8 @@ export const getLandlordByOffice = officeId => {
       username: "Landlord Name",
       avatar: {},
       description:
-        "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
-    }
+        "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
+    },
   });
   // return api.get(`/offices/${officeId}/user/`);
 };
@@ -171,13 +176,13 @@ export const getLandlordByOffice = officeId => {
 /**
  * Call api to get reviews of office
  */
-export const getReviewsByOffice = officeId => {
+export const getReviewsByOffice = (officeId) => {
   return Promise.resolve({ status: 200, data: reviewsMockData });
 };
 
 /**
  * Call api to get similar offices
  */
-export const getSimilarOffices = officeId => {
+export const getSimilarOffices = (officeId) => {
   return Promise.resolve({ status: 200, data: officesMockData });
 };

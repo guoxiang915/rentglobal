@@ -14,8 +14,9 @@ import {
   MapPointerIcon,
   Link,
   FavoriteIcon,
+  FavoriteFilledIcon,
   ShareIcon,
-  Button
+  Button,
 } from "../../common/base-components";
 import { TabWrapper, StatisticBox } from "../../common/base-layouts";
 import { servicesCategories } from "../../utils/constants";
@@ -24,10 +25,11 @@ import {
   ContactInfoDialog,
   LoginDialog,
   ShareOfficeDialog,
-  LocationDialog
+  LocationDialog,
 } from "./Dialogs";
+import { favoriteOffice } from "../../api/endpoints";
 
-const styleSheet = theme => ({
+const styleSheet = (theme) => ({
   root: {},
 
   imageWrapper: {
@@ -35,8 +37,8 @@ const styleSheet = theme => ({
     [theme.breakpoints.down("xs")]: {
       width: "100%",
       position: "relative",
-      left: -10
-    }
+      left: -10,
+    },
   },
 
   coverPhotoWrapper: {
@@ -44,7 +46,7 @@ const styleSheet = theme => ({
     position: "relative",
     paddingTop: "50%",
     border: `1px solid ${theme.colors.primary.borderGrey}`,
-    borderRadius: 8
+    borderRadius: 8,
   },
 
   coverPhoto: {
@@ -54,14 +56,14 @@ const styleSheet = theme => ({
     bottom: 0,
     right: 0,
     overflow: "hidden",
-    borderRadius: 8
+    borderRadius: 8,
   },
 
   coverPhotoContent: {
     width: "100%",
     height: "100%",
     objectFit: "cover",
-    borderRadius: 8
+    borderRadius: 8,
   },
 
   imageNavWrapper: {
@@ -69,12 +71,12 @@ const styleSheet = theme => ({
     marginLeft: 10,
     top: 0,
     bottom: 0,
-    right: 0
+    right: 0,
   },
 
   imageNavButton: {
     width: 24,
-    height: 14
+    height: 14,
   },
 
   imageNav: {
@@ -82,11 +84,11 @@ const styleSheet = theme => ({
     height: "calc(100% - 50px)",
     margin: "10px 5px",
     overflow: "hidden",
-    position: "relative"
+    position: "relative",
   },
 
   imageNavList: {
-    position: "absolute"
+    position: "absolute",
   },
 
   coverPhotoNav: {
@@ -94,27 +96,27 @@ const styleSheet = theme => ({
     height: 126,
     border: `1px solid ${theme.colors.primary.borderGrey}`,
     borderRadius: 8,
-    marginBottom: 15
+    marginBottom: 15,
   },
 
   detailsWrapper: {
     width: "100%",
     paddingTop: 50,
     [theme.breakpoints.down("sm")]: {
-      flexWrap: "wrap"
-    }
+      flexWrap: "wrap",
+    },
   },
 
   mainDetailsWrapper: {
-    flexGrow: 2
+    flexGrow: 2,
   },
 
   detailsTabWrapper: {
     width: "100%",
     paddingBottom: 60,
     [theme.breakpoints.down("sm")]: {
-      paddingBottom: 45
-    }
+      paddingBottom: 45,
+    },
   },
 
   infoRow: {
@@ -122,8 +124,8 @@ const styleSheet = theme => ({
     alignItems: "center",
     flexWrap: "wrap",
     [theme.breakpoints.down("sm")]: {
-      marginBottom: 8
-    }
+      marginBottom: 8,
+    },
   },
 
   infoLabel: {
@@ -135,7 +137,7 @@ const styleSheet = theme => ({
     minHeight: 20,
     marginBottom: 4,
     alignItems: "flex-start",
-    color: theme.colors.primary.darkGrey
+    color: theme.colors.primary.darkGrey,
   },
 
   infoValue: {
@@ -148,16 +150,16 @@ const styleSheet = theme => ({
     marginBottom: 4,
     fontWeight: "bold",
     alignItems: "flex-start",
-    color: theme.colors.primary.darkGrey
+    color: theme.colors.primary.darkGrey,
   },
 
   description: {
-    marginTop: 45
+    marginTop: 45,
   },
 
   statisticWrapper: {
     width: 192,
-    height: 116
+    height: 116,
   },
 
   servicesWrapper: {
@@ -169,12 +171,12 @@ const styleSheet = theme => ({
       border: "none",
       borderTop: `1px solid ${theme.colors.primary.borderGrey}`,
       padding: "42px 0px 0px",
-      margin: 0
-    }
+      margin: 0,
+    },
   },
 
   serviceCategoryWrapper: {
-    marginTop: 23
+    marginTop: 23,
   },
 
   serviceCategoryBody: {
@@ -185,12 +187,17 @@ const styleSheet = theme => ({
     width: 24,
     height: 24,
     color: theme.colors.primary.darkGrey,
-    opacity: 0.15
+    opacity: 0.15,
   },
 
   serviceOption: {
-    paddingLeft: 40
-  }
+    paddingLeft: 40,
+  },
+
+  favoriteIcon: {
+    width: 17,
+    height: 16,
+  },
 });
 
 class OfficeDetailForm extends Component {
@@ -203,7 +210,7 @@ class OfficeDetailForm extends Component {
     mappedLogin: PropTypes.func,
 
     classes: PropTypes.object,
-    t: PropTypes.func
+    t: PropTypes.func,
   };
 
   state = { currentPhoto: 0, dialog: null };
@@ -217,7 +224,7 @@ class OfficeDetailForm extends Component {
       currentPhoto: Math.min(
         this.state.currentPhoto + 1,
         this.props.office.coverPhotos.length - 1
-      )
+      ),
     });
   };
 
@@ -232,15 +239,21 @@ class OfficeDetailForm extends Component {
             mappedLogin={this.props.mappedLogin}
             onClose={this.handleCloseDialog}
           />
-        )
+        ),
       });
     }
     return isLoggedIn;
   };
 
   /** Favorite office */
-  handleFavorite = () => {
+  handleSetFavorite = () => {
     if (this.passLoginDialog()) {
+      favoriteOffice(this.props.office._id).then((response) => {
+        if (response.status === 200) {
+          this.props.office.favorite = response.data.favorite;
+          this.setState({});
+        }
+      });
     }
   };
 
@@ -253,7 +266,7 @@ class OfficeDetailForm extends Component {
             office={this.props.office}
             onClose={this.handleCloseDialog}
           />
-        )
+        ),
       });
     }
   };
@@ -269,11 +282,11 @@ class OfficeDetailForm extends Component {
               username: "Name Family",
               type: "Consultant",
               phoneNumber: "(123) 123-4567",
-              email: "consultantname@domainanme.com"
+              email: "consultantname@domainanme.com",
             }}
             onClose={this.handleCloseDialog}
           />
-        )
+        ),
       });
     }
   };
@@ -287,7 +300,7 @@ class OfficeDetailForm extends Component {
             location={this.props.office.location}
             onClose={this.handleCloseDialog}
           />
-        )
+        ),
       });
     }
   };
@@ -304,6 +317,8 @@ class OfficeDetailForm extends Component {
     const { office, classes: s, t, width } = this.props;
     const { dialog, currentPhoto } = this.state;
 
+    console.log(office);
+
     return (
       <Column classes={{ box: s.root }} fullWidth alignChildrenStart>
         {/** Show office coverPhotos */}
@@ -311,7 +326,7 @@ class OfficeDetailForm extends Component {
           <div className={s.imageWrapper}>
             <Carousel keepDirectionWhenDragging itemWidth={285} offset={20}>
               {office.coverPhotos &&
-                office.coverPhotos.map(photo => (
+                office.coverPhotos.map((photo) => (
                   <div className={s.coverPhotoWrapper}>
                     <div className={s.coverPhoto}>
                       <img
@@ -394,9 +409,17 @@ class OfficeDetailForm extends Component {
                 <Button
                   link="secondary"
                   background="secondaryLight"
-                  onClick={this.handleFavorite}
+                  onClick={this.handleSetFavorite}
                 >
-                  <FavoriteIcon style={{ width: 16, height: 15 }} />
+                  {office.favorite ? (
+                    <FavoriteFilledIcon
+                      className={s.favoriteIcon}
+                      style={{ opacity: 1 }}
+                    />
+                  ) : (
+                    <FavoriteIcon className={s.favoriteIcon} />
+                  )}
+                  {/* <FavoriteIcon style={{ width: 16, height: 15 }} /> */}
                   {!isWidthDown("xs", width) && (
                     <Typography paddingLeft fontSizeS fontWeightBold>
                       {t("favorite")}
@@ -469,14 +492,15 @@ class OfficeDetailForm extends Component {
                 </Column>
                 <Column classes={{ box: s.infoValue }}>
                   {t("dollarPerMonth", {
-                    dollar: office.businessOtherFees || 0
+                    dollar: office.businessOtherFees || 0,
                   })}
                 </Column>
               </Row>
               <Row classes={{ box: s.infoRow }}>
                 <Column classes={{ box: s.infoLabel }}>{t("area")}</Column>
-                <Column classes={{ box: s.infoValue }}>{`${office.area ||
-                  0} mxm`}</Column>
+                <Column classes={{ box: s.infoValue }}>{`${
+                  office.area || 0
+                } mxm`}</Column>
               </Row>
               <Row classes={{ box: s.infoRow }}>
                 <Column classes={{ box: s.infoLabel }}>{t("rooms")}</Column>
@@ -496,8 +520,9 @@ class OfficeDetailForm extends Component {
                 </Column>
                 <Column classes={{ box: s.infoValue }}>
                   {office.businessHours &&
-                    `${`${office.businessHours?.from} AM` ||
-                      ""} - ${`${office.businessHours?.to} PM` || ""}`}
+                    `${`${office.businessHours?.from} AM` || ""} - ${
+                      `${office.businessHours?.to} PM` || ""
+                    }`}
                   {!office.businessHours && "-"}
                 </Column>
               </Row>
@@ -671,7 +696,7 @@ class OfficeDetailForm extends Component {
               Object.entries(office.servicesAndAmenities).map(
                 ([key, options]) => {
                   const category = servicesCategories.find(
-                    item => item.value === key
+                    (item) => item.value === key
                   );
                   return category ? (
                     <React.Fragment key={key}>

@@ -308,13 +308,6 @@ class Dashboard extends Component {
     }
   };
 
-  /** Set favorite of office */
-  handleSetFavorite = (office) => () => {
-    // TODO: call backend api to set favorite
-    office.favorite = !office.favorite;
-    this.setState({});
-  };
-
   /** Toggle office filter */
   handleToggleOfficeFilter = () => {
     this.setState({ showOfficeFilters: !this.state.showOfficeFilters });

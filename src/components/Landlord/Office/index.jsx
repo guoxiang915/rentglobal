@@ -79,13 +79,6 @@ class Offices extends Component {
     }
   };
 
-  /** Set favorite of office */
-  handleSetFavorite = office => () => {
-    // TODO: call backend api to set favorite
-    office.favorite = !office.favorite;
-    this.setState({});
-  };
-
   /**
    * Renderer function
    */
@@ -189,7 +182,7 @@ class Offices extends Component {
                       >
                         <OfficeItem
                           office={office}
-                          setFavorite={this.handleSetFavorite(office)}
+                          setFavorite
                         />
                       </div>
                     ))}
@@ -243,7 +236,7 @@ class Offices extends Component {
                         <OfficeItem
                           office={office}
                           // errorMsg="pending"
-                          setFavorite={this.handleSetFavorite(office)}
+                          setFavorite
                         />
                       </div>
                     ))}
