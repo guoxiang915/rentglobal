@@ -13,7 +13,7 @@ import {
   Button,
   Link,
   Divider,
-  UserIcon
+  UserIcon,
 } from "../../common/base-components";
 import { TabWrapper, OfficeItem } from "../../common/base-layouts";
 import { KeyboardBackspace } from "@material-ui/icons";
@@ -23,19 +23,19 @@ import {
   getApprovedOfficeById,
   getLandlordByOffice,
   getReviewsByOffice,
-  getSimilarOffices
+  getSimilarOffices,
 } from "../../api/endpoints";
 import Carousel from "@brainhubeu/react-carousel";
 
-const styleSheet = theme => ({
+const styleSheet = (theme) => ({
   root: {
     width: "100%",
     height: "100%",
     background: theme.colors.primary.white,
     minHeight: "calc(100vh - 250px)",
     [theme.breakpoints.down("sm")]: {
-      minHeight: "calc(100vh - 166px)"
-    }
+      minHeight: "calc(100vh - 166px)",
+    },
   },
 
   fixedWidth: {
@@ -46,12 +46,12 @@ const styleSheet = theme => ({
     overflow: "hidden",
     [theme.breakpoints.down("sm")]: {
       paddingLeft: 22,
-      paddingRight: 22
-    }
+      paddingRight: 22,
+    },
   },
 
   fullWidth: {
-    width: "100%"
+    width: "100%",
   },
 
   addOfficeTabWrapper: {
@@ -59,20 +59,20 @@ const styleSheet = theme => ({
     paddingBottom: 106,
     [theme.breakpoints.down("xs")]: {
       paddingTop: 8,
-      paddingBottom: 50
-    }
+      paddingBottom: 50,
+    },
   },
 
   formButtons: {
     paddingTop: 160,
     [theme.breakpoints.down("xs")]: {
-      paddingTop: 64
-    }
+      paddingTop: 64,
+    },
   },
 
   landlordInfo: {
     paddingTop: 53,
-    paddingBottom: 58
+    paddingBottom: 58,
   },
 
   landlordAvatarWrapper: {
@@ -84,36 +84,39 @@ const styleSheet = theme => ({
     justifyContent: "center",
     alignItems: "center",
     overflow: "hidden",
-    marginRight: 26
+    marginRight: 26,
   },
 
   landlordAvatar: {
     width: 67,
     height: 67,
-    objectFit: "contain"
+    objectFit: "contain",
   },
 
   landlordMoreInfo: {
-    paddingLeft: 93
+    // paddingLeft: 93
   },
 
   reviewsWrapper: {
     paddingTop: 48,
-    paddingBottom: 48
+    paddingBottom: 48,
   },
 
   similarOfficesWrapper: {
     paddingTop: 46,
-    paddingBottom: 74
+    paddingBottom: 74,
   },
 
   similarOffices: {
     paddingTop: 54,
-    overflow: "hidden"
+    overflow: "hidden",
   },
 
   reviewCompanyInfo: {
-    marginRight: 68
+    marginRight: 68,
+    [theme.breakpoints.down("xs")]: {
+      width: "100%",
+    },
   },
 
   reviewAvatarWrapper: {
@@ -125,18 +128,18 @@ const styleSheet = theme => ({
     justifyContent: "center",
     alignItems: "center",
     overflow: "hidden",
-    marginRight: 20
+    marginRight: 20,
   },
 
   reviewAvatar: {
     width: 39,
     height: 39,
-    objectFit: "contain"
+    objectFit: "contain",
   },
 
   divider: {
-    height: 1
-  }
+    height: 1,
+  },
 });
 
 class OfficeDetail extends Component {
@@ -153,7 +156,7 @@ class OfficeDetail extends Component {
     // getSimilarOffices: PropTypes.func,
 
     classes: PropTypes.object,
-    t: PropTypes.func
+    t: PropTypes.func,
   };
 
   state = {
@@ -161,14 +164,14 @@ class OfficeDetail extends Component {
     landlord: {},
     reviews: [],
     similarOffices: [],
-    dialog: null
+    dialog: null,
   };
 
   componentDidMount() {
     /** Get office from id */
     const { officeId } = this.props;
     // this.props.
-    getApprovedOfficeById(officeId).then(response => {
+    getApprovedOfficeById(officeId).then((response) => {
       if (response.status === 200) {
         console.log(response);
         this.setState({ office: response.data });
@@ -177,7 +180,7 @@ class OfficeDetail extends Component {
 
     /** Get landlord info from office */
     // this.props.
-    getLandlordByOffice(officeId).then(response => {
+    getLandlordByOffice(officeId).then((response) => {
       if (response.status === 200) {
         this.setState({ landlord: response.data });
       }
@@ -185,7 +188,7 @@ class OfficeDetail extends Component {
 
     /** Get reviews from office */
     // this.props.
-    getReviewsByOffice(officeId).then(response => {
+    getReviewsByOffice(officeId).then((response) => {
       if (response.status === 200) {
         this.setState({ reviews: response.data });
       }
@@ -193,7 +196,7 @@ class OfficeDetail extends Component {
 
     /** Get similar offices */
     // this.props.
-    getSimilarOffices(officeId).then(response => {
+    getSimilarOffices(officeId).then((response) => {
       if (response.status === 200) {
         this.setState({ similarOffices: response.data });
       }
@@ -229,7 +232,7 @@ class OfficeDetail extends Component {
 
     return (
       <Row fullWidth alignChildrenStart wrap>
-        <Column classes={{ box: s.reviewCompanyInfo }}>
+        <Column classes={{ box: s.reviewCompanyInfo }} alignChildrenStart paddingBottomHalf>
           {/** Show review avatar, name, created date */}
           <Row>
             <Box classes={{ box: s.reviewAvatarWrapper }}>
@@ -341,25 +344,29 @@ class OfficeDetail extends Component {
               wrap
             >
               {/** Show landlord request buttons */}
-              <Button
-                variant="secondary"
-                onClick={this.handleContactReq}
-                shadow
-              >
-                {t("contactReq")}
-              </Button>
-              <Box paddingLeftHalf />
-              <Button
-                variant="secondary"
-                onClick={this.handleMoreInfoReq}
-                shadow
-              >
-                {t("moreInfoReq")}
-              </Button>
-              <Box paddingLeftHalf />
-              <Button variant="primary" onClick={this.handleFollowUp} shadow>
-                {t("followUp")}
-              </Button>
+              <Box paddingLeftHalf paddingBottomHalf>
+                <Button
+                  variant="secondary"
+                  onClick={this.handleContactReq}
+                  shadow
+                >
+                  {t("contactReq")}
+                </Button>
+              </Box>
+              <Box paddingLeftHalf paddingBottomHalf>
+                <Button
+                  variant="secondary"
+                  onClick={this.handleMoreInfoReq}
+                  shadow
+                >
+                  {t("moreInfoReq")}
+                </Button>
+              </Box>
+              <Box paddingLeftHalf paddingBottomHalf>
+                <Button variant="primary" onClick={this.handleFollowUp} shadow>
+                  {t("followUp")}
+                </Button>
+              </Box>
             </Row>
           </Column>
 
@@ -405,10 +412,7 @@ class OfficeDetail extends Component {
                   >
                     {similarOffices.map((office, index) => (
                       <div style={{ position: "relative" }} key={index}>
-                        <OfficeItem
-                          office={office}
-                          setFavorite
-                        />
+                        <OfficeItem office={office} setFavorite />
                       </div>
                     ))}
                   </Carousel>

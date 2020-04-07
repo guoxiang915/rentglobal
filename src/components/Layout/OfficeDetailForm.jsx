@@ -326,8 +326,8 @@ class OfficeDetailForm extends Component {
           <div className={s.imageWrapper}>
             <Carousel keepDirectionWhenDragging itemWidth={285} offset={20}>
               {office.coverPhotos &&
-                office.coverPhotos.map((photo) => (
-                  <div className={s.coverPhotoWrapper}>
+                office.coverPhotos.map((photo, index) => (
+                  <div className={s.coverPhotoWrapper} key={index}>
                     <div className={s.coverPhoto}>
                       <img
                         src={photo.bucketPath}

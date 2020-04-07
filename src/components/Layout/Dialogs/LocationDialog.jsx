@@ -24,6 +24,10 @@ const styleSheet = (theme) => ({
     width: "80%",
     height: "80%",
     borderRadius: 8,
+
+    [theme.breakpoints.down("xs")]: {
+      width: "100%",
+    },
   },
 
   header: {
@@ -109,6 +113,7 @@ class LocationDialog extends Component {
         open={true}
         onClose={this.handleClose}
         aria-labelledby="help-dialog-title"
+        className={s.dialogWrapper}
         classes={{ paper: clsx(s.root, className) }}
       >
         <Grid container className={s.content}>
