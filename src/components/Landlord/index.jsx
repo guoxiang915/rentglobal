@@ -44,6 +44,10 @@ const styleSheet = (theme) => ({
     maxWidth: 1024 + 44,
     paddingLeft: 22,
     paddingRight: 22,
+    [theme.breakpoints.down("xs")]: {
+      paddingLeft: 0,
+      paddingRight: 0,
+    },
   },
 
   sidebarWrapper: {
@@ -174,7 +178,12 @@ class Landlord extends Component {
               <Switch>
                 <Route
                   path="/landlord/dashboard"
-                  render={(props) => <Dashboard getOffices={getOffices} />}
+                  render={(props) => (
+                    <Dashboard
+                      getOffices={getOffices}
+                      navigate={this.props.navigate}
+                    />
+                  )}
                 />
                 <Route
                   exact

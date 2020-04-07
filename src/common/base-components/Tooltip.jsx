@@ -63,14 +63,16 @@ export const tooltipStylesheet = theme => ({
     "&:after": {
       content: '""',
       display: "block",
-      width: 0,
-      height: 0,
       position: "absolute",
-      borderLeft: "8px solid transparent",
-      borderRight: "8px solid transparent",
-      borderTop: "8px solid rgb(100, 100, 100)",
-      bottom: -8,
-      left: "calc(50% - 7px)"
+      bottom: -9,
+      left: "calc(50% - 7px)",
+      width: 16,
+      height: 16,
+      background: theme.colors.primary.white,
+      border: `1px solid ${theme.colors.primary.borderGrey}`,
+      borderTop: "none",
+      borderLeft: "none",
+      transform: "rotate(45deg)"
     }
   },
 

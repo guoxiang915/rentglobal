@@ -1,6 +1,6 @@
 import React from "react";
 import GoogleMapReact from "google-map-react";
-import { PinGeneralIcon } from "./";
+import { GoogleMapMarker } from ".";
 import { makeStyles } from "@material-ui/styles";
 import { fitBounds } from "google-map-react/utils";
 
@@ -8,32 +8,18 @@ const useStyles = makeStyles({
   map: {
     width: "100%",
     height: "100%",
-    borderRadius: props => props.borderRadius,
-    overflow: "hidden"
+    borderRadius: (props) => props.borderRadius,
+    overflow: "hidden",
   },
-  marker: {
-    width: 40,
-    height: 40,
-    marginLeft: -20,
-    marginTop: -20,
-    backgroundColor: "#525252",
-    padding: 10,
-    borderRadius: 20,
-    boxShadow: props => `0 0 0 ${props.shadowWidth}px rgba(0, 0, 0, 0.2)`,
-    cursor: "pointer"
-  }
 });
-
-const Marker = ({ classes, onClick }) => (
-  <PinGeneralIcon className={classes.marker} onClick={onClick} />
-);
 
 const SimpleMap = ({
   coordinates = [{ lat: 45.5017, lng: -73.5673 }],
   shadowWidth = 5,
   borderRadius = 5,
   onClick,
-  onClickMarker
+  markers = null,
+  onClickMarker,
 }) => {
   const classes = useStyles({ shadowWidth, borderRadius });
   const size = { width: 640, height: 640 };
@@ -47,9 +33,9 @@ const SimpleMap = ({
     } else {
       const bounds = {
         ne: { lat: -1000, lng: 1000 },
-        sw: { lat: 1000, lng: -1000 }
+        sw: { lat: 1000, lng: -1000 },
       };
-      coordinates.forEach(coord => {
+      coordinates.forEach((coord) => {
         if (coord.lat > bounds.ne.lat) bounds.ne.lat = coord.lat;
         if (coord.lat < bounds.sw.lat) bounds.sw.lat = coord.lat;
         if (coord.lng < bounds.ne.lng) bounds.ne.lng = coord.lng;
@@ -62,7 +48,7 @@ const SimpleMap = ({
   }
 
   /** event listeners */
-  const handleClickMarker = coord => () => {
+  const handleClickMarker = (coord) => () => {
     if (onClickMarker) onClickMarker(coord);
   };
 
@@ -76,15 +62,15 @@ const SimpleMap = ({
         zoom={zoom}
         onClick={onClick}
       >
-        {coordinates.map((coord, index) => (
-          <Marker
-            key={index}
-            lat={coord.lat}
-            lng={coord.lng}
-            classes={classes}
-            onClick={handleClickMarker(coord)}
-          />
-        ))}
+        {markers ||
+          coordinates.map((coord, index) => (
+            <GoogleMapMarker
+              key={index}
+              lat={coord.lat}
+              lng={coord.lng}
+              onClick={handleClickMarker(coord)}
+            />
+          ))}
       </GoogleMapReact>
     </div>
   );

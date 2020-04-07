@@ -56,6 +56,11 @@ const styleSheet = theme => ({
   officeList: {
     paddingTop: 28,
     paddingBottom: 60
+  },
+
+  officeItemWrapper: {
+    marginTop: 30,
+    marginBottom: 27,
   }
 });
 

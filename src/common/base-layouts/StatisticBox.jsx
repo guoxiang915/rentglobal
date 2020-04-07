@@ -7,18 +7,19 @@ import {
   Row,
   Column,
   Box,
-  Stretch
+  Stretch,
 } from "../base-components";
 import { KeyboardArrowRight } from "@material-ui/icons";
 
-const styleSheet = theme => ({
+const styleSheet = (theme) => ({
   root: {
     width: 192,
-    height: 116
+    height: 116,
+    cursor: "pointer",
   },
 
   container: {
-    padding: "16px 24px"
+    padding: "16px 24px",
   },
 
   title: {
@@ -26,7 +27,7 @@ const styleSheet = theme => ({
     overflow: "hidden",
     whiteSpace: "nowrap",
     textOverflow: "ellipsis",
-    marginTop: 3
+    marginTop: 3,
   },
 
   infoWrapper: {
@@ -34,8 +35,8 @@ const styleSheet = theme => ({
     height: 24,
     overflow: "hidden",
     position: "relative",
-    fontSize: "19px"
-  }
+    fontSize: "19px",
+  },
 });
 
 /**
@@ -152,5 +153,5 @@ const StatisticBox2 = ({ classes, statistics, icon, title, onClick }) => {
 };
 
 export const StatisticIconBox = withStyles(styleSheet, {
-  name: "StatisticIconBox"
+  name: "StatisticIconBox",
 })(withTranslation("common")(StatisticBox2));

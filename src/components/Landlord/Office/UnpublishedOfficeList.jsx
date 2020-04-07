@@ -11,37 +11,37 @@ import {
   Box,
   Typography,
   Button,
-  Divider
+  Divider,
 } from "../../../common/base-components";
 import { OfficeListItem } from "../../../common/base-layouts";
 import { KeyboardBackspace } from "@material-ui/icons";
 import { Tabs, Tab } from "@material-ui/core";
 import { getOfficeStatus } from "../../../utils/validators";
 
-const styleSheet = theme => ({
+const styleSheet = (theme) => ({
   root: {
     paddingLeft: theme.spacing(5),
     paddingRight: theme.spacing(5),
     [theme.breakpoints.down("sm")]: {
       paddingLeft: 27,
-      paddingRight: 27
-    }
+      paddingRight: 27,
+    },
   },
 
   addButton: {
     width: "100%",
-    marginTop: 25
+    marginTop: 25,
   },
 
   tabs: {
     marginTop: 12,
     width: "100%",
-    borderBottom: `1px solid ${theme.colors.primary.borderGrey}`
+    borderBottom: `1px solid ${theme.colors.primary.borderGrey}`,
   },
 
   indicator: {
     borderRadius: 2,
-    height: 4
+    height: 4,
   },
 
   tab: {
@@ -50,14 +50,19 @@ const styleSheet = theme => ({
     padding: "25px 0px",
     marginRight: 70,
     [theme.breakpoints.down("xs")]: {
-      marginRight: 30
-    }
+      marginRight: 30,
+    },
   },
 
   officeList: {
     paddingTop: 28,
-    paddingBottom: 60
-  }
+    paddingBottom: 60,
+  },
+
+  officeItemWrapper: {
+    marginTop: 30,
+    marginBottom: 27,
+  },
 });
 
 class UnpublishedOfficeList extends Component {
@@ -65,7 +70,7 @@ class UnpublishedOfficeList extends Component {
     getOffices: PropTypes.func.isRequired,
     navigate: PropTypes.func,
     classes: PropTypes.object,
-    t: PropTypes.func
+    t: PropTypes.func,
   };
 
   state = {
@@ -74,31 +79,31 @@ class UnpublishedOfficeList extends Component {
     incompleteOffices: [],
     unpublishedOffices: [],
     dialog: null,
-    currentTab: 0
+    currentTab: 0,
   };
 
   /** Get office from id */
   componentDidMount() {
     this.props.getOffices().then(
-      response =>
+      (response) =>
         this.setState({
           offices: response.data,
           pendingOffices: response.data.filter(
-            office => getOfficeStatus(office).status === "pendingForApprove"
+            (office) => getOfficeStatus(office).status === "pendingForApprove"
           ),
           incompleteOffices: response.data.filter(
-            office => getOfficeStatus(office).status === "incomplete"
+            (office) => getOfficeStatus(office).status === "incomplete"
           ),
           unpublishedOffices: response.data.filter(
-            office => getOfficeStatus(office).status === "unpublish"
-          )
+            (office) => getOfficeStatus(office).status === "unpublish"
+          ),
         }),
-      error => {}
+      (error) => {}
     );
   }
 
   /** Navigation function */
-  navigate = path => () => {
+  navigate = (path) => () => {
     this.props.navigate(path);
   };
 
@@ -123,14 +128,14 @@ class UnpublishedOfficeList extends Component {
       pendingOffices,
       incompleteOffices,
       unpublishedOffices,
-      currentTab
+      currentTab,
     } = this.state;
 
     const officeTabs = [
       { name: "allUnpublish", value: offices },
       { name: "pending", value: pendingOffices },
       { name: "incomplete", value: incompleteOffices },
-      { name: "unpublish", value: unpublishedOffices }
+      { name: "unpublish", value: unpublishedOffices },
     ];
 
     return (

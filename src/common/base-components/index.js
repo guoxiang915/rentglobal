@@ -18,4 +18,5 @@ export { default as Chip } from "./Chip";
 export { default as HorizontalDivider } from "./HorizontalDivider";
 export { default as GooglePlaceField } from "./GooglePlaceField";
 export { default as GoogleMap } from "./GoogleMap";
+export { default as GoogleMapMarker } from "./GoogleMapMarker";
 export { default as LinearProgress } from "./LinearProgress";

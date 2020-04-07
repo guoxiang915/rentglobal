@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { withStyles } from "@material-ui/core/styles";
-import { Grid } from "@material-ui/core";
+import { Container, Grid } from "@material-ui/core";
 import { withTranslation } from "react-i18next";
 import {
   Button,
@@ -12,21 +12,21 @@ import {
   Typography,
   UsersIcon,
   BuildingsIcon,
-  ArrowRightAltIcon
+  ArrowRightAltIcon,
 } from "../../common/base-components";
 
-const styleSheet = theme => ({
+const styleSheet = (theme) => ({
   formWrapper: {
-    width: "100%",
+    // width: "100%",
     marginTop: 54,
-    maxWidth: 1024
+    // maxWidth: 1024
   },
 
   selectorWrapper: {
     maxWidth: 340,
     [theme.breakpoints.down("sm")]: {
-      alignItems: "center"
-    }
+      alignItems: "center",
+    },
   },
 
   formTitle: {
@@ -36,8 +36,8 @@ const styleSheet = theme => ({
     textAlign: "left",
     [theme.breakpoints.down("sm")]: {
       fontSize: "20px",
-      textAlign: "center"
-    }
+      textAlign: "center",
+    },
   },
 
   formSubtitle: {
@@ -47,27 +47,27 @@ const styleSheet = theme => ({
     textAlign: "left",
     [theme.breakpoints.down("sm")]: {
       fontSize: "16px",
-      textAlign: "center"
-    }
+      textAlign: "center",
+    },
   },
 
   signupButton: {
     marginTop: theme.spacing(7),
     [theme.breakpoints.down("sm")]: {
-      marginTop: theme.spacing(4)
-    }
+      marginTop: theme.spacing(4),
+    },
   },
 
   switchText: {
-    fontSize: "14px"
+    fontSize: "14px",
   },
 
   switchTextWrapper: {
-    paddingTop: 40
+    paddingTop: 40,
   },
 
   outlineIcon: {
-    color: theme.colors.primary.borderGrey
+    color: theme.colors.primary.borderGrey,
   },
 
   rightColumn: {
@@ -80,14 +80,14 @@ const styleSheet = theme => ({
       bottom: 16,
       borderLeft: `1px solid ${theme.colors.primary.borderGrey}`,
       [theme.breakpoints.down("sm")]: {
-        border: "none"
-      }
-    }
-  }
+        border: "none",
+      },
+    },
+  },
 });
 
 class SelectRegisterForm extends Component {
-  handleSelectRegister = registerMode => () => {
+  handleSelectRegister = (registerMode) => () => {
     if (registerMode) {
       this.props.navigate(`register/${registerMode}`);
     }
@@ -97,108 +97,110 @@ class SelectRegisterForm extends Component {
     const { classes: s, t } = this.props;
 
     return (
-      <Column fullWidth>
-        <Grid container className={s.formWrapper}>
-          <Grid item xs={12} sm={6}>
-            <Column fullWidth padding>
-              <Column
-                alignChildrenStart
-                classes={{ box: s.selectorWrapper }}
-                textLightGrey
-              >
-                <BuildingsIcon fontSize="large" className={s.outlineIcon} />
-                <Box paddingTopHalf>
-                  <Typography
-                    fontSizeL
-                    fontWeightBold
-                    textSecondary
-                    fullWidth
-                    paddingTopHalf
-                    textLeft
-                    // classes={{ box: classes.formTitle }}
-                  >
-                    {t("amLandlord")}
-                  </Typography>
-                </Box>
-                <Box paddingTopHalf>
-                  <Typography
-                    fontSizeM
-                    textSecondary
-                    classes={{ box: s.formSubtitle }}
-                  >
-                    {t("iHavePlaceToRent")}
-                  </Typography>
-                </Box>
-                <Button
-                  className={s.signupButton}
-                  onClick={this.handleSelectRegister("landlord")}
+      <Container>
+        <Column fullWidth>
+          <Grid container className={s.formWrapper}>
+            <Grid item xs={12} sm={6}>
+              <Column fullWidth padding>
+                <Column
+                  alignChildrenStart
+                  classes={{ box: s.selectorWrapper }}
+                  textLightGrey
                 >
-                  <Typography fontSizeS fontWeightBold textWhite>
-                    {t("landlordSignup")}
-                    <Box paddingLeft alignChildrenCenter>
-                      <ArrowRightAltIcon style={{ width: 14, height: 10 }} />
-                    </Box>
-                  </Typography>
-                </Button>
+                  <BuildingsIcon fontSize="large" className={s.outlineIcon} />
+                  <Box paddingTopHalf>
+                    <Typography
+                      fontSizeL
+                      fontWeightBold
+                      textSecondary
+                      fullWidth
+                      paddingTopHalf
+                      textLeft
+                      // classes={{ box: classes.formTitle }}
+                    >
+                      {t("amLandlord")}
+                    </Typography>
+                  </Box>
+                  <Box paddingTopHalf>
+                    <Typography
+                      fontSizeM
+                      textSecondary
+                      classes={{ box: s.formSubtitle }}
+                    >
+                      {t("iHavePlaceToRent")}
+                    </Typography>
+                  </Box>
+                  <Button
+                    className={s.signupButton}
+                    onClick={this.handleSelectRegister("landlord")}
+                  >
+                    <Typography fontSizeS fontWeightBold textWhite>
+                      {t("landlordSignup")}
+                      <Box paddingLeft alignChildrenCenter>
+                        <ArrowRightAltIcon style={{ width: 14, height: 10 }} />
+                      </Box>
+                    </Typography>
+                  </Button>
+                </Column>
               </Column>
-            </Column>
-          </Grid>
-          <Grid item xs={12} sm={6}>
-            <Column fullWidth padding classes={{ box: s.rightColumn }}>
-              <Column
-                alignChildrenStart
-                classes={{ box: s.selectorWrapper }}
-                textLightGrey
-              >
-                <UsersIcon fontSize="large" className={s.outlineIcon} />
-                <Box paddingTopHalf>
-                  <Typography
-                    fontSizeL
-                    fontWeightBold
-                    textSecondary
-                    fullWidth
-                    paddingTopHalf
-                    textLeft
-                    // classes={{ box: classes.formTitle }}
-                  >
-                    {t("needOffice")}
-                  </Typography>
-                </Box>
-                <Box paddingTopHalf>
-                  <Typography
-                    fontSizeM
-                    textSecondary
-                    classes={{ box: s.formSubtitle }}
-                  >
-                    {t("iLookForOffice")}
-                  </Typography>
-                </Box>
-                <Button
-                  className={s.signupButton}
-                  onClick={this.handleSelectRegister("company")}
+            </Grid>
+            <Grid item xs={12} sm={6}>
+              <Column fullWidth padding classes={{ box: s.rightColumn }}>
+                <Column
+                  alignChildrenStart
+                  classes={{ box: s.selectorWrapper }}
+                  textLightGrey
                 >
-                  <Typography fontSizeS fontWeightBold textWhite>
-                    {t("companySignup")}
-                    <Box paddingLeft alignChildrenCenter>
-                      <ArrowRightAltIcon style={{ width: 14, height: 10 }} />
-                    </Box>
-                  </Typography>
-                </Button>
+                  <UsersIcon fontSize="large" className={s.outlineIcon} />
+                  <Box paddingTopHalf>
+                    <Typography
+                      fontSizeL
+                      fontWeightBold
+                      textSecondary
+                      fullWidth
+                      paddingTopHalf
+                      textLeft
+                      // classes={{ box: classes.formTitle }}
+                    >
+                      {t("needOffice")}
+                    </Typography>
+                  </Box>
+                  <Box paddingTopHalf>
+                    <Typography
+                      fontSizeM
+                      textSecondary
+                      classes={{ box: s.formSubtitle }}
+                    >
+                      {t("iLookForOffice")}
+                    </Typography>
+                  </Box>
+                  <Button
+                    className={s.signupButton}
+                    onClick={this.handleSelectRegister("company")}
+                  >
+                    <Typography fontSizeS fontWeightBold textWhite>
+                      {t("companySignup")}
+                      <Box paddingLeft alignChildrenCenter>
+                        <ArrowRightAltIcon style={{ width: 14, height: 10 }} />
+                      </Box>
+                    </Typography>
+                  </Button>
+                </Column>
               </Column>
-            </Column>
+            </Grid>
           </Grid>
-        </Grid>
-        <Row fullWidth classes={{ box: s.switchTextWrapper }}>
-          <Column fullWidth>
-            <Typography textSecondary fontSizeS>
-              {t("alreadyHaveAccount")}
-              <Link to="/auth/login" variant="primary">
-                &nbsp;{t("login")}
-              </Link>
-            </Typography>
-          </Column>
-        </Row>
-      </Column>
+          <Row fullWidth classes={{ box: s.switchTextWrapper }}>
+            <Column fullWidth>
+              <Typography textSecondary fontSizeS>
+                {t("alreadyHaveAccount")}
+                <Link to="/auth/login" variant="primary">
+                  &nbsp;{t("login")}
+                </Link>
+              </Typography>
+            </Column>
+          </Row>
+        </Column>
+      </Container>
     );
   }
 }
@@ -206,7 +208,7 @@ class SelectRegisterForm extends Component {
 SelectRegisterForm.propTypes = {
   classes: PropTypes.object.isRequired,
   t: PropTypes.func.isRequired,
-  navigate: PropTypes.func
+  navigate: PropTypes.func,
 };
 
 export default withStyles(styleSheet)(

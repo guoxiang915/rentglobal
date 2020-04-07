@@ -1,8 +1,10 @@
 import React, { Component } from "react";
 import { withStyles } from "@material-ui/core/styles";
+import { withRouter } from "react-router-dom";
 import { withTranslation } from "react-i18next";
 import withWidth from "@material-ui/core/withWidth";
 import PropTypes from "prop-types";
+import { Box as MUIBox } from "@material-ui/core";
 import {
   Row,
   Column,
@@ -12,6 +14,7 @@ import {
   LinearProgress,
   Typography,
   GoogleMap,
+  GoogleMapMarker,
   Button,
   Checkbox,
   BuildingsIcon,
@@ -23,53 +26,59 @@ import {
   OptimizationIcon,
   CalendarIcon,
   AdjustIcon,
-  CloseIcon
+  CloseIcon,
+  IndependentOfficeIcon,
+  PrivateOfficeIcon,
+  AssignedOfficeIcon,
+  UnassignedOfficeIcon,
 } from "../../common/base-components";
 import { formatDate, getWeekday } from "../../utils/formatters";
 import { getProfileStatus } from "../../utils/validators";
-import { StatisticIconBox } from "../../common/base-layouts";
+import { StatisticIconBox, OfficeDetailItem } from "../../common/base-layouts";
 import { ArrowBackIos } from "@material-ui/icons";
 
-const styleSheet = theme => ({
+const styleSheet = (theme) => ({
   root: {
     paddingLeft: theme.spacing(5),
     paddingRight: theme.spacing(5),
+    marginBottom: 120,
     [theme.breakpoints.down("sm")]: {
       paddingLeft: 27,
-      paddingRight: 27
-    }
+      paddingRight: 27,
+      marginBottom: 80,
+    },
   },
 
   fullWidth: {
-    width: "100%"
+    width: "100%",
   },
 
   lightIcon: {
     color: theme.colors.primary.darkGrey,
-    opacity: 0.15
+    opacity: 0.15,
   },
 
   normalIcon: {
-    color: theme.colors.primary.grey
+    color: theme.colors.primary.grey,
   },
 
   darkIcon: {
-    color: theme.colors.primary.darkGrey
+    color: theme.colors.primary.darkGrey,
   },
 
   profilePanel: {
     background: theme.colors.primary.white,
     padding: "23px 33px 27px",
-    position: "relative"
+    position: "relative",
   },
 
   accountAvatar: {
     width: 80,
-    height: 80
+    height: 80,
   },
 
   accountName: {
-    paddingLeft: 24
+    paddingLeft: 24,
   },
 
   profileCompletenessWrapper: {
@@ -79,17 +88,17 @@ const styleSheet = theme => ({
     padding: 14,
     paddingLeft: 18,
     width: 228,
-    background: theme.colors.primary.whiteGrey
+    background: theme.colors.primary.whiteGrey,
   },
 
   profileProgress: {
-    marginBottom: 10
+    marginBottom: 10,
   },
 
   attentionIcon: {
     marginLeft: 25,
     width: 11,
-    height: 8
+    height: 8,
   },
 
   officesMap: {
@@ -99,47 +108,43 @@ const styleSheet = theme => ({
     marginTop: 40,
     marginBottom: 40,
     [theme.breakpoints.down("sm")]: {
-      height: 350
+      height: 450,
     },
     [theme.breakpoints.down("xs")]: {
-      height: 250
-    }
+      height: 570,
+    },
   },
 
-  statisticBoxWrapper: {
-    marginLeft: -3,
-    width: "calc(100% + 3px)"
-  },
+  statisticBoxWrapper: {},
 
   statisticBox: {
     marginBottom: 10,
-    padding: "0px 4px 0px 3px",
-    borderRight: `1px solid ${theme.colors.primary.borderGrey}`,
+    padding: 0,
+    paddingRight: 8,
     "&:last-of-type": {
       paddingRight: 0,
-      borderRight: "none"
-    }
+    },
   },
 
   currentOfficeWrapper: {
     width: 232,
-    height: "100%"
+    height: "100%",
   },
 
   officeFilterWrapper: {
     position: "absolute",
     top: 0,
     left: 0,
-    paddingTop: 7
+    paddingTop: 7,
   },
 
   officeFilters: {
-    paddingLeft: 6
+    paddingLeft: 6,
   },
 
   officeFilter: {
     background: theme.colors.primary.white,
-    width: 162
+    width: 162,
   },
 
   toggleFilterButton: {
@@ -148,8 +153,8 @@ const styleSheet = theme => ({
     marginLeft: 12,
     background: theme.colors.primary.white,
     "&:hover": {
-      background: theme.colors.primary.white
-    }
+      background: theme.colors.primary.white,
+    },
   },
 
   clearCurrentOfficeButton: {
@@ -160,9 +165,31 @@ const styleSheet = theme => ({
     right: 16,
     background: theme.colors.primary.white,
     "&:hover": {
-      background: theme.colors.primary.white
-    }
-  }
+      background: theme.colors.primary.white,
+    },
+  },
+
+  officeDetailWrapper: {
+    height: "100%",
+    background: theme.colors.primary.white,
+  },
+
+  officeDetail: {
+    width: 235,
+    padding: 12,
+  },
+
+  officeFullView: {
+    padding: 25,
+    background: theme.colors.primary.mainColor,
+    cursor: "pointer",
+  },
+
+  officeMarkerTooltip: {
+    color: theme.colors.primary.mainColor,
+    width: 32,
+    height: 32,
+  },
 });
 
 class Dashboard extends Component {
@@ -171,54 +198,87 @@ class Dashboard extends Component {
     getOffices: PropTypes.func.isRequired,
 
     classes: PropTypes.object,
-    t: PropTypes.func
+    t: PropTypes.func,
   };
 
   state = {
     offices: [],
-    leasedOffices: [],
-    availableOffices: [],
-    independentOffices: [],
-    privateOffices: [],
-    assignedOffices: [],
-    unassignedOffices: [],
     showOfficeFilters: true,
+    selectedOfficeTypes: [],
     currentOfficeFilter: "allOffices",
-    currentOffice: null
+    currentOffice: null,
+  };
+
+  markerTooltipIcons = {
+    independentOffice: null,
+    privateOffice: null,
+    assignedWorkstation: null,
+    unassignedWorkstation: null,
+  };
+
+  officeFilters = {
+    allOffices: {
+      name: "allOffices",
+    },
+    leasedOffices: {
+      name: "leased",
+    },
+    availableOffices: {
+      name: "available",
+    },
+  };
+
+  officeTypes = {
+    independentOffice: {
+      name: "independent",
+      icon: IndependentOfficeIcon,
+    },
+    privateOffice: {
+      name: "privateOffice",
+      icon: PrivateOfficeIcon,
+    },
+    assignedWorkstation: {
+      name: "assigned",
+      icon: AssignedOfficeIcon,
+    },
+    unassignedWorkstation: {
+      name: "unassigned",
+      icon: UnassignedOfficeIcon,
+    },
   };
 
   /** Navigation */
-  navigate = path => () => {
+  navigate = (path) => () => {
     this.props.navigate(path);
   };
 
   /** Get landlord offices */
   componentDidMount() {
     this.props.getOffices().then(
-      response =>
-        this.setState({
-          offices: response.data,
-          leasedOffices: response.data.filter(o => !!o.leasedBy),
-          availableOffices: response.data.filter(o => !o.leasedBy),
-          independentOffices: response.data.filter(
-            o => o.officeType === "independentOffice"
-          ),
-          privateOffices: response.data.filter(
-            o => o.officeType === "privateOffice"
-          ),
-          assignedOffices: response.data.filter(
-            o => o.officeType === "assignedWorkstation"
-          ),
-          unassignedOffices: response.data.filter(
-            o => o.officeType === "unassignedWorkstation"
-          )
-        }),
-      error => {}
+      (response) => {
+        this.setState({ offices: response.data });
+
+        this.officeFilters["allOffices"].value = response.data;
+        this.officeFilters["leasedOffices"].value = response.data.filter(
+          (o) => !!o.leasedBy
+        );
+        this.officeFilters["availableOffices"].value = response.data.filter(
+          (o) => !o.leasedBy
+        );
+
+        Object.keys(this.officeTypes).forEach(
+          (key) =>
+            (this.officeTypes[key].value = response.data.filter(
+              (o) => o.officeType === key
+            ))
+        );
+      },
+      (error) => {}
     );
   }
 
   /** navigate to office detail page */
-  handleNavigateOfficeDetail = office => () => {
+  handleNavigateOfficeDetail = (office) => () => {
     if (office.published === true) {
       this.props.navigate("landlord/offices", office._id);
     } else {
@@ -227,7 +287,7 @@ class Dashboard extends Component {
   };
 
   /** Set favorite of office */
-  handleSetFavorite = office => () => {
+  handleSetFavorite = (office) => () => {
     // TODO: call backend api to set favorite
     office.favorite = !office.favorite;
     this.setState({});
@@ -239,17 +299,27 @@ class Dashboard extends Component {
   };
 
   /** Set office filter */
-  handleSelectOfficeFilter = filter => () => {
-    this.setState({ currentOfficeFilter: filter });
+  handleSelectOfficeFilter = (filter) => () => {
+    this.setState({
+      currentOfficeFilter: filter,
+      offices: this.officeFilters[filter].value,
+    });
+  };
+
+  /** Toggle selected office types */
+  handleToggleOfficeTypes = (officeType) => () => {
+    let selectedOfficeTypes = [...this.state.selectedOfficeTypes];
+    if (selectedOfficeTypes.indexOf(officeType) !== -1) {
+      selectedOfficeTypes.splice(selectedOfficeTypes.indexOf(officeType), 1);
+    } else {
+      selectedOfficeTypes.push(officeType);
+    }
+    this.setState({ selectedOfficeTypes });
   };
 
   /** Select office from map */
-  handleSelectOffice = coord => {
-    console.log(coord);
-    this.setState({
-      currentOffice:
-        this.state.offices.find(o => o.location.coordinates === coord) || null
-    });
+  handleSelectOffice = (office) => () => {
+    this.setState({ currentOffice: office || null });
   };
 
   /** Clear selected office */
@@ -267,12 +337,7 @@ class Dashboard extends Component {
       currentOffice,
       showOfficeFilters,
       currentOfficeFilter,
-      leasedOffices,
-      availableOffices,
-      independentOffices,
-      privateOffices,
-      assignedOffices,
-      unassignedOffices
+      selectedOfficeTypes,
     } = this.state;
     const { user } = this.props.auth;
     const role = "landlord";
@@ -281,39 +346,8 @@ class Dashboard extends Component {
     const {
       completed: profileCompleted,
       charged: profileCharged,
-      completeness: profileCompleteness
+      completeness: profileCompleteness,
     } = profileStatus;
-
-    const officeFilters = [
-      {
-        name: "allOffices",
-        value: offices
-      },
-      {
-        name: "leased",
-        value: leasedOffices
-      },
-      {
-        name: "available",
-        value: availableOffices
-      },
-      {
-        name: "independent",
-        value: independentOffices
-      },
-      {
-        name: "privateOffice",
-        value: privateOffices
-      },
-      {
-        name: "assigned",
-        value: assignedOffices
-      },
-      {
-        name: "unassigned",
-        value: unassignedOffices
-      }
-    ];
 
     return (
       <Column
@@ -363,11 +397,11 @@ class Dashboard extends Component {
                 ? `url("${user.avatar.bucketPath}")`
                 : "none",
               backgroundSize: "contain",
-              backgroundPosition: "center"
+              backgroundPosition: "center",
             }}
             border
             classes={{
-              box: s.accountAvatar
+              box: s.accountAvatar,
             }}
           >
             {!user.avatar &&
@@ -391,8 +425,8 @@ class Dashboard extends Component {
               {t("lastLogin", {
                 datetime: [
                   formatDate(user.updatedAt),
-                  new Date(user.updatedAt).toLocaleTimeString()
-                ].join(" ")
+                  new Date(user.updatedAt).toLocaleTimeString(),
+                ].join(" "),
               })}
             </Typography>
           </Column>
@@ -403,7 +437,7 @@ class Dashboard extends Component {
               value={profileCompleted}
               valueBuffer={profileCharged}
               styles={{
-                root: s.profileProgress
+                root: s.profileProgress,
               }}
             />
             <Link to="#" onClick={this.navigate("profile")}>
@@ -428,14 +462,41 @@ class Dashboard extends Component {
 
         {/** show google map with offices in it */}
         <Row classes={{ box: s.officesMap }}>
-          <Column stretch fullHeight noOverflow>
+          <Column stretch fullHeight noOverflow relative>
             <GoogleMap
               coordinates={offices
                 .filter(
-                  office => office.location && office.location.coordinates
+                  (office) => office.location && office.location.coordinates
                 )
-                .map(office => office.location.coordinates)}
-              onClickMarker={this.handleSelectOffice}
+                .map((office) => office.location.coordinates)}
+              markers={offices
+                .filter(
+                  (office) => office.location && office.location.coordinates
+                )
+                .map((office, index) => (
+                  <GoogleMapMarker
+                    key={index}
+                    size={30}
+                    lat={office.location.coordinates.lat}
+                    lng={office.location.coordinates.lng}
+                    color={currentOffice === office ? "mainColor" : undefined}
+                    badge={office.leasedBy && office.leasedBy.overduePayment}
+                    tooltip={
+                      (currentOffice === office ||
+                        selectedOfficeTypes.indexOf(office.officeType) !==
+                          -1) && (
+                        <MUIBox
+                          component={() => {
+                            const Icon = this.officeTypes[office.officeType]
+                              .icon;
+                            return <Icon className={s.officeMarkerTooltip} />;
+                          }}
+                        />
+                      )
+                    }
+                    onClick={this.handleSelectOffice(office)}
+                  />
+                ))}
             />
 
             {currentOffice && (
@@ -456,16 +517,37 @@ class Dashboard extends Component {
           <Row classes={{ box: s.officeFilterWrapper }} alignChildrenStart>
             {showOfficeFilters && (
               <Column classes={{ box: s.officeFilters }}>
-                {officeFilters.map((filter, index) => (
-                  <React.Fragment key={index}>
+                {Object.entries(this.officeFilters).map(([key, filter]) => (
+                  <React.Fragment key={key}>
                     <Box paddingBottomHalf>
                       <Checkbox
                         variant="outlined"
-                        isChecked={filter.name === currentOfficeFilter}
+                        isChecked={key === currentOfficeFilter}
                         label={
-                          t(filter.name) + " (" + filter.value.length + ")"
+                          t(filter.name) +
+                          " (" +
+                          (filter.value ? filter.value.length : 0) +
+                          ")"
                         }
-                        onChange={this.handleSelectOfficeFilter(filter.name)}
+                        onChange={this.handleSelectOfficeFilter(key)}
+                        className={s.officeFilter}
+                      />
+                    </Box>
+                  </React.Fragment>
+                ))}
+                {Object.entries(this.officeTypes).map(([key, type]) => (
+                  <React.Fragment key={key}>
+                    <Box paddingBottomHalf>
+                      <Checkbox
+                        variant="outlined"
+                        isChecked={selectedOfficeTypes.indexOf(key) !== -1}
+                        label={
+                          t(type.name) +
+                          " (" +
+                          (type.value ? type.value.length : 0) +
+                          ")"
+                        }
+                        onChange={this.handleToggleOfficeTypes(key)}
                         className={s.officeFilter}
                       />
                     </Box>
@@ -481,7 +563,7 @@ class Dashboard extends Component {
             >
               {showOfficeFilters ? (
                 <ArrowBackIos
-                  style={{ width: 12, height: 16 }}
+                  style={{ width: 18, height: 18, marginLeft: 6 }}
                   className={s.normalIcon}
                 />
               ) : (
@@ -495,14 +577,27 @@ class Dashboard extends Component {
 
           {/* show office detail info */}
           {currentOffice && (
-            <>
-              <Column></Column>
-            </>
+            <Column classes={{ box: s.officeDetailWrapper }}>
+              <Box classes={{ box: s.officeDetail }}>
+                <OfficeDetailItem office={currentOffice} />
+              </Box>
+              <Stretch />
+              <Box
+                classes={{ box: s.officeFullView }}
+                onClick={this.handleNavigateOfficeDetail(currentOffice)}
+                fullWidth
+                justifyChildrenCenter
+              >
+                <Typography fontSizeXS textWhite>
+                  {t("fullView")}
+                </Typography>
+              </Box>
+            </Column>
           )}
         </Row>
 
         {/** show statistics */}
-        <Row classes={{ box: s.statisticBoxWrapper }} wrap>
+        <Row classes={{ box: s.statisticBoxWrapper }} wrap fullWidth>
           <Box classes={{ box: s.statisticBox }}>
             <StatisticIconBox
               icon={
@@ -558,5 +653,5 @@ class Dashboard extends Component {
 }
 
 export default withWidth()(
-  withStyles(styleSheet)(withTranslation("common")(Dashboard))
+  withRouter(withStyles(styleSheet)(withTranslation("common")(Dashboard)))
 );

@@ -12,18 +12,16 @@ import {
   CalendarIcon,
   UsersIcon,
   Button,
-  LinearProgress
+  LinearProgress,
 } from "../base-components";
 import { ContactInfoDialog } from "../../components/Layout/Dialogs";
 import Carousel from "@brainhubeu/react-carousel";
 import { formatDate } from "../../utils/formatters";
 import { getOfficeStatus } from "../../utils/validators";
 
-const styleSheet = theme => ({
+const styleSheet = (theme) => ({
   officeWrapper: {
     width: "100%",
-    marginTop: 30,
-    marginBottom: 27
   },
 
   officeCarousel: {
@@ -34,8 +32,8 @@ const styleSheet = theme => ({
     position: "relative",
     overflow: "hidden",
     [theme.breakpoints.down("sm")]: {
-      width: "100%"
-    }
+      width: "100%",
+    },
   },
 
   officeImage: {
@@ -43,8 +41,8 @@ const styleSheet = theme => ({
     height: 175,
     objectFit: "cover",
     [theme.breakpoints.down("sm")]: {
-      width: "100%"
-    }
+      width: "100%",
+    },
   },
 
   officeGeneralInfo: {
@@ -52,17 +50,17 @@ const styleSheet = theme => ({
     paddingTop: 0,
     [theme.breakpoints.down("sm")]: {
       paddingLeft: 0,
-      paddingTop: 16
+      paddingTop: 16,
     },
     [theme.breakpoints.down("xs")]: {
-      width: "100%"
-    }
+      width: "100%",
+    },
   },
 
   officeLeaseInfo: {
     [theme.breakpoints.down("sm")]: {
-      paddingTop: 16
-    }
+      paddingTop: 16,
+    },
   },
 
   tipOverWrapper: {
@@ -71,7 +69,7 @@ const styleSheet = theme => ({
     left: 0,
     width: "100%",
     height: 44,
-    zIndex: 1
+    zIndex: 1,
   },
 
   primaryTipOver: {
@@ -89,8 +87,8 @@ const styleSheet = theme => ({
       borderTop: `8px solid ${theme.colors.primary.mainColor}`,
       borderLeft: `18px solid transparent`,
       borderRight: `18px solid transparent`,
-      borderBottom: "none"
-    }
+      borderBottom: "none",
+    },
   },
 
   errorRedTipOver: {
@@ -108,15 +106,15 @@ const styleSheet = theme => ({
       borderTop: `8px solid ${theme.colors.primary.errorRed}`,
       borderLeft: `18px solid transparent`,
       borderRight: `18px solid transparent`,
-      borderBottom: "none"
-    }
+      borderBottom: "none",
+    },
   },
 
   progressbar: {
     width: 200,
     marginTop: 20,
-    marginBottom: 10
-  }
+    marginBottom: 10,
+  },
 });
 
 /**
@@ -125,12 +123,19 @@ const styleSheet = theme => ({
  * @property  {object} office Office information
  * @property  {number} autoPlay Duration of autoplay for carousel (default: 4000)
  */
-const OfficeListItem = ({ classes: s, t, autoPlay, office }) => {
+const OfficeListItem = ({
+  classes: s,
+  t,
+  autoPlay,
+  office,
+  noActions,
+  noMoreInfo,
+}) => {
   const [dialog, setDialog] = React.useState(null);
   const handleCloseDialog = () => {
     setDialog(null);
   };
-  const handleContactInfo = e => {
+  const handleContactInfo = (e) => {
     e.stopPropagation();
     setDialog(
       <ContactInfoDialog
@@ -139,16 +144,16 @@ const OfficeListItem = ({ classes: s, t, autoPlay, office }) => {
           username: "Name Family",
           type: "Consultant",
           phoneNumber: "(123) 123-4567",
-          email: "consultantname@domainanme.com"
+          email: "consultantname@domainanme.com",
         }}
         onClose={handleCloseDialog}
       />
     );
   };
-  const handleListen = e => {
+  const handleListen = (e) => {
     e.stopPropagation();
   };
-  const handleCalendar = e => {
+  const handleCalendar = (e) => {
     e.stopPropagation();
   };
 
@@ -256,108 +261,112 @@ const OfficeListItem = ({ classes: s, t, autoPlay, office }) => {
 
         {/** show office action buttons */}
         <Stretch />
-        <Row paddingTopHalf alignChildrenStart>
-          {/** Show microphone button */}
-          <Button
-            link="normalLight"
-            background="normalLight"
-            inverse
-            onClick={handleListen}
-            variant="icon"
-          >
-            <HeadsetIcon style={{ width: 19, height: 19 }} />
-          </Button>
-          <Box paddingLeftHalf />
-
-          {/** Show calendar button */}
-          {office.approved && (
+        {!noActions && (
+          <Row paddingTopHalf alignChildrenStart>
+            {/** Show microphone button */}
             <Button
               link="normalLight"
               background="normalLight"
               inverse
-              onClick={handleCalendar}
+              onClick={handleListen}
               variant="icon"
             >
-              <CalendarIcon style={{ width: 19, height: 19 }} />
+              <HeadsetIcon style={{ width: 19, height: 19 }} />
             </Button>
-          )}
-        </Row>
+            <Box paddingLeftHalf />
+
+            {/** Show calendar button */}
+            {office.approved && (
+              <Button
+                link="normalLight"
+                background="normalLight"
+                inverse
+                onClick={handleCalendar}
+                variant="icon"
+              >
+                <CalendarIcon style={{ width: 19, height: 19 }} />
+              </Button>
+            )}
+          </Row>
+        )}
       </Column>
 
       {/** office more information */}
       <Stretch style={{ minWidth: 1 }} />
-      <Column classes={{ box: s.officeLeaseInfo }} alignChildrenEnd>
-        {/** last updated date */}
-        <Typography textMediumGrey fontSizeXS style={{ lineHeight: "26px" }}>
-          {t("lastUpdate")}: {formatDate(office.updatedAt)}
-        </Typography>
+      {!noMoreInfo && (
+        <Column classes={{ box: s.officeLeaseInfo }} alignChildrenEnd>
+          {/** last updated date */}
+          <Typography textMediumGrey fontSizeXS style={{ lineHeight: "26px" }}>
+            {t("lastUpdate")}: {formatDate(office.updatedAt)}
+          </Typography>
 
-        {/** leased by */}
-        {office.approved ? (
-          !office.leasedBy ? (
-            <Typography
-              textPrimary
-              fontSizeS
-              paddingTopHalf
-              style={{ lineHeight: "26px" }}
-            >
-              {t("available")}
-            </Typography>
-          ) : (
-            <>
-              <Row paddingTopHalf style={{ lineHeight: "26px" }}>
-                <Typography textMediumGrey fontSizeS>
-                  {t("leasedBy")}:&nbsp;
-                </Typography>
-                <Typography textSecondary fontSizeS>
-                  {office.leasedBy.name}
-                </Typography>
-                <Typography textMediumGrey fontSizeS>
-                  &nbsp;({formatDate(office.leasedBy.date)})
-                </Typography>
-              </Row>
-
-              {/** overdue payment */}
-              {office.leasedBy.overduePayment && (
-                <Typography
-                  paddingTopHalf
-                  fontSizeS
-                  textErrorRed
-                  style={{ lineHeight: "26px" }}
-                >
-                  {t("overduePayment")}
-                </Typography>
-              )}
-            </>
-          )
-        ) : (
-          <>
-            {status && (
+          {/** leased by */}
+          {office.approved ? (
+            !office.leasedBy ? (
               <Typography
-                textErrorRed
+                textPrimary
                 fontSizeS
                 paddingTopHalf
                 style={{ lineHeight: "26px" }}
               >
-                {t(status)}
+                {t("available")}
               </Typography>
-            )}
-            {progress && (
-              <LinearProgress
-                styles={{ root: s.progressbar }}
-                value={progress}
-              />
-            )}
-          </>
-        )}
+            ) : (
+              <>
+                <Row paddingTopHalf style={{ lineHeight: "26px" }}>
+                  <Typography textMediumGrey fontSizeS>
+                    {t("leasedBy")}:&nbsp;
+                  </Typography>
+                  <Typography textSecondary fontSizeS>
+                    {office.leasedBy.name}
+                  </Typography>
+                  <Typography textMediumGrey fontSizeS>
+                    &nbsp;({formatDate(office.leasedBy.date)})
+                  </Typography>
+                </Row>
 
-        {/** contact info */}
-        <Stretch />
-        <Box paddingTopHalf />
-        <Button variant="secondary" onClick={handleContactInfo} shadow>
-          {t("contactInfo")}
-        </Button>
-      </Column>
+                {/** overdue payment */}
+                {office.leasedBy.overduePayment && (
+                  <Typography
+                    paddingTopHalf
+                    fontSizeS
+                    textErrorRed
+                    style={{ lineHeight: "26px" }}
+                  >
+                    {t("overduePayment")}
+                  </Typography>
+                )}
+              </>
+            )
+          ) : (
+            <>
+              {status && (
+                <Typography
+                  textErrorRed
+                  fontSizeS
+                  paddingTopHalf
+                  style={{ lineHeight: "26px" }}
+                >
+                  {t(status)}
+                </Typography>
+              )}
+              {progress && (
+                <LinearProgress
+                  styles={{ root: s.progressbar }}
+                  value={progress}
+                />
+              )}
+            </>
+          )}
+
+          {/** contact info */}
+          <Stretch />
+          <Box paddingTopHalf />
+          <Button variant="secondary" onClick={handleContactInfo} shadow>
+            {t("contactInfo")}
+          </Button>
+        </Column>
+      )}
 
       {/** show dialog */}
       {dialog}

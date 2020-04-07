@@ -73,24 +73,28 @@ import { ReactComponent as RulesSvg } from "../../assets/icon/icon_amenities_rul
 import { ReactComponent as TransportationSvg } from "../../assets/icon/icon_amenities_transportation_gray.svg";
 import { ReactComponent as ZonesSvg } from "../../assets/icon/icon_amenities_zones_gray.svg";
 import { ReactComponent as AdjustSvg } from "../../assets/icon/icon_adjust.svg";
+import { ReactComponent as IndependentOfficeSvg } from "../../assets/icon/icon_independent_office.svg";
+import { ReactComponent as PrivateOfficeSvg } from "../../assets/icon/icon_private_office.svg";
+import { ReactComponent as AssignedOfficeSvg } from "../../assets/icon/icon_assigned_workstation.svg";
+import { ReactComponent as UnassignedOfficeSvg } from "../../assets/icon/icon_unassigned_workstation.svg";
 
-const styleSheet = theme => ({
+const styleSheet = (theme) => ({
   primary: {
     color: theme.colors.primary.mainColor,
-    opacity: 1
+    opacity: 1,
   },
   normal: {
     color: theme.colors.primary.darkGrey,
-    opacity: 0.15
+    opacity: 0.15,
   },
   white: {
     color: theme.colors.primary.white,
-    opacity: 1
+    opacity: 1,
   },
   errorRed: {
     color: theme.colors.primary.errorRed,
-    opacity: 1
-  }
+    opacity: 1,
+  },
 });
 
 export const SvgIcon = withStyles(styleSheet, { name: "SvgIcon" })(
@@ -108,103 +112,139 @@ export const SvgIcon = withStyles(styleSheet, { name: "SvgIcon" })(
   }
 );
 
-export const AddressIcon = props => <SvgIcon src={AddressSvg} {...props} />;
-export const AlarmIcon = props => <SvgIcon src={AlarmSvg} {...props} />;
-export const ArrowDownIcon = props => <SvgIcon src={ArrowDownSvg} {...props} />;
-export const ArrowUpIcon = props => <SvgIcon src={ArrowUpSvg} {...props} />;
-export const ArrowRightAltIcon = props => (
+export const AddressIcon = (props) => <SvgIcon src={AddressSvg} {...props} />;
+export const AlarmIcon = (props) => <SvgIcon src={AlarmSvg} {...props} />;
+export const ArrowDownIcon = (props) => (
+  <SvgIcon src={ArrowDownSvg} {...props} />
+);
+export const ArrowUpIcon = (props) => <SvgIcon src={ArrowUpSvg} {...props} />;
+export const ArrowRightAltIcon = (props) => (
   <SvgIcon src={ArrowRightAltSvg} {...props} />
 );
-export const CallIcon = props => <SvgIcon src={CallSvg} {...props} />;
-export const ChatIcon = props => <SvgIcon src={ChatSvg} {...props} />;
-export const CheckIcon = props => <SvgIcon src={CheckSvg} {...props} />;
-export const CloseIcon = props => <SvgIcon src={CloseSvg} {...props} />;
-export const EditIcon = props => <SvgIcon src={EditSvg} {...props} />;
-export const EmailIcon = props => <SvgIcon src={EmailSvg} {...props} />;
-export const LockIcon = props => <SvgIcon src={LockSvg} {...props} />;
-export const MenuIcon = props => <SvgIcon src={MenuSvg} {...props} />;
-export const StarIcon = props => <SvgIcon src={StarSvg} {...props} />;
-export const TruckIcon = props => <SvgIcon src={TruckSvg} {...props} />;
-export const HomeIcon = props => <SvgIcon src={HomeSvg} {...props} />;
-export const TessiIcon = props => <SvgIcon src={TessiSvg} {...props} />;
-export const TessiColorIcon = props => (
+export const CallIcon = (props) => <SvgIcon src={CallSvg} {...props} />;
+export const ChatIcon = (props) => <SvgIcon src={ChatSvg} {...props} />;
+export const CheckIcon = (props) => <SvgIcon src={CheckSvg} {...props} />;
+export const CloseIcon = (props) => <SvgIcon src={CloseSvg} {...props} />;
+export const EditIcon = (props) => <SvgIcon src={EditSvg} {...props} />;
+export const EmailIcon = (props) => <SvgIcon src={EmailSvg} {...props} />;
+export const LockIcon = (props) => <SvgIcon src={LockSvg} {...props} />;
+export const MenuIcon = (props) => <SvgIcon src={MenuSvg} {...props} />;
+export const StarIcon = (props) => <SvgIcon src={StarSvg} {...props} />;
+export const TruckIcon = (props) => <SvgIcon src={TruckSvg} {...props} />;
+export const HomeIcon = (props) => <SvgIcon src={HomeSvg} {...props} />;
+export const TessiIcon = (props) => <SvgIcon src={TessiSvg} {...props} />;
+export const TessiColorIcon = (props) => (
   <SvgIcon src={TessiColorSvg} {...props} />
 );
-export const UserIcon = props => <SvgIcon src={UserSvg} {...props} />;
-export const HelpIcon = props => <SvgIcon src={HelpSvg} {...props} />;
-export const EditDocumentIcon = props => (
+export const UserIcon = (props) => <SvgIcon src={UserSvg} {...props} />;
+export const HelpIcon = (props) => <SvgIcon src={HelpSvg} {...props} />;
+export const EditDocumentIcon = (props) => (
   <SvgIcon src={EditDocumentSvg} {...props} />
 );
-export const MapPointerIcon = props => (
+export const MapPointerIcon = (props) => (
   <SvgIcon src={MapPointerSvg} {...props} />
 );
-export const DashboardIcon = props => <SvgIcon src={GridSvg} {...props} />;
-export const NoteIcon = props => <SvgIcon src={FormSvg} {...props} />;
-export const OptimizationIcon = props => (
+export const DashboardIcon = (props) => <SvgIcon src={GridSvg} {...props} />;
+export const NoteIcon = (props) => <SvgIcon src={FormSvg} {...props} />;
+export const OptimizationIcon = (props) => (
   <SvgIcon src={OptimizationSvg} {...props} />
 );
-export const CalendarIcon = props => <SvgIcon src={CalendarSvg} {...props} />;
-export const TicketIcon = props => <SvgIcon src={TicketSvg} {...props} />;
-export const SettingIcon = props => <SvgIcon src={SettingSvg} {...props} />;
-export const OfficeIcon = props => <SvgIcon src={OfficeSvg} {...props} />;
-export const ImageIcon = props => <SvgIcon src={PicSvg} {...props} />;
-export const EmojiIcon = props => <SvgIcon src={SmilingFaceSvg} {...props} />;
-export const HeartIcon = props => <SvgIcon src={HeartSvg} {...props} />;
-export const FacebookIcon = props => <SvgIcon src={FacebookSvg} {...props} />;
-export const InstagramIcon = props => <SvgIcon src={InstagramSvg} {...props} />;
-export const TwitterIcon = props => <SvgIcon src={TwitterSvg} {...props} />;
-export const LinkedinIcon = props => <SvgIcon src={LinkedinSvg} {...props} />;
-export const BackIcon = props => <SvgIcon src={BackSvg} {...props} />;
-export const CancelIcon = props => <SvgIcon src={CancelSvg} {...props} />;
-export const DeleteIcon = props => <SvgIcon src={DeleteSvg} {...props} />;
-export const FavoriteIcon = props => <SvgIcon src={FavSvg} {...props} />;
-export const FavoriteOutlinedIcon = props => (
+export const CalendarIcon = (props) => <SvgIcon src={CalendarSvg} {...props} />;
+export const TicketIcon = (props) => <SvgIcon src={TicketSvg} {...props} />;
+export const SettingIcon = (props) => <SvgIcon src={SettingSvg} {...props} />;
+export const OfficeIcon = (props) => <SvgIcon src={OfficeSvg} {...props} />;
+export const ImageIcon = (props) => <SvgIcon src={PicSvg} {...props} />;
+export const EmojiIcon = (props) => <SvgIcon src={SmilingFaceSvg} {...props} />;
+export const HeartIcon = (props) => <SvgIcon src={HeartSvg} {...props} />;
+export const FacebookIcon = (props) => <SvgIcon src={FacebookSvg} {...props} />;
+export const InstagramIcon = (props) => (
+  <SvgIcon src={InstagramSvg} {...props} />
+);
+export const TwitterIcon = (props) => <SvgIcon src={TwitterSvg} {...props} />;
+export const LinkedinIcon = (props) => <SvgIcon src={LinkedinSvg} {...props} />;
+export const BackIcon = (props) => <SvgIcon src={BackSvg} {...props} />;
+export const CancelIcon = (props) => <SvgIcon src={CancelSvg} {...props} />;
+export const DeleteIcon = (props) => <SvgIcon src={DeleteSvg} {...props} />;
+export const FavoriteIcon = (props) => <SvgIcon src={FavSvg} {...props} />;
+export const FavoriteOutlinedIcon = (props) => (
   <SvgIcon src={FavOutlinedSvg} {...props} />
 );
-export const FavoriteFilledIcon = props => (
+export const FavoriteFilledIcon = (props) => (
   <SvgIcon src={FavFilledSvg} {...props} />
 );
-export const MapIcon = props => <SvgIcon src={MapSvg} {...props} />;
-export const PhoneIcon = props => <SvgIcon src={PhoneSvg} {...props} />;
-export const RegisterIcon = props => <SvgIcon src={RegisterSvg} {...props} />;
-export const SearchIcon = props => <SvgIcon src={SearchSvg} {...props} />;
-export const ShareIcon = props => <SvgIcon src={ShareSvg} {...props} />;
-export const PowerIcon = props => <SvgIcon src={SignoutSvg} {...props} />;
-export const EyeIcon = props => <SvgIcon src={EyeSvg} {...props} />;
-export const EyeDisIcon = props => <SvgIcon src={EyeDisSvg} {...props} />;
-export const PinGeneralIcon = props => <SvgIcon src={PinGeneralSvg} {...props} />;
-export const HeadsetIcon = props => <SvgIcon src={HeadsetSvg} {...props} />;
-export const BasicsServiceIcon = props => <SvgIcon src={BasicsSvg} {...props} />;
-export const CommunityServiceIcon = props => <SvgIcon src={CommunitySvg} {...props} />;
-export const ZonesServiceIcon = props => <SvgIcon src={ZonesSvg} {...props} />;
-export const FacilitiesServiceIcon = props => <SvgIcon src={FacilitiesSvg} {...props} />;
-export const TransportationServiceIcon = props => <SvgIcon src={TransportationSvg} {...props} />;
-export const CateringServiceIcon = props => <SvgIcon src={CateringSvg} {...props} />;
-export const EquipmentServiceIcon = props => <SvgIcon src={EquipmentSvg} {...props} />;
-export const CoolStuffServiceIcon = props => <SvgIcon src={CoolStuffSvg} {...props} />;
-export const RulesServiceIcon = props => <SvgIcon src={RulesSvg} {...props} />;
-export const AdjustIcon = props => <SvgIcon src={AdjustSvg} {...props} />;
-export const TwitterBorderIcon = props => (
+export const MapIcon = (props) => <SvgIcon src={MapSvg} {...props} />;
+export const PhoneIcon = (props) => <SvgIcon src={PhoneSvg} {...props} />;
+export const RegisterIcon = (props) => <SvgIcon src={RegisterSvg} {...props} />;
+export const SearchIcon = (props) => <SvgIcon src={SearchSvg} {...props} />;
+export const ShareIcon = (props) => <SvgIcon src={ShareSvg} {...props} />;
+export const PowerIcon = (props) => <SvgIcon src={SignoutSvg} {...props} />;
+export const EyeIcon = (props) => <SvgIcon src={EyeSvg} {...props} />;
+export const EyeDisIcon = (props) => <SvgIcon src={EyeDisSvg} {...props} />;
+export const IndependentOfficeIcon = (props) => (
+  <SvgIcon src={IndependentOfficeSvg} {...props} />
+);
+export const PrivateOfficeIcon = (props) => (
+  <SvgIcon src={PrivateOfficeSvg} {...props} />
+);
+export const AssignedOfficeIcon = (props) => (
+  <SvgIcon src={AssignedOfficeSvg} {...props} />
+);
+export const UnassignedOfficeIcon = (props) => (
+  <SvgIcon src={UnassignedOfficeSvg} {...props} />
+);
+export const PinGeneralIcon = (props) => (
+  <SvgIcon src={PinGeneralSvg} {...props} />
+);
+export const HeadsetIcon = (props) => <SvgIcon src={HeadsetSvg} {...props} />;
+export const BasicsServiceIcon = (props) => (
+  <SvgIcon src={BasicsSvg} {...props} />
+);
+export const CommunityServiceIcon = (props) => (
+  <SvgIcon src={CommunitySvg} {...props} />
+);
+export const ZonesServiceIcon = (props) => (
+  <SvgIcon src={ZonesSvg} {...props} />
+);
+export const FacilitiesServiceIcon = (props) => (
+  <SvgIcon src={FacilitiesSvg} {...props} />
+);
+export const TransportationServiceIcon = (props) => (
+  <SvgIcon src={TransportationSvg} {...props} />
+);
+export const CateringServiceIcon = (props) => (
+  <SvgIcon src={CateringSvg} {...props} />
+);
+export const EquipmentServiceIcon = (props) => (
+  <SvgIcon src={EquipmentSvg} {...props} />
+);
+export const CoolStuffServiceIcon = (props) => (
+  <SvgIcon src={CoolStuffSvg} {...props} />
+);
+export const RulesServiceIcon = (props) => (
+  <SvgIcon src={RulesSvg} {...props} />
+);
+export const AdjustIcon = (props) => <SvgIcon src={AdjustSvg} {...props} />;
+export const TwitterBorderIcon = (props) => (
   <SvgIcon src={TwitterBorderSvg} {...props} />
 );
-export const FacebookBorderIcon = props => (
+export const FacebookBorderIcon = (props) => (
   <SvgIcon src={FacebookBorderSvg} {...props} />
 );
-export const InstagramBorderIcon = props => (
+export const InstagramBorderIcon = (props) => (
   <SvgIcon src={InstagramBorderSvg} {...props} />
 );
-export const LinkedinBorderIcon = props => (
+export const LinkedinBorderIcon = (props) => (
   <SvgIcon src={LinkedinBorderSvg} {...props} />
 );
-export const NetworkIcon = props => <SvgIcon src={NetworkSvg} {...props} />;
-export const UsersIcon = props => (
+export const NetworkIcon = (props) => <SvgIcon src={NetworkSvg} {...props} />;
+export const UsersIcon = (props) => (
   <SvgIcon src={CompanyRegisterSvg} {...props} />
 );
-export const BuildingsIcon = props => (
+export const BuildingsIcon = (props) => (
   <SvgIcon src={LandlordRegisterSvg} {...props} />
 );
-export const UploadIcon = props => <SvgIcon src={UploadSvg} {...props} />;
+export const UploadIcon = (props) => <SvgIcon src={UploadSvg} {...props} />;
 
-export const ProgressIcon = props => (
+export const ProgressIcon = (props) => (
   <CircularProgress color="primary" size={36} {...props} />
 );
