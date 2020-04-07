@@ -42,6 +42,7 @@ import {
 import { withCarousel as CarouselWrapper } from "../../common/base-services";
 import { ConditionalWrapper } from "../../utils/helpers";
 import { ArrowBackIos } from "@material-ui/icons";
+import { useEffect } from "react";
 
 const styleSheet = (theme) => ({
   root: {
@@ -342,6 +343,30 @@ class Dashboard extends Component {
     this.setState({ currentOffice: null });
   };
 
+  renderDateTime = () => {
+    const [time, setTime] = React.useState(new Date());
+
+    useEffect(() => {
+      const intervalId = setInterval(() => setTime(new Date()), 1000 * 60);
+      return () => clearInterval(intervalId);
+    }, [time, setTime]);
+
+    return (
+      <Column alignChildrenEnd>
+        <Typography fontSizeXS textMediumGrey>
+          {[formatDate(time), getWeekday(time)].join(" ")}
+        </Typography>
+        <Typography fontSizeS textSecondary paddingTopHalf>
+          {time.toLocaleTimeString("en-US", {
+            hour: "numeric",
+            minute: "2-digit",
+            hour12: true,
+          })}
+        </Typography>
+      </Column>
+    );
+  };
+
   /**
    * Renderer function
    */
@@ -364,6 +389,8 @@ class Dashboard extends Component {
       completeness: profileCompleteness,
     } = profileStatus;
 
+    const DateTime = this.renderDateTime;
+
     return (
       <Column
         classes={{ box: s.root }}
@@ -373,9 +400,19 @@ class Dashboard extends Component {
         paddingBottomDouble
       >
         {/** title */}
-        <Typography fontSizeM textSecondary style={{ marginBottom: 45 }}>
-          {t("dashboard")}
-        </Typography>
+        <Row fullWidth style={{ marginBottom: 45 }} alignChildrenStart>
+          <Typography fontSizeM textSecondary>
+            {t("dashboard")}
+          </Typography>
+          {isWidthDown("xs", width) && (
+            <>
+              <Stretch />
+              <div style={{ marginTop: 4 }}>
+                <DateTime />
+              </div>
+            </>
+          )}
+        </Row>
 
         {/** show sub title and datetime */}
         <Row fullWidth alignChildrenCenter>
@@ -387,16 +424,20 @@ class Dashboard extends Component {
             {t("welcomeToLandlord")}
           </Typography>
 
-          <Stretch />
-
-          <Column alignChildrenEnd>
-            <Typography fontSizeXS textMediumGrey>
-              {[formatDate(new Date()), getWeekday(new Date())].join(" ")}
-            </Typography>
-            <Typography fontSizeS textSecondary paddingTopHalf>
-              {new Date().toLocaleTimeString()}
-            </Typography>
-          </Column>
+          {!isWidthDown("xs", width) && (
+            <>
+              <Stretch />
+              {/* <Column alignChildrenEnd>
+                <Typography fontSizeXS textMediumGrey>
+                  {[formatDate(new Date()), getWeekday(new Date())].join(" ")}
+                </Typography>
+                <Typography fontSizeS textSecondary paddingTopHalf>
+                  {new Date().toLocaleTimeString()}
+                </Typography>
+              </Column> */}
+              <DateTime />
+            </>
+          )}
         </Row>
 
         {/** show profile */}

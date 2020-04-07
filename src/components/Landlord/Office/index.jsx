@@ -9,41 +9,46 @@ import {
   Stretch,
   Box,
   Typography,
-  Button
+  Button,
 } from "../../../common/base-components";
 import {
   TabWrapper,
   StatisticBox,
-  OfficeItem
+  OfficeItem,
 } from "../../../common/base-layouts";
-import Carousel from "@brainhubeu/react-carousel";
+import { withCarousel as CarouselWrapper } from "../../../common/base-services/withCarousel";
+import { ConditionalWrapper } from "../../../utils/helpers";
 
-const styleSheet = theme => ({
+const styleSheet = (theme) => ({
   root: {
     paddingLeft: theme.spacing(5),
     paddingRight: theme.spacing(5),
     [theme.breakpoints.down("sm")]: {
       paddingLeft: 27,
-      paddingRight: 27
-    }
+      paddingRight: 27,
+    },
   },
 
   fullWidth: {
-    width: "100%"
+    width: "100%",
   },
 
   statisticWrapper: {
     flexWrap: "wrap",
     [theme.breakpoints.down("sm")]: {
       flexWrap: "nowrap",
-      overflowX: "auto"
-    }
+      overflowX: "auto",
+    },
   },
 
   officesTabWrapper: {
     paddingTop: 20,
-    paddingBottom: 56
-  }
+    paddingBottom: 56,
+  },
+
+  carouselWrapper: {
+    marginLeft: -10,
+  },
 });
 
 class Offices extends Component {
@@ -52,26 +57,26 @@ class Offices extends Component {
     getOffices: PropTypes.func.isRequired,
 
     classes: PropTypes.object,
-    t: PropTypes.func
+    t: PropTypes.func,
   };
 
   state = { offices: [] };
 
   /** Navigation */
-  navigate = path => () => {
+  navigate = (path) => () => {
     this.props.navigate(path);
   };
 
   /** Get landlord offices */
   componentDidMount() {
     this.props.getOffices().then(
-      response => this.setState({ offices: response.data }),
-      error => {}
+      (response) => this.setState({ offices: response.data }),
+      (error) => {}
     );
   }
 
   /** navigate to office detail page */
-  handleNavigateOfficeDetail = office => () => {
+  handleNavigateOfficeDetail = (office) => () => {
     if (office.published === true) {
       this.props.navigate("landlord/offices", office._id);
     } else {
@@ -83,12 +88,18 @@ class Offices extends Component {
    * Renderer function
    */
   render() {
-    const { width, classes, t } = this.props;
+    const { width, classes: s, t } = this.props;
     const { offices } = this.state;
+
+    const statistics = {
+      followUpRequests: { value: 8, variant: "primary" },
+      moreInfoReq: { value: 1 },
+      contactReq: { value: 1 },
+    };
 
     return (
       <Column
-        classes={{ box: classes.root }}
+        classes={{ box: s.root }}
         fullWidth
         alignChildrenStart
         paddingTopDouble
@@ -110,42 +121,42 @@ class Offices extends Component {
         </Row>
 
         {/* requests tab */}
-        <Row fullWidth classes={{ box: classes.officesTabWrapper }}>
+        <Row fullWidth classes={{ box: s.officesTabWrapper }}>
           <TabWrapper title={t("requests") + " (10)"} open={true} insideOpen>
             <Row
               fullWidth
               paddingTopDouble
-              classes={{ box: classes.statisticWrapper }}
+              classes={{ box: s.statisticWrapper }}
             >
-              <Box>
-                <StatisticBox
-                  title={t("followUpRequests")}
-                  statistics={[{ value: 8, variant: "primary" }]}
-                />
-              </Box>
-              <Box paddingLeftHalf>
-                <StatisticBox
-                  title={t("moreInfoReq")}
-                  statistics={[{ value: 1 }]}
-                />
-              </Box>
-              <Box paddingLeftHalf>
-                <StatisticBox
-                  title={t("contactReq")}
-                  statistics={[{ value: 1 }]}
-                />
-              </Box>
+              <ConditionalWrapper
+                condition={isWidthDown("xs", width)}
+                wrapper={(children) => (
+                  <CarouselWrapper
+                    itemWidth={212}
+                    itemOffset={20}
+                    className={s.carouselWrapper}
+                  >
+                    {children}
+                  </CarouselWrapper>
+                )}
+              >
+                {Object.entries(statistics).map(([key, stat]) => (
+                  <Box paddingRightHalf={!isWidthDown("xs", width)}>
+                    <StatisticBox title={t(key)} statistics={[stat]} />
+                  </Box>
+                ))}
+              </ConditionalWrapper>
             </Row>
           </TabWrapper>
         </Row>
 
         {/* office lists tab */}
-        <Row fullWidth classes={{ box: classes.officesTabWrapper }}>
+        <Row fullWidth classes={{ box: s.officesTabWrapper }}>
           <TabWrapper
             title={
               t("officeLists") +
               " (" +
-              offices.filter(item => item.published === true).length +
+              offices.filter((item) => item.published === true).length +
               ")"
             }
             open={true}
@@ -164,41 +175,34 @@ class Offices extends Component {
             }
           >
             <Row paddingTopDouble fullWidth noOverflow>
-              <div style={{ width: "100%", height: "100%" }}>
-                <Carousel
-                  itemWidth={
-                    isWidthDown("xs", width) ? "calc(100% + 20px)" : 255
-                  }
-                  offset={20}
-                  keepDirectionWhenDragging
-                >
-                  {offices
-                    .filter(item => item.published === true)
-                    .map((office, index) => (
-                      <div
-                        style={{ position: "relative" }}
-                        key={index}
-                        onClick={this.handleNavigateOfficeDetail(office)}
-                      >
-                        <OfficeItem
-                          office={office}
-                          setFavorite
-                        />
-                      </div>
-                    ))}
-                </Carousel>
-              </div>
+              <CarouselWrapper
+                itemWidth={isWidthDown("xs", width) ? "calc(100% + 20px)" : 255}
+                itemOffset={20}
+                className={s.carouselWrapper}
+              >
+                {offices
+                  .filter((item) => item.published === true)
+                  .map((office, index) => (
+                    <div
+                      style={{ position: "relative" }}
+                      key={index}
+                      onClick={this.handleNavigateOfficeDetail(office)}
+                    >
+                      <OfficeItem office={office} setFavorite />
+                    </div>
+                  ))}
+              </CarouselWrapper>
             </Row>
           </TabWrapper>
         </Row>
 
         {/* offices need attention tab */}
-        <Row fullWidth classes={{ box: classes.officesTabWrapper }}>
+        <Row fullWidth classes={{ box: s.officesTabWrapper }}>
           <TabWrapper
             title={
               t("needAttention") +
               " (" +
-              offices.filter(item => item.published === false).length +
+              offices.filter((item) => item.published === false).length +
               ")"
             }
             open={true}
@@ -217,31 +221,27 @@ class Offices extends Component {
             }
           >
             <Row paddingTopDouble fullWidth noOverflow>
-              <div style={{ width: "100%", height: "100%" }}>
-                <Carousel
-                  itemWidth={
-                    isWidthDown("xs", width) ? "calc(100% + 20px)" : 255
-                  }
-                  offset={20}
-                  keepDirectionWhenDragging
-                >
-                  {offices
-                    .filter(item => item.published === false)
-                    .map((office, index) => (
-                      <div
-                        style={{ position: "relative" }}
-                        key={index}
-                        onClick={this.handleNavigateOfficeDetail(office)}
-                      >
-                        <OfficeItem
-                          office={office}
-                          // errorMsg="pending"
-                          setFavorite
-                        />
-                      </div>
-                    ))}
-                </Carousel>
-              </div>
+              <CarouselWrapper
+                itemWidth={isWidthDown("xs", width) ? "calc(100% + 20px)" : 255}
+                itemOffset={20}
+                className={s.carouselWrapper}
+              >
+                {offices
+                  .filter((item) => item.published === false)
+                  .map((office, index) => (
+                    <div
+                      style={{ position: "relative" }}
+                      key={index}
+                      onClick={this.handleNavigateOfficeDetail(office)}
+                    >
+                      <OfficeItem
+                        office={office}
+                        // errorMsg="pending"
+                        setFavorite
+                      />
+                    </div>
+                  ))}
+              </CarouselWrapper>
             </Row>
           </TabWrapper>
         </Row>
