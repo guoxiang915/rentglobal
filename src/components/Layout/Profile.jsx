@@ -780,7 +780,8 @@ class Profile extends Component {
                     {children}
                   </CarouselWrapper>
                 )}
-                children={this.documents[role].map((item) => (
+              >
+                {this.documents[role].map((item) => (
                   <React.Fragment key={item.value}>
                     <Box paddingRightHalf paddingBottomHalf>
                       <UploadDocument
@@ -794,7 +795,7 @@ class Profile extends Component {
                     </Box>
                   </React.Fragment>
                 ))}
-              />
+              </ConditionalWrapper>
             </Row>
           </TabWrapper>
         </Row>

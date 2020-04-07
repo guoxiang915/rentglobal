@@ -388,5 +388,7 @@
     "totalContracts": "Total contracts",
     "totalOptimization": "Total optimization",
     "calendarEvents": "Calendar events",
-    "fullView": "Full view"
+    "fullView": "Full view",
+    "map": "Map",
+    "stat": "Stat"
 }

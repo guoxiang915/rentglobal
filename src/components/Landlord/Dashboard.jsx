@@ -34,7 +34,13 @@ import {
 } from "../../common/base-components";
 import { formatDate, getWeekday } from "../../utils/formatters";
 import { getProfileStatus } from "../../utils/validators";
-import { StatisticIconBox, OfficeDetailItem } from "../../common/base-layouts";
+import {
+  TabWrapper,
+  StatisticIconBox,
+  OfficeDetailItem,
+} from "../../common/base-layouts";
+import { withCarousel as CarouselWrapper } from "../../common/base-services";
+import { ConditionalWrapper } from "../../utils/helpers";
 import { ArrowBackIos } from "@material-ui/icons";
 
 const styleSheet = (theme) => ({
@@ -102,12 +108,20 @@ const styleSheet = (theme) => ({
     height: 8,
   },
 
+  officesMapWrapper: {
+    marginTop: 40,
+    marginBottom: 40,
+    width: "100%",
+  },
+
+  tabWrapper: {
+    paddingTop: 28,
+  },
+
   officesMap: {
     position: "relative",
     width: "100%",
     height: 450,
-    marginTop: 40,
-    marginBottom: 40,
     [theme.breakpoints.down("sm")]: {
       height: 450,
     },
@@ -472,193 +486,238 @@ class Dashboard extends Component {
         </Row>
 
         {/** show google map with offices in it */}
-        <Row classes={{ box: s.officesMap }}>
-          <Column stretch fullHeight noOverflow relative>
-            <GoogleMap
-              coordinates={offices
-                .filter(
-                  (office) => office.location && office.location.coordinates
-                )
-                .map((office) => office.location.coordinates)}
-              markers={offices
-                .filter(
-                  (office) => office.location && office.location.coordinates
-                )
-                .map((office, index) => (
-                  <GoogleMapMarker
-                    key={index}
-                    size={30}
-                    lat={office.location.coordinates.lat}
-                    lng={office.location.coordinates.lng}
-                    color={currentOffice === office ? "mainColor" : undefined}
-                    badge={office.leasedBy && office.leasedBy.overduePayment}
-                    tooltip={
-                      (currentOffice === office ||
-                        selectedOfficeTypes.indexOf(office.officeType) !==
-                          -1) && (
-                        <MUIBox
-                          component={() => {
-                            const Icon = this.officeTypes[office.officeType]
-                              .icon;
-                            return <Icon className={s.officeMarkerTooltip} />;
-                          }}
-                        />
-                      )
-                    }
-                    onClick={this.handleSelectOffice(office)}
-                  />
-                ))}
-            />
-
-            {currentOffice && (
-              <Button
-                variant="icon"
-                className={s.clearCurrentOfficeButton}
-                onClick={this.handleClearCurrentOffice}
+        <Row classes={{ box: s.officesMapWrapper }}>
+          <ConditionalWrapper
+            condition={isWidthDown("sm", width)}
+            wrapper={(children) => (
+              <TabWrapper
+                open={true}
+                insideOpen
+                title={t("map")}
+                bodyClass={s.tabWrapper}
               >
-                <CloseIcon
-                  style={{ width: 11, height: 11 }}
-                  className={s.normalIcon}
-                />
-              </Button>
+                {children}
+              </TabWrapper>
             )}
-          </Column>
+          >
+            <Row classes={{ box: s.officesMap }}>
+              <Column stretch fullHeight noOverflow relative>
+                <GoogleMap
+                  coordinates={offices
+                    .filter(
+                      (office) => office.location && office.location.coordinates
+                    )
+                    .map((office) => office.location.coordinates)}
+                  markers={offices
+                    .filter(
+                      (office) => office.location && office.location.coordinates
+                    )
+                    .map((office, index) => (
+                      <GoogleMapMarker
+                        key={index}
+                        size={30}
+                        lat={office.location.coordinates.lat}
+                        lng={office.location.coordinates.lng}
+                        color={
+                          currentOffice === office ? "mainColor" : undefined
+                        }
+                        badge={
+                          office.leasedBy && office.leasedBy.overduePayment
+                        }
+                        tooltip={
+                          (currentOffice === office ||
+                            selectedOfficeTypes.indexOf(office.officeType) !==
+                              -1) && (
+                            <MUIBox
+                              component={() => {
+                                const Icon = this.officeTypes[office.officeType]
+                                  .icon;
+                                return (
+                                  <Icon className={s.officeMarkerTooltip} />
+                                );
+                              }}
+                            />
+                          )
+                        }
+                        onClick={this.handleSelectOffice(office)}
+                      />
+                    ))}
+                />
 
-          {/* show office filters */}
-          {(!isWidthDown("xs", width) || !currentOffice) && (
-            <Row classes={{ box: s.officeFilterWrapper }} alignChildrenStart>
-              {showOfficeFilters && (
-                <Column classes={{ box: s.officeFilters }}>
-                  {Object.entries(this.officeFilters).map(([key, filter]) => (
-                    <React.Fragment key={key}>
-                      <Box paddingBottomHalf>
-                        <Checkbox
-                          variant="outlined"
-                          isChecked={key === currentOfficeFilter}
-                          label={
-                            t(filter.name) +
-                            " (" +
-                            (filter.value ? filter.value.length : 0) +
-                            ")"
-                          }
-                          onChange={this.handleSelectOfficeFilter(key)}
-                          className={s.officeFilter}
-                        />
-                      </Box>
-                    </React.Fragment>
-                  ))}
-                  {Object.entries(this.officeTypes).map(([key, type]) => (
-                    <React.Fragment key={key}>
-                      <Box paddingBottomHalf>
-                        <Checkbox
-                          variant="outlined"
-                          isChecked={selectedOfficeTypes.indexOf(key) !== -1}
-                          label={
-                            t(type.name) +
-                            " (" +
-                            (type.value ? type.value.length : 0) +
-                            ")"
-                          }
-                          onChange={this.handleToggleOfficeTypes(key)}
-                          className={s.officeFilter}
-                        />
-                      </Box>
-                    </React.Fragment>
-                  ))}
-                </Column>
+                {currentOffice && (
+                  <Button
+                    variant="icon"
+                    className={s.clearCurrentOfficeButton}
+                    onClick={this.handleClearCurrentOffice}
+                  >
+                    <CloseIcon
+                      style={{ width: 11, height: 11 }}
+                      className={s.normalIcon}
+                    />
+                  </Button>
+                )}
+              </Column>
+
+              {/* show office filters */}
+              {(!isWidthDown("xs", width) || !currentOffice) && (
+                <Row
+                  classes={{ box: s.officeFilterWrapper }}
+                  alignChildrenStart
+                >
+                  {showOfficeFilters && (
+                    <Column classes={{ box: s.officeFilters }}>
+                      {Object.entries(this.officeFilters).map(
+                        ([key, filter]) => (
+                          <React.Fragment key={key}>
+                            <Box paddingBottomHalf>
+                              <Checkbox
+                                variant="outlined"
+                                isChecked={key === currentOfficeFilter}
+                                label={
+                                  t(filter.name) +
+                                  " (" +
+                                  (filter.value ? filter.value.length : 0) +
+                                  ")"
+                                }
+                                onChange={this.handleSelectOfficeFilter(key)}
+                                className={s.officeFilter}
+                              />
+                            </Box>
+                          </React.Fragment>
+                        )
+                      )}
+                      {Object.entries(this.officeTypes).map(([key, type]) => (
+                        <React.Fragment key={key}>
+                          <Box paddingBottomHalf>
+                            <Checkbox
+                              variant="outlined"
+                              isChecked={
+                                selectedOfficeTypes.indexOf(key) !== -1
+                              }
+                              label={
+                                t(type.name) +
+                                " (" +
+                                (type.value ? type.value.length : 0) +
+                                ")"
+                              }
+                              onChange={this.handleToggleOfficeTypes(key)}
+                              className={s.officeFilter}
+                            />
+                          </Box>
+                        </React.Fragment>
+                      ))}
+                    </Column>
+                  )}
+
+                  <Button
+                    variant="icon"
+                    className={s.toggleFilterButton}
+                    onClick={this.handleToggleOfficeFilter}
+                  >
+                    {showOfficeFilters ? (
+                      <ArrowBackIos
+                        style={{ width: 18, height: 18, marginLeft: 6 }}
+                        className={s.normalIcon}
+                      />
+                    ) : (
+                      <AdjustIcon
+                        style={{ width: 19, height: 18 }}
+                        className={s.normalIcon}
+                      />
+                    )}
+                  </Button>
+                </Row>
               )}
 
-              <Button
-                variant="icon"
-                className={s.toggleFilterButton}
-                onClick={this.handleToggleOfficeFilter}
-              >
-                {showOfficeFilters ? (
-                  <ArrowBackIos
-                    style={{ width: 18, height: 18, marginLeft: 6 }}
-                    className={s.normalIcon}
-                  />
-                ) : (
-                  <AdjustIcon
-                    style={{ width: 19, height: 18 }}
-                    className={s.normalIcon}
-                  />
-                )}
-              </Button>
+              {/* show office detail info */}
+              {currentOffice && (
+                <Column classes={{ box: s.officeDetailWrapper }}>
+                  <Box classes={{ box: s.officeDetail }}>
+                    <OfficeDetailItem office={currentOffice} />
+                  </Box>
+                  <Stretch />
+                  <Box
+                    classes={{ box: s.officeFullView }}
+                    onClick={this.handleNavigateOfficeDetail(currentOffice)}
+                    fullWidth
+                    justifyChildrenCenter
+                  >
+                    <Typography fontSizeXS textWhite>
+                      {t("fullView")}
+                    </Typography>
+                  </Box>
+                </Column>
+              )}
             </Row>
-          )}
-
-          {/* show office detail info */}
-          {currentOffice && (
-            <Column classes={{ box: s.officeDetailWrapper }}>
-              <Box classes={{ box: s.officeDetail }}>
-                <OfficeDetailItem office={currentOffice} />
-              </Box>
-              <Stretch />
-              <Box
-                classes={{ box: s.officeFullView }}
-                onClick={this.handleNavigateOfficeDetail(currentOffice)}
-                fullWidth
-                justifyChildrenCenter
-              >
-                <Typography fontSizeXS textWhite>
-                  {t("fullView")}
-                </Typography>
-              </Box>
-            </Column>
-          )}
+          </ConditionalWrapper>
         </Row>
 
         {/** show statistics */}
         <Row classes={{ box: s.statisticBoxWrapper }} wrap fullWidth>
-          <Box classes={{ box: s.statisticBox }}>
-            <StatisticIconBox
-              icon={
-                <FavoriteIcon
-                  className={s.lightIcon}
-                  style={{ width: 14, height: 13 }}
-                />
-              }
-              title={t("favoriteOffice")}
-              statistics={[{ value: 0, variant: "primary" }]}
-            />
-          </Box>
-          <Box classes={{ box: s.statisticBox }}>
-            <StatisticIconBox
-              icon={
-                <NoteIcon
-                  className={s.lightIcon}
-                  style={{ width: 14, height: 16 }}
-                />
-              }
-              title={t("totalContracts")}
-              statistics={[{ value: 2, variant: "primary" }]}
-            />
-          </Box>
-          <Box classes={{ box: s.statisticBox }}>
-            <StatisticIconBox
-              icon={
-                <OptimizationIcon
-                  className={s.lightIcon}
-                  style={{ width: 17, height: 19 }}
-                />
-              }
-              title={t("totalOptimization")}
-              statistics={[{ value: 1, variant: "primary" }]}
-            />
-          </Box>
-          <Box classes={{ box: s.statisticBox }}>
-            <StatisticIconBox
-              icon={
-                <CalendarIcon
-                  className={s.lightIcon}
-                  style={{ width: 16, height: 15 }}
-                />
-              }
-              title={t("calendarEvents")}
-              statistics={[{ value: 4, variant: "primary" }]}
-            />
-          </Box>
+          <ConditionalWrapper
+            condition={isWidthDown("sm", width)}
+            wrapper={(children) => (
+              <TabWrapper
+                open={true}
+                insideOpen
+                title={t("stat")}
+                bodyClass={s.tabWrapper}
+              >
+                <CarouselWrapper itemWidth={200} itemOffset={10}>
+                  {children}
+                </CarouselWrapper>
+              </TabWrapper>
+            )}
+          >
+            <Box classes={{ box: s.statisticBox }}>
+              <StatisticIconBox
+                icon={
+                  <FavoriteIcon
+                    className={s.lightIcon}
+                    style={{ width: 14, height: 13 }}
+                  />
+                }
+                title={t("favoriteOffice")}
+                statistics={[{ value: 0, variant: "primary" }]}
+              />
+            </Box>
+            <Box classes={{ box: s.statisticBox }}>
+              <StatisticIconBox
+                icon={
+                  <NoteIcon
+                    className={s.lightIcon}
+                    style={{ width: 14, height: 16 }}
+                  />
+                }
+                title={t("totalContracts")}
+                statistics={[{ value: 2, variant: "primary" }]}
+              />
+            </Box>
+            <Box classes={{ box: s.statisticBox }}>
+              <StatisticIconBox
+                icon={
+                  <OptimizationIcon
+                    className={s.lightIcon}
+                    style={{ width: 17, height: 19 }}
+                  />
+                }
+                title={t("totalOptimization")}
+                statistics={[{ value: 1, variant: "primary" }]}
+              />
+            </Box>
+            <Box classes={{ box: s.statisticBox }}>
+              <StatisticIconBox
+                icon={
+                  <CalendarIcon
+                    className={s.lightIcon}
+                    style={{ width: 16, height: 15 }}
+                  />
+                }
+                title={t("calendarEvents")}
+                statistics={[{ value: 4, variant: "primary" }]}
+              />
+            </Box>
+          </ConditionalWrapper>
         </Row>
       </Column>
     );
