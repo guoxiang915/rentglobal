@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import { withStyles } from "@material-ui/core/styles";
 import { withRouter } from "react-router-dom";
 import { withTranslation } from "react-i18next";
-import withWidth from "@material-ui/core/withWidth";
+import withWidth, { isWidthDown } from "@material-ui/core/withWidth";
 import PropTypes from "prop-types";
 import { Box as MUIBox } from "@material-ui/core";
 import {
@@ -75,10 +75,11 @@ const styleSheet = (theme) => ({
   accountAvatar: {
     width: 80,
     height: 80,
+    marginRight: 24,
   },
 
   accountName: {
-    paddingLeft: 24,
+    minHeight: 75,
   },
 
   profileCompletenessWrapper: {
@@ -112,6 +113,9 @@ const styleSheet = (theme) => ({
     },
     [theme.breakpoints.down("xs")]: {
       height: 570,
+      marginLeft: -27,
+      marginRight: -27,
+      width: "calc(100% + 54px)",
     },
   },
 
@@ -136,6 +140,10 @@ const styleSheet = (theme) => ({
     top: 0,
     left: 0,
     paddingTop: 7,
+    [theme.breakpoints.down("xs")]: {
+      paddingTop: 30,
+      paddingLeft: 20,
+    },
   },
 
   officeFilters: {
@@ -331,7 +339,7 @@ class Dashboard extends Component {
    * Renderer function
    */
   render() {
-    const { classes: s, t } = this.props;
+    const { width, classes: s, t } = this.props;
     const {
       offices,
       currentOffice,
@@ -386,7 +394,7 @@ class Dashboard extends Component {
 
         {/** show profile */}
         <Box paddingTopDouble />
-        <Row classes={{ box: s.profilePanel }} fullWidth>
+        <Row classes={{ box: s.profilePanel }} fullWidth wrap>
           {/* user avatar */}
           <Box
             alignChildrenCenter
@@ -432,31 +440,34 @@ class Dashboard extends Component {
           </Column>
 
           {/* profile completeness */}
-          <Column classes={{ box: s.profileCompletenessWrapper }}>
-            <LinearProgress
-              value={profileCompleted}
-              valueBuffer={profileCharged}
-              styles={{
-                root: s.profileProgress,
-              }}
-            />
-            <Link to="#" onClick={this.navigate("profile")}>
-              <Box
-                fullWidth
-                textPrimary={profileCompleteness === "profileCompleted"}
-                textMediumGrey={profileCompleteness === "profileNotComplete"}
-                textErrorRed={profileCompleteness === "profileNeedAttention"}
-              >
-                <Typography fontSizeXS>{t(profileCompleteness)}</Typography>
-                <Stretch />
-                <Typography fontSizeS alignChildrenCenter>
-                  <ArrowRightAltIcon
-                    className={s.attentionIcon}
-                    variant={profileCompleted < 100 ? "errorRed" : "normal"}
-                  />
-                </Typography>
-              </Box>
-            </Link>
+          <Stretch />
+          <Column style={{ minHeight: 60, width: 228 }}>
+            <Column classes={{ box: s.profileCompletenessWrapper }}>
+              <LinearProgress
+                value={profileCompleted}
+                valueBuffer={profileCharged}
+                styles={{
+                  root: s.profileProgress,
+                }}
+              />
+              <Link to="#" onClick={this.navigate("profile")}>
+                <Box
+                  fullWidth
+                  textPrimary={profileCompleteness === "profileCompleted"}
+                  textMediumGrey={profileCompleteness === "profileNotComplete"}
+                  textErrorRed={profileCompleteness === "profileNeedAttention"}
+                >
+                  <Typography fontSizeXS>{t(profileCompleteness)}</Typography>
+                  <Stretch />
+                  <Typography fontSizeS alignChildrenCenter>
+                    <ArrowRightAltIcon
+                      className={s.attentionIcon}
+                      variant={profileCompleted < 100 ? "errorRed" : "normal"}
+                    />
+                  </Typography>
+                </Box>
+              </Link>
+            </Column>
           </Column>
         </Row>
 
@@ -514,66 +525,68 @@ class Dashboard extends Component {
           </Column>
 
           {/* show office filters */}
-          <Row classes={{ box: s.officeFilterWrapper }} alignChildrenStart>
-            {showOfficeFilters && (
-              <Column classes={{ box: s.officeFilters }}>
-                {Object.entries(this.officeFilters).map(([key, filter]) => (
-                  <React.Fragment key={key}>
-                    <Box paddingBottomHalf>
-                      <Checkbox
-                        variant="outlined"
-                        isChecked={key === currentOfficeFilter}
-                        label={
-                          t(filter.name) +
-                          " (" +
-                          (filter.value ? filter.value.length : 0) +
-                          ")"
-                        }
-                        onChange={this.handleSelectOfficeFilter(key)}
-                        className={s.officeFilter}
-                      />
-                    </Box>
-                  </React.Fragment>
-                ))}
-                {Object.entries(this.officeTypes).map(([key, type]) => (
-                  <React.Fragment key={key}>
-                    <Box paddingBottomHalf>
-                      <Checkbox
-                        variant="outlined"
-                        isChecked={selectedOfficeTypes.indexOf(key) !== -1}
-                        label={
-                          t(type.name) +
-                          " (" +
-                          (type.value ? type.value.length : 0) +
-                          ")"
-                        }
-                        onChange={this.handleToggleOfficeTypes(key)}
-                        className={s.officeFilter}
-                      />
-                    </Box>
-                  </React.Fragment>
-                ))}
-              </Column>
-            )}
-
-            <Button
-              variant="icon"
-              className={s.toggleFilterButton}
-              onClick={this.handleToggleOfficeFilter}
-            >
-              {showOfficeFilters ? (
-                <ArrowBackIos
-                  style={{ width: 18, height: 18, marginLeft: 6 }}
-                  className={s.normalIcon}
-                />
-              ) : (
-                <AdjustIcon
-                  style={{ width: 19, height: 18 }}
-                  className={s.normalIcon}
-                />
+          {(!isWidthDown("xs", width) || !currentOffice) && (
+            <Row classes={{ box: s.officeFilterWrapper }} alignChildrenStart>
+              {showOfficeFilters && (
+                <Column classes={{ box: s.officeFilters }}>
+                  {Object.entries(this.officeFilters).map(([key, filter]) => (
+                    <React.Fragment key={key}>
+                      <Box paddingBottomHalf>
+                        <Checkbox
+                          variant="outlined"
+                          isChecked={key === currentOfficeFilter}
+                          label={
+                            t(filter.name) +
+                            " (" +
+                            (filter.value ? filter.value.length : 0) +
+                            ")"
+                          }
+                          onChange={this.handleSelectOfficeFilter(key)}
+                          className={s.officeFilter}
+                        />
+                      </Box>
+                    </React.Fragment>
+                  ))}
+                  {Object.entries(this.officeTypes).map(([key, type]) => (
+                    <React.Fragment key={key}>
+                      <Box paddingBottomHalf>
+                        <Checkbox
+                          variant="outlined"
+                          isChecked={selectedOfficeTypes.indexOf(key) !== -1}
+                          label={
+                            t(type.name) +
+                            " (" +
+                            (type.value ? type.value.length : 0) +
+                            ")"
+                          }
+                          onChange={this.handleToggleOfficeTypes(key)}
+                          className={s.officeFilter}
+                        />
+                      </Box>
+                    </React.Fragment>
+                  ))}
+                </Column>
               )}
-            </Button>
-          </Row>
+
+              <Button
+                variant="icon"
+                className={s.toggleFilterButton}
+                onClick={this.handleToggleOfficeFilter}
+              >
+                {showOfficeFilters ? (
+                  <ArrowBackIos
+                    style={{ width: 18, height: 18, marginLeft: 6 }}
+                    className={s.normalIcon}
+                  />
+                ) : (
+                  <AdjustIcon
+                    style={{ width: 19, height: 18 }}
+                    className={s.normalIcon}
+                  />
+                )}
+              </Button>
+            </Row>
+          )}
 
           {/* show office detail info */}
           {currentOffice && (
