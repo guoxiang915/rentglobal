@@ -1,4 +1,4 @@
-import React from "react";
+import React, { forwardRef } from "react";
 import PropTypes from "prop-types";
 import {
   Button as MUIButton,
@@ -84,45 +84,51 @@ const styleSheet = (theme) => {
   return styles;
 };
 
-const Button = ({
-  classes,
-  children,
-  rounded,
-  variant,
-  link,
-  background,
-  outline,
-  inverse,
-  transparent,
-  shadow,
-  loading,
-  styles,
-  ...props
-}) => (
-  <MUIButton
-    classes={{
-      root: clsx(
-        classes.root,
-        rounded !== false && classes.rounded,
-        variant && classes[variant],
-        link && classes[`link${link}`],
-        link && inverse && classes["linkinverse"],
-        background && classes[`bk${background}`],
-        outline && classes[`bd${outline}`],
-        transparent && classes.transparent,
-        shadow && classes.shadowButton,
-        styles
-      ),
-    }}
-    {...props}
-  >
-    {loading && (
-      <Box paddingRight>
-        <CircularProgress size={16} style={{ color: "white" }} />
-      </Box>
-    )}
-    {children}
-  </MUIButton>
+const Button = forwardRef(
+  (
+    {
+      classes,
+      children,
+      rounded,
+      variant,
+      link,
+      background,
+      outline,
+      inverse,
+      transparent,
+      shadow,
+      loading,
+      styles,
+      ...props
+    },
+    ref
+  ) => (
+    <MUIButton
+      classes={{
+        root: clsx(
+          classes.root,
+          rounded !== false && classes.rounded,
+          variant && classes[variant],
+          link && classes[`link${link}`],
+          link && inverse && classes["linkinverse"],
+          background && classes[`bk${background}`],
+          outline && classes[`bd${outline}`],
+          transparent && classes.transparent,
+          shadow && classes.shadowButton,
+          styles
+        ),
+      }}
+      ref={ref}
+      {...props}
+    >
+      {loading && (
+        <Box paddingRight>
+          <CircularProgress size={16} style={{ color: "white" }} />
+        </Box>
+      )}
+      {children}
+    </MUIButton>
+  )
 );
 
 Button.propTypes = {

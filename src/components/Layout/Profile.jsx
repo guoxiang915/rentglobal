@@ -41,7 +41,7 @@ import Dropzone from "react-dropzone";
 const SaveButtons = ({ isUpdating, onSave, onCancel, disabled, t }) => (
   <React.Fragment>
     <Box paddingRightDouble>
-      <Button link="errorRed" background="secondaryLight" onClick={onCancel}>
+      <Button link="errorRed" background="errorRedLight" inverse onClick={onCancel}>
         <CloseIcon style={{ width: 9, height: 9 }} />
         <Typography paddingLeft fontSizeS>
           {t("cancel")}

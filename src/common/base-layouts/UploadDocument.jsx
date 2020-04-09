@@ -173,7 +173,7 @@ const UploadDocument = ({
             ) : (
               <Button
                 variant="icon"
-                link="secondary"
+                link="errorRed"
                 background="errorRedLight"
                 outline="transparent"
                 inverse
