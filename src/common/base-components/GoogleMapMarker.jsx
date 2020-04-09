@@ -25,7 +25,7 @@ const useStyles = makeStyles({
     borderRadius: 8,
     background: (props) => props.theme.colors.primary.white,
     padding: 12,
-    boxShadow: (props) => `0px 2px 6px #00000014`,
+    boxShadow: `0px 2px 6px #00000014`,
     "&:after": {
       content: '""',
       display: "block",

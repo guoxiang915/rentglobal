@@ -1,20 +1,14 @@
-export const showSearchBar = visible => {
-  return {
-    type: "SHOW_SEARCHBAR",
-    visible: visible ? visible : true
-  };
-};
+export const showSearchBar = (visible) => ({
+  type: 'SHOW_SEARCHBAR',
+  visible: visible || true,
+});
 
-export const showAppBar = visible => {
-  return {
-    type: "SHOW_APPBAR",
-    visible: visible ? visible : true
-  };
-};
+export const showAppBar = (visible) => ({
+  type: 'SHOW_APPBAR',
+  visible: visible || true,
+});
 
-export const updateAppTitle = title => {
-  return {
-    type: "UPDATE_APP_TITLE",
-    title
-  };
-};
+export const updateAppTitle = (title) => ({
+  type: 'UPDATE_APP_TITLE',
+  title,
+});

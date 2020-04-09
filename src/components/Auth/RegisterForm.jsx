@@ -167,8 +167,8 @@ class RegisterForm extends Component {
           {registerMode === "landlord"
             ? t("signupAsLandlord")
             : registerMode === "company"
-            ? t("signupAsCompany")
-            : t("signupToRENTGLOBAL")}
+              ? t("signupAsCompany")
+              : t("signupToRENTGLOBAL")}
         </Typography>
 
         {/* email */}

@@ -98,7 +98,7 @@ class UnpublishedOfficeList extends Component {
             (office) => getOfficeStatus(office).status === "unpublish"
           ),
         }),
-      (error) => {}
+      () => {}
     );
   }
 

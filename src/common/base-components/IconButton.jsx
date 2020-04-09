@@ -2,7 +2,7 @@ import React from "react";
 import clsx from "clsx";
 import { IconButton as MUIIconButton, withStyles } from "@material-ui/core";
 
-const styleSheet = theme => ({
+const styleSheet = () => ({
   root: {
     // ...theme.buttons.default,
     flex: 0,

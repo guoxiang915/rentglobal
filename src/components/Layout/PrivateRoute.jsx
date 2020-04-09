@@ -4,7 +4,6 @@ import PropTypes from "prop-types";
 import clsx from "clsx";
 import Auth from "../../utils/auth";
 import { AppHeader, AppFooter, AppSidebar, HelpDialog } from ".";
-// import classes from "*.module.css";
 import { withStyles } from "@material-ui/core";
 import { Column, Spinner } from "../../common/base-components";
 import SendVerificationForm from "../Auth/SendVerificationForm";
@@ -145,54 +144,54 @@ class PrivateRoute extends React.Component {
     const { isLoggedIn, user } = this.props.auth;
 
     switch (path) {
-      case "back":
-        this.props.history.goBack();
-        break;
+    case "back":
+      this.props.history.goBack();
+      break;
 
-      case "home":
-        this.props.history.push("/");
-        break;
+    case "home":
+      this.props.history.push("/");
+      break;
 
-      case "help":
-        this.showHelpDialog();
-        break;
+    case "help":
+      this.showHelpDialog();
+      break;
 
-      case "login":
-      case "register":
-      case "register/landlord":
-      case "register/company":
-      case "forgot-password":
-        this.props.history.push(`/auth/${path}`);
-        break;
-      case "logout":
-        authObj.removeToken();
-        authObj.removeRefreshToken();
-        this.props.mappedlogout();
-        this.props.history.push("/");
-        break;
+    case "login":
+    case "register":
+    case "register/landlord":
+    case "register/company":
+    case "forgot-password":
+      this.props.history.push(`/auth/${path}`);
+      break;
+    case "logout":
+      authObj.removeToken();
+      authObj.removeRefreshToken();
+      this.props.mappedlogout();
+      this.props.history.push("/");
+      break;
 
-      case "dashboard":
-      case "profile":
-      case "offices/add":
-      case "offices/all":
-      case "offices/unpublish":
-      case "contracts":
-      case "optimization":
-        if (isLoggedIn) {
-          const role = user.role;
-          this.props.history.push(`/${role}/${path}/${payload ? payload : ""}`);
-          break;
-        }
-        this.props.history.push("/");
+    case "dashboard":
+    case "profile":
+    case "offices/add":
+    case "offices/all":
+    case "offices/unpublish":
+    case "contracts":
+    case "optimization":
+      if (isLoggedIn) {
+        const role = user.role;
+        this.props.history.push(`/${role}/${path}/${payload ? payload : ""}`);
         break;
-      case "landlord/offices":
-      case "offices":
-        this.props.history.push(`/${path}/${payload ? payload : ""}`);
-        break;
+      }
+      this.props.history.push("/");
+      break;
+    case "landlord/offices":
+    case "offices":
+      this.props.history.push(`/${path}/${payload ? payload : ""}`);
+      break;
 
-      default:
-        this.props.history.push("/");
-        break;
+    default:
+      this.props.history.push("/");
+      break;
     }
     this.handleToggleSidebar(false);
   };
@@ -247,7 +246,7 @@ class PrivateRoute extends React.Component {
         {...rest}
         render={(props) => {
           return (
-            <>
+            <React.Fragment>
               {authRequired && !isLoggedIn ? (
                 <Redirect to="/auth/login" />
               ) : (
@@ -342,7 +341,7 @@ class PrivateRoute extends React.Component {
                   {dialog}
                 </div>
               )}
-            </>
+            </React.Fragment>
           );
         }}
       />

@@ -5,11 +5,10 @@ import {
   Tooltip as MUITooltip,
   Typography,
   withStyles,
-  withTheme,
-  Zoom
+  Zoom,
 } from "@material-ui/core";
 
-export const tooltipStylesheet = theme => ({
+const tooltipStylesheet = (theme) => ({
   popper: {},
 
   tooltip: {
@@ -22,7 +21,7 @@ export const tooltipStylesheet = theme => ({
     alignItems: "center",
     border: `1px solid ${theme.colors.primary.borderGrey}`,
     boxShadow: `0px 2px 6px #00000014`,
-    position: "relative"
+    position: "relative",
   },
 
   tooltipRight: {
@@ -38,8 +37,8 @@ export const tooltipStylesheet = theme => ({
       border: `1px solid ${theme.colors.primary.borderGrey}`,
       borderTop: "none",
       borderRight: "none",
-      transform: "rotate(45deg)"
-    }
+      transform: "rotate(45deg)",
+    },
   },
 
   tooltipLeft: {
@@ -55,8 +54,8 @@ export const tooltipStylesheet = theme => ({
       border: `1px solid ${theme.colors.primary.borderGrey}`,
       borderBottom: "none",
       borderLeft: "none",
-      transform: "rotate(45deg)"
-    }
+      transform: "rotate(45deg)",
+    },
   },
 
   tooltipTop: {
@@ -72,8 +71,8 @@ export const tooltipStylesheet = theme => ({
       border: `1px solid ${theme.colors.primary.borderGrey}`,
       borderTop: "none",
       borderLeft: "none",
-      transform: "rotate(45deg)"
-    }
+      transform: "rotate(45deg)",
+    },
   },
 
   tooltipBottom: {
@@ -89,103 +88,99 @@ export const tooltipStylesheet = theme => ({
       border: `1px solid ${theme.colors.primary.borderGrey}`,
       borderBottom: "none",
       borderRight: "none",
-      transform: "rotate(45deg)"
-    }
+      transform: "rotate(45deg)",
+    },
   },
 
   tooltipprimary: {
     borderColor: theme.colors.primary.mainColor,
     "&:before": {
-      borderColor: theme.colors.primary.mainColor
+      borderColor: theme.colors.primary.mainColor,
     },
     "&:after": {
-      borderColor: theme.colors.primary.mainColor
-    }
+      borderColor: theme.colors.primary.mainColor,
+    },
   },
 
   tooltiperrorRed: {
     borderColor: theme.colors.primary.errorRed,
     "&:before": {
-      borderColor: theme.colors.primary.errorRed
+      borderColor: theme.colors.primary.errorRed,
     },
     "&:after": {
-      borderColor: theme.colors.primary.errorRed
-    }
-  }
+      borderColor: theme.colors.primary.errorRed,
+    },
+  },
 });
 
-export const tooltipContentStylesheet = theme => ({
+const tooltipContentStylesheet = (theme) => ({
   tooltipTitle: {
-    ...theme.tooltip.title
+    ...theme.tooltip.title,
   },
 
   tooltipText: {
-    ...theme.tooltip.text
-  }
+    ...theme.tooltip.text,
+  },
 });
 
-export const tooltipTargetStylesheet = theme => ({
+const tooltipTargetStylesheet = (theme) => ({
   tooltipTarget: {
-    ...theme.tooltip.target
-  }
+    ...theme.tooltip.target,
+  },
 });
 
-export const Tooltip = withTheme(
-  withStyles(tooltipStylesheet, { name: "Tooltip" })(
-    class Tooltip extends PureComponent {
-      static propTypes = {
-        content: PropTypes.any,
-        borderType: PropTypes.string,
-        theme: PropTypes.object,
-        placement: PropTypes.string
-      };
+export const Tooltip = withStyles(tooltipStylesheet, { name: "Tooltip" })(
+  class Tooltip extends PureComponent {
+    static propTypes = {
+      content: PropTypes.any,
+      borderType: PropTypes.string,
+      placement: PropTypes.string,
+    };
 
-      render() {
-        let {
-          content,
-          placement,
-          theme,
-          borderType,
-          children,
-          classes,
-          ...props
-        } = this.props;
+    render() {
+      let {
+        content,
+        placement,
+        borderType,
+        children,
+        classes,
+        ...props
+      } = this.props;
 
-        return (
-          <MUITooltip
-            title={content}
-            placement={placement ? placement : "right"}
-            PopperProps={{
-              modifiers: {
-                preventOverflow: { enabled: false },
-                hide: { enabled: false }
-              }
-            }}
-            classes={{
-              popper: classes.popper,
-              tooltip: clsx(
-                classes.tooltip,
-                borderType && classes[`tooltip${borderType}`]
-              ),
-              tooltipPlacementLeft: classes.tooltipLeft,
-              tooltipPlacementRight: classes.tooltipRight,
-              tooltipPlacementTop: classes.tooltipTop,
-              tooltipPlacementBottom: classes.tooltipBottom
-            }}
-            TransitionComponent={Zoom}
-            enterTouchDelay={0}
-            {...props}
-          >
-            {children}
-          </MUITooltip>
-        );
-      }
+      return (
+        <MUITooltip
+          title={content}
+          placement={placement ? placement : "right"}
+          PopperProps={{
+            modifiers: {
+              preventOverflow: { enabled: false },
+              hide: { enabled: false },
+            },
+          }}
+          classes={{
+            popper: classes.popper,
+            tooltip: clsx(
+              classes.tooltip,
+              borderType && classes[`tooltip${borderType}`]
+            ),
+            tooltipPlacementLeft: classes.tooltipLeft,
+            tooltipPlacementRight: classes.tooltipRight,
+            tooltipPlacementTop: classes.tooltipTop,
+            tooltipPlacementBottom: classes.tooltipBottom,
+          }}
+          TransitionComponent={Zoom}
+          enterTouchDelay={0}
+          {...props}
+        >
+          {children}
+        </MUITooltip>
+      );
     }
-  )
+  }
 );
 
 export const TooltipContent = withStyles(tooltipContentStylesheet, {
-  name: "TooltipContent"
+  name: "TooltipContent",
 })(({ title, text, classes }) => (
   <Fragment>
     <Typography variant="h6" classes={{ root: classes.tooltipTitle }}>
@@ -197,7 +192,7 @@ export const TooltipContent = withStyles(tooltipContentStylesheet, {
 ));
 
 export const TooltipTarget = withStyles(tooltipTargetStylesheet, {
-  name: "TooltipTarget"
+  name: "TooltipTarget",
 })(({ children, classes, className, ...props }) => (
   <span className={clsx(classes.tooltipTarget, className)} {...props}>
     {" "}

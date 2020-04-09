@@ -211,7 +211,7 @@ class PictureGalleryForm extends Component {
                 <UploadIcon fontSize="large" color="secondary" />
               )}
               <Hidden xsDown>
-                <>
+                <React.Fragment>
                   <Typography paddingTop fontSizeS textSecondary>
                     {t(
                       selectedPicture
@@ -222,7 +222,7 @@ class PictureGalleryForm extends Component {
                   <Typography paddingTop fontSizeS textSecondary>
                     {t("or")}
                   </Typography>
-                </>
+                </React.Fragment>
               </Hidden>
               <Box paddingTop />
               {selectedPicture ? (
@@ -246,7 +246,7 @@ class PictureGalleryForm extends Component {
                 </Button>
               )}
               {selectedPicture && (
-                <>
+                <React.Fragment>
                   <Box paddingTop />
                   <Button
                     link="errorRed"
@@ -258,7 +258,7 @@ class PictureGalleryForm extends Component {
                       {t("deselect")}
                     </Typography>
                   </Button>
-                </>
+                </React.Fragment>
               )}
             </Box>
           )}

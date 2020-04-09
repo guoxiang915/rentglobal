@@ -4,42 +4,42 @@ import { withStyles, CircularProgress } from "@material-ui/core";
 import { Button, Box } from ".";
 import { PlayArrowOutlined, Pause } from "@material-ui/icons";
 
-const playButtonStyleSheet = theme => ({
+const playButtonStyleSheet = (theme) => ({
   playButtonWrapper: {
     position: "relative",
     width: 70,
-    height: 70
+    height: 70,
   },
 
   circularProgress: {
     position: "absolute",
     width: "100% !important",
-    height: "100% !important"
+    height: "100% !important",
   },
 
   playButton: {
     width: 45,
     height: 45,
-    color: theme.colors.primary.white
-  }
+    color: theme.colors.primary.white,
+  },
 });
 
 const PlayButton = withStyles(playButtonStyleSheet, { name: "PlayButton" })(
   class PlayButton extends PureComponent {
     static defaultProps = {
       isPlaying: PropTypes.bool,
-      onTogglePlay: PropTypes.func
+      onTogglePlay: PropTypes.func,
     };
 
     state = {
       isLoading: this.props.isLoading,
-      isPlaying: this.props.isPlaying
+      isPlaying: this.props.isPlaying,
     };
 
-    componentDidUpdate(prevProps) {
+    componentDidUpdate() {
       this.setState({
         isLoading: this.props.isLoading,
-        isPlaying: this.props.isPlaying
+        isPlaying: this.props.isPlaying,
       });
     }
 
@@ -89,5 +89,5 @@ const PlayButton = withStyles(playButtonStyleSheet, { name: "PlayButton" })(
 );
 
 export const VideoPlayer = {
-  PlayButton
+  PlayButton,
 };

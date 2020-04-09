@@ -3,94 +3,94 @@ import PropTypes from "prop-types";
 import clsx from "clsx";
 import { Grid, Icon, withStyles } from "@material-ui/core";
 
-export const styleSheet = theme => ({
+const styleSheet = (theme) => ({
   headline: {
-    ...theme.typography.headline
+    ...theme.typography.headline,
   },
 
   modalHeader: {
     fontWeight: 500,
-    fontSize: "20px"
+    fontSize: "20px",
     // color: theme.colors.primary.black
   },
 
   subtitle: {
-    ...theme.typography.subtitle
+    ...theme.typography.subtitle,
   },
 
   sectionHeaders: {
     ...theme.typography.sectionHeaders,
     color: theme.colors.primary.black,
-    fontWeight: "bold"
+    fontWeight: "bold",
   },
 
   primaryBody: {
     lineHeight: 1.4,
-    ...theme.typography.primaryBody
+    ...theme.typography.primaryBody,
   },
 
   secondaryBody: {
-    ...theme.typography.secondaryBody
+    ...theme.typography.secondaryBody,
   },
 
   third: {
-    ...theme.typography.third
+    ...theme.typography.third,
   },
 
   primarySmallBody: {
-    ...theme.typography.primarySmallBody
+    ...theme.typography.primarySmallBody,
   },
 
   secondarySmallBody: {
-    ...theme.typography.secondarySmallBody
+    ...theme.typography.secondarySmallBody,
   },
 
   thirdSmall: {
-    ...theme.typography.thirdSmall
+    ...theme.typography.thirdSmall,
   },
 
   thirdSmallOutlined: {
     ...theme.typography.thirdSmall,
     border: `1px solid ${theme.colors.primary.secondaryBlue}`,
     borderRadius: 2,
-    padding: "0px 4px"
+    padding: "0px 4px",
   },
 
   caption: {
-    ...theme.typography.caption
+    ...theme.typography.caption,
   },
 
   errorMessage: {
-    ...theme.typography.errorMessage
+    ...theme.typography.errorMessage,
   },
 
   primaryWhite: {
     ...theme.typography.primaryBody,
-    color: theme.colors.primary.white
+    color: theme.colors.primary.white,
   },
 
   primaryWhiteSmall: {
     ...theme.typography.primarySmallBody,
-    color: theme.colors.primary.white
+    color: theme.colors.primary.white,
   },
 
   bold: {
-    fontWeight: "bold"
+    fontWeight: "bold",
   },
 
   block: {
-    display: "block"
+    display: "block",
   },
 
   italic: {
-    fontStyle: "italic"
-  }
+    fontStyle: "italic",
+  },
 });
 
-export const warningMessageStyleSheet = theme => ({
+const warningMessageStyleSheet = () => ({
   flex: {
-    flex: 1
-  }
+    flex: 1,
+  },
 });
 
 // VARIANT OPTIONS:
@@ -119,11 +119,11 @@ export const Text = withStyles(styleSheet, { name: "Text" })(
       children: PropTypes.any,
       className: PropTypes.string,
 
-      classes: PropTypes.any.isRequired
+      classes: PropTypes.any.isRequired,
     };
 
     static defaultProps = {
-      variant: "primaryBody"
+      variant: "primaryBody",
     };
 
     render() {
@@ -145,7 +145,7 @@ export const Text = withStyles(styleSheet, { name: "Text" })(
             {
               [classes.block]: block,
               [classes.bold]: bold,
-              [classes.italic]: italic
+              [classes.italic]: italic,
             },
             className
           )}
@@ -158,17 +158,17 @@ export const Text = withStyles(styleSheet, { name: "Text" })(
   }
 );
 
-export const Bold = props => <Text bold {...props} />;
+export const Bold = (props) => <Text bold {...props} />;
 
 export const WarningMessage = withStyles(warningMessageStyleSheet, {
-  name: "WarningMessage"
+  name: "WarningMessage",
 })(
   class WarningMessage extends PureComponent {
     static propTypes = {
       children: PropTypes.any,
       className: PropTypes.string,
 
-      classes: PropTypes.any.isRequired
+      classes: PropTypes.any.isRequired,
     };
 
     render() {

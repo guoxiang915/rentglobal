@@ -429,7 +429,7 @@ class AppHeader extends Component {
                 classes={s}
               />
             )}
-            {location.pathname !== `/${role}/dashboard/` && (
+            {location.pathname !== "/" && (
               <NavItem
                 onClick={navigate("dashboard")}
                 icon={DashboardIcon}
@@ -514,13 +514,13 @@ class AppHeader extends Component {
                 className={classes.logoNavigator}
               >
                 {isLoggedIn ? (
-                  <>
+                  <React.Fragment>
                     {!isWidthDown("sm", width) ? (
                       <img src={Logo} className={classes.logo} alt="RENTGLOBAL" />
                     ) : (
                       <img src={MiniLogo} className={classes.logo} alt="RENTGLOBAL" />
                     )}
-                  </>
+                  </React.Fragment>
                 ) : (
                   <img src={Logo} className={classes.logo} alt="RENTGLOBAL" />
                 )}
@@ -618,9 +618,9 @@ class AppHeader extends Component {
           <Grid item>
             <Row>
               {isLoggedIn ? (
-                <>
+                <React.Fragment>
                   {!isWidthDown("sm", width) && (
-                    <>
+                    <React.Fragment>
                       {/* chat with TESSI */}
                       <Column paddingLeftDouble>
                         <Typography fontSizeS fontWeightBold>
@@ -648,7 +648,7 @@ class AppHeader extends Component {
                           </Typography>
                         </Button>
                       </Column>
-                    </>
+                    </React.Fragment>
                   )}
 
                   {/* mails */}
@@ -740,10 +740,10 @@ class AppHeader extends Component {
                       </Paper>
                     </Popover>
                   </Column>
-                </>
+                </React.Fragment>
               ) : (
                 !isWidthDown("sm", width) && (
-                  <>
+                  <React.Fragment>
                     <Column>
                       <Typography fontSizeS>
                         <Link variant="body2" to="/">
@@ -787,7 +787,7 @@ class AppHeader extends Component {
                         </Button>
                       </Column>
                     )}
-                  </>
+                  </React.Fragment>
                 )
               )}
               {isWidthDown("sm", width) && (

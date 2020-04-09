@@ -78,7 +78,7 @@ class OfficeList extends Component {
   componentDidMount() {
     this.props.getOffices().then(
       response => this.setState({ offices: response.data }),
-      error => {}
+      () => {}
     );
   }
 

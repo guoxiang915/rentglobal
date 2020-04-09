@@ -94,7 +94,7 @@ class ShareOfficeDialog extends Component {
   };
 
   /** Share office via social */
-  handleShareSocial = (social) => () => {};
+  handleShareSocial = () => () => {};
 
   /** Render function */
   render() {
