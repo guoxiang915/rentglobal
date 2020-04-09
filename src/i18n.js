@@ -5,6 +5,10 @@ import LanguageDetector from "i18next-browser-languagedetector";
 import enCommon from "./common/locales/en/common.json";
 import enHome from "./common/locales/en/common.json";
 
+// french
+import frCommon from "./common/locales/fr/common.json";
+import frHome from "./common/locales/fr/common.json";
+
 const moment = require("moment");
 
 i18n.use(LanguageDetector).init({
@@ -13,6 +17,10 @@ i18n.use(LanguageDetector).init({
     en: {
       common: enCommon,
       home: enHome
+    },
+    fr: {
+      common: frCommon,
+      home: frHome
     }
   },
   fallbackLng: "en",

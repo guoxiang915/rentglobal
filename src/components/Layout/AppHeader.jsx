@@ -555,10 +555,10 @@ class AppHeader extends Component {
                       onClose={this.handleCloseMenu("languageEl")}
                       className={classes.headerMenu}
                     >
-                      <MenuItem onClick={this.handleSelectLanguage("English")}>
+                      <MenuItem onClick={this.handleSelectLanguage("en")}>
                         {t("english")}
                       </MenuItem>
-                      <MenuItem onClick={this.handleSelectLanguage("French")}>
+                      <MenuItem onClick={this.handleSelectLanguage("fr")}>
                         {t("french")}
                       </MenuItem>
                     </Menu>

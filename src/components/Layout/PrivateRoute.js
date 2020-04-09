@@ -10,6 +10,7 @@ import { Column, Spinner } from "../../common/base-components";
 import SendVerificationForm from "../Auth/SendVerificationForm";
 
 import HeaderImage from "../../assets/img/img_header@2x.jpg";
+import i18n from "../../i18n";
 
 /** Token-based auth object */
 const authObj = new Auth();
@@ -263,7 +264,7 @@ class PrivateRoute extends React.Component {
                         onToggleRole={this.handleToggleRole}
                         onToggleSidebar={this.handleToggleSidebar}
                         onSelectLocation={() => {}}
-                        onSelectLanguage={() => {}}
+                        onSelectLanguage={(lang) => {i18n.changeLanguage(lang)}}
                         navigate={this.navigate}
                       />
                     </div>
