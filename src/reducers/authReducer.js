@@ -169,6 +169,27 @@ const authReducer = (currentState = INITIAL_STATE, action) => {
       error: { type: 'updateUser', msg: action.resp.msg },
     };
 
+  case 'REQUEST_DELETE_DOCUMENT':
+    return {
+      ...currentState,
+      isLoading: true,
+    };
+
+  case 'DELETE_DOCUMENT_SUCCESS':
+    return {
+      ...currentState,
+      isLoading: false,
+      user: action.resp,
+      error: null,
+    };
+
+  case 'DELETE_DOCUMENT_FAILED':
+    return {
+      ...currentState,
+      isLoading: false,
+      error: { type: 'deleteDocument', msg: action.resp.msg },
+    };
+
   default:
     return currentState;
   }

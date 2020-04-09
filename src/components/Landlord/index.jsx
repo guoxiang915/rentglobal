@@ -17,7 +17,6 @@ import {
 import {
   uploadFile,
   downloadFile,
-  deleteUserDocument,
   getOffices,
   getAvailableOffices,
   getUnpublishedOffices,
@@ -31,7 +30,7 @@ import {
   deleteOfficePhoto,
   deleteOffice,
 } from "../../api/endpoints";
-import Profile from "../Layout/Profile";
+import Profile from "../../containers/Layout/Profile";
 import Dashboard from "../../containers/Landlord/Dashboard";
 import Office from "./Office";
 import OfficeDetail from "./Office/OfficeDetail";
@@ -289,7 +288,6 @@ class Landlord extends Component {
                       }
                       uploadFile={uploadFile}
                       downloadFile={downloadFile}
-                      deleteDocument={deleteUserDocument("landlord")}
                     />
                   )}
                 />

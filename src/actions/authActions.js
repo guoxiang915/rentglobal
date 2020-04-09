@@ -97,3 +97,8 @@ export const resetPassword = (payload, history, dispatch) => {
     type: 'REQUEST_RESET_PASSWORD',
   };
 };
+
+export const deleteDocument = (role, docType, docFile) => ({
+  type: 'REQUEST_DELETE_DOCUMENT',
+  payload: { role, docType, docFile },
+});

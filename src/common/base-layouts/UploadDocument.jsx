@@ -86,7 +86,7 @@ const UploadDocument = ({
   const nextCurrent = () => setCurrent(current + 1);
   const deleteCurrent = () => {
     closeDialog();
-    onDelete(documents[current]).then(() => setCurrent(0));
+    onDelete(documents[current]);
   };
   const downloadCurrent = () =>
     onDownload(documents[current]._id, documents[current].fileName);
@@ -196,7 +196,6 @@ const UploadDocument = ({
                 link="secondaryLight"
                 background="transparent"
                 outline="transparent"
-                // onClick={onUpload}
                 {...getRootProps()}
               >
                 <input {...getInputProps()} />
