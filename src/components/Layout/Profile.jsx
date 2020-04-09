@@ -853,25 +853,25 @@ class Profile extends Component {
                       {editTab === 'loginAndSecurity' ||
                       updatingTab === 'password' ? (
                         // buttons for save
-                        <SaveButtons
-                          isUpdating={updatingTab === 'password'}
-                          onSave={this.handleSaveSecurityInfo}
-                          onCancel={this.handleCancelEditProfile}
-                          t={t}
-                          disabled={
-                            !!passwordError || password !== confirmPassword
-                          }
-                        />
-                      ) : (
-                        <React.Fragment>
-                          <Typography fontSizeS textMediumGrey paddingRightHalf>
-                            {t('lastUpdate')}:
-                          </Typography>
-                          <Typography fontSizeS textSecondary>
-                            {passwordLastUpdated}
-                          </Typography>
-                        </React.Fragment>
-                      )}
+                          <SaveButtons
+                            isUpdating={updatingTab === 'password'}
+                            onSave={this.handleSaveSecurityInfo}
+                            onCancel={this.handleCancelEditProfile}
+                            t={t}
+                            disabled={
+                              !!passwordError || password !== confirmPassword
+                            }
+                          />
+                        ) : (
+                          <React.Fragment>
+                            <Typography fontSizeS textMediumGrey paddingRightHalf>
+                              {t('lastUpdate')}:
+                            </Typography>
+                            <Typography fontSizeS textSecondary>
+                              {passwordLastUpdated}
+                            </Typography>
+                          </React.Fragment>
+                        )}
                     </Row>
                   </Grid>
                 </Grid>
