@@ -89,7 +89,7 @@ class ForgotPasswordForm extends Component {
   };
 
   render() {
-    const { classes, t } = this.props;
+    const { classes, t, isLoading } = this.props;
 
     return (
       <form noValidate autoComplete="off" className={classes.formWrapper}>
@@ -125,6 +125,7 @@ class ForgotPasswordForm extends Component {
             className={classes.submitButton}
             onClick={this.handleResetPassword}
             disabled={!this.state.email}
+            loading={isLoading}
           >
             <Typography fontSizeS fontWeightBold>
               {t("resetPassword")}
@@ -149,6 +150,7 @@ class ForgotPasswordForm extends Component {
 ForgotPasswordForm.propTypes = {
   classes: PropTypes.object.isRequired,
   t: PropTypes.func.isRequired,
+  isLoading: PropTypes.bool,
 };
 
 export default withStyles(styleSheet)(

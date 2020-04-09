@@ -205,6 +205,7 @@ class AuthWrapper extends Component {
                   <Column classes={{ box: s.loginCard }}>
                     <ForgotPasswordForm
                       email={this.state.email}
+                      isLoading={isLoading}
                       mappedForgotPassword={payload =>
                         this.props.mappedForgotPassword(
                           payload,
