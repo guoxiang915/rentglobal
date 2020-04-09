@@ -89,7 +89,8 @@ const TabWrapper = (props) => {
         {isEdit ? (
           <Button
             link="errorRed"
-            background="secondaryLight"
+            background="errorRedLight"
+            inverse
             onClick={onToggleEdit}
           >
             <CloseIcon style={{ width: 9, height: 9 }} />
