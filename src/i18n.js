@@ -3,7 +3,7 @@ import LanguageDetector from "i18next-browser-languagedetector";
 
 // english
 import enCommon from "./common/locales/en/common.json";
-import enHome from "./common/locales/en/common.json";
+import enHome from "./common/locales/en/home.json";
 
 const moment = require("moment");
 
@@ -12,8 +12,8 @@ i18n.use(LanguageDetector).init({
   resources: {
     en: {
       common: enCommon,
-      home: enHome
-    }
+      home: enHome,
+    },
   },
   fallbackLng: "en",
   debug: true,
@@ -29,17 +29,18 @@ i18n.use(LanguageDetector).init({
   interpolation: {
     escapeValue: false, // not needed
     formatSeparator: ",",
-    format: function(value, format, lang) {
+    format(value, format) {
       if (format === "uppercase") return value.toUpperCase();
-      if (value instanceof Date)
+      if (value instanceof Date) {
         return moment(value).format(format);
+      }
       return value;
-    }
+    },
   },
 
   react: {
-    wait: true
-  }
+    wait: true,
+  },
 });
 
 export default i18n;

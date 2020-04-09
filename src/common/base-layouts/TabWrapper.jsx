@@ -21,7 +21,7 @@ import {
  * Stylesheet for TabWrapper component
  * @param {Object} theme
  */
-const styleSheet = (theme) => ({
+const styleSheet = () => ({
   headerClass: {
     minHeight: 34,
   },

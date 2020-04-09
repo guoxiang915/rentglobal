@@ -71,7 +71,7 @@ class Offices extends Component {
   componentDidMount() {
     this.props.getOffices().then(
       (response) => this.setState({ offices: response.data }),
-      (error) => {}
+      () => {}
     );
   }
 
@@ -141,9 +141,11 @@ class Offices extends Component {
                 )}
               >
                 {Object.entries(statistics).map(([key, stat]) => (
-                  <Box paddingRightHalf={!isWidthDown("xs", width)}>
-                    <StatisticBox title={t(key)} statistics={[stat]} />
-                  </Box>
+                  <React.Fragment key={key}>
+                    <Box paddingRightHalf={!isWidthDown("xs", width)}>
+                      <StatisticBox title={t(key)} statistics={[stat]} />
+                    </Box>
+                  </React.Fragment>
                 ))}
               </ConditionalWrapper>
             </Row>

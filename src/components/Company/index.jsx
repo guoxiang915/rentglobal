@@ -67,10 +67,13 @@ class Company extends Component {
             </Hidden>
             <Column classes={{ box: classes.contentWrapper }} fullWidth>
               <Switch>
-                <Route path="/company/dashboard" render={(props) => <></>} />
+                <Route
+                  path="/company/dashboard"
+                  render={() => <React.Fragment></React.Fragment>}
+                />
                 <Route
                   path="/company/profile"
-                  render={(props) => (
+                  render={() => (
                     <Profile
                       {...this.props.auth}
                       role="company"

@@ -876,7 +876,7 @@ class Home extends Component {
                 )}
                 <Row paddingTop fullWidth style={{ flexWrap: "wrap" }}>
                   {!isWidthDown("sm", width) && (
-                    <>
+                    <React.Fragment>
                       <Column style={{ height: "100%", left: -6 }} relative>
                         <MobileStepper
                           variant="dots"
@@ -890,7 +890,7 @@ class Home extends Component {
                         />
                       </Column>
                       <Stretch />
-                    </>
+                    </React.Fragment>
                   )}
                   <Grid
                     className={s.landingButtonsWrapper}

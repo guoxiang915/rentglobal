@@ -1,15 +1,15 @@
-import React, { Component } from "react";
+import React from "react";
 import PropTypes from "prop-types";
 import {
   Button as MUIButton,
   CircularProgress,
   withStyles,
-  withTheme
+  withTheme,
 } from "@material-ui/core";
 import { Box } from ".";
 import clsx from "clsx";
 
-const styleSheet = theme => {
+const styleSheet = (theme) => {
   const styles = {
     root: {
       background: `${theme.colors.primary.mainColor}`,
@@ -18,14 +18,14 @@ const styleSheet = theme => {
       color: "white",
       "&:hover": {
         color: "white",
-        background: `${theme.colors.primary.darkColor}`
+        background: `${theme.colors.primary.darkColor}`,
       },
       ...theme.fonts.size.fontSizeS,
-      ...theme.fonts.weight.fontWeightBold
+      ...theme.fonts.weight.fontWeightBold,
     },
 
     rounded: {
-      borderRadius: 99999
+      borderRadius: 99999,
     },
 
     secondary: {
@@ -36,9 +36,9 @@ const styleSheet = theme => {
         background: `${theme.colors.primary.mainColor}`,
         color: `white !important`,
         "& *": {
-          color: `white !important`
-        }
-      }
+          color: `white !important`,
+        },
+      },
     },
 
     icon: {
@@ -50,9 +50,9 @@ const styleSheet = theme => {
       "&:hover": {
         color: theme.colors.primary.mainColor,
         border: `1px solid ${theme.colors.primary.mainColor}`,
-        background: "none"
+        background: "none",
       },
-      ...theme.fonts.weight.fontWeightMedium
+      ...theme.fonts.weight.fontWeightMedium,
     },
 
     transparent: {
@@ -62,13 +62,13 @@ const styleSheet = theme => {
       "&:hover": {
         border: "none",
         background: "none",
-        color: `${theme.colors.primary.darkGrey}`
-      }
+        color: `${theme.colors.primary.darkGrey}`,
+      },
     },
 
     shadowButton: {
-      boxShadow: "0px 6px 12px #D7DF234D"
-    }
+      boxShadow: "0px 6px 12px #D7DF234D",
+    },
   };
 
   Object.entries(theme.links).forEach(
@@ -84,64 +84,57 @@ const styleSheet = theme => {
   return styles;
 };
 
-class Button extends Component {
-  static propTypes = {
-    classes: PropTypes.object.isRequired,
-    rounded: PropTypes.bool,
-    theme: PropTypes.object,
-    variant: PropTypes.string,
-    link: PropTypes.string,
-    background: PropTypes.string,
-    outline: PropTypes.string,
-    transparent: PropTypes.bool,
-    styles: PropTypes.object
-  };
+const Button = ({
+  classes,
+  children,
+  rounded,
+  variant,
+  link,
+  background,
+  outline,
+  inverse,
+  transparent,
+  shadow,
+  loading,
+  styles,
+  ...props
+}) => (
+  <MUIButton
+    classes={{
+      root: clsx(
+        classes.root,
+        rounded !== false && classes.rounded,
+        variant && classes[variant],
+        link && classes[`link${link}`],
+        link && inverse && classes["linkinverse"],
+        background && classes[`bk${background}`],
+        outline && classes[`bd${outline}`],
+        transparent && classes.transparent,
+        shadow && classes.shadowButton,
+        styles
+      ),
+    }}
+    {...props}
+  >
+    {loading && (
+      <Box paddingRight>
+        <CircularProgress size={16} style={{ color: "white" }} />
+      </Box>
+    )}
+    {children}
+  </MUIButton>
+);
 
-  render() {
-    const {
-      classes,
-      theme,
-      children,
-      rounded,
-      variant,
-      link,
-      background,
-      outline,
-      inverse,
-      transparent,
-      shadow,
-      loading,
-      styles,
-      ...props
-    } = this.props;
-
-    return (
-      <MUIButton
-        classes={{
-          root: clsx(
-            classes.root,
-            rounded !== false && classes.rounded,
-            variant && classes[variant],
-            link && classes[`link${link}`],
-            link && inverse && classes["linkinverse"],
-            background && classes[`bk${background}`],
-            outline && classes[`bd${outline}`],
-            transparent && classes.transparent,
-            shadow && classes.shadowButton,
-            styles
-          )
-        }}
-        {...props}
-      >
-        {loading && (
-          <Box paddingRight>
-            <CircularProgress size={16} style={{ color: "white" }} />
-          </Box>
-        )}
-        {children}
-      </MUIButton>
-    );
-  }
-}
+Button.propTypes = {
+  classes: PropTypes.object.isRequired,
+  rounded: PropTypes.bool,
+  theme: PropTypes.object,
+  variant: PropTypes.string,
+  link: PropTypes.string,
+  background: PropTypes.string,
+  outline: PropTypes.string,
+  transparent: PropTypes.bool,
+  styles: PropTypes.object,
+};
 
 export default withStyles(styleSheet, { name: "Button" })(withTheme(Button));

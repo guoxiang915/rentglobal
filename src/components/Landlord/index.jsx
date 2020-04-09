@@ -98,16 +98,16 @@ class Landlord extends Component {
           variant="primary"
           text={this.props.t("confirmEdit")}
           closeLabel={
-            <>
+            <React.Fragment>
               <CloseIcon style={{ width: 10, height: 10 }} />
               <Typography paddingLeft>{this.props.t("cancel")}</Typography>
-            </>
+            </React.Fragment>
           }
           confirmLabel={
-            <>
+            <React.Fragment>
               <CheckIcon style={{ width: 15, height: 12 }} />
               <Typography paddingLeft>{this.props.t("ok")}</Typography>
-            </>
+            </React.Fragment>
           }
           onConfirm={this.editOffice(officeId)}
           onClose={this.closeDialog}
@@ -124,16 +124,16 @@ class Landlord extends Component {
           variant="error"
           text={this.props.t("confirmDelete")}
           closeLabel={
-            <>
+            <React.Fragment>
               <CloseIcon style={{ width: 10, height: 10 }} />
               <Typography paddingLeft>{this.props.t("cancel")}</Typography>
-            </>
+            </React.Fragment>
           }
           confirmLabel={
-            <>
+            <React.Fragment>
               <DeleteIcon style={{ width: 15, height: 12 }} />
               <Typography paddingLeft>{this.props.t("delete")}</Typography>
-            </>
+            </React.Fragment>
           }
           onConfirm={this.deleteOffice(officeId)}
           onClose={this.closeDialog}
@@ -178,7 +178,7 @@ class Landlord extends Component {
               <Switch>
                 <Route
                   path="/landlord/dashboard"
-                  render={(props) => (
+                  render={() => (
                     <Dashboard
                       getOffices={getOffices}
                       navigate={this.props.navigate}
@@ -188,7 +188,7 @@ class Landlord extends Component {
                 <Route
                   exact
                   path="/landlord/offices"
-                  render={(props) => (
+                  render={() => (
                     <Office
                       getOffices={getOffices}
                       navigate={this.props.navigate}
@@ -220,7 +220,7 @@ class Landlord extends Component {
                 <Route
                   exact
                   path="/landlord/offices/all"
-                  render={({ match }) => (
+                  render={() => (
                     <OfficeList
                       getOffices={getAvailableOffices}
                       navigate={this.props.navigate}
@@ -230,7 +230,7 @@ class Landlord extends Component {
                 <Route
                   exact
                   path="/landlord/offices/unpublish"
-                  render={({ match }) => (
+                  render={() => (
                     <UnpublishedOfficeList
                       getOffices={getUnpublishedOffices}
                       navigate={this.props.navigate}
@@ -276,7 +276,7 @@ class Landlord extends Component {
                 />
                 <Route
                   path="/landlord/profile"
-                  render={(props) => (
+                  render={() => (
                     <Profile
                       {...this.props.auth}
                       role="landlord"

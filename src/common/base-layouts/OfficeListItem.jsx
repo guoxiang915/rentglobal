@@ -161,12 +161,12 @@ const OfficeListItem = ({
     status === "rejected"
       ? "rejectedByConsultant"
       : status === "pendingForApprove"
-      ? "pendingForApprove"
-      : status === "unpublished"
-      ? "unpublish"
-      : status === "incomplete"
-      ? "mustCompleteData"
-      : null;
+        ? "pendingForApprove"
+        : status === "unpublished"
+          ? "unpublish"
+          : status === "incomplete"
+            ? "mustCompleteData"
+            : null;
   const progress =
     officeStatus && officeStatus.progress < 100 ? officeStatus.progress : null;
 
@@ -310,7 +310,7 @@ const OfficeListItem = ({
                 {t("available")}
               </Typography>
             ) : (
-              <>
+              <React.Fragment>
                 <Row paddingTopHalf style={{ lineHeight: "26px" }}>
                   <Typography textMediumGrey fontSizeS>
                     {t("leasedBy")}:&nbsp;
@@ -334,10 +334,10 @@ const OfficeListItem = ({
                     {t("overduePayment")}
                   </Typography>
                 )}
-              </>
+              </React.Fragment>
             )
           ) : (
-            <>
+            <React.Fragment>
               {status && (
                 <Typography
                   textErrorRed
@@ -354,7 +354,7 @@ const OfficeListItem = ({
                   value={progress}
                 />
               )}
-            </>
+            </React.Fragment>
           )}
 
           {/** contact info */}

@@ -296,7 +296,7 @@ class Dashboard extends Component {
             ))
         );
       },
-      (error) => {}
+      () => {}
     );
   }
 
@@ -405,12 +405,12 @@ class Dashboard extends Component {
             {t("dashboard")}
           </Typography>
           {isWidthDown("xs", width) && (
-            <>
+            <React.Fragment>
               <Stretch />
               <div style={{ marginTop: 4 }}>
                 <DateTime />
               </div>
-            </>
+            </React.Fragment>
           )}
         </Row>
 
@@ -425,18 +425,10 @@ class Dashboard extends Component {
           </Typography>
 
           {!isWidthDown("xs", width) && (
-            <>
+            <React.Fragment>
               <Stretch />
-              {/* <Column alignChildrenEnd>
-                <Typography fontSizeXS textMediumGrey>
-                  {[formatDate(new Date()), getWeekday(new Date())].join(" ")}
-                </Typography>
-                <Typography fontSizeS textSecondary paddingTopHalf>
-                  {new Date().toLocaleTimeString()}
-                </Typography>
-              </Column> */}
               <DateTime />
-            </>
+            </React.Fragment>
           )}
         </Row>
 

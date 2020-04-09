@@ -39,7 +39,7 @@ import Dropzone from "react-dropzone";
 
 /** Show save and cancel buttons for form */
 const SaveButtons = ({ isUpdating, onSave, onCancel, disabled, t }) => (
-  <>
+  <React.Fragment>
     <Box paddingRightDouble>
       <Button link="errorRed" background="secondaryLight" onClick={onCancel}>
         <CloseIcon style={{ width: 9, height: 9 }} />
@@ -65,7 +65,7 @@ const SaveButtons = ({ isUpdating, onSave, onCancel, disabled, t }) => (
         </Typography>
       </Button>
     </Box>
-  </>
+  </React.Fragment>
 );
 
 const styleSheet = (theme) => ({
@@ -316,23 +316,23 @@ class Profile extends Component {
   };
 
   /** Save security information */
-  handleSaveSecurityInfo = (e) => {
+  handleSaveSecurityInfo = () => {
     this.setState({
       dialog: (
         <ConfirmDialog
           variant="error"
           text={this.props.t("confirmResetPassword")}
           closeLabel={
-            <>
+            <React.Fragment>
               <CloseIcon style={{ width: 10, height: 10 }} />
               <Typography paddingLeft>{this.props.t("cancel")}</Typography>
-            </>
+            </React.Fragment>
           }
           confirmLabel={
-            <>
+            <React.Fragment>
               <CheckIcon style={{ width: 15, height: 12 }} />
               <Typography paddingLeft>{this.props.t("reset")}</Typography>
-            </>
+            </React.Fragment>
           }
           onClose={this.handleCloseDialog}
           onConfirm={this.saveSecurityInfo}
@@ -432,7 +432,7 @@ class Profile extends Component {
           uploadingDocument: null,
         });
       },
-      (error) => {
+      () => {
         this.setState({ uploadingDocument: null });
       }
     );
@@ -463,7 +463,7 @@ class Profile extends Component {
   /** Delete user document */
   handleDeleteDocument = (docType) => (docFile) => {
     this.setState({ uploadingDocument: docType });
-    return this.props.deleteDocument(docType, docFile).then((response) => {
+    return this.props.deleteDocument(docType, docFile).then(() => {
       this.setState({
         uploadingDocument: null,
       });
@@ -853,25 +853,25 @@ class Profile extends Component {
                       {editTab === "loginAndSecurity" ||
                       updatingTab === "password" ? (
                         // buttons for save
-                        <SaveButtons
-                          isUpdating={updatingTab === "password"}
-                          onSave={this.handleSaveSecurityInfo}
-                          onCancel={this.handleCancelEditProfile}
-                          t={t}
-                          disabled={
-                            !!passwordError || password !== confirmPassword
-                          }
-                        />
-                      ) : (
-                        <>
-                          <Typography fontSizeS textMediumGrey paddingRightHalf>
-                            {t("lastUpdate")}:
-                          </Typography>
-                          <Typography fontSizeS textSecondary>
-                            {passwordLastUpdated}
-                          </Typography>
-                        </>
-                      )}
+                          <SaveButtons
+                            isUpdating={updatingTab === "password"}
+                            onSave={this.handleSaveSecurityInfo}
+                            onCancel={this.handleCancelEditProfile}
+                            t={t}
+                            disabled={
+                              !!passwordError || password !== confirmPassword
+                            }
+                          />
+                        ) : (
+                          <React.Fragment>
+                            <Typography fontSizeS textMediumGrey paddingRightHalf>
+                              {t("lastUpdate")}:
+                            </Typography>
+                            <Typography fontSizeS textSecondary>
+                              {passwordLastUpdated}
+                            </Typography>
+                          </React.Fragment>
+                        )}
                     </Row>
                   </Grid>
                 </Grid>

@@ -5,28 +5,24 @@ import flushMessage from "../flushMessages";
 
 const authObj = new Auth();
 
-const sendRequest = async credentials => {
+const sendRequest = async (credentials) => {
   let resp = null;
   try {
-    resp = await api.post(`/auth/login`, credentials);
+    resp = await api.post("/auth/login", credentials);
   } catch (error) {
-    console.log(error);
     resp = error.response;
-  } finally {
-    return resp;
   }
+  return resp;
 };
 
 const sendRequestForUser = async () => {
   let resp = null;
   try {
-    resp = await api.get(`/users/me`);
+    resp = await api.get("/users/me");
   } catch (error) {
-    console.log(error);
     resp = error.response;
-  } finally {
-    return resp;
   }
+  return resp;
 };
 
 function* login(action) {
@@ -40,7 +36,7 @@ function* login(action) {
       if (response.status === 200) {
         yield put({
           type: "LOGIN_SUCCESS",
-          resp: response.data
+          resp: response.data,
         });
         let route = "";
         if (response.data.role === "landlord") {
@@ -55,22 +51,25 @@ function* login(action) {
       } else {
         yield put({
           type: "LOGIN_FAILED",
-          resp: response.data
+          resp: response.data,
         });
       }
     } else if (response.status === 403) {
       yield put({
         type: "USER_NOT_ACTIVATED",
-        resp: response.data
+        resp: response.data,
       });
     } else {
       yield put({
         type: "LOGIN_FAILED",
-        resp: response.data
+        resp: response.data,
       });
     }
   } catch (error) {
-    console.log(error);
+    yield put({
+      type: "LOGIN_FAILED",
+      resp: {},
+    });
   }
   yield call(flushMessage);
 }

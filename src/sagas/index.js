@@ -10,7 +10,7 @@ export default function* rootSaga() {
     watchAuth(),
     watchLogin(),
     watchRegister(),
-    ...Object.entries(watchUser).map(([key, val]) => val()),
-    ...Object.entries(watchOffice).map(([key, val]) => val())
+    ...Object.values(watchUser).map((val) => val()),
+    ...Object.values(watchOffice).map((val) => val()),
   ]);
 }

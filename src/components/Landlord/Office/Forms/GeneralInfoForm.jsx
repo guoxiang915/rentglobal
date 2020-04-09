@@ -18,7 +18,7 @@ import {
   Chip,
   GooglePlaceField,
   GoogleMap,
-  EditIcon
+  EditIcon,
 } from "../../../../common/base-components";
 import { TabWrapper } from "../../../../common/base-layouts";
 import { Grid } from "@material-ui/core";
@@ -26,19 +26,19 @@ import {
   officeTypes,
   contractTypes,
   guarantees,
-  checkOutNotices
+  checkOutNotices,
 } from "../../../../utils/constants";
 
-const styleSheet = theme => ({
+const styleSheet = (theme) => ({
   root: {},
 
   gridRow: {
     width: "100%",
-    paddingBottom: 8
+    paddingBottom: 8,
   },
 
   gridRowHeader: {
-    maxHeight: 47
+    maxHeight: 47,
   },
 
   gridRowValues: {
@@ -48,8 +48,8 @@ const styleSheet = theme => ({
       marginRight: -15,
       maxWidth: "calc(100% + 30px)",
       width: "calc(100% + 30px)",
-      flexBasis: "auto"
-    }
+      flexBasis: "auto",
+    },
   },
 
   importOfficeButton: {
@@ -59,39 +59,39 @@ const styleSheet = theme => ({
     [theme.breakpoints.down("xs")]: {
       marginTop: 0,
       marginBottom: 32,
-      marginRight: -15
-    }
+      marginRight: -15,
+    },
   },
 
   textField350: {
     width: 350,
     [theme.breakpoints.down("sm")]: {
-      width: "100%"
-    }
+      width: "100%",
+    },
   },
 
   textField175: {
     width: 175,
     [theme.breakpoints.down("xs")]: {
-      width: "calc(50% - 10px)"
-    }
+      width: "calc(50% - 10px)",
+    },
   },
 
   textField250Fixed: {
     width: 249,
     marginRight: theme.spacing(1.5),
     marginTop: theme.spacing(0.5),
-    marginBottom: theme.spacing(0.5)
+    marginBottom: theme.spacing(0.5),
   },
 
   googleMap: {
     height: 215,
-    paddingBottom: 8
+    paddingBottom: 8,
   },
 
   fullWidth: {
-    width: "100%"
-  }
+    width: "100%",
+  },
 });
 
 class GeneralInfoForm extends Component {
@@ -100,7 +100,7 @@ class GeneralInfoForm extends Component {
     error: PropTypes.array,
     onChangeField: PropTypes.func.isRequired,
     classes: PropTypes.object,
-    t: PropTypes.func
+    t: PropTypes.func,
   };
 
   state = {
@@ -110,7 +110,7 @@ class GeneralInfoForm extends Component {
       this.props.office &&
       this.props.office.location &&
       this.props.office.location.fullAddress
-    )
+    ),
   };
 
   /**
@@ -118,7 +118,7 @@ class GeneralInfoForm extends Component {
    * @member
    * @param {string} field Name of field to be updated
    */
-  updateState = field => value => {
+  updateState = (field) => (value) => {
     this.setState({ [field]: value });
   };
 
@@ -127,7 +127,7 @@ class GeneralInfoForm extends Component {
    * @member
    * @param {string} field Name of field to be updated
    */
-  handleChangeByEventValue = field => e => {
+  handleChangeByEventValue = (field) => (e) => {
     this.setState({ [field]: e.target.value });
   };
 
@@ -136,7 +136,7 @@ class GeneralInfoForm extends Component {
    * @member
    * @param {string} field Name of field to be updated
    */
-  handleChangePropsByEvent = field => value => () => {
+  handleChangePropsByEvent = (field) => (value) => () => {
     this.props.onChangeField(field, value);
   };
 
@@ -145,7 +145,7 @@ class GeneralInfoForm extends Component {
    * @member
    * @param {string} field Name of field to be updated
    */
-  handleChangePropsByEventValue = field => e => {
+  handleChangePropsByEventValue = (field) => (e) => {
     this.props.onChangeField(field, e.target.value);
   };
 
@@ -154,7 +154,7 @@ class GeneralInfoForm extends Component {
    * @member
    * @param {string} field Name of field to be updated
    */
-  handleChangeProps = field => value => {
+  handleChangeProps = (field) => (value) => {
     console.log(field, value);
     this.props.onChangeField(field, value);
   };
@@ -165,12 +165,12 @@ class GeneralInfoForm extends Component {
   };
 
   /** Change location fields */
-  handleChangeLocation = field => e => {
+  handleChangeLocation = (field) => (e) => {
     const location = { ...this.props.office.location, [field]: e.target.value };
     this.handleChangeProps("location")(location);
   };
 
-  handleSelectLocation = value => {
+  handleSelectLocation = (value) => {
     const location = { ...this.props.office.location, ...value };
     this.setState({ editAddressMode: false }, () => {
       this.handleChangeProps("location")(location);
@@ -178,20 +178,20 @@ class GeneralInfoForm extends Component {
   };
 
   /** Add/Delete spoken languages */
-  handleAddLanguage = e => {
+  handleAddLanguage = (e) => {
     if (e.key === "Enter") {
       let languages = this.props.office.spokenLanguages;
       const language = e.target.value;
       if (!(languages && languages.indexOf(language) !== -1))
         this.handleChangeProps("spokenLanguages")([
           ...(languages || []),
-          language
+          language,
         ]);
       this.setState({ spokenLanguage: "" });
     }
   };
 
-  handleDeleteLanguage = language => () => {
+  handleDeleteLanguage = (language) => () => {
     let languages = this.props.office.spokenLanguages;
     if (languages && languages.indexOf(language) !== -1) {
       languages.splice(languages.indexOf(language), 1);
@@ -248,65 +248,67 @@ class GeneralInfoForm extends Component {
     const { office, error, t } = this.props;
     let validation = null;
     try {
-      validation = error && error.find(item => item.param === field);
-    } catch (e) {}
+      validation = error && error.find((item) => item.param === field);
+    } catch (e) {
+      validation = null;
+    }
     switch (tag) {
-      case "textfield":
-        return (
-          <TextField
-            variant="outlined"
-            value={office[field]}
-            onChange={this.handleChangePropsByEventValue(field)}
-            error={!!validation}
-            helperText={validation && validation.msg}
-            {...props}
-          />
-        );
-      case "numberfield":
-        return (
-          <NumberField
-            value={office[field]}
-            onChange={this.handleChangePropsByEventValue(field)}
-            error={!!validation}
-            helperText={validation && validation.msg}
-            {...props}
-          />
-        );
-      case "select":
-        return (
-          <Select
-            options={["", ...options]}
-            renderOption={item =>
-              !item
-                ? t("selectOne")
-                : typeof item === "object"
+    case "textfield":
+      return (
+        <TextField
+          variant="outlined"
+          value={office[field]}
+          onChange={this.handleChangePropsByEventValue(field)}
+          error={!!validation}
+          helperText={validation && validation.msg}
+          {...props}
+        />
+      );
+    case "numberfield":
+      return (
+        <NumberField
+          value={office[field]}
+          onChange={this.handleChangePropsByEventValue(field)}
+          error={!!validation}
+          helperText={validation && validation.msg}
+          {...props}
+        />
+      );
+    case "select":
+      return (
+        <Select
+          options={["", ...options]}
+          renderOption={(item) =>
+            !item
+              ? t("selectOne")
+              : typeof item === "object"
                 ? t(...item)
                 : t(item)
-            }
-            displayEmpty
-            value={office[field] || ""}
-            onChange={this.handleChangePropsByEventValue(field)}
-            error={!!validation}
-            helperText={validation && validation.msg}
-            {...props}
-          />
-        );
-      case "address":
-        return (
-          <GooglePlaceField
-            variant="outlined"
-            value={office[field]}
-            onChange={this.handleChangePropsByEventValue(field)}
-            inputProps={{
-              ...props.inputProps,
-              error: !!validation,
-              helperText: validation && validation.msg
-            }}
-            {...props}
-          />
-        );
-      default:
-        return null;
+          }
+          displayEmpty
+          value={office[field] || ""}
+          onChange={this.handleChangePropsByEventValue(field)}
+          error={!!validation}
+          helperText={validation && validation.msg}
+          {...props}
+        />
+      );
+    case "address":
+      return (
+        <GooglePlaceField
+          variant="outlined"
+          value={office[field]}
+          onChange={this.handleChangePropsByEventValue(field)}
+          inputProps={{
+            ...props.inputProps,
+            error: !!validation,
+            helperText: validation && validation.msg,
+          }}
+          {...props}
+        />
+      );
+    default:
+      return null;
     }
   };
 
@@ -321,7 +323,7 @@ class GeneralInfoForm extends Component {
           this.props.office &&
           this.props.office.location &&
           this.props.office.location.fullAddress
-        )
+        ),
       };
     }
     if (Object.keys(state).length > 0) {
@@ -594,7 +596,7 @@ class GeneralInfoForm extends Component {
               />
             </GridRow>
             {editAddressMode ? (
-              <>
+              <React.Fragment>
                 {/** location */}
                 <GridRow classes={s} title={t("location")} required>
                   <NormalFormField
@@ -606,13 +608,13 @@ class GeneralInfoForm extends Component {
                     inputProps={{
                       placeholder: t("officeAddress"),
                       required: true,
-                      fullWidth: true
+                      fullWidth: true,
                     }}
                   />
                 </GridRow>
-              </>
+              </React.Fragment>
             ) : (
-              <>
+              <React.Fragment>
                 {/** street address */}
                 <GridRow classes={s} title={t("streetAddress")} labelMd={6}>
                   <NormalFormField
@@ -678,14 +680,17 @@ class GeneralInfoForm extends Component {
                     </Button>
                   </Row>
                 </Grid>
-              </>
+              </React.Fragment>
             )}
           </Grid>
           {!editAddressMode && (
             <Grid item md={4} sm={12} xs={12}>
               <Row fullWidth classes={{ box: s.googleMap }}>
                 <GoogleMap
-                  coordinates={office.location && office.location.coordinates && [office.location.coordinates]}
+                  coordinates={
+                    office.location &&
+                    office.location.coordinates && [office.location.coordinates]
+                  }
                 />
               </Row>
             </Grid>

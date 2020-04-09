@@ -97,9 +97,10 @@ const styleSheet = (theme) => ({
   },
 });
 
-export const SvgIcon = withStyles(styleSheet, { name: "SvgIcon" })(
+const SvgIcon = withStyles(styleSheet, { name: "SvgIcon" })(
   ({ src, variant, className, classes, styles, ...props }) => {
     const C = src;
+    /* eslint-disable no-unused-vars */
     const component = ({ viewBox, ...props }) => <C {...props} />;
 
     return (

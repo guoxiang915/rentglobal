@@ -1,6 +1,5 @@
 import { connect } from "react-redux";
 import AppSidebar from "../../components/Layout/AppSidebar";
-import * as authActions from "../../actions/authActions";
 
 const mapStateToProps = (state) => {
   return {
@@ -8,8 +7,4 @@ const mapStateToProps = (state) => {
   };
 };
 
-const mapDispatchToProps = (dispatch) => {
-  return {};
-};
-
-export default connect(mapStateToProps, mapDispatchToProps)(AppSidebar);
+export default connect(mapStateToProps)(AppSidebar);
