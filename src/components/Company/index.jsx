@@ -1,17 +1,13 @@
-import React, { Component } from "react";
-import { withStyles } from "@material-ui/core/styles";
-import { withTranslation } from "react-i18next";
-import PropTypes from "prop-types";
-import { Hidden } from "@material-ui/core";
-import { Switch, Route, Redirect, withRouter } from "react-router-dom";
-import { AppSidebar } from "../Layout";
-import { Row, Column } from "../../common/base-components";
-import Profile from "../Layout/Profile";
-import {
-  uploadFile,
-  downloadFile,
-  deleteUserDocument,
-} from "../../api/endpoints";
+import React, { Component } from 'react';
+import { withStyles } from '@material-ui/core/styles';
+import { withTranslation } from 'react-i18next';
+import PropTypes from 'prop-types';
+import { Hidden } from '@material-ui/core';
+import { Switch, Route, Redirect, withRouter } from 'react-router-dom';
+import { AppSidebar } from '../Layout';
+import { Row, Column } from '../../common/base-components';
+import Profile from '../../containers/Layout/Profile';
+import { uploadFile, downloadFile } from '../../api/endpoints';
 
 const styleSheet = (theme) => ({
   root: {
@@ -21,15 +17,15 @@ const styleSheet = (theme) => ({
   },
 
   sidebarWrapper: {
-    position: "sticky",
+    position: 'sticky',
     top: 0,
   },
 
   contentWrapper: {
-    width: "calc(100% - 151px)",
-    overflowX: "hidden",
-    [theme.breakpoints.down("sm")]: {
-      width: "100%",
+    width: 'calc(100% - 151px)',
+    overflowX: 'hidden',
+    [theme.breakpoints.down('sm')]: {
+      width: '100%',
     },
   },
 });
@@ -46,14 +42,14 @@ class Company extends Component {
 
     // TODO: requirements not specified when toggling roles
     if (
-      user.roles.indexOf("company") === -1 &&
-      location.pathname !== "/company/profile"
+      user.roles.indexOf('company') === -1 &&
+      location.pathname !== '/company/profile'
     ) {
       return <Redirect to="/company/profile" />;
     }
 
-    if (user.role !== "company") {
-      this.props.onToggleRole("company");
+    if (user.role !== 'company') {
+      this.props.onToggleRole('company');
     }
 
     return (
@@ -86,7 +82,6 @@ class Company extends Component {
                       }
                       uploadFile={uploadFile}
                       downloadFile={downloadFile}
-                      deleteDocument={deleteUserDocument("company")}
                     />
                   )}
                 />
@@ -101,5 +96,5 @@ class Company extends Component {
 }
 
 export default withRouter(
-  withStyles(styleSheet)(withTranslation("common")(Company))
+  withStyles(styleSheet)(withTranslation('common')(Company))
 );
