@@ -317,8 +317,6 @@ class OfficeDetailForm extends Component {
     const { office, classes: s, t, width } = this.props;
     const { dialog, currentPhoto } = this.state;
 
-    console.log(office);
-
     return (
       <Column classes={{ box: s.root }} fullWidth alignChildrenStart>
         {/** Show office coverPhotos */}

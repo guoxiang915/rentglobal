@@ -1,9 +1,9 @@
-import React, { Component } from "react";
-import { withStyles } from "@material-ui/core/styles";
-import { withTranslation } from "react-i18next";
-import clsx from "clsx";
-import PropTypes from "prop-types";
-import { withRouter } from "react-router-dom";
+import React, { Component } from 'react';
+import { withStyles } from '@material-ui/core/styles';
+import { withTranslation } from 'react-i18next';
+import clsx from 'clsx';
+import PropTypes from 'prop-types';
+import { withRouter } from 'react-router-dom';
 import {
   Row,
   Column,
@@ -14,50 +14,50 @@ import {
   Link,
   Divider,
   UserIcon,
-} from "../../common/base-components";
-import { TabWrapper, OfficeItem } from "../../common/base-layouts";
-import { KeyboardBackspace } from "@material-ui/icons";
-import OfficeDetailForm from "../../containers/Layout/OfficeDetailForm";
-import { formatDate1 } from "../../utils/formatters";
+} from '../../common/base-components';
+import { TabWrapper, OfficeItem } from '../../common/base-layouts';
+import { KeyboardBackspace } from '@material-ui/icons';
+import OfficeDetailForm from '../../containers/Layout/OfficeDetailForm';
+import { formatDate1 } from '../../utils/formatters';
 import {
   getApprovedOfficeById,
   getLandlordByOffice,
   getReviewsByOffice,
   getSimilarOffices,
-} from "../../api/endpoints";
-import Carousel from "@brainhubeu/react-carousel";
+} from '../../api/endpoints';
+import Carousel from '@brainhubeu/react-carousel';
 
 const styleSheet = (theme) => ({
   root: {
-    width: "100%",
-    height: "100%",
+    width: '100%',
+    height: '100%',
     background: theme.colors.primary.white,
-    minHeight: "calc(100vh - 250px)",
-    [theme.breakpoints.down("sm")]: {
-      minHeight: "calc(100vh - 166px)",
+    minHeight: 'calc(100vh - 250px)',
+    [theme.breakpoints.down('sm')]: {
+      minHeight: 'calc(100vh - 166px)',
     },
   },
 
   fixedWidth: {
     maxWidth: 1024 + 44,
-    width: "100%",
+    width: '100%',
     paddingLeft: 22,
     paddingRight: 22,
-    overflow: "hidden",
-    [theme.breakpoints.down("sm")]: {
+    overflow: 'hidden',
+    [theme.breakpoints.down('sm')]: {
       paddingLeft: 22,
       paddingRight: 22,
     },
   },
 
   fullWidth: {
-    width: "100%",
+    width: '100%',
   },
 
   addOfficeTabWrapper: {
     paddingTop: 20,
     paddingBottom: 106,
-    [theme.breakpoints.down("xs")]: {
+    [theme.breakpoints.down('xs')]: {
       paddingTop: 8,
       paddingBottom: 50,
     },
@@ -65,7 +65,7 @@ const styleSheet = (theme) => ({
 
   formButtons: {
     paddingTop: 160,
-    [theme.breakpoints.down("xs")]: {
+    [theme.breakpoints.down('xs')]: {
       paddingTop: 64,
     },
   },
@@ -78,19 +78,19 @@ const styleSheet = (theme) => ({
   landlordAvatarWrapper: {
     width: 67,
     height: 67,
-    borderRadius: "50%",
+    borderRadius: '50%',
     border: `1px solid ${theme.colors.primary.borderGrey}`,
-    display: "flex",
-    justifyContent: "center",
-    alignItems: "center",
-    overflow: "hidden",
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
+    overflow: 'hidden',
     marginRight: 26,
   },
 
   landlordAvatar: {
     width: 67,
     height: 67,
-    objectFit: "contain",
+    objectFit: 'contain',
   },
 
   landlordMoreInfo: {
@@ -109,32 +109,32 @@ const styleSheet = (theme) => ({
 
   similarOffices: {
     paddingTop: 54,
-    overflow: "hidden",
+    overflow: 'hidden',
   },
 
   reviewCompanyInfo: {
     marginRight: 68,
-    [theme.breakpoints.down("xs")]: {
-      width: "100%",
+    [theme.breakpoints.down('xs')]: {
+      width: '100%',
     },
   },
 
   reviewAvatarWrapper: {
     width: 39,
     height: 39,
-    borderRadius: "50%",
+    borderRadius: '50%',
     border: `1px solid ${theme.colors.primary.borderGrey}`,
-    display: "flex",
-    justifyContent: "center",
-    alignItems: "center",
-    overflow: "hidden",
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
+    overflow: 'hidden',
     marginRight: 20,
   },
 
   reviewAvatar: {
     width: 39,
     height: 39,
-    objectFit: "contain",
+    objectFit: 'contain',
   },
 
   divider: {
@@ -210,7 +210,7 @@ class OfficeDetail extends Component {
 
   /** Goto previous step */
   handleBack = () => {
-    this.props.history.goBack();
+    this.props.history.push('/');
   };
 
   /** Contact req of landlord */
@@ -232,7 +232,11 @@ class OfficeDetail extends Component {
 
     return (
       <Row fullWidth alignChildrenStart wrap>
-        <Column classes={{ box: s.reviewCompanyInfo }} alignChildrenStart paddingBottomHalf>
+        <Column
+          classes={{ box: s.reviewCompanyInfo }}
+          alignChildrenStart
+          paddingBottomHalf
+        >
           {/** Show review avatar, name, created date */}
           <Row>
             <Box classes={{ box: s.reviewAvatarWrapper }}>
@@ -293,7 +297,7 @@ class OfficeDetail extends Component {
             >
               <KeyboardBackspace />
               <Typography paddingLeft fontSizeS>
-                {t("back")}
+                {t('back')}
               </Typography>
             </Button>
           </Row>
@@ -350,7 +354,7 @@ class OfficeDetail extends Component {
                   onClick={this.handleContactReq}
                   shadow
                 >
-                  {t("contactReq")}
+                  {t('contactReq')}
                 </Button>
               </Box>
               <Box paddingLeftHalf paddingBottomHalf>
@@ -359,12 +363,12 @@ class OfficeDetail extends Component {
                   onClick={this.handleMoreInfoReq}
                   shadow
                 >
-                  {t("moreInfoReq")}
+                  {t('moreInfoReq')}
                 </Button>
               </Box>
               <Box paddingLeftHalf paddingBottomHalf>
                 <Button variant="primary" onClick={this.handleFollowUp} shadow>
-                  {t("followUp")}
+                  {t('followUp')}
                 </Button>
               </Box>
             </Row>
@@ -375,7 +379,7 @@ class OfficeDetail extends Component {
 
           <Row fullWidth classes={{ box: s.reviewsWrapper }}>
             <TabWrapper
-              title={t("reviews") + ` (${reviews.length})`}
+              title={t('reviews') + ` (${reviews.length})`}
               open={true}
               insideOpen
             >
@@ -391,7 +395,7 @@ class OfficeDetail extends Component {
                 onClick={this.handleMoreReviews}
                 variant="normalLight"
               >
-                <Typography fontSizeS>{t("loadMore")}</Typography>
+                <Typography fontSizeS>{t('loadMore')}</Typography>
               </Link>
             </TabWrapper>
           </Row>
@@ -401,17 +405,17 @@ class OfficeDetail extends Component {
           <Row fullWidth classes={{ box: s.similarOfficesWrapper }}>
             <Column fullWidth alignChildrenStart>
               <Typography fontSizeM textBlackGrey fontWeightBold>
-                {t("similarOffice")}
+                {t('similarOffice')}
               </Typography>
               <Row fullWidth classes={{ box: s.similarOffices }}>
-                <div style={{ width: "100%", height: "100%" }}>
+                <div style={{ width: '100%', height: '100%' }}>
                   <Carousel
                     itemWidth={255}
                     offset={20}
                     keepDirectionWhenDragging
                   >
                     {similarOffices.map((office, index) => (
-                      <div style={{ position: "relative" }} key={index}>
+                      <div style={{ position: 'relative' }} key={index}>
                         <OfficeItem office={office} setFavorite />
                       </div>
                     ))}
@@ -430,5 +434,5 @@ class OfficeDetail extends Component {
 }
 
 export default withRouter(
-  withStyles(styleSheet)(withTranslation("common")(OfficeDetail))
+  withStyles(styleSheet)(withTranslation('common')(OfficeDetail))
 );

@@ -82,7 +82,7 @@ class OfficeDetail extends Component {
 
   /** Goto previous step */
   handleBack = () => {
-    this.props.navigate("back");
+    this.props.navigate("offices");
   };
 
   /** Unpublish office */
