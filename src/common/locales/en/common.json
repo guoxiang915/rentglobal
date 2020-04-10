@@ -10,6 +10,8 @@
     "email": "Email",
     "invalidEmail": "Invalid email address",
     "password": "Password",
+    "oldPassword": "Old password",
+    "newPassword": "New password",
     "confirmPassword": "Confirm password",
     "confirmPasswordDifferent": "Confirm password different!",
     "createPassword": "Create a password",
