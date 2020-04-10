@@ -233,6 +233,7 @@ class Profile extends Component {
     copyOfPhotoIds: [],
     lastThreeBalances: [],
     commercialBrochures: [],
+    oldPassword: '',
     password: '',
     passwordError: '',
     confirmPassword: '',
@@ -338,9 +339,10 @@ class Profile extends Component {
   };
 
   saveSecurityInfo = () => {
-    const { password, confirmPassword } = this.state;
+    const { oldPassword, password, confirmPassword } = this.state;
     if (password === confirmPassword) {
       this.props.updateUser('password', {
+        oldPassword,
         password,
         passwordLastUpdated: new Date().getTime(),
       });
@@ -495,6 +497,7 @@ class Profile extends Component {
       phoneNumber,
       address,
       postalCode,
+      oldPassword,
       password,
       passwordError,
       confirmPassword,
@@ -814,7 +817,19 @@ class Profile extends Component {
                       <TextField
                         type="password"
                         variant="outlined"
-                        placeholder={t('password')}
+                        placeholder={t('oldPassword')}
+                        onChange={this.handleStateChangeByInput('oldPassword')}
+                        value={oldPassword}
+                        className={s.profileInput}
+                        startAdornment={<LockIcon className={s.outlineIcon} />}
+                        readOnly={editTab !== 'loginAndSecurity'}
+                      />
+                    </Row>
+                    <Row paddingTopHalf>
+                      <TextField
+                        type="password"
+                        variant="outlined"
+                        placeholder={t('newPassword')}
                         onChange={this.handleStateChangeByInput('password')}
                         value={password}
                         className={s.profileInput}
