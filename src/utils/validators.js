@@ -50,7 +50,7 @@ export function getOfficeStatus(office) {
 /**
  * Check profile status
  */
-export function getProfileStatus(user, role) {
+export function getProfileStatus(user, userRole) {
   let profileCompleted = 0;
   let profileCharged = 10;
   let profileCompleteness = null;
@@ -65,7 +65,7 @@ export function getProfileStatus(user, role) {
       'commercialBrochures',
     ],
   };
-  const profile = user[`${role}Profile`];
+  const profile = user[`${userRole}Profile`];
 
   if (profile) {
     if (profile.username || profile.phoneNumber) {
@@ -78,7 +78,7 @@ export function getProfileStatus(user, role) {
       profileCharged += 20;
     }
 
-    documentTypes[role].forEach((docType) => {
+    documentTypes[userRole].forEach((docType) => {
       if (profile[docType] && profile[docType].length) {
         profileCompleted += 10;
         profileCharged += 15;

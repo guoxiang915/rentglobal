@@ -1,14 +1,14 @@
-import { takeLatest, put, call } from "redux-saga/effects";
-import api from "../../api/api";
-import Auth from "../../utils/auth";
-import flushMessage from "../flushMessages";
+import { takeLatest, put, call } from 'redux-saga/effects';
+import api from '../../api/api';
+import Auth from '../../utils/auth';
+import flushMessage from '../flushMessages';
 
 const authObj = new Auth();
 
 const sendRequest = async (credentials) => {
   let resp = null;
   try {
-    resp = await api.post("/auth/login", credentials);
+    resp = await api.post('/auth/login', credentials);
   } catch (error) {
     resp = error.response;
   }
@@ -18,7 +18,7 @@ const sendRequest = async (credentials) => {
 const sendRequestForUser = async () => {
   let resp = null;
   try {
-    resp = await api.get("/users/me");
+    resp = await api.get('/users/me');
   } catch (error) {
     resp = error.response;
   }
@@ -35,39 +35,44 @@ function* login(action) {
       response = yield call(sendRequestForUser);
       if (response.status === 200) {
         yield put({
-          type: "LOGIN_SUCCESS",
+          type: 'LOGIN_SUCCESS',
           resp: response.data,
         });
-        let route = "";
-        if (response.data.role === "landlord") {
-          route = "/landlord";
+        let route = '';
+        if (response.data.role === 'landlord') {
+          route = '/landlord';
         } else {
-          route = "/company";
-        }
+          route = '/company';
+        }        
         if (!response.data.profile) {
-          route += "/profile";
+          route += '/profile';
         }
-        action.history.push(route);
+        action.history.push(route);        
+        yield put({
+          type: 'SET_USER_ROLE',
+          userRole: response.data.role,
+          history: action.history,
+        });
       } else {
         yield put({
-          type: "LOGIN_FAILED",
+          type: 'LOGIN_FAILED',
           resp: response.data,
         });
       }
     } else if (response.status === 403) {
       yield put({
-        type: "USER_NOT_ACTIVATED",
+        type: 'USER_NOT_ACTIVATED',
         resp: response.data,
       });
     } else {
       yield put({
-        type: "LOGIN_FAILED",
+        type: 'LOGIN_FAILED',
         resp: response.data,
       });
     }
   } catch (error) {
     yield put({
-      type: "LOGIN_FAILED",
+      type: 'LOGIN_FAILED',
       resp: {},
     });
   }
@@ -75,5 +80,5 @@ function* login(action) {
 }
 
 export default function* watchLogin() {
-  yield takeLatest("REQUEST_LOGIN", login);
+  yield takeLatest('REQUEST_LOGIN', login);
 }

@@ -1,10 +1,10 @@
-import React, { Component } from "react";
-import { withStyles } from "@material-ui/core/styles";
-import { withTranslation } from "react-i18next";
-import PropTypes from "prop-types";
-import { Hidden } from "@material-ui/core";
-import { Switch, Route, Redirect, withRouter } from "react-router-dom";
-import { AppSidebar } from "../Layout";
+import React, { Component } from 'react';
+import { withStyles } from '@material-ui/core/styles';
+import { withTranslation } from 'react-i18next';
+import PropTypes from 'prop-types';
+import { Hidden } from '@material-ui/core';
+import { Switch, Route, Redirect, withRouter } from 'react-router-dom';
+import { AppSidebar } from '../Layout';
 import {
   Row,
   Column,
@@ -13,7 +13,7 @@ import {
   CloseIcon,
   CheckIcon,
   DeleteIcon,
-} from "../../common/base-components";
+} from '../../common/base-components';
 import {
   uploadFile,
   downloadFile,
@@ -29,36 +29,36 @@ import {
   unpublishOffice,
   deleteOfficePhoto,
   deleteOffice,
-} from "../../api/endpoints";
-import Profile from "../../containers/Layout/Profile";
-import Dashboard from "../../containers/Landlord/Dashboard";
-import Office from "./Office";
-import OfficeDetail from "./Office/OfficeDetail";
-import AddNewOffice from "../../containers/Landlord/Office/AddNewOffice";
-import OfficeList from "./Office/OfficeList";
-import UnpublishedOfficeList from "./Office/UnpublishedOfficeList";
+} from '../../api/endpoints';
+import Profile from '../../containers/Layout/Profile';
+import Dashboard from '../../containers/Landlord/Dashboard';
+import Office from './Office';
+import OfficeDetail from './Office/OfficeDetail';
+import AddNewOffice from '../../containers/Landlord/Office/AddNewOffice';
+import OfficeList from './Office/OfficeList';
+import UnpublishedOfficeList from './Office/UnpublishedOfficeList';
 
 const styleSheet = (theme) => ({
   root: {
     maxWidth: 1024 + 44,
     paddingLeft: 22,
     paddingRight: 22,
-    [theme.breakpoints.down("xs")]: {
+    [theme.breakpoints.down('xs')]: {
       paddingLeft: 0,
       paddingRight: 0,
     },
   },
 
   sidebarWrapper: {
-    position: "sticky",
+    position: 'sticky',
     top: 0,
   },
 
   contentWrapper: {
-    width: "calc(100% - 151px)",
-    overflowX: "hidden",
-    [theme.breakpoints.down("sm")]: {
-      width: "100%",
+    width: 'calc(100% - 151px)',
+    overflowX: 'hidden',
+    [theme.breakpoints.down('sm')]: {
+      width: '100%',
     },
   },
 });
@@ -74,7 +74,7 @@ class Landlord extends Component {
   deleteOffice = (officeId) => () => {
     deleteOffice(officeId).then((response) => {
       if (response.status === 200) {
-        this.props.navigate("landlord/offices");
+        this.props.navigate('landlord/offices');
       }
     });
   };
@@ -85,7 +85,7 @@ class Landlord extends Component {
    */
   editOffice = (officeId) => () => {
     this.setState({ dialog: null }, () => {
-      this.props.navigate("landlord/offices", `${officeId}/edit`);
+      this.props.navigate('landlord/offices', `${officeId}/edit`);
     });
   };
 
@@ -95,17 +95,17 @@ class Landlord extends Component {
       dialog: (
         <ConfirmDialog
           variant="primary"
-          text={this.props.t("confirmEdit")}
+          text={this.props.t('confirmEdit')}
           closeLabel={
             <React.Fragment>
               <CloseIcon style={{ width: 10, height: 10 }} />
-              <Typography paddingLeft>{this.props.t("cancel")}</Typography>
+              <Typography paddingLeft>{this.props.t('cancel')}</Typography>
             </React.Fragment>
           }
           confirmLabel={
             <React.Fragment>
               <CheckIcon style={{ width: 15, height: 12 }} />
-              <Typography paddingLeft>{this.props.t("ok")}</Typography>
+              <Typography paddingLeft>{this.props.t('ok')}</Typography>
             </React.Fragment>
           }
           onConfirm={this.editOffice(officeId)}
@@ -121,17 +121,17 @@ class Landlord extends Component {
       dialog: (
         <ConfirmDialog
           variant="error"
-          text={this.props.t("confirmDelete")}
+          text={this.props.t('confirmDelete')}
           closeLabel={
             <React.Fragment>
               <CloseIcon style={{ width: 10, height: 10 }} />
-              <Typography paddingLeft>{this.props.t("cancel")}</Typography>
+              <Typography paddingLeft>{this.props.t('cancel')}</Typography>
             </React.Fragment>
           }
           confirmLabel={
             <React.Fragment>
               <DeleteIcon style={{ width: 15, height: 12 }} />
-              <Typography paddingLeft>{this.props.t("delete")}</Typography>
+              <Typography paddingLeft>{this.props.t('delete')}</Typography>
             </React.Fragment>
           }
           onConfirm={this.deleteOffice(officeId)}
@@ -149,19 +149,19 @@ class Landlord extends Component {
   /** Render function */
   render() {
     const { classes, location } = this.props;
-    const { user } = this.props.auth;
+    const { user, userRole } = this.props.auth;
     const { dialog } = this.state;
 
     // TODO: requirements not specified when toggling roles
     if (
-      user.roles.indexOf("landlord") === -1 &&
-      location.pathname !== "/landlord/profile"
+      user.roles.indexOf('landlord') === -1 &&
+      location.pathname !== '/landlord/profile'
     ) {
       return <Redirect to="/landlord/profile/" />;
     }
 
-    if (user.role !== "landlord") {
-      this.props.onToggleRole("landlord");
+    if (userRole !== 'landlord') {
+      this.props.onToggleRole('landlord');
     }
 
     return (
@@ -170,7 +170,10 @@ class Landlord extends Component {
           <Row classes={{ box: classes.root }} fullWidth alignChildrenStart>
             <Hidden smDown>
               <Column classes={{ box: classes.sidebarWrapper }} fullWdith>
-                <AppSidebar role="landlord" navigate={this.props.navigate} />
+                <AppSidebar
+                  userRole={userRole}
+                  navigate={this.props.navigate}
+                />
               </Column>
             </Hidden>
             <Column classes={{ box: classes.contentWrapper }} fullWidth>
@@ -196,7 +199,7 @@ class Landlord extends Component {
                 />
                 <Route
                   exact
-                  path={["/landlord/offices/add/:id", "/landlord/offices/add"]}
+                  path={['/landlord/offices/add/:id', '/landlord/offices/add']}
                   render={({ match }) => (
                     <AddNewOffice
                       officeId={match.params.id}
@@ -277,8 +280,6 @@ class Landlord extends Component {
                   path="/landlord/profile"
                   render={() => (
                     <Profile
-                      {...this.props.auth}
-                      role="landlord"
                       updateUser={(field, user) =>
                         this.props.mappedupdateUser(
                           field,
@@ -305,5 +306,5 @@ class Landlord extends Component {
 }
 
 export default withRouter(
-  withStyles(styleSheet)(withTranslation("common")(Landlord))
+  withStyles(styleSheet)(withTranslation('common')(Landlord))
 );

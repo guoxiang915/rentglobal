@@ -23,9 +23,9 @@ export const updateUser = (field, payload, history) => ({
   field,
 });
 
-export const setUserRole = (role, history) => ({
+export const setUserRole = (userRole, history) => ({
   type: 'SET_USER_ROLE',
-  role,
+  userRole,
   history,
 });
 
@@ -98,7 +98,7 @@ export const resetPassword = (payload, history, dispatch) => {
   };
 };
 
-export const deleteDocument = (role, docType, docFile) => ({
+export const deleteDocument = (userRole, docType, docFile) => ({
   type: 'REQUEST_DELETE_DOCUMENT',
-  payload: { role, docType, docFile },
+  payload: { userRole, docType, docFile },
 });

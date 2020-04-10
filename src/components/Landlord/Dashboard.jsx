@@ -1,10 +1,10 @@
-import React, { Component } from "react";
-import { withStyles } from "@material-ui/core/styles";
-import { withRouter } from "react-router-dom";
-import { withTranslation } from "react-i18next";
-import withWidth, { isWidthDown } from "@material-ui/core/withWidth";
-import PropTypes from "prop-types";
-import { Box as MUIBox } from "@material-ui/core";
+import React, { Component } from 'react';
+import { withStyles } from '@material-ui/core/styles';
+import { withRouter } from 'react-router-dom';
+import { withTranslation } from 'react-i18next';
+import withWidth, { isWidthDown } from '@material-ui/core/withWidth';
+import PropTypes from 'prop-types';
+import { Box as MUIBox } from '@material-ui/core';
 import {
   Row,
   Column,
@@ -31,25 +31,25 @@ import {
   PrivateOfficeIcon,
   AssignedOfficeIcon,
   UnassignedOfficeIcon,
-} from "../../common/base-components";
-import { formatDate, getWeekday } from "../../utils/formatters";
-import { getProfileStatus } from "../../utils/validators";
+} from '../../common/base-components';
+import { formatDate, getWeekday } from '../../utils/formatters';
+import { getProfileStatus } from '../../utils/validators';
 import {
   TabWrapper,
   StatisticIconBox,
   OfficeDetailItem,
-} from "../../common/base-layouts";
-import { withCarousel as CarouselWrapper } from "../../common/base-services";
-import { ConditionalWrapper } from "../../utils/helpers";
-import { ArrowBackIos } from "@material-ui/icons";
-import { useEffect } from "react";
+} from '../../common/base-layouts';
+import { withCarousel as CarouselWrapper } from '../../common/base-services';
+import { ConditionalWrapper } from '../../utils/helpers';
+import { ArrowBackIos } from '@material-ui/icons';
+import { useEffect } from 'react';
 
 const styleSheet = (theme) => ({
   root: {
     paddingLeft: theme.spacing(5),
     paddingRight: theme.spacing(5),
     marginBottom: 120,
-    [theme.breakpoints.down("sm")]: {
+    [theme.breakpoints.down('sm')]: {
       paddingLeft: 27,
       paddingRight: 27,
       marginBottom: 80,
@@ -57,7 +57,7 @@ const styleSheet = (theme) => ({
   },
 
   fullWidth: {
-    width: "100%",
+    width: '100%',
   },
 
   lightIcon: {
@@ -75,8 +75,8 @@ const styleSheet = (theme) => ({
 
   profilePanel: {
     background: theme.colors.primary.white,
-    padding: "23px 33px 27px",
-    position: "relative",
+    padding: '23px 33px 27px',
+    position: 'relative',
   },
 
   accountAvatar: {
@@ -90,7 +90,7 @@ const styleSheet = (theme) => ({
   },
 
   profileCompletenessWrapper: {
-    position: "absolute",
+    position: 'absolute',
     bottom: 0,
     right: 0,
     padding: 14,
@@ -112,7 +112,7 @@ const styleSheet = (theme) => ({
   officesMapWrapper: {
     marginTop: 40,
     marginBottom: 40,
-    width: "100%",
+    width: '100%',
   },
 
   tabWrapper: {
@@ -120,17 +120,17 @@ const styleSheet = (theme) => ({
   },
 
   officesMap: {
-    position: "relative",
-    width: "100%",
+    position: 'relative',
+    width: '100%',
     height: 450,
-    [theme.breakpoints.down("sm")]: {
+    [theme.breakpoints.down('sm')]: {
       height: 450,
     },
-    [theme.breakpoints.down("xs")]: {
+    [theme.breakpoints.down('xs')]: {
       height: 570,
       marginLeft: -27,
       marginRight: -27,
-      width: "calc(100% + 54px)",
+      width: 'calc(100% + 54px)',
     },
   },
 
@@ -140,22 +140,22 @@ const styleSheet = (theme) => ({
     marginBottom: 10,
     padding: 0,
     paddingRight: 8,
-    "&:last-of-type": {
+    '&:last-of-type': {
       paddingRight: 0,
     },
   },
 
   currentOfficeWrapper: {
     width: 232,
-    height: "100%",
+    height: '100%',
   },
 
   officeFilterWrapper: {
-    position: "absolute",
+    position: 'absolute',
     top: 0,
     left: 0,
     paddingTop: 7,
-    [theme.breakpoints.down("xs")]: {
+    [theme.breakpoints.down('xs')]: {
       paddingTop: 30,
       paddingLeft: 20,
     },
@@ -175,7 +175,7 @@ const styleSheet = (theme) => ({
     height: 32,
     marginLeft: 12,
     background: theme.colors.primary.white,
-    "&:hover": {
+    '&:hover': {
       background: theme.colors.primary.white,
     },
   },
@@ -183,17 +183,17 @@ const styleSheet = (theme) => ({
   clearCurrentOfficeButton: {
     width: 32,
     height: 32,
-    position: "absolute",
-    top: "calc(50% - 16px)",
+    position: 'absolute',
+    top: 'calc(50% - 16px)',
     right: 16,
     background: theme.colors.primary.white,
-    "&:hover": {
+    '&:hover': {
       background: theme.colors.primary.white,
     },
   },
 
   officeDetailWrapper: {
-    height: "100%",
+    height: '100%',
     background: theme.colors.primary.white,
   },
 
@@ -205,7 +205,7 @@ const styleSheet = (theme) => ({
   officeFullView: {
     padding: 25,
     background: theme.colors.primary.mainColor,
-    cursor: "pointer",
+    cursor: 'pointer',
   },
 
   officeMarkerTooltip: {
@@ -228,7 +228,7 @@ class Dashboard extends Component {
     offices: [],
     showOfficeFilters: true,
     selectedOfficeTypes: [],
-    currentOfficeFilter: "allOffices",
+    currentOfficeFilter: 'allOffices',
     currentOffice: null,
   };
 
@@ -241,31 +241,31 @@ class Dashboard extends Component {
 
   officeFilters = {
     allOffices: {
-      name: "allOffices",
+      name: 'allOffices',
     },
     leasedOffices: {
-      name: "leased",
+      name: 'leased',
     },
     availableOffices: {
-      name: "available",
+      name: 'available',
     },
   };
 
   officeTypes = {
     independentOffice: {
-      name: "independent",
+      name: 'independent',
       icon: IndependentOfficeIcon,
     },
     privateOffice: {
-      name: "privateOffice",
+      name: 'privateOffice',
       icon: PrivateOfficeIcon,
     },
     assignedWorkstation: {
-      name: "assigned",
+      name: 'assigned',
       icon: AssignedOfficeIcon,
     },
     unassignedWorkstation: {
-      name: "unassigned",
+      name: 'unassigned',
       icon: UnassignedOfficeIcon,
     },
   };
@@ -281,11 +281,11 @@ class Dashboard extends Component {
       (response) => {
         this.setState({ offices: response.data });
 
-        this.officeFilters["allOffices"].value = response.data;
-        this.officeFilters["leasedOffices"].value = response.data.filter(
+        this.officeFilters['allOffices'].value = response.data;
+        this.officeFilters['leasedOffices'].value = response.data.filter(
           (o) => !!o.leasedBy
         );
-        this.officeFilters["availableOffices"].value = response.data.filter(
+        this.officeFilters['availableOffices'].value = response.data.filter(
           (o) => !o.leasedBy
         );
 
@@ -303,9 +303,9 @@ class Dashboard extends Component {
   /** navigate to office detail page */
   handleNavigateOfficeDetail = (office) => () => {
     if (office.published === true) {
-      this.props.navigate("landlord/offices", office._id);
+      this.props.navigate('landlord/offices', office._id);
     } else {
-      this.props.navigate("landlord/offices", `${office._id}/edit`);
+      this.props.navigate('landlord/offices', `${office._id}/edit`);
     }
   };
 
@@ -354,12 +354,12 @@ class Dashboard extends Component {
     return (
       <Column alignChildrenEnd>
         <Typography fontSizeXS textMediumGrey>
-          {[formatDate(time), getWeekday(time)].join(" ")}
+          {[formatDate(time), getWeekday(time)].join(' ')}
         </Typography>
         <Typography fontSizeS textSecondary paddingTopHalf>
-          {time.toLocaleTimeString("en-US", {
-            hour: "numeric",
-            minute: "2-digit",
+          {time.toLocaleTimeString('en-US', {
+            hour: 'numeric',
+            minute: '2-digit',
             hour12: true,
           })}
         </Typography>
@@ -379,10 +379,9 @@ class Dashboard extends Component {
       currentOfficeFilter,
       selectedOfficeTypes,
     } = this.state;
-    const { user } = this.props.auth;
-    const role = "landlord";
-    const profile = user[`${role}Profile`];
-    const profileStatus = getProfileStatus(user, role);
+    const { user, userRole } = this.props.auth;
+    const profile = user[`${userRole}Profile`];
+    const profileStatus = getProfileStatus(user, userRole);
     const {
       completed: profileCompleted,
       charged: profileCharged,
@@ -402,9 +401,9 @@ class Dashboard extends Component {
         {/** title */}
         <Row fullWidth style={{ marginBottom: 45 }} alignChildrenStart>
           <Typography fontSizeM textSecondary>
-            {t("dashboard")}
+            {t('dashboard')}
           </Typography>
-          {isWidthDown("xs", width) && (
+          {isWidthDown('xs', width) && (
             <React.Fragment>
               <Stretch />
               <div style={{ marginTop: 4 }}>
@@ -421,10 +420,10 @@ class Dashboard extends Component {
             className={s.lightIcon}
           />
           <Typography paddingLeft fontSizeS textMediumGrey>
-            {t("welcomeToLandlord")}
+            {t('welcomeToLandlord')}
           </Typography>
 
-          {!isWidthDown("xs", width) && (
+          {!isWidthDown('xs', width) && (
             <React.Fragment>
               <Stretch />
               <DateTime />
@@ -440,12 +439,12 @@ class Dashboard extends Component {
             alignChildrenCenter
             justifyChildrenCenter
             style={{
-              borderRadius: role === "landlord" ? 8 : "50%",
+              borderRadius: userRole === 'landlord' ? 8 : '50%',
               backgroundImage: user.avatar
                 ? `url("${user.avatar.bucketPath}")`
-                : "none",
-              backgroundSize: "contain",
-              backgroundPosition: "center",
+                : 'none',
+              backgroundSize: 'contain',
+              backgroundPosition: 'center',
             }}
             border
             classes={{
@@ -453,7 +452,7 @@ class Dashboard extends Component {
             }}
           >
             {!user.avatar &&
-              (role === "landlord" ? (
+              (userRole === 'landlord' ? (
                 <ImageIcon className={s.smallIcon} variant="normal" />
               ) : (
                 <UserIcon className={s.smallIcon} variant="normal" />
@@ -470,11 +469,11 @@ class Dashboard extends Component {
               {profile.username}
             </Typography>
             <Typography fontSizeXS textMediumGrey paddingTopHalf>
-              {t("lastLogin", {
+              {t('lastLogin', {
                 datetime: [
                   formatDate(user.updatedAt),
                   new Date(user.updatedAt).toLocaleTimeString(),
-                ].join(" "),
+                ].join(' '),
               })}
             </Typography>
           </Column>
@@ -490,19 +489,19 @@ class Dashboard extends Component {
                   root: s.profileProgress,
                 }}
               />
-              <Link to="#" onClick={this.navigate("profile")}>
+              <Link to="#" onClick={this.navigate('profile')}>
                 <Box
                   fullWidth
-                  textPrimary={profileCompleteness === "profileCompleted"}
-                  textMediumGrey={profileCompleteness === "profileNotComplete"}
-                  textErrorRed={profileCompleteness === "profileNeedAttention"}
+                  textPrimary={profileCompleteness === 'profileCompleted'}
+                  textMediumGrey={profileCompleteness === 'profileNotComplete'}
+                  textErrorRed={profileCompleteness === 'profileNeedAttention'}
                 >
                   <Typography fontSizeXS>{t(profileCompleteness)}</Typography>
                   <Stretch />
                   <Typography fontSizeS alignChildrenCenter>
                     <ArrowRightAltIcon
                       className={s.attentionIcon}
-                      variant={profileCompleted < 100 ? "errorRed" : "normal"}
+                      variant={profileCompleted < 100 ? 'errorRed' : 'normal'}
                     />
                   </Typography>
                 </Box>
@@ -514,12 +513,12 @@ class Dashboard extends Component {
         {/** show google map with offices in it */}
         <Row classes={{ box: s.officesMapWrapper }}>
           <ConditionalWrapper
-            condition={isWidthDown("sm", width)}
+            condition={isWidthDown('sm', width)}
             wrapper={(children) => (
               <TabWrapper
                 open={true}
                 insideOpen
-                title={t("map")}
+                title={t('map')}
                 bodyClass={s.tabWrapper}
               >
                 {children}
@@ -545,7 +544,7 @@ class Dashboard extends Component {
                         lat={office.location.coordinates.lat}
                         lng={office.location.coordinates.lng}
                         color={
-                          currentOffice === office ? "mainColor" : undefined
+                          currentOffice === office ? 'mainColor' : undefined
                         }
                         badge={
                           office.leasedBy && office.leasedBy.overduePayment
@@ -585,7 +584,7 @@ class Dashboard extends Component {
               </Column>
 
               {/* show office filters */}
-              {(!isWidthDown("xs", width) || !currentOffice) && (
+              {(!isWidthDown('xs', width) || !currentOffice) && (
                 <Row
                   classes={{ box: s.officeFilterWrapper }}
                   alignChildrenStart
@@ -601,9 +600,9 @@ class Dashboard extends Component {
                                 isChecked={key === currentOfficeFilter}
                                 label={
                                   t(filter.name) +
-                                  " (" +
+                                  ' (' +
                                   (filter.value ? filter.value.length : 0) +
-                                  ")"
+                                  ')'
                                 }
                                 onChange={this.handleSelectOfficeFilter(key)}
                                 className={s.officeFilter}
@@ -622,9 +621,9 @@ class Dashboard extends Component {
                               }
                               label={
                                 t(type.name) +
-                                " (" +
+                                ' (' +
                                 (type.value ? type.value.length : 0) +
-                                ")"
+                                ')'
                               }
                               onChange={this.handleToggleOfficeTypes(key)}
                               className={s.officeFilter}
@@ -669,7 +668,7 @@ class Dashboard extends Component {
                     justifyChildrenCenter
                   >
                     <Typography fontSizeXS textWhite>
-                      {t("fullView")}
+                      {t('fullView')}
                     </Typography>
                   </Box>
                 </Column>
@@ -681,12 +680,12 @@ class Dashboard extends Component {
         {/** show statistics */}
         <Row classes={{ box: s.statisticBoxWrapper }} wrap fullWidth>
           <ConditionalWrapper
-            condition={isWidthDown("sm", width)}
+            condition={isWidthDown('sm', width)}
             wrapper={(children) => (
               <TabWrapper
                 open={true}
                 insideOpen
-                title={t("stat")}
+                title={t('stat')}
                 bodyClass={s.tabWrapper}
               >
                 <CarouselWrapper itemWidth={200} itemOffset={10}>
@@ -703,8 +702,8 @@ class Dashboard extends Component {
                     style={{ width: 14, height: 13 }}
                   />
                 }
-                title={t("favoriteOffice")}
-                statistics={[{ value: 0, variant: "primary" }]}
+                title={t('favoriteOffice')}
+                statistics={[{ value: 0, variant: 'primary' }]}
               />
             </Box>
             <Box classes={{ box: s.statisticBox }}>
@@ -715,8 +714,8 @@ class Dashboard extends Component {
                     style={{ width: 14, height: 16 }}
                   />
                 }
-                title={t("totalContracts")}
-                statistics={[{ value: 2, variant: "primary" }]}
+                title={t('totalContracts')}
+                statistics={[{ value: 2, variant: 'primary' }]}
               />
             </Box>
             <Box classes={{ box: s.statisticBox }}>
@@ -727,8 +726,8 @@ class Dashboard extends Component {
                     style={{ width: 17, height: 19 }}
                   />
                 }
-                title={t("totalOptimization")}
-                statistics={[{ value: 1, variant: "primary" }]}
+                title={t('totalOptimization')}
+                statistics={[{ value: 1, variant: 'primary' }]}
               />
             </Box>
             <Box classes={{ box: s.statisticBox }}>
@@ -739,8 +738,8 @@ class Dashboard extends Component {
                     style={{ width: 16, height: 15 }}
                   />
                 }
-                title={t("calendarEvents")}
-                statistics={[{ value: 4, variant: "primary" }]}
+                title={t('calendarEvents')}
+                statistics={[{ value: 4, variant: 'primary' }]}
               />
             </Box>
           </ConditionalWrapper>
@@ -751,5 +750,5 @@ class Dashboard extends Component {
 }
 
 export default withWidth()(
-  withRouter(withStyles(styleSheet)(withTranslation("common")(Dashboard)))
+  withRouter(withStyles(styleSheet)(withTranslation('common')(Dashboard)))
 );

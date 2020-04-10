@@ -38,7 +38,7 @@ class Company extends Component {
   /** Render function */
   render() {
     const { classes, location } = this.props;
-    const { user } = this.props.auth;
+    const { user, userRole } = this.props.auth;
 
     // TODO: requirements not specified when toggling roles
     if (
@@ -48,7 +48,7 @@ class Company extends Component {
       return <Redirect to="/company/profile" />;
     }
 
-    if (user.role !== 'company') {
+    if (userRole !== 'company') {
       this.props.onToggleRole('company');
     }
 
@@ -58,7 +58,7 @@ class Company extends Component {
           <Row classes={{ box: classes.root }} fullWidth alignChildrenStart>
             <Hidden smDown>
               <Column classes={{ box: classes.sidebarWrapper }} fullWdith>
-                <AppSidebar role="company" navigate={this.props.navigate} />
+                <AppSidebar userRole={userRole} navigate={this.props.navigate} />
               </Column>
             </Hidden>
             <Column classes={{ box: classes.contentWrapper }} fullWidth>
@@ -71,8 +71,6 @@ class Company extends Component {
                   path="/company/profile"
                   render={() => (
                     <Profile
-                      {...this.props.auth}
-                      role="company"
                       updateUser={(field, user) =>
                         this.props.mappedupdateUser(
                           field,

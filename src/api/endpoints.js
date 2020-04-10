@@ -46,8 +46,8 @@ export const downloadFile = (fileId, fileName) => {
 export const getProfile = () => api.get('/users/me/');
 
 /** Call api to delete user document */
-export const deleteUserDocument = ({ role, docType, docFile }) =>
-  api.delete(`/users/me/delete/document?role=${role}`, {
+export const deleteUserDocument = ({ userRole, docType, docFile }) =>
+  api.delete(`/users/me/delete/document?role=${userRole}`, {
     data: {
       document: docType,
       documentFileId: docFile._id,

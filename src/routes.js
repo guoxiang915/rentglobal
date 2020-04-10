@@ -19,8 +19,18 @@ export default (
         noSidebar
       />
       <PrivateRoute path="/auth" component={AuthWrapper} noSidebar />
-      <PrivateRoute path="/landlord" component={Landlord} authRequired />
-      <PrivateRoute path="/company" component={Company} authRequired />
+      <PrivateRoute
+        path="/landlord"
+        component={Landlord}
+        authRequired
+        userRole="landlord"
+      />
+      <PrivateRoute
+        path="/company"
+        component={Company}
+        authRequired
+        userRole="company"
+      />
       <PrivateRoute component={PageNotFound} />
     </Switch>
   </div>
