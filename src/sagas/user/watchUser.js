@@ -8,7 +8,7 @@ const updateUserRequest = async ({ field, data }) => {
   let resp = null;
   try {
     if (field === 'profile') {
-      resp = await api.put(`/users/me/edit/${field}?role=${data.role}`, {
+      resp = await api.put(`/users/me/edit/${field}?role=${data.userRole}`, {
         ...data.profile,
       });
     } else if (field === 'password') {
@@ -16,7 +16,7 @@ const updateUserRequest = async ({ field, data }) => {
     } else if (field === 'avatar') {
       resp = await api.put(`/users/me/edit/${field}`, data);
     } else if (field === 'documents') {
-      resp = await api.put(`/users/me/edit/${field}?role=${data.role}`, {
+      resp = await api.put(`/users/me/edit/${field}?role=${data.userRole}`, {
         ...data.documentInfo,
       });
     } else {
@@ -57,11 +57,11 @@ function* updateUser(action) {
 function* setUserRole(action) {
   let pathname = action.history && action.history.location.pathname;
   if (pathname.startsWith('/company')) {
-    pathname = `/${action.role}${pathname.substring('/company'.length)}`;
+    pathname = `/${action.userRole}${pathname.substring('/company'.length)}`;
   } else if (pathname.startsWith('/landlord')) {
-    pathname = `/${action.role}${pathname.substring('/landlord'.length)}`;
+    pathname = `/${action.userRole}${pathname.substring('/landlord'.length)}`;
   } else {
-    pathname = `/${action.role}`;
+    pathname = `/${action.userRole}`;
   }
   action.history.push(pathname);
   yield call(flushMessage);

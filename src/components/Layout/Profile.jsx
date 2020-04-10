@@ -213,8 +213,7 @@ const styleSheet = (theme) => ({
 
 class Profile extends Component {
   static propTypes = {
-    role: PropTypes.string.isRequired,
-    user: PropTypes.object.isRequired,
+    auth: PropTypes.object.isRequired,
     uploadFile: PropTypes.func,
     downloadFile: PropTypes.func,
     updateUser: PropTypes.func,
@@ -271,11 +270,11 @@ class Profile extends Component {
   };
 
   UNSAFE_componentWillReceiveProps(newProps) {
-    this.handleResetProfileInfo(newProps);
+    this.handleResetProfileInfo(newProps.auth);
   }
 
   UNSAFE_componentWillMount() {
-    this.handleResetProfileInfo(this.props);
+    this.handleResetProfileInfo(this.props.auth);
   }
 
   handleStateChange = (field) => (value) => {
@@ -300,7 +299,7 @@ class Profile extends Component {
       });
     }
     this.props.updateUser('profile', {
-      role: this.props.user.role,
+      userRole: this.props.auth.userRole,
       profile: {
         profile: {
           username,
@@ -356,17 +355,17 @@ class Profile extends Component {
    */
   handleCancelEditProfile = () => {
     this.setState({ editTab: null });
-    this.handleResetProfileInfo(this.props);
+    this.handleResetProfileInfo(this.props.auth);
   };
 
   /**
    * Toggle state variables to input new data in edit mode
-   * @param {string} props props from parent
+   * @param {string} user User information
    */
-  handleResetProfileInfo = (props) => {
-    const { user, role } = props;
+  handleResetProfileInfo = (auth) => {
+    const { user, userRole } = auth;
     let profile =
-      role === 'landlord' ? user.landlordProfile : user.companyProfile;
+      userRole === 'landlord' ? user.landlordProfile : user.companyProfile;
     if (!profile) {
       profile = {};
     }
@@ -445,7 +444,7 @@ class Profile extends Component {
     this.setState({ uploadingDocument: docType });
     this.props.uploadFile(docFile).then((response) => {
       this.props.updateUser('documents', {
-        role: this.props.role,
+        userRole: this.props.auth.userRole,
         documentInfo: {
           document: docType,
           documentFileId: response.data._id,
@@ -459,7 +458,7 @@ class Profile extends Component {
 
   /** Delete user document */
   handleDeleteDocument = (docType) => (docFile) => {
-    this.props.deleteDocument(this.props.role, docType, docFile);
+    this.props.deleteDocument(this.props.auth.userRole, docType, docFile);
   };
 
   /** Change/Select address */
@@ -478,18 +477,12 @@ class Profile extends Component {
    * Render function
    */
   render() {
-    const {
-      user,
-      isUpdating: updatingTab,
-      role,
-      width,
-      classes: s,
-      t,
-    } = this.props;
+    const { width, classes: s, t } = this.props;
+    const { user, userRole, isUpdating: updatingTab } = this.props.auth;
     const { openedTab, editTab, uploadingDocument, dialog } = this.state;
     const CarouselWrapper = withCarousel;
     const profile =
-      role === 'landlord' ? user.landlordProfile : user.companyProfile;
+      userRole === 'landlord' ? user.landlordProfile : user.companyProfile;
 
     const {
       avatar,
@@ -531,7 +524,7 @@ class Profile extends Component {
         {/* general info tab */}
         <Row fullWidth classes={{ box: s.profileTabWrapper }}>
           <TabWrapper
-            title={t(role === 'landlord' ? 'landlordInfo' : 'companyInfo')}
+            title={t(userRole === 'landlord' ? 'landlordInfo' : 'companyInfo')}
             open={openedTab === 'generalInfo'}
             onToggleOpen={this.handleToggleOpen('generalInfo')}
             isEdit={editTab === 'generalInfo' || updatingTab === 'profile'}
@@ -553,7 +546,7 @@ class Profile extends Component {
                           }}
                           className={clsx(
                             s.avatarCard,
-                            role === 'company' && s.companyAvatarCard
+                            userRole === 'company' && s.companyAvatarCard
                           )}
                         >
                           {!avatar && editTab !== 'generalInfo' && (
@@ -574,7 +567,8 @@ class Profile extends Component {
                                   classes={{
                                     box: clsx(
                                       s.dropzone,
-                                      role === 'company' && s.companyDropzone
+                                      userRole === 'company' &&
+                                        s.companyDropzone
                                     ),
                                   }}
                                   justifyChildrenCenter
@@ -606,7 +600,9 @@ class Profile extends Component {
                       <TextField
                         variant="outlined"
                         placeholder={t(
-                          role === 'landlord' ? 'landlordName' : 'companyName'
+                          userRole === 'landlord'
+                            ? 'landlordName'
+                            : 'companyName'
                         )}
                         onChange={this.handleStateChangeByInput('username')}
                         value={username}
@@ -752,7 +748,9 @@ class Profile extends Component {
                 classes={{ box: s.panelDivider }}
               >
                 {t(
-                  role === 'landlord' ? 'landlordDocuments' : 'companyDocuments'
+                  userRole === 'landlord'
+                    ? 'landlordDocuments'
+                    : 'companyDocuments'
                 )}
               </Typography>
             </Row>
@@ -773,7 +771,7 @@ class Profile extends Component {
                   </CarouselWrapper>
                 )}
               >
-                {this.documents[role].map((item) => (
+                {this.documents[userRole].map((item) => (
                   <React.Fragment key={item.value}>
                     <Box paddingRightHalf paddingBottomHalf>
                       <UploadDocument

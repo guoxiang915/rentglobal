@@ -176,7 +176,7 @@ class AppSidebar extends Component {
     landlord: [
       { text: "home", link: "", role: false, icon: HomeIcon, exact: true },
       { text: "dashboard", link: "dashboard", icon: DashboardIcon },
-      { text: "offices", link: "landlord/offices", icon: OfficeIcon },
+      { text: "offices", link: "offices", icon: OfficeIcon },
       { text: "contracts", link: "contracts", icon: NoteIcon },
       {
         text: "optimization",
@@ -273,12 +273,12 @@ class AppSidebar extends Component {
   };
 
   render() {
-    const { role, width, classes, t } = this.props;
+    const { userRole, width, classes, t } = this.props;
     const MenuItem = this.renderMenuItem;
 
     /** Get active item */
-    const activeItem = this.menus[role].find((item) => {
-      let link = `${role && item.role !== false ? "/" + role : ""}/${
+    const activeItem = this.menus[userRole].find((item) => {
+      let link = `${userRole && item.role !== false ? "/" + userRole : ""}/${
         item.link
       }`;
       if (item.link === "login") {
@@ -297,7 +297,7 @@ class AppSidebar extends Component {
         <div className={classes.sidebarContent}>
           <Column alignChildrenEnd classes={{ box: classes.sidebarBody }}>
             {/** Show main menus */}
-            {this.menus[role].map((item) => (
+            {this.menus[userRole].map((item) => (
               <MenuItem
                 active={activeItem === item}
                 item={item}
@@ -311,7 +311,7 @@ class AppSidebar extends Component {
             {/* show more buttons for mobile version */}
             {isWidthDown("sm", width) && (
               <React.Fragment>
-                {!role && (
+                {!userRole && (
                   <Button
                     link="normal"
                     background="primary"
@@ -330,7 +330,7 @@ class AppSidebar extends Component {
                 {/* show more menus */}
                 <Row fullWidth classes={{ box: classes.moreWrapper }}>
                   <Column fullWidth>
-                    {role && (
+                    {userRole && (
                       <Button
                         link="normal"
                         background="primary"
@@ -340,13 +340,13 @@ class AppSidebar extends Component {
                         className={classes.fullWidthButton}
                       >
                         <Typography fontSizeS>
-                          {role === "landlord"
+                          {userRole === "landlord"
                             ? t("needOffice")
                             : t("placeToRent")}
                         </Typography>
                       </Button>
                     )}
-                    {!role ? (
+                    {!userRole ? (
                       <React.Fragment>
                         <MenuItem
                           active={false}
