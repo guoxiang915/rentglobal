@@ -291,7 +291,6 @@ class AppSidebar extends Component {
             this.props.location.pathname === link + "/"
         : this.props.location.pathname.startsWith(link);
     });
-    console.log(activeItem);
 
     return (
       <div className={classes.sidebarWrapper}>

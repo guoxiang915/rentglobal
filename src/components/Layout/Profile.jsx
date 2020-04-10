@@ -224,7 +224,6 @@ class Profile extends Component {
   state = {
     avatar: null,
     username: '',
-    email: '',
     phoneNumber: '',
     address: {},
     postalCode: '',
@@ -292,14 +291,7 @@ class Profile extends Component {
 
   /** Save general info */
   handleSaveGeneralInfo = () => {
-    const {
-      avatar,
-      email,
-      username,
-      phoneNumber,
-      address,
-      postalCode,
-    } = this.state;
+    const { avatar, username, phoneNumber, address, postalCode } = this.state;
 
     if (avatar && avatar._id) {
       this.props.updateUser('avatar', {
@@ -309,7 +301,6 @@ class Profile extends Component {
     this.props.updateUser('profile', {
       role: this.props.user.role,
       profile: {
-        email: email,
         profile: {
           username,
           phoneNumber,
@@ -383,7 +374,6 @@ class Profile extends Component {
 
     this.setState({
       username: profile.username || '',
-      email: user.email || '',
       phoneNumber: profile.phoneNumber || '',
       address: profile.address || {},
       postalCode: profile.address.postalCode || '',
@@ -502,7 +492,6 @@ class Profile extends Component {
     const {
       avatar,
       username,
-      email,
       phoneNumber,
       address,
       postalCode,
@@ -510,6 +499,7 @@ class Profile extends Component {
       passwordError,
       confirmPassword,
     } = this.state;
+    const { email } = user;
 
     let passwordLastUpdated = '-';
     if (user.updatedAt) {
@@ -627,7 +617,6 @@ class Profile extends Component {
                         type="email"
                         variant="outlined"
                         placeholder={t('emailAddress')}
-                        onChange={this.handleStateChangeByInput('email')}
                         value={email}
                         className={s.profileInput}
                         startAdornment={<EmailIcon className={s.outlineIcon} />}
@@ -655,7 +644,7 @@ class Profile extends Component {
                             </div>
                           </Tooltip>
                         }
-                        readOnly={editTab !== 'generalInfo'}
+                        readOnly
                       />
                     </Row>
                     <Row paddingTopHalf>
@@ -853,25 +842,25 @@ class Profile extends Component {
                       {editTab === 'loginAndSecurity' ||
                       updatingTab === 'password' ? (
                         // buttons for save
-                          <SaveButtons
-                            isUpdating={updatingTab === 'password'}
-                            onSave={this.handleSaveSecurityInfo}
-                            onCancel={this.handleCancelEditProfile}
-                            t={t}
-                            disabled={
-                              !!passwordError || password !== confirmPassword
-                            }
-                          />
-                        ) : (
-                          <React.Fragment>
-                            <Typography fontSizeS textMediumGrey paddingRightHalf>
-                              {t('lastUpdate')}:
-                            </Typography>
-                            <Typography fontSizeS textSecondary>
-                              {passwordLastUpdated}
-                            </Typography>
-                          </React.Fragment>
-                        )}
+                        <SaveButtons
+                          isUpdating={updatingTab === 'password'}
+                          onSave={this.handleSaveSecurityInfo}
+                          onCancel={this.handleCancelEditProfile}
+                          t={t}
+                          disabled={
+                            !!passwordError || password !== confirmPassword
+                          }
+                        />
+                      ) : (
+                        <React.Fragment>
+                          <Typography fontSizeS textMediumGrey paddingRightHalf>
+                            {t('lastUpdate')}:
+                          </Typography>
+                          <Typography fontSizeS textSecondary>
+                            {passwordLastUpdated}
+                          </Typography>
+                        </React.Fragment>
+                      )}
                     </Row>
                   </Grid>
                 </Grid>
