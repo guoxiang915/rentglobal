@@ -191,7 +191,7 @@ const OfficeListItem = ({
                 <React.Fragment key={index}>
                   {/* <Box fullWidth> */}
                   <img
-                    src={photo.mobile.bucketPath}
+                    src={photo.mobile ? photo.mobile.bucketPath : photo.bucketPath}
                     alt=""
                     className={s.officeImage}
                   />

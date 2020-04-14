@@ -114,7 +114,7 @@ const OfficeDetailItem = ({ classes: s, t, autoPlay, office }) => {
               {office.coverPhotos.map((photo, index) => (
                 <React.Fragment key={index}>
                   <img
-                    src={photo.mobile.bucketPath}
+                    src={photo.mobile ? photo.mobile.bucketPath : photo.bucketPath}
                     alt=""
                     className={s.officeImage}
                   />

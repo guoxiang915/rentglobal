@@ -1,8 +1,8 @@
-import React, { Component } from "react";
-import { withStyles } from "@material-ui/core/styles";
-import { withTranslation } from "react-i18next";
-import PropTypes from "prop-types";
-import withWidth, { isWidthDown } from "@material-ui/core/withWidth";
+import React, { Component } from 'react';
+import { withStyles } from '@material-ui/core/styles';
+import { withTranslation } from 'react-i18next';
+import PropTypes from 'prop-types';
+import withWidth, { isWidthDown } from '@material-ui/core/withWidth';
 import {
   Box,
   Row,
@@ -17,52 +17,52 @@ import {
   FavoriteFilledIcon,
   ShareIcon,
   Button,
-} from "../../common/base-components";
-import { TabWrapper, StatisticBox } from "../../common/base-layouts";
-import { servicesCategories } from "../../utils/constants";
-import Carousel from "@brainhubeu/react-carousel";
+} from '../../common/base-components';
+import { TabWrapper, StatisticBox } from '../../common/base-layouts';
+import { servicesCategories } from '../../utils/constants';
+import Carousel from '@brainhubeu/react-carousel';
 import {
   ContactInfoDialog,
   LoginDialog,
   ShareOfficeDialog,
   LocationDialog,
-} from "./Dialogs";
-import { favoriteOffice } from "../../api/endpoints";
+} from './Dialogs';
+import { favoriteOffice } from '../../api/endpoints';
 
 const styleSheet = (theme) => ({
   root: {},
 
   imageWrapper: {
-    width: "calc(100% - 188px)",
-    [theme.breakpoints.down("xs")]: {
-      width: "100%",
-      position: "relative",
+    width: 'calc(100% - 188px)',
+    [theme.breakpoints.down('xs')]: {
+      width: '100%',
+      position: 'relative',
       left: -10,
     },
   },
 
   coverPhotoWrapper: {
-    width: "100%",
-    position: "relative",
-    paddingTop: "50%",
+    width: '100%',
+    position: 'relative',
+    paddingTop: '50%',
     border: `1px solid ${theme.colors.primary.borderGrey}`,
     borderRadius: 8,
   },
 
   coverPhoto: {
-    position: "absolute",
+    position: 'absolute',
     top: 0,
     left: 0,
     bottom: 0,
     right: 0,
-    overflow: "hidden",
+    overflow: 'hidden',
     borderRadius: 8,
   },
 
   coverPhotoContent: {
-    width: "100%",
-    height: "100%",
-    objectFit: "cover",
+    width: '100%',
+    height: '100%',
+    objectFit: 'cover',
     borderRadius: 8,
   },
 
@@ -80,15 +80,15 @@ const styleSheet = (theme) => ({
   },
 
   imageNav: {
-    width: "100%",
-    height: "calc(100% - 50px)",
-    margin: "10px 5px",
-    overflow: "hidden",
-    position: "relative",
+    width: '100%',
+    height: 'calc(100% - 50px)',
+    margin: '10px 5px',
+    overflow: 'hidden',
+    position: 'relative',
   },
 
   imageNavList: {
-    position: "absolute",
+    position: 'absolute',
   },
 
   coverPhotoNav: {
@@ -100,10 +100,10 @@ const styleSheet = (theme) => ({
   },
 
   detailsWrapper: {
-    width: "100%",
+    width: '100%',
     paddingTop: 50,
-    [theme.breakpoints.down("sm")]: {
-      flexWrap: "wrap",
+    [theme.breakpoints.down('sm')]: {
+      flexWrap: 'wrap',
     },
   },
 
@@ -112,18 +112,18 @@ const styleSheet = (theme) => ({
   },
 
   detailsTabWrapper: {
-    width: "100%",
+    width: '100%',
     paddingBottom: 60,
-    [theme.breakpoints.down("sm")]: {
+    [theme.breakpoints.down('sm')]: {
       paddingBottom: 45,
     },
   },
 
   infoRow: {
-    width: "100%",
-    alignItems: "center",
-    flexWrap: "wrap",
-    [theme.breakpoints.down("sm")]: {
+    width: '100%',
+    alignItems: 'center',
+    flexWrap: 'wrap',
+    [theme.breakpoints.down('sm')]: {
       marginBottom: 8,
     },
   },
@@ -132,24 +132,24 @@ const styleSheet = (theme) => ({
     // minWidth: 210,
     // width: "45%",
     width: 210,
-    fontSize: "15px",
-    lineHeight: "20px",
+    fontSize: '15px',
+    lineHeight: '20px',
     minHeight: 20,
     marginBottom: 4,
-    alignItems: "flex-start",
+    alignItems: 'flex-start',
     color: theme.colors.primary.darkGrey,
   },
 
   infoValue: {
     // width: "54%",
     minWidth: 210,
-    width: "calc(100% - 210px)",
-    fontSize: "19px",
-    lineHeight: "26px",
+    width: 'calc(100% - 210px)',
+    fontSize: '19px',
+    lineHeight: '26px',
     minHeight: 26,
     marginBottom: 4,
-    fontWeight: "bold",
-    alignItems: "flex-start",
+    fontWeight: 'bold',
+    alignItems: 'flex-start',
     color: theme.colors.primary.darkGrey,
   },
 
@@ -164,13 +164,13 @@ const styleSheet = (theme) => ({
 
   servicesWrapper: {
     flexGrow: 1,
-    padding: "0px 22px",
+    padding: '0px 22px',
     borderLeft: `1px solid ${theme.colors.primary.borderGrey}`,
     marginLeft: 37,
-    [theme.breakpoints.down("sm")]: {
-      border: "none",
+    [theme.breakpoints.down('sm')]: {
+      border: 'none',
       borderTop: `1px solid ${theme.colors.primary.borderGrey}`,
-      padding: "42px 0px 0px",
+      padding: '42px 0px 0px',
       margin: 0,
     },
   },
@@ -277,12 +277,12 @@ class OfficeDetailForm extends Component {
       this.setState({
         dialog: (
           <ContactInfoDialog
-            title={this.props.t("followUp")}
+            title={this.props.t('followUp')}
             contact={{
-              username: "Name Family",
-              type: "Consultant",
-              phoneNumber: "(123) 123-4567",
-              email: "consultantname@domainanme.com",
+              username: 'Name Family',
+              type: 'Consultant',
+              phoneNumber: '(123) 123-4567',
+              email: 'consultantname@domainanme.com',
             }}
             onClose={this.handleCloseDialog}
           />
@@ -320,7 +320,7 @@ class OfficeDetailForm extends Component {
     return (
       <Column classes={{ box: s.root }} fullWidth alignChildrenStart>
         {/** Show office coverPhotos */}
-        {isWidthDown("xs", width) ? (
+        {isWidthDown('xs', width) ? (
           <div className={s.imageWrapper}>
             <Carousel keepDirectionWhenDragging itemWidth={285} offset={20}>
               {office.coverPhotos &&
@@ -328,7 +328,11 @@ class OfficeDetailForm extends Component {
                   <div className={s.coverPhotoWrapper} key={index}>
                     <div className={s.coverPhoto}>
                       <img
-                        src={photo.mobile.bucketPath}
+                        src={
+                          photo.mobile
+                            ? photo.mobile.bucketPath
+                            : photo.bucketPath
+                        }
                         className={s.coverPhotoContent}
                         alt=""
                       />
@@ -346,7 +350,9 @@ class OfficeDetailForm extends Component {
                     src={
                       office.coverPhotos &&
                       office.coverPhotos.length !== 0 &&
-                      office.coverPhotos[currentPhoto].desktop.bucketPath
+                      (office.coverPhotos[currentPhoto].desktop
+                        ? office.coverPhotos[currentPhoto].desktop.bucketPath
+                        : office.coverPhotos[currentPhoto].bucketPath)
                     }
                     className={s.coverPhotoContent}
                     alt=""
@@ -372,7 +378,11 @@ class OfficeDetailForm extends Component {
                     office.coverPhotos.map((photo, index) => (
                       <img
                         key={index}
-                        src={photo.mobile.bucketPath}
+                        src={
+                          photo.mobile
+                            ? photo.mobile.bucketPath
+                            : photo.bucketPath
+                        }
                         className={s.coverPhotoNav}
                         alt=""
                       />
@@ -397,13 +407,13 @@ class OfficeDetailForm extends Component {
           paddingTopHalf
           fullWidth
           wrap
-          style={{ flexDirection: "row-reverse" }}
+          style={{ flexDirection: 'row-reverse' }}
           alignChildrenStart
         >
           {/** Show favorite, share, follow up buttons */}
-          <Column alignChildrenEnd fullWidth={isWidthDown("xs", width)}>
+          <Column alignChildrenEnd fullWidth={isWidthDown('xs', width)}>
             {office.published && (
-              <Row style={{ float: "right" }} paddingTopHalf>
+              <Row style={{ float: 'right' }} paddingTopHalf>
                 <Button
                   link="secondary"
                   background="secondaryLight"
@@ -418,9 +428,9 @@ class OfficeDetailForm extends Component {
                     <FavoriteIcon className={s.favoriteIcon} />
                   )}
                   {/* <FavoriteIcon style={{ width: 16, height: 15 }} /> */}
-                  {!isWidthDown("xs", width) && (
+                  {!isWidthDown('xs', width) && (
                     <Typography paddingLeft fontSizeS fontWeightBold>
-                      {t("favorite")}
+                      {t('favorite')}
                     </Typography>
                   )}
                 </Button>
@@ -433,9 +443,9 @@ class OfficeDetailForm extends Component {
                   onClick={this.handleShare}
                 >
                   <ShareIcon style={{ width: 13, height: 15 }} />
-                  {!isWidthDown("xs", width) && (
+                  {!isWidthDown('xs', width) && (
                     <Typography paddingLeft fontSizeS fontWeightBold>
-                      {t("share")}
+                      {t('share')}
                     </Typography>
                   )}
                 </Button>
@@ -443,7 +453,7 @@ class OfficeDetailForm extends Component {
                 <Box paddingLeftHalf />
 
                 <Button variant="primary" onClick={this.handleFollowUp} shadow>
-                  {t("followUp")}
+                  {t('followUp')}
                 </Button>
               </Row>
             )}
@@ -458,7 +468,7 @@ class OfficeDetailForm extends Component {
               {t(office.officeType)}
             </Row>
             <Row paddingTopHalf fontSizeS textPrimary>
-              {t("dollarPerMonth", { dollar: office.priceMonthly || 0 })}
+              {t('dollarPerMonth', { dollar: office.priceMonthly || 0 })}
             </Row>
             {office.published && (
               // office.rating &&
@@ -482,31 +492,31 @@ class OfficeDetailForm extends Component {
               open={true}
               insideOpen
               className={s.detailsTabWrapper}
-              title={t("generalInfo")}
+              title={t('generalInfo')}
             >
               <Row classes={{ box: s.infoRow }}>
                 <Column classes={{ box: s.infoLabel }}>
-                  {t("businessOtherFees")}
+                  {t('businessOtherFees')}
                 </Column>
                 <Column classes={{ box: s.infoValue }}>
-                  {t("dollarPerMonth", {
+                  {t('dollarPerMonth', {
                     dollar: office.businessOtherFees || 0,
                   })}
                 </Column>
               </Row>
               <Row classes={{ box: s.infoRow }}>
-                <Column classes={{ box: s.infoLabel }}>{t("area")}</Column>
+                <Column classes={{ box: s.infoLabel }}>{t('area')}</Column>
                 <Column classes={{ box: s.infoValue }}>{`${
                   office.area || 0
                 } mxm`}</Column>
               </Row>
               <Row classes={{ box: s.infoRow }}>
-                <Column classes={{ box: s.infoLabel }}>{t("rooms")}</Column>
+                <Column classes={{ box: s.infoLabel }}>{t('rooms')}</Column>
                 <Column classes={{ box: s.infoValue }}>{office.rooms}</Column>
               </Row>
               <Row classes={{ box: s.infoRow }}>
                 <Column classes={{ box: s.infoLabel }}>
-                  {t("numberOfEmployees")}
+                  {t('numberOfEmployees')}
                 </Column>
                 <Column classes={{ box: s.infoValue }}>
                   {office.numberOfEmployees}
@@ -514,19 +524,19 @@ class OfficeDetailForm extends Component {
               </Row>
               <Row classes={{ box: s.infoRow }}>
                 <Column classes={{ box: s.infoLabel }}>
-                  {t("businessHours")}
+                  {t('businessHours')}
                 </Column>
                 <Column classes={{ box: s.infoValue }}>
                   {office.businessHours &&
-                    `${`${office.businessHours?.from} AM` || ""} - ${
-                      `${office.businessHours?.to} PM` || ""
+                    `${`${office.businessHours?.from} AM` || ''} - ${
+                      `${office.businessHours?.to} PM` || ''
                     }`}
-                  {!office.businessHours && "-"}
+                  {!office.businessHours && '-'}
                 </Column>
               </Row>
               <Row classes={{ box: s.infoRow }}>
                 <Column classes={{ box: s.infoLabel }}>
-                  {t("24HourAccessibility")}
+                  {t('24HourAccessibility')}
                 </Column>
                 <Column classes={{ box: s.infoValue }}>
                   {office.fullTimeAccessibility}
@@ -534,15 +544,15 @@ class OfficeDetailForm extends Component {
               </Row>
               <Row classes={{ box: s.infoRow }}>
                 <Column classes={{ box: s.infoLabel }}>
-                  {t("spokenLanguage")}
+                  {t('spokenLanguage')}
                 </Column>
                 <Column classes={{ box: s.infoValue }}>
-                  {office.spokenLanguages && office.spokenLanguages.join(" / ")}
+                  {office.spokenLanguages && office.spokenLanguages.join(' / ')}
                 </Column>
               </Row>
               <Row classes={{ box: s.infoRow }}>
                 <Column classes={{ box: s.infoLabel }}>
-                  {t("leaseDurationPerMonths")}
+                  {t('leaseDurationPerMonths')}
                 </Column>
                 <Column classes={{ box: s.infoValue }}>
                   {office.leaseDurationPerMonths}
@@ -553,7 +563,7 @@ class OfficeDetailForm extends Component {
 
               <Row classes={{ box: s.infoRow }}>
                 <Column classes={{ box: s.infoLabel }}>
-                  {t("officeNumber")}
+                  {t('officeNumber')}
                 </Column>
                 <Column classes={{ box: s.infoValue }}>
                   {office.officeNumber}
@@ -561,7 +571,7 @@ class OfficeDetailForm extends Component {
               </Row>
               <Row classes={{ box: s.infoRow }}>
                 <Column classes={{ box: s.infoLabel }}>
-                  {t("officeFloor")}
+                  {t('officeFloor')}
                 </Column>
                 <Column classes={{ box: s.infoValue }}>
                   {office.officeFloor}
@@ -569,38 +579,38 @@ class OfficeDetailForm extends Component {
               </Row>
               <Row classes={{ box: s.infoRow }}>
                 <Column classes={{ box: s.infoLabel }}>
-                  {t("streetAddress")}
+                  {t('streetAddress')}
                 </Column>
                 <Column classes={{ box: s.infoValue }}>
                   {office.location && office.location.streetName}
                 </Column>
               </Row>
               <Row classes={{ box: s.infoRow }}>
-                <Column classes={{ box: s.infoLabel }}>{t("city")}</Column>
+                <Column classes={{ box: s.infoLabel }}>{t('city')}</Column>
                 <Column classes={{ box: s.infoValue }}>
                   {office.location && office.location.city}
                 </Column>
               </Row>
               <Row classes={{ box: s.infoRow }}>
-                <Column classes={{ box: s.infoLabel }}>{t("state")}</Column>
+                <Column classes={{ box: s.infoLabel }}>{t('state')}</Column>
                 <Column classes={{ box: s.infoValue }}>
                   {office.location && office.location.state}
                 </Column>
               </Row>
               <Row classes={{ box: s.infoRow }}>
-                <Column classes={{ box: s.infoLabel }}>{t("zipCode")}</Column>
+                <Column classes={{ box: s.infoLabel }}>{t('zipCode')}</Column>
                 <Column classes={{ box: s.infoValue }}>
                   {office.location && office.location.zipCode}
                 </Column>
               </Row>
               <Row classes={{ box: s.infoRow }}>
-                <Column classes={{ box: s.infoLabel }}>{t("country")}</Column>
+                <Column classes={{ box: s.infoLabel }}>{t('country')}</Column>
                 <Column classes={{ box: s.infoValue }}>
                   {office.location && office.location.country}
                 </Column>
               </Row>
               <Row classes={{ box: s.infoRow }}>
-                <Column classes={{ box: s.infoLabel }}>{t("location")}</Column>
+                <Column classes={{ box: s.infoLabel }}>{t('location')}</Column>
                 <Row classes={{ box: s.infoValue }} paddingTopHalf>
                   <Link
                     to="#"
@@ -610,7 +620,7 @@ class OfficeDetailForm extends Component {
                     <Typography fontSizeS>
                       <MapPointerIcon style={{ width: 15, height: 20 }} />
                       <Box paddingLeft />
-                      {t("showOnMap")}
+                      {t('showOnMap')}
                     </Typography>
                   </Link>
                 </Row>
@@ -632,11 +642,11 @@ class OfficeDetailForm extends Component {
               open={true}
               insideOpen
               className={s.detailsTabWrapper}
-              title={t("moreInfo")}
+              title={t('moreInfo')}
             >
               <Row classes={{ box: s.infoRow }}>
                 <Column classes={{ box: s.infoLabel }}>
-                  {t("typeOfContract")}
+                  {t('typeOfContract')}
                 </Column>
                 <Column classes={{ box: s.infoValue }}>
                   {office.contractType}
@@ -644,7 +654,7 @@ class OfficeDetailForm extends Component {
               </Row>
               <Row classes={{ box: s.infoRow }}>
                 <Column classes={{ box: s.infoLabel }}>
-                  {t("guaranteesOrSecurityDeposit")}
+                  {t('guaranteesOrSecurityDeposit')}
                 </Column>
                 <Column classes={{ box: s.infoValue }}>
                   {office.guarantees}
@@ -652,7 +662,7 @@ class OfficeDetailForm extends Component {
               </Row>
               <Row classes={{ box: s.infoRow }}>
                 <Column classes={{ box: s.infoLabel }}>
-                  {t("checkOutNotice")}
+                  {t('checkOutNotice')}
                 </Column>
                 <Column classes={{ box: s.infoValue }}>
                   {office.checkOutNotice}
@@ -667,7 +677,7 @@ class OfficeDetailForm extends Component {
                 insideOpen
                 className={s.detailsTabWrapper}
                 title={
-                  t("reviews") + " (" + Object.keys(office.reviews).length + ")"
+                  t('reviews') + ' (' + Object.keys(office.reviews).length + ')'
                 }
               >
                 <Row
@@ -688,7 +698,7 @@ class OfficeDetailForm extends Component {
           <Column classes={{ box: s.servicesWrapper }} alignChildrenStart>
             {/** Show services & amenities */}
             <Typography textSecondary fontSizeS>
-              {t("servicesAndAmenities")}
+              {t('servicesAndAmenities')}
             </Typography>
             {office.servicesAndAmenities &&
               Object.entries(office.servicesAndAmenities).map(
@@ -745,5 +755,5 @@ class OfficeDetailForm extends Component {
 }
 
 export default withWidth()(
-  withStyles(styleSheet)(withTranslation("common")(OfficeDetailForm))
+  withStyles(styleSheet)(withTranslation('common')(OfficeDetailForm))
 );

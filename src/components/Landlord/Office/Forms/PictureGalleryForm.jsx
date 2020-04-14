@@ -296,7 +296,11 @@ class PictureGalleryForm extends Component {
                   onClick={this.handleSelectPicture(picture)}
                 >
                   <img
-                    src={picture.mobile.bucketPath}
+                    src={
+                      picture.mobile
+                        ? picture.mobile.bucketPath
+                        : picture.bucketPath
+                    }
                     className={s.coverPhotosImage}
                     alt=""
                   />
