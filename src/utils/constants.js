@@ -192,6 +192,8 @@ const servicesCategories = [
   },
 ];
 
+const maxFileSize = 10485760; // 10 MB
+
 export {
   API,
   officeTypes,
@@ -199,4 +201,5 @@ export {
   guarantees,
   checkOutNotices,
   servicesCategories,
+  maxFileSize
 };
