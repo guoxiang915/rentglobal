@@ -1,18 +1,18 @@
-import React, { Component } from "react";
-import PropTypes from "prop-types";
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import GooglePlacesAutocomplete, {
   geocodeByPlaceId,
   getLatLng,
-} from "react-google-places-autocomplete";
+} from 'react-google-places-autocomplete';
 import {
   Popper,
   withStyles,
   MenuList,
   MenuItem,
   Paper,
-} from "@material-ui/core";
-import TextField from "./TextField";
-import clsx from "clsx";
+} from '@material-ui/core';
+import TextField from './TextField';
+import clsx from 'clsx';
 
 const styleSheet = () => ({
   root: {},
@@ -23,15 +23,6 @@ const styleSheet = () => ({
 });
 
 class GooglePlaceField extends Component {
-  constructor(props) {
-    super(props);
-    this.mapRef = React.createRef();
-
-    this.state = {
-      address: this.props.value,
-    };
-  }
-
   static propTypes = {
     value: PropTypes.any,
     onChange: PropTypes.func,
@@ -41,15 +32,18 @@ class GooglePlaceField extends Component {
     endAdornment: PropTypes.any,
     className: PropTypes.string,
     classes: PropTypes.any.isRequired,
-    errorHelper: PropTypes.bool,
     type: PropTypes.string,
     variant: PropTypes.string,
     inputProps: PropTypes.object,
   };
 
   static defaultProps = {
-    variant: "outlined",
+    variant: 'outlined',
   };
+
+  mapRef = React.createRef();
+
+  state = { address: this.props.value };
 
   handleClick = (e, suggestion, onSelectSuggestion) => {
     onSelectSuggestion(suggestion, e);
@@ -62,28 +56,28 @@ class GooglePlaceField extends Component {
           fullAddress: this.state.address,
           streetName:
             addressComponents.find(
-              (component) => component.types[0] === "street_address"
+              (component) => component.types[0] === 'street_address'
             )?.long_name ||
             `${
               addressComponents.find(
-                (component) => component.types[0] === "route"
+                (component) => component.types[0] === 'route'
               )?.long_name
             } ${
               addressComponents.find(
-                (component) => component.types[0] === "street_number"
-              )?.long_name || ""
+                (component) => component.types[0] === 'street_number'
+              )?.long_name || ''
             }`,
           city: addressComponents.find(
-            (component) => component.types[0] === "locality"
+            (component) => component.types[0] === 'locality'
           )?.long_name,
           state: addressComponents.find(
-            (component) => component.types[0] === "administrative_area_level_1"
+            (component) => component.types[0] === 'administrative_area_level_1'
           )?.long_name,
           zipCode: addressComponents.find(
-            (component) => component.types[0] === "postal_code"
+            (component) => component.types[0] === 'postal_code'
           )?.long_name,
           country: addressComponents.find(
-            (component) => component.types[0] === "country"
+            (component) => component.types[0] === 'country'
           )?.long_name,
         };
         return getLatLng(familiarResult);
@@ -149,6 +143,6 @@ class GooglePlaceField extends Component {
   }
 }
 
-export default withStyles(styleSheet, { name: "GooglePlaceField" })(
+export default withStyles(styleSheet, { name: 'GooglePlaceField' })(
   GooglePlaceField
 );

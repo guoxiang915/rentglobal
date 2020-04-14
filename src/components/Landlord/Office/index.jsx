@@ -186,7 +186,7 @@ class Offices extends Component {
                   .filter((item) => item.published === true)
                   .map((office, index) => (
                     <div
-                      style={{ position: 'relative' }}
+                      style={{ position: 'relative', cursor: 'pointer' }}
                       key={index}
                       onClick={this.handleNavigateOfficeDetail(office)}
                     >
@@ -232,7 +232,7 @@ class Offices extends Component {
                   .filter((item) => item.published === false)
                   .map((office, index) => (
                     <div
-                      style={{ position: 'relative' }}
+                      style={{ position: 'relative', cursor: 'pointer' }}
                       key={index}
                       onClick={this.handleNavigateOfficeDetail(office)}
                     >

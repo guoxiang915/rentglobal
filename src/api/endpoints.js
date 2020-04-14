@@ -1,8 +1,5 @@
 import api from './api';
-import {
-  offices as officesMockData,
-  reviews as reviewsMockData,
-} from '../common/mock/officeMockData';
+import { reviews as reviewsMockData } from '../common/mock/officeMockData';
 
 /**
  * Upload file to the api
@@ -80,10 +77,6 @@ export const createOffice = (office) => api.post('/offices/', office);
 export const updateOffice = (office) =>
   api.put(`/users/me/offices/${office._id}/`, { office });
 
-/** Call api to save cover-photos */
-export const createOfficeCoverPhotos = (officeId, payload) =>
-  api.put(`/offices/${officeId}/cover-photos/`, payload);
-
 /** Call api to save services & amenities of office */
 export const createOfficeServicesAmenities = (officeId, payload) =>
   api.put(`/offices/${officeId}/services-amenities/`, payload);
@@ -95,6 +88,18 @@ export const publishOffice = (officeId) =>
 /** Call api to unpublish office */
 export const unpublishOffice = (officeId) =>
   api.put(`/offices/${officeId}/unpublish/`);
+
+/** Call api to upload office photo */
+export const uploadOfficePhoto = (officeId, file) => {
+  const formData = new FormData();
+  formData.append('file', file);
+  const config = { headers: { 'Content-Type': undefined } };
+  return api.post(
+    `/offices/${officeId}/cover-photos/upload/`,
+    formData,
+    config
+  );
+};
 
 /** Call api to delete office photo */
 export const deleteOfficePhoto = (officeId, photoId) =>
@@ -152,6 +157,6 @@ export const getReviewsByOffice = () =>
 
 /**
  * Call api to get similar offices
+ * @deprecated for now, admin doesn't exist, and call api for getting published offices
  */
-export const getSimilarOffices = () =>
-  Promise.resolve({ status: 200, data: officesMockData });
+export const getSimilarOffices = (officeId) => getPublishedOffices();

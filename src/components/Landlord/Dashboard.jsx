@@ -303,9 +303,9 @@ class Dashboard extends Component {
   /** navigate to office detail page */
   handleNavigateOfficeDetail = (office) => () => {
     if (office.published === true) {
-      this.props.navigate('landlord/offices', office._id);
+      this.props.navigate('offices', office._id);
     } else {
-      this.props.navigate('landlord/offices', `${office._id}/edit`);
+      this.props.navigate('offices', `${office._id}/edit`);
     }
   };
 

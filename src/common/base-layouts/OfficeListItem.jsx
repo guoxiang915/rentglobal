@@ -1,6 +1,7 @@
-import React from "react";
-import { withStyles } from "@material-ui/core";
-import { withTranslation } from "react-i18next";
+import React from 'react';
+import { withStyles } from '@material-ui/core';
+import { withTranslation } from 'react-i18next';
+import PropTypes from 'prop-types';
 import {
   Typography,
   Row,
@@ -13,15 +14,15 @@ import {
   UsersIcon,
   Button,
   LinearProgress,
-} from "../base-components";
-import { ContactInfoDialog } from "../../components/Layout/Dialogs";
-import Carousel from "@brainhubeu/react-carousel";
-import { formatDate } from "../../utils/formatters";
-import { getOfficeStatus } from "../../utils/validators";
+} from '../base-components';
+import { ContactInfoDialog } from '../../components/Layout/Dialogs';
+import Carousel from '@brainhubeu/react-carousel';
+import { formatDate } from '../../utils/formatters';
+import { getOfficeStatus } from '../../utils/validators';
 
 const styleSheet = (theme) => ({
   officeWrapper: {
-    width: "100%",
+    width: '100%',
   },
 
   officeCarousel: {
@@ -29,45 +30,45 @@ const styleSheet = (theme) => ({
     height: 175,
     borderRadius: 8,
     border: `1px solid ${theme.colors.primary.borderGrey}`,
-    position: "relative",
-    overflow: "hidden",
-    [theme.breakpoints.down("sm")]: {
-      width: "100%",
+    position: 'relative',
+    overflow: 'hidden',
+    [theme.breakpoints.down('sm')]: {
+      width: '100%',
     },
   },
 
   officeImage: {
     width: 235,
     height: 175,
-    objectFit: "cover",
-    [theme.breakpoints.down("sm")]: {
-      width: "100%",
+    objectFit: 'cover',
+    [theme.breakpoints.down('sm')]: {
+      width: '100%',
     },
   },
 
   officeGeneralInfo: {
     paddingLeft: 27,
     paddingTop: 0,
-    [theme.breakpoints.down("sm")]: {
+    [theme.breakpoints.down('sm')]: {
       paddingLeft: 0,
       paddingTop: 16,
     },
-    [theme.breakpoints.down("xs")]: {
-      width: "100%",
+    [theme.breakpoints.down('xs')]: {
+      width: '100%',
     },
   },
 
   officeLeaseInfo: {
-    [theme.breakpoints.down("sm")]: {
+    [theme.breakpoints.down('sm')]: {
       paddingTop: 16,
     },
   },
 
   tipOverWrapper: {
-    position: "absolute",
+    position: 'absolute',
     top: 0,
     left: 0,
-    width: "100%",
+    width: '100%',
     height: 44,
     zIndex: 1,
   },
@@ -78,16 +79,16 @@ const styleSheet = (theme) => ({
     color: theme.colors.primary.white,
     background: theme.colors.primary.mainColor,
     marginLeft: 10,
-    position: "relative",
-    "&::after": {
+    position: 'relative',
+    '&::after': {
       content: "' '",
-      position: "absolute",
+      position: 'absolute',
       bottom: -8,
-      width: "100%",
+      width: '100%',
       borderTop: `8px solid ${theme.colors.primary.mainColor}`,
       borderLeft: `18px solid transparent`,
       borderRight: `18px solid transparent`,
-      borderBottom: "none",
+      borderBottom: 'none',
     },
   },
 
@@ -97,16 +98,16 @@ const styleSheet = (theme) => ({
     color: theme.colors.primary.white,
     background: theme.colors.primary.errorRed,
     marginLeft: 6,
-    position: "relative",
-    "&::after": {
+    position: 'relative',
+    '&::after': {
       content: "' '",
-      position: "absolute",
+      position: 'absolute',
       bottom: -8,
-      width: "100%",
+      width: '100%',
       borderTop: `8px solid ${theme.colors.primary.errorRed}`,
       borderLeft: `18px solid transparent`,
       borderRight: `18px solid transparent`,
-      borderBottom: "none",
+      borderBottom: 'none',
     },
   },
 
@@ -130,6 +131,7 @@ const OfficeListItem = ({
   office,
   noActions,
   noMoreInfo,
+  goDetail,
 }) => {
   const [dialog, setDialog] = React.useState(null);
 
@@ -139,34 +141,36 @@ const OfficeListItem = ({
     e.stopPropagation();
     setDialog(
       <ContactInfoDialog
-        title={t("contactInfo")}
+        title={t('contactInfo')}
         contact={{
-          username: "Name Family",
-          type: "Consultant",
-          phoneNumber: "(123) 123-4567",
-          email: "consultantname@domainanme.com",
+          username: 'Name Family',
+          type: 'Consultant',
+          phoneNumber: '(123) 123-4567',
+          email: 'consultantname@domainanme.com',
         }}
         onClose={handleCloseDialog}
       />
     );
   };
 
+  // TODO
   const handleListen = (e) => e.stopPropagation();
 
+  // TODO
   const handleCalendar = (e) => e.stopPropagation();
 
   const officeStatus = getOfficeStatus(office);
   let status = officeStatus ? officeStatus.status : null;
   status =
-    status === "rejected"
-      ? "rejectedByConsultant"
-      : status === "pendingForApprove"
-        ? "pendingForApprove"
-        : status === "unpublished"
-          ? "unpublish"
-          : status === "incomplete"
-            ? "mustCompleteData"
-            : null;
+    status === 'rejected'
+      ? 'rejectedByConsultant'
+      : status === 'pendingForApprove'
+      ? 'pendingForApprove'
+      : status === 'unpublished'
+      ? 'unpublish'
+      : status === 'incomplete'
+      ? 'mustCompleteData'
+      : null;
   const progress =
     officeStatus && officeStatus.progress < 100 ? officeStatus.progress : null;
 
@@ -174,7 +178,7 @@ const OfficeListItem = ({
     <Row classes={{ box: s.officeWrapper }} wrap alignChildrenStretch>
       <Box classes={{ box: s.officeCarousel }}>
         {/** office images */}
-        <div style={{ width: "100%", height: "100%" }}>
+        <div style={{ width: '100%', height: '100%' }}>
           {office.coverPhotos && (
             <Carousel
               slidesPerPage={1}
@@ -187,7 +191,7 @@ const OfficeListItem = ({
                 <React.Fragment key={index}>
                   {/* <Box fullWidth> */}
                   <img
-                    src={photo.bucketPath}
+                    src={photo.mobile.bucketPath}
                     alt=""
                     className={s.officeImage}
                   />
@@ -225,7 +229,13 @@ const OfficeListItem = ({
       <Column classes={{ box: s.officeGeneralInfo }} alignChildrenStart>
         {/** office title */}
         <Box>
-          <Typography fontSizeM textBlackGrey fontWeightBold>
+          <Typography
+            fontSizeM
+            textBlackGrey
+            fontWeightBold
+            onClick={goDetail}
+            style={{ cursor: 'pointer' }}
+          >
             {office.title}
           </Typography>
         </Box>
@@ -240,7 +250,7 @@ const OfficeListItem = ({
         {/** show office price */}
         <Row paddingTopHalf>
           <Typography fontSizeS textPrimary>
-            {t("dollarPerMonth", { dollar: office.priceMonthly || 0 })}
+            {t('dollarPerMonth', { dollar: office.priceMonthly || 0 })}
           </Typography>
         </Row>
 
@@ -294,8 +304,8 @@ const OfficeListItem = ({
       {!noMoreInfo && (
         <Column classes={{ box: s.officeLeaseInfo }} alignChildrenEnd>
           {/** last updated date */}
-          <Typography textMediumGrey fontSizeXS style={{ lineHeight: "26px" }}>
-            {t("lastUpdate")}: {formatDate(office.updatedAt)}
+          <Typography textMediumGrey fontSizeXS style={{ lineHeight: '26px' }}>
+            {t('lastUpdate')}: {formatDate(office.updatedAt)}
           </Typography>
 
           {/** leased by */}
@@ -305,15 +315,15 @@ const OfficeListItem = ({
                 textPrimary
                 fontSizeS
                 paddingTopHalf
-                style={{ lineHeight: "26px" }}
+                style={{ lineHeight: '26px' }}
               >
-                {t("available")}
+                {t('available')}
               </Typography>
             ) : (
               <React.Fragment>
-                <Row paddingTopHalf style={{ lineHeight: "26px" }}>
+                <Row paddingTopHalf style={{ lineHeight: '26px' }}>
                   <Typography textMediumGrey fontSizeS>
-                    {t("leasedBy")}:&nbsp;
+                    {t('leasedBy')}:&nbsp;
                   </Typography>
                   <Typography textSecondary fontSizeS>
                     {office.leasedBy.name}
@@ -329,9 +339,9 @@ const OfficeListItem = ({
                     paddingTopHalf
                     fontSizeS
                     textErrorRed
-                    style={{ lineHeight: "26px" }}
+                    style={{ lineHeight: '26px' }}
                   >
-                    {t("overduePayment")}
+                    {t('overduePayment')}
                   </Typography>
                 )}
               </React.Fragment>
@@ -343,7 +353,7 @@ const OfficeListItem = ({
                   textErrorRed
                   fontSizeS
                   paddingTopHalf
-                  style={{ lineHeight: "26px" }}
+                  style={{ lineHeight: '26px' }}
                 >
                   {t(status)}
                 </Typography>
@@ -361,7 +371,7 @@ const OfficeListItem = ({
           <Stretch />
           <Box paddingTopHalf />
           <Button variant="secondary" onClick={handleContactInfo} shadow>
-            {t("contactInfo")}
+            {t('contactInfo')}
           </Button>
         </Column>
       )}
@@ -372,6 +382,16 @@ const OfficeListItem = ({
   );
 };
 
-export default withStyles(styleSheet, { name: "OfficeListItem" })(
-  withTranslation("common")(OfficeListItem)
+OfficeListItem.propTypes = {
+  classes: PropTypes.object,
+  t: PropTypes.func,
+  autoPlay: PropTypes.number,
+  office: PropTypes.object.isRequired,
+  noActions: PropTypes.bool,
+  noMoreInfo: PropTypes.bool,
+  goDetail: PropTypes.func,
+};
+
+export default withStyles(styleSheet, { name: 'OfficeListItem' })(
+  withTranslation('common')(OfficeListItem)
 );

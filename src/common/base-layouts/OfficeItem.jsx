@@ -326,9 +326,9 @@ const OfficeItem = ({
               {office.coverPhotos.map((photo, index) => (
                 <React.Fragment key={index}>
                   {/* <Box fullWidth> */}
-                  {photo.bucketPath ? (
+                  {photo.mobile.bucketPath ? (
                     <img
-                      src={photo.bucketPath}
+                      src={photo.mobile.bucketPath}
                       alt=""
                       className={s.officeImage}
                     />

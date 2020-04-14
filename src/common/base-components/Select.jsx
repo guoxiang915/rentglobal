@@ -1,98 +1,98 @@
-import React, { PureComponent } from "react";
-import PropTypes from "prop-types";
-import clsx from "clsx";
+import React, { PureComponent } from 'react';
+import PropTypes from 'prop-types';
+import clsx from 'clsx';
 import {
   withStyles,
   MenuItem,
   Typography,
   Select as MUISelect,
   FormControl as MUIFormControl,
-  FormHelperText as MUIFormHelperText
-} from "@material-ui/core";
-import { ArrowDownIcon } from ".";
+  FormHelperText as MUIFormHelperText,
+} from '@material-ui/core';
+import { ArrowDownIcon } from '.';
 
-const styleSheet = theme => ({
+const styleSheet = (theme) => ({
   root: {
-    borderRadius: 99999
+    borderRadius: 99999,
   },
 
   focused: {
-    border: "none",
-    display: "none"
+    border: 'none',
+    display: 'none',
   },
 
   label: {
     color: theme.colors.primary.grey,
-    textAlign: "left"
+    textAlign: 'left',
   },
 
   asterisk: {
-    color: theme.colors.primary.mainColor
+    color: theme.colors.primary.mainColor,
   },
 
   errorMessage: {
     ...theme.typography.errorMessage,
     color: `${theme.colors.primary.errorRed} !important`,
-    textAlign: "right",
-    margin: "8px 14px 0px"
+    textAlign: 'right',
+    margin: '8px 14px 0px',
   },
 
   inputError: {
-    "&:after": {
-      borderBottom: `1px solid ${theme.colors.primary.errorRed} !important`
-    }
+    '&:after': {
+      borderBottom: `1px solid ${theme.colors.primary.errorRed} !important`,
+    },
   },
 
   input: {
     ...theme.typography.primaryBody,
     padding: `14px 16px`,
     borderRadius: 99999,
-    "&:focus": {
+    '&:focus': {
       borderRadius: 99999,
-      background: "inherit"
-    }
+      background: 'inherit',
+    },
   },
 
   readOnly: {
-    opacity: 0.6
+    opacity: 0.6,
   },
 
   underline: {
-    "&:before": {
-      borderBottom: `1px solid ${theme.colors.primary.lightGrey} !important`
+    '&:before': {
+      borderBottom: `1px solid ${theme.colors.primary.lightGrey} !important`,
     },
-    "&:after": {
-      borderBottom: `2px solid ${theme.colors.primary.mainColor} !important`
+    '&:after': {
+      borderBottom: `2px solid ${theme.colors.primary.mainColor} !important`,
     },
-    "&:hover:before": {
-      borderBottom: `2px solid ${theme.colors.primary.lightGrey} !important`
-    }
+    '&:hover:before': {
+      borderBottom: `2px solid ${theme.colors.primary.lightGrey} !important`,
+    },
   },
 
   fullWidth: {
-    width: "100%"
+    width: '100%',
   },
 
   white: {
-    color: "white",
-    borderColor: "white"
+    color: 'white',
+    borderColor: 'white',
   },
 
   select: {
     ...theme.typography.primaryBody,
-    padding: `14px 16px`
+    padding: `14px 16px`,
   },
 
   icon: {
-    padding: "0px 12px"
-  }
+    padding: '0px 12px',
+  },
 });
 
-export const Select = withStyles(styleSheet, { name: "Select" })(
+export const Select = withStyles(styleSheet, { name: 'Select' })(
   class Select extends PureComponent {
     state = {
       error: false,
-      helperText: undefined
+      helperText: undefined,
     };
 
     static propTypes = {
@@ -113,17 +113,17 @@ export const Select = withStyles(styleSheet, { name: "Select" })(
       native: PropTypes.bool,
       white: PropTypes.bool,
       tooltip: PropTypes.any,
-      classes: PropTypes.object.isRequired
+      classes: PropTypes.object.isRequired,
     };
 
     static defaultProps = {
-      variant: "outlined",
+      variant: 'outlined',
       displayEmpty: true,
-      getKey: option => option || "",
-      renderOption: option => option
+      getKey: (option) => option || '',
+      renderOption: (option) => option,
     };
 
-    handleChange = event => {
+    handleChange = (event) => {
       const { onChange } = this.props;
       this.setState({ error: false, helperText: undefined });
       onChange && onChange(event);
@@ -134,13 +134,13 @@ export const Select = withStyles(styleSheet, { name: "Select" })(
       if (prevProps.error !== this.props.error) {
         fieldState = {
           ...fieldState,
-          error: this.props.error
+          error: this.props.error,
         };
       }
       if (prevProps.helperText !== this.props.helperText) {
         fieldState = {
           ...fieldState,
-          helperText: this.props.helperText
+          helperText: this.props.helperText,
         };
       }
       if (Object.keys(fieldState).length > 0) {
@@ -159,6 +159,7 @@ export const Select = withStyles(styleSheet, { name: "Select" })(
         variant,
         classes: s,
         className,
+        helperText: ht,
         ...props
       } = this.props;
       const { error, helperText } = this.state;
@@ -174,9 +175,9 @@ export const Select = withStyles(styleSheet, { name: "Select" })(
             className={clsx(className, s.root)}
             classes={{
               root: s.input,
-              icon: s.icon
+              icon: s.icon,
             }}
-            IconComponent={props => (
+            IconComponent={(props) => (
               <div {...props}>
                 <ArrowDownIcon
                   style={{ width: 12, height: 8 }}
@@ -184,12 +185,12 @@ export const Select = withStyles(styleSheet, { name: "Select" })(
                 />
               </div>
             )}
-            renderValue={value => renderOption(value)}
+            renderValue={(value) => renderOption(value)}
             error={error}
             {...props}
           >
             {native && displayEmpty && (
-              <option key={0} value={""}>
+              <option key={0} value={''}>
                 &nbsp;
               </option>
             )}

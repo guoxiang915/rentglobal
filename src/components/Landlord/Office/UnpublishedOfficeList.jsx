@@ -103,8 +103,8 @@ class UnpublishedOfficeList extends Component {
   }
 
   /** Navigation function */
-  navigate = (path) => () => {
-    this.props.navigate(path);
+  navigate = (path, payload) => () => {
+    this.props.navigate(path, payload);
   };
 
   /** Goto previous step */
@@ -198,7 +198,10 @@ class UnpublishedOfficeList extends Component {
             <React.Fragment key={index}>
               {index > 0 && <Divider />}
               <Row fullWidth classes={{ box: s.officeItemWrapper }}>
-                <OfficeListItem office={item} />
+                <OfficeListItem
+                  office={item}
+                  goDetail={this.navigate('offices', item._id)}
+                />
               </Row>
             </React.Fragment>
           ))}

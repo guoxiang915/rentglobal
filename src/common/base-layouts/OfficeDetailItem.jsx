@@ -92,7 +92,7 @@ const styleSheet = (theme) => ({
 });
 
 /**
- * Function component for uploading document
+ * Function component for showing office detail on map
  * @typeof Props
  * @property  {object} office Office information
  * @property  {number} autoPlay Duration of autoplay for carousel (default: 4000)
@@ -114,7 +114,7 @@ const OfficeDetailItem = ({ classes: s, t, autoPlay, office }) => {
               {office.coverPhotos.map((photo, index) => (
                 <React.Fragment key={index}>
                   <img
-                    src={photo.bucketPath}
+                    src={photo.mobile.bucketPath}
                     alt=""
                     className={s.officeImage}
                   />

@@ -15,7 +15,9 @@ export default (
       <PrivateRoute
         exact
         path="/offices/:id"
-        component={({ match }) => <OfficeDetail officeId={match.params.id} />}
+        component={({ match, ...props }) => (
+          <OfficeDetail officeId={match.params.id} {...props} />
+        )}
         noSidebar
       />
       <PrivateRoute path="/auth" component={AuthWrapper} noSidebar />

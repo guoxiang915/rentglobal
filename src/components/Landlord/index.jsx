@@ -23,10 +23,10 @@ import {
   getOfficeById,
   createOffice,
   updateOffice,
-  createOfficeCoverPhotos,
   createOfficeServicesAmenities,
   publishOffice,
   unpublishOffice,
+  uploadOfficePhoto,
   deleteOfficePhoto,
   deleteOffice,
 } from '../../api/endpoints';
@@ -74,7 +74,7 @@ class Landlord extends Component {
   deleteOffice = (officeId) => () => {
     deleteOffice(officeId).then((response) => {
       if (response.status === 200) {
-        this.props.navigate('landlord/offices');
+        this.props.navigate('offices');
       }
     });
   };
@@ -85,7 +85,7 @@ class Landlord extends Component {
    */
   editOffice = (officeId) => () => {
     this.setState({ dialog: null }, () => {
-      this.props.navigate('landlord/offices', `${officeId}/edit`);
+      this.props.navigate('offices', `${officeId}/edit`);
     });
   };
 
@@ -205,11 +205,10 @@ class Landlord extends Component {
                       officeId={match.params.id}
                       navigate={this.props.navigate}
                       getOfficeById={getOfficeById}
-                      uploadFile={uploadFile}
                       createOffice={createOffice}
                       updateOffice={updateOffice}
+                      uploadOfficePhoto={uploadOfficePhoto}
                       deleteOfficePhoto={deleteOfficePhoto}
-                      createOfficeCoverPhotos={createOfficeCoverPhotos}
                       createOfficeServicesAmenities={
                         createOfficeServicesAmenities
                       }
@@ -261,11 +260,10 @@ class Landlord extends Component {
                       officeId={match.params.id}
                       navigate={this.props.navigate}
                       getOfficeById={getOfficeById}
-                      uploadFile={uploadFile}
                       createOffice={createOffice}
                       updateOffice={updateOffice}
+                      uploadOfficePhoto={uploadOfficePhoto}
                       deleteOfficePhoto={deleteOfficePhoto}
-                      createOfficeCoverPhotos={createOfficeCoverPhotos}
                       createOfficeServicesAmenities={
                         createOfficeServicesAmenities
                       }

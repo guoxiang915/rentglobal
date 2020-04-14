@@ -82,10 +82,11 @@ const styleSheet = (theme) => ({
 
 class PictureGalleryForm extends Component {
   static propTypes = {
-    office: PropTypes.object,
+    office: PropTypes.object.isRequired,
     error: PropTypes.object,
     onChangeField: PropTypes.func,
-    deletePhoto: PropTypes.func,
+    uploadPhoto: PropTypes.func.isRequired,
+    deletePhoto: PropTypes.func.isRequired,
 
     classes: PropTypes.object,
     t: PropTypes.func,
@@ -141,13 +142,16 @@ class PictureGalleryForm extends Component {
    */
   handleUploadPhoto = (file) => {
     this.setState({ isLoading: true });
-    this.props.uploadFile(file, 'public-read').then((response) => {
+    this.props.uploadPhoto(this.props.office._id, file).then(() => {
       this.setState({ isLoading: false });
-      this.props.onChangeField('coverPhotos', [
-        ...(this.props.office.coverPhotos || []),
-        response.data,
-      ]);
     });
+    // this.props.uploadFile(file, 'public-read').then((response) => {
+    //   this.setState({ isLoading: false });
+    //   this.props.onChangeField('coverPhotos', [
+    //     ...(this.props.office.coverPhotos || []),
+    //     response.data,
+    //   ]);
+    // });
   };
 
   /** Select/Deselect picture */
@@ -161,18 +165,25 @@ class PictureGalleryForm extends Component {
 
   /** Remove selected picture */
   handleRemoveSelectedPicture = () => {
-    const { office = {} } = this.props;
-    const { coverPhotos = [] } = office;
+    // const { office = {} } = this.props;
+    // const { coverPhotos = [] } = office;
     const { selectedPicture } = this.state;
-    const selectedPictureIndex = coverPhotos.findIndex(
-      (photo) => photo._id === selectedPicture._id
-    );
-    if (selectedPictureIndex >= 0) {
-      coverPhotos.splice(selectedPictureIndex, 1);
-    }
-    this.setState({ selectedPicture: null }, () => {
-      this.props.onChangeField('coverPhotos', coverPhotos);
-    });
+    console.log(selectedPicture);
+    this.setState({ isLoading: true });
+    this.props
+      .deletePhoto(this.props.office._id, selectedPicture.original._id)
+      .then(() => {
+        this.setState({ isLoading: false, selectedPicture: null });
+      });
+    // const selectedPictureIndex = coverPhotos.findIndex(
+    //   (photo) => photo._id === selectedPicture._id
+    // );
+    // if (selectedPictureIndex >= 0) {
+    //   coverPhotos.splice(selectedPictureIndex, 1);
+    // }
+    // this.setState({ selectedPicture: null }, () => {
+    //   this.props.onChangeField('coverPhotos', coverPhotos);
+    // });
   };
 
   /**
@@ -285,7 +296,7 @@ class PictureGalleryForm extends Component {
                   onClick={this.handleSelectPicture(picture)}
                 >
                   <img
-                    src={picture.bucketPath}
+                    src={picture.mobile.bucketPath}
                     className={s.coverPhotosImage}
                     alt=""
                   />

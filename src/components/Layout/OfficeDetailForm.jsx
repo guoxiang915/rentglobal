@@ -328,7 +328,7 @@ class OfficeDetailForm extends Component {
                   <div className={s.coverPhotoWrapper} key={index}>
                     <div className={s.coverPhoto}>
                       <img
-                        src={photo.bucketPath}
+                        src={photo.mobile.bucketPath}
                         className={s.coverPhotoContent}
                         alt=""
                       />
@@ -346,7 +346,7 @@ class OfficeDetailForm extends Component {
                     src={
                       office.coverPhotos &&
                       office.coverPhotos.length !== 0 &&
-                      office.coverPhotos[currentPhoto].bucketPath
+                      office.coverPhotos[currentPhoto].desktop.bucketPath
                     }
                     className={s.coverPhotoContent}
                     alt=""
@@ -372,7 +372,7 @@ class OfficeDetailForm extends Component {
                     office.coverPhotos.map((photo, index) => (
                       <img
                         key={index}
-                        src={photo.bucketPath}
+                        src={photo.mobile.bucketPath}
                         className={s.coverPhotoNav}
                         alt=""
                       />
@@ -696,7 +696,7 @@ class OfficeDetailForm extends Component {
                   const category = servicesCategories.find(
                     (item) => item.value === key
                   );
-                  return category ? (
+                  return category && options.length ? (
                     <React.Fragment key={key}>
                       <TabWrapper
                         title={

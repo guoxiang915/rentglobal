@@ -15,8 +15,6 @@ import VerifyEmailFailedForm from "./VerifyEmailFailedForm";
 
 import HeaderImage from "../../assets/img/img_header@2x.jpg";
 
-import "./Login.css";
-
 const styleSheet = theme => ({
   root: {
     height: "100%",

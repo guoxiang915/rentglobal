@@ -299,12 +299,12 @@ class GeneralInfoForm extends Component {
           variant="outlined"
           value={office[field]}
           onChange={this.handleChangePropsByEventValue(field)}
+          {...props}
           inputProps={{
             ...props.inputProps,
             error: !!validation,
             helperText: validation && validation.msg,
           }}
-          {...props}
         />
       );
     default:

@@ -1,35 +1,38 @@
 /* regular */
 @font-face {
-  font-family: "Avenir Next";
+  font-family: 'Avenir Next';
   font-style: normal;
-  src: local("Avenir Next"),
-    local("Avenir-Next-Regular"),
-      url("../../assets/font/AvenirNextLTPro/AvenirNextLTPro-Regular.otf")
-      format("opentype");
+  src: local('Avenir Next'), local('Avenir-Next-Regular'),
+    url('../../assets/font/AvenirNextLTPro/AvenirNextLTPro-Regular.otf')
+      format('opentype');
 }
 
 /* italic */
 @font-face {
-  font-family: "Avenir Next";
+  font-family: 'Avenir Next';
   font-style: italic;
-  src: local("Avenir Next Italic"),
-    local("Avenir-Next-Italic")
-      url("../../assets/font/AvenirNextLTPro/AvenirNextLTPro-It.otf")
-      format("opentype");
+  src: local('Avenir Next Italic'),
+    local('Avenir-Next-Italic')
+      url('../../assets/font/AvenirNextLTPro/AvenirNextLTPro-It.otf')
+      format('opentype');
 }
 
 /* bold */
 @font-face {
-  font-family: "Avenir Next";
+  font-family: 'Avenir Next';
   font-style: normal;
-  src: local("Avenir Next Bold"),
-    local("Avenir-Next-Bold")
-      url("../../assets/font/AvenirNextLTPro/AvenirNextLTPro-Bold.otf")
-      format("opentype");
+  src: local('Avenir Next Bold'),
+    local('Avenir-Next-Bold')
+      url('../../assets/font/AvenirNextLTPro/AvenirNextLTPro-Bold.otf')
+      format('opentype');
 }
 
 html,
 body,
 * {
-  font-family: "Avenir Next", "Lucida Sans Unicode", "Lucida Grande", sans-serif;
+  font-family: 'Avenir Next', 'Lucida Sans Unicode', 'Lucida Grande', sans-serif;
+}
+
+.touch {
+  -webkit-overflow-scrolling: touch;
 }

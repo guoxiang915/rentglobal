@@ -1,9 +1,9 @@
-import React, { Component } from "react";
-import { withStyles } from "@material-ui/core/styles";
-import { withTranslation } from "react-i18next";
-import clsx from "clsx";
-import PropTypes from "prop-types";
-import withWidth, { isWidthDown } from "@material-ui/core/withWidth";
+import React, { Component } from 'react';
+import { withStyles } from '@material-ui/core/styles';
+import { withTranslation } from 'react-i18next';
+import clsx from 'clsx';
+import PropTypes from 'prop-types';
+import withWidth, { isWidthDown } from '@material-ui/core/withWidth';
 import {
   Row,
   Column,
@@ -11,57 +11,57 @@ import {
   Box,
   Typography,
   Button,
-  Divider
-} from "../../../common/base-components";
-import { OfficeListItem } from "../../../common/base-layouts";
-import { KeyboardBackspace } from "@material-ui/icons";
-import { Tabs, Tab } from "@material-ui/core";
+  Divider,
+} from '../../../common/base-components';
+import { OfficeListItem } from '../../../common/base-layouts';
+import { KeyboardBackspace } from '@material-ui/icons';
+import { Tabs, Tab } from '@material-ui/core';
 
-const styleSheet = theme => ({
+const styleSheet = (theme) => ({
   root: {
     paddingLeft: theme.spacing(5),
     paddingRight: theme.spacing(5),
-    [theme.breakpoints.down("sm")]: {
+    [theme.breakpoints.down('sm')]: {
       paddingLeft: 27,
-      paddingRight: 27
-    }
+      paddingRight: 27,
+    },
   },
 
   addButton: {
-    width: "100%",
-    marginTop: 25
+    width: '100%',
+    marginTop: 25,
   },
 
   tabs: {
     marginTop: 12,
-    width: "100%",
-    borderBottom: `1px solid ${theme.colors.primary.borderGrey}`
+    width: '100%',
+    borderBottom: `1px solid ${theme.colors.primary.borderGrey}`,
   },
 
   indicator: {
     borderRadius: 2,
-    height: 4
+    height: 4,
   },
 
   tab: {
-    textTransform: "none",
+    textTransform: 'none',
     minWidth: 0,
-    padding: "25px 0px",
+    padding: '25px 0px',
     marginRight: 70,
-    [theme.breakpoints.down("xs")]: {
-      marginRight: 30
-    }
+    [theme.breakpoints.down('xs')]: {
+      marginRight: 30,
+    },
   },
 
   officeList: {
     paddingTop: 28,
-    paddingBottom: 60
+    paddingBottom: 60,
   },
 
   officeItemWrapper: {
     marginTop: 30,
     marginBottom: 27,
-  }
+  },
 });
 
 class OfficeList extends Component {
@@ -69,7 +69,7 @@ class OfficeList extends Component {
     getOffices: PropTypes.func.isRequired,
     navigate: PropTypes.func,
     classes: PropTypes.object,
-    t: PropTypes.func
+    t: PropTypes.func,
   };
 
   state = { offices: [], dialog: null, currentTab: 0 };
@@ -77,24 +77,23 @@ class OfficeList extends Component {
   /** Get office from id */
   componentDidMount() {
     this.props.getOffices().then(
-      response => this.setState({ offices: response.data }),
+      (response) => this.setState({ offices: response.data }),
       () => {}
     );
   }
 
   /** Navigation function */
-  navigate = path => () => {
-    this.props.navigate(path);
+  navigate = (path, payload) => () => {
+    this.props.navigate(path, payload);
   };
 
   /** Goto previous step */
   handleBack = () => {
-    this.props.navigate("offices");
+    this.props.navigate('offices');
   };
 
   /** Change tab value */
   handleChangeTab = (e, currentTab) => {
-    console.log(currentTab);
     this.setState({ currentTab });
   };
 
@@ -104,11 +103,11 @@ class OfficeList extends Component {
   render() {
     const { classes: s, t, width } = this.props;
     const { offices, currentTab } = this.state;
-    const leasedOffices = offices.filter(item => !!item.leasedBy);
-    const availableOffices = offices.filter(item => !item.leasedBy);
+    const leasedOffices = offices.filter((item) => !!item.leasedBy);
+    const availableOffices = offices.filter((item) => !item.leasedBy);
 
     const filteredOffices = offices.filter(
-      item =>
+      (item) =>
         currentTab === 0 ||
         (currentTab === 1 && !!item.leasedBy) ||
         (currentTab === 2 && !item.leasedBy)
@@ -125,7 +124,7 @@ class OfficeList extends Component {
         <Row fullWidth paddingBottom wrap>
           {/** title */}
           <Typography fontSizeM textSecondary>
-            {t("offices")}
+            {t('offices')}
           </Typography>
           <Stretch />
           <Button
@@ -135,17 +134,17 @@ class OfficeList extends Component {
           >
             <KeyboardBackspace />
             <Typography paddingLeft fontSizeS>
-              {t("back")}
+              {t('back')}
             </Typography>
           </Button>
           <Box paddingLeftHalf />
           <Button
             variant="secondary"
             shadow
-            onClick={this.navigate("offices/add")}
-            className={clsx(isWidthDown("xs", width) && s.addButton)}
+            onClick={this.navigate('offices/add')}
+            className={clsx(isWidthDown('xs', width) && s.addButton)}
           >
-            {t("addNewOffice")}
+            {t('addNewOffice')}
           </Button>
         </Row>
 
@@ -160,17 +159,17 @@ class OfficeList extends Component {
         >
           <Tab
             value={0}
-            label={t("allOfficesList") + " (" + offices.length + ")"}
+            label={t('allOfficesList') + ' (' + offices.length + ')'}
             classes={{ root: s.tab }}
           />
           <Tab
             value={1}
-            label={t("leased") + " (" + leasedOffices.length + ")"}
+            label={t('leased') + ' (' + leasedOffices.length + ')'}
             classes={{ root: s.tab }}
           />
           <Tab
             value={2}
-            label={t("available") + " (" + availableOffices.length + ")"}
+            label={t('available') + ' (' + availableOffices.length + ')'}
             classes={{ root: s.tab }}
           />
         </Tabs>
@@ -181,7 +180,10 @@ class OfficeList extends Component {
             <React.Fragment key={index}>
               {index > 0 && <Divider />}
               <Row fullWidth classes={{ box: s.officeItemWrapper }}>
-                <OfficeListItem office={item} />
+                <OfficeListItem
+                  office={item}
+                  goDetail={this.navigate('offices', item._id)}
+                />
               </Row>
             </React.Fragment>
           ))}
@@ -192,5 +194,5 @@ class OfficeList extends Component {
 }
 
 export default withWidth()(
-  withStyles(styleSheet)(withTranslation("common")(OfficeList))
+  withStyles(styleSheet)(withTranslation('common')(OfficeList))
 );

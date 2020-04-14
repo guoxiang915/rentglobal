@@ -1,9 +1,9 @@
-import React, { Component } from "react";
-import PropTypes from "prop-types";
-import { Dialog, Grid, withStyles } from "@material-ui/core";
-import clsx from "clsx";
-import { withTranslation } from "react-i18next";
-import withWidth from "@material-ui/core/withWidth";
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
+import { Dialog, Grid, withStyles } from '@material-ui/core';
+import clsx from 'clsx';
+import { withTranslation } from 'react-i18next';
+import withWidth from '@material-ui/core/withWidth';
 import {
   Button,
   Typography,
@@ -13,62 +13,63 @@ import {
   Column,
   Link,
   GoogleMap,
-} from "../../../common/base-components";
-import { CloseIcon } from "../../../common/base-components/Icons";
+} from '../../../common/base-components';
+import { CloseIcon } from '../../../common/base-components/Icons';
 
 const styleSheet = (theme) => ({
   root: {
     maxWidth: 1056,
     maxHeight: 768,
     padding: 0,
-    width: "80%",
-    height: "80%",
+    width: '80%',
+    height: '80%',
     borderRadius: 8,
 
-    [theme.breakpoints.down("xs")]: {
-      width: "100%",
+    [theme.breakpoints.down('xs')]: {
+      width: '100%',
     },
   },
 
   header: {
-    width: "100%",
-    padding: "12px 12px 12px 40px",
+    width: '100%',
+    padding: '12px 12px 12px 40px',
   },
 
   content: {
-    height: "100%",
+    height: '100%',
     padding: 0,
   },
 
   googleMapSide: {
-    width: "100%",
-    height: "100%",
+    width: '100%',
+    height: '100%',
     minHeight: 150,
-    [theme.breakpoints.down("xs")]: {
+    [theme.breakpoints.down('xs')]: {
       height: 250,
     },
   },
 
   descriptions: {
-    width: "100%",
-    height: "100%",
-    border: "none",
+    width: '100%',
+    height: '100%',
+    border: 'none',
     borderLeft: `0.5px solid ${theme.colors.primary.borderGrey}`,
-    [theme.breakpoints.down("xs")]: {
-      border: "none",
+    [theme.breakpoints.down('xs')]: {
+      border: 'none',
       borderUp: `0.5px solid ${theme.colors.primary.borderGrey}`,
     },
   },
 
   descriptionsWrapper: {
-    padding: "30px 30px 30px 40px",
-    height: "100%",
-    overflowY: "auto",
+    padding: '30px 30px 30px 40px',
+    height: '100%',
+    overflowY: 'auto',
+    '-webkit-overflow-scrolling': 'touch',
   },
 
   footer: {
-    width: "100%",
-    padding: "12px 12px 12px 40px",
+    width: '100%',
+    padding: '12px 12px 12px 40px',
   },
 });
 
@@ -83,14 +84,14 @@ class LocationDialog extends Component {
   /** TODO: show description for this location */
   descriptions = [
     {
-      title: "Verdun,H4G2V9, Québec, Canada",
+      title: 'Verdun,H4G2V9, Québec, Canada',
       content:
-        "If you walk, It is so close to green line metro station -Jolicoeur , just 5-6 minutes walking distance to there . If you drive , it is so close to highway 15 (15-20 minutes to Bridge Champlain to the necessary...",
+        'If you walk, It is so close to green line metro station -Jolicoeur , just 5-6 minutes walking distance to there . If you drive , it is so close to highway 15 (15-20 minutes to Bridge Champlain to the necessary...',
     },
     {
-      title: "Getting around",
+      title: 'Getting around',
       content:
-        "You can park your car in the private driveway side of house face to boulevard Champlain , but extra parking fee collected by host in cash. Of course , you also can park your car in the street side front of…",
+        'You can park your car in the private driveway side of house face to boulevard Champlain , but extra parking fee collected by host in cash. Of course , you also can park your car in the street side front of…',
     },
   ];
 
@@ -133,7 +134,7 @@ class LocationDialog extends Component {
               {/** header */}
               <Row fullWidth classes={{ box: s.header }}>
                 <Typography fontSizeM fontWeightBold textSecondary>
-                  {t("location")}
+                  {t('location')}
                 </Typography>
                 <Stretch />
                 <Button
@@ -143,7 +144,7 @@ class LocationDialog extends Component {
                 >
                   <Typography fontSizeS alignChildrenCenter>
                     <CloseIcon style={{ width: 10, height: 10 }} />
-                    <Typography paddingLeft>{t("close")}</Typography>
+                    <Typography paddingLeft>{t('close')}</Typography>
                   </Typography>
                 </Button>
               </Row>
@@ -175,7 +176,7 @@ class LocationDialog extends Component {
                     onClick={this.handleMoreDescriptions}
                     variant="normalLight"
                   >
-                    <Typography fontSizeS>{t("loadMore")}</Typography>
+                    <Typography fontSizeS>{t('loadMore')}</Typography>
                   </Link>
                 </Column>
               </Row>
@@ -190,7 +191,7 @@ class LocationDialog extends Component {
                 >
                   <Typography fontSizeS alignChildrenCenter>
                     <CloseIcon style={{ width: 10, height: 10 }} />
-                    <Typography paddingLeft>{t("close")}</Typography>
+                    <Typography paddingLeft>{t('close')}</Typography>
                   </Typography>
                 </Button>
               </Row>
@@ -202,6 +203,6 @@ class LocationDialog extends Component {
   }
 }
 
-export default withStyles(styleSheet, { name: "LocationDialog" })(
-  withTranslation("common")(withWidth()(LocationDialog))
+export default withStyles(styleSheet, { name: 'LocationDialog' })(
+  withTranslation('common')(withWidth()(LocationDialog))
 );

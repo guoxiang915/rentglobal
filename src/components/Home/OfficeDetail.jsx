@@ -146,6 +146,8 @@ class OfficeDetail extends Component {
   static propTypes = {
     /** office id to show */
     officeId: PropTypes.string.isRequired,
+    /** navigate handler */
+    navigate: PropTypes.func.isRequired,
     /** function for getting office from office id */
     // getOfficeById: PropTypes.func.isRequired,
     /** function for getting landlord from office */
@@ -173,7 +175,6 @@ class OfficeDetail extends Component {
     // this.props.
     getApprovedOfficeById(officeId).then((response) => {
       if (response.status === 200) {
-        console.log(response);
         this.setState({ office: response.data });
       }
     });
@@ -211,6 +212,12 @@ class OfficeDetail extends Component {
   /** Goto previous step */
   handleBack = () => {
     this.props.history.push('/');
+  };
+
+  /** Goto office detail of similar offices */
+  goDetail = (officeId) => () => {
+    console.log(officeId);
+    this.props.navigate('offices', officeId);
   };
 
   /** Contact req of landlord */
@@ -415,7 +422,11 @@ class OfficeDetail extends Component {
                     keepDirectionWhenDragging
                   >
                     {similarOffices.map((office, index) => (
-                      <div style={{ position: 'relative' }} key={index}>
+                      <div
+                        style={{ position: 'relative', cursor: 'pointer' }}
+                        key={index}
+                        onClick={this.goDetail(office._id)}
+                      >
                         <OfficeItem office={office} setFavorite />
                       </div>
                     ))}

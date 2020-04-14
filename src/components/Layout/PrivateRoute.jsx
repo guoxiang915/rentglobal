@@ -47,6 +47,7 @@ const styleSheet = (theme) => ({
     width: '100%',
     height: '100%',
     overflowY: 'scroll',
+    '-webkit-overflow-scrolling': 'touch',
   },
 
   contentWrapper: {
