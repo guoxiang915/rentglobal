@@ -34,8 +34,10 @@ import {
 import { withCarousel } from '../../common/base-services';
 import { ConditionalWrapper } from '../../utils/helpers';
 import { CropperDialog } from '../Layout';
-import { Grid, Card } from '@material-ui/core';
+import { Grid, Card, Snackbar } from '@material-ui/core';
+import { Alert } from '@material-ui/lab';
 import Dropzone from 'react-dropzone';
+import { maxFileSize } from '../../utils/constants';
 
 /** Show save and cancel buttons for form */
 const SaveButtons = ({ isUpdating, onSave, onCancel, disabled, t }) => (
@@ -559,36 +561,56 @@ class Profile extends Component {
                             <Dropzone
                               multiple={false}
                               onDrop={(files) =>
-                                this.handleClickAvatar(files[0])
+                                files.length > 0 && this.handleClickAvatar(files[0])
                               }
+                              accept={"image/*"}
+                              maxSize={maxFileSize}
                             >
-                              {({ getRootProps, getInputProps }) => (
-                                <Box
-                                  classes={{
-                                    box: clsx(
-                                      s.dropzone,
-                                      userRole === 'company' &&
-                                        s.companyDropzone
-                                    ),
-                                  }}
-                                  justifyChildrenCenter
-                                  alignChildrenCenter
-                                  {...getRootProps()}
-                                >
-                                  <input {...getInputProps()} />
-                                  {uploadingDocument === 'avatar' ? (
-                                    <ProgressIcon />
-                                  ) : (
-                                    <UploadIcon
-                                      fontSize="large"
-                                      className={clsx({
-                                        [s.uploadIcon]: avatar,
-                                        [s.outlineIcon]: !avatar,
-                                      })}
-                                    />
-                                  )}
-                                </Box>
-                              )}
+                              {({ getRootProps, getInputProps, isDragReject, rejectedFiles }) => {
+                                const isFileTooLarge = rejectedFiles.length > 0 && rejectedFiles[0].size > maxFileSize;
+                                let uploadMsg = null;
+                                if (isFileTooLarge) {
+                                  uploadMsg = (
+                                    <Alert severity="error">
+                                      {t("uploadTooLarge")}
+                                    </Alert>
+                                  );
+                                } else if (isDragReject || rejectedFiles.length > 0) {
+                                  uploadMsg = (
+                                    <Alert severity="error">
+                                      {t("uploadImageOnly")}
+                                    </Alert>
+                                  );
+                                }
+                                return (
+                                  <Box
+                                    classes={{
+                                      box: clsx(
+                                        s.dropzone,
+                                        userRole === 'company' &&
+                                          s.companyDropzone
+                                      ),
+                                    }}
+                                    justifyChildrenCenter
+                                    alignChildrenCenter
+                                    {...getRootProps()}
+                                  >
+                                    <input {...getInputProps()} />
+                                    {uploadMsg}
+                                    {uploadingDocument === 'avatar' ? (
+                                      <ProgressIcon />
+                                    ) : (
+                                      <UploadIcon
+                                        fontSize="large"
+                                        className={clsx({
+                                          [s.uploadIcon]: avatar,
+                                          [s.outlineIcon]: !avatar,
+                                        })}
+                                      />
+                                    )}
+                                  </Box>
+                                )}
+                              }
                             </Dropzone>
                           )}
                         </Card>
