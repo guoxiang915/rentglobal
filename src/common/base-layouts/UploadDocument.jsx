@@ -193,7 +193,7 @@ const UploadDocument = ({
         ) : (
           <Dropzone
             multiple={false}
-            onDrop={(files) => onUpload(files[0])}
+            onDrop={files => files.length > 0 && onUpload(files[0])}
             accept={"image/*, application/pdf"}
             maxSize={maxFileSize}
           >
