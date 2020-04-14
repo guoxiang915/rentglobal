@@ -115,6 +115,8 @@
     "french": "French",
     "number": "Number",
     "upload": "Upload",
+    "uploadTooLarge": "File is too large!",
+    "uploadWrongType": "Image or PDF only!",
     "montreal": "Montreal",
     "toronto": "Toronto",
     "needSpaceForBusiness": "I need a space for my business",

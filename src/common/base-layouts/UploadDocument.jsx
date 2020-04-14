@@ -20,6 +20,7 @@ import {
   KeyboardArrowRight,
 } from "@material-ui/icons";
 import Dropzone from "react-dropzone";
+import { maxFileSize } from '../../utils/constants';
 
 const styleSheet = (theme) => ({
   root: {
@@ -190,23 +191,37 @@ const UploadDocument = ({
             <CircularProgress size={24} />
           </Box>
         ) : (
-          <Dropzone multiple={false} onDrop={(files) => onUpload(files[0])}>
-            {({ getRootProps, getInputProps }) => (
-              <Button
-                link="secondaryLight"
-                background="transparent"
-                outline="transparent"
-                {...getRootProps()}
-              >
-                <input {...getInputProps()} />
-                <Column fontSizeXS fontWeightMedium>
-                  <Typography paddingTopHalf>
-                    <UploadIcon style={{ width: 21, height: 19 }} />
-                  </Typography>
-                  <Typography>{t("upload")}</Typography>
-                </Column>
-              </Button>
-            )}
+          <Dropzone
+            multiple={false}
+            onDrop={files => files.length > 0 && onUpload(files[0])}
+            accept={"image/*, application/pdf"}
+            maxSize={maxFileSize}
+          >
+            {({ getRootProps, getInputProps, isDragReject, rejectedFiles }) => {
+              const isFileTooLarge = rejectedFiles.length > 0 && rejectedFiles[0].size > maxFileSize;
+              let uploadMsg = <Typography>{t("upload")}</Typography>;
+              if (isFileTooLarge) {
+                uploadMsg = <Typography textErrorRed>{t("uploadTooLarge")}</Typography>;
+              } else if (isDragReject || rejectedFiles.length > 0) {
+                uploadMsg = <Typography textErrorRed>{t("uploadWrongType")}</Typography>;
+              }
+              return (
+                <Button
+                  link="secondaryLight"
+                  background="transparent"
+                  outline="transparent"
+                  {...getRootProps()}
+                >
+                  <input {...getInputProps()} />
+                  <Column fontSizeXS fontWeightMedium>
+                    <Typography paddingTopHalf>
+                      <UploadIcon style={{ width: 21, height: 19 }} />
+                    </Typography>
+                    {uploadMsg}
+                  </Column>
+                </Button>
+              )}
+            }
           </Dropzone>
         )}
       </Column>
