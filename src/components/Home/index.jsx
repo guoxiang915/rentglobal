@@ -330,7 +330,7 @@ class Home extends Component {
     });
 
     return (
-      <>
+      <React.Fragment>
         <div className={s.landingBoardWrapper}>
           {this.landingBlocks.map((block, index) => (
             <img
@@ -499,7 +499,7 @@ class Home extends Component {
             </Column>
           </Row>
         )}
-      </>
+      </React.Fragment>
     );
   };
 

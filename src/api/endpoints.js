@@ -159,4 +159,4 @@ export const getReviewsByOffice = () =>
  * Call api to get similar offices
  * @deprecated for now, admin doesn't exist, and call api for getting published offices
  */
-export const getSimilarOffices = (officeId) => getPublishedOffices();
+export const getSimilarOffices = () => getPublishedOffices();

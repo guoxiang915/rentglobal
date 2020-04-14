@@ -145,57 +145,57 @@ class PrivateRoute extends React.Component {
     const { isLoggedIn, userRole } = this.props.auth;
 
     switch (path) {
-      case 'back':
-        this.props.history.goBack();
-        break;
+    case 'back':
+      this.props.history.goBack();
+      break;
 
-      case 'home':
-        this.props.history.push('/');
-        break;
+    case 'home':
+      this.props.history.push('/');
+      break;
 
-      case 'help':
-        this.showHelpDialog();
-        break;
+    case 'help':
+      this.showHelpDialog();
+      break;
 
-      case 'login':
-      case 'register':
-      case 'register/landlord':
-      case 'register/company':
-      case 'forgot-password':
-        this.props.history.push(`/auth/${path}`);
-        break;
-      case 'logout':
-        authObj.removeToken();
-        authObj.removeRefreshToken();
-        this.props.mappedlogout();
-        this.props.history.push('/');
-        break;
+    case 'login':
+    case 'register':
+    case 'register/landlord':
+    case 'register/company':
+    case 'forgot-password':
+      this.props.history.push(`/auth/${path}`);
+      break;
+    case 'logout':
+      authObj.removeToken();
+      authObj.removeRefreshToken();
+      this.props.mappedlogout();
+      this.props.history.push('/');
+      break;
 
-      case 'dashboard':
-      case 'profile':
-      case 'offices/add':
-      case 'offices/all':
-      case 'offices/unpublish':
-      case 'contracts':
-      case 'optimization':
-        if (isLoggedIn) {
-          this.props.history.push(
-            `/${userRole}/${path}/${payload ? payload : ''}`
-          );
-          break;
-        }
-        this.props.history.push('/');
-        break;
-      case 'offices':
+    case 'dashboard':
+    case 'profile':
+    case 'offices/add':
+    case 'offices/all':
+    case 'offices/unpublish':
+    case 'contracts':
+    case 'optimization':
+      if (isLoggedIn) {
         this.props.history.push(
-          (userRole ? `/${userRole}` : '') +
-            `/${path}/${payload ? payload : ''}`
+          `/${userRole}/${path}/${payload ? payload : ''}`
         );
         break;
+      }
+      this.props.history.push('/');
+      break;
+    case 'offices':
+      this.props.history.push(
+        (userRole ? `/${userRole}` : '') +
+            `/${path}/${payload ? payload : ''}`
+      );
+      break;
 
-      default:
-        this.props.history.push('/');
-        break;
+    default:
+      this.props.history.push('/');
+      break;
     }
     this.handleToggleSidebar(false);
   };
@@ -207,8 +207,8 @@ class PrivateRoute extends React.Component {
       typeof setRole === 'string'
         ? setRole
         : userRole === 'landlord'
-        ? 'company'
-        : 'landlord',
+          ? 'company'
+          : 'landlord',
       this.props.history
     );
     this.handleToggleSidebar(false);

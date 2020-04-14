@@ -213,7 +213,7 @@ class CropperDialog extends Component {
             <Stretch />
             {/** save button */}
             <Button variant="primary" onClick={this.handleSave}>
-              <Typography fontSizeS>
+              <Typography fontSizeS alignChildrenCenter>
                 <CheckIcon style={{ width: 15, height: 12 }} />
                 <Typography paddingLeft>{t('save')}</Typography>
               </Typography>

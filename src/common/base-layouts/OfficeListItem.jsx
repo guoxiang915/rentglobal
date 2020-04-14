@@ -165,12 +165,12 @@ const OfficeListItem = ({
     status === 'rejected'
       ? 'rejectedByConsultant'
       : status === 'pendingForApprove'
-      ? 'pendingForApprove'
-      : status === 'unpublished'
-      ? 'unpublish'
-      : status === 'incomplete'
-      ? 'mustCompleteData'
-      : null;
+        ? 'pendingForApprove'
+        : status === 'unpublished'
+          ? 'unpublish'
+          : status === 'incomplete'
+            ? 'mustCompleteData'
+            : null;
   const progress =
     officeStatus && officeStatus.progress < 100 ? officeStatus.progress : null;
 
