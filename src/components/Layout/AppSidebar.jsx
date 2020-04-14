@@ -27,10 +27,10 @@ import {
   TicketIcon,
   ChatIcon,
   SettingIcon,
-  ArrowUpIcon
+  ArrowUpIcon,
 } from "../../common/base-components";
 
-const styleSheet = theme => ({
+const styleSheet = (theme) => ({
   sidebarWrapper: {
     height: "100%",
     borderRight: `1px solid ${theme.colors.primary.borderGrey}`,
@@ -42,8 +42,8 @@ const styleSheet = theme => ({
       height: "100%",
       position: "absolute",
       zIndex: 1000,
-      opacity: 0.98
-    }
+      opacity: 0.98,
+    },
   },
 
   sidebarContent: {
@@ -54,15 +54,15 @@ const styleSheet = theme => ({
     paddingBottom: 24,
     [theme.breakpoints.down("sm")]: {
       paddingTop: 17,
-      paddingBottom: 10
-    }
+      paddingBottom: 10,
+    },
   },
 
   sidebarBody: {
     width: 150,
     [theme.breakpoints.down("sm")]: {
-      width: "100%"
-    }
+      width: "100%",
+    },
   },
 
   menuItem: {
@@ -75,8 +75,8 @@ const styleSheet = theme => ({
       width: "100%",
       marginTop: 2,
       marginBottom: 2,
-      paddingLeft: 27
-    }
+      paddingLeft: 27,
+    },
   },
 
   activeItem: {
@@ -91,9 +91,9 @@ const styleSheet = theme => ({
       border: "none",
       background: theme.colors.primary.mainColor,
       [theme.breakpoints.down("sm")]: {
-        background: theme.colors.primary.white
-      }
-    }
+        background: theme.colors.primary.white,
+      },
+    },
   },
 
   menuIcon: {
@@ -104,17 +104,17 @@ const styleSheet = theme => ({
     [theme.breakpoints.down("sm")]: {
       marginRight: 32,
       opacity: 0.15,
-      color: theme.colors.primary.darkGrey
+      color: theme.colors.primary.darkGrey,
       // stroke: theme.colors.primary.darkGrey
-    }
+    },
   },
 
   activeMenuIcon: {
     opacity: 1,
     color: theme.colors.primary.mainColor,
     [theme.breakpoints.down("sm")]: {
-      color: theme.colors.primary.white
-    }
+      color: theme.colors.primary.white,
+    },
   },
 
   iconComponent: {
@@ -122,37 +122,37 @@ const styleSheet = theme => ({
     height: 16,
     [theme.breakpoints.down("sm")]: {
       width: 24,
-      height: 24
-    }
+      height: 24,
+    },
   },
 
   divider: {
     backgroundColor: theme.colors.primary.darkColor,
     opacity: 0.5,
-    marginTop: 13
+    marginTop: 13,
   },
 
   moreWrapper: {
     paddingTop: 20,
-    paddingBottom: 20
+    paddingBottom: 20,
   },
 
   fullWidthButton: {
     width: "calc(100% - 40px)",
     margin: "12px 18px 12px 21px",
-    border: `2px solid ${theme.colors.primary.darkColor}80`
+    border: `2px solid ${theme.colors.primary.darkColor}80`,
   },
 
   chatItem: {
     paddingTop: 8,
-    paddingBottom: 48
+    paddingBottom: 48,
   },
 
   collapseButton: {
     position: "absolute",
     bottom: 0,
-    opacity: 0.25
-  }
+    opacity: 0.25,
+  },
 });
 
 class AppSidebar extends Component {
@@ -163,7 +163,7 @@ class AppSidebar extends Component {
 
     width: PropTypes.string,
     classes: PropTypes.object,
-    t: PropTypes.func
+    t: PropTypes.func,
   };
 
   menus = {
@@ -171,23 +171,23 @@ class AppSidebar extends Component {
       { text: "home", link: "", role: false, icon: HomeIcon, exact: true },
       { text: "chatWithTessi", link: "chat", icon: TessiIcon },
       { text: "login", link: "login", icon: UserIcon },
-      { text: "register", link: "register", icon: EditDocumentIcon }
+      { text: "register", link: "register", icon: EditDocumentIcon },
     ],
     landlord: [
       { text: "home", link: "", role: false, icon: HomeIcon, exact: true },
       { text: "dashboard", link: "dashboard", icon: DashboardIcon },
-      { text: "offices", link: "landlord/offices", icon: OfficeIcon },
+      { text: "offices", link: "offices", icon: OfficeIcon },
       { text: "contracts", link: "contracts", icon: NoteIcon },
       {
         text: "optimization",
         link: "optimization",
-        icon: OptimizationIcon
+        icon: OptimizationIcon,
       },
       { text: "calendar", link: "calendar", icon: CalendarIcon },
       { text: "financials", link: "financial", icon: TicketIcon },
       { text: "support", link: "support", icon: ChatIcon },
       { text: "profile", link: "profile", icon: UserIcon },
-      { text: "setting", link: "settings", icon: SettingIcon }
+      { text: "setting", link: "settings", icon: SettingIcon },
     ],
     company: [
       { text: "home", link: "", role: false, icon: HomeIcon, exact: true },
@@ -198,8 +198,8 @@ class AppSidebar extends Component {
       { text: "financials", link: "financial", icon: TicketIcon },
       { text: "support", link: "support", icon: ChatIcon },
       { text: "profile", link: "profile", icon: UserIcon },
-      { text: "setting", link: "settings", icon: SettingIcon }
-    ]
+      { text: "setting", link: "settings", icon: SettingIcon },
+    ],
   };
 
   // menu item component
@@ -215,7 +215,7 @@ class AppSidebar extends Component {
               box: clsx(
                 classes.menuItem,
                 (active || isHover) && classes.activeItem
-              )
+              ),
             }}
             fontWeightBold={active}
           >
@@ -232,7 +232,7 @@ class AppSidebar extends Component {
                       box: clsx(
                         classes.menuIcon,
                         (active || isHover) && classes.activeMenuIcon
-                      )
+                      ),
                     }}
                   >
                     <IconComponent className={classes.iconComponent} />
@@ -252,7 +252,7 @@ class AppSidebar extends Component {
                       box: clsx(
                         classes.menuIcon,
                         (active || isHover) && classes.activeMenuIcon
-                      )
+                      ),
                     }}
                   >
                     <IconComponent className={classes.iconComponent} />
@@ -268,17 +268,17 @@ class AppSidebar extends Component {
   );
 
   /** Navigate pages */
-  navigate = path => {
+  navigate = (path) => {
     this.props.navigate(path);
   };
 
   render() {
-    const { role, width, classes, t } = this.props;
+    const { userRole, width, classes, t } = this.props;
     const MenuItem = this.renderMenuItem;
 
     /** Get active item */
-    const activeItem = this.menus[role].find(item => {
-      let link = `${role && item.role !== false ? "/" + role : ""}/${
+    const activeItem = this.menus[userRole].find((item) => {
+      let link = `${userRole && item.role !== false ? "/" + userRole : ""}/${
         item.link
       }`;
       if (item.link === "login") {
@@ -291,14 +291,13 @@ class AppSidebar extends Component {
             this.props.location.pathname === link + "/"
         : this.props.location.pathname.startsWith(link);
     });
-    console.log(activeItem);
 
     return (
       <div className={classes.sidebarWrapper}>
         <div className={classes.sidebarContent}>
           <Column alignChildrenEnd classes={{ box: classes.sidebarBody }}>
             {/** Show main menus */}
-            {this.menus[role].map(item => (
+            {this.menus[userRole].map((item) => (
               <MenuItem
                 active={activeItem === item}
                 item={item}
@@ -311,8 +310,8 @@ class AppSidebar extends Component {
 
             {/* show more buttons for mobile version */}
             {isWidthDown("sm", width) && (
-              <>
-                {!role && (
+              <React.Fragment>
+                {!userRole && (
                   <Button
                     link="normal"
                     background="primary"
@@ -331,7 +330,7 @@ class AppSidebar extends Component {
                 {/* show more menus */}
                 <Row fullWidth classes={{ box: classes.moreWrapper }}>
                   <Column fullWidth>
-                    {role && (
+                    {userRole && (
                       <Button
                         link="normal"
                         background="primary"
@@ -341,20 +340,20 @@ class AppSidebar extends Component {
                         className={classes.fullWidthButton}
                       >
                         <Typography fontSizeS>
-                          {role === "landlord"
+                          {userRole === "landlord"
                             ? t("needOffice")
                             : t("placeToRent")}
                         </Typography>
                       </Button>
                     )}
-                    {!role ? (
-                      <>
+                    {!userRole ? (
+                      <React.Fragment>
                         <MenuItem
                           active={false}
                           item={{
                             text: "montreal",
                             link: "location",
-                            icon: MapPointerIcon
+                            icon: MapPointerIcon,
                           }}
                           navigate={this.navigate}
                           classes={classes}
@@ -365,7 +364,7 @@ class AppSidebar extends Component {
                           item={{
                             text: "english",
                             link: "language",
-                            icon: props => <Typography>EN</Typography>
+                            icon: () => <Typography>EN</Typography>,
                           }}
                           navigate={this.navigate}
                           classes={classes}
@@ -376,13 +375,13 @@ class AppSidebar extends Component {
                           item={{
                             text: "help",
                             link: "help",
-                            icon: HelpIcon
+                            icon: HelpIcon,
                           }}
                           navigate={this.navigate}
                           classes={classes}
                           t={t}
                         />
-                      </>
+                      </React.Fragment>
                     ) : (
                       <Row classes={{ box: classes.chatItem }} fullWidth>
                         <MenuItem
@@ -390,7 +389,7 @@ class AppSidebar extends Component {
                           item={{
                             text: "chatWithTessi",
                             link: "",
-                            icon: TessiIcon
+                            icon: TessiIcon,
                           }}
                           navigate={this.navigate}
                           classes={classes}
@@ -416,7 +415,7 @@ class AppSidebar extends Component {
                     <ArrowUpIcon />
                   </Link>
                 </Column>
-              </>
+              </React.Fragment>
             )}
           </Column>
         </div>

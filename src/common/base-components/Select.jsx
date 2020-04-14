@@ -112,7 +112,6 @@ export const Select = withStyles(styleSheet, { name: "Select" })(
       disabled: PropTypes.bool,
       native: PropTypes.bool,
       white: PropTypes.bool,
-      errorHelper: PropTypes.bool,
       tooltip: PropTypes.any,
       classes: PropTypes.object.isRequired
     };
@@ -157,13 +156,9 @@ export const Select = withStyles(styleSheet, { name: "Select" })(
         renderOption,
         displayEmpty,
         native,
-        errorHelper,
         variant,
         classes: s,
         className,
-        error: errorProps,
-        helperText: helperTextProps,
-        onChange,
         ...props
       } = this.props;
       const { error, helperText } = this.state;

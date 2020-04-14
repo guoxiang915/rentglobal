@@ -1,11 +1,11 @@
-import React, { Component } from "react";
-import { withStyles } from "@material-ui/core/styles";
-import { withTranslation } from "react-i18next";
-import PropTypes from "prop-types";
-import clsx from "clsx";
-import withWidth, { isWidthDown } from "@material-ui/core/withWidth";
-import { withRouter } from "react-router-dom";
-import { MenuItem, Grid, Menu, Popover, Paper, Badge } from "@material-ui/core";
+import React, { Component } from 'react';
+import { withStyles } from '@material-ui/core/styles';
+import { withTranslation } from 'react-i18next';
+import PropTypes from 'prop-types';
+import clsx from 'clsx';
+import withWidth, { isWidthDown } from '@material-ui/core/withWidth';
+import { withRouter } from 'react-router-dom';
+import { MenuItem, Grid, Menu, Popover, Paper, Badge } from '@material-ui/core';
 import {
   Button,
   Link,
@@ -29,56 +29,56 @@ import {
   ArrowDownIcon,
   DashboardIcon,
   ImageIcon,
-} from "../../common/base-components";
-import { getProfileStatus } from "../../utils/validators";
+} from '../../common/base-components';
+import { getProfileStatus } from '../../utils/validators';
 
-import "./style.css";
-import Logo from "../../assets/logo.svg";
-import MiniLogo from "../../assets/mini-logo.svg";
+import './style.css';
+import Logo from '../../assets/logo.svg';
+import MiniLogo from '../../assets/mini-logo.svg';
 
 const styleSheet = (theme) => ({
   root: {
     flexGrow: 1,
     // marginTop: 70,
-    height: "100%",
-    background: "rgba(255, 255, 255, .8)",
-    backdropFilter: "blur(10px)",
-    boxShadow: "0px 10px 10px #0000000D",
-    [theme.breakpoints.down("sm")]: {
-      boxShadow: "0px 10px 10px #0000001A",
+    height: '100%',
+    background: 'rgba(255, 255, 255, .8)',
+    backdropFilter: 'blur(10px)',
+    boxShadow: '0px 10px 10px #0000000D',
+    [theme.breakpoints.down('sm')]: {
+      boxShadow: '0px 10px 10px #0000001A',
     },
   },
 
   loggedIn: {
-    boxShadow: "0px 14px 14px #15151514",
-    [theme.breakpoints.down("sm")]: {
-      boxShadow: "0px 14px 14px #15151514",
+    boxShadow: '0px 14px 14px #15151514',
+    [theme.breakpoints.down('sm')]: {
+      boxShadow: '0px 14px 14px #15151514',
     },
   },
 
   headerWrapper: {
-    height: "100%",
+    height: '100%',
     paddingLeft: theme.spacing(4) - 2,
     paddingRight: theme.spacing(4) - 2,
-    [theme.breakpoints.down("sm")]: {
+    [theme.breakpoints.down('sm')]: {
       paddingLeft: theme.spacing(2),
       paddingRight: theme.spacing(2),
     },
   },
 
   logoWrapper: {
-    display: "flex",
+    display: 'flex',
     marginRight: theme.spacing(2),
     height: 38,
   },
 
   logoNavigator: {
-    width: "fit-content",
-    cursor: "pointer",
+    width: 'fit-content',
+    cursor: 'pointer',
   },
 
   logo: {
-    height: "100%",
+    height: '100%',
   },
 
   grayButton: {
@@ -88,32 +88,32 @@ const styleSheet = (theme) => ({
   headerMenu: {
     zIndex: 1500,
     minWidth: 200,
-    position: "relative",
+    position: 'relative',
     top: 30,
   },
 
   stickyBar: {
-    width: "100%",
+    width: '100%',
     height: 4,
     background: `linear-gradient(97deg, ${theme.colors.primary.mainColor} 0%, ${theme.colors.primary.darkColor} 100%)`,
   },
 
   accountInfoWrapper: {
-    background: "transparent",
-    boxShadow: "none",
-    overflow: "visible",
+    background: 'transparent',
+    boxShadow: 'none',
+    overflow: 'visible',
   },
 
   accountInfoContentWrapper: {
-    position: "relative",
+    position: 'relative',
     top: 15,
-    boxShadow: "0px 2px 4px #00000014",
+    boxShadow: '0px 2px 4px #00000014',
     border: `1px solid ${theme.colors.primary.borderGrey}`,
-    [theme.breakpoints.down("sm")]: {
+    [theme.breakpoints.down('sm')]: {
       right: -29,
     },
-    "&::before": {
-      position: "absolute",
+    '&::before': {
+      position: 'absolute',
       top: -8,
       right: 36,
       content: '" "',
@@ -121,9 +121,9 @@ const styleSheet = (theme) => ({
       height: 16,
       background: theme.colors.primary.white,
       border: `1px solid ${theme.colors.primary.borderGrey}`,
-      borderBottom: "none",
-      borderRight: "none",
-      transform: "rotate(45deg)",
+      borderBottom: 'none',
+      borderRight: 'none',
+      transform: 'rotate(45deg)',
     },
   },
 
@@ -136,7 +136,7 @@ const styleSheet = (theme) => ({
   },
 
   accountBlockWrapper: {
-    width: "100%",
+    width: '100%',
     padding: 14,
     paddingLeft: 18,
   },
@@ -189,8 +189,8 @@ const styleSheet = (theme) => ({
   divider: {
     left: -18,
     right: -14,
-    position: "relative",
-    width: "calc(100% + 32px)",
+    position: 'relative',
+    width: 'calc(100% + 32px)',
   },
 });
 
@@ -237,16 +237,16 @@ class AppHeader extends Component {
 
   handleSelectLocation = (location) => () => {
     this.props.onSelectLocation(location);
-    this.handleCloseMenu("locationEl")();
+    this.handleCloseMenu('locationEl')();
   };
 
   handleSelectLanguage = (language) => () => {
     this.props.onSelectLanguage(language);
-    this.handleCloseMenu("languageEl")();
+    this.handleCloseMenu('languageEl')();
   };
 
   handleHelp = () => {
-    this.props.navigate("help");
+    this.props.navigate('help');
   };
 
   handleCloseDialog = () => {
@@ -259,19 +259,18 @@ class AppHeader extends Component {
 
   /** Navigate from Account Info panel */
   handleAccountInfoNavigate = (path) => () => {
-    this.handleCloseMenu("accountInfoEl")();
+    this.handleCloseMenu('accountInfoEl')();
     this.props.navigate(path);
   };
 
   /** Toggle role when user selects another role in Account Info panel */
-  handleAccountInfoToggleRole = (role) => () => {
-    this.handleCloseMenu("accountInfoEl")();
-    // console.log(this.props.auth.user.role);
+  handleAccountInfoToggleRole = (userRole) => () => {
+    this.handleCloseMenu('accountInfoEl')();
     // const userRole = this.props.auth.user.role;
     // if (role !== userRole) {
     //   this.props.onToggleRole();
     // }
-    this.props.onToggleRole(role);
+    this.props.onToggleRole(userRole);
   };
 
   /**
@@ -320,7 +319,6 @@ class AppHeader extends Component {
   /**
    * Render Account Info Form
    * @typedef Props
-   * @property  {string}    role
    * @property  {object}    user
    * @property  {object}    profileProgress
    * @property  {function}  navigate
@@ -329,8 +327,8 @@ class AppHeader extends Component {
    * @property  {function}  t
    */
   renderAccountInfo = ({
-    role,
     user,
+    userRole,
     profileProgress,
     navigate,
     onToggleRole,
@@ -344,9 +342,7 @@ class AppHeader extends Component {
       profileCharged,
       profileCompleteness,
     } = profileProgress;
-    const profile = user[`${role}Profile`];
-
-    console.log(role, user.roles);
+    const profile = user[`${userRole}Profile`];
 
     return (
       <Column alignChildrenStart classes={{ box: s.accountInfoContent }}>
@@ -356,12 +352,12 @@ class AppHeader extends Component {
             alignChildrenCenter
             justifyChildrenCenter
             style={{
-              borderRadius: role === "landlord" ? 8 : "50%",
+              borderRadius: userRole === 'landlord' ? 8 : '50%',
               backgroundImage: user.avatar
                 ? `url("${user.avatar.bucketPath}")`
-                : "none",
-              backgroundSize: "contain",
-              backgroundPosition: "center",
+                : 'none',
+              backgroundSize: 'contain',
+              backgroundPosition: 'center',
             }}
             border
             classes={{
@@ -369,7 +365,7 @@ class AppHeader extends Component {
             }}
           >
             {!user.avatar &&
-              (role === "landlord" ? (
+              (userRole === 'landlord' ? (
                 <ImageIcon className={s.smallIcon} variant="normal" />
               ) : (
                 <UserIcon className={s.smallIcon} variant="normal" />
@@ -384,7 +380,7 @@ class AppHeader extends Component {
           justifyChildrenCenter
         >
           <Typography fontSizeS textSecondary>
-            {profile ? profile.username : "Unknown"}
+            {profile ? profile.username : 'Unknown'}
           </Typography>
         </Row>
 
@@ -398,19 +394,19 @@ class AppHeader extends Component {
                 root: s.profileProgress,
               }}
             />
-            <Link to="#" onClick={navigate("profile")}>
+            <Link to="#" onClick={navigate('profile')}>
               <Box
                 fullWidth
-                textPrimary={profileCompleteness === "profileCompleted"}
-                textMediumGrey={profileCompleteness === "profileNotComplete"}
-                textErrorRed={profileCompleteness === "profileNeedAttention"}
+                textPrimary={profileCompleteness === 'profileCompleted'}
+                textMediumGrey={profileCompleteness === 'profileNotComplete'}
+                textErrorRed={profileCompleteness === 'profileNeedAttention'}
               >
                 <Typography fontSizeXS>{t(profileCompleteness)}</Typography>
                 <Stretch />
                 <Typography fontSizeS alignChildrenCenter>
                   <ArrowRightAltIcon
                     className={s.attentionIcon}
-                    variant={profileCompleted < 100 ? "errorRed" : "normal"}
+                    variant={profileCompleted < 100 ? 'errorRed' : 'normal'}
                   />
                 </Typography>
               </Box>
@@ -421,19 +417,19 @@ class AppHeader extends Component {
         {/* links */}
         <Row fullWidth>
           <Column classes={{ box: s.accountBlockWrapper }} alignChildrenStart>
-            {location.pathname !== "/" && (
+            {location.pathname !== '/' && (
               <NavItem
-                onClick={navigate("home")}
+                onClick={navigate('home')}
                 icon={HomeIcon}
-                text={t("home")}
+                text={t('home')}
                 classes={s}
               />
             )}
-            {location.pathname !== `/${role}/dashboard/` && (
+            {location.pathname !== '/' && (
               <NavItem
-                onClick={navigate("dashboard")}
+                onClick={navigate('dashboard')}
                 icon={DashboardIcon}
-                text={t("dashboard")}
+                text={t('dashboard')}
                 classes={s}
               />
             )}
@@ -443,11 +439,11 @@ class AppHeader extends Component {
               <React.Fragment key={index}>
                 <NavItem
                   onClick={onToggleRole(r)}
-                  icon={r === "company" ? UsersIcon : BuildingsIcon}
+                  icon={r === 'company' ? UsersIcon : BuildingsIcon}
                   text={
-                    r === "company" ? t("companyPanel") : t("landlordPanel")
+                    r === 'company' ? t('companyPanel') : t('landlordPanel')
                   }
-                  active={role === r}
+                  active={userRole === r}
                   classes={s}
                 />
               </React.Fragment>
@@ -455,9 +451,9 @@ class AppHeader extends Component {
             <Divider className={s.divider} />
             <Box padding2 />
             <NavItem
-              onClick={navigate("logout")}
+              onClick={navigate('logout')}
               icon={PowerIcon}
-              text={t("signOut")}
+              text={t('signOut')}
               classes={s}
               errorRed
             />
@@ -479,9 +475,8 @@ class AppHeader extends Component {
       classes,
       t,
     } = this.props;
-    const { isLoggedIn, user } = this.props.auth;
+    const { isLoggedIn, user, userRole } = this.props.auth;
     const { locationEl, languageEl, accountInfoEl, dialog } = this.state;
-    const role = isLoggedIn ? user.role : "";
 
     const AccountInfo = withRouter(this.renderAccountInfo);
 
@@ -490,7 +485,7 @@ class AppHeader extends Component {
     let profileCharged = 10;
     let profileCompleteness = null;
     if (isLoggedIn) {
-      const profileStatus = getProfileStatus(user, role);
+      const profileStatus = getProfileStatus(user, userRole);
       profileCompleted = profileStatus.completed;
       profileCharged = profileStatus.charged;
       profileCompleteness = profileStatus.completeness;
@@ -510,30 +505,30 @@ class AppHeader extends Component {
             <div className={classes.logoWrapper}>
               {/* logo image */}
               <div
-                onClick={this.handleNavigate("home")}
+                onClick={this.handleNavigate('home')}
                 className={classes.logoNavigator}
               >
                 {isLoggedIn ? (
-                  <>
-                    {!isWidthDown("sm", width) ? (
+                  <React.Fragment>
+                    {!isWidthDown('sm', width) ? (
                       <img src={Logo} className={classes.logo} alt="RENTGLOBAL" />
                     ) : (
                       <img src={MiniLogo} className={classes.logo} alt="RENTGLOBAL" />
                     )}
-                  </>
+                  </React.Fragment>
                 ) : (
                   <img src={Logo} className={classes.logo} alt="RENTGLOBAL" />
                 )}
               </div>
 
               {/* language, location, help menu */}
-              {!isLoggedIn && !isWidthDown("sm", width) && (
+              {!isLoggedIn && !isWidthDown('sm', width) && (
                 <Box paddingLeftDouble>
                   <Column>
                     <Button
                       aria-controls="language-menu"
                       aria-haspopup="true"
-                      onClick={this.handleMenu("languageEl")}
+                      onClick={this.handleMenu('languageEl')}
                       color="secondary"
                       transparent
                       className={classes.grayButton}
@@ -552,14 +547,14 @@ class AppHeader extends Component {
                       anchorEl={languageEl}
                       keepMounted
                       open={Boolean(languageEl)}
-                      onClose={this.handleCloseMenu("languageEl")}
+                      onClose={this.handleCloseMenu('languageEl')}
                       className={classes.headerMenu}
                     >
-                      <MenuItem onClick={this.handleSelectLanguage("English")}>
-                        {t("english")}
+                      <MenuItem onClick={this.handleSelectLanguage('English')}>
+                        {t('english')}
                       </MenuItem>
-                      <MenuItem onClick={this.handleSelectLanguage("French")}>
-                        {t("french")}
+                      <MenuItem onClick={this.handleSelectLanguage('French')}>
+                        {t('french')}
                       </MenuItem>
                     </Menu>
                   </Column>
@@ -567,7 +562,7 @@ class AppHeader extends Component {
                     <Button
                       aria-controls="location-menu"
                       aria-haspopup="true"
-                      onClick={this.handleMenu("locationEl")}
+                      onClick={this.handleMenu('locationEl')}
                       color="secondary"
                       transparent
                       className={classes.grayButton}
@@ -586,14 +581,14 @@ class AppHeader extends Component {
                       anchorEl={locationEl}
                       keepMounted
                       open={Boolean(locationEl)}
-                      onClose={this.handleCloseMenu("locationEl")}
+                      onClose={this.handleCloseMenu('locationEl')}
                       className={classes.headerMenu}
                     >
-                      <MenuItem onClick={this.handleSelectLocation("Montreal")}>
-                        {t("montreal")}
+                      <MenuItem onClick={this.handleSelectLocation('Montreal')}>
+                        {t('montreal')}
                       </MenuItem>
-                      <MenuItem onClick={this.handleSelectLocation("Toronto")}>
-                        {t("toronto")}
+                      <MenuItem onClick={this.handleSelectLocation('Toronto')}>
+                        {t('toronto')}
                       </MenuItem>
                     </Menu>
                   </Column>
@@ -605,7 +600,7 @@ class AppHeader extends Component {
                       className={classes.grayButton}
                     >
                       <Typography fontSizeS fontWeightMedium>
-                        {t("help")}
+                        {t('help')}
                       </Typography>
                     </Button>
                   </Column>
@@ -618,14 +613,14 @@ class AppHeader extends Component {
           <Grid item>
             <Row>
               {isLoggedIn ? (
-                <>
-                  {!isWidthDown("sm", width) && (
-                    <>
+                <React.Fragment>
+                  {!isWidthDown('sm', width) && (
+                    <React.Fragment>
                       {/* chat with TESSI */}
                       <Column paddingLeftDouble>
                         <Typography fontSizeS fontWeightBold>
                           <Link variant="primary" to="/">
-                            {t("chatWithTessi")}
+                            {t('chatWithTessi')}
                           </Link>
                         </Typography>
                       </Column>
@@ -637,18 +632,20 @@ class AppHeader extends Component {
                           shadow
                           onClick={() =>
                             this.props.onToggleRole(
-                              role === "landlord" ? "company" : "landlord"
+                              userRole === 'landlord' ? 'company' : 'landlord'
                             )
                           }
                         >
                           <Typography fontSizeS fontWeightBold>
                             {t(
-                              role === "landlord" ? "needOffice" : "placeToRent"
+                              userRole === 'landlord'
+                                ? 'needOffice'
+                                : 'placeToRent'
                             )}
                           </Typography>
                         </Button>
                       </Column>
-                    </>
+                    </React.Fragment>
                   )}
 
                   {/* mails */}
@@ -689,9 +686,9 @@ class AppHeader extends Component {
                     <Button
                       variant="icon"
                       aria-describedby="accountinfo-popover"
-                      onClick={this.handleMenu("accountInfoEl")}
+                      onClick={this.handleMenu('accountInfoEl')}
                     >
-                      {!isWidthDown("sm", width) && (
+                      {!isWidthDown('sm', width) && (
                         <Typography paddingRight>
                           <ArrowDownIcon className={classes.arrowDownIcon} />
                         </Typography>
@@ -700,7 +697,7 @@ class AppHeader extends Component {
                         color="error"
                         badgeContent="!"
                         invisible={
-                          profileCompleteness !== "profileNeedAttention"
+                          profileCompleteness !== 'profileNeedAttention'
                         }
                       >
                         <UserIcon className={classes.smallIcon} />
@@ -712,20 +709,20 @@ class AppHeader extends Component {
                       id="accountinfo-popover"
                       open={Boolean(accountInfoEl)}
                       anchorEl={accountInfoEl}
-                      onClose={this.handleCloseMenu("accountInfoEl")}
+                      onClose={this.handleCloseMenu('accountInfoEl')}
                       anchorOrigin={{
-                        vertical: "bottom",
-                        horizontal: "right",
+                        vertical: 'bottom',
+                        horizontal: 'right',
                       }}
                       transformOrigin={{
-                        vertical: "top",
-                        horizontal: "right",
+                        vertical: 'top',
+                        horizontal: 'right',
                       }}
                       classes={{ paper: classes.accountInfoWrapper }}
                     >
                       <Paper className={classes.accountInfoContentWrapper}>
                         <AccountInfo
-                          role={role}
+                          userRole={userRole}
                           user={user}
                           profileProgress={{
                             profileCompleteness,
@@ -740,57 +737,57 @@ class AppHeader extends Component {
                       </Paper>
                     </Popover>
                   </Column>
-                </>
+                </React.Fragment>
               ) : (
-                !isWidthDown("sm", width) && (
-                  <>
+                !isWidthDown('sm', width) && (
+                  <React.Fragment>
                     <Column>
                       <Typography fontSizeS>
                         <Link variant="body2" to="/">
-                          {t("home")}
+                          {t('home')}
                         </Link>
                       </Typography>
                     </Column>
                     <Column paddingLeftDouble>
                       <Typography fontSizeS fontWeightBold>
                         <Link variant="primary" to="/">
-                          {t("chatWithTessi")}
+                          {t('chatWithTessi')}
                         </Link>
                       </Typography>
                     </Column>
                     <Column paddingLeftDouble>
                       <Typography fontSizeS>
                         <Link variant="body2" to="/auth/login">
-                          {t("login")}
+                          {t('login')}
                         </Link>
                       </Typography>
                     </Column>
                     <Column paddingLeftDouble>
                       <Typography fontSizeS>
                         <Link variant="body2" to="/auth/register">
-                          {t("register")}
+                          {t('register')}
                         </Link>
                       </Typography>
                     </Column>
-                    {!isWidthDown("md", width) && (
+                    {!isWidthDown('md', width) && (
                       <Column paddingLeftDouble>
                         <Button
                           variant="secondary"
                           shadow
                           onClick={() =>
-                            this.props.navigate("register/landlord")
+                            this.props.navigate('register/landlord')
                           }
                         >
                           <Typography fontSizeS fontWeightBold>
-                            {t("placeToRent")}
+                            {t('placeToRent')}
                           </Typography>
                         </Button>
                       </Column>
                     )}
-                  </>
+                  </React.Fragment>
                 )
               )}
-              {isWidthDown("sm", width) && (
+              {isWidthDown('sm', width) && (
                 <Column paddingLeft>
                   {sidebarOpened ? (
                     <Button
@@ -833,5 +830,5 @@ class AppHeader extends Component {
 }
 
 export default withWidth()(
-  withStyles(styleSheet)(withTranslation("common")(AppHeader))
+  withStyles(styleSheet)(withTranslation('common')(AppHeader))
 );

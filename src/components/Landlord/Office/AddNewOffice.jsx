@@ -261,16 +261,16 @@ class AddNewOffice extends Component {
           variant="error"
           text={this.props.t("confirmLeavePage")}
           closeLabel={
-            <>
+            <React.Fragment>
               <CloseIcon style={{ width: 10, height: 10 }} />
               <Typography paddingLeft>{this.props.t("cancel")}</Typography>
-            </>
+            </React.Fragment>
           }
           confirmLabel={
-            <>
+            <React.Fragment>
               <CheckIcon style={{ width: 15, height: 12 }} />
               <Typography paddingLeft>{this.props.t("leave")}</Typography>
-            </>
+            </React.Fragment>
           }
           onConfirm={this.navigate("offices")}
           onClose={this.closeDialog}
@@ -296,34 +296,34 @@ class AddNewOffice extends Component {
     this.setState({ isLoading: false });
     let result = Promise.reject(null);
     switch (this.state.currentStep) {
-      case 0:
-        if (this.state.office._id) {
-          result = this.props.updateOffice(this.state.office);
-        } else {
-          result = this.props.createOffice(this.state.office);
-        }
-        break;
-      case 1:
-        if (this.state.office) {
-          result = this.props.createOfficeCoverPhotos(
-            this.state.office._id,
-            this.state.office.coverPhotos.map(photo => photo._id)
-          );
-        }
-        break;
-      case 2:
-        if (this.state.office)
-          result = this.props.createOfficeServicesAmenities(
-            this.state.office._id,
-            this.state.office.servicesAndAmenities
-          );
-        break;
-      case 3:
-        if (this.state.office)
-          result = this.props.publishOffice(this.state.office._id);
-        break;
-      default:
-        break;
+    case 0:
+      if (this.state.office._id) {
+        result = this.props.updateOffice(this.state.office);
+      } else {
+        result = this.props.createOffice(this.state.office);
+      }
+      break;
+    case 1:
+      if (this.state.office) {
+        result = this.props.createOfficeCoverPhotos(
+          this.state.office._id,
+          this.state.office.coverPhotos.map(photo => photo._id)
+        );
+      }
+      break;
+    case 2:
+      if (this.state.office)
+        result = this.props.createOfficeServicesAmenities(
+          this.state.office._id,
+          this.state.office.servicesAndAmenities
+        );
+      break;
+    case 3:
+      if (this.state.office)
+        result = this.props.publishOffice(this.state.office._id);
+      break;
+    default:
+      break;
     }
     return result.then(
       response => {
@@ -432,8 +432,8 @@ class AddNewOffice extends Component {
             {currentStep === 3
               ? t("preview")
               : editMode
-              ? t("editOffice")
-              : t("addNewOffice")}
+                ? t("editOffice")
+                : t("addNewOffice")}
           </Typography>
           <Stretch />
           <Button
@@ -557,7 +557,7 @@ class AddNewOffice extends Component {
 
         {/** forms by step */}
         {/* <form style={{ width: "100%" }}> */}
-        <>
+        <React.Fragment>
           <Row fullWidth classes={{ box: clsx(s.addOfficeTabWrapper) }}>
             <CurrentForm
               office={office}
@@ -638,7 +638,7 @@ class AddNewOffice extends Component {
               </Button>
             </Row>
           )}
-        </>
+        </React.Fragment>
 
         {/** Show dialogs */}
         {dialog}

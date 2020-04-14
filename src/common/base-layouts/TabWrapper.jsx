@@ -21,7 +21,7 @@ import {
  * Stylesheet for TabWrapper component
  * @param {Object} theme
  */
-const styleSheet = (theme) => ({
+const styleSheet = () => ({
   headerClass: {
     minHeight: 34,
   },
@@ -89,7 +89,8 @@ const TabWrapper = (props) => {
         {isEdit ? (
           <Button
             link="errorRed"
-            background="secondaryLight"
+            background="errorRedLight"
+            inverse
             onClick={onToggleEdit}
           >
             <CloseIcon style={{ width: 9, height: 9 }} />

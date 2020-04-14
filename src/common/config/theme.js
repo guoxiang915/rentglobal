@@ -1,24 +1,24 @@
-import { createMuiTheme } from "@material-ui/core/styles";
+import { createMuiTheme } from '@material-ui/core/styles';
 
 // theme colors
 const colors = {
   primary: {
-    transparent: "transparent",
-    black: "#000000",
-    white: "#ffffff",
-    mainColor: "#d7df23",
-    darkColor: "#a3b100",
-    mainShadow: "#D7DF234D",
-    whiteGrey: "#fafafa",
-    lightGrey: "#efefef",
-    grey: "#b9b9b9",
-    darkGrey: "#525252",
-    blackGrey: "#3b3b3b",
-    borderGrey: "#e8e8e8",
-    errorRed: "#fd6d9f",
-    purple: "#8468e2",
-    darkPurple: "#63529b"
-  }
+    transparent: 'transparent',
+    black: '#000000',
+    white: '#ffffff',
+    mainColor: '#d7df23',
+    darkColor: '#a3b100',
+    mainShadow: '#D7DF234D',
+    whiteGrey: '#fafafa',
+    lightGrey: '#efefef',
+    grey: '#b9b9b9',
+    darkGrey: '#525252',
+    blackGrey: '#3b3b3b',
+    borderGrey: '#e8e8e8',
+    errorRed: '#fd6d9f',
+    purple: '#8468e2',
+    darkPurple: '#63529b',
+  },
 };
 
 // theme palettes
@@ -27,342 +27,342 @@ const palette = {
     light: colors.primary.mainColor,
     main: colors.primary.mainColor,
     dark: colors.primary.darkColor,
-    contrastText: colors.primary.white
+    contrastText: colors.primary.white,
   },
   secondary: {
     light: colors.primary.lightGrey,
     main: colors.primary.grey,
-    dark: colors.primary.darkGrey
+    dark: colors.primary.darkGrey,
   },
   third: {
     light: colors.primary.purple,
     main: colors.primary.purple,
-    dark: colors.primary.darkPurple
+    dark: colors.primary.darkPurple,
   },
   error: {
     light: colors.primary.errorRed,
     main: colors.primary.errorRed,
     dark: colors.primary.errorRed,
-    contrastText: colors.primary.white
-  }
+    contrastText: colors.primary.white,
+  },
 };
 
 // font sizes
 const fontSize = {
   fontSizeXS: {
-    fontSize: "13px",
-    lineHeight: "18px"
+    fontSize: '13px',
+    lineHeight: '18px',
   },
   fontSizeS: {
-    fontSize: "15px",
-    lineHeight: "20px"
+    fontSize: '15px',
+    lineHeight: '20px',
   },
   fontSizeM: {
-    fontSize: "19px",
-    lineHeight: "26px"
+    fontSize: '19px',
+    lineHeight: '26px',
   },
   fontSizeL: {
-    fontSize: "25px",
-    lineHeight: "34px"
+    fontSize: '25px',
+    lineHeight: '34px',
   },
   fontSizeXL: {
-    fontSize: "31px",
-    lineHeight: "42px"
-  }
+    fontSize: '31px',
+    lineHeight: '42px',
+  },
 };
 
 // font weights
 const fontWeight = {
   fontWeightLight: {
-    fontWeight: 100
+    fontWeight: 100,
   },
   fontWeightMedium: {
-    fontWeight: "normal"
+    fontWeight: 'normal',
   },
   fontWeightBold: {
-    fontWeight: "bold",
+    fontWeight: 'bold',
     // fontWeight: 700,
-    fontStyle: "normal"
-  }
+    fontStyle: 'normal',
+  },
 };
 
 // font styles
 const fonts = {
   size: fontSize,
-  weight: fontWeight
+  weight: fontWeight,
 };
 
 // link styles
 const links = {
   white: {
     color: colors.primary.white,
-    "&:hover": {
-      color: colors.primary.white
-    }
+    '&:hover': {
+      color: colors.primary.white,
+    },
   },
   normal: {
     color: colors.primary.darkGrey,
-    "&:hover": {
-      color: colors.primary.mainColor
-    }
+    '&:hover': {
+      color: colors.primary.mainColor,
+    },
   },
   normalLight: {
     color: colors.primary.grey,
-    "&:hover": {
-      color: colors.primary.mainColor
-    }
+    '&:hover': {
+      color: colors.primary.mainColor,
+    },
   },
   normalXLight: {
     color: colors.primary.lightGrey,
-    "&:hover": {
-      color: colors.primary.mainColor
-    }
+    '&:hover': {
+      color: colors.primary.mainColor,
+    },
   },
   primary: {
     color: colors.primary.mainColor,
-    "&:hover": {
-      color: colors.primary.darkColor
-    }
+    '&:hover': {
+      color: colors.primary.darkColor,
+    },
   },
   secondary: {
     color: colors.primary.grey,
-    "&:hover": {
-      color: colors.primary.darkGrey
-    }
+    '&:hover': {
+      color: colors.primary.darkGrey,
+    },
   },
   secondaryDark: {
     color: colors.primary.darkGrey,
-    "&:hover": {
-      color: colors.primary.darkGrey
-    }
+    '&:hover': {
+      color: colors.primary.darkGrey,
+    },
   },
   secondaryLight: {
     color: colors.primary.lightGrey,
-    "&:hover": {
-      color: colors.primary.grey
-    }
+    '&:hover': {
+      color: colors.primary.grey,
+    },
   },
   errorRed: {
     color: colors.primary.grey,
-    "&:hover": {
-      color: colors.primary.errorRed
-    }
+    '&:hover': {
+      color: colors.primary.errorRed,
+    },
   },
   errorRedLight: {
     color: colors.primary.lightGrey,
-    "&:hover": {
-      color: colors.primary.errorRed
-    }
+    '&:hover': {
+      color: colors.primary.errorRed,
+    },
   },
   errorRedNormal: {
     color: colors.primary.errorRed,
-    "&:hover": {
-      color: colors.primary.errorRed
-    }
+    '&:hover': {
+      color: colors.primary.errorRed,
+    },
   },
   inverse: {
-    "&:hover": {
-      color: colors.primary.white
-    }
-  }
+    '&:hover': {
+      color: colors.primary.white,
+    },
+  },
 };
 
 // link background styles
 const linksBackground = {
   transparent: {
-    background: "none",
-    "&:hover": {
-      background: "none"
-    }
+    background: 'none',
+    '&:hover': {
+      background: 'none',
+    },
   },
   normal: {
     background: colors.primary.grey,
-    "&:hover": {
-      background: colors.primary.mainColor
-    }
+    '&:hover': {
+      background: colors.primary.mainColor,
+    },
   },
   borderLight: {
     background: colors.primary.borderGrey,
-    "&:hover": {
-      background: colors.primary.mainColor
-    }
+    '&:hover': {
+      background: colors.primary.mainColor,
+    },
   },
   normalLight: {
     background: colors.primary.transparent,
-    "&:hover": {
-      background: colors.primary.mainColor
-    }
+    '&:hover': {
+      background: colors.primary.mainColor,
+    },
   },
   primary: {
     background: colors.primary.mainColor,
-    "&:hover": {
-      background: colors.primary.darkColor
-    }
+    '&:hover': {
+      background: colors.primary.darkColor,
+    },
   },
   secondary: {
     background: colors.primary.transparent,
-    "&:hover": {
-      background: colors.primary.grey
-    }
+    '&:hover': {
+      background: colors.primary.grey,
+    },
   },
   secondaryLight: {
     background: colors.primary.transparent,
-    "&:hover": {
-      background: colors.primary.lightGrey
-    }
+    '&:hover': {
+      background: colors.primary.lightGrey,
+    },
   },
   errorRed: {
     background: colors.primary.lightGrey,
-    "&:hover": {
-      background: colors.primary.errorRed
-    }
+    '&:hover': {
+      background: colors.primary.errorRed,
+    },
   },
   errorRedLight: {
     background: colors.primary.transparent,
-    "&:hover": {
-      background: colors.primary.errorRed
-    }
-  }
+    '&:hover': {
+      background: colors.primary.errorRed,
+    },
+  },
 };
 
 // link outline styles
 const linksOutline = {
   transparent: {
-    border: "none",
-    "&:hover": {
-      border: "none"
-    }
+    border: 'none',
+    '&:hover': {
+      border: 'none',
+    },
   },
   normal: {
     borderWidth: 1,
-    borderStyle: "solid",
+    borderStyle: 'solid',
     borderColor: colors.primary.darkGrey,
-    "&:hover": {
-      borderColor: colors.primary.mainColor
-    }
+    '&:hover': {
+      borderColor: colors.primary.mainColor,
+    },
   },
   normalLight: {
     borderWidth: 1,
-    borderStyle: "solid",
+    borderStyle: 'solid',
     borderColor: colors.primary.grey,
-    "&:hover": {
-      borderColor: colors.primary.mainColor
-    }
+    '&:hover': {
+      borderColor: colors.primary.mainColor,
+    },
   },
   primary: {
     borderWidth: 1,
-    borderStyle: "solid",
+    borderStyle: 'solid',
     borderColor: colors.primary.mainColor,
-    "&:hover": {
-      borderColor: colors.primary.darkColor
-    }
+    '&:hover': {
+      borderColor: colors.primary.darkColor,
+    },
   },
   primaryDark: {
     borderWidth: 1,
-    borderStyle: "solid",
+    borderStyle: 'solid',
     borderColor: colors.primary.darkColor,
-    "&:hover": {
-      borderColor: colors.primary.darkColor
-    }
+    '&:hover': {
+      borderColor: colors.primary.darkColor,
+    },
   },
   secondary: {
     borderWidth: 1,
-    borderStyle: "solid",
+    borderStyle: 'solid',
     borderColor: colors.primary.grey,
-    "&:hover": {
-      borderColor: colors.primary.darkGrey
-    }
+    '&:hover': {
+      borderColor: colors.primary.darkGrey,
+    },
   },
   secondaryLight: {
     borderWidth: 1,
-    borderStyle: "solid",
+    borderStyle: 'solid',
     borderColor: colors.primary.lightGrey,
-    "&:hover": {
-      borderColor: colors.primary.grey
-    }
+    '&:hover': {
+      borderColor: colors.primary.grey,
+    },
   },
   errorRedNormal: {
     borderWidth: 1,
-    borderStyle: "solid",
+    borderStyle: 'solid',
     borderColor: colors.primary.errorRed,
-    "&:hover": {
-      borderColor: colors.primary.errorRed
-    }
+    '&:hover': {
+      borderColor: colors.primary.errorRed,
+    },
   },
   errorRed: {
     borderWidth: 1,
-    borderStyle: "solid",
+    borderStyle: 'solid',
     borderColor: colors.primary.grey,
-    "&:hover": {
-      borderColor: colors.primary.errorRed
-    }
+    '&:hover': {
+      borderColor: colors.primary.errorRed,
+    },
   },
   errorRedLight: {
     borderWidth: 1,
-    borderStyle: "solid",
+    borderStyle: 'solid',
     borderColor: colors.primary.lightGrey,
-    "&:hover": {
-      borderColor: colors.primary.errorRed
-    }
-  }
+    '&:hover': {
+      borderColor: colors.primary.errorRed,
+    },
+  },
 };
 
 // theme typography variants
 const typography = {
   useNextVariants: true,
 
-  mainFont: "Avenir Next",
+  mainFont: 'Avenir Next',
   headline: {
-    fontWeight: "normal",
-    fontSize: "24px",
-    color: colors.primary.black
+    fontWeight: 'normal',
+    fontSize: '24px',
+    color: colors.primary.black,
   },
   notificationHeadline: {
-    fontWeight: "normal",
-    fontSize: "16px",
-    color: colors.primary.black
+    fontWeight: 'normal',
+    fontSize: '16px',
+    color: colors.primary.black,
   },
   subtitle: {
-    fontWeight: "normal",
-    fontSize: "16px",
-    color: colors.primary.black
+    fontWeight: 'normal',
+    fontSize: '16px',
+    color: colors.primary.black,
   },
   sectionHeaders: {
-    textTransform: "uppercase",
-    fontWeight: "normal",
-    fontSize: "12px",
-    color: colors.primary.grey
+    textTransform: 'uppercase',
+    fontWeight: 'normal',
+    fontSize: '12px',
+    color: colors.primary.grey,
   },
   primaryBody: {
-    fontWeight: "normal",
-    fontSize: "16px",
-    color: colors.primary.darkGrey
+    fontWeight: 'normal',
+    fontSize: '16px',
+    color: colors.primary.darkGrey,
   },
   secondaryBody: {
-    fontWeight: "normal",
-    fontSize: "16px",
-    color: colors.primary.grey
+    fontWeight: 'normal',
+    fontSize: '16px',
+    color: colors.primary.grey,
   },
   primarySmallBody: {
-    fontWeight: "normal",
-    fontSize: "14px",
-    color: colors.primary.darkGrey
+    fontWeight: 'normal',
+    fontSize: '14px',
+    color: colors.primary.darkGrey,
   },
   secondarySmallBody: {
-    fontWeight: "normal",
-    fontSize: "14px",
-    color: colors.primary.grey
+    fontWeight: 'normal',
+    fontSize: '14px',
+    color: colors.primary.grey,
   },
   caption: {
-    fontWeight: "normal",
-    fontSize: "12px",
-    color: colors.primary.grey
+    fontWeight: 'normal',
+    fontSize: '12px',
+    color: colors.primary.grey,
   },
   errorMessage: {
-    fontWeight: "normal",
-    fontSize: "12px",
-    color: colors.primary.errorRed
-  }
+    fontWeight: 'normal',
+    fontSize: '12px',
+    color: colors.primary.errorRed,
+  },
 };
 
 // tooltip theme
@@ -373,13 +373,13 @@ const tooltip = {
   title: {
     ...fonts.size.fontSizeXS,
     color: colors.primary.darkGrey,
-    textAlign: "center"
+    textAlign: 'center',
   },
   text: {
     ...fonts.size.fontSizeXS,
     color: colors.primary.darkGrey,
-    textAlign: "center"
-  }
+    textAlign: 'center',
+  },
 };
 
 // A theme with custom primary and secondary color.
@@ -392,7 +392,7 @@ const theme = {
   links,
   linksBackground,
   linksOutline,
-  tooltip
+  tooltip,
 };
 
 export default createMuiTheme(theme);

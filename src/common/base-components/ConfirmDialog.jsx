@@ -114,7 +114,7 @@ export const ConfirmDialog = withStyles(styleSheet, { name: "ConfirmDialog" })(
               id="confirm-dialog-title"
               className={clsx(s.header, variant && s[`${variant}`])}
             >
-              <></>
+              <React.Fragment></React.Fragment>
             </DialogTitle>
             <DialogContent className={s.contentWrapper}>
               <Typography
@@ -162,16 +162,16 @@ export const DeleteConfirmDialog = withTranslation(({ t, ...props }) => (
   <ConfirmDialog
     variant="error"
     closeLabel={
-      <>
+      <React.Fragment>
         <CloseIcon style={{ width: 10, height: 10 }} />
         <Typography paddingLeft>{t("cancel")}</Typography>
-      </>
+      </React.Fragment>
     }
     confirmLabel={
-      <>
+      <React.Fragment>
         <DeleteIcon style={{ width: 13, height: 12 }} />
         <Typography paddingLeft>{t("delete")}</Typography>
-      </>
+      </React.Fragment>
     }
     {...props}
   />
@@ -181,16 +181,16 @@ export const PrimaryConfirmDialog = withTranslation(({ t, ...props }) => (
   <ConfirmDialog
     variant="primary"
     closeLabel={
-      <>
+      <React.Fragment>
         <CloseIcon style={{ width: 10, height: 10 }} />
         <Typography paddingLeft>{t("cancel")}</Typography>
-      </>
+      </React.Fragment>
     }
     confirmLabel={
-      <>
+      <React.Fragment>
         <CheckIcon style={{ width: 15, height: 12 }} />
         <Typography paddingLeft>{t("ok")}</Typography>
-      </>
+      </React.Fragment>
     }
     {...props}
   />

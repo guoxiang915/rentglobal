@@ -1,52 +1,53 @@
 const INITIAL_STATE = {
   isLoggedIn: false,
   user: null,
+  userRole: '',
   isLoading: false,
   error: null,
   loaded: false,
   successMsg: null,
   isActivated: false,
-  isUpdating: null
+  isUpdating: null,
 };
 
 const authReducer = (currentState = INITIAL_STATE, action) => {
   switch (action.type) {
-    case "REQUEST_LOGIN":
+    case 'REQUEST_LOGIN':
       return {
         ...currentState,
         isLoading: true,
-        successMsg: null
+        successMsg: null,
       };
 
-    case "LOGIN_SUCCESS":
+    case 'LOGIN_SUCCESS':
       return {
         ...currentState,
         isLoading: false,
         isLoggedIn: true,
         error: null,
-        user: action.resp
+        user: action.resp,
         // successMsg: action.resp.msg
       };
 
-    case "LOGIN_FAILED":
+    case 'LOGIN_FAILED':
       return {
         ...currentState,
         isLoading: false,
-        error: { type: "login", msg: action.resp.msg },
-        isLoggedIn: false
+        error: { type: 'login', msg: action.resp.msg },
+        isLoggedIn: false,
       };
 
-    case "USER_NOT_ACTIVATED":
+    case 'USER_NOT_ACTIVATED':
       return {
         ...currentState,
         isLoading: false,
         // error: action.resp.msg,
         error: null,
         isLoggedIn: true,
-        user: action.resp
+        user: action.resp,
       };
 
-    case "REQUEST_AUTHENTICATION":
+    case 'REQUEST_AUTHENTICATION':
       return {
         ...currentState,
         isLoading: true,
@@ -54,37 +55,37 @@ const authReducer = (currentState = INITIAL_STATE, action) => {
         error: null,
         user: null,
         loaded: false,
-        successMsg: null
+        successMsg: null,
       };
 
-    case "AUTH_SUCCESS":
+    case 'AUTH_SUCCESS':
       return {
         ...currentState,
         isLoading: false,
         isLoggedIn: true,
         error: null,
         user: action.resp,
-        loaded: true
+        loaded: true,
       };
 
-    case "AUTH_FAILED":
+    case 'AUTH_FAILED':
       return {
         ...currentState,
         isLoading: false,
         isLoggedIn: false,
-        error: { type: "auth", msg: action.resp.msg },
+        error: { type: 'auth', msg: action.resp.msg },
         user: null,
-        loaded: true
+        loaded: true,
       };
 
-    case "FLUSH_MESSAGES":
+    case 'FLUSH_MESSAGES':
       return {
         ...currentState,
         error: null,
-        successMsg: null
+        successMsg: null,
       };
 
-    case "REQUEST_LOGOUT":
+    case 'REQUEST_LOGOUT':
       return {
         ...currentState,
         isLoading: false,
@@ -92,10 +93,10 @@ const authReducer = (currentState = INITIAL_STATE, action) => {
         error: null,
         user: null,
         loaded: true,
-        successMsg: null
+        successMsg: null,
       };
 
-    case "REQUEST_USER_REGISTER":
+    case 'REQUEST_USER_REGISTER':
       return {
         ...currentState,
         isLoading: true,
@@ -103,70 +104,90 @@ const authReducer = (currentState = INITIAL_STATE, action) => {
         user: null,
         error: null,
         // loaded: false,
-        successMsg: null
+        successMsg: null,
       };
 
-    case "REQUEST_VERIFY_EMAIL":
-    case "REQUEST_FORGOT_PASSWORD":
-    case "REQUEST_RESET_PASSWORD":
+    case 'REQUEST_VERIFY_EMAIL':
+    case 'REQUEST_FORGOT_PASSWORD':
+    case 'REQUEST_RESET_PASSWORD':
       return {
         ...currentState,
-        isLoading: true
+        isLoading: true,
       };
 
-    case "RESPONSE_VERIFY_EMAIL":
-    case "RESPONSE_FORGOT_PASSWORD":
-    case "RESPONSE_RESET_PASSWORD":
+    case 'RESPONSE_VERIFY_EMAIL':
+    case 'RESPONSE_FORGOT_PASSWORD':
+    case 'RESPONSE_RESET_PASSWORD':
       return {
         ...currentState,
-        isLoading: false
+        isLoading: false,
       };
 
-    case "REGISTER_USER_FAILED":
+    case 'REGISTER_USER_FAILED':
       return {
         ...currentState,
         isLoading: false,
         isLoggedIn: false,
         user: null,
-        error: { type: "register", msg: action.resp.msg }
+        error: { type: 'register', msg: action.resp.msg },
         // loaded: true
       };
 
     // unusable
-    case "REGISTER_USER_SUCCESS":
+    case 'REGISTER_USER_SUCCESS':
       return {
         ...currentState,
         isLoading: false,
         isLoggedIn: true,
-        error: null
+        error: null,
         // loaded: true
       };
 
-    case "SET_USER_ROLE":
+    case 'SET_USER_ROLE':
       return {
         ...currentState,
-        user: { ...currentState.user, role: action.role },
-        isLoading: true
+        userRole: action.userRole,
       };
 
-    case "REQUEST_UPDATE_USER":
+    case 'REQUEST_UPDATE_USER':
       return {
         ...currentState,
-        isUpdating: action.field
+        isUpdating: action.field,
       };
 
-    case "UPDATE_USER_SUCCESS":
+    case 'UPDATE_USER_SUCCESS':
       return {
         ...currentState,
         isUpdating: null,
-        user: action.resp
+        user: action.resp,
       };
 
-    case "UPDATE_USER_FAILED":
+    case 'UPDATE_USER_FAILED':
       return {
         ...currentState,
         isUpdating: null,
-        error: { type: "updateUser", msg: action.resp.msg }
+        error: { type: 'updateUser', msg: action.resp.msg },
+      };
+
+    case 'REQUEST_DELETE_DOCUMENT':
+      return {
+        ...currentState,
+        isLoading: true,
+      };
+
+    case 'DELETE_DOCUMENT_SUCCESS':
+      return {
+        ...currentState,
+        isLoading: false,
+        user: action.resp,
+        error: null,
+      };
+
+    case 'DELETE_DOCUMENT_FAILED':
+      return {
+        ...currentState,
+        isLoading: false,
+        error: { type: 'deleteDocument', msg: action.resp.msg },
       };
 
     default:

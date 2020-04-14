@@ -1,54 +1,48 @@
-import React, { Component } from "react";
+import React from "react";
 import PropTypes from "prop-types";
 import { Link as RouterLink } from "react-router-dom";
 import { withStyles } from "@material-ui/core";
 import clsx from "clsx";
 
-const styleSheet = theme => ({
+const styleSheet = (theme) => ({
   root: {
     textDecoration: "none",
     cursor: "pointer",
     color: theme.colors.primary.darkGrey,
     "&:hover": {
-      color: theme.colors.primary.mainColor
+      color: theme.colors.primary.mainColor,
     },
-    transition: "all .2s"
+    transition: "all .2s",
   },
-  ...theme.links
+  ...theme.links,
 });
 
-class Link extends Component {
-  static propTypes = {
-    classes: PropTypes.object.isRequired,
-    styles: PropTypes.any
-  };
+const Link = ({
+  classes,
+  children,
+  underline,
+  variant,
+  inverse,
+  styles,
+  ...props
+}) => (
+  <RouterLink
+    className={clsx(
+      classes.root,
+      variant && classes[variant],
+      inverse && classes.inverse,
+      styles
+    )}
+    underline={underline ? underline : "none"}
+    {...props}
+  >
+    {children}
+  </RouterLink>
+);
 
-  render() {
-    const {
-      classes,
-      children,
-      underline,
-      variant,
-      inverse,
-      styles,
-      ...props
-    } = this.props;
-
-    return (
-      <RouterLink
-        className={clsx(
-          classes.root,
-          variant && classes[variant],
-          inverse && classes.inverse,
-          styles
-        )}
-        underline={underline ? underline : "none"}
-        {...props}
-      >
-        {children}
-      </RouterLink>
-    );
-  }
-}
+Link.propTypes = {
+  classes: PropTypes.object.isRequired,
+  styles: PropTypes.any,
+};
 
 export default withStyles(styleSheet, { name: "Link" })(Link);

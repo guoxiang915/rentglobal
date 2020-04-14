@@ -1,9 +1,9 @@
-import React, { Component } from "react";
-import { withStyles } from "@material-ui/core/styles";
-import { withTranslation } from "react-i18next";
-import clsx from "clsx";
-import PropTypes from "prop-types";
-import withWidth, { isWidthDown } from "@material-ui/core/withWidth";
+import React, { Component } from 'react';
+import { withStyles } from '@material-ui/core/styles';
+import { withTranslation } from 'react-i18next';
+import clsx from 'clsx';
+import PropTypes from 'prop-types';
+import withWidth, { isWidthDown } from '@material-ui/core/withWidth';
 import {
   Box,
   Row,
@@ -25,26 +25,31 @@ import {
   LockIcon,
   UploadIcon,
   ProgressIcon,
-} from "../../common/base-components";
+} from '../../common/base-components';
 import {
   UploadDocument,
   TabWrapper,
   StatisticBox,
-} from "../../common/base-layouts";
-import { withCarousel } from "../../common/base-services";
-import { ConditionalWrapper } from "../../utils/helpers";
-import { CropperDialog } from "../Layout";
-import { Grid, Card } from "@material-ui/core";
-import Dropzone from "react-dropzone";
+} from '../../common/base-layouts';
+import { withCarousel } from '../../common/base-services';
+import { ConditionalWrapper } from '../../utils/helpers';
+import { CropperDialog } from '../Layout';
+import { Grid, Card } from '@material-ui/core';
+import Dropzone from 'react-dropzone';
 
 /** Show save and cancel buttons for form */
 const SaveButtons = ({ isUpdating, onSave, onCancel, disabled, t }) => (
-  <>
+  <React.Fragment>
     <Box paddingRightDouble>
-      <Button link="errorRed" background="secondaryLight" onClick={onCancel}>
+      <Button
+        link="errorRed"
+        background="errorRedLight"
+        inverse
+        onClick={onCancel}
+      >
         <CloseIcon style={{ width: 9, height: 9 }} />
         <Typography paddingLeft fontSizeS>
-          {t("cancel")}
+          {t('cancel')}
         </Typography>
       </Button>
     </Box>
@@ -61,25 +66,25 @@ const SaveButtons = ({ isUpdating, onSave, onCancel, disabled, t }) => (
           <CheckIcon style={{ width: 16, height: 12 }} />
         )}
         <Typography paddingLeft fontSizeS>
-          {t("save")}
+          {t('save')}
         </Typography>
       </Button>
     </Box>
-  </>
+  </React.Fragment>
 );
 
 const styleSheet = (theme) => ({
   root: {
     paddingLeft: theme.spacing(5),
     paddingRight: theme.spacing(5),
-    [theme.breakpoints.down("sm")]: {
+    [theme.breakpoints.down('sm')]: {
       paddingLeft: 27,
       paddingRight: 27,
     },
   },
 
   fullWidth: {
-    width: "100%",
+    width: '100%',
   },
 
   profileTabWrapper: {
@@ -93,8 +98,8 @@ const styleSheet = (theme) => ({
 
   profileInput: {
     width: 370,
-    [theme.breakpoints.down("sm")]: {
-      width: "100%",
+    [theme.breakpoints.down('sm')]: {
+      width: '100%',
     },
   },
 
@@ -103,10 +108,10 @@ const styleSheet = (theme) => ({
   },
 
   panelDivider: {
-    "&::after": {
+    '&::after': {
       content: "''",
       height: 1,
-      top: "50%",
+      top: '50%',
       left: 35,
       right: 0,
       background: theme.colors.primary.borderGrey,
@@ -114,65 +119,65 @@ const styleSheet = (theme) => ({
   },
 
   documentsWrapper: {
-    flexWrap: "wrap",
-    [theme.breakpoints.down("sm")]: {
-      flexWrap: "nowrap",
-      overflow: "hidden",
+    flexWrap: 'wrap',
+    [theme.breakpoints.down('sm')]: {
+      flexWrap: 'nowrap',
+      overflow: 'hidden',
     },
   },
 
   generalInfoForm: {
-    width: "100%",
+    width: '100%',
   },
 
   imageWrapper: {
-    float: "right",
+    float: 'right',
   },
 
   avatarCard: {
     width: 216,
     height: 216,
-    display: "flex",
-    justifyContent: "center",
-    alignItems: "center",
-    overflow: "hidden",
-    position: "relative",
-    backgroundRepeat: "no-repeat",
-    backgroundSize: "cover",
-    backgroundPosition: "center",
-    "&:hover": {
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
+    overflow: 'hidden',
+    position: 'relative',
+    backgroundRepeat: 'no-repeat',
+    backgroundSize: 'cover',
+    backgroundPosition: 'center',
+    '&:hover': {
       backgroundColor: theme.colors.primary.grey,
-      backgroundBlendMode: "screen",
+      backgroundBlendMode: 'screen',
     },
   },
 
   companyAvatarCard: {
-    borderRadius: "50%",
+    borderRadius: '50%',
   },
 
   dropzone: {
-    width: "90%",
-    height: "90%",
+    width: '90%',
+    height: '90%',
     border: `3px dashed ${theme.colors.primary.borderGrey}`,
-    position: "absolute",
-    top: "5%",
-    left: "5%",
-    filter: "grayscale(1)",
+    position: 'absolute',
+    top: '5%',
+    left: '5%',
+    filter: 'grayscale(1)',
   },
 
   companyDropzone: {
-    borderRadius: "50%",
+    borderRadius: '50%',
   },
 
   uploadIcon: {
     color: theme.colors.primary.mainColor,
-    mixBlendMode: "difference",
+    mixBlendMode: 'difference',
   },
 
   avatarImage: {
-    width: "100%",
-    height: "100%",
-    objectFit: "cover",
+    width: '100%',
+    height: '100%',
+    objectFit: 'cover',
   },
 
   outlineIcon: {
@@ -180,27 +185,27 @@ const styleSheet = (theme) => ({
   },
 
   errorIcon: {
-    borderRadius: "50%",
+    borderRadius: '50%',
     border: `1px solid ${theme.colors.primary.errorRed}`,
     boxShadow: `0px 6px 12px ${theme.colors.primary.errorRed}4D`,
     color: theme.colors.primary.white,
     background: theme.colors.primary.errorRed,
-    display: "flex",
-    justifyContent: "center",
-    alignItems: "center",
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
     width: 30,
     height: 24,
   },
 
   approveIcon: {
-    borderRadius: "50%",
+    borderRadius: '50%',
     border: `1px solid ${theme.colors.primary.mainColor}`,
     boxShadow: `0px 6px 12px ${theme.colors.primary.mainColor}4D`,
     color: theme.colors.primary.white,
     background: theme.colors.primary.mainColor,
-    display: "flex",
-    justifyContent: "center",
-    alignItems: "center",
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
     width: 30,
     height: 24,
   },
@@ -208,8 +213,7 @@ const styleSheet = (theme) => ({
 
 class Profile extends Component {
   static propTypes = {
-    role: PropTypes.string.isRequired,
-    user: PropTypes.object.isRequired,
+    auth: PropTypes.object.isRequired,
     uploadFile: PropTypes.func,
     downloadFile: PropTypes.func,
     updateUser: PropTypes.func,
@@ -218,23 +222,23 @@ class Profile extends Component {
 
   state = {
     avatar: null,
-    username: "",
-    email: "",
-    phoneNumber: "",
+    username: '',
+    phoneNumber: '',
     address: {},
-    postalCode: "",
+    postalCode: '',
     legalStatusDocuments: [],
     checkSpecimen: [],
     leases: [],
     copyOfPhotoIds: [],
     lastThreeBalances: [],
     commercialBrochures: [],
-    password: "",
-    passwordError: "",
-    confirmPassword: "",
+    oldPassword: '',
+    password: '',
+    passwordError: '',
+    confirmPassword: '',
 
     editTab: null,
-    openedTab: "generalInfo",
+    openedTab: 'generalInfo',
     uploadingDocument: null,
 
     dialog: null,
@@ -244,33 +248,33 @@ class Profile extends Component {
   documents = {
     landlord: [
       {
-        value: "legalStatusDocuments",
-        title: this.props.t("legalStatusDocument"),
+        value: 'legalStatusDocuments',
+        title: this.props.t('legalStatusDocument'),
       },
-      { value: "checkSpecimen", title: this.props.t("checkSpecimen") },
-      { value: "leases", title: this.props.t("lease") },
+      { value: 'checkSpecimen', title: this.props.t('checkSpecimen') },
+      { value: 'leases', title: this.props.t('lease') },
     ],
     company: [
       {
-        value: "legalStatusDocuments",
-        title: this.props.t("legalStatusDocument"),
+        value: 'legalStatusDocuments',
+        title: this.props.t('legalStatusDocument'),
       },
-      { value: "checkSpecimen", title: this.props.t("checkSpecimen") },
-      { value: "copyOfPhotoIds", title: this.props.t("copyOfID") },
-      { value: "lastThreeBalances", title: this.props.t("lastThreeBalance") },
+      { value: 'checkSpecimen', title: this.props.t('checkSpecimen') },
+      { value: 'copyOfPhotoIds', title: this.props.t('copyOfID') },
+      { value: 'lastThreeBalances', title: this.props.t('lastThreeBalance') },
       {
-        value: "commercialBrochures",
-        title: this.props.t("commercialBrochure"),
+        value: 'commercialBrochures',
+        title: this.props.t('commercialBrochure'),
       },
     ],
   };
 
   UNSAFE_componentWillReceiveProps(newProps) {
-    this.handleResetProfileInfo(newProps);
+    this.handleResetProfileInfo(newProps.auth);
   }
 
   UNSAFE_componentWillMount() {
-    this.handleResetProfileInfo(this.props);
+    this.handleResetProfileInfo(this.props.auth);
   }
 
   handleStateChange = (field) => (value) => {
@@ -287,24 +291,16 @@ class Profile extends Component {
 
   /** Save general info */
   handleSaveGeneralInfo = () => {
-    const {
-      avatar,
-      email,
-      username,
-      phoneNumber,
-      address,
-      postalCode,
-    } = this.state;
+    const { avatar, username, phoneNumber, address, postalCode } = this.state;
 
     if (avatar && avatar._id) {
-      this.props.updateUser("avatar", {
+      this.props.updateUser('avatar', {
         avatarFileId: avatar._id,
       });
     }
-    this.props.updateUser("profile", {
-      role: this.props.user.role,
+    this.props.updateUser('profile', {
+      userRole: this.props.auth.userRole,
       profile: {
-        email: email,
         profile: {
           username,
           phoneNumber,
@@ -316,23 +312,23 @@ class Profile extends Component {
   };
 
   /** Save security information */
-  handleSaveSecurityInfo = (e) => {
+  handleSaveSecurityInfo = () => {
     this.setState({
       dialog: (
         <ConfirmDialog
           variant="error"
-          text={this.props.t("confirmResetPassword")}
+          text={this.props.t('confirmResetPassword')}
           closeLabel={
-            <>
+            <React.Fragment>
               <CloseIcon style={{ width: 10, height: 10 }} />
-              <Typography paddingLeft>{this.props.t("cancel")}</Typography>
-            </>
+              <Typography paddingLeft>{this.props.t('cancel')}</Typography>
+            </React.Fragment>
           }
           confirmLabel={
-            <>
+            <React.Fragment>
               <CheckIcon style={{ width: 15, height: 12 }} />
-              <Typography paddingLeft>{this.props.t("reset")}</Typography>
-            </>
+              <Typography paddingLeft>{this.props.t('reset')}</Typography>
+            </React.Fragment>
           }
           onClose={this.handleCloseDialog}
           onConfirm={this.saveSecurityInfo}
@@ -342,9 +338,10 @@ class Profile extends Component {
   };
 
   saveSecurityInfo = () => {
-    const { password, confirmPassword } = this.state;
+    const { oldPassword, password, confirmPassword } = this.state;
     if (password === confirmPassword) {
-      this.props.updateUser("password", {
+      this.props.updateUser('password', {
+        oldPassword,
         password,
         passwordLastUpdated: new Date().getTime(),
       });
@@ -358,17 +355,17 @@ class Profile extends Component {
    */
   handleCancelEditProfile = () => {
     this.setState({ editTab: null });
-    this.handleResetProfileInfo(this.props);
+    this.handleResetProfileInfo(this.props.auth);
   };
 
   /**
    * Toggle state variables to input new data in edit mode
-   * @param {string} props props from parent
+   * @param {string} user User information
    */
-  handleResetProfileInfo = (props) => {
-    const { user, role } = props;
+  handleResetProfileInfo = (auth) => {
+    const { user, userRole } = auth;
     let profile =
-      role === "landlord" ? user.landlordProfile : user.companyProfile;
+      userRole === 'landlord' ? user.landlordProfile : user.companyProfile;
     if (!profile) {
       profile = {};
     }
@@ -377,11 +374,10 @@ class Profile extends Component {
     }
 
     this.setState({
-      username: profile.username || "",
-      email: user.email || "",
-      phoneNumber: profile.phoneNumber || "",
+      username: profile.username || '',
+      phoneNumber: profile.phoneNumber || '',
       address: profile.address || {},
-      postalCode: profile.address.postalCode || "",
+      postalCode: profile.address.postalCode || '',
       avatar: user.avatar || null,
     });
   };
@@ -407,7 +403,7 @@ class Profile extends Component {
   /** Set and resize avatar image */
   handleClickAvatar = (avatar) => {
     const reader = new FileReader();
-    reader.addEventListener("load", () =>
+    reader.addEventListener('load', () =>
       this.setState({
         dialog: (
           <CropperDialog
@@ -424,15 +420,15 @@ class Profile extends Component {
 
   /** Upload avatar from cropper dialog */
   handleUploadAvatar = (avatar) => {
-    this.setState({ uploadingDocument: "avatar" });
-    this.props.uploadFile(avatar, "public-read").then(
+    this.setState({ uploadingDocument: 'avatar' });
+    this.props.uploadFile(avatar, 'public-read').then(
       (response) => {
         this.setState({
           avatar: response.data,
           uploadingDocument: null,
         });
       },
-      (error) => {
+      () => {
         this.setState({ uploadingDocument: null });
       }
     );
@@ -447,8 +443,8 @@ class Profile extends Component {
   handleUploadDocument = (docType) => (docFile) => {
     this.setState({ uploadingDocument: docType });
     this.props.uploadFile(docFile).then((response) => {
-      this.props.updateUser("documents", {
-        role: this.props.role,
+      this.props.updateUser('documents', {
+        userRole: this.props.auth.userRole,
         documentInfo: {
           document: docType,
           documentFileId: response.data._id,
@@ -462,12 +458,7 @@ class Profile extends Component {
 
   /** Delete user document */
   handleDeleteDocument = (docType) => (docFile) => {
-    this.setState({ uploadingDocument: docType });
-    return this.props.deleteDocument(docType, docFile).then((response) => {
-      this.setState({
-        uploadingDocument: null,
-      });
-    });
+    this.props.deleteDocument(this.props.auth.userRole, docType, docFile);
   };
 
   /** Change/Select address */
@@ -478,7 +469,7 @@ class Profile extends Component {
 
   handleSelectAddress = (value) => {
     const address = { ...this.state.address, ...value };
-    const postalCode = value.zipCode || "";
+    const postalCode = value.zipCode || '';
     this.setState({ address, postalCode });
   };
 
@@ -486,39 +477,34 @@ class Profile extends Component {
    * Render function
    */
   render() {
-    const {
-      user,
-      isUpdating: updatingTab,
-      role,
-      width,
-      classes: s,
-      t,
-    } = this.props;
+    const { width, classes: s, t } = this.props;
+    const { user, userRole, isUpdating: updatingTab } = this.props.auth;
     const { openedTab, editTab, uploadingDocument, dialog } = this.state;
     const CarouselWrapper = withCarousel;
     const profile =
-      role === "landlord" ? user.landlordProfile : user.companyProfile;
+      userRole === 'landlord' ? user.landlordProfile : user.companyProfile;
 
     const {
       avatar,
       username,
-      email,
       phoneNumber,
       address,
       postalCode,
+      oldPassword,
       password,
       passwordError,
       confirmPassword,
     } = this.state;
+    const { email } = user;
 
-    let passwordLastUpdated = "-";
+    let passwordLastUpdated = '-';
     if (user.updatedAt) {
       passwordLastUpdated = new Date(user.updatedAt);
       passwordLastUpdated =
         passwordLastUpdated.getFullYear() +
-        "/" +
+        '/' +
         (passwordLastUpdated.getMonth() + 1) +
-        "/" +
+        '/' +
         passwordLastUpdated.getDate();
     }
 
@@ -532,18 +518,18 @@ class Profile extends Component {
       >
         {/* title */}
         <Typography fontSizeM textSecondary paddingBottom>
-          {t("profileAndAccount")}
+          {t('profileAndAccount')}
         </Typography>
 
         {/* general info tab */}
         <Row fullWidth classes={{ box: s.profileTabWrapper }}>
           <TabWrapper
-            title={t(role === "landlord" ? "landlordInfo" : "companyInfo")}
-            open={openedTab === "generalInfo"}
-            onToggleOpen={this.handleToggleOpen("generalInfo")}
-            isEdit={editTab === "generalInfo" || updatingTab === "profile"}
+            title={t(userRole === 'landlord' ? 'landlordInfo' : 'companyInfo')}
+            open={openedTab === 'generalInfo'}
+            onToggleOpen={this.handleToggleOpen('generalInfo')}
+            isEdit={editTab === 'generalInfo' || updatingTab === 'profile'}
             isEditable={editTab === null}
-            onToggleEdit={this.handleToggleEdit("generalInfo")}
+            onToggleEdit={this.handleToggleEdit('generalInfo')}
           >
             <Row fullWidth>
               <form noValidate autoComplete="off" className={s.generalInfoForm}>
@@ -556,20 +542,20 @@ class Profile extends Component {
                           style={{
                             backgroundImage: avatar
                               ? `url("${avatar.bucketPath}")`
-                              : "none",
+                              : 'none',
                           }}
                           className={clsx(
                             s.avatarCard,
-                            role === "company" && s.companyAvatarCard
+                            userRole === 'company' && s.companyAvatarCard
                           )}
                         >
-                          {!avatar && editTab !== "generalInfo" && (
+                          {!avatar && editTab !== 'generalInfo' && (
                             <UserIcon
                               fontSize="large"
                               className={s.outlineIcon}
                             />
                           )}
-                          {editTab === "generalInfo" && (
+                          {editTab === 'generalInfo' && (
                             <Dropzone
                               multiple={false}
                               onDrop={(files) =>
@@ -581,7 +567,8 @@ class Profile extends Component {
                                   classes={{
                                     box: clsx(
                                       s.dropzone,
-                                      role === "company" && s.companyDropzone
+                                      userRole === 'company' &&
+                                        s.companyDropzone
                                     ),
                                   }}
                                   justifyChildrenCenter
@@ -589,7 +576,7 @@ class Profile extends Component {
                                   {...getRootProps()}
                                 >
                                   <input {...getInputProps()} />
-                                  {uploadingDocument === "avatar" ? (
+                                  {uploadingDocument === 'avatar' ? (
                                     <ProgressIcon />
                                   ) : (
                                     <UploadIcon
@@ -613,28 +600,29 @@ class Profile extends Component {
                       <TextField
                         variant="outlined"
                         placeholder={t(
-                          role === "landlord" ? "landlordName" : "companyName"
+                          userRole === 'landlord'
+                            ? 'landlordName'
+                            : 'companyName'
                         )}
-                        onChange={this.handleStateChangeByInput("username")}
+                        onChange={this.handleStateChangeByInput('username')}
                         value={username}
                         className={s.profileInput}
                         startAdornment={<UserIcon className={s.outlineIcon} />}
-                        readOnly={editTab !== "generalInfo"}
+                        readOnly={editTab !== 'generalInfo'}
                       />
                     </Row>
                     <Row paddingTopHalf>
                       <TextField
                         type="email"
                         variant="outlined"
-                        placeholder={t("emailAddress")}
-                        onChange={this.handleStateChangeByInput("email")}
+                        placeholder={t('emailAddress')}
                         value={email}
                         className={s.profileInput}
                         startAdornment={<EmailIcon className={s.outlineIcon} />}
                         endAdornment={
                           <Tooltip
                             placement={
-                              isWidthDown("xs", width) ? "left" : "bottom"
+                              isWidthDown('xs', width) ? 'left' : 'bottom'
                             }
                             borderType="primary"
                             title={
@@ -642,7 +630,7 @@ class Profile extends Component {
                                 title={
                                   <Column>
                                     <Typography textSecondary>
-                                      {t("yourEmailConfirmed")}
+                                      {t('yourEmailConfirmed')}
                                     </Typography>
                                   </Column>
                                 }
@@ -655,21 +643,21 @@ class Profile extends Component {
                             </div>
                           </Tooltip>
                         }
-                        readOnly={editTab !== "generalInfo"}
+                        readOnly
                       />
                     </Row>
                     <Row paddingTopHalf>
                       <TextField
                         variant="outlined"
-                        placeholder={t("phoneNumber")}
-                        onChange={this.handleStateChangeByInput("phoneNumber")}
+                        placeholder={t('phoneNumber')}
+                        onChange={this.handleStateChangeByInput('phoneNumber')}
                         value={phoneNumber}
                         className={s.profileInput}
                         startAdornment={<PhoneIcon className={s.outlineIcon} />}
                         endAdornment={
                           <Tooltip
                             placement={
-                              isWidthDown("xs", width) ? "left" : "bottom"
+                              isWidthDown('xs', width) ? 'left' : 'bottom'
                             }
                             borderType="errorRed"
                             title={
@@ -677,7 +665,7 @@ class Profile extends Component {
                                 title={
                                   <Column>
                                     <Typography textErrorRed>
-                                      {t("phoneMustApproved")}
+                                      {t('phoneMustApproved')}
                                     </Typography>
                                     <Box paddingTop>
                                       <Button
@@ -688,7 +676,7 @@ class Profile extends Component {
                                         }
                                       >
                                         <Typography fontSizeXS>
-                                          {t("sendVerificationCode")}
+                                          {t('sendVerificationCode')}
                                         </Typography>
                                       </Button>
                                     </Box>
@@ -701,7 +689,7 @@ class Profile extends Component {
                             <div className={s.errorIcon}>!</div>
                           </Tooltip>
                         }
-                        readOnly={editTab !== "generalInfo"}
+                        readOnly={editTab !== 'generalInfo'}
                       />
                     </Row>
                     <Row paddingTopHalf>
@@ -709,15 +697,15 @@ class Profile extends Component {
                         <GooglePlaceField
                           variant="outlined"
                           value={address.fullAddress}
-                          onChange={this.handleChangeAddress("fullAddress")}
+                          onChange={this.handleChangeAddress('fullAddress')}
                           onSelect={this.handleSelectAddress}
                           inputProps={{
                             startAdornment: (
                               <AddressIcon className={s.outlineIcon} />
                             ),
-                            readOnly: editTab !== "generalInfo",
+                            readOnly: editTab !== 'generalInfo',
                             fullWidth: true,
-                            placeholder: t("currentAddress"),
+                            placeholder: t('currentAddress'),
                             // error: !!validation
                             // helperText: validation && validation.msg
                           }}
@@ -727,22 +715,22 @@ class Profile extends Component {
                     <Row paddingTopHalf>
                       <TextField
                         variant="outlined"
-                        placeholder={t("postalCode")}
-                        onChange={this.handleStateChangeByInput("postalCode")}
+                        placeholder={t('postalCode')}
+                        onChange={this.handleStateChangeByInput('postalCode')}
                         value={postalCode}
                         className={s.profileInput}
                         startAdornment={
                           <MapPointerIcon className={s.outlineIcon} />
                         }
-                        readOnly={editTab !== "generalInfo"}
+                        readOnly={editTab !== 'generalInfo'}
                       />
                     </Row>
-                    {(editTab === "generalInfo" ||
-                      updatingTab === "profile") && (
+                    {(editTab === 'generalInfo' ||
+                      updatingTab === 'profile') && (
                       // buttons for save
                       <Row paddingTopHalf style={{ maxWidth: 370 }}>
                         <SaveButtons
-                          isUpdating={updatingTab === "profile"}
+                          isUpdating={updatingTab === 'profile'}
                           onSave={this.handleSaveGeneralInfo}
                           onCancel={this.handleCancelEditProfile}
                           t={t}
@@ -760,12 +748,14 @@ class Profile extends Component {
                 classes={{ box: s.panelDivider }}
               >
                 {t(
-                  role === "landlord" ? "landlordDocuments" : "companyDocuments"
+                  userRole === 'landlord'
+                    ? 'landlordDocuments'
+                    : 'companyDocuments'
                 )}
               </Typography>
             </Row>
             <Typography fontSizeS textSecondary paddingTop>
-              {t("provideDocumentsNeeded")}
+              {t('provideDocumentsNeeded')}
             </Typography>
             <Row
               fullWidth
@@ -774,14 +764,14 @@ class Profile extends Component {
               classes={{ box: s.documentsWrapper }}
             >
               <ConditionalWrapper
-                condition={isWidthDown("sm", width)}
+                condition={isWidthDown('sm', width)}
                 wrapper={(children) => (
                   <CarouselWrapper itemWidth={200} itemOffset={10}>
                     {children}
                   </CarouselWrapper>
                 )}
               >
-                {this.documents[role].map((item) => (
+                {this.documents[userRole].map((item) => (
                   <React.Fragment key={item.value}>
                     <Box paddingRightHalf paddingBottomHalf>
                       <UploadDocument
@@ -803,14 +793,14 @@ class Profile extends Component {
         {/* login and security tab */}
         <Row fullWidth classes={{ box: s.profileTabWrapper }}>
           <TabWrapper
-            title={t("loginAndSecurity")}
-            open={openedTab === "loginAndSecurity"}
-            onToggleOpen={this.handleToggleOpen("loginAndSecurity")}
+            title={t('loginAndSecurity')}
+            open={openedTab === 'loginAndSecurity'}
+            onToggleOpen={this.handleToggleOpen('loginAndSecurity')}
             isEdit={
-              editTab === "loginAndSecurity" || updatingTab === "password"
+              editTab === 'loginAndSecurity' || updatingTab === 'password'
             }
             isEditable={editTab === null}
-            onToggleEdit={this.handleToggleEdit("loginAndSecurity")}
+            onToggleEdit={this.handleToggleEdit('loginAndSecurity')}
           >
             <Row fullWidth>
               <form
@@ -825,12 +815,24 @@ class Profile extends Component {
                       <TextField
                         type="password"
                         variant="outlined"
-                        placeholder={t("password")}
-                        onChange={this.handleStateChangeByInput("password")}
+                        placeholder={t('oldPassword')}
+                        onChange={this.handleStateChangeByInput('oldPassword')}
+                        value={oldPassword}
+                        className={s.profileInput}
+                        startAdornment={<LockIcon className={s.outlineIcon} />}
+                        readOnly={editTab !== 'loginAndSecurity'}
+                      />
+                    </Row>
+                    <Row paddingTopHalf>
+                      <TextField
+                        type="password"
+                        variant="outlined"
+                        placeholder={t('newPassword')}
+                        onChange={this.handleStateChangeByInput('password')}
                         value={password}
                         className={s.profileInput}
                         startAdornment={<LockIcon className={s.outlineIcon} />}
-                        readOnly={editTab !== "loginAndSecurity"}
+                        readOnly={editTab !== 'loginAndSecurity'}
                         error={!!passwordError}
                         helperText={passwordError}
                       />
@@ -839,22 +841,22 @@ class Profile extends Component {
                       <TextField
                         type="password"
                         variant="outlined"
-                        placeholder={t("confirmPassword")}
+                        placeholder={t('confirmPassword')}
                         onChange={this.handleStateChangeByInput(
-                          "confirmPassword"
+                          'confirmPassword'
                         )}
                         value={confirmPassword}
                         className={s.profileInput}
                         startAdornment={<LockIcon className={s.outlineIcon} />}
-                        readOnly={editTab !== "loginAndSecurity"}
+                        readOnly={editTab !== 'loginAndSecurity'}
                       />
                     </Row>
                     <Row paddingTopHalf style={{ maxWidth: 370 }}>
-                      {editTab === "loginAndSecurity" ||
-                      updatingTab === "password" ? (
+                      {editTab === 'loginAndSecurity' ||
+                      updatingTab === 'password' ? (
                         // buttons for save
                         <SaveButtons
-                          isUpdating={updatingTab === "password"}
+                          isUpdating={updatingTab === 'password'}
                           onSave={this.handleSaveSecurityInfo}
                           onCancel={this.handleCancelEditProfile}
                           t={t}
@@ -863,14 +865,14 @@ class Profile extends Component {
                           }
                         />
                       ) : (
-                        <>
+                        <React.Fragment>
                           <Typography fontSizeS textMediumGrey paddingRightHalf>
-                            {t("lastUpdate")}:
+                            {t('lastUpdate')}:
                           </Typography>
                           <Typography fontSizeS textSecondary>
                             {passwordLastUpdated}
                           </Typography>
-                        </>
+                        </React.Fragment>
                       )}
                     </Row>
                   </Grid>
@@ -883,13 +885,13 @@ class Profile extends Component {
                 textMediumGrey
                 classes={{ box: s.panelDivider }}
               >
-                {t("securityOptions")}
+                {t('securityOptions')}
               </Typography>
             </Row>
             <Row fullWidth paddingTopDouble paddingBottom>
               <Box>
                 <StatisticBox
-                  title={t("securityQuestion")}
+                  title={t('securityQuestion')}
                   statistics={[
                     {
                       value: (
@@ -900,20 +902,20 @@ class Profile extends Component {
                           <CheckIcon style={{ width: 11, height: 8 }} />
                         </div>
                       ),
-                      variant: "primary",
+                      variant: 'primary',
                     },
                   ]}
                 />
               </Box>
               <Box paddingLeftHalf>
                 <StatisticBox
-                  title={t("twoFactorLogin")}
-                  statistics={[{ value: "-" }]}
+                  title={t('twoFactorLogin')}
+                  statistics={[{ value: '-' }]}
                 />
               </Box>
               <Box paddingLeftHalf>
                 <StatisticBox
-                  title={t("activeSessions")}
+                  title={t('activeSessions')}
                   statistics={[{ value: 2 }]}
                 />
               </Box>
@@ -924,30 +926,30 @@ class Profile extends Component {
         {/* payments and payouts tab */}
         <Row fullWidth classes={{ box: s.profileTabWrapper }}>
           <TabWrapper
-            title={t("paymentsAndPayouts")}
-            open={openedTab === "paymentsAndPayouts"}
-            onToggleOpen={this.handleToggleOpen("paymentsAndPayouts")}
+            title={t('paymentsAndPayouts')}
+            open={openedTab === 'paymentsAndPayouts'}
+            onToggleOpen={this.handleToggleOpen('paymentsAndPayouts')}
             isEdit={
-              editTab === "paymentsAndPayouts" ||
-              updatingTab === "paymentsAndPayouts"
+              editTab === 'paymentsAndPayouts' ||
+              updatingTab === 'paymentsAndPayouts'
             }
             isEditable={editTab === null}
-            onToggleEdit={this.handleToggleEdit("paymentsAndPayouts")}
+            onToggleEdit={this.handleToggleEdit('paymentsAndPayouts')}
           ></TabWrapper>
         </Row>
 
         {/* privacy & sharing tab */}
         <Row fullWidth classes={{ box: s.profileTabWrapper }}>
           <TabWrapper
-            title={t("privacyAndSharing")}
-            open={openedTab === "privacyAndSharing"}
-            onToggleOpen={this.handleToggleOpen("privacyAndSharing")}
+            title={t('privacyAndSharing')}
+            open={openedTab === 'privacyAndSharing'}
+            onToggleOpen={this.handleToggleOpen('privacyAndSharing')}
             isEdit={
-              editTab === "privacyAndSharing" ||
-              updatingTab === "privacyAndSharing"
+              editTab === 'privacyAndSharing' ||
+              updatingTab === 'privacyAndSharing'
             }
             isEditable={editTab === null}
-            onToggleEdit={this.handleToggleEdit("privacyAndSharing")}
+            onToggleEdit={this.handleToggleEdit('privacyAndSharing')}
           ></TabWrapper>
         </Row>
 
@@ -959,5 +961,5 @@ class Profile extends Component {
 }
 
 export default withStyles(styleSheet)(
-  withTranslation("common")(withWidth()(Profile))
+  withTranslation('common')(withWidth()(Profile))
 );

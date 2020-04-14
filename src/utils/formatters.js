@@ -3,15 +3,15 @@
  * @param {Date} date Date object to be converted
  */
 export function formatDate(date) {
-  let d = new Date(date),
-    month = "" + (d.getMonth() + 1),
-    day = "" + d.getDate(),
-    year = d.getFullYear();
+  const d = new Date(date);
+  let month = `${d.getMonth() + 1}`;
+  let day = `${d.getDate()}`;
+  const year = d.getFullYear();
 
-  if (month.length < 2) month = "0" + month;
-  if (day.length < 2) day = "0" + day;
+  if (month.length < 2) month = `0${month}`;
+  if (day.length < 2) day = `0${day}`;
 
-  return [year, month, day].join("-");
+  return [year, month, day].join('-');
 }
 /**
  * Convert date to yyyy mon dd format
@@ -20,25 +20,25 @@ export function formatDate(date) {
 export function formatDate1(date) {
   // TODO: define this constants from i18n
   const months = [
-    "Jan",
-    "Feb",
-    "Mar",
-    "Apr",
-    "May",
-    "Jun",
-    "Jul",
-    "Aug",
-    "Sep",
-    "Oct",
-    "Nov",
-    "Dec"
+    'Jan',
+    'Feb',
+    'Mar',
+    'Apr',
+    'May',
+    'Jun',
+    'Jul',
+    'Aug',
+    'Sep',
+    'Oct',
+    'Nov',
+    'Dec',
   ];
-  let d = new Date(date);
-  let year = d.getFullYear();
-  let day = "" + d.getDate();
-  if (day.length < 2) day = "0" + day;
+  const d = new Date(date);
+  const year = d.getFullYear();
+  let day = `${d.getDate()}`;
+  if (day.length < 2) day = `0${day}`;
 
-  return [year, months[d.getMonth()], day].join(" ");
+  return [year, months[d.getMonth()], day].join(' ');
 }
 
 /**
@@ -47,13 +47,13 @@ export function formatDate1(date) {
  */
 export function getWeekday(date) {
   const weekdays = [
-    "Sunday",
-    "Monday",
-    "Tuesday",
-    "Wednesday",
-    "Thursday",
-    "Friday",
-    "Saturday"
+    'Sunday',
+    'Monday',
+    'Tuesday',
+    'Wednesday',
+    'Thursday',
+    'Friday',
+    'Saturday',
   ];
   return weekdays[new Date(date).getDay()];
 }

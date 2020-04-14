@@ -78,7 +78,7 @@ class OfficeList extends Component {
   componentDidMount() {
     this.props.getOffices().then(
       response => this.setState({ offices: response.data }),
-      error => {}
+      () => {}
     );
   }
 
@@ -89,7 +89,7 @@ class OfficeList extends Component {
 
   /** Goto previous step */
   handleBack = () => {
-    this.props.navigate("back");
+    this.props.navigate("offices");
   };
 
   /** Change tab value */

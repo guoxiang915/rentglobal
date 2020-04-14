@@ -2,29 +2,29 @@ import React from "react";
 import clsx from "clsx";
 import { withStyles } from "@material-ui/core";
 
-const styleSheet = theme => {
+const styleSheet = (theme) => {
   let unit = 1.1;
   return {
     divider: {
       width: "100%",
       backgroundColor: theme.colors.primary.borderGrey,
-      height: unit
+      height: unit,
     },
     half: {
-      height: 0.5 * unit
+      height: 0.5 * unit,
     },
     single: {
-      height: unit
+      height: unit,
     },
     double: {
-      height: 2 * unit
+      height: 2 * unit,
     },
     light: {
-      backgroundColor: theme.colors.primary.borderGrey
+      backgroundColor: theme.colors.primary.borderGrey,
     },
     dark: {
-      backgroundColor: theme.colors.primary.darkGrey
-    }
+      backgroundColor: theme.colors.primary.darkGrey,
+    },
   };
 };
 
@@ -37,7 +37,6 @@ const Divider = ({
   dark,
   styles,
   className,
-  ...props
 }) => (
   <div
     className={clsx(
@@ -48,7 +47,7 @@ const Divider = ({
         [classes.double]: double,
         [classes.light]: light,
         [classes.dark]: dark,
-        [styles]: styles
+        [styles]: styles,
       },
       className
     )}
