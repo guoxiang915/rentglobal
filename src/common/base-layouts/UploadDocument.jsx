@@ -20,6 +20,7 @@ import {
   KeyboardArrowRight,
 } from "@material-ui/icons";
 import Dropzone from "react-dropzone";
+import { maxFileSize } from '../../utils/constants';
 
 const styleSheet = (theme) => ({
   root: {
@@ -116,7 +117,6 @@ const UploadDocument = ({
 
   const approved =
     documents && documents.find((item) => item.approved === true);
-  const maxFileSize = 10485760;
 
   return (
     <Card variant="outlined" className={classes.root}>
