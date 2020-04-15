@@ -342,7 +342,6 @@ class AppHeader extends Component {
       profileCharged,
       profileCompleteness,
     } = profileProgress;
-    const profile = user[`${userRole}Profile`];
 
     return (
       <Column alignChildrenStart classes={{ box: s.accountInfoContent }}>
@@ -380,7 +379,7 @@ class AppHeader extends Component {
           justifyChildrenCenter
         >
           <Typography fontSizeS textSecondary>
-            {profile ? profile.username : 'Unknown'}
+            {user.generalInfo?.username || 'Unknown'}
           </Typography>
         </Row>
 

@@ -380,7 +380,6 @@ class Dashboard extends Component {
       selectedOfficeTypes,
     } = this.state;
     const { user, userRole } = this.props.auth;
-    const profile = user[`${userRole}Profile`];
     const profileStatus = getProfileStatus(user, userRole);
     const {
       completed: profileCompleted,
@@ -466,7 +465,7 @@ class Dashboard extends Component {
             alignChildrenStart
           >
             <Typography fontSizeS textSecondary>
-              {profile.username}
+              {user.generalInfo?.username || 'Unknown'}
             </Typography>
             <Typography fontSizeXS textMediumGrey paddingTopHalf>
               {t('lastLogin', {

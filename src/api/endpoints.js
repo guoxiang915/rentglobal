@@ -141,7 +141,10 @@ export const getLandlordByOffice = () =>
   Promise.resolve({
     status: 200,
     data: {
-      username: 'Landlord Name',
+      generalInfo: {
+        username: 'Landlord Name',
+        phoneNumber: { number: '111-222-3333', verified: false },
+      },
       avatar: {},
       description:
         'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',

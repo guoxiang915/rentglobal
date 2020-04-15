@@ -301,11 +301,9 @@ class Profile extends Component {
     this.props.updateUser('profile', {
       userRole: this.props.auth.userRole,
       profile: {
-        profile: {
-          username,
-          phoneNumber,
-          address: { ...address, postalCode },
-        },
+        username,
+        phoneNumber,
+        address: { ...address, postalCode },
       },
     });
     this.setState({ editTab: null });
@@ -363,21 +361,13 @@ class Profile extends Component {
    * @param {string} user User information
    */
   handleResetProfileInfo = (auth) => {
-    const { user, userRole } = auth;
-    let profile =
-      userRole === 'landlord' ? user.landlordProfile : user.companyProfile;
-    if (!profile) {
-      profile = {};
-    }
-    if (!profile.address) {
-      profile.address = {};
-    }
+    const { user } = auth;
 
     this.setState({
-      username: profile.username || '',
-      phoneNumber: profile.phoneNumber || '',
-      address: profile.address || {},
-      postalCode: profile.address.postalCode || '',
+      username: user.generalInfo?.username || '',
+      phoneNumber: user.generalInfo?.phoneNumber || '',
+      address: user.generalInfo?.address || {},
+      postalCode: user.generalInfo?.address.postalCode || '',
       avatar: user.avatar || null,
     });
   };
@@ -651,43 +641,45 @@ class Profile extends Component {
                         variant="outlined"
                         placeholder={t('phoneNumber')}
                         onChange={this.handleStateChangeByInput('phoneNumber')}
-                        value={phoneNumber}
+                        value={phoneNumber?.number || ''}
                         className={s.profileInput}
                         startAdornment={<PhoneIcon className={s.outlineIcon} />}
                         endAdornment={
-                          <Tooltip
-                            placement={
-                              isWidthDown('xs', width) ? 'left' : 'bottom'
-                            }
-                            borderType="errorRed"
-                            title={
-                              <TooltipContent
-                                title={
-                                  <Column>
-                                    <Typography textErrorRed>
-                                      {t('phoneMustApproved')}
-                                    </Typography>
-                                    <Box paddingTop>
-                                      <Button
-                                        link="normal"
-                                        background="secondaryLight"
-                                        onClick={
-                                          this.handleSendPhoneVerification
-                                        }
-                                      >
-                                        <Typography fontSizeXS>
-                                          {t('sendVerificationCode')}
-                                        </Typography>
-                                      </Button>
-                                    </Box>
-                                  </Column>
-                                }
-                              />
-                            }
-                            interactive
-                          >
-                            <div className={s.errorIcon}>!</div>
-                          </Tooltip>
+                          phoneNumber?.number && !phoneNumber?.verified ? (
+                            <Tooltip
+                              placement={
+                                isWidthDown('xs', width) ? 'left' : 'bottom'
+                              }
+                              borderType="errorRed"
+                              title={
+                                <TooltipContent
+                                  title={
+                                    <Column>
+                                      <Typography textErrorRed>
+                                        {t('phoneMustApproved')}
+                                      </Typography>
+                                      <Box paddingTop>
+                                        <Button
+                                          link="normal"
+                                          background="secondaryLight"
+                                          onClick={
+                                            this.handleSendPhoneVerification
+                                          }
+                                        >
+                                          <Typography fontSizeXS>
+                                            {t('sendVerificationCode')}
+                                          </Typography>
+                                        </Button>
+                                      </Box>
+                                    </Column>
+                                  }
+                                />
+                              }
+                              interactive
+                            >
+                              <div className={s.errorIcon}>!</div>
+                            </Tooltip>
+                          ) : null
                         }
                         readOnly={editTab !== 'generalInfo'}
                       />
@@ -855,25 +847,25 @@ class Profile extends Component {
                       {editTab === 'loginAndSecurity' ||
                       updatingTab === 'password' ? (
                         // buttons for save
-                          <SaveButtons
-                            isUpdating={updatingTab === 'password'}
-                            onSave={this.handleSaveSecurityInfo}
-                            onCancel={this.handleCancelEditProfile}
-                            t={t}
-                            disabled={
-                              !!passwordError || password !== confirmPassword
-                            }
-                          />
-                        ) : (
-                          <React.Fragment>
-                            <Typography fontSizeS textMediumGrey paddingRightHalf>
-                              {t('lastUpdate')}:
-                            </Typography>
-                            <Typography fontSizeS textSecondary>
-                              {passwordLastUpdated}
-                            </Typography>
-                          </React.Fragment>
-                        )}
+                        <SaveButtons
+                          isUpdating={updatingTab === 'password'}
+                          onSave={this.handleSaveSecurityInfo}
+                          onCancel={this.handleCancelEditProfile}
+                          t={t}
+                          disabled={
+                            !!passwordError || password !== confirmPassword
+                          }
+                        />
+                      ) : (
+                        <React.Fragment>
+                          <Typography fontSizeS textMediumGrey paddingRightHalf>
+                            {t('lastUpdate')}:
+                          </Typography>
+                          <Typography fontSizeS textSecondary>
+                            {passwordLastUpdated}
+                          </Typography>
+                        </React.Fragment>
+                      )}
                     </Row>
                   </Grid>
                 </Grid>
