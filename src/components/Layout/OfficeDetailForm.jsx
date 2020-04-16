@@ -348,11 +348,9 @@ class OfficeDetailForm extends Component {
                 <div className={s.coverPhoto}>
                   <img
                     src={
-                      office.coverPhotos &&
-                      office.coverPhotos.length !== 0 &&
-                      (office.coverPhotos[currentPhoto].desktop
-                        ? office.coverPhotos[currentPhoto].desktop.bucketPath
-                        : office.coverPhotos[currentPhoto].bucketPath)
+                      office.coverPhotos?.[currentPhoto]?.desktop?.bucketPath ||
+                      office.coverPhotos?.[currentPhoto]?.bucketPath ||
+                      null
                     }
                     className={s.coverPhotoContent}
                     alt=""
@@ -428,11 +426,11 @@ class OfficeDetailForm extends Component {
                     <FavoriteIcon className={s.favoriteIcon} />
                   )}
                   {/* <FavoriteIcon style={{ width: 16, height: 15 }} /> */}
-                  {!isWidthDown('xs', width) && (
+                  {!isWidthDown('xs', width) ? (
                     <Typography paddingLeft fontSizeS fontWeightBold>
                       {t('favorite')}
                     </Typography>
-                  )}
+                  ) : null}
                 </Button>
 
                 <Box paddingLeftHalf />
@@ -443,11 +441,11 @@ class OfficeDetailForm extends Component {
                   onClick={this.handleShare}
                 >
                   <ShareIcon style={{ width: 13, height: 15 }} />
-                  {!isWidthDown('xs', width) && (
+                  {!isWidthDown('xs', width) ? (
                     <Typography paddingLeft fontSizeS fontWeightBold>
                       {t('share')}
                     </Typography>
-                  )}
+                  ) : null}
                 </Button>
 
                 <Box paddingLeftHalf />

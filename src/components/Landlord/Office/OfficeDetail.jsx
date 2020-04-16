@@ -162,11 +162,11 @@ class OfficeDetail extends Component {
             variant={isWidthDown('xs', width) ? 'icon' : ''}
           >
             <DeleteIcon style={{ width: 20, height: 18 }} />
-            {!isWidthDown('xs', width) && (
+            {!isWidthDown('xs', width) ? (
               <Typography paddingLeft fontSizeS>
                 {t('delete')}
               </Typography>
-            )}
+            ) : null}
           </Button>
           <Box paddingLeft />
 
@@ -179,11 +179,11 @@ class OfficeDetail extends Component {
             variant={isWidthDown('xs', width) ? 'icon' : ''}
           >
             <EditIcon style={{ width: 20, height: 18 }} />
-            {!isWidthDown('xs', width) && (
+            {!isWidthDown('xs', width) ? (
               <Typography paddingLeft fontSizeS>
                 {t('edit')}
               </Typography>
-            )}
+            ) : null}
           </Button>
         </Row>
 

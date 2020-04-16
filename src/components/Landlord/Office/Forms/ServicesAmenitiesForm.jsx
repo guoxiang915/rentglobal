@@ -93,7 +93,6 @@ class ServicesAmenitiesForm extends Component {
     } else if (isRemove) {
       services[category].splice(services[category].indexOf(option), 1);
     }
-    console.log(category, option, services[category]);
     this.props.onChangeField("servicesAndAmenities", services);
   };
 

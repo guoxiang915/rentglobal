@@ -402,14 +402,14 @@ class Dashboard extends Component {
           <Typography fontSizeM textSecondary>
             {t('dashboard')}
           </Typography>
-          {isWidthDown('xs', width) && (
+          {isWidthDown('xs', width) ? (
             <React.Fragment>
               <Stretch />
               <div style={{ marginTop: 4 }}>
                 <DateTime />
               </div>
             </React.Fragment>
-          )}
+          ) : null}
         </Row>
 
         {/** show sub title and datetime */}
@@ -422,12 +422,12 @@ class Dashboard extends Component {
             {t('welcomeToLandlord')}
           </Typography>
 
-          {!isWidthDown('xs', width) && (
+          {!isWidthDown('xs', width) ? (
             <React.Fragment>
               <Stretch />
               <DateTime />
             </React.Fragment>
-          )}
+          ) : null}
         </Row>
 
         {/** show profile */}

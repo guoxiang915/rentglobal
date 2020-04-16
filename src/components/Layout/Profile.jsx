@@ -224,6 +224,7 @@ class Profile extends Component {
     avatar: null,
     username: '',
     phoneNumber: '',
+    phoneNumberVerified: false,
     address: {},
     postalCode: '',
     legalStatusDocuments: [],
@@ -292,20 +293,29 @@ class Profile extends Component {
   /** Save general info */
   handleSaveGeneralInfo = () => {
     const { avatar, username, phoneNumber, address, postalCode } = this.state;
+    const { user } = this.props.auth;
 
-    if (avatar && avatar._id) {
+    if (avatar && avatar._id && avatar._id !== user.avatar?._id) {
       this.props.updateUser('avatar', {
         avatarFileId: avatar._id,
       });
     }
-    this.props.updateUser('profile', {
-      userRole: this.props.auth.userRole,
-      profile: {
-        username,
-        phoneNumber,
-        address: { ...address, postalCode },
-      },
-    });
+
+    if (
+      username !== user.generalInfo?.username ||
+      phoneNumber !== user.generalInfo?.phoneNumber.number ||
+      address !== user.generalInfo?.address ||
+      postalCode !== user.generalInfo?.address?.postalCode
+    ) {
+      this.props.updateUser('profile', {
+        userRole: this.props.auth.userRole,
+        profile: {
+          username,
+          phoneNumber,
+          address: { ...address, postalCode },
+        },
+      });
+    }
     this.setState({ editTab: null });
   };
 
@@ -365,7 +375,8 @@ class Profile extends Component {
 
     this.setState({
       username: user.generalInfo?.username || '',
-      phoneNumber: user.generalInfo?.phoneNumber || '',
+      phoneNumber: user.generalInfo?.phoneNumber?.number || '',
+      phoneNumberVerified: !!user.generalInfo?.phoneNumber?.verified,
       address: user.generalInfo?.address || {},
       postalCode: user.generalInfo?.address.postalCode || '',
       avatar: user.avatar || null,
@@ -478,6 +489,7 @@ class Profile extends Component {
       avatar,
       username,
       phoneNumber,
+      phoneNumberVerified,
       address,
       postalCode,
       oldPassword,
@@ -641,11 +653,11 @@ class Profile extends Component {
                         variant="outlined"
                         placeholder={t('phoneNumber')}
                         onChange={this.handleStateChangeByInput('phoneNumber')}
-                        value={phoneNumber?.number || ''}
+                        value={phoneNumber || ''}
                         className={s.profileInput}
                         startAdornment={<PhoneIcon className={s.outlineIcon} />}
                         endAdornment={
-                          phoneNumber?.number && !phoneNumber?.verified ? (
+                          phoneNumber && !phoneNumberVerified ? (
                             <Tooltip
                               placement={
                                 isWidthDown('xs', width) ? 'left' : 'bottom'
