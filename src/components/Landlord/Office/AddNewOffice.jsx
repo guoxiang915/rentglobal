@@ -33,7 +33,6 @@ import {
   ServicesAmenitiesForm,
 } from './Forms';
 import OfficeDetailForm from '../../../containers/Layout/OfficeDetailForm';
-import { servicesCategories } from '../../../utils/constants';
 
 const styleSheet = (theme) => ({
   root: {
@@ -184,32 +183,33 @@ class AddNewOffice extends Component {
         if (response.status === 200) {
           const office = response.data;
           let currentStep = 0;
-          if (editMode) {
-            currentStep = 0;
-          } else if (
-            office.title &&
-            office.officeType &&
-            office.pricemonthly &&
-            office.location &&
-            office.numberOfEmployees
-          ) {
-            currentStep = 1;
-          } else if (
-            office.coverPhotos &&
-            office.coverPhotos.length >= 3 &&
-            office.coverPhotos.length <= 15
-          ) {
-            currentStep = 2;
-          } else if (office.servicesAndAmenities) {
-            servicesCategories.forEach((cat) => {
-              if (
-                office.servicesAndAmenities[cat.name] &&
-                office.servicesAndAmenities[cat.name].length
-              ) {
-                currentStep = 3;
-              }
-            });
-          }
+          // if (editMode) {
+          //   currentStep = 0;
+          // } else if (
+          //   office.title &&
+          //   office.officeType &&
+          //   office.pricemonthly &&
+          //   office.location &&
+          //   office.numberOfEmployees
+          // ) {
+          //   currentStep = 1;
+          // } else if (
+          //   office.coverPhotos &&
+          //   office.coverPhotos.length >= 3 &&
+          //   office.coverPhotos.length <= 15
+          // ) {
+          //   currentStep = 2;
+          // } else if (office.servicesAndAmenities) {
+          //   servicesCategories.forEach((cat) => {
+          //     if (
+          //       office.servicesAndAmenities[cat.name] &&
+          //       office.servicesAndAmenities[cat.name].length
+          //     ) {
+          //       currentStep = 3;
+          //     }
+          //   });
+          // }
+          if (!editMode) currentStep = 3;
           this.setState({ office, currentStep });
         }
       });

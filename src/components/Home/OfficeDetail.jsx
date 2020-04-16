@@ -259,7 +259,7 @@ class OfficeDetail extends Component {
             </Box>
             <Column alignChildrenStart>
               <Typography fontSizeM fontWeightBold textSecondary>
-                {company.username}
+                {company.generalInfo?.username}
               </Typography>
               <Typography fontSizeS textMediumGrey style={{ paddingTop: 4 }}>
                 {createDate}
@@ -339,7 +339,7 @@ class OfficeDetail extends Component {
                 stretch
               >
                 <Typography fontSizeM fontWeightBold textSecondary>
-                  {landlord.username}
+                  {landlord.generalInfo?.username}
                 </Typography>
                 <Typography fontSizeS textSecondary paddingTopHalf>
                   {landlord.description}

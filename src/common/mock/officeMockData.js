@@ -52,7 +52,9 @@ export const reviews = [
   {
     company: {
       avatar: {},
-      username: 'Company Name',
+      generalInfo: {
+        username: 'Company 1',
+      },
     },
     createdAt: new Date(2019, 1, 21),
     content:
@@ -61,7 +63,9 @@ export const reviews = [
   {
     company: {
       avatar: {},
-      username: 'Company Name',
+      generalInfo: {
+        username: 'Company 2',
+      },
     },
     createdAt: new Date(2018, 6, 13),
     content:
@@ -70,7 +74,9 @@ export const reviews = [
   {
     company: {
       avatar: {},
-      username: 'Company Name',
+      generalInfo: {
+        username: 'Company 3',
+      },
     },
     createdAt: new Date(2019, 1, 21),
     content:
@@ -79,7 +85,9 @@ export const reviews = [
   {
     company: {
       avatar: {},
-      username: 'Company Name',
+      generalInfo: {
+        username: 'Company 4',
+      },
     },
     createdAt: new Date(2018, 6, 13),
     content:

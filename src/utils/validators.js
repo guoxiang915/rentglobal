@@ -17,26 +17,30 @@ export function getOfficeStatus(office) {
 
   if (
     !(
-      office.title
-      && office.officeType
-      && office.pricemonthly
-      && office.location
-      && office.numberOfEmployees
+      office.title &&
+      office.officeType &&
+      office.pricemonthly &&
+      office.location &&
+      office.numberOfEmployees
     )
-  ) { return { status: 'incomplete', progress: 20 }; }
+  ) {
+    return { status: 'incomplete', progress: 20 };
+  }
   if (
     !(
-      office.coverPhotos
-      && office.coverPhotos.length >= 3
-      && office.coverPhotos.length <= 15
+      office.coverPhotos &&
+      office.coverPhotos.length >= 3 &&
+      office.coverPhotos.length <= 15
     )
-  ) { return { status: 'incomplete', progress: 40 }; }
+  ) {
+    return { status: 'incomplete', progress: 40 };
+  }
   let servicesAndAmenities = false;
   if (office.servicesAndAmenities) {
     servicesCategories.forEach((cat) => {
       if (
-        office.servicesAndAmenities[cat.name]
-        && office.servicesAndAmenities[cat.name].length
+        office.servicesAndAmenities[cat.name] &&
+        office.servicesAndAmenities[cat.name].length
       ) {
         servicesAndAmenities = true;
       }
@@ -55,6 +59,16 @@ export function getProfileStatus(user, userRole) {
   let profileCharged = 10;
   let profileCompleteness = null;
 
+  if (user.generalInfo?.username || user.generalInfo?.phoneNumber) {
+    profileCompleted += 30;
+    profileCharged += 30;
+  }
+
+  if (user.avatar) {
+    profileCompleted += 20;
+    profileCharged += 20;
+  }
+
   const documentTypes = {
     landlord: ['legalStatusDocuments', 'checkSpecimen', 'leases'],
     company: [
@@ -68,16 +82,6 @@ export function getProfileStatus(user, userRole) {
   const profile = user[`${userRole}Profile`];
 
   if (profile) {
-    if (profile.username || profile.phoneNumber) {
-      profileCompleted += 30;
-      profileCharged += 30;
-    }
-
-    if (user.avatar) {
-      profileCompleted += 20;
-      profileCharged += 20;
-    }
-
     documentTypes[userRole].forEach((docType) => {
       if (profile[docType] && profile[docType].length) {
         profileCompleted += 10;
@@ -94,9 +98,10 @@ export function getProfileStatus(user, userRole) {
     profileCompleted = 100;
   }
 
-  profileCompleteness = profileCompleted === 100
-    ? 'profileCompleted'
-    : profileCompleted > 60
+  profileCompleteness =
+    profileCompleted === 100
+      ? 'profileCompleted'
+      : profileCompleted > 60
       ? 'profileNotComplete'
       : 'profileNeedAttention';
 
