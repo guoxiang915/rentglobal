@@ -36,6 +36,7 @@ import { ConditionalWrapper } from '../../utils/helpers';
 import { CropperDialog } from '../Layout';
 import { Grid, Card } from '@material-ui/core';
 import Dropzone from 'react-dropzone';
+import PhoneNumber from 'awesome-phonenumber';
 
 /** Show save and cancel buttons for form */
 const SaveButtons = ({ isUpdating, onSave, onCancel, disabled, t }) => (
@@ -224,6 +225,7 @@ class Profile extends Component {
     avatar: null,
     username: '',
     phoneNumber: '',
+    phoneNumberError: '',
     address: {},
     postalCode: '',
     legalStatusDocuments: [],
@@ -473,6 +475,21 @@ class Profile extends Component {
     this.setState({ address, postalCode });
   };
 
+  validateForm = () => {
+    const {
+      phoneNumber
+    } = this.state;
+    let pn = new PhoneNumber(phoneNumber);
+    if (!pn.isValid()) {
+      this.setState({ phoneNumberError: "Invalid Number" });
+      return false;
+    } else {
+      this.setState({ phoneNumberError: '' });
+    }
+
+    return true;
+  }
+
   /**
    * Render function
    */
@@ -494,6 +511,7 @@ class Profile extends Component {
       password,
       passwordError,
       confirmPassword,
+      phoneNumberError,
     } = this.state;
     const { email } = user;
 
@@ -690,6 +708,9 @@ class Profile extends Component {
                           </Tooltip>
                         }
                         readOnly={editTab !== 'generalInfo'}
+                        onBlur={() => this.validateForm()}
+                        helperText={phoneNumberError}
+                        error={phoneNumberError ? true : false}
                       />
                     </Row>
                     <Row paddingTopHalf>

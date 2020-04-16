@@ -8,6 +8,7 @@
     "@material-ui/icons": "^4.5.1",
     "@material-ui/lab": "^4.0.0-alpha.45",
     "@material-ui/styles": "^4.9.6",
+    "awesome-phonenumber": "^2.30.0",
     "axios": "^0.18.1",
     "babel-eslint": "^10.0.3",
     "clsx": "^1.0.4",
