@@ -8,6 +8,8 @@ const INITIAL_STATE = {
   successMsg: null,
   isActivated: false,
   isUpdating: null,
+  verifiedPhoneNumber: null,
+  phoneCodeSent: null
 };
 
 const authReducer = (currentState = INITIAL_STATE, action) => {
@@ -188,6 +190,27 @@ const authReducer = (currentState = INITIAL_STATE, action) => {
       ...currentState,
       isLoading: false,
       error: { type: 'deleteDocument', msg: action.resp.msg },
+    };
+
+  case 'VERIFY_PHONE_SUCCESS':
+    return {
+      ...currentState,
+      isLoading: false,
+      phoneCodeSent: {
+        success: true
+      },
+      error: null,
+    };
+
+  case 'VERIFY_PHONE_FAILED':
+    return {
+      ...currentState,
+      isLoading: false,
+      verifiedPhoneNumber: null,
+      phoneCodeSent: {
+        error: action.resp.msg
+      },
+      error: { type: 'verifyPhoneNumber', msg: action.resp.msg },
     };
 
   default:

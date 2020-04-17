@@ -12,7 +12,11 @@ const mapStateToProps = state => {
 const mapDispatchToprops = dispatch => {
   return {
     mappedupdateUser: (field, user, history) =>
-      dispatch(authActions.updateUser(field, user, history))
+      dispatch(authActions.updateUser(field, user, history)),
+    mappedverifyPhoneNumber: (phoneNumber) =>
+      dispatch(authActions.verifyPhoneNumber(phoneNumber)),
+    mappedverifyPhoneCode: (phoneCode) =>
+      dispatch(authActions.verifyPhoneCode(phoneCode)),
   };
 };
 

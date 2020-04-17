@@ -163,3 +163,9 @@ export const getReviewsByOffice = () =>
  * @deprecated for now, admin doesn't exist, and call api for getting published offices
  */
 export const getSimilarOffices = () => getPublishedOffices();
+
+/** Call api to verify phone number */
+export const verifyPhoneNumber = (phoneNumber) => api.post('/users/me/verify-phone-number', phoneNumber);
+
+/** Call api to verify phone code */
+export const verifyPhoneCode = (phoneCode) => api.post('/users/me/confirm-phone-code', phoneCode);

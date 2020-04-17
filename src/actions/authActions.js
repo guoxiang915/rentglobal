@@ -102,3 +102,13 @@ export const deleteDocument = (userRole, docType, docFile) => ({
   type: 'REQUEST_DELETE_DOCUMENT',
   payload: { userRole, docType, docFile },
 });
+
+export const verifyPhoneNumber = (phoneNumber) => ({
+  type: 'REQUEST_VERIFY_PHONE',
+  payload: { phoneNumber },
+});
+
+export const verifyPhoneCode = (phoneCode) => ({
+  type: 'REQUEST_VERIFY_CODE',
+  payload: phoneCode,
+});

@@ -219,13 +219,20 @@ class Profile extends Component {
     downloadFile: PropTypes.func,
     updateUser: PropTypes.func,
     deleteDocument: PropTypes.func,
+    verifyPhoneNumber: PropTypes.func,
+    confirmPhoneCode: PropTypes.func,
+    verifiedPhoneNumber: PropTypes.object
   };
 
   state = {
     avatar: null,
     username: '',
-    phoneNumber: '',
+    phoneNumber: {
+      number: '',
+      verified: false
+    },
     phoneNumberError: '',
+    phoneCode: '',
     address: {},
     postalCode: '',
     legalStatusDocuments: [],
@@ -272,11 +279,17 @@ class Profile extends Component {
   };
 
   UNSAFE_componentWillReceiveProps(newProps) {
-    this.handleResetProfileInfo(newProps.auth);
+    //this.handleResetProfileInfo(newProps.auth);
   }
 
   UNSAFE_componentWillMount() {
     this.handleResetProfileInfo(this.props.auth);
+  }
+
+  componentDidUpdate(prevProps) {
+    if (prevProps.verifiedPhoneNumber !== this.props.verifiedPhoneNumber) {
+      this.setState({phoneNumber: this.props.verifiedPhoneNumber});
+    }
   }
 
   handleStateChange = (field) => (value) => {
@@ -367,7 +380,8 @@ class Profile extends Component {
 
     this.setState({
       username: user.generalInfo?.username || '',
-      phoneNumber: user.generalInfo?.phoneNumber || '',
+      phoneNumber: user.generalInfo?.phoneNumber || {},
+      phoneNumberError: '',
       address: user.generalInfo?.address || {},
       postalCode: user.generalInfo?.address.postalCode || '',
       avatar: user.avatar || null,
@@ -390,7 +404,27 @@ class Profile extends Component {
     }
   };
 
-  handleSendPhoneVerification = () => {};
+  handleSendPhoneVerification = () => {
+    const { 
+      phoneNumber, 
+      phoneNumberError,
+    } = this.state;
+    this.validateForm();
+    if (phoneNumberError) {
+      return;
+    }
+
+    // verify number
+    this.props.verifyPhoneNumber(phoneNumber?.number);
+  };
+
+  verifyCode = () => {
+    const { 
+      phoneCode,
+      phoneNumber
+    } = this.state;
+    this.props.verifyPhoneCode({code: phoneCode, phoneNumber: phoneNumber?.number});
+  }
 
   /** Set and resize avatar image */
   handleClickAvatar = (avatar) => {
@@ -465,13 +499,34 @@ class Profile extends Component {
     this.setState({ address, postalCode });
   };
 
+  handleChangePhone = () => (e) => {
+    this.setState({
+      phoneNumber: {
+        number: e.target.value,
+        verified: false
+      }
+    });
+  };
+
   validateForm = () => {
     const {
       phoneNumber
     } = this.state;
-    let pn = new PhoneNumber(phoneNumber);
+    let num = phoneNumber?.number || ''
+    if (!num.startsWith("+") && num.length > 0) {
+      num = "+" + num;
+      this.setState({
+        phoneNumber: {
+          ...phoneNumber,
+          number: num,
+        }
+      });
+    }
+
+    let pn = new PhoneNumber(num);
     if (!pn.isValid()) {
-      this.setState({ phoneNumberError: "Invalid Number" });
+
+      this.setState({ phoneNumberError: "Invalid Number! Please include the country and area code" });
       return false;
     } else {
       this.setState({ phoneNumberError: '' });
@@ -484,7 +539,7 @@ class Profile extends Component {
    * Render function
    */
   render() {
-    const { width, classes: s, t } = this.props;
+    const { width, classes: s, t, phoneCodeSent } = this.props;
     const { user, userRole, isUpdating: updatingTab } = this.props.auth;
     const { openedTab, editTab, uploadingDocument, dialog } = this.state;
     const CarouselWrapper = withCarousel;
@@ -502,6 +557,7 @@ class Profile extends Component {
       passwordError,
       confirmPassword,
       phoneNumberError,
+      phoneCode
     } = this.state;
     const { email } = user;
 
@@ -658,12 +714,12 @@ class Profile extends Component {
                       <TextField
                         variant="outlined"
                         placeholder={t('phoneNumber')}
-                        onChange={this.handleStateChangeByInput('phoneNumber')}
+                        onChange={this.handleChangePhone()}
                         value={phoneNumber?.number || ''}
                         className={s.profileInput}
                         startAdornment={<PhoneIcon className={s.outlineIcon} />}
                         endAdornment={
-                          phoneNumber?.number && !phoneNumber?.verified ? (
+                          phoneNumber?.number && !phoneNumber?.verified && !phoneNumberError ? (
                             <Tooltip
                               placement={
                                 isWidthDown('xs', width) ? 'left' : 'bottom'
@@ -672,24 +728,63 @@ class Profile extends Component {
                               title={
                                 <TooltipContent
                                   title={
-                                    <Column>
-                                      <Typography textErrorRed>
-                                        {t('phoneMustApproved')}
-                                      </Typography>
-                                      <Box paddingTop>
-                                        <Button
-                                          link="normal"
-                                          background="secondaryLight"
-                                          onClick={
-                                            this.handleSendPhoneVerification
-                                          }
-                                        >
-                                          <Typography fontSizeXS>
-                                            {t('sendVerificationCode')}
-                                          </Typography>
-                                        </Button>
-                                      </Box>
-                                    </Column>
+                                    phoneCodeSent && phoneCodeSent.success? (
+                                      <Column>
+                                        <Typography textErrorRed>
+                                          Please enter your code
+                                        </Typography>
+                                        <Box paddingTop>
+                                          <TextField
+                                            variant="outlined"
+                                            placeholder={"code"}
+                                            onChange={this.handleStateChangeByInput('phoneCode')}
+                                            value={phoneCode}
+                                          />
+                                          <Button
+                                            link="normal"
+                                            background="secondaryLight"
+                                            onClick={
+                                              this.verifyCode
+                                            }
+                                          >
+                                            <Typography fontSizeXS>
+                                              Verify
+                                            </Typography>
+                                          </Button>
+                                          <Button
+                                            link="normal"
+                                            background="secondaryLight"
+                                            onClick={
+                                              this.handleSendPhoneVerification
+                                            }
+                                          >
+                                            <Typography fontSizeXS>
+                                              Resend
+                                            </Typography>
+                                          </Button>
+                                        </Box>
+                                      </Column>
+                                    ) : (
+                                      <Column>
+                                        <Typography textErrorRed>
+                                          {t('phoneMustApproved')}
+                                        </Typography>
+                                        <Box paddingTop>
+                                          <Button
+                                            link="normal"
+                                            background="secondaryLight"
+                                            onClick={
+                                              this.handleSendPhoneVerification
+                                            }
+                                          >
+                                            <Typography fontSizeXS>
+                                              {t('sendVerificationCode')}
+                                            </Typography>
+                                          </Button>
+                                        </Box>
+                                        {phoneCodeSent && phoneCodeSent.error ? <Typography textErrorRed>{phoneCodeSent.error}</Typography> : null}
+                                      </Column>
+                                    )
                                   }
                                 />
                               }
@@ -697,10 +792,14 @@ class Profile extends Component {
                             >
                               <div className={s.errorIcon}>!</div>
                             </Tooltip>
+                          ) : phoneNumber?.number && phoneNumber?.verified ? (
+                            <div className={s.approveIcon}>
+                              <CheckIcon style={{ width: 11, height: 8 }} />
+                            </div>
                           ) : null
                         }
                         readOnly={editTab !== 'generalInfo'}
-                        onBlur={() => this.validateForm()}
+                        onBlur={() => editTab === 'generalInfo' && this.validateForm()}
                         helperText={phoneNumberError}
                         error={phoneNumberError ? true : false}
                       />

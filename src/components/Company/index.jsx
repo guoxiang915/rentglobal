@@ -38,7 +38,7 @@ class Company extends Component {
   /** Render function */
   render() {
     const { classes, location } = this.props;
-    const { user, userRole } = this.props.auth;
+    const { user, userRole, phoneCodeSent, verifiedPhoneNumber } = this.props.auth;
 
     // TODO: requirements not specified when toggling roles
     if (
@@ -78,6 +78,18 @@ class Company extends Component {
                           this.props.history
                         )
                       }
+                      verifyPhoneNumber={(phoneNumber) =>
+                        this.props.mappedverifyPhoneNumber(
+                          phoneNumber
+                        )   
+                      }
+                      verifyPhoneCode={(phoneCode) =>
+                        this.props.mappedverifyPhoneCode(
+                          phoneCode
+                        )                   
+                      }
+                      verifiedPhoneNumber={verifiedPhoneNumber}
+                      phoneCodeSent={phoneCodeSent}
                       uploadFile={uploadFile}
                       downloadFile={downloadFile}
                     />
