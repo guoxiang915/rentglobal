@@ -282,7 +282,6 @@ class Profile extends PureComponent {
 
   componentDidUpdate(prevProps) {
     if (prevProps.verifiedPhoneNumber !== this.props.verifiedPhoneNumber && !this.props.verifiedPhoneNumber.error) {
-      console.log(this.props.verifiedPhoneNumber)
       this.setState({
         phoneNumber: this.props.verifiedPhoneNumber?.number,
         phoneNumberVerified: this.props.verifiedPhoneNumber?.verified
