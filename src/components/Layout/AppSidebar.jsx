@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { PureComponent } from 'react';
 import { withStyles } from '@material-ui/core/styles';
 import { withTranslation } from 'react-i18next';
 import { withRouter } from 'react-router-dom';
@@ -156,7 +156,7 @@ const styleSheet = (theme) => ({
   },
 });
 
-class AppSidebar extends Component {
+class AppSidebar extends PureComponent {
   static propTypes = {
     onToggleRole: PropTypes.func,
     onCollapse: PropTypes.func,

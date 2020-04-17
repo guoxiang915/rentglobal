@@ -134,20 +134,20 @@ export const getApprovedOfficeById = (officeId) =>
   api.get(`/offices/${officeId}/`);
 
 /**
- * Call api to get office created landlord by id
+ * Call api to get consultant for office by office id
  */
-export const getLandlordByOffice = () =>
+export const getConsultantByOffice = () =>
   // For now using mock data
   Promise.resolve({
     status: 200,
     data: {
       generalInfo: {
-        username: 'Landlord Name',
+        username: 'Consultant Name',
         phoneNumber: { number: '111-222-3333', verified: false },
       },
       avatar: {},
       description:
-        'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
+        'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.\nLorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
     },
   });
 // return api.get(`/offices/${officeId}/user/`);

@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { PureComponent } from 'react';
 import { withStyles } from '@material-ui/core/styles';
 import { withRouter } from 'react-router-dom';
 import { withTranslation } from 'react-i18next';
@@ -215,7 +215,7 @@ const styleSheet = (theme) => ({
   },
 });
 
-class Dashboard extends Component {
+class Dashboard extends PureComponent {
   static propTypes = {
     navigate: PropTypes.func,
     getOffices: PropTypes.func.isRequired,
@@ -402,14 +402,14 @@ class Dashboard extends Component {
           <Typography fontSizeM textSecondary>
             {t('dashboard')}
           </Typography>
-          {isWidthDown('xs', width) && (
+          {isWidthDown('xs', width) ? (
             <React.Fragment>
               <Stretch />
               <div style={{ marginTop: 4 }}>
                 <DateTime />
               </div>
             </React.Fragment>
-          )}
+          ) : null}
         </Row>
 
         {/** show sub title and datetime */}
@@ -422,12 +422,12 @@ class Dashboard extends Component {
             {t('welcomeToLandlord')}
           </Typography>
 
-          {!isWidthDown('xs', width) && (
+          {!isWidthDown('xs', width) ? (
             <React.Fragment>
               <Stretch />
               <DateTime />
             </React.Fragment>
-          )}
+          ) : null}
         </Row>
 
         {/** show profile */}

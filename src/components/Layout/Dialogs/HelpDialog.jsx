@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import {
   Dialog,
@@ -79,7 +79,7 @@ const styleSheet = (theme) => ({
   },
 });
 
-class HelpDialog extends Component {
+class HelpDialog extends PureComponent {
   static propTypes = {
     className: PropTypes.string,
     open: PropTypes.bool,

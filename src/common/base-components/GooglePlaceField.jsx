@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import GooglePlacesAutocomplete, {
   geocodeByPlaceId,
@@ -22,7 +22,7 @@ const styleSheet = () => ({
   listItem: {},
 });
 
-class GooglePlaceField extends Component {
+class GooglePlaceField extends PureComponent {
   static propTypes = {
     value: PropTypes.any,
     onChange: PropTypes.func,

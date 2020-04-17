@@ -213,6 +213,24 @@ const authReducer = (currentState = INITIAL_STATE, action) => {
       error: { type: 'verifyPhoneNumber', msg: action.resp.msg },
     };
 
+  case 'VERIFY_CODE_SUCCESS':
+    return {
+      ...currentState,
+      isLoading: false,
+      verifiedPhoneNumber: action.phoneNumber,
+      error: null,
+    };
+
+  case 'VERIFY_CODE_FAILED':
+    return {
+      ...currentState,
+      isLoading: false,
+      verifiedPhoneNumber: {
+        error: action.resp.msg
+      },
+      error: { type: 'verifyPhoneCode', msg: action.resp.msg },
+    };
+
   default:
     return currentState;
   }

@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React, { PureComponent } from "react";
 import PropTypes from "prop-types";
 import {
   Dialog,
@@ -34,7 +34,7 @@ const styleSheet = theme => ({
   }
 });
 
-class LoginDialog extends Component {
+class LoginDialog extends PureComponent {
   static propTypes = {
     /** Auth state */
     auth: PropTypes.object,

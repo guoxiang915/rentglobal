@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React, { PureComponent } from "react";
 import PropTypes from "prop-types";
 import clsx from "clsx";
 import { Icon, withStyles } from "@material-ui/core";
@@ -21,7 +21,7 @@ const styleSheet = () => ({
   },
 });
 
-class NumberField extends Component {
+class NumberField extends PureComponent {
   static propTypes = {
     value: PropTypes.any,
     onChange: PropTypes.func,

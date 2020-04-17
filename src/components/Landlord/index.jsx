@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { PureComponent } from 'react';
 import { withStyles } from '@material-ui/core/styles';
 import { withTranslation } from 'react-i18next';
 import PropTypes from 'prop-types';
@@ -63,7 +63,7 @@ const styleSheet = (theme) => ({
   },
 });
 
-class Landlord extends Component {
+class Landlord extends PureComponent {
   static propTypes = {
     navigate: PropTypes.func,
   };

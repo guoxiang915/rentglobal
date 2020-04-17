@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import { Dialog, Grid, withStyles } from '@material-ui/core';
 import clsx from 'clsx';
@@ -73,7 +73,7 @@ const styleSheet = (theme) => ({
   },
 });
 
-class LocationDialog extends Component {
+class LocationDialog extends PureComponent {
   static propTypes = {
     location: PropTypes.object,
     className: PropTypes.string,

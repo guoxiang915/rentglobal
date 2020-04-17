@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { PureComponent } from 'react';
 import { withStyles } from '@material-ui/core/styles';
 import { withTranslation } from 'react-i18next';
 import withWidth, { isWidthDown } from '@material-ui/core/withWidth';
@@ -51,7 +51,7 @@ const styleSheet = (theme) => ({
   },
 });
 
-class Offices extends Component {
+class Offices extends PureComponent {
   static propTypes = {
     navigate: PropTypes.func,
     getOffices: PropTypes.func.isRequired,
@@ -186,11 +186,18 @@ class Offices extends Component {
                   .filter((item) => item.published === true)
                   .map((office, index) => (
                     <div
-                      style={{ position: 'relative', cursor: 'pointer' }}
+                      style={{
+                        position: 'relative',
+                        cursor: 'pointer',
+                        height: '100%',
+                      }}
                       key={index}
-                      onClick={this.handleNavigateOfficeDetail(office)}
                     >
-                      <OfficeItem office={office} setFavorite />
+                      <OfficeItem
+                        office={office}
+                        setFavorite
+                        onClick={this.handleNavigateOfficeDetail(office)}
+                      />
                     </div>
                   ))}
               </CarouselWrapper>
@@ -234,12 +241,12 @@ class Offices extends Component {
                     <div
                       style={{ position: 'relative', cursor: 'pointer' }}
                       key={index}
-                      onClick={this.handleNavigateOfficeDetail(office)}
                     >
                       <OfficeItem
                         office={office}
                         // errorMsg="pending"
                         setFavorite
+                        onClick={this.handleNavigateOfficeDetail(office)}
                       />
                     </div>
                   ))}

@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React, { PureComponent } from "react";
 import PropTypes from "prop-types";
 import {
   Dialog,
@@ -63,7 +63,7 @@ const styleSheet = (theme) => ({
   },
 });
 
-class ContactInfoDialog extends Component {
+class ContactInfoDialog extends PureComponent {
   static propTypes = {
     /** Title of dialog */
     title: PropTypes.string,

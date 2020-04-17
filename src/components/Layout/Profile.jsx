@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { PureComponent } from 'react';
 import { withStyles } from '@material-ui/core/styles';
 import { withTranslation } from 'react-i18next';
 import clsx from 'clsx';
@@ -212,7 +212,7 @@ const styleSheet = (theme) => ({
   },
 });
 
-class Profile extends Component {
+class Profile extends PureComponent {
   static propTypes = {
     auth: PropTypes.object.isRequired,
     uploadFile: PropTypes.func,
@@ -227,12 +227,10 @@ class Profile extends Component {
   state = {
     avatar: null,
     username: '',
-    phoneNumber: {
-      number: '',
-      verified: false
-    },
     phoneNumberError: '',
     phoneCode: '',
+    phoneNumber: '',
+    phoneNumberVerified: false,
     address: {},
     postalCode: '',
     legalStatusDocuments: [],
@@ -278,17 +276,17 @@ class Profile extends Component {
     ],
   };
 
-  UNSAFE_componentWillReceiveProps(newProps) {
-    //this.handleResetProfileInfo(newProps.auth);
-  }
-
   UNSAFE_componentWillMount() {
     this.handleResetProfileInfo(this.props.auth);
   }
 
   componentDidUpdate(prevProps) {
-    if (prevProps.verifiedPhoneNumber !== this.props.verifiedPhoneNumber) {
-      this.setState({phoneNumber: this.props.verifiedPhoneNumber});
+    if (prevProps.verifiedPhoneNumber !== this.props.verifiedPhoneNumber && !this.props.verifiedPhoneNumber.error) {
+      console.log(this.props.verifiedPhoneNumber)
+      this.setState({
+        phoneNumber: this.props.verifiedPhoneNumber?.number,
+        phoneNumberVerified: this.props.verifiedPhoneNumber?.verified
+      });
     }
   }
 
@@ -306,21 +304,31 @@ class Profile extends Component {
 
   /** Save general info */
   handleSaveGeneralInfo = () => {
-    const { avatar, username, phoneNumber, address, postalCode } = this.state;
+    const { avatar, username, phoneNumber, phoneNumberVerified, address, postalCode } = this.state;
+    const { user } = this.props.auth;
 
-    if (avatar && avatar._id) {
+    if (avatar && avatar._id && avatar._id !== user.avatar?._id) {
       this.props.updateUser('avatar', {
         avatarFileId: avatar._id,
       });
     }
-    this.props.updateUser('profile', {
-      userRole: this.props.auth.userRole,
-      profile: {
-        username,
-        phoneNumber,
-        address: { ...address, postalCode },
-      },
-    });
+
+    if (
+      username !== user.generalInfo?.username ||
+      phoneNumber !== user.generalInfo?.phoneNumber.number ||
+      address !== user.generalInfo?.address ||
+      postalCode !== user.generalInfo?.address?.postalCode
+    ) {
+      this.props.updateUser('profile', {
+        userRole: this.props.auth.userRole,
+        profile: {
+          username,
+          phoneNumber,
+          phoneNumberVerified,
+          address: { ...address, postalCode },
+        },
+      });
+    }
     this.setState({ editTab: null });
   };
 
@@ -380,10 +388,10 @@ class Profile extends Component {
 
     this.setState({
       username: user.generalInfo?.username || '',
-      phoneNumber: user.generalInfo?.phoneNumber || {},
-      phoneNumberError: '',
+      phoneNumber: user.generalInfo?.phoneNumber?.number || '',
+      phoneNumberVerified: !!user.generalInfo?.phoneNumber?.verified,
       address: user.generalInfo?.address || {},
-      postalCode: user.generalInfo?.address.postalCode || '',
+      postalCode: user.generalInfo?.address?.postalCode || '',
       avatar: user.avatar || null,
     });
   };
@@ -415,7 +423,7 @@ class Profile extends Component {
     }
 
     // verify number
-    this.props.verifyPhoneNumber(phoneNumber?.number);
+    this.props.verifyPhoneNumber(phoneNumber);
   };
 
   verifyCode = () => {
@@ -423,7 +431,7 @@ class Profile extends Component {
       phoneCode,
       phoneNumber
     } = this.state;
-    this.props.verifyPhoneCode({code: phoneCode, phoneNumber: phoneNumber?.number});
+    this.props.verifyPhoneCode({code: phoneCode, phoneNumber});
   }
 
   /** Set and resize avatar image */
@@ -501,10 +509,8 @@ class Profile extends Component {
 
   handleChangePhone = () => (e) => {
     this.setState({
-      phoneNumber: {
-        number: e.target.value,
-        verified: false
-      }
+      phoneNumber: e.target.value,
+      phoneNumberVerified: false
     });
   };
 
@@ -512,14 +518,11 @@ class Profile extends Component {
     const {
       phoneNumber
     } = this.state;
-    let num = phoneNumber?.number || ''
+    let num = phoneNumber || '';
     if (!num.startsWith("+") && num.length > 0) {
       num = "+" + num;
       this.setState({
-        phoneNumber: {
-          ...phoneNumber,
-          number: num,
-        }
+        phoneNumber: num
       });
     }
 
@@ -539,7 +542,7 @@ class Profile extends Component {
    * Render function
    */
   render() {
-    const { width, classes: s, t, phoneCodeSent } = this.props;
+    const { width, classes: s, t, phoneCodeSent, verifiedPhoneNumber } = this.props;
     const { user, userRole, isUpdating: updatingTab } = this.props.auth;
     const { openedTab, editTab, uploadingDocument, dialog } = this.state;
     const CarouselWrapper = withCarousel;
@@ -550,6 +553,7 @@ class Profile extends Component {
       avatar,
       username,
       phoneNumber,
+      phoneNumberVerified,
       address,
       postalCode,
       oldPassword,
@@ -715,11 +719,11 @@ class Profile extends Component {
                         variant="outlined"
                         placeholder={t('phoneNumber')}
                         onChange={this.handleChangePhone()}
-                        value={phoneNumber?.number || ''}
+                        value={phoneNumber || ''}
                         className={s.profileInput}
                         startAdornment={<PhoneIcon className={s.outlineIcon} />}
                         endAdornment={
-                          phoneNumber?.number && !phoneNumber?.verified && !phoneNumberError ? (
+                          phoneNumber && !phoneNumberVerified && !phoneNumberError ? (
                             <Tooltip
                               placement={
                                 isWidthDown('xs', width) ? 'left' : 'bottom'
@@ -763,6 +767,7 @@ class Profile extends Component {
                                             </Typography>
                                           </Button>
                                         </Box>
+                                        {verifiedPhoneNumber && verifiedPhoneNumber.error ? <Typography textErrorRed>{verifiedPhoneNumber.error}</Typography> : null}
                                       </Column>
                                     ) : (
                                       <Column>
@@ -776,6 +781,7 @@ class Profile extends Component {
                                             onClick={
                                               this.handleSendPhoneVerification
                                             }
+                                            disabled={editTab !== 'generalInfo'}
                                           >
                                             <Typography fontSizeXS>
                                               {t('sendVerificationCode')}
@@ -792,7 +798,7 @@ class Profile extends Component {
                             >
                               <div className={s.errorIcon}>!</div>
                             </Tooltip>
-                          ) : phoneNumber?.number && phoneNumber?.verified ? (
+                          ) : phoneNumberVerified ? (
                             <div className={s.approveIcon}>
                               <CheckIcon style={{ width: 11, height: 8 }} />
                             </div>

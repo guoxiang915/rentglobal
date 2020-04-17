@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
 import { Switch, Route, Redirect } from 'react-router-dom';
@@ -82,7 +82,7 @@ const styleSheet = (theme) => ({
   },
 });
 
-class AuthWrapper extends Component {
+class AuthWrapper extends PureComponent {
   constructor(props) {
     super(props);
     this.state = {
