@@ -849,9 +849,12 @@ class Home extends PureComponent {
                         height: '100%',
                       }}
                       key={index}
-                      onClick={this.handleOfficeDetail(office._id)}
                     >
-                      <OfficeItem office={office} setFavorite />
+                      <OfficeItem
+                        office={office}
+                        setFavorite
+                        onClick={this.handleOfficeDetail(office._id)}
+                      />
                     </div>
                   ))}
                 </Carousel>

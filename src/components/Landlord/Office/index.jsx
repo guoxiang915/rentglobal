@@ -186,11 +186,18 @@ class Offices extends PureComponent {
                   .filter((item) => item.published === true)
                   .map((office, index) => (
                     <div
-                      style={{ position: 'relative', cursor: 'pointer' }}
+                      style={{
+                        position: 'relative',
+                        cursor: 'pointer',
+                        height: '100%',
+                      }}
                       key={index}
-                      onClick={this.handleNavigateOfficeDetail(office)}
                     >
-                      <OfficeItem office={office} setFavorite />
+                      <OfficeItem
+                        office={office}
+                        setFavorite
+                        onClick={this.handleNavigateOfficeDetail(office)}
+                      />
                     </div>
                   ))}
               </CarouselWrapper>
@@ -234,12 +241,12 @@ class Offices extends PureComponent {
                     <div
                       style={{ position: 'relative', cursor: 'pointer' }}
                       key={index}
-                      onClick={this.handleNavigateOfficeDetail(office)}
                     >
                       <OfficeItem
                         office={office}
                         // errorMsg="pending"
                         setFavorite
+                        onClick={this.handleNavigateOfficeDetail(office)}
                       />
                     </div>
                   ))}

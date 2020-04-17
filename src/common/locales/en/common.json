@@ -172,6 +172,7 @@
     "followUpRequests": "Follow Up Requests",
     "moreInfoReq": "More Info Req",
     "contactReq": "Contact Req",
+    "sendMessage": "Send Message",
     "officeLists": "Office Lists",
     "needAttention": "Need attention",
     "mustBeCompleteLocation": "Must be complete location",
@@ -394,5 +395,6 @@
     "calendarEvents": "Calendar events",
     "fullView": "Full view",
     "map": "Map",
-    "stat": "Stat"
+    "stat": "Stat",
+    "refID": "Ref ID"
 }

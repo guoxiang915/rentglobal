@@ -32,7 +32,7 @@ import {
   PictureGalleryForm,
   ServicesAmenitiesForm,
 } from './Forms';
-import OfficeDetailForm from '../../../containers/Layout/OfficeDetailForm';
+import OfficeDetailForm from '../../../components/Layout/OfficeDetailForm';
 
 const styleSheet = (theme) => ({
   root: {

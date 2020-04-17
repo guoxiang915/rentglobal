@@ -23,11 +23,12 @@ import { servicesCategories } from '../../utils/constants';
 import Carousel from '@brainhubeu/react-carousel';
 import {
   ContactInfoDialog,
-  LoginDialog,
   ShareOfficeDialog,
   LocationDialog,
 } from './Dialogs';
 import { favoriteOffice } from '../../api/endpoints';
+import { numberWithSpaces } from '../../utils/formatters';
+import { withLogin } from '../../common/base-services';
 
 const styleSheet = (theme) => ({
   root: {},
@@ -175,9 +176,7 @@ const styleSheet = (theme) => ({
     },
   },
 
-  serviceCategoryWrapper: {
-    marginTop: 23,
-  },
+  serviceCategoryWrapper: {},
 
   serviceCategoryBody: {
     //   paddingLeft: 60
@@ -192,12 +191,107 @@ const styleSheet = (theme) => ({
 
   serviceOption: {
     paddingLeft: 40,
+    paddingBottom: 14,
   },
 
   favoriteIcon: {
     width: 17,
     height: 16,
   },
+});
+
+/** Render cover photos */
+const CoverPhotos = React.memo(({ classes: s, coverPhotos, width }) => {
+  const [currentPhoto, setCurrentPhoto] = React.useState(0);
+  const prevPhoto = () => {
+    setCurrentPhoto(Math.max(currentPhoto - 1, 0));
+  };
+  const nextPhoto = () => {
+    setCurrentPhoto(Math.min(currentPhoto + 1, (coverPhotos?.length || 0) - 1));
+  };
+
+  return (
+    <React.Fragment>
+      {isWidthDown('xs', width) ? (
+        <div className={s.imageWrapper}>
+          <Carousel keepDirectionWhenDragging itemWidth={285} offset={20}>
+            {coverPhotos &&
+              coverPhotos.map((photo, index) => (
+                <div className={s.coverPhotoWrapper} key={index}>
+                  <div className={s.coverPhoto}>
+                    <img
+                      src={
+                        photo.mobile
+                          ? photo.mobile.bucketPath
+                          : photo.bucketPath
+                      }
+                      className={s.coverPhotoContent}
+                      alt=""
+                    />
+                  </div>
+                </div>
+              ))}
+          </Carousel>
+        </div>
+      ) : (
+        <Row fullWidth relative>
+          <Box classes={{ box: s.imageWrapper }}>
+            <div className={s.coverPhotoWrapper}>
+              <div className={s.coverPhoto}>
+                <img
+                  src={
+                    coverPhotos?.[currentPhoto]?.desktop?.bucketPath ||
+                    coverPhotos?.[currentPhoto]?.bucketPath ||
+                    null
+                  }
+                  className={s.coverPhotoContent}
+                  alt=""
+                />
+              </div>
+            </div>
+          </Box>
+          <Column absolute classes={{ box: s.imageNavWrapper }}>
+            <Link
+              to="#"
+              variant="normalLight"
+              onClick={prevPhoto}
+              disabled={currentPhoto <= 0}
+            >
+              <ArrowUpIcon className={s.imageNavButton} />
+            </Link>
+            <Box classes={{ box: s.imageNav }}>
+              <Column
+                style={{ top: -currentPhoto * 140 }}
+                classes={{ box: s.imageNavList }}
+              >
+                {coverPhotos &&
+                  coverPhotos.map((photo, index) => (
+                    <img
+                      key={index}
+                      src={
+                        photo.mobile
+                          ? photo.mobile.bucketPath
+                          : photo.bucketPath
+                      }
+                      className={s.coverPhotoNav}
+                      alt=""
+                    />
+                  ))}
+              </Column>
+            </Box>
+            <Link
+              to="#"
+              variant="normalLight"
+              onClick={nextPhoto}
+              disabled={currentPhoto <= 0}
+            >
+              <ArrowDownIcon className={s.imageNavButton} />
+            </Link>
+          </Column>
+        </Row>
+      )}
+    </React.Fragment>
+  );
 });
 
 class OfficeDetailForm extends PureComponent {
@@ -213,41 +307,11 @@ class OfficeDetailForm extends PureComponent {
     t: PropTypes.func,
   };
 
-  state = { currentPhoto: 0, dialog: null };
-
-  /** Prev/Next current photo */
-  handlePrevPhoto = () => {
-    this.setState({ currentPhoto: Math.max(this.state.currentPhoto - 1, 0) });
-  };
-  handleNextPhoto = () => {
-    this.setState({
-      currentPhoto: Math.min(
-        this.state.currentPhoto + 1,
-        this.props.office.coverPhotos.length - 1
-      ),
-    });
-  };
-
-  /** Show login dialog */
-  passLoginDialog = () => {
-    const { isLoggedIn } = this.props.auth;
-    if (!isLoggedIn) {
-      this.setState({
-        dialog: (
-          <LoginDialog
-            auth={this.props.auth}
-            mappedLogin={this.props.mappedLogin}
-            onClose={this.handleCloseDialog}
-          />
-        ),
-      });
-    }
-    return isLoggedIn;
-  };
+  state = { dialog: null };
 
   /** Favorite office */
   handleSetFavorite = () => {
-    if (this.passLoginDialog()) {
+    if (this.props.passLoginDialog()) {
       favoriteOffice(this.props.office._id).then((response) => {
         if (response.status === 200) {
           this.props.office.favorite = response.data.favorite;
@@ -259,7 +323,7 @@ class OfficeDetailForm extends PureComponent {
 
   /** Share office */
   handleShare = () => {
-    if (this.passLoginDialog()) {
+    if (this.props.passLoginDialog()) {
       this.setState({
         dialog: (
           <ShareOfficeDialog
@@ -273,7 +337,7 @@ class OfficeDetailForm extends PureComponent {
 
   /** Follow up office */
   handleFollowUp = () => {
-    if (this.passLoginDialog()) {
+    if (this.props.passLoginDialog()) {
       this.setState({
         dialog: (
           <ContactInfoDialog
@@ -293,7 +357,7 @@ class OfficeDetailForm extends PureComponent {
 
   /** Show location dialog */
   handleShowLocationOnMap = () => {
-    if (this.passLoginDialog()) {
+    if (this.props.passLoginDialog()) {
       this.setState({
         dialog: (
           <LocationDialog
@@ -315,92 +379,18 @@ class OfficeDetailForm extends PureComponent {
    */
   render() {
     const { office, classes: s, t, width } = this.props;
-    const { dialog, currentPhoto } = this.state;
+    const { dialog } = this.state;
 
     return (
       <Column classes={{ box: s.root }} fullWidth alignChildrenStart>
         {/** Show office coverPhotos */}
-        {isWidthDown('xs', width) ? (
-          <div className={s.imageWrapper}>
-            <Carousel keepDirectionWhenDragging itemWidth={285} offset={20}>
-              {office.coverPhotos &&
-                office.coverPhotos.map((photo, index) => (
-                  <div className={s.coverPhotoWrapper} key={index}>
-                    <div className={s.coverPhoto}>
-                      <img
-                        src={
-                          photo.mobile
-                            ? photo.mobile.bucketPath
-                            : photo.bucketPath
-                        }
-                        className={s.coverPhotoContent}
-                        alt=""
-                      />
-                    </div>
-                  </div>
-                ))}
-            </Carousel>
-          </div>
-        ) : (
-          <Row fullWidth relative>
-            <Box classes={{ box: s.imageWrapper }}>
-              <div className={s.coverPhotoWrapper}>
-                <div className={s.coverPhoto}>
-                  <img
-                    src={
-                      office.coverPhotos?.[currentPhoto]?.desktop?.bucketPath ||
-                      office.coverPhotos?.[currentPhoto]?.bucketPath ||
-                      null
-                    }
-                    className={s.coverPhotoContent}
-                    alt=""
-                  />
-                </div>
-              </div>
-            </Box>
-            <Column absolute classes={{ box: s.imageNavWrapper }}>
-              <Link
-                to="#"
-                variant="normalLight"
-                onClick={this.handlePrevPhoto}
-                disabled={currentPhoto <= 0}
-              >
-                <ArrowUpIcon className={s.imageNavButton} />
-              </Link>
-              <Box classes={{ box: s.imageNav }}>
-                <Column
-                  style={{ top: -currentPhoto * 140 }}
-                  classes={{ box: s.imageNavList }}
-                >
-                  {office.coverPhotos &&
-                    office.coverPhotos.map((photo, index) => (
-                      <img
-                        key={index}
-                        src={
-                          photo.mobile
-                            ? photo.mobile.bucketPath
-                            : photo.bucketPath
-                        }
-                        className={s.coverPhotoNav}
-                        alt=""
-                      />
-                    ))}
-                </Column>
-              </Box>
-              <Link
-                to="#"
-                variant="normalLight"
-                onClick={this.handleNextPhoto}
-                disabled={currentPhoto <= 0}
-              >
-                <ArrowDownIcon className={s.imageNavButton} />
-              </Link>
-            </Column>
-          </Row>
-        )}
+        <CoverPhotos
+          classes={s}
+          coverPhotos={office.coverPhotos}
+          width={width}
+        />
 
         <Row paddingTop />
-
         <Row
           paddingTopHalf
           fullWidth
@@ -469,15 +459,30 @@ class OfficeDetailForm extends PureComponent {
               {t('dollarPerMonth', { dollar: office.priceMonthly || 0 })}
             </Row>
             {office.published && (
-              // office.rating &&
-              <Row paddingTopHalf>
-                <Typography textPrimary>
-                  <StarIcon style={{ width: 12, height: 12 }} />
-                </Typography>
-                <Typography fontSizeS textMediumGrey paddingLeftHalf>
-                  3.5 {/* office.rating */}
-                </Typography>
-              </Row>
+              <React.Fragment>
+                {
+                  // office.rating &&
+                  <Row paddingTopHalf>
+                    <Typography textPrimary>
+                      <StarIcon style={{ width: 12, height: 12 }} />
+                    </Typography>
+                    <Typography fontSizeS textSecondary paddingLeftHalf>
+                      3.5 {/* office.rating */}
+                    </Typography>
+                  </Row>
+                }
+                {
+                  // office.refID &&
+                  <Row paddingTopHalf>
+                    <Typography fontSizeS textSecondary>
+                      {t('refID')}:&nbsp;
+                    </Typography>
+                    <Typography fontSizeM fontWeightBold textSecondary>
+                      #{numberWithSpaces('001234567')} {/* office.refID */}
+                    </Typography>
+                  </Row>
+                }
+              </React.Fragment>
             )}
           </Column>
         </Row>
@@ -695,7 +700,7 @@ class OfficeDetailForm extends PureComponent {
 
           <Column classes={{ box: s.servicesWrapper }} alignChildrenStart>
             {/** Show services & amenities */}
-            <Typography textSecondary fontSizeS>
+            <Typography textSecondary fontSizeS paddingBottom>
               {t('servicesAndAmenities')}
             </Typography>
             {office.servicesAndAmenities &&
@@ -728,10 +733,8 @@ class OfficeDetailForm extends PureComponent {
                           <React.Fragment key={optIndex}>
                             <Typography
                               classes={{ box: s.serviceOption }}
-                              fontSizeM
-                              fontWeightBold
+                              fontSizeS
                               textSecondary
-                              paddingBottomHalf
                             >
                               {t(opt)}
                             </Typography>
@@ -753,5 +756,5 @@ class OfficeDetailForm extends PureComponent {
 }
 
 export default withWidth()(
-  withStyles(styleSheet)(withTranslation('common')(OfficeDetailForm))
+  withLogin(withStyles(styleSheet)(withTranslation('common')(OfficeDetailForm)))
 );

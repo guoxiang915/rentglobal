@@ -13,6 +13,7 @@ export function formatDate(date) {
 
   return [year, month, day].join('-');
 }
+
 /**
  * Convert date to yyyy mon dd format
  * @param {Date} date Date object to be converted
@@ -56,4 +57,18 @@ export function getWeekday(date) {
     'Saturday',
   ];
   return weekdays[new Date(date).getDay()];
+}
+
+/**
+ * Format number with commas per thousands
+ */
+export function numberWithCommas(x) {
+  return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+}
+
+/**
+ * Format number with spaces per thousands
+ */
+export function numberWithSpaces(x) {
+  return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ' ');
 }
