@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { PureComponent } from 'react';
 import { withStyles } from '@material-ui/core/styles';
 import { withRouter } from 'react-router-dom';
 import { withTranslation } from 'react-i18next';
@@ -215,7 +215,7 @@ const styleSheet = (theme) => ({
   },
 });
 
-class Dashboard extends Component {
+class Dashboard extends PureComponent {
   static propTypes = {
     navigate: PropTypes.func,
     getOffices: PropTypes.func.isRequired,

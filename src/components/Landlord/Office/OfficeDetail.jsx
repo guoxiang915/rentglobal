@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { PureComponent } from 'react';
 import { withStyles } from '@material-ui/core/styles';
 import { withTranslation } from 'react-i18next';
 import clsx from 'clsx';
@@ -49,7 +49,7 @@ const styleSheet = (theme) => ({
   },
 });
 
-class OfficeDetail extends Component {
+class OfficeDetail extends PureComponent {
   static propTypes = {
     officeId: PropTypes.string.isRequired,
     getOfficeById: PropTypes.func.isRequired,

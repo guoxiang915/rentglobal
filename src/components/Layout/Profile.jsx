@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { PureComponent } from 'react';
 import { withStyles } from '@material-ui/core/styles';
 import { withTranslation } from 'react-i18next';
 import clsx from 'clsx';
@@ -211,7 +211,7 @@ const styleSheet = (theme) => ({
   },
 });
 
-class Profile extends Component {
+class Profile extends PureComponent {
   static propTypes = {
     auth: PropTypes.object.isRequired,
     uploadFile: PropTypes.func,

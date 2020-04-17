@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React, { PureComponent } from "react";
 import PropTypes from "prop-types";
 import { withStyles } from "@material-ui/core/styles";
 import { withTranslation } from "react-i18next";
@@ -31,7 +31,7 @@ const styleSheet = () => ({
   },
 });
 
-class VerifyEmailSuccessForm extends Component {
+class VerifyEmailSuccessForm extends PureComponent {
   handleLogin = () => {
     this.props.navigate("login");
   };

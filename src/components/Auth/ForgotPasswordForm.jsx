@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React, { PureComponent } from "react";
 import PropTypes from "prop-types";
 import { withStyles } from "@material-ui/core/styles";
 import { withTranslation } from "react-i18next";
@@ -39,7 +39,7 @@ const styleSheet = (theme) => ({
   },
 });
 
-class ForgotPasswordForm extends Component {
+class ForgotPasswordForm extends PureComponent {
   constructor(props) {
     super(props);
     this.state = {

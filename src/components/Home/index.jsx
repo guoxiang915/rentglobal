@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { PureComponent } from 'react';
 import { withStyles } from '@material-ui/core/styles';
 import clsx from 'clsx';
 import PropTypes from 'prop-types';
@@ -47,7 +47,7 @@ import gallery3 from '../../assets/img/img_gallery_03@2x.png';
 
 import { styleSheet } from './Home';
 
-class Home extends Component {
+class Home extends PureComponent {
   static propTypes = {
     classes: PropTypes.object,
     t: PropTypes.func,

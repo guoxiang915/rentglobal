@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { PureComponent } from 'react';
 import { withStyles } from '@material-ui/core/styles';
 import { withTranslation } from 'react-i18next';
 import clsx from 'clsx';
@@ -65,7 +65,7 @@ const styleSheet = (theme) => ({
   },
 });
 
-class UnpublishedOfficeList extends Component {
+class UnpublishedOfficeList extends PureComponent {
   static propTypes = {
     getOffices: PropTypes.func.isRequired,
     navigate: PropTypes.func,

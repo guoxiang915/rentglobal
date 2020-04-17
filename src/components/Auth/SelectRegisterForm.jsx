@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React, { PureComponent } from "react";
 import PropTypes from "prop-types";
 import { withStyles } from "@material-ui/core/styles";
 import { Container, Grid } from "@material-ui/core";
@@ -86,7 +86,7 @@ const styleSheet = (theme) => ({
   },
 });
 
-class SelectRegisterForm extends Component {
+class SelectRegisterForm extends PureComponent {
   handleSelectRegister = (registerMode) => () => {
     if (registerMode) {
       this.props.navigate(`register/${registerMode}`);

@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { PureComponent } from 'react';
 import { withStyles } from '@material-ui/core/styles';
 import { withTranslation } from 'react-i18next';
 import clsx from 'clsx';
@@ -138,7 +138,7 @@ const StepperIcon = ({ classes, icon, active, completed }) => (
   </Box>
 );
 
-class AddNewOffice extends Component {
+class AddNewOffice extends PureComponent {
   static propTypes = {
     officeId: PropTypes.string,
     getOfficeById: PropTypes.func,

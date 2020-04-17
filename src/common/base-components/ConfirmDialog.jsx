@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React, { PureComponent } from "react";
 import PropTypes from "prop-types";
 import {
   Dialog,
@@ -51,7 +51,7 @@ const styleSheet = theme => ({
 
 export const ConfirmDialog = withStyles(styleSheet, { name: "ConfirmDialog" })(
   withWidth()(
-    class ConfirmDialog extends Component {
+    class ConfirmDialog extends PureComponent {
       static propTypes = {
         variant: PropTypes.string,
         open: PropTypes.bool,

@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { PureComponent } from 'react';
 import { withStyles } from '@material-ui/core/styles';
 import { withTranslation } from 'react-i18next';
 import withWidth, { isWidthDown } from '@material-ui/core/withWidth';
@@ -51,7 +51,7 @@ const styleSheet = (theme) => ({
   },
 });
 
-class Offices extends Component {
+class Offices extends PureComponent {
   static propTypes = {
     navigate: PropTypes.func,
     getOffices: PropTypes.func.isRequired,

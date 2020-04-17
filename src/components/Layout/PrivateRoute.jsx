@@ -176,6 +176,10 @@ class PrivateRoute extends React.Component {
             const history = this.props.history;
             history.location.pathname = `/${user.roles[0]}/profile`;
             this.props.mappedToggleRole(user.roles[0], history);
+          } else {
+            this.props.history.push(
+              `/${userRole}/${path}/${payload ? payload : ''}`
+            );
           }
         }
         break;
