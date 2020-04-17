@@ -378,7 +378,7 @@ class Profile extends PureComponent {
       phoneNumber: user.generalInfo?.phoneNumber?.number || '',
       phoneNumberVerified: !!user.generalInfo?.phoneNumber?.verified,
       address: user.generalInfo?.address || {},
-      postalCode: user.generalInfo?.address.postalCode || '',
+      postalCode: user.generalInfo?.address?.postalCode || '',
       avatar: user.avatar || null,
     });
   };
