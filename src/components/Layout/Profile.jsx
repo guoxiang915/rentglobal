@@ -798,9 +798,28 @@ class Profile extends PureComponent {
                               <div className={s.errorIcon}>!</div>
                             </Tooltip>
                           ) : phoneNumberVerified ? (
-                            <div className={s.approveIcon}>
-                              <CheckIcon style={{ width: 11, height: 8 }} />
-                            </div>
+                            <Tooltip
+                              placement={
+                                isWidthDown('xs', width) ? 'left' : 'bottom'
+                              }
+                              borderType="primary"
+                              title={
+                                <TooltipContent
+                                  title={
+                                    <Column>
+                                      <Typography textSecondary>
+                                        Your phone number confirmed
+                                      </Typography>
+                                    </Column>
+                                  }
+                                />
+                              }
+                              interactive
+                            >
+                              <div className={s.approveIcon}>
+                                <CheckIcon style={{ width: 11, height: 8 }} />
+                              </div>
+                            </Tooltip>
                           ) : null
                         }
                         readOnly={editTab !== 'generalInfo'}

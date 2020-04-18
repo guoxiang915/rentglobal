@@ -149,7 +149,7 @@ class Landlord extends PureComponent {
   /** Render function */
   render() {
     const { classes, location } = this.props;
-    const { user, userRole } = this.props.auth;
+    const { user, userRole, phoneCodeSent, verifiedPhoneNumber } = this.props.auth;
     const { dialog } = this.state;
 
     // TODO: requirements not specified when toggling roles
@@ -285,6 +285,18 @@ class Landlord extends PureComponent {
                           this.props.history
                         )
                       }
+                      verifyPhoneNumber={(phoneNumber) =>
+                        this.props.mappedverifyPhoneNumber(
+                          phoneNumber
+                        )   
+                      }
+                      verifyPhoneCode={(phoneCode) =>
+                        this.props.mappedverifyPhoneCode(
+                          phoneCode
+                        )                   
+                      }
+                      verifiedPhoneNumber={verifiedPhoneNumber}
+                      phoneCodeSent={phoneCodeSent}
                       uploadFile={uploadFile}
                       downloadFile={downloadFile}
                     />
