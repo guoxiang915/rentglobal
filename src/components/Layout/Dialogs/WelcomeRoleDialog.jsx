@@ -34,6 +34,9 @@ import {
   StepLabel,
   Badge,
 } from '@material-ui/core';
+import { Storage, storageKeys } from '../../../utils/storage';
+
+const storage = new Storage();
 
 const styleSheet = (theme) => ({
   root: {
@@ -188,9 +191,36 @@ class WelcomeRoleDialog extends PureComponent {
     }
   };
 
+  /** Toggle hide guidance */
+  handleHideGuidance = () => {
+    const { role } = this.props;
+    const key =
+      role === 'landlord'
+        ? storageKeys.HIDE_LANDLORD_GUIDE
+        : role === 'company'
+        ? storageKeys.HIDE_COMPANY_GUIDE
+        : role === 'consultant'
+        ? storageKeys.HIDE_CONSULTANT_GUIDE
+        : '';
+    const hideGuidance = role && storage.getData(key);
+    storage.saveData(key, !hideGuidance);
+    this.setState({});
+  };
+
   /** Render function */
   render() {
     const { title, className, role, classes: s, t } = this.props;
+    const hideGuidance =
+      role &&
+      storage.getData(
+        role === 'landlord'
+          ? storageKeys.HIDE_LANDLORD_GUIDE
+          : role === 'company'
+          ? storageKeys.HIDE_COMPANY_GUIDE
+          : role === 'consultant'
+          ? storageKeys.HIDE_CONSULTANT_GUIDE
+          : ''
+      );
 
     return (
       <Dialog
@@ -273,8 +303,8 @@ class WelcomeRoleDialog extends PureComponent {
             <Checkbox
               variant="outlined"
               label={t('dontShowAgain')}
-              isChecked={true}
-              onChange={() => {}}
+              isChecked={hideGuidance}
+              onChange={this.handleHideGuidance}
               className={s.rememberSelection}
             />
             {/** close button */}

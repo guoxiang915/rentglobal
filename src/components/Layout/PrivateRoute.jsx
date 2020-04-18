@@ -8,11 +8,15 @@ import { withStyles } from '@material-ui/core';
 import { Column, Spinner } from '../../common/base-components';
 import { WelcomeRoleDialog } from './Dialogs';
 import SendVerificationForm from '../Auth/SendVerificationForm';
+import { Storage, storageKeys } from '../../utils/storage';
 
 import HeaderImage from '../../assets/img/img_header@2x.jpg';
 
 /** Token-based auth object */
 const authObj = new Auth();
+
+/** Storage object */
+const storage = new Storage();
 
 const styleSheet = (theme) => ({
   root: {
@@ -211,17 +215,32 @@ class PrivateRoute extends React.Component {
         ? 'company'
         : 'landlord';
     if (user?.roles.indexOf(nextRole) === -1) {
-      this.setState({
-        dialog: (
-          <WelcomeRoleDialog
-            role={nextRole}
-            onClose={() => {
-              this.props.mappedToggleRole(nextRole, this.props.history);
-              this.handleCloseDialog();
-            }}
-          />
-        ),
-      });
+      const hideGuidance =
+        nextRole &&
+        storage.getData(
+          nextRole === 'landlord'
+            ? storageKeys.HIDE_LANDLORD_GUIDE
+            : nextRole === 'company'
+            ? storageKeys.HIDE_COMPANY_GUIDE
+            : nextRole === 'consultant'
+            ? storageKeys.HIDE_CONSULTANT_GUIDE
+            : ''
+        );
+      if (hideGuidance) {
+        this.props.mappedToggleRole(nextRole, this.props.history);
+      } else {
+        this.setState({
+          dialog: (
+            <WelcomeRoleDialog
+              role={nextRole}
+              onClose={() => {
+                this.props.mappedToggleRole(nextRole, this.props.history);
+                this.handleCloseDialog();
+              }}
+            />
+          ),
+        });
+      }
     } else {
       this.props.mappedToggleRole(nextRole, this.props.history);
     }
