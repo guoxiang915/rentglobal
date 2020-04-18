@@ -6,6 +6,7 @@ import Auth from '../../utils/auth';
 import { AppHeader, AppFooter, AppSidebar, HelpDialog } from '.';
 import { withStyles } from '@material-ui/core';
 import { Column, Spinner } from '../../common/base-components';
+import { WelcomeRoleDialog } from './Dialogs';
 import SendVerificationForm from '../Auth/SendVerificationForm';
 
 import HeaderImage from '../../assets/img/img_header@2x.jpg';
@@ -23,10 +24,7 @@ const styleSheet = (theme) => ({
     position: 'sticky',
     top: 0,
     zIndex: 1100,
-    height: 100,
-    [theme.breakpoints.down('sm')]: {
-      height: 66,
-    },
+    height: 95,
   },
 
   bodyWrapper: {
@@ -37,10 +35,7 @@ const styleSheet = (theme) => ({
   },
 
   bodyHeaderOffset: {
-    height: 'calc(100% - 100px)',
-    [theme.breakpoints.down('sm')]: {
-      height: 'calc(100% - 66px)',
-    },
+    height: 'calc(100% - 95px)',
   },
 
   bodyContent: {
@@ -52,10 +47,7 @@ const styleSheet = (theme) => ({
 
   contentWrapper: {
     background: theme.colors.primary.whiteGrey,
-    minHeight: 'calc(100vh - 250px)',
-    [theme.breakpoints.down('sm')]: {
-      minHeight: 'calc(100vh - 166px)',
-    },
+    minHeight: 'calc(100vh - 245px)',
   },
 
   footerWrapper: {
@@ -68,10 +60,7 @@ const styleSheet = (theme) => ({
 
   sendVerificationWrapper: {
     background: theme.colors.primary.white,
-    minHeight: 'calc(100vh - 250px)',
-    [theme.breakpoints.down('sm')]: {
-      minHeight: 'calc(100vh - 166px)',
-    },
+    minHeight: 'calc(100vh - 245px)',
   },
 
   backgroundWrapper: {
@@ -214,15 +203,28 @@ class PrivateRoute extends React.Component {
 
   /** Toggle userRole between landlord/company */
   handleToggleRole = (setRole) => {
-    const { userRole } = this.props.auth;
-    this.props.mappedToggleRole(
+    const { user, userRole } = this.props.auth;
+    const nextRole =
       typeof setRole === 'string'
         ? setRole
         : userRole === 'landlord'
         ? 'company'
-        : 'landlord',
-      this.props.history
-    );
+        : 'landlord';
+    if (user?.roles.indexOf(nextRole) === -1) {
+      this.setState({
+        dialog: (
+          <WelcomeRoleDialog
+            role={nextRole}
+            onClose={() => {
+              this.props.mappedToggleRole(nextRole, this.props.history);
+              this.handleCloseDialog();
+            }}
+          />
+        ),
+      });
+    } else {
+      this.props.mappedToggleRole(nextRole, this.props.history);
+    }
     this.handleToggleSidebar(false);
   };
 
