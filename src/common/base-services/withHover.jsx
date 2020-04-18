@@ -1,12 +1,12 @@
-import React, { Component } from "react";
+import React, { PureComponent } from "react";
 
-export const withHover = C =>
-  class extends Component {
+export const withHover = (C) =>
+  class WithHover extends PureComponent {
     state = {
-      isHover: false
+      isHover: false,
     };
 
-    handleHoverChange = isHover => () => {
+    handleHoverChange = (isHover) => () => {
       this.setState({ isHover });
     };
 
@@ -16,7 +16,7 @@ export const withHover = C =>
           hover={{
             isHover: this.state.isHover,
             onMouseEnter: this.handleHoverChange(true),
-            onMouseLeave: this.handleHoverChange(false)
+            onMouseLeave: this.handleHoverChange(false),
           }}
           {...this.props}
         />

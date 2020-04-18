@@ -4,5 +4,4 @@
  * @param {component} wrapper Wrapper component
  * @param {any} children Wrapped children
  */
-export const ConditionalWrapper = ({ condition, wrapper, children }) =>
-  condition ? wrapper(children) : children;
+export const ConditionalWrapper = ({ condition, wrapper, children }) => (condition ? wrapper(children) : children);

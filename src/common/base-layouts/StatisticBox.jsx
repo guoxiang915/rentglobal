@@ -11,7 +11,7 @@ import {
 } from "../base-components";
 import { KeyboardArrowRight } from "@material-ui/icons";
 
-const styleSheet = (theme) => ({
+const styleSheet = () => ({
   root: {
     width: 192,
     height: 116,

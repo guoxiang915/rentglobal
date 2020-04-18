@@ -1,10 +1,10 @@
-import React, { Component } from "react";
-import { withStyles } from "@material-ui/core/styles";
-import { withTranslation } from "react-i18next";
-import { withRouter } from "react-router-dom";
-import withWidth, { isWidthDown } from "@material-ui/core/withWidth";
-import PropTypes from "prop-types";
-import clsx from "clsx";
+import React, { PureComponent } from 'react';
+import { withStyles } from '@material-ui/core/styles';
+import { withTranslation } from 'react-i18next';
+import { withRouter } from 'react-router-dom';
+import withWidth, { isWidthDown } from '@material-ui/core/withWidth';
+import PropTypes from 'prop-types';
+import clsx from 'clsx';
 import {
   Link,
   Typography,
@@ -27,73 +27,74 @@ import {
   TicketIcon,
   ChatIcon,
   SettingIcon,
-  ArrowUpIcon
-} from "../../common/base-components";
+  ArrowUpIcon,
+} from '../../common/base-components';
 
-const styleSheet = theme => ({
+const styleSheet = (theme) => ({
   sidebarWrapper: {
-    height: "100%",
+    height: '100%',
     borderRight: `1px solid ${theme.colors.primary.borderGrey}`,
-    overflowY: "auto",
-    [theme.breakpoints.down("sm")]: {
-      borderRight: "none",
+    overflowY: 'auto',
+    '-webkit-overflow-scrolling': 'touch',
+    [theme.breakpoints.down('sm')]: {
+      borderRight: 'none',
       background: theme.colors.primary.mainColor,
-      width: "100%",
-      height: "100%",
-      position: "absolute",
+      width: '100%',
+      height: '100%',
+      position: 'absolute',
       zIndex: 1000,
-      opacity: 0.98
-    }
+      opacity: 0.98,
+    },
   },
 
   sidebarContent: {
-    minHeight: "100%",
-    width: "100%",
-    position: "relative",
+    minHeight: '100%',
+    width: '100%',
+    position: 'relative',
     paddingTop: 24,
     paddingBottom: 24,
-    [theme.breakpoints.down("sm")]: {
+    [theme.breakpoints.down('sm')]: {
       paddingTop: 17,
-      paddingBottom: 10
-    }
+      paddingBottom: 10,
+    },
   },
 
   sidebarBody: {
     width: 150,
-    [theme.breakpoints.down("sm")]: {
-      width: "100%"
-    }
+    [theme.breakpoints.down('sm')]: {
+      width: '100%',
+    },
   },
 
   menuItem: {
-    position: "relative",
+    position: 'relative',
     width: 150,
-    overflow: "hidden",
+    overflow: 'hidden',
     paddingTop: 10,
     paddingBottom: 10,
-    [theme.breakpoints.down("sm")]: {
-      width: "100%",
+    [theme.breakpoints.down('sm')]: {
+      width: '100%',
       marginTop: 2,
       marginBottom: 2,
-      paddingLeft: 27
-    }
+      paddingLeft: 27,
+    },
   },
 
   activeItem: {
-    "&:after": {
-      position: "absolute",
+    '&:after': {
+      position: 'absolute',
       right: 0,
       top: 0,
       width: 4,
-      height: "100%",
+      height: '100%',
       content: "' '",
       borderRadius: 2,
-      border: "none",
+      border: 'none',
       background: theme.colors.primary.mainColor,
-      [theme.breakpoints.down("sm")]: {
-        background: theme.colors.primary.white
-      }
-    }
+      [theme.breakpoints.down('sm')]: {
+        background: theme.colors.primary.white,
+      },
+    },
   },
 
   menuIcon: {
@@ -101,61 +102,61 @@ const styleSheet = theme => ({
     color: theme.colors.primary.borderGrey,
     // stroke: theme.colors.primary.borderGrey,
     opacity: 1,
-    [theme.breakpoints.down("sm")]: {
+    [theme.breakpoints.down('sm')]: {
       marginRight: 32,
       opacity: 0.15,
-      color: theme.colors.primary.darkGrey
+      color: theme.colors.primary.darkGrey,
       // stroke: theme.colors.primary.darkGrey
-    }
+    },
   },
 
   activeMenuIcon: {
     opacity: 1,
     color: theme.colors.primary.mainColor,
-    [theme.breakpoints.down("sm")]: {
-      color: theme.colors.primary.white
-    }
+    [theme.breakpoints.down('sm')]: {
+      color: theme.colors.primary.white,
+    },
   },
 
   iconComponent: {
     width: 16,
     height: 16,
-    [theme.breakpoints.down("sm")]: {
+    [theme.breakpoints.down('sm')]: {
       width: 24,
-      height: 24
-    }
+      height: 24,
+    },
   },
 
   divider: {
     backgroundColor: theme.colors.primary.darkColor,
     opacity: 0.5,
-    marginTop: 13
+    marginTop: 13,
   },
 
   moreWrapper: {
     paddingTop: 20,
-    paddingBottom: 20
+    paddingBottom: 20,
   },
 
   fullWidthButton: {
-    width: "calc(100% - 40px)",
-    margin: "12px 18px 12px 21px",
-    border: `2px solid ${theme.colors.primary.darkColor}80`
+    width: 'calc(100% - 40px)',
+    margin: '12px 18px 12px 21px',
+    border: `2px solid ${theme.colors.primary.darkColor}80`,
   },
 
   chatItem: {
     paddingTop: 8,
-    paddingBottom: 48
+    paddingBottom: 48,
   },
 
   collapseButton: {
-    position: "absolute",
+    position: 'absolute',
     bottom: 0,
-    opacity: 0.25
-  }
+    opacity: 0.25,
+  },
 });
 
-class AppSidebar extends Component {
+class AppSidebar extends PureComponent {
   static propTypes = {
     onToggleRole: PropTypes.func,
     onCollapse: PropTypes.func,
@@ -163,43 +164,43 @@ class AppSidebar extends Component {
 
     width: PropTypes.string,
     classes: PropTypes.object,
-    t: PropTypes.func
+    t: PropTypes.func,
   };
 
   menus = {
-    "": [
-      { text: "home", link: "", role: false, icon: HomeIcon, exact: true },
-      { text: "chatWithTessi", link: "chat", icon: TessiIcon },
-      { text: "login", link: "login", icon: UserIcon },
-      { text: "register", link: "register", icon: EditDocumentIcon }
+    '': [
+      { text: 'home', link: '', role: false, icon: HomeIcon, exact: true },
+      { text: 'chatWithTessi', link: 'chat', icon: TessiIcon },
+      { text: 'login', link: 'login', icon: UserIcon },
+      { text: 'register', link: 'register', icon: EditDocumentIcon },
     ],
     landlord: [
-      { text: "home", link: "", role: false, icon: HomeIcon, exact: true },
-      { text: "dashboard", link: "dashboard", icon: DashboardIcon },
-      { text: "offices", link: "landlord/offices", icon: OfficeIcon },
-      { text: "contracts", link: "contracts", icon: NoteIcon },
+      { text: 'home', link: '', role: false, icon: HomeIcon, exact: true },
+      { text: 'dashboard', link: 'dashboard', icon: DashboardIcon },
+      { text: 'offices', link: 'offices', icon: OfficeIcon },
+      { text: 'contracts', link: 'contracts', icon: NoteIcon },
       {
-        text: "optimization",
-        link: "optimization",
-        icon: OptimizationIcon
+        text: 'optimization',
+        link: 'optimization',
+        icon: OptimizationIcon,
       },
-      { text: "calendar", link: "calendar", icon: CalendarIcon },
-      { text: "financials", link: "financial", icon: TicketIcon },
-      { text: "support", link: "support", icon: ChatIcon },
-      { text: "profile", link: "profile", icon: UserIcon },
-      { text: "setting", link: "settings", icon: SettingIcon }
+      { text: 'calendar', link: 'calendar', icon: CalendarIcon },
+      { text: 'financials', link: 'financial', icon: TicketIcon },
+      { text: 'support', link: 'support', icon: ChatIcon },
+      { text: 'profile', link: 'profile', icon: UserIcon },
+      { text: 'setting', link: 'settings', icon: SettingIcon },
     ],
     company: [
-      { text: "home", link: "", role: false, icon: HomeIcon, exact: true },
-      { text: "dashboard", link: "dashboard", icon: DashboardIcon },
-      { text: "offices", link: "offices", icon: OfficeIcon },
-      { text: "contracts", link: "contracts", icon: NoteIcon },
-      { text: "calendar", link: "calendar", icon: CalendarIcon },
-      { text: "financials", link: "financial", icon: TicketIcon },
-      { text: "support", link: "support", icon: ChatIcon },
-      { text: "profile", link: "profile", icon: UserIcon },
-      { text: "setting", link: "settings", icon: SettingIcon }
-    ]
+      { text: 'home', link: '', role: false, icon: HomeIcon, exact: true },
+      { text: 'dashboard', link: 'dashboard', icon: DashboardIcon },
+      { text: 'offices', link: 'offices', icon: OfficeIcon },
+      { text: 'contracts', link: 'contracts', icon: NoteIcon },
+      { text: 'calendar', link: 'calendar', icon: CalendarIcon },
+      { text: 'financials', link: 'financial', icon: TicketIcon },
+      { text: 'support', link: 'support', icon: ChatIcon },
+      { text: 'profile', link: 'profile', icon: UserIcon },
+      { text: 'setting', link: 'settings', icon: SettingIcon },
+    ],
   };
 
   // menu item component
@@ -215,15 +216,15 @@ class AppSidebar extends Component {
               box: clsx(
                 classes.menuItem,
                 (active || isHover) && classes.activeItem
-              )
+              ),
             }}
             fontWeightBold={active}
           >
-            {isWidthDown("sm", width) ? (
+            {isWidthDown('sm', width) ? (
               <Link
                 to="#"
                 onClick={() => navigate(item.link)}
-                variant={active || isHover ? "white" : "normal"}
+                variant={active || isHover ? 'white' : 'normal'}
                 inverse
               >
                 <Typography fontSizeM alignChildrenCenter>
@@ -232,7 +233,7 @@ class AppSidebar extends Component {
                       box: clsx(
                         classes.menuIcon,
                         (active || isHover) && classes.activeMenuIcon
-                      )
+                      ),
                     }}
                   >
                     <IconComponent className={classes.iconComponent} />
@@ -244,7 +245,7 @@ class AppSidebar extends Component {
               <Link
                 to="#"
                 onClick={() => navigate(item.link)}
-                variant={active || isHover ? "primary" : "normal"}
+                variant={active || isHover ? 'primary' : 'normal'}
               >
                 <Typography fontSizeS alignChildrenCenter>
                   <Box
@@ -252,7 +253,7 @@ class AppSidebar extends Component {
                       box: clsx(
                         classes.menuIcon,
                         (active || isHover) && classes.activeMenuIcon
-                      )
+                      ),
                     }}
                   >
                     <IconComponent className={classes.iconComponent} />
@@ -268,37 +269,36 @@ class AppSidebar extends Component {
   );
 
   /** Navigate pages */
-  navigate = path => {
+  navigate = (path) => {
     this.props.navigate(path);
   };
 
   render() {
-    const { role, width, classes, t } = this.props;
+    const { userRole, width, classes, t } = this.props;
     const MenuItem = this.renderMenuItem;
 
     /** Get active item */
-    const activeItem = this.menus[role].find(item => {
-      let link = `${role && item.role !== false ? "/" + role : ""}/${
+    const activeItem = this.menus[userRole].find((item) => {
+      let link = `${userRole && item.role !== false ? '/' + userRole : ''}/${
         item.link
       }`;
-      if (item.link === "login") {
-        link = "login";
-      } else if (item.link === "register") {
-        link = "register";
+      if (item.link === 'login') {
+        link = 'login';
+      } else if (item.link === 'register') {
+        link = 'register';
       }
       return item.exact
         ? this.props.location.pathname === link ||
-            this.props.location.pathname === link + "/"
+            this.props.location.pathname === link + '/'
         : this.props.location.pathname.startsWith(link);
     });
-    console.log(activeItem);
 
     return (
       <div className={classes.sidebarWrapper}>
         <div className={classes.sidebarContent}>
           <Column alignChildrenEnd classes={{ box: classes.sidebarBody }}>
             {/** Show main menus */}
-            {this.menus[role].map(item => (
+            {this.menus[userRole].map((item) => (
               <MenuItem
                 active={activeItem === item}
                 item={item}
@@ -310,18 +310,18 @@ class AppSidebar extends Component {
             ))}
 
             {/* show more buttons for mobile version */}
-            {isWidthDown("sm", width) && (
-              <>
-                {!role && (
+            {isWidthDown('sm', width) && (
+              <React.Fragment>
+                {!userRole && (
                   <Button
                     link="normal"
                     background="primary"
                     outline="primaryDark"
                     inverse
-                    onClick={() => this.navigate("register/company")}
+                    onClick={() => this.navigate('register/company')}
                     className={classes.fullWidthButton}
                   >
-                    <Typography fontSizeS>{t("placeToRent")}</Typography>
+                    <Typography fontSizeS>{t('placeToRent')}</Typography>
                   </Button>
                 )}
 
@@ -331,7 +331,7 @@ class AppSidebar extends Component {
                 {/* show more menus */}
                 <Row fullWidth classes={{ box: classes.moreWrapper }}>
                   <Column fullWidth>
-                    {role && (
+                    {userRole && (
                       <Button
                         link="normal"
                         background="primary"
@@ -341,20 +341,20 @@ class AppSidebar extends Component {
                         className={classes.fullWidthButton}
                       >
                         <Typography fontSizeS>
-                          {role === "landlord"
-                            ? t("needOffice")
-                            : t("placeToRent")}
+                          {userRole === 'landlord'
+                            ? t('needOffice')
+                            : t('placeToRent')}
                         </Typography>
                       </Button>
                     )}
-                    {!role ? (
-                      <>
+                    {!userRole ? (
+                      <React.Fragment>
                         <MenuItem
                           active={false}
                           item={{
-                            text: "montreal",
-                            link: "location",
-                            icon: MapPointerIcon
+                            text: 'montreal',
+                            link: 'location',
+                            icon: MapPointerIcon,
                           }}
                           navigate={this.navigate}
                           classes={classes}
@@ -363,9 +363,9 @@ class AppSidebar extends Component {
                         <MenuItem
                           active={false}
                           item={{
-                            text: "english",
-                            link: "language",
-                            icon: props => <Typography>EN</Typography>
+                            text: 'english',
+                            link: 'language',
+                            icon: () => <Typography>EN</Typography>,
                           }}
                           navigate={this.navigate}
                           classes={classes}
@@ -374,23 +374,23 @@ class AppSidebar extends Component {
                         <MenuItem
                           active={false}
                           item={{
-                            text: "help",
-                            link: "help",
-                            icon: HelpIcon
+                            text: 'help',
+                            link: 'help',
+                            icon: HelpIcon,
                           }}
                           navigate={this.navigate}
                           classes={classes}
                           t={t}
                         />
-                      </>
+                      </React.Fragment>
                     ) : (
                       <Row classes={{ box: classes.chatItem }} fullWidth>
                         <MenuItem
                           active={false}
                           item={{
-                            text: "chatWithTessi",
-                            link: "",
-                            icon: TessiIcon
+                            text: 'chatWithTessi',
+                            link: '',
+                            icon: TessiIcon,
                           }}
                           navigate={this.navigate}
                           classes={classes}
@@ -416,7 +416,7 @@ class AppSidebar extends Component {
                     <ArrowUpIcon />
                   </Link>
                 </Column>
-              </>
+              </React.Fragment>
             )}
           </Column>
         </div>
@@ -426,5 +426,5 @@ class AppSidebar extends Component {
 }
 
 export default withWidth()(
-  withRouter(withStyles(styleSheet)(withTranslation("common")(AppSidebar)))
+  withRouter(withStyles(styleSheet)(withTranslation('common')(AppSidebar)))
 );

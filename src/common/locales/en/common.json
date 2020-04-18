@@ -10,6 +10,8 @@
     "email": "Email",
     "invalidEmail": "Invalid email address",
     "password": "Password",
+    "oldPassword": "Old password",
+    "newPassword": "New password",
     "confirmPassword": "Confirm password",
     "confirmPasswordDifferent": "Confirm password different!",
     "createPassword": "Create a password",
@@ -113,6 +115,8 @@
     "french": "French",
     "number": "Number",
     "upload": "Upload",
+    "uploadTooLarge": "File is too large!",
+    "uploadWrongType": "Image or PDF only!",
     "montreal": "Montreal",
     "toronto": "Toronto",
     "needSpaceForBusiness": "I need a space for my business",
@@ -168,6 +172,7 @@
     "followUpRequests": "Follow Up Requests",
     "moreInfoReq": "More Info Req",
     "contactReq": "Contact Req",
+    "sendMessage": "Send Message",
     "officeLists": "Office Lists",
     "needAttention": "Need attention",
     "mustBeCompleteLocation": "Must be complete location",
@@ -390,5 +395,6 @@
     "calendarEvents": "Calendar events",
     "fullView": "Full view",
     "map": "Map",
-    "stat": "Stat"
+    "stat": "Stat",
+    "refID": "Ref ID"
 }

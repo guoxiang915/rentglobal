@@ -9,20 +9,23 @@ import {
   Column,
   Box,
   Stretch,
+  ConfirmDialog,
   UploadIcon,
-  DeleteIcon
+  CloseIcon,
+  DeleteIcon,
 } from "../base-components";
 import {
   CheckCircle,
   KeyboardArrowLeft,
-  KeyboardArrowRight
+  KeyboardArrowRight,
 } from "@material-ui/icons";
 import Dropzone from "react-dropzone";
+import { maxFileSize } from '../../utils/constants';
 
-const styleSheet = theme => ({
+const styleSheet = (theme) => ({
   root: {
     width: 192,
-    height: 116
+    height: 116,
   },
 
   title: {
@@ -30,18 +33,18 @@ const styleSheet = theme => ({
     overflow: "hidden",
     whiteSpace: "nowrap",
     textOverflow: "ellipsis",
-     marginTop: 3
+    marginTop: 3,
   },
 
   documents: {
-    color: theme.colors.primary.lightGrey
+    color: theme.colors.primary.lightGrey,
   },
 
   fileNameWrapper: {
     width: 110,
     height: 24,
     overflow: "hidden",
-    position: "relative"
+    position: "relative",
   },
 
   fileName: {
@@ -55,9 +58,9 @@ const styleSheet = theme => ({
       width: "fit-content",
       overflow: "visible",
       position: "absolute",
-      transform: "translateX(calc(110px - 100%))"
-    }
-  }
+      transform: "translateX(calc(110px - 100%))",
+    },
+  },
 });
 
 /**
@@ -74,18 +77,46 @@ const UploadDocument = ({
   onUpload,
   onDownload,
   onDelete,
-  uploading
+  uploading,
 }) => {
   const [current, setCurrent] = useState(0);
+  const [dialog, setDialog] = useState(null);
+  const closeDialog = () => setDialog(null);
 
   const prevCurrent = () => setCurrent(current - 1);
   const nextCurrent = () => setCurrent(current + 1);
-  const deleteCurrent = () =>
-    onDelete(documents[current]).then(() => setCurrent(0));
+  const deleteCurrent = () => {
+    closeDialog();
+    onDelete(documents[current]);
+  };
   const downloadCurrent = () =>
     onDownload(documents[current]._id, documents[current].fileName);
 
-  const approved = documents && documents.find(item => item.approved === true);
+  const handleDelete = () => {
+    setDialog(
+      <ConfirmDialog
+        variant="error"
+        text={t("confirmDelete")}
+        closeLabel={
+          <React.Fragment>
+            <CloseIcon style={{ width: 10, height: 10 }} />
+            <Typography paddingLeft>{t("cancel")}</Typography>
+          </React.Fragment>
+        }
+        confirmLabel={
+          <React.Fragment>
+            <DeleteIcon style={{ width: 15, height: 12 }} />
+            <Typography paddingLeft>{t("delete")}</Typography>
+          </React.Fragment>
+        }
+        onConfirm={deleteCurrent}
+        onClose={closeDialog}
+      />
+    );
+  };
+
+  const approved =
+    documents && documents.find((item) => item.approved === true);
 
   return (
     <Card variant="outlined" className={classes.root}>
@@ -100,7 +131,7 @@ const UploadDocument = ({
           {title}
         </Typography>
         {documents && documents.length ? (
-          <>
+          <React.Fragment>
             <Row
               paddingTopHalf
               classes={{ box: classes.documents }}
@@ -143,44 +174,60 @@ const UploadDocument = ({
             ) : (
               <Button
                 variant="icon"
-                link="secondaryLight"
+                link="errorRed"
                 background="errorRedLight"
                 outline="transparent"
                 inverse
-                onClick={deleteCurrent}
+                onClick={handleDelete}
               >
                 <Typography fontSizeXS>
                   <DeleteIcon style={{ width: 12, height: 13 }} />
                 </Typography>
               </Button>
             )}
-          </>
+          </React.Fragment>
         ) : uploading ? (
           <Box style={{ paddingTop: 16, paddingBottom: 18 }}>
             <CircularProgress size={24} />
           </Box>
         ) : (
-          <Dropzone multiple={false} onDrop={files => onUpload(files[0])}>
-            {({ getRootProps, getInputProps }) => (
-              <Button
-                link="secondaryLight"
-                background="transparent"
-                outline="transparent"
-                // onClick={onUpload}
-                {...getRootProps()}
-              >
-                <input {...getInputProps()} />
-                <Column fontSizeXS fontWeightMedium>
-                  <Typography paddingTopHalf>
-                    <UploadIcon style={{ width: 21, height: 19 }} />
-                  </Typography>
-                  <Typography>{t("upload")}</Typography>
-                </Column>
-              </Button>
-            )}
+          <Dropzone
+            multiple={false}
+            onDrop={files => files.length > 0 && onUpload(files[0])}
+            accept={"image/*, application/pdf"}
+            maxSize={maxFileSize}
+          >
+            {({ getRootProps, getInputProps, isDragReject, rejectedFiles }) => {
+              const isFileTooLarge = rejectedFiles.length > 0 && rejectedFiles[0].size > maxFileSize;
+              let uploadMsg = <Typography>{t("upload")}</Typography>;
+              if (isFileTooLarge) {
+                uploadMsg = <Typography textErrorRed>{t("uploadTooLarge")}</Typography>;
+              } else if (isDragReject || rejectedFiles.length > 0) {
+                uploadMsg = <Typography textErrorRed>{t("uploadWrongType")}</Typography>;
+              }
+              return (
+                <Button
+                  link="secondaryLight"
+                  background="transparent"
+                  outline="transparent"
+                  {...getRootProps()}
+                >
+                  <input {...getInputProps()} />
+                  <Column fontSizeXS fontWeightMedium>
+                    <Typography paddingTopHalf>
+                      <UploadIcon style={{ width: 21, height: 19 }} />
+                    </Typography>
+                    {uploadMsg}
+                  </Column>
+                </Button>
+              )}
+            }
           </Dropzone>
         )}
       </Column>
+
+      {/* Show dialog */}
+      {dialog}
     </Card>
   );
 };

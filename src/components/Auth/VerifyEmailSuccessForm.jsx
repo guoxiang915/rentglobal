@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React, { PureComponent } from "react";
 import PropTypes from "prop-types";
 import { withStyles } from "@material-ui/core/styles";
 import { withTranslation } from "react-i18next";
@@ -8,30 +8,30 @@ import {
   Button,
   Typography,
   Divider,
-  Link
+  Link,
 } from "../../common/base-components";
 import { CheckCircleOutline } from "@material-ui/icons";
 
-const styleSheet = theme => ({
+const styleSheet = () => ({
   formWrapper: {
-    width: "100%"
+    width: "100%",
   },
 
   successIcon: {
     marginTop: 45,
-    fontSize: 40
+    fontSize: 40,
   },
 
   fixedWidthButton: {
-    width: 220
+    width: 220,
   },
 
   dividerPadding: {
-    marginTop: 80
-  }
+    marginTop: 80,
+  },
 });
 
-class VerifyEmailSuccessForm extends Component {
+class VerifyEmailSuccessForm extends PureComponent {
   handleLogin = () => {
     this.props.navigate("login");
   };
@@ -89,7 +89,7 @@ class VerifyEmailSuccessForm extends Component {
 VerifyEmailSuccessForm.propTypes = {
   classes: PropTypes.object.isRequired,
   t: PropTypes.func.isRequired,
-  navigate: PropTypes.func
+  navigate: PropTypes.func,
 };
 
 export default withStyles(styleSheet)(

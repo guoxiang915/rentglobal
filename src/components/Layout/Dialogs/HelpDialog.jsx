@@ -1,16 +1,16 @@
-import React, { Component } from "react";
-import PropTypes from "prop-types";
+import React, { PureComponent } from 'react';
+import PropTypes from 'prop-types';
 import {
   Dialog,
   DialogTitle,
   DialogContent,
   DialogActions,
   Grid,
-  withStyles
-} from "@material-ui/core";
-import clsx from "clsx";
-import { withTranslation } from "react-i18next";
-import withWidth from "@material-ui/core/withWidth";
+  withStyles,
+} from '@material-ui/core';
+import clsx from 'clsx';
+import { withTranslation } from 'react-i18next';
+import withWidth from '@material-ui/core/withWidth';
 import {
   Button,
   Typography,
@@ -18,99 +18,100 @@ import {
   Box,
   Stretch,
   Column,
-  VideoPlayer
-} from "../../../common/base-components";
-import { CloseIcon } from "../../../common/base-components/Icons";
+  VideoPlayer,
+} from '../../../common/base-components';
+import { CloseIcon } from '../../../common/base-components/Icons';
 
-const styleSheet = theme => ({
+const styleSheet = (theme) => ({
   root: {
     maxWidth: 1056,
     maxHeight: 512,
     padding: 0,
-    width: "80%",
-    height: "80%",
-    borderRadius: 8
+    width: '80%',
+    height: '80%',
+    borderRadius: 8,
   },
 
   header: {
-    width: "100%",
-    padding: "12px 40px"
+    width: '100%',
+    padding: '12px 40px',
   },
 
   content: {
-    padding: "3px 17px"
+    padding: '3px 17px',
   },
 
   contentWrapper: {
-    height: "100%"
+    height: '100%',
   },
 
   videoPlayer: {
-    width: "100%",
-    height: "100%",
-    minHeight: 150
+    width: '100%',
+    height: '100%',
+    minHeight: 150,
   },
 
   videoPlayerWrapper: {
-    padding: 20
+    padding: 20,
   },
 
   userGuides: {
-    width: "100%",
-    height: "100%",
-    border: "none",
+    width: '100%',
+    height: '100%',
+    border: 'none',
     borderLeft: `0.5px solid ${theme.colors.primary.borderGrey}`,
-    [theme.breakpoints.down("xs")]: {
-      border: "none",
-      borderUp: `0.5px solid ${theme.colors.primary.borderGrey}`
-    }
+    [theme.breakpoints.down('xs')]: {
+      border: 'none',
+      borderUp: `0.5px solid ${theme.colors.primary.borderGrey}`,
+    },
   },
 
   userGuidesWrapper: {
-    padding: "35px 16px 35px 38px",
-    height: "100%",
-    overflowY: "auto"
+    padding: '35px 16px 35px 38px',
+    height: '100%',
+    overflowY: 'auto',
+    '-webkit-overflow-scrolling': 'touch',
   },
 
   footer: {
-    width: "100%",
-    padding: "12px 40px"
-  }
+    width: '100%',
+    padding: '12px 40px',
+  },
 });
 
-class HelpDialog extends Component {
+class HelpDialog extends PureComponent {
   static propTypes = {
     className: PropTypes.string,
     open: PropTypes.bool,
-    onClose: PropTypes.func
+    onClose: PropTypes.func,
   };
 
   userGuides = [
     {
-      title: "Title of ...",
+      title: 'Title of ...',
       content:
-        "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat."
+        'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.',
     },
     {
-      title: "Title of ...",
+      title: 'Title of ...',
       content:
-        "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat."
+        'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.',
     },
     {
-      title: "Title of ...",
+      title: 'Title of ...',
       content:
-        "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat."
+        'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.',
     },
     {
-      title: "Title of ...",
+      title: 'Title of ...',
       content:
-        "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat."
+        'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.',
     },
     {
-      title: "Title of ...",
+      title: 'Title of ...',
       content:
-        "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat."
-    }
+        'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.',
+    },
   ];
 
   handleClose = () => {
@@ -140,7 +141,7 @@ class HelpDialog extends Component {
             >
               <Typography fontSizeS alignChildrenCenter>
                 <CloseIcon style={{ width: 10, height: 10 }} />
-                <Typography paddingLeft>{t("cancel")}</Typography>
+                <Typography paddingLeft>{t('cancel')}</Typography>
               </Typography>
             </Button>
           </Row>
@@ -172,7 +173,7 @@ class HelpDialog extends Component {
                   fontSizeM
                   paddingBottomHalf
                 >
-                  {t("userGuide")}
+                  {t('userGuide')}
                 </Typography>
                 {this.userGuides.map((item, index) => (
                   <React.Fragment key={index}>
@@ -209,7 +210,7 @@ class HelpDialog extends Component {
             >
               <Typography fontSizeS alignChildrenCenter>
                 <CloseIcon style={{ width: 10, height: 10 }} />
-                <Typography paddingLeft>{t("cancel")}</Typography>
+                <Typography paddingLeft>{t('cancel')}</Typography>
               </Typography>
             </Button>
           </Row>
@@ -219,6 +220,6 @@ class HelpDialog extends Component {
   }
 }
 
-export default withStyles(styleSheet, { name: "HelpDialog" })(
-  withTranslation("common")(withWidth()(HelpDialog))
+export default withStyles(styleSheet, { name: 'HelpDialog' })(
+  withTranslation('common')(withWidth()(HelpDialog))
 );

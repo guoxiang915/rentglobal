@@ -1,4 +1,4 @@
-import { servicesCategories } from "./constants";
+import { servicesCategories } from './constants';
 
 /** Check email validation */
 export function emailValidation(email) {
@@ -11,9 +11,9 @@ export function emailValidation(email) {
  */
 export function getOfficeStatus(office) {
   if (!office) return null;
-  if (office.approved) return { status: "approved", progress: 100 };
-  if (office.rejected) return { status: "rejected", progress: 100 };
-  if (office.published) return { status: "pendingForApprove", progress: 100 };
+  if (office.approved) return { status: 'approved', progress: 100 };
+  if (office.rejected) return { status: 'rejected', progress: 100 };
+  if (office.published) return { status: 'pendingForApprove', progress: 100 };
 
   if (
     !(
@@ -23,19 +23,21 @@ export function getOfficeStatus(office) {
       office.location &&
       office.numberOfEmployees
     )
-  )
-    return { status: "incomplete", progress: 20 };
+  ) {
+    return { status: 'incomplete', progress: 20 };
+  }
   if (
     !(
       office.coverPhotos &&
       office.coverPhotos.length >= 3 &&
       office.coverPhotos.length <= 15
     )
-  )
-    return { status: "incomplete", progress: 40 };
+  ) {
+    return { status: 'incomplete', progress: 40 };
+  }
   let servicesAndAmenities = false;
   if (office.servicesAndAmenities) {
-    servicesCategories.forEach(cat => {
+    servicesCategories.forEach((cat) => {
       if (
         office.servicesAndAmenities[cat.name] &&
         office.servicesAndAmenities[cat.name].length
@@ -44,48 +46,48 @@ export function getOfficeStatus(office) {
       }
     });
   }
-  if (!servicesAndAmenities) return { status: "incomplete", progress: 60 };
+  if (!servicesAndAmenities) return { status: 'incomplete', progress: 60 };
 
-  return { status: "unpublish", progress: 80 };
+  return { status: 'unpublish', progress: 80 };
 }
 
 /**
  * Check profile status
  */
-export function getProfileStatus(user, role) {
+export function getProfileStatus(user, userRole) {
   let profileCompleted = 0;
   let profileCharged = 10;
   let profileCompleteness = null;
 
+  if (user.generalInfo?.username || user.generalInfo?.phoneNumber) {
+    profileCompleted += 30;
+    profileCharged += 30;
+  }
+
+  if (user.avatar) {
+    profileCompleted += 20;
+    profileCharged += 20;
+  }
+
   const documentTypes = {
-    landlord: ["legalStatusDocuments", "checkSpecimen", "leases"],
+    landlord: ['legalStatusDocuments', 'checkSpecimen', 'leases'],
     company: [
-      "legalStatusDocuments",
-      "checkSpecimen",
-      "copyOfPhotoIds",
-      "lastThreeBalances",
-      "commercialBrochures"
-    ]
+      'legalStatusDocuments',
+      'checkSpecimen',
+      'copyOfPhotoIds',
+      'lastThreeBalances',
+      'commercialBrochures',
+    ],
   };
-  const profile = user[`${role}Profile`];
+  const profile = user[`${userRole}Profile`];
 
   if (profile) {
-    if (profile.username || profile.phoneNumber) {
-      profileCompleted += 30;
-      profileCharged += 30;
-    }
-
-    if (user.avatar) {
-      profileCompleted += 20;
-      profileCharged += 20;
-    }
-
-    documentTypes[role].forEach(docType => {
+    documentTypes[userRole].forEach((docType) => {
       if (profile[docType] && profile[docType].length) {
         profileCompleted += 10;
         profileCharged += 15;
 
-        if (profile[docType].find(docItem => docItem.approved === true)) {
+        if (profile[docType].find((docItem) => docItem.approved === true)) {
           profileCompleted += 5;
         }
       }
@@ -98,14 +100,14 @@ export function getProfileStatus(user, role) {
 
   profileCompleteness =
     profileCompleted === 100
-      ? "profileCompleted"
+      ? 'profileCompleted'
       : profileCompleted > 60
-      ? "profileNotComplete"
-      : "profileNeedAttention";
+      ? 'profileNotComplete'
+      : 'profileNeedAttention';
 
   return {
     completed: profileCompleted,
     charged: profileCharged,
-    completeness: profileCompleteness
+    completeness: profileCompleteness,
   };
 }

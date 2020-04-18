@@ -1,7 +1,6 @@
-import React, { Component } from "react";
+import React, { PureComponent } from "react";
 import PropTypes from "prop-types";
 import { withStyles } from "@material-ui/core/styles";
-import "./Login.css";
 import { withTranslation } from "react-i18next";
 import {
   TextField,
@@ -40,7 +39,7 @@ const styleSheet = (theme) => ({
   },
 });
 
-class ForgotPasswordForm extends Component {
+class ForgotPasswordForm extends PureComponent {
   constructor(props) {
     super(props);
     this.state = {
@@ -89,7 +88,7 @@ class ForgotPasswordForm extends Component {
   };
 
   render() {
-    const { classes, t } = this.props;
+    const { classes, t, isLoading } = this.props;
 
     return (
       <form noValidate autoComplete="off" className={classes.formWrapper}>
@@ -125,6 +124,7 @@ class ForgotPasswordForm extends Component {
             className={classes.submitButton}
             onClick={this.handleResetPassword}
             disabled={!this.state.email}
+            loading={isLoading}
           >
             <Typography fontSizeS fontWeightBold>
               {t("resetPassword")}
@@ -149,6 +149,7 @@ class ForgotPasswordForm extends Component {
 ForgotPasswordForm.propTypes = {
   classes: PropTypes.object.isRequired,
   t: PropTypes.func.isRequired,
+  isLoading: PropTypes.bool,
 };
 
 export default withStyles(styleSheet)(

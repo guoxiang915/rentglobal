@@ -1,9 +1,9 @@
-import React, { Component } from "react";
-import { withStyles } from "@material-ui/core/styles";
-import { withTranslation } from "react-i18next";
-import clsx from "clsx";
-import PropTypes from "prop-types";
-import withWidth, { isWidthDown } from "@material-ui/core/withWidth";
+import React, { PureComponent } from 'react';
+import { withStyles } from '@material-ui/core/styles';
+import { withTranslation } from 'react-i18next';
+import clsx from 'clsx';
+import PropTypes from 'prop-types';
+import withWidth, { isWidthDown } from '@material-ui/core/withWidth';
 import {
   Row,
   Column,
@@ -12,30 +12,30 @@ import {
   Typography,
   Button,
   Divider,
-} from "../../../common/base-components";
-import { OfficeListItem } from "../../../common/base-layouts";
-import { KeyboardBackspace } from "@material-ui/icons";
-import { Tabs, Tab } from "@material-ui/core";
-import { getOfficeStatus } from "../../../utils/validators";
+} from '../../../common/base-components';
+import { OfficeListItem } from '../../../common/base-layouts';
+import { KeyboardBackspace } from '@material-ui/icons';
+import { Tabs, Tab } from '@material-ui/core';
+import { getOfficeStatus } from '../../../utils/validators';
 
 const styleSheet = (theme) => ({
   root: {
     paddingLeft: theme.spacing(5),
     paddingRight: theme.spacing(5),
-    [theme.breakpoints.down("sm")]: {
+    [theme.breakpoints.down('sm')]: {
       paddingLeft: 27,
       paddingRight: 27,
     },
   },
 
   addButton: {
-    width: "100%",
+    width: '100%',
     marginTop: 25,
   },
 
   tabs: {
     marginTop: 12,
-    width: "100%",
+    width: '100%',
     borderBottom: `1px solid ${theme.colors.primary.borderGrey}`,
   },
 
@@ -45,11 +45,11 @@ const styleSheet = (theme) => ({
   },
 
   tab: {
-    textTransform: "none",
+    textTransform: 'none',
     minWidth: 0,
-    padding: "25px 0px",
+    padding: '25px 0px',
     marginRight: 70,
-    [theme.breakpoints.down("xs")]: {
+    [theme.breakpoints.down('xs')]: {
       marginRight: 30,
     },
   },
@@ -65,7 +65,7 @@ const styleSheet = (theme) => ({
   },
 });
 
-class UnpublishedOfficeList extends Component {
+class UnpublishedOfficeList extends PureComponent {
   static propTypes = {
     getOffices: PropTypes.func.isRequired,
     navigate: PropTypes.func,
@@ -89,27 +89,27 @@ class UnpublishedOfficeList extends Component {
         this.setState({
           offices: response.data,
           pendingOffices: response.data.filter(
-            (office) => getOfficeStatus(office).status === "pendingForApprove"
+            (office) => getOfficeStatus(office).status === 'pendingForApprove'
           ),
           incompleteOffices: response.data.filter(
-            (office) => getOfficeStatus(office).status === "incomplete"
+            (office) => getOfficeStatus(office).status === 'incomplete'
           ),
           unpublishedOffices: response.data.filter(
-            (office) => getOfficeStatus(office).status === "unpublish"
+            (office) => getOfficeStatus(office).status === 'unpublish'
           ),
         }),
-      (error) => {}
+      () => {}
     );
   }
 
   /** Navigation function */
-  navigate = (path) => () => {
-    this.props.navigate(path);
+  navigate = (path, payload) => () => {
+    this.props.navigate(path, payload);
   };
 
   /** Goto previous step */
   handleBack = () => {
-    this.props.navigate("back");
+    this.props.navigate('offices');
   };
 
   /** Change tab value */
@@ -132,10 +132,10 @@ class UnpublishedOfficeList extends Component {
     } = this.state;
 
     const officeTabs = [
-      { name: "allUnpublish", value: offices },
-      { name: "pending", value: pendingOffices },
-      { name: "incomplete", value: incompleteOffices },
-      { name: "unpublish", value: unpublishedOffices },
+      { name: 'allUnpublish', value: offices },
+      { name: 'pending', value: pendingOffices },
+      { name: 'incomplete', value: incompleteOffices },
+      { name: 'unpublish', value: unpublishedOffices },
     ];
 
     return (
@@ -149,7 +149,7 @@ class UnpublishedOfficeList extends Component {
         <Row fullWidth paddingBottom wrap>
           {/** title */}
           <Typography fontSizeM textSecondary>
-            {t("offices")}
+            {t('offices')}
           </Typography>
           <Stretch />
           <Button
@@ -159,17 +159,17 @@ class UnpublishedOfficeList extends Component {
           >
             <KeyboardBackspace />
             <Typography paddingLeft fontSizeS>
-              {t("back")}
+              {t('back')}
             </Typography>
           </Button>
           <Box paddingLeftHalf />
           <Button
             variant="secondary"
             shadow
-            onClick={this.navigate("offices/add")}
-            className={clsx(isWidthDown("xs", width) && s.addButton)}
+            onClick={this.navigate('offices/add')}
+            className={clsx(isWidthDown('xs', width) && s.addButton)}
           >
-            {t("addNewOffice")}
+            {t('addNewOffice')}
           </Button>
         </Row>
 
@@ -186,7 +186,7 @@ class UnpublishedOfficeList extends Component {
             <Tab
               value={index}
               key={index}
-              label={t(tab.name) + " (" + tab.value.length + ")"}
+              label={t(tab.name) + ' (' + tab.value.length + ')'}
               classes={{ root: s.tab }}
             />
           ))}
@@ -198,7 +198,10 @@ class UnpublishedOfficeList extends Component {
             <React.Fragment key={index}>
               {index > 0 && <Divider />}
               <Row fullWidth classes={{ box: s.officeItemWrapper }}>
-                <OfficeListItem office={item} />
+                <OfficeListItem
+                  office={item}
+                  goDetail={this.navigate('offices', item._id)}
+                />
               </Row>
             </React.Fragment>
           ))}
@@ -209,5 +212,5 @@ class UnpublishedOfficeList extends Component {
 }
 
 export default withWidth()(
-  withStyles(styleSheet)(withTranslation("common")(UnpublishedOfficeList))
+  withStyles(styleSheet)(withTranslation('common')(UnpublishedOfficeList))
 );

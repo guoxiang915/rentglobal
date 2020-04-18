@@ -1,117 +1,104 @@
-import api from "../api/api";
+import api from '../api/api';
 
-export const login = (payload, history) => {
-  return {
-    type: "REQUEST_LOGIN",
-    history,
-    payload
-  };
-};
+export const login = (payload, history) => ({
+  type: 'REQUEST_LOGIN',
+  history,
+  payload,
+});
 
-export const authenticate = (token, history) => {
-  return {
-    type: "REQUEST_AUTHENTICATION",
-    token,
-    history
-  };
-};
+export const authenticate = (token, history) => ({
+  type: 'REQUEST_AUTHENTICATION',
+  token,
+  history,
+});
 
-export const logout = () => {
-  return {
-    type: "REQUEST_LOGOUT"
-  };
-};
+export const logout = () => ({
+  type: 'REQUEST_LOGOUT',
+});
 
-export const updateUser = (field, payload, history) => {
-  return {
-    type: "REQUEST_UPDATE_USER",
-    history,
-    payload,
-    field
-  };
-};
+export const updateUser = (field, payload, history) => ({
+  type: 'REQUEST_UPDATE_USER',
+  history,
+  payload,
+  field,
+});
 
-export const setUserRole = (role, history) => {
-  return {
-    type: "SET_USER_ROLE",
-    role: role,
-    history
-  };
-};
+export const setUserRole = (userRole, history) => ({
+  type: 'SET_USER_ROLE',
+  userRole,
+  history,
+});
 
-export const registerUser = (payload, history) => {
-  return {
-    type: "REQUEST_USER_REGISTER",
-    history,
-    payload
-  };
-};
+export const registerUser = (payload, history) => ({
+  type: 'REQUEST_USER_REGISTER',
+  history,
+  payload,
+});
 
-export const verifyEmailResponse = response => {
-  return {
-    type: "RESPONSE_VERIFY_EMAIL",
-    payload: response
-  };
-};
+export const verifyEmailResponse = (response) => ({
+  type: 'RESPONSE_VERIFY_EMAIL',
+  payload: response,
+});
 
 export const verifyEmail = (payload, history, dispatch) => {
   api
     .get(`/auth/activate/${payload.token}`)
-    .then(response => {
-      history.push("/auth/verify-email-success", {
-        success: true
+    .then((response) => {
+      history.push('/auth/verify-email-success', {
+        success: true,
       });
       dispatch(verifyEmailResponse(response));
     })
-    .catch(error => {
-      history.push("/auth/verify-email-failed", { failed: true });
+    .catch((error) => {
+      history.push('/auth/verify-email-failed', { failed: true });
       dispatch(verifyEmailResponse(error.response));
     });
   return {
-    type: "REQUEST_VERIFY_EMAIL"
+    type: 'REQUEST_VERIFY_EMAIL',
   };
 };
 
-export const forgotPasswordResponse = response => {
-  return {
-    type: "RESPONSE_FORGOT_PASSWORD",
-    payload: response
-  };
-};
+export const forgotPasswordResponse = (response) => ({
+  type: 'RESPONSE_FORGOT_PASSWORD',
+  payload: response,
+});
 
 export const forgotPassword = (payload, history, dispatch) => {
   api
-    .post(`/auth/forgot-password`, payload)
-    .then(response => {
-      history.push("/auth/reset-password/confirm", payload);
+    .post('/auth/forgot-password', payload)
+    .then((response) => {
+      history.push('/auth/reset-password/confirm', payload);
       dispatch(forgotPasswordResponse(response));
     })
-    .catch(error => {
+    .catch((error) => {
       dispatch(forgotPasswordResponse(error.response));
     });
   return {
-    type: "REQUEST_FORGOT_PASSWORD"
+    type: 'REQUEST_FORGOT_PASSWORD',
   };
 };
 
-export const resetPasswordResponse = response => {
-  return {
-    type: "RESPONSE_RESET_PASSWORD",
-    payload: response
-  };
-};
+export const resetPasswordResponse = (response) => ({
+  type: 'RESPONSE_RESET_PASSWORD',
+  payload: response,
+});
 
 export const resetPassword = (payload, history, dispatch) => {
   api
     .post(`/auth/reset-password/${payload.token}`, payload)
-    .then(response => {
-      history.push("/auth/login");
+    .then((response) => {
+      history.push('/auth/login');
       dispatch(resetPasswordResponse(response));
     })
-    .catch(error => {
+    .catch((error) => {
       dispatch(resetPasswordResponse(error.response));
     });
   return {
-    type: "REQUEST_RESET_PASSWORD"
+    type: 'REQUEST_RESET_PASSWORD',
   };
 };
+
+export const deleteDocument = (userRole, docType, docFile) => ({
+  type: 'REQUEST_DELETE_DOCUMENT',
+  payload: { userRole, docType, docFile },
+});

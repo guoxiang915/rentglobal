@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React, { PureComponent } from "react";
 import PropTypes from "prop-types";
 import { withStyles } from "@material-ui/core/styles";
 import { withTranslation } from "react-i18next";
@@ -50,7 +50,7 @@ const styleSheet = (theme) => ({
   },
 });
 
-class RegisterForm extends Component {
+class RegisterForm extends PureComponent {
   /**
    * @static Prop types of RegisterForm component
    */
@@ -167,8 +167,8 @@ class RegisterForm extends Component {
           {registerMode === "landlord"
             ? t("signupAsLandlord")
             : registerMode === "company"
-            ? t("signupAsCompany")
-            : t("signupToRENTGLOBAL")}
+              ? t("signupAsCompany")
+              : t("signupToRENTGLOBAL")}
         </Typography>
 
         {/* email */}

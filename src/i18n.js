@@ -3,7 +3,7 @@ import LanguageDetector from "i18next-browser-languagedetector";
 
 // english
 import enCommon from "./common/locales/en/common.json";
-import enHome from "./common/locales/en/common.json";
+import enHome from "./common/locales/en/home.json";
 
 // french
 import frCommon from "./common/locales/fr/common.json";
@@ -37,17 +37,18 @@ i18n.use(LanguageDetector).init({
   interpolation: {
     escapeValue: false, // not needed
     formatSeparator: ",",
-    format: function(value, format, lang) {
+    format(value, format) {
       if (format === "uppercase") return value.toUpperCase();
-      if (value instanceof Date)
+      if (value instanceof Date) {
         return moment(value).format(format);
+      }
       return value;
-    }
+    },
   },
 
   react: {
-    wait: true
-  }
+    wait: true,
+  },
 });
 
 export default i18n;

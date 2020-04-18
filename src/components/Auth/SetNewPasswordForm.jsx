@@ -1,7 +1,6 @@
-import React, { Component } from "react";
+import React, { PureComponent } from "react";
 import PropTypes from "prop-types";
 import { withStyles } from "@material-ui/core/styles";
-import "./Login.css";
 import { withTranslation } from "react-i18next";
 import {
   TextField,
@@ -40,7 +39,7 @@ const styleSheet = (theme) => ({
   },
 });
 
-class SetNewPasswordForm extends Component {
+class SetNewPasswordForm extends PureComponent {
   constructor(props) {
     super(props);
     this.state = {

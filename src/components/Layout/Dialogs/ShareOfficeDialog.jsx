@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React, { PureComponent } from "react";
 import PropTypes from "prop-types";
 import {
   Dialog,
@@ -69,7 +69,7 @@ const styleSheet = (theme) => ({
   },
 });
 
-class ShareOfficeDialog extends Component {
+class ShareOfficeDialog extends PureComponent {
   static propTypes = {
     /** Title of dialog */
     title: PropTypes.string,
@@ -94,7 +94,7 @@ class ShareOfficeDialog extends Component {
   };
 
   /** Share office via social */
-  handleShareSocial = (social) => () => {};
+  handleShareSocial = () => () => {};
 
   /** Render function */
   render() {

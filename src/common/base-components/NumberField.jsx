@@ -1,41 +1,43 @@
-import React, { Component } from "react";
+import React, { PureComponent } from "react";
 import PropTypes from "prop-types";
 import clsx from "clsx";
 import { Icon, withStyles } from "@material-ui/core";
 import { TextField, Button } from ".";
 
-const styleSheet = theme => ({
+const styleSheet = () => ({
   root: {
-    position: "relative"
+    position: "relative",
   },
 
   input: {
     textAlign: "center",
-    margin: "0 20px"
+    margin: "0 20px",
   },
 
   button: {
     position: "absolute",
     width: 37,
-    height: 37
-  }
+    height: 37,
+  },
 });
 
-class NumberField extends Component {
+class NumberField extends PureComponent {
   static propTypes = {
     value: PropTypes.any,
     onChange: PropTypes.func,
-    classes: PropTypes.any.isRequired
+    classes: PropTypes.any.isRequired,
   };
 
   static defaultProps = {
-    variant: "outlined"
+    variant: "outlined",
   };
 
   handleMinus = () => {
     if (this.props.onChange) {
       this.props.onChange({
-        target: { value: (this.props.value ? Number(this.props.value) : 0) - 1 }
+        target: {
+          value: (this.props.value ? Number(this.props.value) : 0) - 1,
+        },
       });
     }
   };
@@ -43,7 +45,9 @@ class NumberField extends Component {
   handlePlus = () => {
     if (this.props.onChange) {
       this.props.onChange({
-        target: { value: (this.props.value ? Number(this.props.value) : 0) + 1 }
+        target: {
+          value: (this.props.value ? Number(this.props.value) : 0) + 1,
+        },
       });
     }
   };
