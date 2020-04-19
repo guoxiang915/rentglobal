@@ -1,16 +1,20 @@
-export const storageKeys = {
-  HIDE_LANDLORD_GUIDE: 'HIDE_LANDLORD_GUIDE',
-  HIDE_CONSULTANT_GUIDE: 'HIDE_CONSULTANT_GUIDE',
-  HIDE_COMPANY_GUIDE: 'HIDE_COMPANY_GUIDE',
-};
+export const storageKeys = {};
 
 export class Storage {
-  saveData = async (key, value) => {
-    localStorage.setItem(key, value);
+  saveString = async (key, value) => {
+    localStorage.setItem(key, '' + value);
   };
 
-  getData = (key) => {
-    return localStorage.getItem(key);
+  getString = (key) => {
+    return '' + localStorage.getItem(key);
+  };
+
+  saveBoolean = async (key, value) => {
+    localStorage.setItem(key, value ? 'true' : 'false');
+  };
+
+  getBoolean = (key) => {
+    return localStorage.getItem(key) === 'true' ? true : false;
   };
 
   removeData = async (key) => {

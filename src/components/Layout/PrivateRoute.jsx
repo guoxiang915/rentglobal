@@ -8,7 +8,7 @@ import { withStyles } from '@material-ui/core';
 import { Column, Spinner } from '../../common/base-components';
 import { WelcomeRoleDialog } from './Dialogs';
 import SendVerificationForm from '../Auth/SendVerificationForm';
-import { Storage, storageKeys } from '../../utils/storage';
+import { Storage } from '../../utils/storage';
 
 import HeaderImage from '../../assets/img/img_header@2x.jpg';
 
@@ -214,18 +214,8 @@ class PrivateRoute extends React.Component {
         : userRole === 'landlord'
         ? 'company'
         : 'landlord';
-    if (user?.roles.indexOf(nextRole) === -1) {
-      const hideGuidance =
-        nextRole &&
-        storage.getData(
-          nextRole === 'landlord'
-            ? storageKeys.HIDE_LANDLORD_GUIDE
-            : nextRole === 'company'
-            ? storageKeys.HIDE_COMPANY_GUIDE
-            : nextRole === 'consultant'
-            ? storageKeys.HIDE_CONSULTANT_GUIDE
-            : ''
-        );
+    if (nextRole && user?.roles.indexOf(nextRole) === -1) {
+      const hideGuidance = storage.getBoolean(`${nextRole}HideGuide`);
       if (hideGuidance) {
         this.props.mappedToggleRole(nextRole, this.props.history);
       } else {

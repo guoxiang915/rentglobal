@@ -8,6 +8,7 @@ import {
   withStyles,
 } from '@material-ui/core';
 import clsx from 'clsx';
+import { Redirect } from 'react-router-dom';
 import { withTranslation } from 'react-i18next';
 import withWidth from '@material-ui/core/withWidth';
 import {
@@ -34,7 +35,7 @@ import {
   StepLabel,
   Badge,
 } from '@material-ui/core';
-import { Storage, storageKeys } from '../../../utils/storage';
+import { Storage } from '../../../utils/storage';
 
 const storage = new Storage();
 
@@ -143,6 +144,10 @@ class WelcomeRoleDialog extends PureComponent {
     onClose: PropTypes.func,
   };
 
+  state = {
+    hideGuidance: false,
+  };
+
   steps = {
     landlord: [
       { title: 'profile', label: 'landlordProfileWelcome1', icon: UserIcon },
@@ -181,6 +186,12 @@ class WelcomeRoleDialog extends PureComponent {
     ],
   };
 
+  componentDidMount() {
+    const { role } = this.props;
+    const hideGuidance = role && storage.getBoolean(`${role}HideGuide`);
+    this.setState({ hideGuidance });
+  }
+
   /**
    * Event handler for closing dialog
    * @description Call props.onClose() to close dialog
@@ -194,33 +205,19 @@ class WelcomeRoleDialog extends PureComponent {
   /** Toggle hide guidance */
   handleHideGuidance = () => {
     const { role } = this.props;
-    const key =
-      role === 'landlord'
-        ? storageKeys.HIDE_LANDLORD_GUIDE
-        : role === 'company'
-        ? storageKeys.HIDE_COMPANY_GUIDE
-        : role === 'consultant'
-        ? storageKeys.HIDE_CONSULTANT_GUIDE
-        : '';
-    const hideGuidance = role && storage.getData(key);
-    storage.saveData(key, !hideGuidance);
-    this.setState({});
+    const key = role ? `${role}HideGuide` : '';
+    storage.saveBoolean(key, !this.state.hideGuidance);
+    this.setState({ hideGuidance: !this.state.hideGuidance });
   };
 
   /** Render function */
   render() {
     const { title, className, role, classes: s, t } = this.props;
-    const hideGuidance =
-      role &&
-      storage.getData(
-        role === 'landlord'
-          ? storageKeys.HIDE_LANDLORD_GUIDE
-          : role === 'company'
-          ? storageKeys.HIDE_COMPANY_GUIDE
-          : role === 'consultant'
-          ? storageKeys.HIDE_CONSULTANT_GUIDE
-          : ''
-      );
+    const { hideGuidance } = this.state;
+
+    if (!role) {
+      return <Redirect to="/" />;
+    }
 
     return (
       <Dialog
