@@ -596,11 +596,11 @@ class AppHeader extends PureComponent {
                       onClose={this.handleCloseMenu('languageEl')}
                       className={classes.headerMenu}
                     >
-                      <MenuItem onClick={this.handleSelectLanguage('English')}>
-                        {t('english')}
+                      <MenuItem onClick={this.handleSelectLanguage("en")}>
+                        {t("english")}
                       </MenuItem>
-                      <MenuItem onClick={this.handleSelectLanguage('French')}>
-                        {t('french')}
+                      <MenuItem onClick={this.handleSelectLanguage("fr")}>
+                        {t("french")}
                       </MenuItem>
                     </Menu>
                   </Column>
