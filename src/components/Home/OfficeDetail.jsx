@@ -34,10 +34,7 @@ const styleSheet = (theme) => ({
     width: '100%',
     height: '100%',
     background: theme.colors.primary.white,
-    minHeight: 'calc(100vh - 250px)',
-    [theme.breakpoints.down('sm')]: {
-      minHeight: 'calc(100vh - 166px)',
-    },
+    minHeight: 'calc(100vh - 245px)',
   },
 
   fixedWidth: {
