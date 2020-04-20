@@ -490,9 +490,6 @@ class AppHeader extends PureComponent {
       profileCompleteness = profileStatus.completeness;
     }
 
-    console.log("language!!!!!!!!!!!!!!")
-    console.log(language)
-
     return (
       <div className={clsx(classes.root, isLoggedIn && classes.loggedIn)}>
         <Grid
