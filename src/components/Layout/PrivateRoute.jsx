@@ -11,6 +11,7 @@ import SendVerificationForm from '../Auth/SendVerificationForm';
 import { Storage } from '../../utils/storage';
 
 import HeaderImage from '../../assets/img/img_header@2x.jpg';
+import i18n from "../../i18n";
 
 /** Token-based auth object */
 const authObj = new Auth();
@@ -294,11 +295,14 @@ class PrivateRoute extends React.Component {
                         auth={this.props.auth}
                         sidebarOpened={sidebarOpened}
                         location="Montreal"
-                        language="en"
+                        language={this.props.app.language}
                         onToggleRole={this.handleToggleRole}
                         onToggleSidebar={this.handleToggleSidebar}
                         onSelectLocation={() => {}}
-                        onSelectLanguage={() => {}}
+                        onSelectLanguage={(lang) => {
+                          i18n.changeLanguage(lang);
+                          this.props.mappedChangeLanguage(lang);
+                        }}
                         navigate={this.navigate}
                       />
                     </div>
