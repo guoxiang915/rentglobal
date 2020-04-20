@@ -347,10 +347,12 @@ class Profile extends PureComponent {
 
   saveSecurityInfo = () => {
     const { oldPassword, password, confirmPassword } = this.state;
+    const { user } = this.props.auth;
     if (password === confirmPassword) {
       this.props.updateUser('password', {
+        email: user?.email,
         oldPassword,
-        password,
+        newPassword: password,
         passwordLastUpdated: new Date().getTime(),
       });
     }
@@ -479,7 +481,7 @@ class Profile extends PureComponent {
    */
   render() {
     const { width, classes: s, t } = this.props;
-    const { user, userRole, isUpdating: updatingTab } = this.props.auth;
+    const { user, userRole, isUpdating: updatingTab, error } = this.props.auth;
     const { openedTab, editTab, uploadingDocument, dialog } = this.state;
     const CarouselWrapper = withCarousel;
     const profile =
@@ -855,6 +857,12 @@ class Profile extends PureComponent {
                         readOnly={editTab !== 'loginAndSecurity'}
                       />
                     </Row>
+                    {error?.type === 'updateUser' &&
+                    error?.field === 'password' ? (
+                      <Typography textErrorRed paddingTopHalf paddingBottom>
+                        {error.msg}
+                      </Typography>
+                    ) : null}
                     <Row paddingTopHalf style={{ maxWidth: 370 }}>
                       {editTab === 'loginAndSecurity' ||
                       updatingTab === 'password' ? (
