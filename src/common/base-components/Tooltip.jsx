@@ -1,12 +1,12 @@
-import React, { PureComponent, Fragment } from "react";
-import PropTypes from "prop-types";
-import clsx from "clsx";
+import React, { PureComponent, Fragment } from 'react';
+import PropTypes from 'prop-types';
+import clsx from 'clsx';
 import {
   Tooltip as MUITooltip,
   Typography,
   withStyles,
   Zoom,
-} from "@material-ui/core";
+} from '@material-ui/core';
 
 const tooltipStylesheet = (theme) => ({
   popper: {},
@@ -15,99 +15,99 @@ const tooltipStylesheet = (theme) => ({
     borderRadius: 8,
     backgroundColor: theme.colors.primary.white,
     padding: 18,
-    display: "flex",
-    flexDirection: "column",
-    justifyContent: "center",
-    alignItems: "center",
+    display: 'flex',
+    flexDirection: 'column',
+    justifyContent: 'center',
+    alignItems: 'center',
     border: `1px solid ${theme.colors.primary.borderGrey}`,
-    boxShadow: `0px 2px 6px #00000014`,
-    position: "relative",
+    boxShadow: '0px 2px 6px #00000014',
+    position: 'relative',
   },
 
   tooltipRight: {
-    "&:before": {
+    '&:before': {
       content: '""',
-      display: "block",
-      position: "absolute",
-      top: "calc(50% - 7px)",
+      display: 'block',
+      position: 'absolute',
+      top: 'calc(50% - 7px)',
       left: -8,
       width: 16,
       height: 16,
       background: theme.colors.primary.white,
       border: `1px solid ${theme.colors.primary.borderGrey}`,
-      borderTop: "none",
-      borderRight: "none",
-      transform: "rotate(45deg)",
+      borderTop: 'none',
+      borderRight: 'none',
+      transform: 'rotate(45deg)',
     },
   },
 
   tooltipLeft: {
-    "&:after": {
+    '&:after': {
       content: '""',
-      display: "block",
-      position: "absolute",
-      top: "calc(50% - 7px)",
+      display: 'block',
+      position: 'absolute',
+      top: 'calc(50% - 7px)',
       right: -8,
       width: 16,
       height: 16,
       background: theme.colors.primary.white,
       border: `1px solid ${theme.colors.primary.borderGrey}`,
-      borderBottom: "none",
-      borderLeft: "none",
-      transform: "rotate(45deg)",
+      borderBottom: 'none',
+      borderLeft: 'none',
+      transform: 'rotate(45deg)',
     },
   },
 
   tooltipTop: {
-    "&:after": {
+    '&:after': {
       content: '""',
-      display: "block",
-      position: "absolute",
+      display: 'block',
+      position: 'absolute',
       bottom: -9,
-      left: "calc(50% - 7px)",
+      left: 'calc(50% - 7px)',
       width: 16,
       height: 16,
       background: theme.colors.primary.white,
       border: `1px solid ${theme.colors.primary.borderGrey}`,
-      borderTop: "none",
-      borderLeft: "none",
-      transform: "rotate(45deg)",
+      borderTop: 'none',
+      borderLeft: 'none',
+      transform: 'rotate(45deg)',
     },
   },
 
   tooltipBottom: {
-    "&:before": {
+    '&:before': {
       content: '""',
-      display: "block",
-      position: "absolute",
+      display: 'block',
+      position: 'absolute',
       top: -9,
-      left: "calc(50% - 7px)",
+      left: 'calc(50% - 7px)',
       width: 16,
       height: 16,
       background: theme.colors.primary.white,
       border: `1px solid ${theme.colors.primary.borderGrey}`,
-      borderBottom: "none",
-      borderRight: "none",
-      transform: "rotate(45deg)",
+      borderBottom: 'none',
+      borderRight: 'none',
+      transform: 'rotate(45deg)',
     },
   },
 
   tooltipprimary: {
     borderColor: theme.colors.primary.mainColor,
-    "&:before": {
+    '&:before': {
       borderColor: theme.colors.primary.mainColor,
     },
-    "&:after": {
+    '&:after': {
       borderColor: theme.colors.primary.mainColor,
     },
   },
 
   tooltiperrorRed: {
     borderColor: theme.colors.primary.errorRed,
-    "&:before": {
+    '&:before': {
       borderColor: theme.colors.primary.errorRed,
     },
-    "&:after": {
+    '&:after': {
       borderColor: theme.colors.primary.errorRed,
     },
   },
@@ -129,7 +129,7 @@ const tooltipTargetStylesheet = (theme) => ({
   },
 });
 
-export const Tooltip = withStyles(tooltipStylesheet, { name: "Tooltip" })(
+export const Tooltip = withStyles(tooltipStylesheet, { name: 'Tooltip' })(
   class Tooltip extends PureComponent {
     static propTypes = {
       content: PropTypes.any,
@@ -138,7 +138,7 @@ export const Tooltip = withStyles(tooltipStylesheet, { name: "Tooltip" })(
     };
 
     render() {
-      let {
+      const {
         content,
         placement,
         borderType,
@@ -150,7 +150,7 @@ export const Tooltip = withStyles(tooltipStylesheet, { name: "Tooltip" })(
       return (
         <MUITooltip
           title={content}
-          placement={placement ? placement : "right"}
+          placement={placement || 'right'}
           PopperProps={{
             modifiers: {
               preventOverflow: { enabled: false },
@@ -161,7 +161,7 @@ export const Tooltip = withStyles(tooltipStylesheet, { name: "Tooltip" })(
             popper: classes.popper,
             tooltip: clsx(
               classes.tooltip,
-              borderType && classes[`tooltip${borderType}`]
+              borderType && classes[`tooltip${borderType}`],
             ),
             tooltipPlacementLeft: classes.tooltipLeft,
             tooltipPlacementRight: classes.tooltipRight,
@@ -176,26 +176,34 @@ export const Tooltip = withStyles(tooltipStylesheet, { name: "Tooltip" })(
         </MUITooltip>
       );
     }
-  }
+  },
 );
 
 export const TooltipContent = withStyles(tooltipContentStylesheet, {
-  name: "TooltipContent",
+  name: 'TooltipContent',
 })(({ title, text, classes }) => (
   <Fragment>
     <Typography variant="h6" classes={{ root: classes.tooltipTitle }}>
-      {" "}
-      {title}{" "}
+      {' '}
+      {title}
+      {' '}
     </Typography>
-    <Typography classes={{ root: classes.tooltipText }}> {text} </Typography>
+    <Typography classes={{ root: classes.tooltipText }}>
+      {' '}
+      {text}
+      {' '}
+    </Typography>
   </Fragment>
 ));
 
 export const TooltipTarget = withStyles(tooltipTargetStylesheet, {
-  name: "TooltipTarget",
-})(({ children, classes, className, ...props }) => (
+  name: 'TooltipTarget',
+})(({
+  children, classes, className, ...props
+}) => (
   <span className={clsx(classes.tooltipTarget, className)} {...props}>
-    {" "}
-    {children}{" "}
+    {' '}
+    {children}
+    {' '}
   </span>
 ));

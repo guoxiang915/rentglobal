@@ -1,17 +1,21 @@
 import React from 'react';
-import { Switch, Route, withRouter, Redirect } from 'react-router-dom';
+import {
+  Switch, Route, withRouter, Redirect,
+} from 'react-router-dom';
 import PropTypes from 'prop-types';
 import clsx from 'clsx';
-import Auth from '../../utils/auth';
-import { AppHeader, AppFooter, AppSidebar, HelpDialog } from '.';
 import { withStyles } from '@material-ui/core';
+import Auth from '../../utils/auth';
+import {
+  AppHeader, AppFooter, AppSidebar, HelpDialog,
+} from '.';
 import { Column, Spinner } from '../../common/base-components';
 import { WelcomeRoleDialog } from './Dialogs';
 import SendVerificationForm from '../Auth/SendVerificationForm';
 import { Storage } from '../../utils/storage';
 
 import HeaderImage from '../../assets/img/img_header@2x.jpg';
-import i18n from "../../i18n";
+import i18n from '../../i18n';
 
 /** Token-based auth object */
 const authObj = new Auth();
@@ -130,7 +134,7 @@ class PrivateRoute extends React.Component {
 
   authenticate = async () => {
     // check authenticated user
-    let token = await authObj.getToken();
+    const token = await authObj.getToken();
     // if (token)
     await this.props.mappedAuthenticate(token, this.props.history);
   };
@@ -139,69 +143,69 @@ class PrivateRoute extends React.Component {
     const { isLoggedIn, userRole, user } = this.props.auth;
 
     switch (path) {
-      case 'back':
-        this.props.history.goBack();
-        break;
+    case 'back':
+      this.props.history.goBack();
+      break;
 
-      case 'home':
-        this.props.history.push('/');
-        break;
+    case 'home':
+      this.props.history.push('/');
+      break;
 
-      case 'help':
-        this.showHelpDialog();
-        break;
+    case 'help':
+      this.showHelpDialog();
+      break;
 
-      case 'login':
-      case 'register':
-      case 'register/landlord':
-      case 'register/company':
-      case 'forgot-password':
-        this.props.history.push(`/auth/${path}`);
-        break;
-      case 'logout':
-        authObj.removeToken();
-        authObj.removeRefreshToken();
-        this.props.mappedlogout();
-        this.props.history.push('/');
-        break;
-      case 'profile':
-        if (isLoggedIn) {
-          if (userRole === '') {
-            const history = this.props.history;
-            history.location.pathname = `/${user.roles[0]}/profile`;
-            this.props.mappedToggleRole(user.roles[0], history);
-          } else {
-            this.props.history.push(
-              `/${userRole}/${path}/${payload ? payload : ''}`
-            );
-          }
-        }
-        break;
-
-      case 'dashboard':
-      case 'offices/add':
-      case 'offices/all':
-      case 'offices/unpublish':
-      case 'contracts':
-      case 'optimization':
-        if (isLoggedIn) {
+    case 'login':
+    case 'register':
+    case 'register/landlord':
+    case 'register/company':
+    case 'forgot-password':
+      this.props.history.push(`/auth/${path}`);
+      break;
+    case 'logout':
+      authObj.removeToken();
+      authObj.removeRefreshToken();
+      this.props.mappedlogout();
+      this.props.history.push('/');
+      break;
+    case 'profile':
+      if (isLoggedIn) {
+        if (userRole === '') {
+          const { history } = this.props;
+          history.location.pathname = `/${user.roles[0]}/profile`;
+          this.props.mappedToggleRole(user.roles[0], history);
+        } else {
           this.props.history.push(
-            `/${userRole}/${path}/${payload ? payload : ''}`
+            `/${userRole}/${path}/${payload || ''}`,
           );
-          break;
         }
-        this.props.history.push('/');
-        break;
-      case 'offices':
+      }
+      break;
+
+    case 'dashboard':
+    case 'offices/add':
+    case 'offices/all':
+    case 'offices/unpublish':
+    case 'contracts':
+    case 'optimization':
+      if (isLoggedIn) {
         this.props.history.push(
-          (userRole ? `/${userRole}` : '') +
-            `/${path}/${payload ? payload : ''}`
+          `/${userRole}/${path}/${payload || ''}`,
         );
         break;
+      }
+      this.props.history.push('/');
+      break;
+    case 'offices':
+      this.props.history.push(
+        `${userRole ? `/${userRole}` : ''
+        }/${path}/${payload || ''}`,
+      );
+      break;
 
-      default:
-        this.props.history.push('/');
-        break;
+    default:
+      this.props.history.push('/');
+      break;
     }
     this.handleToggleSidebar(false);
   };
@@ -209,10 +213,9 @@ class PrivateRoute extends React.Component {
   /** Toggle userRole between landlord/company */
   handleToggleRole = (setRole) => {
     const { user, userRole } = this.props.auth;
-    const nextRole =
-      typeof setRole === 'string'
-        ? setRole
-        : userRole === 'landlord'
+    const nextRole = typeof setRole === 'string'
+      ? setRole
+      : userRole === 'landlord'
         ? 'company'
         : 'landlord';
     if (nextRole && user?.roles.indexOf(nextRole) === -1) {
@@ -265,7 +268,9 @@ class PrivateRoute extends React.Component {
       userRole: requiredRole = '',
       ...rest
     } = this.props;
-    const { isLoggedIn, user, userRole, loaded } = this.props.auth;
+    const {
+      isLoggedIn, user, userRole, loaded,
+    } = this.props.auth;
     const { dialog } = this.state;
 
     if (userRole !== requiredRole) {
@@ -312,7 +317,7 @@ class PrivateRoute extends React.Component {
                   <div
                     className={clsx(
                       classes.bodyWrapper,
-                      !noHeader && classes.bodyHeaderOffset
+                      !noHeader && classes.bodyHeaderOffset,
                     )}
                   >
                     {/* show sidebar for mobile */}
@@ -339,7 +344,7 @@ class PrivateRoute extends React.Component {
                                 >
                                   <div
                                     className={classes.backgroundWrapper}
-                                  ></div>
+                                  />
                                   <div className={classes.loginWrapper}>
                                     <Column
                                       classes={{ box: classes.loginCard }}

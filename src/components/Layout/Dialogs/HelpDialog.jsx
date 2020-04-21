@@ -125,7 +125,7 @@ class HelpDialog extends PureComponent {
 
     return (
       <Dialog
-        open={true}
+        open
         onClose={this.handleClose}
         aria-labelledby="help-dialog-title"
         classes={{ paper: clsx(s.root, className) }}
@@ -158,7 +158,7 @@ class HelpDialog extends PureComponent {
                 alignChildrenCenter
               >
                 <VideoPlayer.PlayButton
-                  isLoading={true}
+                  isLoading
                   isPlaying={false}
                   onTogglePlay={() => {}}
                 />
@@ -221,5 +221,5 @@ class HelpDialog extends PureComponent {
 }
 
 export default withStyles(styleSheet, { name: 'HelpDialog' })(
-  withTranslation('common')(withWidth()(HelpDialog))
+  withTranslation('common')(withWidth()(HelpDialog)),
 );

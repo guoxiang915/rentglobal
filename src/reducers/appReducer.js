@@ -3,7 +3,7 @@ const initialState = {
   showAppBar: true,
   showSearchBar: false,
   appBarTitle: 'RENTGLOBAL Real Estate',
-  language: localStorage.getItem("i18nextLng") || 'en'
+  language: localStorage.getItem('i18nextLng') || 'en',
 };
 
 const appReducer = (currentState = initialState, action) => {

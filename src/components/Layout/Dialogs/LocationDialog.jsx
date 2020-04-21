@@ -107,11 +107,13 @@ class LocationDialog extends PureComponent {
 
   /** Render */
   render() {
-    const { location, className, classes: s, t } = this.props;
+    const {
+      location, className, classes: s, t,
+    } = this.props;
 
     return (
       <Dialog
-        open={true}
+        open
         onClose={this.handleClose}
         aria-labelledby="help-dialog-title"
         className={s.dialogWrapper}
@@ -204,5 +206,5 @@ class LocationDialog extends PureComponent {
 }
 
 export default withStyles(styleSheet, { name: 'LocationDialog' })(
-  withTranslation('common')(withWidth()(LocationDialog))
+  withTranslation('common')(withWidth()(LocationDialog)),
 );

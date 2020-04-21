@@ -9,6 +9,7 @@ import {
 } from '@material-ui/core';
 import clsx from 'clsx';
 import { withTranslation } from 'react-i18next';
+import ReactCrop from 'react-image-crop';
 import {
   Button,
   Typography,
@@ -19,7 +20,6 @@ import {
   CheckIcon,
   CloseIcon,
 } from '../../../common/base-components';
-import ReactCrop from 'react-image-crop';
 import 'react-image-crop/dist/ReactCrop.css';
 
 const styleSheet = (theme) => ({
@@ -108,7 +108,7 @@ class CropperDialog extends PureComponent {
       0,
       0,
       crop.width,
-      crop.height
+      crop.height,
     );
 
     return new Promise((resolve, reject) => {
@@ -132,7 +132,7 @@ class CropperDialog extends PureComponent {
       this.getCroppedImage(
         this.imageRef,
         this.state.crop,
-        this.props.fileName || 'image.jpg'
+        this.props.fileName || 'image.jpg',
       ).then((imageUrl) => this.props.onSave(imageUrl));
     }
     this.handleClose();
@@ -162,12 +162,14 @@ class CropperDialog extends PureComponent {
    * Render
    */
   render() {
-    const { title, src, className, classes: s, t } = this.props;
+    const {
+      title, src, className, classes: s, t,
+    } = this.props;
     const { crop } = this.state;
 
     return (
       <Dialog
-        open={true}
+        open
         onClose={this.handleClose}
         aria-labelledby="help-dialog-title"
         classes={{ paper: clsx(s.root, className) }}
@@ -177,7 +179,7 @@ class CropperDialog extends PureComponent {
           <Row fullWidth>
             {/** header title */}
             <Typography fontSizeM textSecondary fontWeightBold>
-              {title ? title : t('resizeCropImage')}
+              {title || t('resizeCropImage')}
             </Typography>
             <Stretch />
             {/** close button */}
@@ -240,5 +242,5 @@ class CropperDialog extends PureComponent {
 }
 
 export default withStyles(styleSheet, { name: 'CropperDialog' })(
-  withTranslation()(CropperDialog)
+  withTranslation()(CropperDialog),
 );

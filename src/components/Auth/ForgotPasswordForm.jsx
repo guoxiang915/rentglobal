@@ -1,7 +1,7 @@
-import React, { PureComponent } from "react";
-import PropTypes from "prop-types";
-import { withStyles } from "@material-ui/core/styles";
-import { withTranslation } from "react-i18next";
+import React, { PureComponent } from 'react';
+import PropTypes from 'prop-types';
+import { withStyles } from '@material-ui/core/styles';
+import { withTranslation } from 'react-i18next';
 import {
   TextField,
   Button,
@@ -11,19 +11,19 @@ import {
   Divider,
   Typography,
   EmailIcon,
-} from "../../common/base-components";
+} from '../../common/base-components';
 
 const styleSheet = (theme) => ({
   formWrapper: {
-    width: "100%",
+    width: '100%',
   },
 
   formTitle: {
     color: theme.colors.primary.darkGrey,
-    lineHeight: "26px",
-    fontSize: "20px",
+    lineHeight: '26px',
+    fontSize: '20px',
     marginTop: 8,
-    textAlign: "center",
+    textAlign: 'center',
   },
 
   submitButton: {
@@ -43,7 +43,7 @@ class ForgotPasswordForm extends PureComponent {
   constructor(props) {
     super(props);
     this.state = {
-      email: this.props.email ? this.props.email : "",
+      email: this.props.email ? this.props.email : '',
       emailError: null,
       error: null,
     };
@@ -58,13 +58,13 @@ class ForgotPasswordForm extends PureComponent {
 
   async validateForm() {
     const emailValid = this.state.email.match(
-      /^([\w.%+-]+)@([\w-]+\.)+([\w]{2,})$/i
+      /^([\w.%+-]+)@([\w-]+\.)+([\w]{2,})$/i,
     );
-    if (this.state.email === "") {
-      this.setState({ emailError: this.props.t("emailRequired") });
+    if (this.state.email === '') {
+      this.setState({ emailError: this.props.t('emailRequired') });
       return false;
-    } else if (!emailValid) {
-      this.setState({ emailError: this.props.t("invalidEmailAddress") });
+    } if (!emailValid) {
+      this.setState({ emailError: this.props.t('invalidEmailAddress') });
       return false;
     }
     return true;
@@ -82,7 +82,7 @@ class ForgotPasswordForm extends PureComponent {
     const payload = {
       email: this.state.email,
     };
-    if (payload.email !== "") {
+    if (payload.email !== '') {
       this.props.mappedForgotPassword(payload);
     }
   };
@@ -100,14 +100,14 @@ class ForgotPasswordForm extends PureComponent {
           paddingTopHalf
           justifyChildrenCenter
         >
-          {t("forgotYourPassword")}
+          {t('forgotYourPassword')}
         </Typography>
         <Box paddingTop>
           <TextField
             id="email"
             placeholder="Email"
             value={this.state.email}
-            onChange={this.handleChange("email")}
+            onChange={this.handleChange('email')}
             type="email"
             variant="outlined"
             startAdornment={<EmailIcon className={classes.outlineIcon} />}
@@ -127,7 +127,7 @@ class ForgotPasswordForm extends PureComponent {
             loading={isLoading}
           >
             <Typography fontSizeS fontWeightBold>
-              {t("resetPassword")}
+              {t('resetPassword')}
             </Typography>
           </Button>
         </Box>
@@ -136,7 +136,7 @@ class ForgotPasswordForm extends PureComponent {
           <Box paddingTop paddingBottom>
             <Typography fontSizeS fontWeightBold>
               <Link variant="primary" to="/auth/login">
-                {t("login")}
+                {t('login')}
               </Link>
             </Typography>
           </Box>
@@ -153,5 +153,5 @@ ForgotPasswordForm.propTypes = {
 };
 
 export default withStyles(styleSheet)(
-  withTranslation("common")(ForgotPasswordForm)
+  withTranslation('common')(ForgotPasswordForm),
 );

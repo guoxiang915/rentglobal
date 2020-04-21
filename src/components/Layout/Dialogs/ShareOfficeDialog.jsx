@@ -1,23 +1,23 @@
-import React, { PureComponent } from "react";
-import PropTypes from "prop-types";
+import React, { PureComponent } from 'react';
+import PropTypes from 'prop-types';
 import {
   Dialog,
   DialogTitle,
   DialogContent,
   DialogActions,
   withStyles,
-} from "@material-ui/core";
-import clsx from "clsx";
-import { withTranslation } from "react-i18next";
-import withWidth, { isWidthDown } from "@material-ui/core/withWidth";
+} from '@material-ui/core';
+import clsx from 'clsx';
+import { withTranslation } from 'react-i18next';
+import withWidth, { isWidthDown } from '@material-ui/core/withWidth';
 import {
   Button,
   Typography,
   Row,
   Box,
   Stretch,
-} from "../../../common/base-components";
-import { OfficeItem } from "../../../common/base-layouts";
+} from '../../../common/base-components';
+import { OfficeItem } from '../../../common/base-layouts';
 import {
   CloseIcon,
   InstagramBorderIcon,
@@ -25,7 +25,7 @@ import {
   FacebookBorderIcon,
   LinkedinBorderIcon,
   NetworkIcon,
-} from "../../../common/base-components/Icons";
+} from '../../../common/base-components/Icons';
 
 const styleSheet = (theme) => ({
   root: {
@@ -36,24 +36,24 @@ const styleSheet = (theme) => ({
     minHeight: 395,
     borderRadius: 8,
 
-    [theme.breakpoints.down("sm")]: {
+    [theme.breakpoints.down('sm')]: {
       minWidth: 320,
-      minHeight: "auto",
+      minHeight: 'auto',
     },
   },
 
   header: {
-    width: "100%",
-    padding: "12px 40px",
+    width: '100%',
+    padding: '12px 40px',
     borderBottom: `1px solid ${theme.colors.primary.borderGrey}`,
   },
 
   content: {
-    padding: "24px 40px 30px",
-    [theme.breakpoints.down("xs")]: {
-      display: "flex",
-      flexDirection: "column",
-      alignItems: "center",
+    padding: '24px 40px 30px',
+    [theme.breakpoints.down('xs')]: {
+      display: 'flex',
+      flexDirection: 'column',
+      alignItems: 'center',
     },
   },
 
@@ -63,8 +63,8 @@ const styleSheet = (theme) => ({
   },
 
   footer: {
-    width: "100%",
-    padding: "32px 40px 37px",
+    width: '100%',
+    padding: '32px 40px 37px',
     borderTop: `1px solid ${theme.colors.primary.borderGrey}`,
   },
 });
@@ -98,11 +98,13 @@ class ShareOfficeDialog extends PureComponent {
 
   /** Render function */
   render() {
-    const { title, office, className, width, classes: s, t } = this.props;
+    const {
+      title, office, className, width, classes: s, t,
+    } = this.props;
 
     return (
       <Dialog
-        open={true}
+        open
         onClose={this.handleClose}
         aria-labelledby="help-dialog-title"
         classes={{ paper: clsx(s.root, className) }}
@@ -112,7 +114,7 @@ class ShareOfficeDialog extends PureComponent {
           <Row fullWidth>
             {/** header title */}
             <Typography fontSizeM textSecondary fontWeightBold>
-              {title ? title : t("share")}
+              {title || t('share')}
             </Typography>
             <Stretch />
             {/** close button */}
@@ -123,7 +125,7 @@ class ShareOfficeDialog extends PureComponent {
             >
               <Typography fontSizeS alignChildrenCenter>
                 <CloseIcon style={{ width: 10, height: 10 }} />
-                <Typography paddingLeft>{t("cancel")}</Typography>
+                <Typography paddingLeft>{t('cancel')}</Typography>
               </Typography>
             </Button>
           </Row>
@@ -131,7 +133,7 @@ class ShareOfficeDialog extends PureComponent {
 
         {/** dialog content */}
         <DialogContent className={s.content}>
-          <OfficeItem office={office} horizontal={!isWidthDown("xs", width)} />
+          <OfficeItem office={office} horizontal={!isWidthDown('xs', width)} />
         </DialogContent>
 
         {/** dialog footer */}
@@ -139,7 +141,7 @@ class ShareOfficeDialog extends PureComponent {
           <Row fullWidth justifyChildrenCenter>
             <Button
               variant="icon"
-              onClick={this.handleShareSocial("twitter")}
+              onClick={this.handleShareSocial('twitter')}
               className={s.socialIcon}
             >
               <TwitterBorderIcon style={{ width: 17, height: 14 }} />
@@ -147,7 +149,7 @@ class ShareOfficeDialog extends PureComponent {
             <Box paddingLeftHalf />
             <Button
               variant="icon"
-              onClick={this.handleShareSocial("facebook")}
+              onClick={this.handleShareSocial('facebook')}
               className={s.socialIcon}
             >
               <FacebookBorderIcon style={{ width: 10, height: 17 }} />
@@ -155,7 +157,7 @@ class ShareOfficeDialog extends PureComponent {
             <Box paddingLeftHalf />
             <Button
               variant="icon"
-              onClick={this.handleShareSocial("instagram")}
+              onClick={this.handleShareSocial('instagram')}
               className={s.socialIcon}
             >
               <InstagramBorderIcon style={{ width: 17, height: 17 }} />
@@ -163,7 +165,7 @@ class ShareOfficeDialog extends PureComponent {
             <Box paddingLeftHalf />
             <Button
               variant="icon"
-              onClick={this.handleShareSocial("linkedin")}
+              onClick={this.handleShareSocial('linkedin')}
               className={s.socialIcon}
             >
               <LinkedinBorderIcon style={{ width: 15, height: 17 }} />
@@ -171,7 +173,7 @@ class ShareOfficeDialog extends PureComponent {
             <Box paddingLeftHalf />
             <Button
               variant="icon"
-              onClick={this.handleShareSocial("network")}
+              onClick={this.handleShareSocial('network')}
               className={s.socialIcon}
             >
               <NetworkIcon style={{ width: 19, height: 16 }} />
@@ -183,6 +185,6 @@ class ShareOfficeDialog extends PureComponent {
   }
 }
 
-export default withStyles(styleSheet, { name: "ShareOfficeDialog" })(
-  withTranslation("common")(withWidth()(ShareOfficeDialog))
+export default withStyles(styleSheet, { name: 'ShareOfficeDialog' })(
+  withTranslation('common')(withWidth()(ShareOfficeDialog)),
 );

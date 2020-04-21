@@ -6,6 +6,12 @@ import {
   DialogContent,
   DialogActions,
   withStyles,
+
+  Step,
+  Stepper,
+  StepConnector,
+  StepLabel,
+  Badge,
 } from '@material-ui/core';
 import clsx from 'clsx';
 import { Redirect } from 'react-router-dom';
@@ -28,13 +34,7 @@ import {
   SearchIcon,
   ConsultantIcon,
 } from '../../../common/base-components/Icons';
-import {
-  Step,
-  Stepper,
-  StepConnector,
-  StepLabel,
-  Badge,
-} from '@material-ui/core';
+
 import { Storage } from '../../../utils/storage';
 
 const storage = new Storage();
@@ -212,7 +212,9 @@ class WelcomeRoleDialog extends PureComponent {
 
   /** Render function */
   render() {
-    const { title, className, role, classes: s, t } = this.props;
+    const {
+      title, className, role, classes: s, t,
+    } = this.props;
     const { hideGuidance } = this.state;
 
     if (!role) {
@@ -221,7 +223,7 @@ class WelcomeRoleDialog extends PureComponent {
 
     return (
       <Dialog
-        open={true}
+        open
         onClose={this.handleClose}
         aria-labelledby="help-dialog-title"
         classes={{ paper: clsx(s.root, className) }}
@@ -231,7 +233,7 @@ class WelcomeRoleDialog extends PureComponent {
           <Row fullWidth>
             {/** header title */}
             <Typography fontSizeM textSecondary fontWeightBold>
-              {title ? title : t('welcome')}
+              {title || t('welcome')}
             </Typography>
             <Stretch />
             {/** close button */}
@@ -324,5 +326,5 @@ class WelcomeRoleDialog extends PureComponent {
 }
 
 export default withStyles(styleSheet, { name: 'WelcomeRoleDialog' })(
-  withTranslation('common')(withWidth()(WelcomeRoleDialog))
+  withTranslation('common')(withWidth()(WelcomeRoleDialog)),
 );

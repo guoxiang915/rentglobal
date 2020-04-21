@@ -43,11 +43,11 @@ function* login(action) {
           route = '/landlord';
         } else {
           route = '/company';
-        }        
+        }
         if (!response.data.profile) {
           route += '/profile';
         }
-        action.history.push(route);        
+        action.history.push(route);
         yield put({
           type: 'SET_USER_ROLE',
           userRole: response.data.role,

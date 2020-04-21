@@ -4,6 +4,8 @@ import { withTranslation } from 'react-i18next';
 import clsx from 'clsx';
 import PropTypes from 'prop-types';
 import withWidth, { isWidthDown } from '@material-ui/core/withWidth';
+import { Grid, Card } from '@material-ui/core';
+import Dropzone from 'react-dropzone';
 import {
   Box,
   Row,
@@ -33,13 +35,15 @@ import {
 } from '../../common/base-layouts';
 import { withCarousel } from '../../common/base-services';
 import { ConditionalWrapper } from '../../utils/helpers';
-import { CropperDialog } from '../Layout';
+import { CropperDialog } from '.';
 import { Grid, Card } from '@material-ui/core';
 import Dropzone from 'react-dropzone';
 import PhoneNumber from 'awesome-phonenumber';
 
 /** Show save and cancel buttons for form */
-const SaveButtons = ({ isUpdating, onSave, onCancel, disabled, t }) => (
+const SaveButtons = ({
+  isUpdating, onSave, onCancel, disabled, t,
+}) => (
   <React.Fragment>
     <Box paddingRightDouble>
       <Button
@@ -303,7 +307,9 @@ class Profile extends PureComponent {
 
   /** Save general info */
   handleSaveGeneralInfo = () => {
-    const { avatar, username, phoneNumber, phoneNumberVerified, address, postalCode } = this.state;
+    const {
+      avatar, username, phoneNumber, phoneNumberVerified, address, postalCode
+    } = this.state;
     const { user } = this.props.auth;
 
     if (avatar && avatar._id && avatar._id !== user.avatar?._id) {
@@ -313,10 +319,10 @@ class Profile extends PureComponent {
     }
 
     if (
-      username !== user.generalInfo?.username ||
-      phoneNumber !== user.generalInfo?.phoneNumber.number ||
-      address !== user.generalInfo?.address ||
-      postalCode !== user.generalInfo?.address?.postalCode
+      username !== user.generalInfo?.username
+      || phoneNumber !== user.generalInfo?.phoneNumber.number
+      || address !== user.generalInfo?.address
+      || postalCode !== user.generalInfo?.address?.postalCode
     ) {
       this.props.updateUser('profile', {
         userRole: this.props.auth.userRole,
@@ -338,18 +344,18 @@ class Profile extends PureComponent {
         <ConfirmDialog
           variant="error"
           text={this.props.t('confirmResetPassword')}
-          closeLabel={
+          closeLabel={(
             <React.Fragment>
               <CloseIcon style={{ width: 10, height: 10 }} />
               <Typography paddingLeft>{this.props.t('cancel')}</Typography>
             </React.Fragment>
-          }
-          confirmLabel={
+          )}
+          confirmLabel={(
             <React.Fragment>
               <CheckIcon style={{ width: 15, height: 12 }} />
               <Typography paddingLeft>{this.props.t('reset')}</Typography>
             </React.Fragment>
-          }
+          )}
           onClose={this.handleCloseDialog}
           onConfirm={this.saveSecurityInfo}
         />
@@ -438,18 +444,16 @@ class Profile extends PureComponent {
   /** Set and resize avatar image */
   handleClickAvatar = (avatar) => {
     const reader = new FileReader();
-    reader.addEventListener('load', () =>
-      this.setState({
-        dialog: (
-          <CropperDialog
-            fileName={avatar.name}
-            src={reader.result}
-            onClose={this.handleCloseDialog}
-            onSave={this.handleUploadAvatar}
-          />
-        ),
-      })
-    );
+    reader.addEventListener('load', () => this.setState({
+      dialog: (
+        <CropperDialog
+          fileName={avatar.name}
+          src={reader.result}
+          onClose={this.handleCloseDialog}
+          onSave={this.handleUploadAvatar}
+        />
+      ),
+    }));
     reader.readAsDataURL(avatar);
   };
 
@@ -465,7 +469,7 @@ class Profile extends PureComponent {
       },
       () => {
         this.setState({ uploadingDocument: null });
-      }
+      },
     );
   };
 
@@ -544,11 +548,14 @@ class Profile extends PureComponent {
    */
   render() {
     const { width, classes: s, t, phoneCodeSent, verifiedPhoneNumber } = this.props;
-    const { user, userRole, isUpdating: updatingTab, error } = this.props.auth;
-    const { openedTab, editTab, uploadingDocument, dialog } = this.state;
+    const {
+      user, userRole, isUpdating: updatingTab, error,
+    } = this.props.auth;
+    const {
+      openedTab, editTab, uploadingDocument, dialog,
+    } = this.state;
     const CarouselWrapper = withCarousel;
-    const profile =
-      userRole === 'landlord' ? user.landlordProfile : user.companyProfile;
+    const profile = userRole === 'landlord' ? user.landlordProfile : user.companyProfile;
 
     const {
       avatar,
@@ -569,12 +576,11 @@ class Profile extends PureComponent {
     let passwordLastUpdated = '-';
     if (user.updatedAt) {
       passwordLastUpdated = new Date(user.updatedAt);
-      passwordLastUpdated =
-        passwordLastUpdated.getFullYear() +
-        '/' +
-        (passwordLastUpdated.getMonth() + 1) +
-        '/' +
-        passwordLastUpdated.getDate();
+      passwordLastUpdated = `${passwordLastUpdated.getFullYear()
+      }/${
+        passwordLastUpdated.getMonth() + 1
+      }/${
+        passwordLastUpdated.getDate()}`;
     }
 
     return (
@@ -615,7 +621,7 @@ class Profile extends PureComponent {
                           }}
                           className={clsx(
                             s.avatarCard,
-                            userRole === 'company' && s.companyAvatarCard
+                            userRole === 'company' && s.companyAvatarCard,
                           )}
                         >
                           {!avatar && editTab !== 'generalInfo' && (
@@ -627,17 +633,15 @@ class Profile extends PureComponent {
                           {editTab === 'generalInfo' && (
                             <Dropzone
                               multiple={false}
-                              onDrop={(files) =>
-                                this.handleClickAvatar(files[0])
-                              }
+                              onDrop={(files) => this.handleClickAvatar(files[0])}
                             >
                               {({ getRootProps, getInputProps }) => (
                                 <Box
                                   classes={{
                                     box: clsx(
                                       s.dropzone,
-                                      userRole === 'company' &&
-                                        s.companyDropzone
+                                      userRole === 'company'
+                                        && s.companyDropzone,
                                     ),
                                   }}
                                   justifyChildrenCenter
@@ -671,7 +675,7 @@ class Profile extends PureComponent {
                         placeholder={t(
                           userRole === 'landlord'
                             ? 'landlordName'
-                            : 'companyName'
+                            : 'companyName',
                         )}
                         onChange={this.handleStateChangeByInput('username')}
                         value={username}
@@ -688,30 +692,30 @@ class Profile extends PureComponent {
                         value={email}
                         className={s.profileInput}
                         startAdornment={<EmailIcon className={s.outlineIcon} />}
-                        endAdornment={
+                        endAdornment={(
                           <Tooltip
                             placement={
                               isWidthDown('xs', width) ? 'left' : 'bottom'
                             }
                             borderType="primary"
-                            title={
+                            title={(
                               <TooltipContent
-                                title={
+                                title={(
                                   <Column>
                                     <Typography textSecondary>
                                       {t('yourEmailConfirmed')}
                                     </Typography>
                                   </Column>
-                                }
+                                )}
                               />
-                            }
+                            )}
                             interactive
                           >
                             <div className={s.approveIcon}>
                               <CheckIcon style={{ width: 11, height: 8 }} />
                             </div>
                           </Tooltip>
-                        }
+                        )}
                         readOnly
                       />
                     </Row>
@@ -730,7 +734,7 @@ class Profile extends PureComponent {
                                 isWidthDown('xs', width) ? 'left' : 'bottom'
                               }
                               borderType="errorRed"
-                              title={
+                              title={(
                                 <TooltipContent
                                   title={
                                     phoneCodeSent && phoneCodeSent.success? (
@@ -809,17 +813,17 @@ class Profile extends PureComponent {
                                 isWidthDown('xs', width) ? 'left' : 'bottom'
                               }
                               borderType="primary"
-                              title={
+                              title={(
                                 <TooltipContent
-                                  title={
+                                  title={(
                                     <Column>
                                       <Typography textSecondary>
                                         Your phone number confirmed
                                       </Typography>
                                     </Column>
-                                  }
+                                  )}
                                 />
-                              }
+                              )}
                               interactive
                             >
                               <div className={s.approveIcon}>
@@ -867,8 +871,8 @@ class Profile extends PureComponent {
                         readOnly={editTab !== 'generalInfo'}
                       />
                     </Row>
-                    {(editTab === 'generalInfo' ||
-                      updatingTab === 'profile') && (
+                    {(editTab === 'generalInfo'
+                      || updatingTab === 'profile') && (
                       // buttons for save
                       <Row paddingTopHalf style={{ maxWidth: 370 }}>
                         <SaveButtons
@@ -892,7 +896,7 @@ class Profile extends PureComponent {
                 {t(
                   userRole === 'landlord'
                     ? 'landlordDocuments'
-                    : 'companyDocuments'
+                    : 'companyDocuments',
                 )}
               </Typography>
             </Row>
@@ -985,7 +989,7 @@ class Profile extends PureComponent {
                         variant="outlined"
                         placeholder={t('confirmPassword')}
                         onChange={this.handleStateChangeByInput(
-                          'confirmPassword'
+                          'confirmPassword',
                         )}
                         value={confirmPassword}
                         className={s.profileInput}
@@ -993,35 +997,36 @@ class Profile extends PureComponent {
                         readOnly={editTab !== 'loginAndSecurity'}
                       />
                     </Row>
-                    {error?.type === 'updateUser' &&
-                    error?.field === 'password' ? (
-                      <Typography textErrorRed paddingTopHalf paddingBottom>
-                        {error.msg}
-                      </Typography>
-                    ) : null}
+                    {error?.type === 'updateUser'
+                    && error?.field === 'password' ? (
+                        <Typography textErrorRed paddingTopHalf paddingBottom>
+                          {error.msg}
+                        </Typography>
+                      ) : null}
                     <Row paddingTopHalf style={{ maxWidth: 370 }}>
-                      {editTab === 'loginAndSecurity' ||
-                      updatingTab === 'password' ? (
+                      {editTab === 'loginAndSecurity'
+                      || updatingTab === 'password' ? (
                         // buttons for save
-                        <SaveButtons
-                          isUpdating={updatingTab === 'password'}
-                          onSave={this.handleSaveSecurityInfo}
-                          onCancel={this.handleCancelEditProfile}
-                          t={t}
-                          disabled={
-                            !!passwordError || password !== confirmPassword
-                          }
-                        />
-                      ) : (
-                        <React.Fragment>
-                          <Typography fontSizeS textMediumGrey paddingRightHalf>
-                            {t('lastUpdate')}:
-                          </Typography>
-                          <Typography fontSizeS textSecondary>
-                            {passwordLastUpdated}
-                          </Typography>
-                        </React.Fragment>
-                      )}
+                          <SaveButtons
+                            isUpdating={updatingTab === 'password'}
+                            onSave={this.handleSaveSecurityInfo}
+                            onCancel={this.handleCancelEditProfile}
+                            t={t}
+                            disabled={
+                              !!passwordError || password !== confirmPassword
+                            }
+                          />
+                        ) : (
+                          <React.Fragment>
+                            <Typography fontSizeS textMediumGrey paddingRightHalf>
+                              {t('lastUpdate')}
+                              :
+                            </Typography>
+                            <Typography fontSizeS textSecondary>
+                              {passwordLastUpdated}
+                            </Typography>
+                          </React.Fragment>
+                        )}
                     </Row>
                   </Grid>
                 </Grid>
@@ -1078,12 +1083,12 @@ class Profile extends PureComponent {
             open={openedTab === 'paymentsAndPayouts'}
             onToggleOpen={this.handleToggleOpen('paymentsAndPayouts')}
             isEdit={
-              editTab === 'paymentsAndPayouts' ||
-              updatingTab === 'paymentsAndPayouts'
+              editTab === 'paymentsAndPayouts'
+              || updatingTab === 'paymentsAndPayouts'
             }
             isEditable={editTab === null}
             onToggleEdit={this.handleToggleEdit('paymentsAndPayouts')}
-          ></TabWrapper>
+          />
         </Row>
 
         {/* privacy & sharing tab */}
@@ -1093,12 +1098,12 @@ class Profile extends PureComponent {
             open={openedTab === 'privacyAndSharing'}
             onToggleOpen={this.handleToggleOpen('privacyAndSharing')}
             isEdit={
-              editTab === 'privacyAndSharing' ||
-              updatingTab === 'privacyAndSharing'
+              editTab === 'privacyAndSharing'
+              || updatingTab === 'privacyAndSharing'
             }
             isEditable={editTab === null}
             onToggleEdit={this.handleToggleEdit('privacyAndSharing')}
-          ></TabWrapper>
+          />
         </Row>
 
         {/* Show dialog */}
@@ -1109,5 +1114,5 @@ class Profile extends PureComponent {
 }
 
 export default withStyles(styleSheet)(
-  withTranslation('common')(withWidth()(Profile))
+  withTranslation('common')(withWidth()(Profile)),
 );

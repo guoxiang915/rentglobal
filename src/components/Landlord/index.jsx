@@ -3,7 +3,9 @@ import { withStyles } from '@material-ui/core/styles';
 import { withTranslation } from 'react-i18next';
 import PropTypes from 'prop-types';
 import { Hidden } from '@material-ui/core';
-import { Switch, Route, Redirect, withRouter } from 'react-router-dom';
+import {
+  Switch, Route, Redirect, withRouter,
+} from 'react-router-dom';
 import { AppSidebar } from '../Layout';
 import {
   Row,
@@ -96,18 +98,18 @@ class Landlord extends PureComponent {
         <ConfirmDialog
           variant="primary"
           text={this.props.t('confirmEdit')}
-          closeLabel={
+          closeLabel={(
             <React.Fragment>
               <CloseIcon style={{ width: 10, height: 10 }} />
               <Typography paddingLeft>{this.props.t('cancel')}</Typography>
             </React.Fragment>
-          }
-          confirmLabel={
+          )}
+          confirmLabel={(
             <React.Fragment>
               <CheckIcon style={{ width: 15, height: 12 }} />
               <Typography paddingLeft>{this.props.t('ok')}</Typography>
             </React.Fragment>
-          }
+          )}
           onConfirm={this.editOffice(officeId)}
           onClose={this.closeDialog}
         />
@@ -122,18 +124,18 @@ class Landlord extends PureComponent {
         <ConfirmDialog
           variant="error"
           text={this.props.t('confirmDelete')}
-          closeLabel={
+          closeLabel={(
             <React.Fragment>
               <CloseIcon style={{ width: 10, height: 10 }} />
               <Typography paddingLeft>{this.props.t('cancel')}</Typography>
             </React.Fragment>
-          }
-          confirmLabel={
+          )}
+          confirmLabel={(
             <React.Fragment>
               <DeleteIcon style={{ width: 15, height: 12 }} />
               <Typography paddingLeft>{this.props.t('delete')}</Typography>
             </React.Fragment>
-          }
+          )}
           onConfirm={this.deleteOffice(officeId)}
           onClose={this.closeDialog}
         />
@@ -154,8 +156,8 @@ class Landlord extends PureComponent {
 
     // TODO: requirements not specified when toggling roles
     if (
-      user.roles.indexOf('landlord') === -1 &&
-      location.pathname !== '/landlord/profile'
+      user.roles.indexOf('landlord') === -1
+      && location.pathname !== '/landlord/profile'
     ) {
       return <Redirect to="/landlord/profile/" />;
     }
@@ -270,7 +272,7 @@ class Landlord extends PureComponent {
                       publishOffice={publishOffice}
                       onDeleteOffice={this.handleDeleteOffice}
                       onEditOffice={this.handleEditOffice}
-                      editMode={true}
+                      editMode
                     />
                   )}
                 />
@@ -278,13 +280,11 @@ class Landlord extends PureComponent {
                   path="/landlord/profile"
                   render={() => (
                     <Profile
-                      updateUser={(field, user) =>
-                        this.props.mappedupdateUser(
-                          field,
-                          user,
-                          this.props.history
-                        )
-                      }
+                      updateUser={(field, user) => this.props.mappedupdateUser(
+                        field,
+                        user,
+                        this.props.history,
+                      )}
                       verifyPhoneNumber={(phoneNumber) =>
                         this.props.mappedverifyPhoneNumber(
                           phoneNumber
@@ -316,5 +316,5 @@ class Landlord extends PureComponent {
 }
 
 export default withRouter(
-  withStyles(styleSheet)(withTranslation('common')(Landlord))
+  withStyles(styleSheet)(withTranslation('common')(Landlord)),
 );

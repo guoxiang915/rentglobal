@@ -1,20 +1,20 @@
-import React, { PureComponent } from "react";
-import PropTypes from "prop-types";
-import { withStyles, CircularProgress } from "@material-ui/core";
-import { Button, Box } from ".";
-import { PlayArrowOutlined, Pause } from "@material-ui/icons";
+import React, { PureComponent } from 'react';
+import PropTypes from 'prop-types';
+import { withStyles, CircularProgress } from '@material-ui/core';
+import { PlayArrowOutlined, Pause } from '@material-ui/icons';
+import { Button, Box } from '.';
 
 const playButtonStyleSheet = (theme) => ({
   playButtonWrapper: {
-    position: "relative",
+    position: 'relative',
     width: 70,
     height: 70,
   },
 
   circularProgress: {
-    position: "absolute",
-    width: "100% !important",
-    height: "100% !important",
+    position: 'absolute',
+    width: '100% !important',
+    height: '100% !important',
   },
 
   playButton: {
@@ -24,7 +24,7 @@ const playButtonStyleSheet = (theme) => ({
   },
 });
 
-const PlayButton = withStyles(playButtonStyleSheet, { name: "PlayButton" })(
+const PlayButton = withStyles(playButtonStyleSheet, { name: 'PlayButton' })(
   class PlayButton extends PureComponent {
     static defaultProps = {
       isPlaying: PropTypes.bool,
@@ -46,9 +46,8 @@ const PlayButton = withStyles(playButtonStyleSheet, { name: "PlayButton" })(
     handleTogglePlay = () => {
       this.setState(
         { isPlaying: !this.state.isPlaying },
-        () =>
-          this.props.onTogglePlay &&
-          this.props.onTogglePlay(this.state.isPlaying)
+        () => this.props.onTogglePlay
+          && this.props.onTogglePlay(this.state.isPlaying),
       );
     };
 
@@ -85,7 +84,7 @@ const PlayButton = withStyles(playButtonStyleSheet, { name: "PlayButton" })(
         </Box>
       );
     }
-  }
+  },
 );
 
 export const VideoPlayer = {

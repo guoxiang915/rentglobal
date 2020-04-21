@@ -16,8 +16,8 @@ export default (props) => (
         y2="0.5"
         gradientUnits="objectBoundingBox"
       >
-        <stop offset="0" stop-color="#8abb2a" />
-        <stop offset="1" stop-color="#dad800" />
+        <stop offset="0" stopColor="#8abb2a" />
+        <stop offset="1" stopColor="#dad800" />
       </linearGradient>
       <linearGradient
         id="c"
@@ -27,8 +27,8 @@ export default (props) => (
         y2="0.056"
         gradientUnits="objectBoundingBox"
       >
-        <stop offset="0" stop-color="#c3e9fc" />
-        <stop offset="1" stop-color="#e3f5fd" />
+        <stop offset="0" stopColor="#c3e9fc" />
+        <stop offset="1" stopColor="#e3f5fd" />
       </linearGradient>
       <linearGradient
         id="d"
@@ -44,8 +44,8 @@ export default (props) => (
         y2="0.5"
         gradientUnits="objectBoundingBox"
       >
-        <stop offset="0" stop-color="#d3effd" />
-        <stop offset="1" stop-color="#e3f5fd" />
+        <stop offset="0" stopColor="#d3effd" />
+        <stop offset="1" stopColor="#e3f5fd" />
       </linearGradient>
     </defs>
     <path
