@@ -1,13 +1,13 @@
-import React from "react";
-import PropTypes from "prop-types";
-import { withStyles } from "@material-ui/core/styles";
-import { Trans, withTranslation } from "react-i18next";
-import { Box, Column, Typography } from "../../common/base-components";
-import { CheckCircleOutline } from "@material-ui/icons";
+import React from 'react';
+import PropTypes from 'prop-types';
+import { withStyles } from '@material-ui/core/styles';
+import { Trans, withTranslation } from 'react-i18next';
+import { CheckCircleOutline } from '@material-ui/icons';
+import { Box, Column, Typography } from '../../common/base-components';
 
 const styleSheet = (theme) => ({
   formWrapper: {
-    width: "100%",
+    width: '100%',
     paddingTop: 45,
     paddingBottom: 75,
   },
@@ -18,17 +18,17 @@ const styleSheet = (theme) => ({
 
   formTitle: {
     color: theme.colors.primary.darkGrey,
-    lineHeight: "26px",
-    fontSize: "20px",
+    lineHeight: '26px',
+    fontSize: '20px',
     marginTop: 8,
-    textAlign: "center",
+    textAlign: 'center',
   },
 
   formSubtitle: {
     color: theme.colors.primary.grey,
-    lineHeight: "20px",
-    fontSize: "16px",
-    textAlign: "center",
+    lineHeight: '20px',
+    fontSize: '16px',
+    textAlign: 'center',
   },
 });
 
@@ -45,14 +45,14 @@ const SendVerificationForm = ({ email, classes, t }) => (
           paddingTopHalf
           justifyChildrenCenter
         >
-          {t("verificationSent")}
+          {t('verificationSent')}
         </Typography>
       </Box>
       <Box paddingTop>
         <Typography fontSizeS textMediumGrey textCenter block>
           <Trans i18nKey="checkEmailForVerification">
             <Typography textPrimary span>
-              {{ email: email }}
+              {{ email }}
             </Typography>
           </Trans>
         </Typography>
@@ -67,5 +67,5 @@ SendVerificationForm.propTypes = {
 };
 
 export default withStyles(styleSheet)(
-  withTranslation("common")(SendVerificationForm)
+  withTranslation('common')(SendVerificationForm),
 );

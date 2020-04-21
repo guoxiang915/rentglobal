@@ -1,17 +1,17 @@
-import React from "react";
-import PropTypes from "prop-types";
-import { Chip as MUIChip, withStyles } from "@material-ui/core";
-import clsx from "clsx";
-import { CheckCircle, Close } from "@material-ui/icons";
+import React from 'react';
+import PropTypes from 'prop-types';
+import { Chip as MUIChip, withStyles } from '@material-ui/core';
+import clsx from 'clsx';
+import { CheckCircle, Close } from '@material-ui/icons';
 
 const styleSheet = (theme) => ({
   root: {
     height: 34,
-    position: "relative",
+    position: 'relative',
   },
 
   icon: {
-    position: "absolute",
+    position: 'absolute',
     left: -1,
     color: theme.colors.primary.mainColor,
     width: 28,
@@ -19,7 +19,7 @@ const styleSheet = (theme) => ({
   },
 
   deleteIcon: {
-    position: "absolute",
+    position: 'absolute',
     right: 8,
     color: theme.colors.primary.grey,
     width: 20,
@@ -72,9 +72,9 @@ Chip.propTypes = {
 };
 
 Chip.defaultProps = {
-  variant: "outlined",
-  color: "primary",
+  variant: 'outlined',
+  color: 'primary',
   checked: true,
 };
 
-export default withStyles(styleSheet, { name: "Chip" })(Chip);
+export default withStyles(styleSheet, { name: 'Chip' })(Chip);

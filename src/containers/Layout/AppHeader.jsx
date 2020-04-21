@@ -1,7 +1,7 @@
-import { connect } from "react-redux";
-import AppHeader from "../../components/AppHeader";
-import * as authActions from "../../actions/authActions";
-import { withRouter } from "react-router-dom";
+import { connect } from 'react-redux';
+import { withRouter } from 'react-router-dom';
+import AppHeader from '../../components/AppHeader';
+import * as authActions from '../../actions/authActions';
 
 const mapStateToProps = (state) => {
   return {
@@ -17,5 +17,5 @@ const mapDispatchToProps = (dispatch) => {
 
 export default connect(
   mapStateToProps,
-  mapDispatchToProps
+  mapDispatchToProps,
 )(withRouter(AppHeader));

@@ -1,7 +1,7 @@
-import React, { PureComponent } from "react";
-import PropTypes from "prop-types";
-import clsx from "clsx";
-import { Grid, Icon, withStyles } from "@material-ui/core";
+import React, { PureComponent } from 'react';
+import PropTypes from 'prop-types';
+import clsx from 'clsx';
+import { Grid, Icon, withStyles } from '@material-ui/core';
 
 const styleSheet = (theme) => ({
   headline: {
@@ -10,7 +10,7 @@ const styleSheet = (theme) => ({
 
   modalHeader: {
     fontWeight: 500,
-    fontSize: "20px",
+    fontSize: '20px',
     // color: theme.colors.primary.black
   },
 
@@ -21,7 +21,7 @@ const styleSheet = (theme) => ({
   sectionHeaders: {
     ...theme.typography.sectionHeaders,
     color: theme.colors.primary.black,
-    fontWeight: "bold",
+    fontWeight: 'bold',
   },
 
   primaryBody: {
@@ -53,7 +53,7 @@ const styleSheet = (theme) => ({
     ...theme.typography.thirdSmall,
     border: `1px solid ${theme.colors.primary.secondaryBlue}`,
     borderRadius: 2,
-    padding: "0px 4px",
+    padding: '0px 4px',
   },
 
   caption: {
@@ -75,15 +75,15 @@ const styleSheet = (theme) => ({
   },
 
   bold: {
-    fontWeight: "bold",
+    fontWeight: 'bold',
   },
 
   block: {
-    display: "block",
+    display: 'block',
   },
 
   italic: {
-    fontStyle: "italic",
+    fontStyle: 'italic',
   },
 });
 
@@ -109,7 +109,7 @@ const warningMessageStyleSheet = () => ({
 // primaryWhite
 // primaryWhiteSmall
 
-export const Text = withStyles(styleSheet, { name: "Text" })(
+export const Text = withStyles(styleSheet, { name: 'Text' })(
   class Text extends PureComponent {
     static propTypes = {
       variant: PropTypes.string.isRequired,
@@ -123,7 +123,7 @@ export const Text = withStyles(styleSheet, { name: "Text" })(
     };
 
     static defaultProps = {
-      variant: "primaryBody",
+      variant: 'primaryBody',
     };
 
     render() {
@@ -147,7 +147,7 @@ export const Text = withStyles(styleSheet, { name: "Text" })(
               [classes.bold]: bold,
               [classes.italic]: italic,
             },
-            className
+            className,
           )}
           {...props}
         >
@@ -155,13 +155,13 @@ export const Text = withStyles(styleSheet, { name: "Text" })(
         </span>
       );
     }
-  }
+  },
 );
 
 export const Bold = (props) => <Text bold {...props} />;
 
 export const WarningMessage = withStyles(warningMessageStyleSheet, {
-  name: "WarningMessage",
+  name: 'WarningMessage',
 })(
   class WarningMessage extends PureComponent {
     static propTypes = {
@@ -187,5 +187,5 @@ export const WarningMessage = withStyles(warningMessageStyleSheet, {
         </Text>
       );
     }
-  }
+  },
 );

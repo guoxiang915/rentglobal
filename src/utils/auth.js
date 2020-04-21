@@ -1,36 +1,36 @@
 class Auth {
   setToken = async (token) => {
-    localStorage.setItem("userToken", token);
+    localStorage.setItem('userToken', token);
   };
 
   getToken = () => {
-    let token = localStorage.getItem("userToken");
+    const token = localStorage.getItem('userToken');
     return token;
   };
 
   removeToken = async () => {
-    localStorage.removeItem("userToken");
+    localStorage.removeItem('userToken');
   };
 
   setRefreshToken = async (token) => {
-    localStorage.setItem("refreshToken", token);
+    localStorage.setItem('refreshToken', token);
   };
 
   getRefreshToken = () => {
-    let token = localStorage.getItem("refreshToken");
+    const token = localStorage.getItem('refreshToken');
     return token;
   };
 
   removeRefreshToken = async () => {
-    localStorage.removeItem("refreshToken");
+    localStorage.removeItem('refreshToken');
   };
 
   setRememberUser = async (rememberUser) => {
-    localStorage.setItem("rememberUser", rememberUser);
+    localStorage.setItem('rememberUser', rememberUser);
   };
 
   getRememberUser = () => {
-    let rememberUser = localStorage.getItem("rememberUser");
+    const rememberUser = localStorage.getItem('rememberUser');
     return rememberUser;
   };
 }

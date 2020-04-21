@@ -1,5 +1,6 @@
-import React from "react";
-import { withStyles } from "@material-ui/core/styles";
+import React from 'react';
+import { withStyles } from '@material-ui/core/styles';
+import { withTranslation } from 'react-i18next';
 import {
   Box,
   Column,
@@ -7,14 +8,13 @@ import {
   Link,
   Row,
   Typography,
-} from "../../common/base-components";
-import MiniLogo from "../../assets/mini-logo-gray.svg";
-import { withTranslation } from "react-i18next";
-import withMuiRoot from "../../withMuiRoot";
+} from '../../common/base-components';
+import MiniLogo from '../../assets/mini-logo-gray.svg';
+import withMuiRoot from '../../withMuiRoot';
 
 const styleSheet = (theme) => ({
   footerWrapper: {
-    height: "100%",
+    height: '100%',
     borderTop: `0.5px solid ${theme.colors.primary.borderGrey}`,
     paddingTop: theme.spacing(2),
     paddingLeft: theme.spacing(2),
@@ -22,14 +22,14 @@ const styleSheet = (theme) => ({
   },
 
   container: {
-    justifyContent: "center",
+    justifyContent: 'center',
     maxWidth: 1024,
   },
 
   navWrapper: {
-    [theme.breakpoints.down("sm")]: {
-      flexDirection: "column",
-      alignItems: "flex-start",
+    [theme.breakpoints.down('sm')]: {
+      flexDirection: 'column',
+      alignItems: 'flex-start',
     },
   },
 
@@ -48,22 +48,22 @@ const AppFooter = ({ classes, t }) => (
     <Row classes={{ box: classes.container }} fullWidth>
       <Box classes={{ box: classes.navWrapper }}>
         <Typography textMediumGrey fontSizeXS paddingRight>
-          {t("allRightsReserved")}
+          {t('allRightsReserved')}
         </Typography>
         <Typography fontSizeXS>
           <Box paddingRight span>
             <Link variant="normalLight" to="#">
-              {t("terms")}
+              {t('terms')}
             </Link>
           </Box>
           <Box paddingRight span>
             <Link variant="normalLight" to="#">
-              {t("privacy")}
+              {t('privacy')}
             </Link>
           </Box>
           <Box span>
             <Link variant="normalLight" to="#">
-              {t("siteMap")}
+              {t('siteMap')}
             </Link>
           </Box>
         </Typography>
@@ -77,5 +77,5 @@ const AppFooter = ({ classes, t }) => (
 );
 
 export default withMuiRoot(
-  withStyles(styleSheet)(withTranslation("common")(AppFooter))
+  withStyles(styleSheet)(withTranslation('common')(AppFooter)),
 );

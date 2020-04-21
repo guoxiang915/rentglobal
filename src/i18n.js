@@ -1,44 +1,44 @@
-import i18n from "i18next";
-import LanguageDetector from "i18next-browser-languagedetector";
+import i18n from 'i18next';
+import LanguageDetector from 'i18next-browser-languagedetector';
 
 // english
-import enCommon from "./common/locales/en/common.json";
-import enHome from "./common/locales/en/home.json";
+import enCommon from './common/locales/en/common.json';
+import enHome from './common/locales/en/home.json';
 
 // french
-import frCommon from "./common/locales/fr/common.json";
-import frHome from "./common/locales/fr/common.json";
+import frCommon from './common/locales/fr/common.json';
+import frHome from './common/locales/fr/common.json';
 
-const moment = require("moment");
+const moment = require('moment');
 
 i18n.use(LanguageDetector).init({
   // init resources
   resources: {
     en: {
       common: enCommon,
-      home: enHome
+      home: enHome,
     },
     fr: {
       common: frCommon,
-      home: frHome
-    }
+      home: frHome,
+    },
   },
-  fallbackLng: "en",
+  fallbackLng: 'en',
   debug: true,
 
   // common namespace
-  ns: ["common"],
-  defaultNS: "common",
-  fallbackNS: "common",
+  ns: ['common'],
+  defaultNS: 'common',
+  fallbackNS: 'common',
 
   // use content as keys
   keySeparator: false,
 
   interpolation: {
     escapeValue: false, // not needed
-    formatSeparator: ",",
+    formatSeparator: ',',
     format(value, format) {
-      if (format === "uppercase") return value.toUpperCase();
+      if (format === 'uppercase') return value.toUpperCase();
       if (value instanceof Date) {
         return moment(value).format(format);
       }

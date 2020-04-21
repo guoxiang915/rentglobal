@@ -1,63 +1,63 @@
-import React, { PureComponent } from "react";
-import PropTypes from "prop-types";
-import clsx from "clsx";
-import { withStyles } from "@material-ui/core";
+import React, { PureComponent } from 'react';
+import PropTypes from 'prop-types';
+import clsx from 'clsx';
+import { withStyles } from '@material-ui/core';
 
 const styleSheet = (theme) => {
-  let padding = theme.spacing(2);
+  const padding = theme.spacing(2);
   return {
     /* display mode */
     box: {
-      display: "flex",
+      display: 'flex',
     },
     block: {
-      display: "block",
+      display: 'block',
     },
     span: {
-      display: "inline",
+      display: 'inline',
     },
     container: {
-      justifyContent: "flex-start",
-      alignItems: "center",
-      flexWrap: "nowrap",
+      justifyContent: 'flex-start',
+      alignItems: 'center',
+      flexWrap: 'nowrap',
     },
     row: {
-      flexDirection: "row",
+      flexDirection: 'row',
     },
     column: {
-      flexDirection: "column",
+      flexDirection: 'column',
     },
 
     /* aligning */
     justifyChildrenStart: {
-      justifyContent: "flex-start",
+      justifyContent: 'flex-start',
     },
     justifyChildrenEnd: {
-      justifyContent: "flex-end",
+      justifyContent: 'flex-end',
     },
     justifyChildrenCenter: {
-      justifyContent: "center",
+      justifyContent: 'center',
     },
     justifyChildrenSpaceBetween: {
-      justifyContent: "space-between",
+      justifyContent: 'space-between',
     },
     justifyChildrenpaceAround: {
-      justifyContent: "space-around",
+      justifyContent: 'space-around',
     },
     justifyChildrenSpaceEvenly: {
-      justifyContent: "space-evenly",
+      justifyContent: 'space-evenly',
     },
     alignChildrenStart: {
-      alignItems: "flex-start",
+      alignItems: 'flex-start',
     },
     alignChildrenEnd: {
-      alignItems: "flex-end",
+      alignItems: 'flex-end',
     },
     alignChildrenCenter: {
-      alignItems: "center",
+      alignItems: 'center',
     },
     alignChildrenStretch: {
-      alignItems: "stretch",
+      alignItems: 'stretch',
     },
 
     stretch: {
@@ -67,22 +67,22 @@ const styleSheet = (theme) => {
       flex: 0,
     },
     wrap: {
-      flexWrap: "wrap",
+      flexWrap: 'wrap',
     },
     nowrap: {
-      flexWrap: "nowrap",
+      flexWrap: 'nowrap',
     },
 
     /* size */
     fullWidth: {
-      width: "100%",
+      width: '100%',
     },
     fullHeight: {
-      height: "100%",
+      height: '100%',
     },
     fill: {
-      width: "100%",
-      height: "100%",
+      width: '100%',
+      height: '100%',
     },
 
     /* borders */
@@ -91,7 +91,7 @@ const styleSheet = (theme) => {
     },
 
     shadow: {
-      boxShadow: "0 1px 4px rgba(0, 0, 0, .6)",
+      boxShadow: '0 1px 4px rgba(0, 0, 0, .6)',
     },
 
     /* paddings */
@@ -99,7 +99,7 @@ const styleSheet = (theme) => {
       padding: 2 * padding,
     },
     padding: {
-      padding: padding,
+      padding,
     },
     paddingHalf: {
       padding: padding / 2,
@@ -202,41 +202,41 @@ const styleSheet = (theme) => {
       color: theme.colors.primary.errorRed,
     },
     textCenter: {
-      textAlign: "center",
+      textAlign: 'center',
     },
     textLeft: {
-      textAlign: "left",
+      textAlign: 'left',
     },
     textRight: {
-      textAlign: "right",
+      textAlign: 'right',
     },
     bold: {
-      fontWeight: "bold",
+      fontWeight: 'bold',
     },
     italic: {
-      fontStyle: "italic",
+      fontStyle: 'italic',
     },
     uppercase: {
-      textTransform: "uppercase",
+      textTransform: 'uppercase',
     },
 
     /* layout styles */
     noOverflow: {
-      overflowY: "hidden",
+      overflowY: 'hidden',
     },
     inline: {
-      display: "inline-flex",
+      display: 'inline-flex',
     },
     absolute: {
-      position: "absolute",
+      position: 'absolute',
     },
     relative: {
-      position: "relative",
+      position: 'relative',
     },
   };
 };
 
-export const Box = withStyles(styleSheet, { name: "Box" })(
+export const Box = withStyles(styleSheet, { name: 'Box' })(
   class Box extends PureComponent {
     static propTypes = {
       classes: PropTypes.object.isRequired,
@@ -244,10 +244,12 @@ export const Box = withStyles(styleSheet, { name: "Box" })(
     };
 
     render() {
-      let { children, style, classes, onClick, ...props } = this.props;
-      let propsClasses = {};
+      const {
+        children, style, classes, onClick, ...props
+      } = this.props;
+      const propsClasses = {};
       Object.entries(props).forEach(
-        ([key, value]) => (propsClasses[classes[key]] = value)
+        ([key, value]) => (propsClasses[classes[key]] = value),
       );
 
       return (
@@ -264,7 +266,7 @@ export const Box = withStyles(styleSheet, { name: "Box" })(
         </div>
       );
     }
-  }
+  },
 );
 
 export const Row = (props) => <Box row {...props} />;

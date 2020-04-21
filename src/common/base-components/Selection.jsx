@@ -1,100 +1,100 @@
-import React, { PureComponent } from "react";
-import PropTypes from "prop-types";
-import clsx from "clsx";
+import React, { PureComponent } from 'react';
+import PropTypes from 'prop-types';
+import clsx from 'clsx';
 import {
   FormControlLabel,
   Checkbox as MUICheckbox,
   Radio as MUIRadio,
-  withStyles
-} from "@material-ui/core";
+  withStyles,
+} from '@material-ui/core';
 import {
   CheckCircle,
   RadioButtonChecked,
-  RadioButtonUnchecked
-} from "@material-ui/icons";
+  RadioButtonUnchecked,
+} from '@material-ui/icons';
 
-const styleSheet = theme => ({
+const styleSheet = (theme) => ({
   root: {
-    position: "relative",
+    position: 'relative',
     color: theme.colors.primary.darkGrey,
     padding: 2,
     margin: 0,
-    border: "none",
+    border: 'none',
     borderRadius: 99999,
-    "&:hover": {
-      color: theme.colors.primary.mainColor
-    }
+    '&:hover': {
+      color: theme.colors.primary.mainColor,
+    },
   },
 
   outlined: {
-    background: "none",
+    background: 'none',
     border: `1px solid ${theme.colors.primary.borderGrey}`,
-    "&:hover": {
-      border: `1px solid ${theme.colors.primary.mainColor}`
-    }
+    '&:hover': {
+      border: `1px solid ${theme.colors.primary.mainColor}`,
+    },
   },
 
   contained: {
     color: theme.colors.primary.white,
     background: `${theme.colors.primary.mainColor}`,
-    border: "none",
-    "&:hover": {
+    border: 'none',
+    '&:hover': {
       background: `${theme.colors.primary.darkColor}`,
-      color: theme.colors.primary.white
-    }
+      color: theme.colors.primary.white,
+    },
   },
 
   checkedOutlined: {
-    border: `1px solid ${theme.colors.primary.mainColor} !important`
+    border: `1px solid ${theme.colors.primary.mainColor} !important`,
   },
 
   checkedContained: {
-    background: `${theme.colors.primary.darkColor}`
+    background: `${theme.colors.primary.darkColor}`,
   },
 
   rounded: {
-    borderRadius: 99999
+    borderRadius: 99999,
   },
 
   label: {
-    padding: "5px 28px",
-    fontSize: "13px",
-    lineHeight: "18px",
-    width: "200%"
+    padding: '5px 28px',
+    fontSize: '13px',
+    lineHeight: '18px',
+    width: '200%',
   },
 
   icon: {
     color: theme.colors.primary.darkGrey,
     width: 28,
-    height: 28
+    height: 28,
   },
 
   checkedIcon: {
     color: theme.colors.primary.mainColor,
     width: 28,
-    height: 28
+    height: 28,
   },
 
   primaryIcon: {
-    color: theme.colors.primary.mainColor
+    color: theme.colors.primary.mainColor,
   },
 
   controlStyle: {
     padding: 0,
     margin: 0,
-    position: "absolute"
+    position: 'absolute',
   },
 
   secondaryIcon: {
-    color: theme.colors.primary.darkGrey
+    color: theme.colors.primary.darkGrey,
   },
 
   whiteIcon: {
-    color: theme.colors.primary.white
-  }
+    color: theme.colors.primary.white,
+  },
 });
 
-const Selection = withStyles(styleSheet, { name: "Selection" })(
+const Selection = withStyles(styleSheet, { name: 'Selection' })(
   class Selection extends PureComponent {
     static propTypes = {
       isChecked: PropTypes.bool,
@@ -104,11 +104,11 @@ const Selection = withStyles(styleSheet, { name: "Selection" })(
       classes: PropTypes.object.isRequired,
       icon: PropTypes.object,
       checkedIcon: PropTypes.object,
-      variant: PropTypes.string
+      variant: PropTypes.string,
     };
 
     render() {
-      let {
+      const {
         classes: s,
         control: Control,
         icon: Icon,
@@ -122,52 +122,52 @@ const Selection = withStyles(styleSheet, { name: "Selection" })(
 
       return (
         <FormControlLabel
-          control={
+          control={(
             <Control
-              icon={
+              icon={(
                 <Icon
                   classes={{
                     root: clsx(s.icon, {
                       [s.whiteIcon]:
-                        variant === "outlined" || variant === "contained"
-                    })
+                        variant === 'outlined' || variant === 'contained',
+                    }),
                   }}
                 />
-              }
-              checkedIcon={
+              )}
+              checkedIcon={(
                 <CheckedIcon
                   classes={{
                     root: clsx(
                       s.checkedIcon,
-                      variant === "outlined" && s.primaryIcon,
-                      variant === "contained" && s.whiteIcon
-                    )
+                      variant === 'outlined' && s.primaryIcon,
+                      variant === 'contained' && s.whiteIcon,
+                    ),
                   }}
                 />
-              }
+              )}
               checked={isChecked}
               onChange={onChange}
               className={s.controlStyle}
             />
-          }
+          )}
           label={label}
           classes={{
             root: clsx(s.root, {
-              [s.outlined]: variant === "outlined",
-              [s.checkedOutlined]: variant === "outlined" && isChecked,
-              [s.contained]: variant === "contained",
-              [s.checkedContained]: variant === "contained" && isChecked
+              [s.outlined]: variant === 'outlined',
+              [s.checkedOutlined]: variant === 'outlined' && isChecked,
+              [s.contained]: variant === 'contained',
+              [s.checkedContained]: variant === 'contained' && isChecked,
             }),
-            label: s.label
+            label: s.label,
           }}
           {...props}
         />
       );
     }
-  }
+  },
 );
 
-export const Radio = props => (
+export const Radio = (props) => (
   <Selection
     control={MUIRadio}
     icon={RadioButtonUnchecked}
@@ -176,19 +176,19 @@ export const Radio = props => (
   />
 );
 
-export const Checkbox = props => (
+export const Checkbox = (props) => (
   <Selection
     control={MUICheckbox}
     icon={RadioButtonUnchecked}
     checkedIcon={CheckCircle}
-    style={{ textAlign: "center" }}
+    style={{ textAlign: 'center' }}
     {...props}
   />
 );
 
 export const ExpandableSectionRadio = ({ onCheck, ...props }) => (
   <Radio
-    onChange={isChecked => {
+    onChange={(isChecked) => {
       if (isChecked) {
         onCheck();
       }

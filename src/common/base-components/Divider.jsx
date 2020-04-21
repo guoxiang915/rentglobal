@@ -1,12 +1,12 @@
-import React from "react";
-import clsx from "clsx";
-import { withStyles } from "@material-ui/core";
+import React from 'react';
+import clsx from 'clsx';
+import { withStyles } from '@material-ui/core';
 
 const styleSheet = (theme) => {
-  let unit = 1.1;
+  const unit = 1.1;
   return {
     divider: {
-      width: "100%",
+      width: '100%',
       backgroundColor: theme.colors.primary.borderGrey,
       height: unit,
     },
@@ -49,9 +49,9 @@ const Divider = ({
         [classes.dark]: dark,
         [styles]: styles,
       },
-      className
+      className,
     )}
   />
 );
 
-export default withStyles(styleSheet, { name: "Divider" })(Divider);
+export default withStyles(styleSheet, { name: 'Divider' })(Divider);

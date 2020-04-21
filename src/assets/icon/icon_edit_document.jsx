@@ -9,7 +9,7 @@ export default (props) => (
     viewBox="0 0 22.415 23.721"
   >
     <defs>
-      <style></style>
+      <style />
     </defs>
     <g>
       <g transform="translate(0 0)">

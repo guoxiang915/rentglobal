@@ -4,6 +4,8 @@ import { withTranslation } from 'react-i18next';
 import clsx from 'clsx';
 import PropTypes from 'prop-types';
 import { withRouter } from 'react-router-dom';
+import { KeyboardBackspace } from '@material-ui/icons';
+import Carousel from '@brainhubeu/react-carousel';
 import {
   Row,
   Column,
@@ -18,8 +20,7 @@ import {
   ArrowDownIcon,
 } from '../../common/base-components';
 import { TabWrapper, OfficeItem } from '../../common/base-layouts';
-import { KeyboardBackspace } from '@material-ui/icons';
-import OfficeDetailForm from '../../components/Layout/OfficeDetailForm';
+import OfficeDetailForm from '../Layout/OfficeDetailForm';
 import { formatDate1 } from '../../utils/formatters';
 import {
   getApprovedOfficeById,
@@ -27,7 +28,6 @@ import {
   getReviewsByOffice,
   getSimilarOffices,
 } from '../../api/endpoints';
-import Carousel from '@brainhubeu/react-carousel';
 
 const styleSheet = (theme) => ({
   root: {
@@ -310,7 +310,7 @@ class OfficeDetail extends PureComponent {
 
   /** Render review component */
   renderReview = ({ review, classes: s }) => {
-    const company = review.company;
+    const { company } = review;
     const createDate = formatDate1(review.createdAt);
 
     return (
@@ -360,8 +360,8 @@ class OfficeDetail extends PureComponent {
     return (
       <Row fullWidth classes={{ box: s.reviewsWrapper }}>
         <TabWrapper
-          title={t('reviews') + ` (${reviews.length})`}
-          open={true}
+          title={`${t('reviews')} (${reviews.length})`}
+          open
           insideOpen
         >
           {reviews.map((review, index) => (
@@ -384,7 +384,9 @@ class OfficeDetail extends PureComponent {
    */
   render() {
     const { classes: s, t } = this.props;
-    const { office, consultant, reviews, similarOffices, dialog } = this.state;
+    const {
+      office, consultant, reviews, similarOffices, dialog,
+    } = this.state;
     const ConsultantInfo = this.renderConsultant;
     const ReviewList = this.renderReviewList;
 
@@ -469,5 +471,5 @@ class OfficeDetail extends PureComponent {
 }
 
 export default withRouter(
-  withStyles(styleSheet)(withTranslation('common')(OfficeDetail))
+  withStyles(styleSheet)(withTranslation('common')(OfficeDetail)),
 );

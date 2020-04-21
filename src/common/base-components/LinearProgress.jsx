@@ -1,11 +1,11 @@
-import React from "react";
-import { withStyles } from "@material-ui/core/styles";
-import clsx from "clsx";
-import { LinearProgress as MUILinearProgress } from "@material-ui/core";
+import React from 'react';
+import { withStyles } from '@material-ui/core/styles';
+import clsx from 'clsx';
+import { LinearProgress as MUILinearProgress } from '@material-ui/core';
 
 const styleSheet = (theme) => ({
   root: {
-    width: "100%",
+    width: '100%',
     background: theme.colors.primary.borderGrey,
   },
 
@@ -15,15 +15,17 @@ const styleSheet = (theme) => ({
   },
 
   dashed: {
-    background: "none",
+    background: 'none',
   },
 });
 
 const LinearProgress = (props) => {
-  let { classes, styles, value, valueBuffer, ...prop } = props;
+  let {
+    classes, styles, value, valueBuffer, ...prop
+  } = props;
   if (styles) {
     Object.keys(classes).forEach(
-      (key) => (classes[key] = clsx(classes[key], styles[key]))
+      (key) => (classes[key] = clsx(classes[key], styles[key])),
     );
     classes = { ...styles, ...classes };
   }
@@ -34,7 +36,7 @@ const LinearProgress = (props) => {
       variant="buffer"
       classes={classes}
       value={valueBuffer ? value : 0}
-      valueBuffer={valueBuffer ? valueBuffer : value}
+      valueBuffer={valueBuffer || value}
       {...prop}
     />
   );

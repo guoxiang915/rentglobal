@@ -1,19 +1,19 @@
-import React from "react";
-import { withStyles } from "@material-ui/core/styles";
-import CircularProgress from "@material-ui/core/CircularProgress";
+import React from 'react';
+import { withStyles } from '@material-ui/core/styles';
+import CircularProgress from '@material-ui/core/CircularProgress';
 
-const styleSheet = theme => ({
+const styleSheet = (theme) => ({
   progress: {
-    margin: theme.spacing(2)
+    margin: theme.spacing(2),
   },
   container: {
-    display: "flex",
-    alignItems: "center",
-    justifyContent: "center"
-  }
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
 });
 
-const Spinner = props => {
+const Spinner = (props) => {
   const { classes, ...prop } = props;
   return (
     <div className={classes.container}>

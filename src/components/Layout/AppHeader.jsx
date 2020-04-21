@@ -5,7 +5,9 @@ import PropTypes from 'prop-types';
 import clsx from 'clsx';
 import withWidth, { isWidthDown } from '@material-ui/core/withWidth';
 import { withRouter } from 'react-router-dom';
-import { MenuItem, Grid, Menu, Popover, Paper, Badge } from '@material-ui/core';
+import {
+  MenuItem, Grid, Menu, Popover, Paper, Badge,
+} from '@material-ui/core';
 import {
   Button,
   Link,
@@ -335,7 +337,7 @@ class AppHeader extends PureComponent {
                 className={clsx(
                   classes.smallIcon,
                   classes.accountNavIcon,
-                  errorRed && classes.errorRedIcon
+                  errorRed && classes.errorRedIcon,
                 )}
               />
             </Box>
@@ -393,8 +395,8 @@ class AppHeader extends PureComponent {
               box: clsx(s.accountAvatar),
             }}
           >
-            {!user.avatar &&
-              (role === 'landlord' ? (
+            {!user.avatar
+              && (role === 'landlord' ? (
                 <ImageIcon className={s.smallIcon} variant="normal" />
               ) : (
                 <UserIcon className={s.smallIcon} variant="normal" />
@@ -505,7 +507,9 @@ class AppHeader extends PureComponent {
       t,
     } = this.props;
     const { isLoggedIn, user, userRole } = this.props.auth;
-    const { locationEl, languageEl, accountInfoEl, dialog } = this.state;
+    const {
+      locationEl, languageEl, accountInfoEl, dialog,
+    } = this.state;
     const role = userRole || user?.role;
 
     const AccountInfo = withRouter(this.renderAccountInfo);
@@ -584,7 +588,8 @@ class AppHeader extends PureComponent {
                         fontWeightMedium
                         alignChildrenCenter
                       >
-                        {t(language)}&nbsp;&nbsp;
+                        {t(language)}
+&nbsp;&nbsp;
                         <ArrowDownIcon className={classes.arrowDownIcon} />
                       </Typography>
                     </Button>
@@ -596,11 +601,11 @@ class AppHeader extends PureComponent {
                       onClose={this.handleCloseMenu('languageEl')}
                       className={classes.headerMenu}
                     >
-                      <MenuItem onClick={this.handleSelectLanguage("en")}>
-                        {t("english")}
+                      <MenuItem onClick={this.handleSelectLanguage('en')}>
+                        {t('english')}
                       </MenuItem>
-                      <MenuItem onClick={this.handleSelectLanguage("fr")}>
-                        {t("french")}
+                      <MenuItem onClick={this.handleSelectLanguage('fr')}>
+                        {t('french')}
                       </MenuItem>
                     </Menu>
                   </Column>
@@ -618,7 +623,8 @@ class AppHeader extends PureComponent {
                         fontWeightMedium
                         alignChildrenCenter
                       >
-                        {location}&nbsp;&nbsp;
+                        {location}
+&nbsp;&nbsp;
                         <ArrowDownIcon className={classes.arrowDownIcon} />
                       </Typography>
                     </Button>
@@ -676,17 +682,15 @@ class AppHeader extends PureComponent {
                         <Button
                           variant="secondary"
                           shadow
-                          onClick={() =>
-                            this.props.onToggleRole(
-                              role === 'landlord' ? 'company' : 'landlord'
-                            )
-                          }
+                          onClick={() => this.props.onToggleRole(
+                            role === 'landlord' ? 'company' : 'landlord',
+                          )}
                         >
                           <Typography fontSizeS fontWeightBold>
                             {t(
                               role === 'landlord'
                                 ? 'needOffice'
-                                : 'placeToRent'
+                                : 'placeToRent',
                             )}
                           </Typography>
                         </Button>
@@ -700,8 +704,8 @@ class AppHeader extends PureComponent {
                       <Badge
                         color="primary"
                         badgeContent={
-                          mails &&
-                          (mails.length > 3 ? `${mails.length}+` : mails.length)
+                          mails
+                          && (mails.length > 3 ? `${mails.length}+` : mails.length)
                         }
                       >
                         <EmailIcon className={classes.smallIcon} />
@@ -715,8 +719,8 @@ class AppHeader extends PureComponent {
                       <Badge
                         color="primary"
                         badgeContent={
-                          notifications &&
-                          (notifications.length > 9
+                          notifications
+                          && (notifications.length > 9
                             ? `${notifications.length}+`
                             : notifications.length)
                         }
@@ -735,7 +739,7 @@ class AppHeader extends PureComponent {
                       onClick={this.handleMenu('accountInfoEl')}
                       className={clsx(
                         classes.iconButton,
-                        classes.accountButton
+                        classes.accountButton,
                       )}
                     >
                       {!isWidthDown('sm', width) && (
@@ -824,9 +828,7 @@ class AppHeader extends PureComponent {
                         <Button
                           variant="secondary"
                           shadow
-                          onClick={() =>
-                            this.props.navigate('register/landlord')
-                          }
+                          onClick={() => this.props.navigate('register/landlord')}
                         >
                           <Typography fontSizeS fontWeightBold>
                             {t('placeToRent')}
@@ -872,7 +874,7 @@ class AppHeader extends PureComponent {
         </Grid>
 
         {/* thin bar at the bottom of header */}
-        {isLoggedIn && <div className={classes.stickyBar}></div>}
+        {isLoggedIn && <div className={classes.stickyBar} />}
 
         {/** dialog */}
         {dialog}
@@ -882,5 +884,5 @@ class AppHeader extends PureComponent {
 }
 
 export default withWidth()(
-  withStyles(styleSheet)(withTranslation('common')(AppHeader))
+  withStyles(styleSheet)(withTranslation('common')(AppHeader)),
 );
