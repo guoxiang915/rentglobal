@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { PureComponent } from 'react';
 import { withStyles } from '@material-ui/core/styles';
 import { withTranslation } from 'react-i18next';
 import clsx from 'clsx';
@@ -14,14 +14,16 @@ import {
   Link,
   Divider,
   UserIcon,
+  ArrowUpIcon,
+  ArrowDownIcon,
 } from '../../common/base-components';
 import { TabWrapper, OfficeItem } from '../../common/base-layouts';
 import { KeyboardBackspace } from '@material-ui/icons';
-import OfficeDetailForm from '../../containers/Layout/OfficeDetailForm';
+import OfficeDetailForm from '../../components/Layout/OfficeDetailForm';
 import { formatDate1 } from '../../utils/formatters';
 import {
   getApprovedOfficeById,
-  getLandlordByOffice,
+  getConsultantByOffice,
   getReviewsByOffice,
   getSimilarOffices,
 } from '../../api/endpoints';
@@ -32,10 +34,7 @@ const styleSheet = (theme) => ({
     width: '100%',
     height: '100%',
     background: theme.colors.primary.white,
-    minHeight: 'calc(100vh - 250px)',
-    [theme.breakpoints.down('sm')]: {
-      minHeight: 'calc(100vh - 166px)',
-    },
+    minHeight: 'calc(100vh - 245px)',
   },
 
   fixedWidth: {
@@ -70,12 +69,12 @@ const styleSheet = (theme) => ({
     },
   },
 
-  landlordInfo: {
+  consultantInfo: {
     paddingTop: 53,
     paddingBottom: 58,
   },
 
-  landlordAvatarWrapper: {
+  consultantAvatarWrapper: {
     width: 67,
     height: 67,
     borderRadius: '50%',
@@ -87,14 +86,14 @@ const styleSheet = (theme) => ({
     marginRight: 26,
   },
 
-  landlordAvatar: {
+  consultantAvatar: {
     width: 67,
     height: 67,
     objectFit: 'contain',
   },
 
-  landlordMoreInfo: {
-    // paddingLeft: 93
+  consultantMoreInfo: {
+    paddingLeft: 93,
   },
 
   reviewsWrapper: {
@@ -142,7 +141,7 @@ const styleSheet = (theme) => ({
   },
 });
 
-class OfficeDetail extends Component {
+class OfficeDetail extends PureComponent {
   static propTypes = {
     /** office id to show */
     officeId: PropTypes.string.isRequired,
@@ -150,8 +149,8 @@ class OfficeDetail extends Component {
     navigate: PropTypes.func.isRequired,
     /** function for getting office from office id */
     // getOfficeById: PropTypes.func.isRequired,
-    /** function for getting landlord from office */
-    // getLandlordByOffice: PropTypes.func.isRequired,
+    /** function for getting consultant from office */
+    // getConsultantByOffice: PropTypes.func.isRequired,
     /** function for getting reviews from office */
     // getReviewsByOffice: PropTypes.func,
     /** function for getting similar offices */
@@ -163,7 +162,7 @@ class OfficeDetail extends Component {
 
   state = {
     office: {},
-    landlord: {},
+    consultant: {},
     reviews: [],
     similarOffices: [],
     dialog: null,
@@ -179,11 +178,11 @@ class OfficeDetail extends Component {
       }
     });
 
-    /** Get landlord info from office */
+    /** Get consultant info from office */
     // this.props.
-    getLandlordByOffice(officeId).then((response) => {
+    getConsultantByOffice(officeId).then((response) => {
       if (response.status === 200) {
-        this.setState({ landlord: response.data });
+        this.setState({ consultant: response.data });
       }
     });
 
@@ -220,17 +219,94 @@ class OfficeDetail extends Component {
     this.props.navigate('offices', officeId);
   };
 
-  /** Contact req of landlord */
-  handleContactReq = () => {};
+  /** Send message to consultant */
+  handleSendMessage = () => {};
 
-  /** More info req of landlord */
-  handleMoreInfoReq = () => {};
-
-  /** Follow up of landlord */
+  /** Follow up of consultant */
   handleFollowUp = () => {};
 
   /** Load more reviews */
   handleMoreReviews = () => {};
+
+  /** Render related consultant info */
+  renderConsultant = ({ classes: s, t, consultant }) => {
+    const [showMore, setShowMore] = React.useState(false);
+    console.log('consultant!');
+    return (
+      <Column classes={{ box: s.consultantInfo }}>
+        <Row fullWidth alignChildrenStart>
+          {/** Show consultant avatar, name, description */}
+          <Box classes={{ box: s.consultantAvatarWrapper }}>
+            {consultant.avatar && consultant.avatar.bucketPath ? (
+              <img
+                src={consultant.avatar.bucketPath}
+                alt=""
+                className={s.consultantAvatar}
+              />
+            ) : (
+              <UserIcon color="secondary" style={{ width: 27, height: 35 }} />
+            )}
+          </Box>
+          <Column alignChildrenStart stretch>
+            <Typography fontSizeM fontWeightBold textSecondary>
+              {consultant.generalInfo?.username}
+            </Typography>
+            <Typography
+              fontSizeS
+              textSecondary
+              paddingTopHalf
+              style={{ overflow: 'hidden', height: showMore ? 'auto' : 32 }}
+            >
+              {consultant.description}
+            </Typography>
+          </Column>
+        </Row>
+
+        <Row
+          fullWidth
+          paddingTopDouble
+          justifyChildrenSpaceBetween
+          classes={{ box: s.consultantMoreInfo }}
+          wrap
+        >
+          <Link
+            to="#"
+            onClick={() => setShowMore(!showMore)}
+            variant="normalLight"
+          >
+            <Typography alignChildrenCenter>
+              <Typography fontSizeS paddingRight>
+                {t('loadMore')}
+              </Typography>
+              {showMore ? (
+                <ArrowUpIcon style={{ width: 12, height: 7 }} />
+              ) : (
+                <ArrowDownIcon style={{ width: 12, height: 7 }} />
+              )}
+            </Typography>
+          </Link>
+
+          <Box>
+            {/** Show consultant request buttons */}
+            <Box paddingLeftHalf paddingBottomHalf>
+              <Button
+                variant="secondary"
+                onClick={this.handleSendMessage}
+                shadow
+              >
+                {t('sendMessage')}
+              </Button>
+            </Box>
+            <Box paddingLeft paddingBottomHalf>
+              <Button variant="primary" onClick={this.handleFollowUp} shadow>
+                {t('followUp')}
+              </Button>
+            </Box>
+          </Box>
+        </Row>
+      </Column>
+    );
+  };
 
   /** Render review component */
   renderReview = ({ review, classes: s }) => {
@@ -259,7 +335,7 @@ class OfficeDetail extends Component {
             </Box>
             <Column alignChildrenStart>
               <Typography fontSizeM fontWeightBold textSecondary>
-                {company.username}
+                {company.generalInfo?.username}
               </Typography>
               <Typography fontSizeS textMediumGrey style={{ paddingTop: 4 }}>
                 {createDate}
@@ -278,13 +354,39 @@ class OfficeDetail extends Component {
     );
   };
 
+  /** Render review list */
+  renderReviewList = ({ classes: s, t, reviews }) => {
+    const Review = this.renderReview;
+    return (
+      <Row fullWidth classes={{ box: s.reviewsWrapper }}>
+        <TabWrapper
+          title={t('reviews') + ` (${reviews.length})`}
+          open={true}
+          insideOpen
+        >
+          {reviews.map((review, index) => (
+            <React.Fragment key={index}>
+              <Row fullWidth paddingTopHalf paddingBottom>
+                <Review review={review} classes={s} t={t} />
+              </Row>
+            </React.Fragment>
+          ))}
+          <Link to="#" onClick={this.handleMoreReviews} variant="normalLight">
+            <Typography fontSizeS>{t('loadMore')}</Typography>
+          </Link>
+        </TabWrapper>
+      </Row>
+    );
+  };
+
   /**
    * Renderer function
    */
   render() {
     const { classes: s, t } = this.props;
-    const { office, landlord, reviews, similarOffices, dialog } = this.state;
-    const Review = this.renderReview;
+    const { office, consultant, reviews, similarOffices, dialog } = this.state;
+    const ConsultantInfo = this.renderConsultant;
+    const ReviewList = this.renderReviewList;
 
     return (
       <Row justifyChildrenCenter classes={{ box: s.root }}>
@@ -309,103 +411,18 @@ class OfficeDetail extends Component {
             </Button>
           </Row>
 
+          {/** Show office detail form */}
           <Row fullWidth classes={{ box: clsx(s.addOfficeTabWrapper) }}>
             {office && <OfficeDetailForm office={office} />}
           </Row>
 
-          {/** Show office created landlord info */}
+          {/** Show office created consultant info */}
           <Divider className={s.divider} />
-
-          <Column classes={{ box: s.landlordInfo }}>
-            <Row fullWidth alignChildrenStart>
-              {/** Show landlord avatar, name, description */}
-              <Box classes={{ box: s.landlordAvatarWrapper }}>
-                {landlord.avatar && landlord.avatar.bucketPath ? (
-                  <img
-                    src={landlord.avatar.bucketPath}
-                    alt=""
-                    className={s.landlordAvatar}
-                  />
-                ) : (
-                  <UserIcon
-                    color="secondary"
-                    style={{ width: 27, height: 35 }}
-                  />
-                )}
-              </Box>
-              <Column
-                classes={{ box: s.landlordName }}
-                alignChildrenStart
-                stretch
-              >
-                <Typography fontSizeM fontWeightBold textSecondary>
-                  {landlord.username}
-                </Typography>
-                <Typography fontSizeS textSecondary paddingTopHalf>
-                  {landlord.description}
-                </Typography>
-              </Column>
-            </Row>
-
-            <Row
-              fullWidth
-              paddingTopDouble
-              justifyChildrenEnd
-              classes={{ box: s.landlordMoreInfo }}
-              wrap
-            >
-              {/** Show landlord request buttons */}
-              <Box paddingLeftHalf paddingBottomHalf>
-                <Button
-                  variant="secondary"
-                  onClick={this.handleContactReq}
-                  shadow
-                >
-                  {t('contactReq')}
-                </Button>
-              </Box>
-              <Box paddingLeftHalf paddingBottomHalf>
-                <Button
-                  variant="secondary"
-                  onClick={this.handleMoreInfoReq}
-                  shadow
-                >
-                  {t('moreInfoReq')}
-                </Button>
-              </Box>
-              <Box paddingLeftHalf paddingBottomHalf>
-                <Button variant="primary" onClick={this.handleFollowUp} shadow>
-                  {t('followUp')}
-                </Button>
-              </Box>
-            </Row>
-          </Column>
+          <ConsultantInfo classes={s} t={t} consultant={consultant} />
 
           {/** Show reviews */}
           <Divider />
-
-          <Row fullWidth classes={{ box: s.reviewsWrapper }}>
-            <TabWrapper
-              title={t('reviews') + ` (${reviews.length})`}
-              open={true}
-              insideOpen
-            >
-              {reviews.map((review, index) => (
-                <React.Fragment key={index}>
-                  <Row fullWidth paddingTopHalf paddingBottom>
-                    <Review review={review} classes={s} t={t} />
-                  </Row>
-                </React.Fragment>
-              ))}
-              <Link
-                to="#"
-                onClick={this.handleMoreReviews}
-                variant="normalLight"
-              >
-                <Typography fontSizeS>{t('loadMore')}</Typography>
-              </Link>
-            </TabWrapper>
-          </Row>
+          <ReviewList classes={s} t={t} reviews={reviews} />
 
           {/** Show similar offices */}
           <Divider />
@@ -423,11 +440,18 @@ class OfficeDetail extends Component {
                   >
                     {similarOffices.map((office, index) => (
                       <div
-                        style={{ position: 'relative', cursor: 'pointer' }}
+                        style={{
+                          position: 'relative',
+                          cursor: 'pointer',
+                          height: '100%',
+                        }}
                         key={index}
-                        onClick={this.goDetail(office._id)}
                       >
-                        <OfficeItem office={office} setFavorite />
+                        <OfficeItem
+                          office={office}
+                          setFavorite
+                          onClick={this.goDetail(office._id)}
+                        />
                       </div>
                     ))}
                   </Carousel>

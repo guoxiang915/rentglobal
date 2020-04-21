@@ -1,4 +1,4 @@
-import React, { Component, forwardRef } from "react";
+import React, { PureComponent, forwardRef } from "react";
 import PropTypes from "prop-types";
 import clsx from "clsx";
 import { TextField as MUITextField, withStyles } from "@material-ui/core";
@@ -45,7 +45,7 @@ const styleSheet = (theme) => ({
   },
 });
 
-class TextField extends Component {
+class TextField extends PureComponent {
   state = {
     error: this.props.error,
     helperText: this.props.helperText,

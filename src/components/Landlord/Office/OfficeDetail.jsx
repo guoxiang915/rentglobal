@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { PureComponent } from 'react';
 import { withStyles } from '@material-ui/core/styles';
 import { withTranslation } from 'react-i18next';
 import clsx from 'clsx';
@@ -16,7 +16,7 @@ import {
   EditIcon,
 } from '../../../common/base-components';
 import { KeyboardBackspace } from '@material-ui/icons';
-import OfficeDetailForm from '../../../containers/Layout/OfficeDetailForm';
+import OfficeDetailForm from '../../../components/Layout/OfficeDetailForm';
 
 const styleSheet = (theme) => ({
   root: {
@@ -49,7 +49,7 @@ const styleSheet = (theme) => ({
   },
 });
 
-class OfficeDetail extends Component {
+class OfficeDetail extends PureComponent {
   static propTypes = {
     officeId: PropTypes.string.isRequired,
     getOfficeById: PropTypes.func.isRequired,
@@ -162,11 +162,11 @@ class OfficeDetail extends Component {
             variant={isWidthDown('xs', width) ? 'icon' : ''}
           >
             <DeleteIcon style={{ width: 20, height: 18 }} />
-            {!isWidthDown('xs', width) && (
+            {!isWidthDown('xs', width) ? (
               <Typography paddingLeft fontSizeS>
                 {t('delete')}
               </Typography>
-            )}
+            ) : null}
           </Button>
           <Box paddingLeft />
 
@@ -179,11 +179,11 @@ class OfficeDetail extends Component {
             variant={isWidthDown('xs', width) ? 'icon' : ''}
           >
             <EditIcon style={{ width: 20, height: 18 }} />
-            {!isWidthDown('xs', width) && (
+            {!isWidthDown('xs', width) ? (
               <Typography paddingLeft fontSizeS>
                 {t('edit')}
               </Typography>
-            )}
+            ) : null}
           </Button>
         </Row>
 

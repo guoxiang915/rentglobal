@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { PureComponent } from 'react';
 import { withStyles } from '@material-ui/core/styles';
 import { withTranslation } from 'react-i18next';
 import PropTypes from 'prop-types';
@@ -29,6 +29,7 @@ import {
   ArrowDownIcon,
   DashboardIcon,
   ImageIcon,
+  ConsultantIcon,
 } from '../../common/base-components';
 import { getProfileStatus } from '../../utils/validators';
 
@@ -61,8 +62,8 @@ const styleSheet = (theme) => ({
     paddingLeft: theme.spacing(4) - 2,
     paddingRight: theme.spacing(4) - 2,
     [theme.breakpoints.down('sm')]: {
-      paddingLeft: theme.spacing(2),
-      paddingRight: theme.spacing(2),
+      paddingLeft: theme.spacing(3),
+      paddingRight: theme.spacing(3),
     },
   },
 
@@ -75,6 +76,23 @@ const styleSheet = (theme) => ({
   logoNavigator: {
     width: 'fit-content',
     cursor: 'pointer',
+  },
+
+  roleInfoWrapper: {
+    position: 'absolute',
+    left: 'calc((100% - 1044px) / 2 + 150px)',
+    bottom: 0,
+    background: theme.colors.primary.mainColor,
+    color: theme.colors.primary.white,
+    borderRadius: '8px 8px 0px 0px',
+    padding: 12,
+    paddingBottom: 32,
+    '@media (max-width: 1078px)': {
+      left: 175,
+    },
+    [theme.breakpoints.down('sm')]: {
+      left: 65,
+    },
   },
 
   logo: {
@@ -192,9 +210,21 @@ const styleSheet = (theme) => ({
     position: 'relative',
     width: 'calc(100% + 32px)',
   },
+
+  iconButton: {
+    width: 39,
+    height: 39,
+  },
+
+  accountButton: {
+    width: 'auto',
+    [theme.breakpoints.down('xs')]: {
+      width: 39,
+    },
+  },
 });
 
-class AppHeader extends Component {
+class AppHeader extends PureComponent {
   static propTypes = {
     auth: PropTypes.object,
     sidebarOpened: PropTypes.bool,
@@ -266,7 +296,7 @@ class AppHeader extends Component {
   /** Toggle role when user selects another role in Account Info panel */
   handleAccountInfoToggleRole = (userRole) => () => {
     this.handleCloseMenu('accountInfoEl')();
-    // const userRole = this.props.auth.user.role;
+    // const userRole = this.props.auth.userRole;
     // if (role !== userRole) {
     //   this.props.onToggleRole();
     // }
@@ -328,7 +358,7 @@ class AppHeader extends Component {
    */
   renderAccountInfo = ({
     user,
-    userRole,
+    role,
     profileProgress,
     navigate,
     onToggleRole,
@@ -342,7 +372,6 @@ class AppHeader extends Component {
       profileCharged,
       profileCompleteness,
     } = profileProgress;
-    const profile = user[`${userRole}Profile`];
 
     return (
       <Column alignChildrenStart classes={{ box: s.accountInfoContent }}>
@@ -352,11 +381,11 @@ class AppHeader extends Component {
             alignChildrenCenter
             justifyChildrenCenter
             style={{
-              borderRadius: userRole === 'landlord' ? 8 : '50%',
+              borderRadius: role === 'landlord' ? 8 : '50%',
               backgroundImage: user.avatar
                 ? `url("${user.avatar.bucketPath}")`
                 : 'none',
-              backgroundSize: 'contain',
+              backgroundSize: 'cover',
               backgroundPosition: 'center',
             }}
             border
@@ -365,7 +394,7 @@ class AppHeader extends Component {
             }}
           >
             {!user.avatar &&
-              (userRole === 'landlord' ? (
+              (role === 'landlord' ? (
                 <ImageIcon className={s.smallIcon} variant="normal" />
               ) : (
                 <UserIcon className={s.smallIcon} variant="normal" />
@@ -380,7 +409,7 @@ class AppHeader extends Component {
           justifyChildrenCenter
         >
           <Typography fontSizeS textSecondary>
-            {profile ? profile.username : 'Unknown'}
+            {user.generalInfo?.username || 'Unknown'}
           </Typography>
         </Row>
 
@@ -443,7 +472,7 @@ class AppHeader extends Component {
                   text={
                     r === 'company' ? t('companyPanel') : t('landlordPanel')
                   }
-                  active={userRole === r}
+                  active={role === r}
                   classes={s}
                 />
               </React.Fragment>
@@ -477,6 +506,7 @@ class AppHeader extends Component {
     } = this.props;
     const { isLoggedIn, user, userRole } = this.props.auth;
     const { locationEl, languageEl, accountInfoEl, dialog } = this.state;
+    const role = userRole || user?.role;
 
     const AccountInfo = withRouter(this.renderAccountInfo);
 
@@ -485,7 +515,7 @@ class AppHeader extends Component {
     let profileCharged = 10;
     let profileCompleteness = null;
     if (isLoggedIn) {
-      const profileStatus = getProfileStatus(user, userRole);
+      const profileStatus = getProfileStatus(user, role);
       profileCompleted = profileStatus.completed;
       profileCharged = profileStatus.charged;
       profileCompleteness = profileStatus.completeness;
@@ -509,17 +539,33 @@ class AppHeader extends Component {
                 className={classes.logoNavigator}
               >
                 {isLoggedIn ? (
-                  <React.Fragment>
-                    {!isWidthDown('sm', width) ? (
-                      <img src={Logo} className={classes.logo} alt="RENTGLOBAL" />
-                    ) : (
-                      <img src={MiniLogo} className={classes.logo} alt="RENTGLOBAL" />
-                    )}
-                  </React.Fragment>
+                  !isWidthDown('sm', width) ? (
+                    <img src={Logo} className={classes.logo} alt="RENTGLOBAL" />
+                  ) : (
+                    <img src={MiniLogo} className={classes.logo} alt="RENTGLOBAL" />
+                  )
                 ) : (
                   <img src={Logo} className={classes.logo} alt="RENTGLOBAL" />
                 )}
               </div>
+
+              {/* role image */}
+              {isLoggedIn && userRole ? (
+                <Row classes={{ box: classes.roleInfoWrapper }}>
+                  {userRole === 'landlord' ? (
+                    <BuildingsIcon style={{ width: 24, height: 24 }} />
+                  ) : userRole === 'company' ? (
+                    <UsersIcon style={{ width: 24, height: 24 }} />
+                  ) : userRole === 'consultant' ? (
+                    <ConsultantIcon style={{ width: 24, height: 24 }} />
+                  ) : null}
+                  {!isWidthDown('sm', width) && (
+                    <Typography fontSizeS paddingLeftHalf>
+                      {t(`${userRole}Panel`)}
+                    </Typography>
+                  )}
+                </Row>
+              ) : null}
 
               {/* language, location, help menu */}
               {!isLoggedIn && !isWidthDown('sm', width) && (
@@ -550,11 +596,11 @@ class AppHeader extends Component {
                       onClose={this.handleCloseMenu('languageEl')}
                       className={classes.headerMenu}
                     >
-                      <MenuItem onClick={this.handleSelectLanguage('English')}>
-                        {t('english')}
+                      <MenuItem onClick={this.handleSelectLanguage("en")}>
+                        {t("english")}
                       </MenuItem>
-                      <MenuItem onClick={this.handleSelectLanguage('French')}>
-                        {t('french')}
+                      <MenuItem onClick={this.handleSelectLanguage("fr")}>
+                        {t("french")}
                       </MenuItem>
                     </Menu>
                   </Column>
@@ -632,13 +678,13 @@ class AppHeader extends Component {
                           shadow
                           onClick={() =>
                             this.props.onToggleRole(
-                              userRole === 'landlord' ? 'company' : 'landlord'
+                              role === 'landlord' ? 'company' : 'landlord'
                             )
                           }
                         >
                           <Typography fontSizeS fontWeightBold>
                             {t(
-                              userRole === 'landlord'
+                              role === 'landlord'
                                 ? 'needOffice'
                                 : 'placeToRent'
                             )}
@@ -650,7 +696,7 @@ class AppHeader extends Component {
 
                   {/* mails */}
                   <Column paddingLeftDouble>
-                    <Button variant="icon">
+                    <Button variant="icon" className={classes.iconButton}>
                       <Badge
                         color="primary"
                         badgeContent={
@@ -665,7 +711,7 @@ class AppHeader extends Component {
 
                   {/* notifications */}
                   <Column paddingLeft>
-                    <Button variant="icon">
+                    <Button variant="icon" className={classes.iconButton}>
                       <Badge
                         color="primary"
                         badgeContent={
@@ -687,6 +733,10 @@ class AppHeader extends Component {
                       variant="icon"
                       aria-describedby="accountinfo-popover"
                       onClick={this.handleMenu('accountInfoEl')}
+                      className={clsx(
+                        classes.iconButton,
+                        classes.accountButton
+                      )}
                     >
                       {!isWidthDown('sm', width) && (
                         <Typography paddingRight>
@@ -722,7 +772,7 @@ class AppHeader extends Component {
                     >
                       <Paper className={classes.accountInfoContentWrapper}>
                         <AccountInfo
-                          userRole={userRole}
+                          role={role}
                           user={user}
                           profileProgress={{
                             profileCompleteness,
@@ -797,6 +847,7 @@ class AppHeader extends Component {
                       outline="primary"
                       onClick={this.handleToggleSidebar(!sidebarOpened)}
                       shadow
+                      className={classes.iconButton}
                     >
                       <CloseIcon className={classes.smallIcon} />
                     </Button>
@@ -809,6 +860,7 @@ class AppHeader extends Component {
                       inverse
                       onClick={this.handleToggleSidebar(!sidebarOpened)}
                       shadow
+                      className={classes.iconButton}
                     >
                       <MenuIcon className={classes.smallIcon} />
                     </Button>

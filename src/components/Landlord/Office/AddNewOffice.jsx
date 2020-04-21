@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { PureComponent } from 'react';
 import { withStyles } from '@material-ui/core/styles';
 import { withTranslation } from 'react-i18next';
 import clsx from 'clsx';
@@ -32,8 +32,7 @@ import {
   PictureGalleryForm,
   ServicesAmenitiesForm,
 } from './Forms';
-import OfficeDetailForm from '../../../containers/Layout/OfficeDetailForm';
-import { servicesCategories } from '../../../utils/constants';
+import OfficeDetailForm from '../../../components/Layout/OfficeDetailForm';
 
 const styleSheet = (theme) => ({
   root: {
@@ -139,7 +138,7 @@ const StepperIcon = ({ classes, icon, active, completed }) => (
   </Box>
 );
 
-class AddNewOffice extends Component {
+class AddNewOffice extends PureComponent {
   static propTypes = {
     officeId: PropTypes.string,
     getOfficeById: PropTypes.func,
@@ -184,32 +183,33 @@ class AddNewOffice extends Component {
         if (response.status === 200) {
           const office = response.data;
           let currentStep = 0;
-          if (editMode) {
-            currentStep = 0;
-          } else if (
-            office.title &&
-            office.officeType &&
-            office.pricemonthly &&
-            office.location &&
-            office.numberOfEmployees
-          ) {
-            currentStep = 1;
-          } else if (
-            office.coverPhotos &&
-            office.coverPhotos.length >= 3 &&
-            office.coverPhotos.length <= 15
-          ) {
-            currentStep = 2;
-          } else if (office.servicesAndAmenities) {
-            servicesCategories.forEach((cat) => {
-              if (
-                office.servicesAndAmenities[cat.name] &&
-                office.servicesAndAmenities[cat.name].length
-              ) {
-                currentStep = 3;
-              }
-            });
-          }
+          // if (editMode) {
+          //   currentStep = 0;
+          // } else if (
+          //   office.title &&
+          //   office.officeType &&
+          //   office.pricemonthly &&
+          //   office.location &&
+          //   office.numberOfEmployees
+          // ) {
+          //   currentStep = 1;
+          // } else if (
+          //   office.coverPhotos &&
+          //   office.coverPhotos.length >= 3 &&
+          //   office.coverPhotos.length <= 15
+          // ) {
+          //   currentStep = 2;
+          // } else if (office.servicesAndAmenities) {
+          //   servicesCategories.forEach((cat) => {
+          //     if (
+          //       office.servicesAndAmenities[cat.name] &&
+          //       office.servicesAndAmenities[cat.name].length
+          //     ) {
+          //       currentStep = 3;
+          //     }
+          //   });
+          // }
+          if (!editMode) currentStep = 3;
           this.setState({ office, currentStep });
         }
       });
@@ -296,31 +296,31 @@ class AddNewOffice extends Component {
     let result = Promise.reject('');
 
     switch (this.state.currentStep) {
-    case 0:
-      if (this.state.office._id) {
-        result = this.props.updateOffice(this.state.office);
-      } else {
-        result = this.props.createOffice(this.state.office);
-      }
-      break;
-    case 1:
-      if (this.state.office) {
-        result = Promise.resolve({ data: this.state.office });
-      }
-      break;
-    case 2:
-      if (this.state.office)
-        result = this.props.createOfficeServicesAmenities(
-          this.state.office._id,
-          this.state.office.servicesAndAmenities
-        );
-      break;
-    case 3:
-      if (this.state.office)
-        result = this.props.publishOffice(this.state.office._id);
-      break;
-    default:
-      break;
+      case 0:
+        if (this.state.office._id) {
+          result = this.props.updateOffice(this.state.office);
+        } else {
+          result = this.props.createOffice(this.state.office);
+        }
+        break;
+      case 1:
+        if (this.state.office) {
+          result = Promise.resolve({ data: this.state.office });
+        }
+        break;
+      case 2:
+        if (this.state.office)
+          result = this.props.createOfficeServicesAmenities(
+            this.state.office._id,
+            this.state.office.servicesAndAmenities
+          );
+        break;
+      case 3:
+        if (this.state.office)
+          result = this.props.publishOffice(this.state.office._id);
+        break;
+      default:
+        break;
     }
 
     return result.then(
@@ -356,7 +356,7 @@ class AddNewOffice extends Component {
     if (this.state.office) {
       /** Check photos count when current step is 1 */
       if (
-        currentStep === 1 &&
+        currentStep === 3 &&
         (!this.state.office.coverPhotos ||
           this.state.office.coverPhotos.length < 3 ||
           this.state.office.coverPhotos.length > 15)
@@ -450,8 +450,8 @@ class AddNewOffice extends Component {
             {currentStep === 3
               ? t('preview')
               : editMode
-                ? t('editOffice')
-                : t('addNewOffice')}
+              ? t('editOffice')
+              : t('addNewOffice')}
           </Typography>
           <Stretch />
           <Button
@@ -491,11 +491,11 @@ class AddNewOffice extends Component {
               variant={isWidthDown('xs', width) ? 'icon' : ''}
             >
               <DeleteIcon style={{ width: 20, height: 18 }} />
-              {!isWidthDown('xs', width) && (
+              {!isWidthDown('xs', width) ? (
                 <Typography paddingLeft fontSizeS>
                   {t('delete')}
                 </Typography>
-              )}
+              ) : null}
             </Button>
             <Box paddingLeft />
 
@@ -506,14 +506,14 @@ class AddNewOffice extends Component {
                 background="normalLight"
                 inverse
                 onClick={this.handleEditOffice}
-                variant={isWidthDown('xs', width) && 'icon'}
+                variant={isWidthDown('xs', width) ? 'icon' : ''}
               >
                 <EditIcon style={{ width: 20, height: 18 }} />
-                {!isWidthDown('xs', width) && (
+                {!isWidthDown('xs', width) ? (
                   <Typography paddingLeft fontSizeS>
                     {t('edit')}
                   </Typography>
-                )}
+                ) : null}
               </Button>
             )}
           </Row>

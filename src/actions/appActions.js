@@ -12,3 +12,8 @@ export const updateAppTitle = (title) => ({
   type: 'UPDATE_APP_TITLE',
   title,
 });
+
+export const changeLanguage = (language) => ({
+  type: 'CHANGE_LANGUAGE',
+  language
+});

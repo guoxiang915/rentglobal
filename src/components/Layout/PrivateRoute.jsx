@@ -6,12 +6,18 @@ import Auth from '../../utils/auth';
 import { AppHeader, AppFooter, AppSidebar, HelpDialog } from '.';
 import { withStyles } from '@material-ui/core';
 import { Column, Spinner } from '../../common/base-components';
+import { WelcomeRoleDialog } from './Dialogs';
 import SendVerificationForm from '../Auth/SendVerificationForm';
+import { Storage } from '../../utils/storage';
 
 import HeaderImage from '../../assets/img/img_header@2x.jpg';
+import i18n from "../../i18n";
 
 /** Token-based auth object */
 const authObj = new Auth();
+
+/** Storage object */
+const storage = new Storage();
 
 const styleSheet = (theme) => ({
   root: {
@@ -23,10 +29,7 @@ const styleSheet = (theme) => ({
     position: 'sticky',
     top: 0,
     zIndex: 1100,
-    height: 100,
-    [theme.breakpoints.down('sm')]: {
-      height: 66,
-    },
+    height: 95,
   },
 
   bodyWrapper: {
@@ -37,10 +40,7 @@ const styleSheet = (theme) => ({
   },
 
   bodyHeaderOffset: {
-    height: 'calc(100% - 100px)',
-    [theme.breakpoints.down('sm')]: {
-      height: 'calc(100% - 66px)',
-    },
+    height: 'calc(100% - 95px)',
   },
 
   bodyContent: {
@@ -52,10 +52,7 @@ const styleSheet = (theme) => ({
 
   contentWrapper: {
     background: theme.colors.primary.whiteGrey,
-    minHeight: 'calc(100vh - 250px)',
-    [theme.breakpoints.down('sm')]: {
-      minHeight: 'calc(100vh - 166px)',
-    },
+    minHeight: 'calc(100vh - 245px)',
   },
 
   footerWrapper: {
@@ -68,10 +65,7 @@ const styleSheet = (theme) => ({
 
   sendVerificationWrapper: {
     background: theme.colors.primary.white,
-    minHeight: 'calc(100vh - 250px)',
-    [theme.breakpoints.down('sm')]: {
-      minHeight: 'calc(100vh - 166px)',
-    },
+    minHeight: 'calc(100vh - 245px)',
   },
 
   backgroundWrapper: {
@@ -142,75 +136,105 @@ class PrivateRoute extends React.Component {
   };
 
   navigate = (path, payload) => {
-    const { isLoggedIn, userRole } = this.props.auth;
+    const { isLoggedIn, userRole, user } = this.props.auth;
 
     switch (path) {
-    case 'back':
-      this.props.history.goBack();
-      break;
+      case 'back':
+        this.props.history.goBack();
+        break;
 
-    case 'home':
-      this.props.history.push('/');
-      break;
+      case 'home':
+        this.props.history.push('/');
+        break;
 
-    case 'help':
-      this.showHelpDialog();
-      break;
+      case 'help':
+        this.showHelpDialog();
+        break;
 
-    case 'login':
-    case 'register':
-    case 'register/landlord':
-    case 'register/company':
-    case 'forgot-password':
-      this.props.history.push(`/auth/${path}`);
-      break;
-    case 'logout':
-      authObj.removeToken();
-      authObj.removeRefreshToken();
-      this.props.mappedlogout();
-      this.props.history.push('/');
-      break;
+      case 'login':
+      case 'register':
+      case 'register/landlord':
+      case 'register/company':
+      case 'forgot-password':
+        this.props.history.push(`/auth/${path}`);
+        break;
+      case 'logout':
+        authObj.removeToken();
+        authObj.removeRefreshToken();
+        this.props.mappedlogout();
+        this.props.history.push('/');
+        break;
+      case 'profile':
+        if (isLoggedIn) {
+          if (userRole === '') {
+            const history = this.props.history;
+            history.location.pathname = `/${user.roles[0]}/profile`;
+            this.props.mappedToggleRole(user.roles[0], history);
+          } else {
+            this.props.history.push(
+              `/${userRole}/${path}/${payload ? payload : ''}`
+            );
+          }
+        }
+        break;
 
-    case 'dashboard':
-    case 'profile':
-    case 'offices/add':
-    case 'offices/all':
-    case 'offices/unpublish':
-    case 'contracts':
-    case 'optimization':
-      if (isLoggedIn) {
+      case 'dashboard':
+      case 'offices/add':
+      case 'offices/all':
+      case 'offices/unpublish':
+      case 'contracts':
+      case 'optimization':
+        if (isLoggedIn) {
+          this.props.history.push(
+            `/${userRole}/${path}/${payload ? payload : ''}`
+          );
+          break;
+        }
+        this.props.history.push('/');
+        break;
+      case 'offices':
         this.props.history.push(
-          `/${userRole}/${path}/${payload ? payload : ''}`
+          (userRole ? `/${userRole}` : '') +
+            `/${path}/${payload ? payload : ''}`
         );
         break;
-      }
-      this.props.history.push('/');
-      break;
-    case 'offices':
-      this.props.history.push(
-        (userRole ? `/${userRole}` : '') +
-            `/${path}/${payload ? payload : ''}`
-      );
-      break;
 
-    default:
-      this.props.history.push('/');
-      break;
+      default:
+        this.props.history.push('/');
+        break;
     }
     this.handleToggleSidebar(false);
   };
 
   /** Toggle userRole between landlord/company */
   handleToggleRole = (setRole) => {
-    const { userRole } = this.props.auth;
-    this.props.mappedToggleRole(
+    const { user, userRole } = this.props.auth;
+    const nextRole =
       typeof setRole === 'string'
         ? setRole
         : userRole === 'landlord'
-          ? 'company'
-          : 'landlord',
-      this.props.history
-    );
+        ? 'company'
+        : 'landlord';
+    if (nextRole && user?.roles.indexOf(nextRole) === -1) {
+      const hideGuidance = storage.getBoolean(`${nextRole}HideGuide`);
+      if (hideGuidance) {
+        this.props.mappedToggleRole(nextRole, this.props.history);
+      } else {
+        this.setState({
+          dialog: (
+            <WelcomeRoleDialog
+              role={nextRole}
+              onClose={() => {
+                this.props.mappedToggleRole(nextRole, this.props.history);
+                this.handleCloseDialog();
+              }}
+            />
+          ),
+        });
+      }
+    } else {
+      this.props.mappedToggleRole(nextRole, this.props.history);
+    }
     this.handleToggleSidebar(false);
   };
 
@@ -271,11 +295,14 @@ class PrivateRoute extends React.Component {
                         auth={this.props.auth}
                         sidebarOpened={sidebarOpened}
                         location="Montreal"
-                        language="en"
+                        language={this.props.app.language}
                         onToggleRole={this.handleToggleRole}
                         onToggleSidebar={this.handleToggleSidebar}
                         onSelectLocation={() => {}}
-                        onSelectLanguage={() => {}}
+                        onSelectLanguage={(lang) => {
+                          i18n.changeLanguage(lang);
+                          this.props.mappedChangeLanguage(lang);
+                        }}
                         navigate={this.navigate}
                       />
                     </div>

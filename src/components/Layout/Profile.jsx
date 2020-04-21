@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { PureComponent } from 'react';
 import { withStyles } from '@material-ui/core/styles';
 import { withTranslation } from 'react-i18next';
 import clsx from 'clsx';
@@ -213,7 +213,7 @@ const styleSheet = (theme) => ({
   },
 });
 
-class Profile extends Component {
+class Profile extends PureComponent {
   static propTypes = {
     auth: PropTypes.object.isRequired,
     uploadFile: PropTypes.func,
@@ -226,6 +226,7 @@ class Profile extends Component {
     avatar: null,
     username: '',
     phoneNumber: '',
+    phoneNumberVerified: false,
     address: {},
     postalCode: '',
     legalStatusDocuments: [],
@@ -294,22 +295,29 @@ class Profile extends Component {
   /** Save general info */
   handleSaveGeneralInfo = () => {
     const { avatar, username, phoneNumber, address, postalCode } = this.state;
+    const { user } = this.props.auth;
 
-    if (avatar && avatar._id) {
+    if (avatar && avatar._id && avatar._id !== user.avatar?._id) {
       this.props.updateUser('avatar', {
         avatarFileId: avatar._id,
       });
     }
-    this.props.updateUser('profile', {
-      userRole: this.props.auth.userRole,
-      profile: {
+
+    if (
+      username !== user.generalInfo?.username ||
+      phoneNumber !== user.generalInfo?.phoneNumber.number ||
+      address !== user.generalInfo?.address ||
+      postalCode !== user.generalInfo?.address?.postalCode
+    ) {
+      this.props.updateUser('profile', {
+        userRole: this.props.auth.userRole,
         profile: {
           username,
           phoneNumber,
           address: { ...address, postalCode },
         },
-      },
-    });
+      });
+    }
     this.setState({ editTab: null });
   };
 
@@ -341,10 +349,12 @@ class Profile extends Component {
 
   saveSecurityInfo = () => {
     const { oldPassword, password, confirmPassword } = this.state;
+    const { user } = this.props.auth;
     if (password === confirmPassword) {
       this.props.updateUser('password', {
+        email: user?.email,
         oldPassword,
-        password,
+        newPassword: password,
         passwordLastUpdated: new Date().getTime(),
       });
     }
@@ -365,21 +375,14 @@ class Profile extends Component {
    * @param {string} user User information
    */
   handleResetProfileInfo = (auth) => {
-    const { user, userRole } = auth;
-    let profile =
-      userRole === 'landlord' ? user.landlordProfile : user.companyProfile;
-    if (!profile) {
-      profile = {};
-    }
-    if (!profile.address) {
-      profile.address = {};
-    }
+    const { user } = auth;
 
     this.setState({
-      username: profile.username || '',
-      phoneNumber: profile.phoneNumber || '',
-      address: profile.address || {},
-      postalCode: profile.address.postalCode || '',
+      username: user.generalInfo?.username || '',
+      phoneNumber: user.generalInfo?.phoneNumber?.number || '',
+      phoneNumberVerified: !!user.generalInfo?.phoneNumber?.verified,
+      address: user.generalInfo?.address || {},
+      postalCode: user.generalInfo?.address?.postalCode || '',
       avatar: user.avatar || null,
     });
   };
@@ -480,7 +483,7 @@ class Profile extends Component {
    */
   render() {
     const { width, classes: s, t } = this.props;
-    const { user, userRole, isUpdating: updatingTab } = this.props.auth;
+    const { user, userRole, isUpdating: updatingTab, error } = this.props.auth;
     const { openedTab, editTab, uploadingDocument, dialog } = this.state;
     const CarouselWrapper = withCarousel;
     const profile =
@@ -490,6 +493,7 @@ class Profile extends Component {
       avatar,
       username,
       phoneNumber,
+      phoneNumberVerified,
       address,
       postalCode,
       oldPassword,
@@ -673,43 +677,45 @@ class Profile extends Component {
                         variant="outlined"
                         placeholder={t('phoneNumber')}
                         onChange={this.handleStateChangeByInput('phoneNumber')}
-                        value={phoneNumber}
+                        value={phoneNumber || ''}
                         className={s.profileInput}
                         startAdornment={<PhoneIcon className={s.outlineIcon} />}
                         endAdornment={
-                          <Tooltip
-                            placement={
-                              isWidthDown('xs', width) ? 'left' : 'bottom'
-                            }
-                            borderType="errorRed"
-                            title={
-                              <TooltipContent
-                                title={
-                                  <Column>
-                                    <Typography textErrorRed>
-                                      {t('phoneMustApproved')}
-                                    </Typography>
-                                    <Box paddingTop>
-                                      <Button
-                                        link="normal"
-                                        background="secondaryLight"
-                                        onClick={
-                                          this.handleSendPhoneVerification
-                                        }
-                                      >
-                                        <Typography fontSizeXS>
-                                          {t('sendVerificationCode')}
-                                        </Typography>
-                                      </Button>
-                                    </Box>
-                                  </Column>
-                                }
-                              />
-                            }
-                            interactive
-                          >
-                            <div className={s.errorIcon}>!</div>
-                          </Tooltip>
+                          phoneNumber && !phoneNumberVerified ? (
+                            <Tooltip
+                              placement={
+                                isWidthDown('xs', width) ? 'left' : 'bottom'
+                              }
+                              borderType="errorRed"
+                              title={
+                                <TooltipContent
+                                  title={
+                                    <Column>
+                                      <Typography textErrorRed>
+                                        {t('phoneMustApproved')}
+                                      </Typography>
+                                      <Box paddingTop>
+                                        <Button
+                                          link="normal"
+                                          background="secondaryLight"
+                                          onClick={
+                                            this.handleSendPhoneVerification
+                                          }
+                                        >
+                                          <Typography fontSizeXS>
+                                            {t('sendVerificationCode')}
+                                          </Typography>
+                                        </Button>
+                                      </Box>
+                                    </Column>
+                                  }
+                                />
+                              }
+                              interactive
+                            >
+                              <div className={s.errorIcon}>!</div>
+                            </Tooltip>
+                          ) : null
                         }
                         readOnly={editTab !== 'generalInfo'}
                       />
@@ -873,29 +879,35 @@ class Profile extends Component {
                         readOnly={editTab !== 'loginAndSecurity'}
                       />
                     </Row>
+                    {error?.type === 'updateUser' &&
+                    error?.field === 'password' ? (
+                      <Typography textErrorRed paddingTopHalf paddingBottom>
+                        {error.msg}
+                      </Typography>
+                    ) : null}
                     <Row paddingTopHalf style={{ maxWidth: 370 }}>
                       {editTab === 'loginAndSecurity' ||
                       updatingTab === 'password' ? (
                         // buttons for save
-                          <SaveButtons
-                            isUpdating={updatingTab === 'password'}
-                            onSave={this.handleSaveSecurityInfo}
-                            onCancel={this.handleCancelEditProfile}
-                            t={t}
-                            disabled={
-                              !!passwordError || password !== confirmPassword
-                            }
-                          />
-                        ) : (
-                          <React.Fragment>
-                            <Typography fontSizeS textMediumGrey paddingRightHalf>
-                              {t('lastUpdate')}:
-                            </Typography>
-                            <Typography fontSizeS textSecondary>
-                              {passwordLastUpdated}
-                            </Typography>
-                          </React.Fragment>
-                        )}
+                        <SaveButtons
+                          isUpdating={updatingTab === 'password'}
+                          onSave={this.handleSaveSecurityInfo}
+                          onCancel={this.handleCancelEditProfile}
+                          t={t}
+                          disabled={
+                            !!passwordError || password !== confirmPassword
+                          }
+                        />
+                      ) : (
+                        <React.Fragment>
+                          <Typography fontSizeS textMediumGrey paddingRightHalf>
+                            {t('lastUpdate')}:
+                          </Typography>
+                          <Typography fontSizeS textSecondary>
+                            {passwordLastUpdated}
+                          </Typography>
+                        </React.Fragment>
+                      )}
                     </Row>
                   </Grid>
                 </Grid>

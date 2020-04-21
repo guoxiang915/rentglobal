@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React, { PureComponent } from "react";
 import { withStyles } from "@material-ui/core/styles";
 import { withTranslation } from "react-i18next";
 import PropTypes from "prop-types";
@@ -55,7 +55,7 @@ const styleSheet = theme => ({
   }
 });
 
-class ServicesAmenitiesForm extends Component {
+class ServicesAmenitiesForm extends PureComponent {
   static propTypes = {
     classes: PropTypes.object,
     t: PropTypes.func
@@ -93,7 +93,6 @@ class ServicesAmenitiesForm extends Component {
     } else if (isRemove) {
       services[category].splice(services[category].indexOf(option), 1);
     }
-    console.log(category, option, services[category]);
     this.props.onChangeField("servicesAndAmenities", services);
   };
 

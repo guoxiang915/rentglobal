@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import {
   Dialog,
@@ -68,7 +68,7 @@ const styleSheet = (theme) => ({
   },
 });
 
-class CropperDialog extends Component {
+class CropperDialog extends PureComponent {
   static propTypes = {
     /** Title of dialog */
     title: PropTypes.string,
