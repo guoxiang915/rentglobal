@@ -24,6 +24,7 @@ import {
   CheckIcon,
   LockIcon,
   UploadIcon,
+  DeleteIcon,
   ProgressIcon,
 } from '../../common/base-components';
 import {
@@ -34,7 +35,7 @@ import {
 import { withCarousel } from '../../common/base-services';
 import { ConditionalWrapper } from '../../utils/helpers';
 import { CropperDialog } from '../Layout';
-import { Grid, Card, Snackbar } from '@material-ui/core';
+import { Grid, Card } from '@material-ui/core';
 import { Alert } from '@material-ui/lab';
 import Dropzone from 'react-dropzone';
 import { maxFileSize } from '../../utils/constants';
@@ -291,6 +292,37 @@ class Profile extends PureComponent {
   handleStateChangeByEvent = (field, value) => () => {
     this.setState({ [field]: value });
   };
+
+  handleDeleteAvatar = () => {
+    const { t } = this.props;
+    this.setState({
+      dialog: (
+        <ConfirmDialog
+          variant="error"
+          text={t("confirmDelete")}
+          closeLabel={
+            <React.Fragment>
+              <CloseIcon style={{ width: 10, height: 10 }} />
+              <Typography paddingLeft>{t("cancel")}</Typography>
+            </React.Fragment>
+          }
+          confirmLabel={
+            <React.Fragment>
+              <DeleteIcon style={{ width: 15, height: 12 }} />
+              <Typography paddingLeft>{t("delete")}</Typography>
+            </React.Fragment>
+          }
+          onConfirm={this.deleteAvatar}
+          onClose={this.handleCloseDialog}
+        />
+      )
+    });
+  };
+
+  deleteAvatar = () => {
+    const { avatar } = this.state;
+    console.log(avatar);
+  }
 
   /** Save general info */
   handleSaveGeneralInfo = () => {
@@ -618,6 +650,20 @@ class Profile extends PureComponent {
                             </Dropzone>
                           )}
                         </Card>
+                      </Row>
+                      <Row>
+                        <Button
+                          variant="icon"
+                          link="errorRed"
+                          background="errorRedLight"
+                          outline="transparent"
+                          inverse
+                          onClick={this.handleDeleteAvatar}
+                        >
+                          <Typography fontSizeXS>
+                            <DeleteIcon style={{ width: 12, height: 13 }} />
+                          </Typography>
+                        </Button>
                       </Row>
                     </Column>
                   </Grid>
