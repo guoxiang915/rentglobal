@@ -23,6 +23,7 @@
     "forgotPassword": "Forgot Password?",
     "loginError_User not found": "User is incorrect",
     "loginError_Unauthorized": "Password is incorrect",
+    "loginError": "Email/Password combination is not correct",
     "registerError_User already exists": "This user already exists",
     "forgotYourPassword": "Forgot your password",
     "resetPassword": "Reset password",
