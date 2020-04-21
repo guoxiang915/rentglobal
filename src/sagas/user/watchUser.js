@@ -37,17 +37,20 @@ function* updateUser(action) {
     if (response.status === 200) {
       yield put({
         type: 'UPDATE_USER_SUCCESS',
+        field: action.field,
         resp: response.data,
       });
     } else {
       yield put({
         type: 'UPDATE_USER_FAILED',
+        field: action.field,
         resp: response.data,
       });
     }
   } catch (error) {
     yield put({
       type: 'UPDATE_USER_FAILED',
+      field: action.field,
       resp: { msg: error },
     });
   }

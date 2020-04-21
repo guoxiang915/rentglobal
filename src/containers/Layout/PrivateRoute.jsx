@@ -2,13 +2,15 @@ import { connect } from "react-redux";
 import PropTypes from "prop-types";
 import PrivateRoute from "../../components/Layout/PrivateRoute";
 import * as authActions from "../../actions/authActions";
+import * as appActions from "../../actions/appActions";
 
 PrivateRoute.propTypes = {
   auth: PropTypes.object.isRequired
 };
 
 const mapStateToProps = state => ({
-  auth: state.authState
+  auth: state.authState,
+  app: state.appState
 });
 
 const mapDispatchToProps = dispatch => ({
@@ -16,7 +18,9 @@ const mapDispatchToProps = dispatch => ({
     dispatch(authActions.authenticate(token, history)),
   mappedlogout: () => dispatch(authActions.logout()),
   mappedToggleRole: (userRole, history) =>
-    dispatch(authActions.setUserRole(userRole, history))
+    dispatch(authActions.setUserRole(userRole, history)),
+  mappedChangeLanguage: (language) =>
+    dispatch(appActions.changeLanguage(language))
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(PrivateRoute);

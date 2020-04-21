@@ -247,7 +247,7 @@ class LoginForm extends PureComponent {
             paddingTopHalf
             paddingRightHalf
           >
-            {t(`loginError_${error.msg}`)}
+            {t("loginError")}
           </Typography>
         )}
 

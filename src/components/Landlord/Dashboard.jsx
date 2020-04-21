@@ -442,7 +442,7 @@ class Dashboard extends PureComponent {
               backgroundImage: user.avatar
                 ? `url("${user.avatar.bucketPath}")`
                 : 'none',
-              backgroundSize: 'contain',
+              backgroundSize: 'cover',
               backgroundPosition: 'center',
             }}
             border
