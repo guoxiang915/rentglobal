@@ -521,6 +521,9 @@ class Profile extends PureComponent {
     const {
       phoneNumber
     } = this.state;
+    const {
+      t
+    } = this.props;
     let num = phoneNumber || '';
     if (!num.startsWith("+") && num.length > 0) {
       num = "+" + num;
@@ -532,7 +535,7 @@ class Profile extends PureComponent {
     let pn = new PhoneNumber(num);
     if (!pn.isValid()) {
 
-      this.setState({ phoneNumberError: "Invalid Number! Please include the country and area code" });
+      this.setState({ phoneNumberError: t("invalidNumberError") });
       return false;
     } else {
       this.setState({ phoneNumberError: '' });
@@ -779,7 +782,7 @@ class Profile extends PureComponent {
                                         </Typography>
                                         <Box paddingTop>
                                           {
-                                            editTab === 'generalInfo' ? "Save your phone number and then verify" : (
+                                            editTab === 'generalInfo' ? t("saveToVerify") : (
                                               <Button
                                                 link="normal"
                                                 background="secondaryLight"
@@ -816,7 +819,7 @@ class Profile extends PureComponent {
                                   title={(
                                     <Column>
                                       <Typography textSecondary>
-                                        Your phone number confirmed
+                                        {t("Your phone number confirmed")}
                                       </Typography>
                                     </Column>
                                   )}

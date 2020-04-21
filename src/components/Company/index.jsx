@@ -73,11 +73,11 @@ class Company extends PureComponent {
                   path="/company/profile"
                   render={() => (
                     <Profile
-                    updateUser={(field, user) => this.props.mappedupdateUser(
-                      field,
-                      user,
-                      this.props.history,
-                    )}
+                      updateUser={(field, user) => this.props.mappedupdateUser(
+                        field,
+                        user,
+                        this.props.history,
+                      )}
                       verifyPhoneNumber={(phoneNumber) =>
                         this.props.mappedverifyPhoneNumber(
                           phoneNumber
