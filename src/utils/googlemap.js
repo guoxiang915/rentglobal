@@ -10,9 +10,9 @@ export function area(coordinates) {
   let j;
   let size = 0;
   for (i = 0, j = coordinates.length - 1; i < coordinates.length; j = i, i++) {
-    size +=
-      coordinates[i].lat * coordinates[j].lng -
-      coordinates[j].lat * coordinates[i].lng;
+    size
+      += coordinates[i].lat * coordinates[j].lng
+      - coordinates[j].lat * coordinates[i].lng;
   }
 
   return size / 2;
@@ -36,9 +36,8 @@ export function centeroid(coordinates) {
     i < coordinates.length;
     j = i, i += 1
   ) {
-    const f =
-      coordinates[i].lat * coordinates[j].lng -
-      coordinates[j].lat * coordinates[i].lng;
+    const f = coordinates[i].lat * coordinates[j].lng
+      - coordinates[j].lat * coordinates[i].lng;
     lat += (coordinates[i].lat + coordinates[j].lat) * f;
     lng += (coordinates[i].lng + coordinates[j].lng) * f;
   }

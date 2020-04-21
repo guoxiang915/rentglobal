@@ -1,34 +1,34 @@
-import React, { PureComponent } from "react";
-import PropTypes from "prop-types";
-import { withStyles } from "@material-ui/core/styles";
-import { withTranslation } from "react-i18next";
-import { Column, Button, Typography } from "../../common/base-components";
-import { ErrorOutline } from "@material-ui/icons";
+import React, { PureComponent } from 'react';
+import PropTypes from 'prop-types';
+import { withStyles } from '@material-ui/core/styles';
+import { withTranslation } from 'react-i18next';
+import { ErrorOutline } from '@material-ui/icons';
+import { Column, Button, Typography } from '../../common/base-components';
 
-const styleSheet = theme => ({
+const styleSheet = (theme) => ({
   formWrapper: {
-    width: "100%",
+    width: '100%',
     paddingTop: 45,
-    paddingBottom: 75
+    paddingBottom: 75,
   },
 
   failedIcon: {
     fontSize: 40,
-    color: theme.colors.primary.errorRed
+    color: theme.colors.primary.errorRed,
   },
 
   fixedWidthButton: {
-    width: 220
+    width: 220,
   },
 
   dividerPadding: {
-    marginTop: 80
-  }
+    marginTop: 80,
+  },
 });
 
 class VerifyEmailFailedForm extends PureComponent {
   handleRegister = () => {
-    this.props.navigate("register");
+    this.props.navigate('register');
   };
 
   render() {
@@ -39,10 +39,10 @@ class VerifyEmailFailedForm extends PureComponent {
         <Column fullWidth>
           <ErrorOutline className={classes.failedIcon} />
           <Typography fontSizeM fontWeightBold textSecondary paddingTop>
-            {t("verificationFailed")}
+            {t('verificationFailed')}
           </Typography>
           <Typography fontSizeS textMediumGrey paddingTop>
-            {t("emailVerificationFailedMsg")}
+            {t('emailVerificationFailedMsg')}
           </Typography>
           <Column paddingTopDouble fullWidth>
             <Button
@@ -52,7 +52,7 @@ class VerifyEmailFailedForm extends PureComponent {
               onClick={this.handleRegister}
             >
               <Typography fontSizeS fontWeightBold>
-                {t("register")}
+                {t('register')}
               </Typography>
             </Button>
           </Column>
@@ -65,9 +65,9 @@ class VerifyEmailFailedForm extends PureComponent {
 VerifyEmailFailedForm.propTypes = {
   classes: PropTypes.object.isRequired,
   t: PropTypes.func.isRequired,
-  navigate: PropTypes.func
+  navigate: PropTypes.func,
 };
 
 export default withStyles(styleSheet)(
-  withTranslation("common")(VerifyEmailFailedForm)
+  withTranslation('common')(VerifyEmailFailedForm),
 );

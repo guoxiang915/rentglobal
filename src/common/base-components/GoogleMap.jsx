@@ -1,15 +1,15 @@
-import React from "react";
-import GoogleMapReact from "google-map-react";
-import { GoogleMapMarker } from ".";
-import { makeStyles } from "@material-ui/styles";
-import { fitBounds } from "google-map-react/utils";
+import React from 'react';
+import GoogleMapReact from 'google-map-react';
+import { makeStyles } from '@material-ui/styles';
+import { fitBounds } from 'google-map-react/utils';
+import { GoogleMapMarker } from '.';
 
 const useStyles = makeStyles({
   map: {
-    width: "100%",
-    height: "100%",
+    width: '100%',
+    height: '100%',
     borderRadius: (props) => props.borderRadius,
-    overflow: "hidden",
+    overflow: 'hidden',
   },
 });
 
@@ -25,8 +25,8 @@ const SimpleMap = ({
   const size = { width: 640, height: 640 };
 
   /** get center of coordinates */
-  let center = { lat: 0, lng: 0 },
-    zoom = 11;
+  let center = { lat: 0, lng: 0 };
+  let zoom = 11;
   if (coordinates) {
     if (coordinates.length === 1) {
       center = coordinates[0];
@@ -55,15 +55,15 @@ const SimpleMap = ({
   return (
     <div className={classes.map}>
       <GoogleMapReact
-        bootstrapURLKeys={{ key: "AIzaSyCFjI4tzrBQzlNgWorViS48057MOvcn_VY" }}
+        bootstrapURLKeys={{ key: 'AIzaSyCFjI4tzrBQzlNgWorViS48057MOvcn_VY' }}
         defaultCenter={{ lat: 45.5017, lng: -73.5673 }}
         defaultZoom={11}
         center={center}
         zoom={zoom}
         onClick={onClick}
       >
-        {markers ||
-          coordinates.map((coord, index) => (
+        {markers
+          || coordinates.map((coord, index) => (
             <GoogleMapMarker
               key={index}
               lat={coord.lat}

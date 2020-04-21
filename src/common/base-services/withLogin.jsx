@@ -1,7 +1,7 @@
 import React, { PureComponent } from 'react';
-import { LoginDialog } from '../../components/Layout/Dialogs';
 import { withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
+import { LoginDialog } from '../../components/Layout/Dialogs';
 import * as authActions from '../../actions/authActions';
 
 export const withLogin = (C, options) => {
@@ -56,8 +56,7 @@ export const withLogin = (C, options) => {
 
   const mapDispatchToProps = (dispatch) => {
     return {
-      mappedLogin: (credentials, history) =>
-        dispatch(authActions.login(credentials, history)),
+      mappedLogin: (credentials, history) => dispatch(authActions.login(credentials, history)),
     };
   };
 

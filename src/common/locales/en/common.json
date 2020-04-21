@@ -189,7 +189,7 @@
     "area": "Area",
     "rooms": "Rooms",
     "numberOfEmployees": "Number of employees",
-    "priceOrMonthly": "Price / Monthly",
+    "pricePerMonth": "Price / Monthly",
     "$/month": "$ / Month",
     "businessOtherFees": "Business / Other fees",
     "spokenLanguage": "Spoken language",

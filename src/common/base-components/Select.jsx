@@ -45,7 +45,7 @@ const styleSheet = (theme) => ({
 
   input: {
     ...theme.typography.primaryBody,
-    padding: `14px 16px`,
+    padding: '14px 16px',
     borderRadius: 99999,
     '&:focus': {
       borderRadius: 99999,
@@ -80,7 +80,7 @@ const styleSheet = (theme) => ({
 
   select: {
     ...theme.typography.primaryBody,
-    padding: `14px 16px`,
+    padding: '14px 16px',
   },
 
   icon: {
@@ -159,10 +159,10 @@ export const Select = withStyles(styleSheet, { name: 'Select' })(
         variant,
         classes: s,
         className,
-        helperText: ht,
+        helperText,
         ...props
       } = this.props;
-      const { error, helperText } = this.state;
+      const { error, helperText: errorText } = this.state;
 
       return (
         <MUIFormControl className={className}>
@@ -190,30 +190,28 @@ export const Select = withStyles(styleSheet, { name: 'Select' })(
             {...props}
           >
             {native && displayEmpty && (
-              <option key={0} value={''}>
+              <option key={0} value="">
                 &nbsp;
               </option>
             )}
-            {options &&
-              options.map((option, i) =>
-                native ? (
-                  <option key={i + 1} value={getKey(option)}>
-                    {renderOption(option)}
-                  </option>
-                ) : (
-                  <MenuItem key={i} value={getKey(option)}>
-                    <Typography>{renderOption(option)}</Typography>
-                  </MenuItem>
-                )
-              )}
+            {options
+              && options.map((option, i) => (native ? (
+                <option key={i + 1} value={getKey(option)}>
+                  {renderOption(option)}
+                </option>
+              ) : (
+                <MenuItem key={i} value={getKey(option)}>
+                  <Typography>{renderOption(option)}</Typography>
+                </MenuItem>
+              )))}
           </MUISelect>
-          {helperText && (
+          {errorText && (
             <MUIFormHelperText className={s.errorMessage}>
-              {helperText}
+              {errorText}
             </MUIFormHelperText>
           )}
         </MUIFormControl>
       );
     }
-  }
+  },
 );

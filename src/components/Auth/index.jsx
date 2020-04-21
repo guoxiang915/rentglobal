@@ -94,7 +94,7 @@ class AuthWrapper extends PureComponent {
   };
 
   renderVerifyForm = ({ match, classes: s }) => {
-    const token = match.params['token'];
+    const { token } = match.params;
     React.useMemo(() => {
       console.log(token);
       this.props.mappedVerifyEmail({ token }, this.props.history);
@@ -115,7 +115,7 @@ class AuthWrapper extends PureComponent {
 
     return (
       <div className={s.root}>
-        <div className={s.backgroundWrapper}></div>
+        <div className={s.backgroundWrapper} />
         <div className={s.loginWrapper}>
           {!isLoggedIn ? (
             <Switch>
@@ -127,9 +127,7 @@ class AuthWrapper extends PureComponent {
                   <Column classes={{ box: s.loginCard }}>
                     <LoginForm
                       email={this.state.email}
-                      mappedLogin={(payload) =>
-                        this.props.mappedLogin(payload, this.props.history)
-                      }
+                      mappedLogin={(payload) => this.props.mappedLogin(payload, this.props.history)}
                       error={error}
                       isLoading={isLoading}
                     />
@@ -150,10 +148,8 @@ class AuthWrapper extends PureComponent {
                   <Column classes={{ box: s.loginCard }}>
                     <RegisterForm
                       email={this.state.email}
-                      mappedRegister={(payload) =>
-                        this.props.mappedRegister(payload, this.props.history)
-                      }
-                      registerMode={match.params['registerMode']}
+                      mappedRegister={(payload) => this.props.mappedRegister(payload, this.props.history)}
+                      registerMode={match.params.registerMode}
                       error={error}
                       isLoading={isLoading}
                     />
@@ -170,29 +166,25 @@ class AuthWrapper extends PureComponent {
               <Route
                 exact
                 path="/auth/verify-email-success"
-                render={({ location }) =>
-                  location.state && location.state.success ? (
-                    <Column classes={{ box: s.loginCard }}>
-                      <VerifyEmailSuccessForm navigate={this.navigate} />
-                    </Column>
-                  ) : (
-                    <Redirect to="/auth/login" />
-                  )
-                }
+                render={({ location }) => (location.state && location.state.success ? (
+                  <Column classes={{ box: s.loginCard }}>
+                    <VerifyEmailSuccessForm navigate={this.navigate} />
+                  </Column>
+                ) : (
+                  <Redirect to="/auth/login" />
+                ))}
               />
               {/* verify email failed form */}
               <Route
                 exact
                 path="/auth/verify-email-failed"
-                render={({ location }) =>
-                  location.state && location.state.failed ? (
-                    <Column classes={{ box: s.loginCard }}>
-                      <VerifyEmailFailedForm navigate={this.navigate} />
-                    </Column>
-                  ) : (
-                    <Redirect to="/auth/login" />
-                  )
-                }
+                render={({ location }) => (location.state && location.state.failed ? (
+                  <Column classes={{ box: s.loginCard }}>
+                    <VerifyEmailFailedForm navigate={this.navigate} />
+                  </Column>
+                ) : (
+                  <Redirect to="/auth/login" />
+                ))}
               />
               {/* forgot password form */}
               <Route
@@ -203,12 +195,10 @@ class AuthWrapper extends PureComponent {
                     <ForgotPasswordForm
                       email={this.state.email}
                       isLoading={isLoading}
-                      mappedForgotPassword={(payload) =>
-                        this.props.mappedForgotPassword(
-                          payload,
-                          this.props.history
-                        )
-                      }
+                      mappedForgotPassword={(payload) => this.props.mappedForgotPassword(
+                        payload,
+                        this.props.history,
+                      )}
                     />
                   </Column>
                 )}
@@ -216,18 +206,16 @@ class AuthWrapper extends PureComponent {
               {/* reset password form */}
               <Route
                 path="/auth/reset-password/confirm"
-                render={({ location }) =>
-                  location.state && location.state.email ? (
-                    <Column classes={{ box: s.loginCard }}>
-                      <SendPasswordVerificationForm
-                        email={location.state.email}
-                        navigate={this.navigate}
-                      />
-                    </Column>
-                  ) : (
-                    <Redirect to="/auth/login" />
-                  )
-                }
+                render={({ location }) => (location.state && location.state.email ? (
+                  <Column classes={{ box: s.loginCard }}>
+                    <SendPasswordVerificationForm
+                      email={location.state.email}
+                      navigate={this.navigate}
+                    />
+                  </Column>
+                ) : (
+                  <Redirect to="/auth/login" />
+                ))}
               />
               {/* reset password confirm form */}
               <Route
@@ -235,13 +223,11 @@ class AuthWrapper extends PureComponent {
                 render={({ match }) => (
                   <Column classes={{ box: s.loginCard }}>
                     <SetNewPasswordForm
-                      token={match.params['token']}
-                      mappedResetPassword={(payload) =>
-                        this.props.mappedResetPassword(
-                          payload,
-                          this.props.history
-                        )
-                      }
+                      token={match.params.token}
+                      mappedResetPassword={(payload) => this.props.mappedResetPassword(
+                        payload,
+                        this.props.history,
+                      )}
                     />
                   </Column>
                 )}

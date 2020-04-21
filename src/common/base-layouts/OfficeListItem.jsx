@@ -2,6 +2,7 @@ import React from 'react';
 import { withStyles } from '@material-ui/core';
 import { withTranslation } from 'react-i18next';
 import PropTypes from 'prop-types';
+import Carousel from '@brainhubeu/react-carousel';
 import {
   Typography,
   Row,
@@ -16,7 +17,6 @@ import {
   LinearProgress,
 } from '../base-components';
 import { ContactInfoDialog } from '../../components/Layout/Dialogs';
-import Carousel from '@brainhubeu/react-carousel';
 import { formatDate } from '../../utils/formatters';
 import { getOfficeStatus } from '../../utils/validators';
 
@@ -86,8 +86,8 @@ const styleSheet = (theme) => ({
       bottom: -8,
       width: '100%',
       borderTop: `8px solid ${theme.colors.primary.mainColor}`,
-      borderLeft: `18px solid transparent`,
-      borderRight: `18px solid transparent`,
+      borderLeft: '18px solid transparent',
+      borderRight: '18px solid transparent',
       borderBottom: 'none',
     },
   },
@@ -105,8 +105,8 @@ const styleSheet = (theme) => ({
       bottom: -8,
       width: '100%',
       borderTop: `8px solid ${theme.colors.primary.errorRed}`,
-      borderLeft: `18px solid transparent`,
-      borderRight: `18px solid transparent`,
+      borderLeft: '18px solid transparent',
+      borderRight: '18px solid transparent',
       borderBottom: 'none',
     },
   },
@@ -149,7 +149,7 @@ const OfficeListItem = ({
           email: 'consultantname@domainanme.com',
         }}
         onClose={handleCloseDialog}
-      />
+      />,
     );
   };
 
@@ -161,18 +161,16 @@ const OfficeListItem = ({
 
   const officeStatus = getOfficeStatus(office);
   let status = officeStatus ? officeStatus.status : null;
-  status =
-    status === 'rejected'
-      ? 'rejectedByConsultant'
-      : status === 'pendingForApprove'
-        ? 'pendingForApprove'
-        : status === 'unpublished'
-          ? 'unpublish'
-          : status === 'incomplete'
-            ? 'mustCompleteData'
-            : null;
-  const progress =
-    officeStatus && officeStatus.progress < 100 ? officeStatus.progress : null;
+  status = status === 'rejected'
+    ? 'rejectedByConsultant'
+    : status === 'pendingForApprove'
+      ? 'pendingForApprove'
+      : status === 'unpublished'
+        ? 'unpublish'
+        : status === 'incomplete'
+          ? 'mustCompleteData'
+          : null;
+  const progress = officeStatus && officeStatus.progress < 100 ? officeStatus.progress : null;
 
   return (
     <Row classes={{ box: s.officeWrapper }} wrap alignChildrenStretch>
@@ -262,7 +260,9 @@ const OfficeListItem = ({
               <StarIcon style={{ width: 12, height: 12 }} />
             </Typography>
             <Typography fontSizeS textMediumGrey paddingLeftHalf>
-              3.5 {/* office.rating */}
+              3.5
+              {' '}
+              {/* office.rating */}
             </Typography>
           </Row>
         )}
@@ -305,7 +305,9 @@ const OfficeListItem = ({
         <Column classes={{ box: s.officeLeaseInfo }} alignChildrenEnd>
           {/** last updated date */}
           <Typography textMediumGrey fontSizeXS style={{ lineHeight: '26px' }}>
-            {t('lastUpdate')}: {formatDate(office.updatedAt)}
+            {t('lastUpdate')}
+            :
+            {formatDate(office.updatedAt)}
           </Typography>
 
           {/** leased by */}
@@ -323,13 +325,16 @@ const OfficeListItem = ({
               <React.Fragment>
                 <Row paddingTopHalf style={{ lineHeight: '26px' }}>
                   <Typography textMediumGrey fontSizeS>
-                    {t('leasedBy')}:&nbsp;
+                    {t('leasedBy')}
+                    :&nbsp;
                   </Typography>
                   <Typography textSecondary fontSizeS>
                     {office.leasedBy.name}
                   </Typography>
                   <Typography textMediumGrey fontSizeS>
-                    &nbsp;({formatDate(office.leasedBy.date)})
+                    &nbsp;(
+                    {formatDate(office.leasedBy.date)}
+                    )
                   </Typography>
                 </Row>
 
@@ -393,5 +398,5 @@ OfficeListItem.propTypes = {
 };
 
 export default withStyles(styleSheet, { name: 'OfficeListItem' })(
-  withTranslation('common')(OfficeListItem)
+  withTranslation('common')(OfficeListItem),
 );

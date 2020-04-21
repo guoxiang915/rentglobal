@@ -1,16 +1,16 @@
-import { connect } from "react-redux";
-import AddNewOffice from "../../../components/Landlord/Office/AddNewOffice";
-import * as officeActions from "../../../actions/officeActions";
+import { connect } from 'react-redux';
+import AddNewOffice from '../../../components/Landlord/Office/AddNewOffice';
+import * as officeActions from '../../../actions/officeActions';
 
-const mapStateToProps = state => {
+const mapStateToProps = (state) => {
   return {
-    office: state.officeState
+    office: state.officeState,
   };
 };
 
-const mapDispatchToprops = dispatch => {
+const mapDispatchToprops = (dispatch) => {
   return {
-    mappedCreateOffice: office => dispatch(officeActions.createOffice(office))
+    mappedCreateOffice: (office) => dispatch(officeActions.createOffice(office)),
   };
 };
 

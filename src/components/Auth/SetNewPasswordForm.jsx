@@ -1,7 +1,7 @@
-import React, { PureComponent } from "react";
-import PropTypes from "prop-types";
-import { withStyles } from "@material-ui/core/styles";
-import { withTranslation } from "react-i18next";
+import React, { PureComponent } from 'react';
+import PropTypes from 'prop-types';
+import { withStyles } from '@material-ui/core/styles';
+import { withTranslation } from 'react-i18next';
 import {
   TextField,
   Button,
@@ -11,19 +11,19 @@ import {
   Divider,
   Typography,
   LockIcon,
-} from "../../common/base-components";
+} from '../../common/base-components';
 
 const styleSheet = (theme) => ({
   formWrapper: {
-    width: "100%",
+    width: '100%',
   },
 
   formTitle: {
     color: theme.colors.primary.darkGrey,
-    lineHeight: "26px",
-    fontSize: "20px",
+    lineHeight: '26px',
+    fontSize: '20px',
     marginTop: 8,
-    textAlign: "center",
+    textAlign: 'center',
   },
 
   submitButton: {
@@ -43,9 +43,9 @@ class SetNewPasswordForm extends PureComponent {
   constructor(props) {
     super(props);
     this.state = {
-      password: "",
+      password: '',
       passwordError: null,
-      confirmPassword: "",
+      confirmPassword: '',
       confirmPasswordError: null,
       error: null,
     };
@@ -66,12 +66,12 @@ class SetNewPasswordForm extends PureComponent {
    * Check form validations
    */
   validateForm = () => {
-    if (this.state.password === "") {
-      this.setState({ passwordError: this.props.t("passwordRequired") });
+    if (this.state.password === '') {
+      this.setState({ passwordError: this.props.t('passwordRequired') });
       return false;
-    } else if (this.state.password !== this.state.confirmPassword) {
+    } if (this.state.password !== this.state.confirmPassword) {
       this.setState({
-        confirmPasswordError: this.props.t("confirmPasswordDifferent"),
+        confirmPasswordError: this.props.t('confirmPasswordDifferent'),
       });
       return false;
     }
@@ -91,7 +91,7 @@ class SetNewPasswordForm extends PureComponent {
       token: this.props.token,
       password: this.state.password,
     };
-    if (payload.password !== "") {
+    if (payload.password !== '') {
       this.props.mappedResetPassword(payload);
     }
   };
@@ -109,14 +109,14 @@ class SetNewPasswordForm extends PureComponent {
           paddingTopHalf
           justifyChildrenCenter
         >
-          {t("setNewPassword")}
+          {t('setNewPassword')}
         </Typography>
         <Box paddingTop>
           <TextField
             id="password"
-            placeholder={t("password")}
+            placeholder={t('password')}
             value={this.state.password}
-            onChange={this.handleChange("password")}
+            onChange={this.handleChange('password')}
             type="password"
             variant="outlined"
             startAdornment={<LockIcon className={classes.outlineIcon} />}
@@ -128,9 +128,9 @@ class SetNewPasswordForm extends PureComponent {
         <Box paddingTop>
           <TextField
             id="confirmPassword"
-            placeholder={t("confirmPassword")}
+            placeholder={t('confirmPassword')}
             value={this.state.confirmPassword}
-            onChange={this.handleChange("confirmPassword")}
+            onChange={this.handleChange('confirmPassword')}
             type="password"
             variant="outlined"
             startAdornment={<LockIcon className={classes.outlineIcon} />}
@@ -149,7 +149,7 @@ class SetNewPasswordForm extends PureComponent {
             onClick={this.handleSubmit}
           >
             <Typography fontSizeS fontWeightBold>
-              {t("resetPassword")}
+              {t('resetPassword')}
             </Typography>
           </Button>
         </Box>
@@ -158,7 +158,7 @@ class SetNewPasswordForm extends PureComponent {
           <Box paddingTop paddingBottom>
             <Typography fontSizeS fontWeightBold>
               <Link variant="primary" to="/auth/login">
-                {t("login")}
+                {t('login')}
               </Link>
             </Typography>
           </Box>
@@ -175,5 +175,5 @@ SetNewPasswordForm.propTypes = {
 };
 
 export default withStyles(styleSheet)(
-  withTranslation("common")(SetNewPasswordForm)
+  withTranslation('common')(SetNewPasswordForm),
 );

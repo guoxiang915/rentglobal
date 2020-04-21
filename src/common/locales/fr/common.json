@@ -198,7 +198,7 @@
     "area": "Zone",
     "rooms": "Piece",
     "numberOfEmployees": "Nombre de poste",
-    "priceOrMonthly": "Prix/Mois",
+    "pricePerMonth": "Prix/Mois",
     "$/month": "$ / Mois",
     "businessOtherFees": "Autre charger",
     "spokenLanguage": "Langue parlee",

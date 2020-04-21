@@ -1,7 +1,9 @@
 import React, { useState } from 'react';
 import { LinearProgress, withStyles } from '@material-ui/core';
 import { withTranslation } from 'react-i18next';
-import { withLogin } from '../../common/base-services';
+import { KeyboardArrowLeft, KeyboardArrowRight } from '@material-ui/icons';
+import Carousel, { Dots } from '@brainhubeu/react-carousel';
+import { withLogin } from '../base-services';
 import {
   Typography,
   Row,
@@ -12,8 +14,6 @@ import {
   FavoriteFilledIcon,
   FavoriteIcon,
 } from '../base-components';
-import { KeyboardArrowLeft, KeyboardArrowRight } from '@material-ui/icons';
-import Carousel, { Dots } from '@brainhubeu/react-carousel';
 import { getOfficeStatus } from '../../utils/validators';
 import { favoriteOffice } from '../../api/endpoints';
 
@@ -160,7 +160,7 @@ const styleSheet = (theme) => ({
 });
 
 /** Dot component */
-const Dot = ({ classes }) => <div className={classes.dot}></div>;
+const Dot = ({ classes }) => <div className={classes.dot} />;
 
 /**
  * Function component for uploading document
@@ -213,30 +213,28 @@ const OfficeItem = React.memo(
     const dots = React.useMemo(() => {
       return office.coverPhotos
         ? office.coverPhotos.map((content, key) => (
-            <React.Fragment key={key}>
-              <Dot classes={s} />
-            </React.Fragment>
-          ))
+          <React.Fragment key={key}>
+            <Dot classes={s} />
+          </React.Fragment>
+        ))
         : [];
     }, [office, s]);
 
     /** Get status of office */
     const officeStatus = getOfficeStatus(office);
     let status = officeStatus ? officeStatus.status : null;
-    status =
-      status === 'approved'
-        ? null
-        : status === 'rejected'
+    status = status === 'approved'
+      ? null
+      : status === 'rejected'
         ? 'rejectedByConsultant'
         : status === 'unpublished'
-        ? 'unpublished'
-        : status === 'incomplete'
-        ? 'mustCompleteData'
-        : null;
-    const progress =
-      officeStatus && officeStatus.progress < 100
-        ? officeStatus.progress
-        : null;
+          ? 'unpublished'
+          : status === 'incomplete'
+            ? 'mustCompleteData'
+            : null;
+    const progress = officeStatus && officeStatus.progress < 100
+      ? officeStatus.progress
+      : null;
 
     return (
       <Box
@@ -277,7 +275,9 @@ const OfficeItem = React.memo(
               textWhite
               classes={{ box: s.officeLocation }}
             >
-              {office.location.fullAddress} {office.location.fullAddress}
+              {office.location.fullAddress}
+              {' '}
+              {office.location.fullAddress}
             </Typography>
 
             {/** arrows */}
@@ -377,7 +377,9 @@ const OfficeItem = React.memo(
                 <StarIcon style={{ width: 12, height: 12 }} />
               </Typography>
               <Typography fontSizeS textMediumGrey paddingLeftHalf>
-                3.5 {/* office.rating */}
+                3.5
+                {' '}
+                {/* office.rating */}
               </Typography>
             </Row>
           )}
@@ -417,9 +419,9 @@ const OfficeItem = React.memo(
         </Column>
       </Box>
     );
-  }
+  },
 );
 
 export default withStyles(styleSheet, { name: 'OfficeItem' })(
-  withTranslation('common')(withLogin(OfficeItem))
+  withTranslation('common')(withLogin(OfficeItem)),
 );

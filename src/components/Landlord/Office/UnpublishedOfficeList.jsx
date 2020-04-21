@@ -4,6 +4,8 @@ import { withTranslation } from 'react-i18next';
 import clsx from 'clsx';
 import PropTypes from 'prop-types';
 import withWidth, { isWidthDown } from '@material-ui/core/withWidth';
+import { KeyboardBackspace } from '@material-ui/icons';
+import { Tabs, Tab } from '@material-ui/core';
 import {
   Row,
   Column,
@@ -14,8 +16,6 @@ import {
   Divider,
 } from '../../../common/base-components';
 import { OfficeListItem } from '../../../common/base-layouts';
-import { KeyboardBackspace } from '@material-ui/icons';
-import { Tabs, Tab } from '@material-ui/core';
 import { getOfficeStatus } from '../../../utils/validators';
 
 const styleSheet = (theme) => ({
@@ -85,20 +85,19 @@ class UnpublishedOfficeList extends PureComponent {
   /** Get office from id */
   componentDidMount() {
     this.props.getOffices().then(
-      (response) =>
-        this.setState({
-          offices: response.data,
-          pendingOffices: response.data.filter(
-            (office) => getOfficeStatus(office).status === 'pendingForApprove'
-          ),
-          incompleteOffices: response.data.filter(
-            (office) => getOfficeStatus(office).status === 'incomplete'
-          ),
-          unpublishedOffices: response.data.filter(
-            (office) => getOfficeStatus(office).status === 'unpublish'
-          ),
-        }),
-      () => {}
+      (response) => this.setState({
+        offices: response.data,
+        pendingOffices: response.data.filter(
+          (office) => getOfficeStatus(office).status === 'pendingForApprove',
+        ),
+        incompleteOffices: response.data.filter(
+          (office) => getOfficeStatus(office).status === 'incomplete',
+        ),
+        unpublishedOffices: response.data.filter(
+          (office) => getOfficeStatus(office).status === 'unpublish',
+        ),
+      }),
+      () => {},
     );
   }
 
@@ -186,7 +185,7 @@ class UnpublishedOfficeList extends PureComponent {
             <Tab
               value={index}
               key={index}
-              label={t(tab.name) + ' (' + tab.value.length + ')'}
+              label={`${t(tab.name)} (${tab.value.length})`}
               classes={{ root: s.tab }}
             />
           ))}
@@ -212,5 +211,5 @@ class UnpublishedOfficeList extends PureComponent {
 }
 
 export default withWidth()(
-  withStyles(styleSheet)(withTranslation('common')(UnpublishedOfficeList))
+  withStyles(styleSheet)(withTranslation('common')(UnpublishedOfficeList)),
 );

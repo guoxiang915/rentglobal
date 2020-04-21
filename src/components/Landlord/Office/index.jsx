@@ -71,7 +71,7 @@ class Offices extends PureComponent {
   componentDidMount() {
     this.props.getOffices().then(
       (response) => this.setState({ offices: response.data }),
-      () => {}
+      () => {},
     );
   }
 
@@ -122,7 +122,7 @@ class Offices extends PureComponent {
 
         {/* requests tab */}
         <Row fullWidth classes={{ box: s.officesTabWrapper }}>
-          <TabWrapper title={t('requests') + ' (10)'} open={true} insideOpen>
+          <TabWrapper title={`${t('requests')} (10)`} open insideOpen>
             <Row
               fullWidth
               paddingTopDouble
@@ -156,14 +156,14 @@ class Offices extends PureComponent {
         <Row fullWidth classes={{ box: s.officesTabWrapper }}>
           <TabWrapper
             title={
-              t('officeLists') +
-              ' (' +
-              offices.filter((item) => item.published === true).length +
-              ')'
+              `${t('officeLists')
+              } (${
+                offices.filter((item) => item.published === true).length
+              })`
             }
-            open={true}
+            open
             insideOpen
-            actionButton={
+            actionButton={(
               <Button
                 link="primary"
                 background="normalLight"
@@ -174,7 +174,7 @@ class Offices extends PureComponent {
                   {t('allOfficesList')}
                 </Typography>
               </Button>
-            }
+            )}
           >
             <Row paddingTopDouble fullWidth noOverflow>
               <CarouselWrapper
@@ -209,14 +209,14 @@ class Offices extends PureComponent {
         <Row fullWidth classes={{ box: s.officesTabWrapper }}>
           <TabWrapper
             title={
-              t('needAttention') +
-              ' (' +
-              offices.filter((item) => item.published === false).length +
-              ')'
+              `${t('needAttention')
+              } (${
+                offices.filter((item) => item.published === false).length
+              })`
             }
-            open={true}
+            open
             insideOpen
-            actionButton={
+            actionButton={(
               <Button
                 link="primary"
                 background="normalLight"
@@ -227,7 +227,7 @@ class Offices extends PureComponent {
                   {t('allUnpublish')}
                 </Typography>
               </Button>
-            }
+            )}
           >
             <Row paddingTopDouble fullWidth noOverflow>
               <CarouselWrapper
@@ -260,5 +260,5 @@ class Offices extends PureComponent {
 }
 
 export default withWidth()(
-  withStyles(styleSheet)(withTranslation('common')(Offices))
+  withStyles(styleSheet)(withTranslation('common')(Offices)),
 );

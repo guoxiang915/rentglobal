@@ -169,13 +169,17 @@ class AppSidebar extends PureComponent {
 
   menus = {
     '': [
-      { text: 'home', link: '', role: false, icon: HomeIcon, exact: true },
+      {
+        text: 'home', link: '', role: false, icon: HomeIcon, exact: true,
+      },
       { text: 'chatWithTessi', link: 'chat', icon: TessiIcon },
       { text: 'login', link: 'login', icon: UserIcon },
       { text: 'register', link: 'register', icon: EditDocumentIcon },
     ],
     landlord: [
-      { text: 'home', link: '', role: false, icon: HomeIcon, exact: true },
+      {
+        text: 'home', link: '', role: false, icon: HomeIcon, exact: true,
+      },
       { text: 'dashboard', link: 'dashboard', icon: DashboardIcon },
       { text: 'offices', link: 'offices', icon: OfficeIcon },
       { text: 'contracts', link: 'contracts', icon: NoteIcon },
@@ -191,7 +195,9 @@ class AppSidebar extends PureComponent {
       { text: 'setting', link: 'settings', icon: SettingIcon },
     ],
     company: [
-      { text: 'home', link: '', role: false, icon: HomeIcon, exact: true },
+      {
+        text: 'home', link: '', role: false, icon: HomeIcon, exact: true,
+      },
       { text: 'dashboard', link: 'dashboard', icon: DashboardIcon },
       { text: 'offices', link: 'offices', icon: OfficeIcon },
       { text: 'contracts', link: 'contracts', icon: NoteIcon },
@@ -205,7 +211,9 @@ class AppSidebar extends PureComponent {
 
   // menu item component
   renderMenuItem = withWidth()(
-    ({ active, item, navigate, width, classes, t }) => {
+    ({
+      active, item, navigate, width, classes, t,
+    }) => {
       const IconComponent = item.icon;
       const isHover = false;
 
@@ -215,7 +223,7 @@ class AppSidebar extends PureComponent {
             classes={{
               box: clsx(
                 classes.menuItem,
-                (active || isHover) && classes.activeItem
+                (active || isHover) && classes.activeItem,
               ),
             }}
             fontWeightBold={active}
@@ -232,7 +240,7 @@ class AppSidebar extends PureComponent {
                     classes={{
                       box: clsx(
                         classes.menuIcon,
-                        (active || isHover) && classes.activeMenuIcon
+                        (active || isHover) && classes.activeMenuIcon,
                       ),
                     }}
                   >
@@ -252,7 +260,7 @@ class AppSidebar extends PureComponent {
                     classes={{
                       box: clsx(
                         classes.menuIcon,
-                        (active || isHover) && classes.activeMenuIcon
+                        (active || isHover) && classes.activeMenuIcon,
                       ),
                     }}
                   >
@@ -265,7 +273,7 @@ class AppSidebar extends PureComponent {
           </Row>
         </React.Fragment>
       );
-    }
+    },
   );
 
   /** Navigate pages */
@@ -274,12 +282,14 @@ class AppSidebar extends PureComponent {
   };
 
   render() {
-    const { userRole, width, classes, t } = this.props;
+    const {
+      userRole, width, classes, t,
+    } = this.props;
     const MenuItem = this.renderMenuItem;
 
     /** Get active item */
     const activeItem = this.menus[userRole].find((item) => {
-      let link = `${userRole && item.role !== false ? '/' + userRole : ''}/${
+      let link = `${userRole && item.role !== false ? `/${userRole}` : ''}/${
         item.link
       }`;
       if (item.link === 'login') {
@@ -288,8 +298,8 @@ class AppSidebar extends PureComponent {
         link = 'register';
       }
       return item.exact
-        ? this.props.location.pathname === link ||
-            this.props.location.pathname === link + '/'
+        ? this.props.location.pathname === link
+            || this.props.location.pathname === `${link}/`
         : this.props.location.pathname.startsWith(link);
     });
 
@@ -426,5 +436,5 @@ class AppSidebar extends PureComponent {
 }
 
 export default withWidth()(
-  withRouter(withStyles(styleSheet)(withTranslation('common')(AppSidebar)))
+  withRouter(withStyles(styleSheet)(withTranslation('common')(AppSidebar))),
 );

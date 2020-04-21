@@ -3,6 +3,7 @@ import { withStyles } from '@material-ui/core/styles';
 import { withTranslation } from 'react-i18next';
 import PropTypes from 'prop-types';
 import withWidth, { isWidthDown } from '@material-ui/core/withWidth';
+import Carousel from '@brainhubeu/react-carousel';
 import {
   Box,
   Row,
@@ -20,7 +21,6 @@ import {
 } from '../../common/base-components';
 import { TabWrapper, StatisticBox } from '../../common/base-layouts';
 import { servicesCategories } from '../../utils/constants';
-import Carousel from '@brainhubeu/react-carousel';
 import {
   ContactInfoDialog,
   ShareOfficeDialog,
@@ -215,8 +215,8 @@ const CoverPhotos = React.memo(({ classes: s, coverPhotos, width }) => {
       {isWidthDown('xs', width) ? (
         <div className={s.imageWrapper}>
           <Carousel keepDirectionWhenDragging itemWidth={285} offset={20}>
-            {coverPhotos &&
-              coverPhotos.map((photo, index) => (
+            {coverPhotos
+              && coverPhotos.map((photo, index) => (
                 <div className={s.coverPhotoWrapper} key={index}>
                   <div className={s.coverPhoto}>
                     <img
@@ -240,9 +240,9 @@ const CoverPhotos = React.memo(({ classes: s, coverPhotos, width }) => {
               <div className={s.coverPhoto}>
                 <img
                   src={
-                    coverPhotos?.[currentPhoto]?.desktop?.bucketPath ||
-                    coverPhotos?.[currentPhoto]?.bucketPath ||
-                    null
+                    coverPhotos?.[currentPhoto]?.desktop?.bucketPath
+                    || coverPhotos?.[currentPhoto]?.bucketPath
+                    || null
                   }
                   className={s.coverPhotoContent}
                   alt=""
@@ -264,8 +264,8 @@ const CoverPhotos = React.memo(({ classes: s, coverPhotos, width }) => {
                 style={{ top: -currentPhoto * 140 }}
                 classes={{ box: s.imageNavList }}
               >
-                {coverPhotos &&
-                  coverPhotos.map((photo, index) => (
+                {coverPhotos
+                  && coverPhotos.map((photo, index) => (
                     <img
                       key={index}
                       src={
@@ -378,7 +378,9 @@ class OfficeDetailForm extends PureComponent {
    * Renderer function
    */
   render() {
-    const { office, classes: s, t, width } = this.props;
+    const {
+      office, classes: s, t, width,
+    } = this.props;
     const { dialog } = this.state;
 
     return (
@@ -467,7 +469,9 @@ class OfficeDetailForm extends PureComponent {
                       <StarIcon style={{ width: 12, height: 12 }} />
                     </Typography>
                     <Typography fontSizeS textSecondary paddingLeftHalf>
-                      3.5 {/* office.rating */}
+                      3.5
+                      {' '}
+                      {/* office.rating */}
                     </Typography>
                   </Row>
                 }
@@ -475,10 +479,14 @@ class OfficeDetailForm extends PureComponent {
                   // office.refID &&
                   <Row paddingTopHalf>
                     <Typography fontSizeS textSecondary>
-                      {t('refID')}:&nbsp;
+                      {t('refID')}
+                      :&nbsp;
                     </Typography>
                     <Typography fontSizeM fontWeightBold textSecondary>
-                      #{numberWithSpaces('001234567')} {/* office.refID */}
+                      #
+                      {numberWithSpaces('001234567')}
+                      {' '}
+                      {/* office.refID */}
                     </Typography>
                   </Row>
                 }
@@ -492,7 +500,7 @@ class OfficeDetailForm extends PureComponent {
           <Column classes={{ box: s.mainDetailsWrapper }}>
             {/** Show general info */}
             <TabWrapper
-              open={true}
+              open
               insideOpen
               className={s.detailsTabWrapper}
               title={t('generalInfo')}
@@ -509,9 +517,11 @@ class OfficeDetailForm extends PureComponent {
               </Row>
               <Row classes={{ box: s.infoRow }}>
                 <Column classes={{ box: s.infoLabel }}>{t('area')}</Column>
-                <Column classes={{ box: s.infoValue }}>{`${
-                  office.area || 0
-                } mxm`}</Column>
+                <Column classes={{ box: s.infoValue }}>
+                  {`${
+                    office.area || 0
+                  } mxm`}
+                </Column>
               </Row>
               <Row classes={{ box: s.infoRow }}>
                 <Column classes={{ box: s.infoLabel }}>{t('rooms')}</Column>
@@ -530,8 +540,8 @@ class OfficeDetailForm extends PureComponent {
                   {t('businessHours')}
                 </Column>
                 <Column classes={{ box: s.infoValue }}>
-                  {office.businessHours &&
-                    `${`${office.businessHours?.from} AM` || ''} - ${
+                  {office.businessHours
+                    && `${`${office.businessHours?.from} AM` || ''} - ${
                       `${office.businessHours?.to} PM` || ''
                     }`}
                   {!office.businessHours && '-'}
@@ -642,7 +652,7 @@ class OfficeDetailForm extends PureComponent {
 
             {/** Show more info */}
             <TabWrapper
-              open={true}
+              open
               insideOpen
               className={s.detailsTabWrapper}
               title={t('moreInfo')}
@@ -676,11 +686,11 @@ class OfficeDetailForm extends PureComponent {
             {/** Show reviews */}
             {office.reviews && (
               <TabWrapper
-                open={true}
+                open
                 insideOpen
                 className={s.detailsTabWrapper}
                 title={
-                  t('reviews') + ' (' + Object.keys(office.reviews).length + ')'
+                  `${t('reviews')} (${Object.keys(office.reviews).length})`
                 }
               >
                 <Row
@@ -703,16 +713,16 @@ class OfficeDetailForm extends PureComponent {
             <Typography textSecondary fontSizeS paddingBottom>
               {t('servicesAndAmenities')}
             </Typography>
-            {office.servicesAndAmenities &&
-              Object.entries(office.servicesAndAmenities).map(
+            {office.servicesAndAmenities
+              && Object.entries(office.servicesAndAmenities).map(
                 ([key, options]) => {
                   const category = servicesCategories.find(
-                    (item) => item.value === key
+                    (item) => item.value === key,
                   );
                   return category && options.length ? (
                     <React.Fragment key={key}>
                       <TabWrapper
-                        title={
+                        title={(
                           <Typography
                             alignChildrenCenter
                             fontSizeS
@@ -723,8 +733,8 @@ class OfficeDetailForm extends PureComponent {
                               {t(category.name)}
                             </Typography>
                           </Typography>
-                        }
-                        open={true}
+                        )}
+                        open
                         insideOpen
                         className={s.serviceCategoryWrapper}
                         bodyClass={s.serviceCategoryBody}
@@ -743,7 +753,7 @@ class OfficeDetailForm extends PureComponent {
                       </TabWrapper>
                     </React.Fragment>
                   ) : null;
-                }
+                },
               )}
           </Column>
         </Row>
@@ -756,5 +766,5 @@ class OfficeDetailForm extends PureComponent {
 }
 
 export default withWidth()(
-  withLogin(withStyles(styleSheet)(withTranslation('common')(OfficeDetailForm)))
+  withLogin(withStyles(styleSheet)(withTranslation('common')(OfficeDetailForm))),
 );
