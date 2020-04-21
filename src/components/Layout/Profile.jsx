@@ -5,7 +5,6 @@ import clsx from 'clsx';
 import PropTypes from 'prop-types';
 import withWidth, { isWidthDown } from '@material-ui/core/withWidth';
 import { Grid, Card } from '@material-ui/core';
-import Dropzone from 'react-dropzone';
 import {
   Box,
   Row,
@@ -36,7 +35,6 @@ import {
 import { withCarousel } from '../../common/base-services';
 import { ConditionalWrapper } from '../../utils/helpers';
 import { CropperDialog } from '.';
-import { Grid, Card } from '@material-ui/core';
 import Dropzone from 'react-dropzone';
 import PhoneNumber from 'awesome-phonenumber';
 
@@ -802,7 +800,7 @@ class Profile extends PureComponent {
                                     )
                                   }
                                 />
-                              }
+                              )}
                               interactive
                             >
                               <div className={s.errorIcon}>!</div>
