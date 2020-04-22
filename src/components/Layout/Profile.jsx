@@ -26,6 +26,7 @@ import {
   CheckIcon,
   LockIcon,
   UploadIcon,
+  DeleteIcon,
   ProgressIcon,
 } from '../../common/base-components';
 import {
@@ -36,6 +37,8 @@ import {
 import { withCarousel } from '../../common/base-services';
 import { ConditionalWrapper } from '../../utils/helpers';
 import { CropperDialog } from '.';
+import { Alert } from '@material-ui/lab';
+import { maxFileSize } from '../../utils/constants';
 
 /** Show save and cancel buttons for form */
 const SaveButtons = ({
@@ -219,6 +222,7 @@ class Profile extends PureComponent {
     uploadFile: PropTypes.func,
     downloadFile: PropTypes.func,
     updateUser: PropTypes.func,
+    deleteAvatar: PropTypes.func,
     deleteDocument: PropTypes.func,
   };
 
@@ -291,6 +295,37 @@ class Profile extends PureComponent {
   handleStateChangeByEvent = (field, value) => () => {
     this.setState({ [field]: value });
   };
+
+  handleDeleteAvatar = () => {
+    const { t } = this.props;
+    this.setState({
+      dialog: (
+        <ConfirmDialog
+          variant="error"
+          text={t("confirmDelete")}
+          closeLabel={
+            <React.Fragment>
+              <CloseIcon style={{ width: 10, height: 10 }} />
+              <Typography paddingLeft>{t("cancel")}</Typography>
+            </React.Fragment>
+          }
+          confirmLabel={
+            <React.Fragment>
+              <DeleteIcon style={{ width: 15, height: 12 }} />
+              <Typography paddingLeft>{t("delete")}</Typography>
+            </React.Fragment>
+          }
+          onConfirm={this.deleteAvatar}
+          onClose={this.handleCloseDialog}
+        />
+      )
+    });
+  };
+
+  deleteAvatar = () => {
+    this.props.deleteAvatar();
+    this.setState({ dialog: null });
+  }
 
   /** Save general info */
   handleSaveGeneralInfo = () => {
@@ -566,39 +601,78 @@ class Profile extends PureComponent {
                           {editTab === 'generalInfo' && (
                             <Dropzone
                               multiple={false}
-                              onDrop={(files) => this.handleClickAvatar(files[0])}
+                              onDrop={(files) =>
+                                files.length > 0 && this.handleClickAvatar(files[0])
+                              }
+                              accept={"image/*"}
+                              maxSize={maxFileSize}
                             >
-                              {({ getRootProps, getInputProps }) => (
-                                <Box
-                                  classes={{
-                                    box: clsx(
-                                      s.dropzone,
-                                      userRole === 'company'
-                                        && s.companyDropzone,
-                                    ),
-                                  }}
-                                  justifyChildrenCenter
-                                  alignChildrenCenter
-                                  {...getRootProps()}
-                                >
-                                  <input {...getInputProps()} />
-                                  {uploadingDocument === 'avatar' ? (
-                                    <ProgressIcon />
-                                  ) : (
-                                    <UploadIcon
-                                      fontSize="large"
-                                      className={clsx({
-                                        [s.uploadIcon]: avatar,
-                                        [s.outlineIcon]: !avatar,
-                                      })}
-                                    />
-                                  )}
-                                </Box>
-                              )}
+                              {({ getRootProps, getInputProps, isDragReject, rejectedFiles }) => {
+                                const isFileTooLarge = rejectedFiles.length > 0 && rejectedFiles[0].size > maxFileSize;
+                                let uploadMsg = null;
+                                if (isFileTooLarge) {
+                                  uploadMsg = (
+                                    <Alert severity="error">
+                                      {t("uploadTooLarge")}
+                                    </Alert>
+                                  );
+                                } else if (isDragReject || rejectedFiles.length > 0) {
+                                  uploadMsg = (
+                                    <Alert severity="error">
+                                      {t("uploadImageOnly")}
+                                    </Alert>
+                                  );
+                                }
+                                return (
+                                  <Box
+                                    classes={{
+                                      box: clsx(
+                                        s.dropzone,
+                                        userRole === 'company' &&
+                                          s.companyDropzone
+                                      ),
+                                    }}
+                                    justifyChildrenCenter
+                                    alignChildrenCenter
+                                    {...getRootProps()}
+                                  >
+                                    <input {...getInputProps()} />
+                                    {uploadMsg}
+                                    {uploadingDocument === 'avatar' ? (
+                                      <ProgressIcon />
+                                    ) : (
+                                      <UploadIcon
+                                        fontSize="large"
+                                        className={clsx({
+                                          [s.uploadIcon]: avatar,
+                                          [s.outlineIcon]: !avatar,
+                                        })}
+                                      />
+                                    )}
+                                  </Box>
+                                )}
+                              }
                             </Dropzone>
                           )}
                         </Card>
                       </Row>
+                      {
+                        avatar ? (
+                          <Row>
+                            <Button
+                              variant="icon"
+                              link="errorRed"
+                              background="errorRedLight"
+                              inverse
+                              onClick={this.handleDeleteAvatar}
+                            >
+                              <Typography fontSizeXS>
+                                <DeleteIcon />
+                              </Typography>
+                            </Button>
+                          </Row>
+                        ) : null
+                      }
                     </Column>
                   </Grid>
                   <Grid item xs={12} sm={6}>
