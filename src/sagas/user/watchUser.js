@@ -1,7 +1,7 @@
 import { takeLatest, put, call } from 'redux-saga/effects';
 import api from '../../api/api';
 import flushMessage from '../flushMessages';
-import { deleteUserDocument, verifyPhoneNumber, verifyPhoneCode } from '../../api/endpoints';
+import { deleteUserAvatar, deleteUserDocument, verifyPhoneNumber, verifyPhoneCode } from '../../api/endpoints';
 import { callApi } from '../../utils/api';
 
 const updateUserRequest = async ({ field, data }) => {
@@ -67,6 +67,29 @@ function* setUserRole(action) {
     pathname = `/${action.userRole}`;
   }
   action.history.push(pathname);
+  yield call(flushMessage);
+}
+
+function* deleteAvatar(action) {
+  try {
+    const response = yield call(callApi, deleteUserAvatar, {});
+    if (response.status === 200) {
+      yield put({
+        type: 'DELETE_AVATAR_SUCCESS',
+        resp: response.data,
+      });
+    } else {
+      yield put({
+        type: 'DELETE_AVATAR_FAILED',
+        resp: response.data,
+      });
+    }
+  } catch (error) {
+    yield put({
+      type: 'DELETE_AVATAR_FAILED',
+      resp: { msg: error },
+    });
+  }
   yield call(flushMessage);
 }
 
@@ -146,6 +169,7 @@ function* verifyCode(action) {
 export default function* watchUpdateUser() {
   yield takeLatest('REQUEST_UPDATE_USER', updateUser);
   yield takeLatest('SET_USER_ROLE', setUserRole);
+  yield takeLatest('REQUEST_DELETE_AVATAR', deleteAvatar);
   yield takeLatest('REQUEST_DELETE_DOCUMENT', deleteDocument);
   yield takeLatest('REQUEST_VERIFY_PHONE', verifyPhone);
   yield takeLatest('REQUEST_VERIFY_CODE', verifyCode);

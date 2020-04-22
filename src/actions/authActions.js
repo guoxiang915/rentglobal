@@ -112,3 +112,7 @@ export const verifyPhoneCode = (phoneCode) => ({
   type: 'REQUEST_VERIFY_CODE',
   payload: phoneCode,
 });
+
+export const deleteAvatar = () => ({
+  type: 'REQUEST_DELETE_AVATAR',
+});

@@ -42,6 +42,9 @@ export const downloadFile = (fileId, fileName) => {
 /** Call api to get user profile */
 export const getProfile = () => api.get('/users/me/');
 
+/** Call api to delete user avatar */
+export const deleteUserAvatar = () => api.delete(`/users/me/delete/avatar`);
+
 /** Call api to delete user document */
 export const deleteUserDocument = ({ userRole, docType, docFile }) => api.delete(`/users/me/delete/document?role=${userRole}`, {
   data: {
