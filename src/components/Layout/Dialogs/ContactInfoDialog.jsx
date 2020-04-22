@@ -1,15 +1,15 @@
-import React, { PureComponent } from "react";
-import PropTypes from "prop-types";
+import React, { PureComponent } from 'react';
+import PropTypes from 'prop-types';
 import {
   Dialog,
   DialogTitle,
   DialogContent,
   DialogActions,
   withStyles,
-} from "@material-ui/core";
-import clsx from "clsx";
-import { withTranslation } from "react-i18next";
-import withWidth from "@material-ui/core/withWidth";
+} from '@material-ui/core';
+import clsx from 'clsx';
+import { withTranslation } from 'react-i18next';
+import withWidth from '@material-ui/core/withWidth';
 import {
   Button,
   Typography,
@@ -17,12 +17,12 @@ import {
   Box,
   Stretch,
   Column,
-} from "../../../common/base-components";
+} from '../../../common/base-components';
 import {
   CloseIcon,
   EmailIcon,
   PhoneIcon,
-} from "../../../common/base-components/Icons";
+} from '../../../common/base-components/Icons';
 
 const styleSheet = (theme) => ({
   root: {
@@ -33,22 +33,22 @@ const styleSheet = (theme) => ({
     minHeight: 395,
     borderRadius: 8,
 
-    [theme.breakpoints.down("sm")]: {
+    [theme.breakpoints.down('sm')]: {
       minWidth: 320,
-      minHeight: "auto",
+      minHeight: 'auto',
     },
   },
 
   header: {
-    width: "100%",
-    padding: "12px 40px",
+    width: '100%',
+    padding: '12px 40px',
     borderBottom: `1px solid ${theme.colors.primary.borderGrey}`,
   },
 
   content: {
-    padding: "82px 120px",
-    [theme.breakpoints.down("sm")]: {
-      padding: "40px 16px",
+    padding: '82px 120px',
+    [theme.breakpoints.down('sm')]: {
+      padding: '40px 16px',
     },
   },
 
@@ -57,8 +57,8 @@ const styleSheet = (theme) => ({
   },
 
   footer: {
-    width: "100%",
-    padding: "12px 40px",
+    width: '100%',
+    padding: '12px 40px',
     borderTop: `1px solid ${theme.colors.primary.borderGrey}`,
   },
 });
@@ -89,11 +89,13 @@ class ContactInfoDialog extends PureComponent {
 
   /** Render function */
   render() {
-    const { title, contact, className, classes: s, t } = this.props;
+    const {
+      title, contact, className, classes: s, t,
+    } = this.props;
 
     return (
       <Dialog
-        open={true}
+        open
         onClose={this.handleClose}
         aria-labelledby="help-dialog-title"
         classes={{ paper: clsx(s.root, className) }}
@@ -103,7 +105,7 @@ class ContactInfoDialog extends PureComponent {
           <Row fullWidth>
             {/** header title */}
             <Typography fontSizeM textSecondary fontWeightBold>
-              {title ? title : t("contactInfo")}
+              {title || t('contactInfo')}
             </Typography>
             <Stretch />
             {/** close button */}
@@ -114,7 +116,7 @@ class ContactInfoDialog extends PureComponent {
             >
               <Typography fontSizeS alignChildrenCenter>
                 <CloseIcon style={{ width: 10, height: 10 }} />
-                <Typography paddingLeft>{t("cancel")}</Typography>
+                <Typography paddingLeft>{t('cancel')}</Typography>
               </Typography>
             </Button>
           </Row>
@@ -166,7 +168,7 @@ class ContactInfoDialog extends PureComponent {
             >
               <Typography fontSizeS alignChildrenCenter>
                 <CloseIcon style={{ width: 10, height: 10 }} />
-                <Typography paddingLeft>{t("cancel")}</Typography>
+                <Typography paddingLeft>{t('cancel')}</Typography>
               </Typography>
             </Button>
           </Row>
@@ -176,6 +178,6 @@ class ContactInfoDialog extends PureComponent {
   }
 }
 
-export default withStyles(styleSheet, { name: "ContactInfoDialog" })(
-  withTranslation("common")(withWidth()(ContactInfoDialog))
+export default withStyles(styleSheet, { name: 'ContactInfoDialog' })(
+  withTranslation('common')(withWidth()(ContactInfoDialog)),
 );

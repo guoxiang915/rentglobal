@@ -1,8 +1,8 @@
-import React, { PureComponent } from "react";
-import PropTypes from "prop-types";
-import { withStyles } from "@material-ui/core/styles";
-import { Container, Grid } from "@material-ui/core";
-import { withTranslation } from "react-i18next";
+import React, { PureComponent } from 'react';
+import PropTypes from 'prop-types';
+import { withStyles } from '@material-ui/core/styles';
+import { Container, Grid } from '@material-ui/core';
+import { withTranslation } from 'react-i18next';
 import {
   Button,
   Row,
@@ -13,7 +13,7 @@ import {
   UsersIcon,
   BuildingsIcon,
   ArrowRightAltIcon,
-} from "../../common/base-components";
+} from '../../common/base-components';
 
 const styleSheet = (theme) => ({
   formWrapper: {
@@ -24,42 +24,42 @@ const styleSheet = (theme) => ({
 
   selectorWrapper: {
     maxWidth: 340,
-    [theme.breakpoints.down("sm")]: {
-      alignItems: "center",
+    [theme.breakpoints.down('sm')]: {
+      alignItems: 'center',
     },
   },
 
   formTitle: {
     color: theme.colors.primary.darkGrey,
-    fontSize: "26px",
-    lineHeight: "34px",
-    textAlign: "left",
-    [theme.breakpoints.down("sm")]: {
-      fontSize: "20px",
-      textAlign: "center",
+    fontSize: '26px',
+    lineHeight: '34px',
+    textAlign: 'left',
+    [theme.breakpoints.down('sm')]: {
+      fontSize: '20px',
+      textAlign: 'center',
     },
   },
 
   formSubtitle: {
     color: theme.colors.primary.darkGrey,
-    fontSize: "20px",
-    lineHeight: "26px",
-    textAlign: "left",
-    [theme.breakpoints.down("sm")]: {
-      fontSize: "16px",
-      textAlign: "center",
+    fontSize: '20px',
+    lineHeight: '26px',
+    textAlign: 'left',
+    [theme.breakpoints.down('sm')]: {
+      fontSize: '16px',
+      textAlign: 'center',
     },
   },
 
   signupButton: {
     marginTop: theme.spacing(7),
-    [theme.breakpoints.down("sm")]: {
+    [theme.breakpoints.down('sm')]: {
       marginTop: theme.spacing(4),
     },
   },
 
   switchText: {
-    fontSize: "14px",
+    fontSize: '14px',
   },
 
   switchTextWrapper: {
@@ -71,16 +71,16 @@ const styleSheet = (theme) => ({
   },
 
   rightColumn: {
-    position: "relative",
-    "&:before": {
+    position: 'relative',
+    '&:before': {
       content: '" "',
-      position: "absolute",
+      position: 'absolute',
       left: 0,
       top: 67,
       bottom: 16,
       borderLeft: `1px solid ${theme.colors.primary.borderGrey}`,
-      [theme.breakpoints.down("sm")]: {
-        border: "none",
+      [theme.breakpoints.down('sm')]: {
+        border: 'none',
       },
     },
   },
@@ -118,7 +118,7 @@ class SelectRegisterForm extends PureComponent {
                       textLeft
                       // classes={{ box: classes.formTitle }}
                     >
-                      {t("amLandlord")}
+                      {t('amLandlord')}
                     </Typography>
                   </Box>
                   <Box paddingTopHalf>
@@ -127,15 +127,15 @@ class SelectRegisterForm extends PureComponent {
                       textSecondary
                       classes={{ box: s.formSubtitle }}
                     >
-                      {t("iHavePlaceToRent")}
+                      {t('iHavePlaceToRent')}
                     </Typography>
                   </Box>
                   <Button
                     className={s.signupButton}
-                    onClick={this.handleSelectRegister("landlord")}
+                    onClick={this.handleSelectRegister('landlord')}
                   >
                     <Typography fontSizeS fontWeightBold textWhite>
-                      {t("landlordSignup")}
+                      {t('landlordSignup')}
                       <Box paddingLeft alignChildrenCenter>
                         <ArrowRightAltIcon style={{ width: 14, height: 10 }} />
                       </Box>
@@ -162,7 +162,7 @@ class SelectRegisterForm extends PureComponent {
                       textLeft
                       // classes={{ box: classes.formTitle }}
                     >
-                      {t("needOffice")}
+                      {t('needOffice')}
                     </Typography>
                   </Box>
                   <Box paddingTopHalf>
@@ -171,15 +171,15 @@ class SelectRegisterForm extends PureComponent {
                       textSecondary
                       classes={{ box: s.formSubtitle }}
                     >
-                      {t("iLookForOffice")}
+                      {t('iLookForOffice')}
                     </Typography>
                   </Box>
                   <Button
                     className={s.signupButton}
-                    onClick={this.handleSelectRegister("company")}
+                    onClick={this.handleSelectRegister('company')}
                   >
                     <Typography fontSizeS fontWeightBold textWhite>
-                      {t("companySignup")}
+                      {t('companySignup')}
                       <Box paddingLeft alignChildrenCenter>
                         <ArrowRightAltIcon style={{ width: 14, height: 10 }} />
                       </Box>
@@ -192,9 +192,10 @@ class SelectRegisterForm extends PureComponent {
           <Row fullWidth classes={{ box: s.switchTextWrapper }}>
             <Column fullWidth>
               <Typography textSecondary fontSizeS>
-                {t("alreadyHaveAccount")}
+                {t('alreadyHaveAccount')}
                 <Link to="/auth/login" variant="primary">
-                  &nbsp;{t("login")}
+                  &nbsp;
+                  {t('login')}
                 </Link>
               </Typography>
             </Column>
@@ -212,5 +213,5 @@ SelectRegisterForm.propTypes = {
 };
 
 export default withStyles(styleSheet)(
-  withTranslation("common")(SelectRegisterForm)
+  withTranslation('common')(SelectRegisterForm),
 );

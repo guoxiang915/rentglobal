@@ -1,59 +1,59 @@
-import React, { PureComponent } from "react";
-import PropTypes from "prop-types";
-import clsx from "clsx";
-import { Icon, withStyles } from "@material-ui/core";
-import { TextField, Button } from ".";
+import React from 'react';
+import PropTypes from 'prop-types';
+import clsx from 'clsx';
+import { Icon, withStyles } from '@material-ui/core';
+import { TextField, Button } from '.';
+import useCombinedRefs from '../../utils/hooks/useCombinedRefs';
 
 const styleSheet = () => ({
   root: {
-    position: "relative",
+    position: 'relative',
   },
 
   input: {
-    textAlign: "center",
-    margin: "0 20px",
+    textAlign: 'center',
+    margin: '0 20px',
   },
 
   button: {
-    position: "absolute",
+    position: 'absolute',
     width: 37,
     height: 37,
   },
 });
 
-class NumberField extends PureComponent {
-  static propTypes = {
-    value: PropTypes.any,
-    onChange: PropTypes.func,
-    classes: PropTypes.any.isRequired,
-  };
+const NumberField = React.forwardRef(
+  ({ value, onChange, classes, className, ...props }, ref) => {
+    const inputRef = React.useRef();
+    const innerRef = useCombinedRefs(ref, inputRef);
 
-  static defaultProps = {
-    variant: "outlined",
-  };
+    const handleMinus = () => {
+      if (onChange) {
+        let newValue = (value ? Number(value) : 0) - 1;
+        if (
+          props.inputProps?.min !== undefined &&
+          props.inputProps?.min !== null
+        ) {
+          newValue =
+            newValue > props.inputProps.min ? newValue : props.inputProps.min;
+        }
+        onChange({ target: { value: newValue } });
+      }
+    };
 
-  handleMinus = () => {
-    if (this.props.onChange) {
-      this.props.onChange({
-        target: {
-          value: (this.props.value ? Number(this.props.value) : 0) - 1,
-        },
-      });
-    }
-  };
-
-  handlePlus = () => {
-    if (this.props.onChange) {
-      this.props.onChange({
-        target: {
-          value: (this.props.value ? Number(this.props.value) : 0) + 1,
-        },
-      });
-    }
-  };
-
-  render() {
-    let { value, onChange, classes, className, ...props } = this.props;
+    const handlePlus = () => {
+      if (onChange) {
+        let newValue = (value ? Number(value) : 0) + 1;
+        if (
+          props.inputProps?.max !== undefined &&
+          props.inputProps?.max !== null
+        ) {
+          newValue =
+            newValue < props.inputProps.max ? newValue : props.inputProps.max;
+        }
+        onChange({ target: { value: newValue } });
+      }
+    };
 
     return (
       <TextField
@@ -62,13 +62,14 @@ class NumberField extends PureComponent {
         onChange={onChange}
         className={clsx(className, classes.root)}
         styles={{ input: classes.input }}
+        inputRef={innerRef}
         startAdornment={
           <Button
             variant="icon"
             link="secondary"
             background="borderLight"
             inverse
-            onClick={this.handleMinus}
+            onClick={handleMinus}
             className={classes.button}
             style={{ left: 6 }}
           >
@@ -81,7 +82,7 @@ class NumberField extends PureComponent {
             link="secondary"
             background="borderLight"
             inverse
-            onClick={this.handlePlus}
+            onClick={handlePlus}
             className={classes.button}
             style={{ right: 6 }}
           >
@@ -92,6 +93,16 @@ class NumberField extends PureComponent {
       />
     );
   }
-}
+);
 
-export default withStyles(styleSheet, { name: "NumberField" })(NumberField);
+NumberField.propTypes = {
+  value: PropTypes.any,
+  onChange: PropTypes.func,
+  classes: PropTypes.any.isRequired,
+};
+
+NumberField.defaultProps = {
+  variant: 'outlined',
+};
+
+export default withStyles(styleSheet, { name: 'NumberField' })(NumberField);

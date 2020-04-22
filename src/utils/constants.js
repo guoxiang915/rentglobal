@@ -201,5 +201,5 @@ export {
   guarantees,
   checkOutNotices,
   servicesCategories,
-  maxFileSize
+  maxFileSize,
 };

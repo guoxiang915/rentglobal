@@ -1,6 +1,7 @@
-import React from "react";
-import { withStyles } from "@material-ui/core";
-import { withTranslation } from "react-i18next";
+import React from 'react';
+import { withStyles } from '@material-ui/core';
+import { withTranslation } from 'react-i18next';
+import Carousel from '@brainhubeu/react-carousel';
 import {
   Typography,
   Row,
@@ -8,12 +9,11 @@ import {
   Box,
   StarIcon,
   UsersIcon,
-} from "../base-components";
-import Carousel from "@brainhubeu/react-carousel";
+} from '../base-components';
 
 const styleSheet = (theme) => ({
   officeWrapper: {
-    width: "100%",
+    width: '100%',
   },
 
   officeCarousel: {
@@ -21,33 +21,33 @@ const styleSheet = (theme) => ({
     height: 110,
     borderRadius: 8,
     border: `1px solid ${theme.colors.primary.borderGrey}`,
-    position: "relative",
-    overflow: "hidden",
-    [theme.breakpoints.down("sm")]: {
-      width: "100%",
+    position: 'relative',
+    overflow: 'hidden',
+    [theme.breakpoints.down('sm')]: {
+      width: '100%',
     },
   },
 
   officeImage: {
     width: 210,
     height: 110,
-    objectFit: "cover",
-    [theme.breakpoints.down("sm")]: {
-      width: "100%",
+    objectFit: 'cover',
+    [theme.breakpoints.down('sm')]: {
+      width: '100%',
     },
   },
 
   officeGeneralInfo: {
     paddingLeft: 0,
     paddingTop: 16,
-    width: "100%",
+    width: '100%',
   },
 
   tipOverWrapper: {
-    position: "absolute",
+    position: 'absolute',
     top: 0,
     left: 0,
-    width: "100%",
+    width: '100%',
     height: 44,
     zIndex: 1,
   },
@@ -58,16 +58,16 @@ const styleSheet = (theme) => ({
     color: theme.colors.primary.white,
     background: theme.colors.primary.mainColor,
     marginLeft: 10,
-    position: "relative",
-    "&::after": {
+    position: 'relative',
+    '&::after': {
       content: "' '",
-      position: "absolute",
+      position: 'absolute',
       bottom: -8,
-      width: "100%",
+      width: '100%',
       borderTop: `8px solid ${theme.colors.primary.mainColor}`,
-      borderLeft: `18px solid transparent`,
-      borderRight: `18px solid transparent`,
-      borderBottom: "none",
+      borderLeft: '18px solid transparent',
+      borderRight: '18px solid transparent',
+      borderBottom: 'none',
     },
   },
 
@@ -77,16 +77,16 @@ const styleSheet = (theme) => ({
     color: theme.colors.primary.white,
     background: theme.colors.primary.errorRed,
     marginLeft: 6,
-    position: "relative",
-    "&::after": {
+    position: 'relative',
+    '&::after': {
       content: "' '",
-      position: "absolute",
+      position: 'absolute',
       bottom: -8,
-      width: "100%",
+      width: '100%',
       borderTop: `8px solid ${theme.colors.primary.errorRed}`,
-      borderLeft: `18px solid transparent`,
-      borderRight: `18px solid transparent`,
-      borderBottom: "none",
+      borderLeft: '18px solid transparent',
+      borderRight: '18px solid transparent',
+      borderBottom: 'none',
     },
   },
 });
@@ -97,12 +97,14 @@ const styleSheet = (theme) => ({
  * @property  {object} office Office information
  * @property  {number} autoPlay Duration of autoplay for carousel (default: 4000)
  */
-const OfficeDetailItem = ({ classes: s, t, autoPlay, office }) => {
+const OfficeDetailItem = ({
+  classes: s, t, autoPlay, office,
+}) => {
   return (
     <Column classes={{ box: s.officeWrapper }} alignChildrenStretch>
       <Box classes={{ box: s.officeCarousel }}>
         {/** office images */}
-        <div style={{ width: "100%", height: "100%" }}>
+        <div style={{ width: '100%', height: '100%' }}>
           {office.coverPhotos && (
             <Carousel
               slidesPerPage={1}
@@ -166,7 +168,7 @@ const OfficeDetailItem = ({ classes: s, t, autoPlay, office }) => {
         {/** show office price */}
         <Row paddingTopHalf>
           <Typography fontSizeS textPrimary>
-            {t("dollarPerMonth", { dollar: office.priceMonthly || 0 })}
+            {t('dollarPerMonth', { dollar: office.priceMonthly || 0 })}
           </Typography>
         </Row>
 
@@ -178,7 +180,9 @@ const OfficeDetailItem = ({ classes: s, t, autoPlay, office }) => {
               <StarIcon style={{ width: 12, height: 12 }} />
             </Typography>
             <Typography fontSizeS textMediumGrey paddingLeftHalf>
-              3.5 {/* office.rating */}
+              3.5
+              {' '}
+              {/* office.rating */}
             </Typography>
           </Row>
         )}
@@ -187,6 +191,6 @@ const OfficeDetailItem = ({ classes: s, t, autoPlay, office }) => {
   );
 };
 
-export default withStyles(styleSheet, { name: "OfficeDetailItem" })(
-  withTranslation("common")(OfficeDetailItem)
+export default withStyles(styleSheet, { name: 'OfficeDetailItem' })(
+  withTranslation('common')(OfficeDetailItem),
 );

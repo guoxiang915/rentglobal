@@ -1,7 +1,7 @@
-import React, { PureComponent } from "react";
-import PropTypes from "prop-types";
-import { withStyles } from "@material-ui/core/styles";
-import { withTranslation } from "react-i18next";
+import React, { PureComponent } from 'react';
+import PropTypes from 'prop-types';
+import { withStyles } from '@material-ui/core/styles';
+import { withTranslation } from 'react-i18next';
 import {
   TextField,
   Button,
@@ -14,19 +14,19 @@ import {
   Typography,
   LockIcon,
   EmailIcon,
-} from "../../common/base-components";
-import Auth from "../../utils/auth";
+} from '../../common/base-components';
+import Auth from '../../utils/auth';
 
 const authObj = new Auth();
 
 const styleSheet = (theme) => ({
   formWrapper: {
-    width: "100%",
+    width: '100%',
   },
 
   formTitle: {
     marginTop: 8,
-    textAlign: "center",
+    textAlign: 'center',
   },
 
   fixedWidthButton: {
@@ -38,11 +38,11 @@ const styleSheet = (theme) => ({
   },
 
   fullWidth: {
-    width: "100%",
+    width: '100%',
   },
 
   switchText: {
-    fontSize: "14px",
+    fontSize: '14px',
   },
 
   outlineIcon: {
@@ -73,11 +73,11 @@ class LoginForm extends PureComponent {
    * @member {Object} state State of LoginForm component
    */
   state = {
-    email: this.props.email ? this.props.email : "",
+    email: this.props.email ? this.props.email : '',
     emailError: null,
-    password: "",
+    password: '',
     passwordError: null,
-    isRemember: authObj.getRememberUser() === "true",
+    isRemember: authObj.getRememberUser() === 'true',
   };
 
   /**
@@ -98,16 +98,16 @@ class LoginForm extends PureComponent {
    */
   async validateForm() {
     const emailValid = this.state.email.match(
-      /^([\w.%+-]+)@([\w-]+\.)+([\w]{2,})$/i
+      /^([\w.%+-]+)@([\w-]+\.)+([\w]{2,})$/i,
     );
-    if (this.state.email === "") {
-      this.setState({ emailError: this.props.t("emailRequired") });
+    if (this.state.email === '') {
+      this.setState({ emailError: this.props.t('emailRequired') });
       return false;
-    } else if (!emailValid) {
-      this.setState({ emailError: this.props.t("invalidEmailAddress") });
+    } if (!emailValid) {
+      this.setState({ emailError: this.props.t('invalidEmailAddress') });
       return false;
-    } else if (this.state.password === "") {
-      this.setState({ passwordError: this.props.t("passwordRequired") });
+    } if (this.state.password === '') {
+      this.setState({ passwordError: this.props.t('passwordRequired') });
       return false;
     }
     return true;
@@ -127,7 +127,7 @@ class LoginForm extends PureComponent {
       email: this.state.email,
       password: this.state.password,
     };
-    if (payload.email !== "" && payload.password !== "") {
+    if (payload.email !== '' && payload.password !== '') {
       this.props.mappedLogin(payload);
     }
   };
@@ -154,7 +154,7 @@ class LoginForm extends PureComponent {
       email: this.state.email,
       password: this.state.password,
     };
-    if (payload.email !== "" && payload.password !== "") {
+    if (payload.email !== '' && payload.password !== '') {
       this.props.mappedLogin(payload, this.props.history);
     }
   };
@@ -202,7 +202,7 @@ class LoginForm extends PureComponent {
             paddingTopHalf
             justifyChildrenCenter
           >
-            {t("loginToRENTGLOBAL")}
+            {t('loginToRENTGLOBAL')}
           </Typography>
         )}
 
@@ -210,9 +210,9 @@ class LoginForm extends PureComponent {
         <Box paddingTop>
           <TextField
             id="email"
-            placeholder={t("email")}
+            placeholder={t('email')}
             value={this.state.email}
-            onChange={this.handleChange("email")}
+            onChange={this.handleChange('email')}
             type="email"
             variant="outlined"
             startAdornment={<EmailIcon className={s.outlineIcon} />}
@@ -226,9 +226,9 @@ class LoginForm extends PureComponent {
         <Box paddingTopHalf>
           <TextField
             id="password"
-            placeholder={t("password")}
+            placeholder={t('password')}
             value={this.state.password}
-            onChange={this.handleChange("password")}
+            onChange={this.handleChange('password')}
             type="password"
             variant="outlined"
             startAdornment={<LockIcon className={s.outlineIcon} />}
@@ -239,7 +239,7 @@ class LoginForm extends PureComponent {
         </Box>
 
         {/* error message */}
-        {error && error.type === "login" && (
+        {error && error.type === 'login' && (
           <Typography
             fontSizeS
             textErrorRed
@@ -247,7 +247,7 @@ class LoginForm extends PureComponent {
             paddingTopHalf
             paddingRightHalf
           >
-            {t(`loginError_${error.msg}`)}
+            {t('loginError')}
           </Typography>
         )}
 
@@ -255,7 +255,7 @@ class LoginForm extends PureComponent {
         <Box paddingTopHalf justifyChildrenEnd fullWidth>
           <Checkbox
             variant="outlined"
-            label={t("rememberMe")}
+            label={t('rememberMe')}
             className={s.fixedWidthButton}
             isChecked={this.state.isRemember}
             onChange={this.handleToggleRememberUser}
@@ -285,7 +285,7 @@ class LoginForm extends PureComponent {
             loading={isLoading}
           >
             <Typography fontSizeS fontWeightBold>
-              {t("login")}
+              {t('login')}
             </Typography>
           </Button>
         </Box>
@@ -297,12 +297,12 @@ class LoginForm extends PureComponent {
           <Box paddingTop paddingBottom>
             <Typography fontSizeS fontWeightBold>
               <Link variant="primary" to="/auth/reset-password">
-                {t("forgotPassword")}
+                {t('forgotPassword')}
               </Link>
             </Typography>
           </Box>
 
-          <HorizontalDivider text={t("or")} light />
+          <HorizontalDivider text={t('or')} light />
 
           {/* login with facebook */}
           <Box paddingTop justifyChildrenEnd fullWidth>
@@ -313,9 +313,10 @@ class LoginForm extends PureComponent {
               className={s.fullWidth}
               onClick={this.handleLoginFacebook}
             >
-              {t("loginWith")}&nbsp;
+              {t('loginWith')}
+&nbsp;
               <Typography textPrimary fontSizeS fontWeightBold>
-                {t("facebook")}
+                {t('facebook')}
               </Typography>
             </Button>
           </Box>
@@ -329,9 +330,10 @@ class LoginForm extends PureComponent {
               className={s.fullWidth}
               onClick={this.handleLoginGoogle}
             >
-              {t("loginWith")}&nbsp;
+              {t('loginWith')}
+&nbsp;
               <Typography textPrimary fontSizeS fontWeightBold>
-                {t("google")}
+                {t('google')}
               </Typography>
             </Button>
           </Box>
@@ -341,9 +343,10 @@ class LoginForm extends PureComponent {
         <Column paddingTopDouble>
           <Box paddingTop>
             <Typography fontSizeXS textMediumGrey>
-              {t("dontHaveAccount")}
+              {t('dontHaveAccount')}
               <Link variant="primary" to="/auth/register">
-                &nbsp;{t("register")}
+                &nbsp;
+                {t('register')}
               </Link>
             </Typography>
           </Box>
@@ -353,4 +356,4 @@ class LoginForm extends PureComponent {
   }
 }
 
-export default withStyles(styleSheet)(withTranslation("common")(LoginForm));
+export default withStyles(styleSheet)(withTranslation('common')(LoginForm));

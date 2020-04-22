@@ -4,6 +4,7 @@ import { withTranslation } from 'react-i18next';
 import clsx from 'clsx';
 import PropTypes from 'prop-types';
 import withWidth, { isWidthDown } from '@material-ui/core/withWidth';
+import { KeyboardBackspace } from '@material-ui/icons';
 import {
   Row,
   Column,
@@ -15,8 +16,7 @@ import {
   DeleteIcon,
   EditIcon,
 } from '../../../common/base-components';
-import { KeyboardBackspace } from '@material-ui/icons';
-import OfficeDetailForm from '../../../components/Layout/OfficeDetailForm';
+import OfficeDetailForm from '../../Layout/OfficeDetailForm';
 
 const styleSheet = (theme) => ({
   root: {
@@ -216,5 +216,5 @@ class OfficeDetail extends PureComponent {
 }
 
 export default withWidth()(
-  withStyles(styleSheet)(withTranslation('common')(OfficeDetail))
+  withStyles(styleSheet)(withTranslation('common')(OfficeDetail)),
 );

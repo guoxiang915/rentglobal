@@ -1,7 +1,7 @@
-import React, { useState } from "react";
-import { Collapse, withStyles } from "@material-ui/core";
-import { withTranslation } from "react-i18next";
-import clsx from "clsx";
+import React, { useState } from 'react';
+import { Collapse, withStyles } from '@material-ui/core';
+import { withTranslation } from 'react-i18next';
+import clsx from 'clsx';
 import {
   Typography,
   Button,
@@ -9,13 +9,13 @@ import {
   Column,
   Box,
   Stretch,
-} from "../base-components";
-import {
+
   ArrowUpIcon,
   ArrowDownIcon,
   CloseIcon,
   EditIcon,
-} from "../base-components";
+} from '../base-components';
+
 
 /**
  * Stylesheet for TabWrapper component
@@ -27,7 +27,7 @@ const styleSheet = () => ({
   },
 
   fullWidth: {
-    width: "100%",
+    width: '100%',
   },
 });
 
@@ -73,7 +73,7 @@ const TabWrapper = (props) => {
           onClick={handleToggleOpen}
           alignChildrenCenter
           textMediumGrey={!color}
-          style={{ cursor: "pointer" }}
+          style={{ cursor: 'pointer' }}
           {...color}
         >
           <Typography fontSizeS paddingRight>
@@ -95,7 +95,7 @@ const TabWrapper = (props) => {
           >
             <CloseIcon style={{ width: 9, height: 9 }} />
             <Typography paddingLeft fontSizeS>
-              {t("cancel")}
+              {t('cancel')}
             </Typography>
           </Button>
         ) : (
@@ -108,7 +108,7 @@ const TabWrapper = (props) => {
             >
               <EditIcon style={{ width: 16, height: 16 }} />
               <Typography paddingLeft fontSizeS>
-                {t("edit")}
+                {t('edit')}
               </Typography>
             </Button>
           )
@@ -128,6 +128,6 @@ const TabWrapper = (props) => {
   );
 };
 
-export default withStyles(styleSheet, { name: "TabWrapper" })(
-  withTranslation("common")(TabWrapper)
+export default withStyles(styleSheet, { name: 'TabWrapper' })(
+  withTranslation('common')(TabWrapper),
 );

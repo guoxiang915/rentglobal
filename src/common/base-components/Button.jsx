@@ -1,23 +1,23 @@
-import React, { forwardRef } from "react";
-import PropTypes from "prop-types";
+import React, { forwardRef } from 'react';
+import PropTypes from 'prop-types';
 import {
   Button as MUIButton,
   CircularProgress,
   withStyles,
   withTheme,
-} from "@material-ui/core";
-import { Box } from ".";
-import clsx from "clsx";
+} from '@material-ui/core';
+import clsx from 'clsx';
+import { Box } from '.';
 
 const styleSheet = (theme) => {
   const styles = {
     root: {
       background: `${theme.colors.primary.mainColor}`,
-      padding: "7px 27px",
-      textTransform: "none",
-      color: "white",
-      "&:hover": {
-        color: "white",
+      padding: '7px 27px',
+      textTransform: 'none',
+      color: 'white',
+      '&:hover': {
+        color: 'white',
         background: `${theme.colors.primary.darkColor}`,
       },
       ...theme.fonts.size.fontSizeS,
@@ -30,55 +30,55 @@ const styleSheet = (theme) => {
 
     secondary: {
       border: `1px solid ${theme.colors.primary.mainColor}`,
-      background: "white",
+      background: 'white',
       color: theme.colors.primary.darkGrey,
-      "&:hover": {
+      '&:hover': {
         background: `${theme.colors.primary.mainColor}`,
-        color: `white !important`,
-        "& *": {
-          color: `white !important`,
+        color: 'white !important',
+        '& *': {
+          color: 'white !important',
         },
       },
     },
 
     icon: {
       padding: 7,
-      background: "none",
+      background: 'none',
       minWidth: 0,
       color: theme.colors.primary.grey,
       border: `1px solid ${theme.colors.primary.borderGrey}`,
-      "&:hover": {
+      '&:hover': {
         color: theme.colors.primary.mainColor,
         border: `1px solid ${theme.colors.primary.mainColor}`,
-        background: "none",
+        background: 'none',
       },
       ...theme.fonts.weight.fontWeightMedium,
     },
 
     transparent: {
-      border: "none",
-      background: "none",
+      border: 'none',
+      background: 'none',
       color: `${theme.colors.primary.grey}`,
-      "&:hover": {
-        border: "none",
-        background: "none",
+      '&:hover': {
+        border: 'none',
+        background: 'none',
         color: `${theme.colors.primary.darkGrey}`,
       },
     },
 
     shadowButton: {
-      boxShadow: "0px 6px 12px #D7DF234D",
+      boxShadow: '0px 6px 12px #D7DF234D',
     },
   };
 
   Object.entries(theme.links).forEach(
-    ([key, val]) => (styles[`link${key}`] = val)
+    ([key, val]) => (styles[`link${key}`] = val),
   );
   Object.entries(theme.linksBackground).forEach(
-    ([key, val]) => (styles[`bk${key}`] = val)
+    ([key, val]) => (styles[`bk${key}`] = val),
   );
   Object.entries(theme.linksOutline).forEach(
-    ([key, val]) => (styles[`bd${key}`] = val)
+    ([key, val]) => (styles[`bd${key}`] = val),
   );
 
   return styles;
@@ -101,7 +101,7 @@ const Button = forwardRef(
       styles,
       ...props
     },
-    ref
+    ref,
   ) => (
     <MUIButton
       classes={{
@@ -110,12 +110,12 @@ const Button = forwardRef(
           rounded !== false && classes.rounded,
           variant && classes[variant],
           link && classes[`link${link}`],
-          link && inverse && classes["linkinverse"],
+          link && inverse && classes.linkinverse,
           background && classes[`bk${background}`],
           outline && classes[`bd${outline}`],
           transparent && classes.transparent,
           shadow && classes.shadowButton,
-          styles
+          styles,
         ),
       }}
       ref={ref}
@@ -123,12 +123,12 @@ const Button = forwardRef(
     >
       {loading && (
         <Box paddingRight>
-          <CircularProgress size={16} style={{ color: "white" }} />
+          <CircularProgress size={16} style={{ color: 'white' }} />
         </Box>
       )}
       {children}
     </MUIButton>
-  )
+  ),
 );
 
 Button.propTypes = {
@@ -143,4 +143,4 @@ Button.propTypes = {
   styles: PropTypes.object,
 };
 
-export default withStyles(styleSheet, { name: "Button" })(withTheme(Button));
+export default withStyles(styleSheet, { name: 'Button' })(withTheme(Button));

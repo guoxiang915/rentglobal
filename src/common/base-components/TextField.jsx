@@ -1,7 +1,7 @@
-import React, { PureComponent, forwardRef } from "react";
-import PropTypes from "prop-types";
-import clsx from "clsx";
-import { TextField as MUITextField, withStyles } from "@material-ui/core";
+import React, { PureComponent, forwardRef } from 'react';
+import PropTypes from 'prop-types';
+import clsx from 'clsx';
+import { TextField as MUITextField, withStyles } from '@material-ui/core';
 
 const styleSheet = (theme) => ({
   root: {
@@ -10,7 +10,7 @@ const styleSheet = (theme) => ({
 
   label: {
     ...theme.typography.secondaryBody,
-    textAlign: "left",
+    textAlign: 'left',
   },
 
   asterisk: {
@@ -20,7 +20,7 @@ const styleSheet = (theme) => ({
   errorMessage: {
     ...theme.typography.errorMessage,
     color: `${theme.colors.primary.errorRed} !important`,
-    textAlign: "right",
+    textAlign: 'right',
   },
 
   inputError: {
@@ -29,7 +29,7 @@ const styleSheet = (theme) => ({
 
   input: {
     ...theme.typography.primaryBody,
-    padding: `14px 16px`,
+    padding: '14px 16px',
   },
 
   multiline: {
@@ -41,7 +41,7 @@ const styleSheet = (theme) => ({
   },
 
   fullWidth: {
-    width: "100%",
+    width: '100%',
   },
 });
 
@@ -66,7 +66,7 @@ class TextField extends PureComponent {
   };
 
   static defaultProps = {
-    variant: "outlined",
+    variant: 'outlined',
   };
 
   handleChange = (e) => {
@@ -94,7 +94,7 @@ class TextField extends PureComponent {
   }
 
   render() {
-    let {
+    const {
       value,
       label,
       readOnly,
@@ -107,6 +107,7 @@ class TextField extends PureComponent {
       classes: s,
       className,
       styles,
+      inputProps,
       ...props
     } = this.props;
     const { error, helperText } = this.state;
@@ -115,7 +116,7 @@ class TextField extends PureComponent {
       <MUITextField
         // defaultValue={type === "number" ? 0 : ""}
         // fix bug of default value
-        value={value || ""}
+        value={value ?? ''}
         onChange={this.handleChange}
         type={type}
         label={label}
@@ -128,8 +129,8 @@ class TextField extends PureComponent {
             error: clsx(s.inputError, styles && styles.inputError),
             multiline: clsx(s.multiline, styles && styles.multiline),
           },
-          inputProps: { readOnly: !!readOnly },
         }}
+        inputProps={{ readOnly: !!readOnly, ...inputProps }}
         InputLabelProps={{
           FormLabelClasses: { asterisk: s.asterisk, root: s.label },
           error: false,
@@ -151,6 +152,6 @@ class TextField extends PureComponent {
   }
 }
 
-export default withStyles(styleSheet, { name: "TextField" })(
+export default withStyles(styleSheet, { name: 'TextField' })(
   forwardRef((props, ref) => <TextField innerRef={ref} {...props} />)
 );

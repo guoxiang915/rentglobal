@@ -5,6 +5,7 @@ import PropTypes from 'prop-types';
 import clsx from 'clsx';
 import withWidth, { isWidthDown } from '@material-ui/core/withWidth';
 import { Hidden } from '@material-ui/core';
+import Dropzone from 'react-dropzone';
 import {
   Box,
   Row,
@@ -16,7 +17,6 @@ import {
   DeleteIcon,
   CloseIcon,
 } from '../../../../common/base-components';
-import Dropzone from 'react-dropzone';
 import { CropperDialog } from '../../../Layout';
 
 const styleSheet = (theme) => ({
@@ -117,18 +117,16 @@ class PictureGalleryForm extends PureComponent {
   /** Set and crop/resize photo */
   handleCropPhoto = (file) => {
     const reader = new FileReader();
-    reader.addEventListener('load', () =>
-      this.setState({
-        dialog: (
-          <CropperDialog
-            fileName={file.name}
-            src={reader.result}
-            onClose={this.handleCloseDialog}
-            onSave={this.handleUploadPhoto}
-          />
-        ),
-      })
-    );
+    reader.addEventListener('load', () => this.setState({
+      dialog: (
+        <CropperDialog
+          fileName={file.name}
+          src={reader.result}
+          onClose={this.handleCloseDialog}
+          onSave={this.handleUploadPhoto}
+        />
+      ),
+    }));
     reader.readAsDataURL(file);
   };
 
@@ -190,7 +188,9 @@ class PictureGalleryForm extends PureComponent {
    * Renderer function
    */
   render() {
-    const { office, width, classes: s, t } = this.props;
+    const {
+      office, width, classes: s, t,
+    } = this.props;
     const { isLoading, selectedPicture, dialog } = this.state;
 
     return (
@@ -227,7 +227,7 @@ class PictureGalleryForm extends PureComponent {
                     {t(
                       selectedPicture
                         ? 'dragAndDropOfficePictureToRemove'
-                        : 'dragAndDropOfficePicture'
+                        : 'dragAndDropOfficePicture',
                     )}
                   </Typography>
                   <Typography paddingTop fontSizeS textSecondary>
@@ -282,15 +282,15 @@ class PictureGalleryForm extends PureComponent {
           wrap
           justifyChildrenSpaceBetween={isWidthDown('xs', width)}
         >
-          {office &&
-            office.coverPhotos &&
-            office.coverPhotos.map((picture, index) => (
+          {office
+            && office.coverPhotos
+            && office.coverPhotos.map((picture, index) => (
               <React.Fragment key={index}>
                 <Box
                   classes={{
                     box: clsx(
                       s.coverPhotos,
-                      picture === selectedPicture && s.coverPhotosSelected
+                      picture === selectedPicture && s.coverPhotosSelected,
                     ),
                   }}
                   onClick={this.handleSelectPicture(picture)}
@@ -330,5 +330,5 @@ class PictureGalleryForm extends PureComponent {
 }
 
 export default withWidth()(
-  withStyles(styleSheet)(withTranslation('common')(PictureGalleryForm))
+  withStyles(styleSheet)(withTranslation('common')(PictureGalleryForm)),
 );

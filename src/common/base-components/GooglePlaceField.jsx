@@ -11,8 +11,8 @@ import {
   MenuItem,
   Paper,
 } from '@material-ui/core';
-import TextField from './TextField';
 import clsx from 'clsx';
+import TextField from './TextField';
 
 const styleSheet = () => ({
   root: {},
@@ -56,28 +56,28 @@ class GooglePlaceField extends PureComponent {
           fullAddress: this.state.address,
           streetName:
             addressComponents.find(
-              (component) => component.types[0] === 'street_address'
-            )?.long_name ||
-            `${
+              (component) => component.types[0] === 'street_address',
+            )?.long_name
+            || `${
               addressComponents.find(
-                (component) => component.types[0] === 'route'
+                (component) => component.types[0] === 'route',
               )?.long_name
             } ${
               addressComponents.find(
-                (component) => component.types[0] === 'street_number'
+                (component) => component.types[0] === 'street_number',
               )?.long_name || ''
             }`,
           city: addressComponents.find(
-            (component) => component.types[0] === 'locality'
+            (component) => component.types[0] === 'locality',
           )?.long_name,
           state: addressComponents.find(
-            (component) => component.types[0] === 'administrative_area_level_1'
+            (component) => component.types[0] === 'administrative_area_level_1',
           )?.long_name,
           zipCode: addressComponents.find(
-            (component) => component.types[0] === 'postal_code'
+            (component) => component.types[0] === 'postal_code',
           )?.long_name,
           country: addressComponents.find(
-            (component) => component.types[0] === 'country'
+            (component) => component.types[0] === 'country',
           )?.long_name,
         };
         return getLatLng(familiarResult);
@@ -114,20 +114,18 @@ class GooglePlaceField extends PureComponent {
           renderSuggestions={(active, suggestions, onSelectSuggestion) => {
             return (
               <Popper
-                open={true}
+                open
                 anchorEl={this.mapRef.current}
                 className={clsx(s.root)}
               >
                 <Paper>
                   <MenuList className={clsx(s.list, className)}>
-                    {suggestions &&
-                      suggestions.map((suggestion) => (
+                    {suggestions
+                      && suggestions.map((suggestion) => (
                         <MenuItem
                           className={s.listItem}
                           key={suggestion.id}
-                          onClick={(e) =>
-                            this.handleClick(e, suggestion, onSelectSuggestion)
-                          }
+                          onClick={(e) => this.handleClick(e, suggestion, onSelectSuggestion)}
                         >
                           {suggestion.description}
                         </MenuItem>
@@ -144,5 +142,5 @@ class GooglePlaceField extends PureComponent {
 }
 
 export default withStyles(styleSheet, { name: 'GooglePlaceField' })(
-  GooglePlaceField
+  GooglePlaceField,
 );

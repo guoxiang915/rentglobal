@@ -1,7 +1,6 @@
-import React, { PureComponent } from "react";
+import React, { PureComponent } from 'react';
 
-export const withHover = (C) =>
-  class WithHover extends PureComponent {
+export const withHover = (C) => class WithHover extends PureComponent {
     state = {
       isHover: false,
     };
@@ -22,4 +21,4 @@ export const withHover = (C) =>
         />
       );
     }
-  };
+};

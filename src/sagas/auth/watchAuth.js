@@ -1,11 +1,11 @@
-import { takeLatest, put, call } from "redux-saga/effects";
-import api from "../../api/api";
-import flushMessage from "../flushMessages";
+import { takeLatest, put, call } from 'redux-saga/effects';
+import api from '../../api/api';
+import flushMessage from '../flushMessages';
 
 const sendRequest = async (token) => {
   let resp = null;
   try {
-    resp = await api.post("/auth/validate-token", { token });
+    resp = await api.post('/auth/validate-token', { token });
   } catch (error) {
     console.log(error);
     resp = error.response;
@@ -21,24 +21,24 @@ function* authenticate(action) {
     }
     if (response && response.status === 200) {
       yield put({
-        type: "AUTH_SUCCESS",
+        type: 'AUTH_SUCCESS',
         resp: response.data,
       });
     } else {
       yield put({
-        type: "AUTH_FAILED",
-        resp: response ? response.data : "",
+        type: 'AUTH_FAILED',
+        resp: response ? response.data : '',
       });
     }
   } catch (error) {
     yield put({
-      type: "AUTH_FAILED",
-      resp: "",
+      type: 'AUTH_FAILED',
+      resp: '',
     });
   }
   yield call(flushMessage);
 }
 
 export default function* watchAuth() {
-  yield takeLatest("REQUEST_AUTHENTICATION", authenticate);
+  yield takeLatest('REQUEST_AUTHENTICATION', authenticate);
 }

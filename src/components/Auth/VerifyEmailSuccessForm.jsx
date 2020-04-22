@@ -1,7 +1,8 @@
-import React, { PureComponent } from "react";
-import PropTypes from "prop-types";
-import { withStyles } from "@material-ui/core/styles";
-import { withTranslation } from "react-i18next";
+import React, { PureComponent } from 'react';
+import PropTypes from 'prop-types';
+import { withStyles } from '@material-ui/core/styles';
+import { withTranslation } from 'react-i18next';
+import { CheckCircleOutline } from '@material-ui/icons';
 import {
   Box,
   Column,
@@ -9,12 +10,11 @@ import {
   Typography,
   Divider,
   Link,
-} from "../../common/base-components";
-import { CheckCircleOutline } from "@material-ui/icons";
+} from '../../common/base-components';
 
 const styleSheet = () => ({
   formWrapper: {
-    width: "100%",
+    width: '100%',
   },
 
   successIcon: {
@@ -33,7 +33,7 @@ const styleSheet = () => ({
 
 class VerifyEmailSuccessForm extends PureComponent {
   handleLogin = () => {
-    this.props.navigate("login");
+    this.props.navigate('login');
   };
 
   render() {
@@ -43,10 +43,10 @@ class VerifyEmailSuccessForm extends PureComponent {
       <form noValidate autoComplete="off" className={classes.formWrapper}>
         <Column fullWidth>
           <Typography fontSizeM fontWeightBold textSecondary paddingTopHalf>
-            {t("thankyou")}
+            {t('thankyou')}
           </Typography>
           <Typography fontSizeS textMediumGrey paddingTop>
-            {t("emailVerificationSuccessMsg")}
+            {t('emailVerificationSuccessMsg')}
           </Typography>
           <CheckCircleOutline color="primary" className={classes.successIcon} />
           <Box paddingTopHalf>
@@ -57,7 +57,7 @@ class VerifyEmailSuccessForm extends PureComponent {
               fullWidth
               justifyChildrenCenter
             >
-              {t("yourEmailConfirmed")}
+              {t('yourEmailConfirmed')}
             </Typography>
           </Box>
           <Column paddingTopHalf fullWidth>
@@ -68,7 +68,7 @@ class VerifyEmailSuccessForm extends PureComponent {
               onClick={this.handleLogin}
             >
               <Typography fontSizeS fontWeightBold>
-                {t("login")}
+                {t('login')}
               </Typography>
             </Button>
           </Column>
@@ -76,7 +76,7 @@ class VerifyEmailSuccessForm extends PureComponent {
           <Box paddingTop paddingBottom>
             <Typography fontSizeS fontWeightBold>
               <Link variant="primary" to="/auth/reset-password">
-                {t("forgotPassword")}
+                {t('forgotPassword')}
               </Link>
             </Typography>
           </Box>
@@ -93,5 +93,5 @@ VerifyEmailSuccessForm.propTypes = {
 };
 
 export default withStyles(styleSheet)(
-  withTranslation("common")(VerifyEmailSuccessForm)
+  withTranslation('common')(VerifyEmailSuccessForm),
 );

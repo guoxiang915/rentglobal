@@ -26,11 +26,17 @@
     "react/jsx-fragments": [1, "element"],
     "react/destructuring-assignment": [0],
     "space-before-function-paren": "off",
-    "linebreak-style": "off",
     "global-require": "off",
     "semi": "warn",
     "arrow-body-style": "off",
-    "indent": [2, 2]
+    "indent": [2, 2],
+    "no-control-regex": [0],
+    "react/require-default-props": [0],
+    "no-nested-ternary": [0],
+    "react/no-array-index-key": [0],
+    "import/prefer-default-export": [0],
+    "max-len": [0],
+    "react/display-name": [0]
   },
   "settings": {
     "react": {

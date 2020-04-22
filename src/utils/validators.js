@@ -17,20 +17,20 @@ export function getOfficeStatus(office) {
 
   if (
     !(
-      office.title &&
-      office.officeType &&
-      office.pricemonthly &&
-      office.location &&
-      office.numberOfEmployees
+      office.title
+      && office.officeType
+      && office.pricemonthly
+      && office.location
+      && office.numberOfEmployees
     )
   ) {
     return { status: 'incomplete', progress: 20 };
   }
   if (
     !(
-      office.coverPhotos &&
-      office.coverPhotos.length >= 3 &&
-      office.coverPhotos.length <= 15
+      office.coverPhotos
+      && office.coverPhotos.length >= 3
+      && office.coverPhotos.length <= 15
     )
   ) {
     return { status: 'incomplete', progress: 40 };
@@ -39,8 +39,8 @@ export function getOfficeStatus(office) {
   if (office.servicesAndAmenities) {
     servicesCategories.forEach((cat) => {
       if (
-        office.servicesAndAmenities[cat.name] &&
-        office.servicesAndAmenities[cat.name].length
+        office.servicesAndAmenities[cat.name]
+        && office.servicesAndAmenities[cat.name].length
       ) {
         servicesAndAmenities = true;
       }
@@ -98,10 +98,9 @@ export function getProfileStatus(user, userRole) {
     profileCompleted = 100;
   }
 
-  profileCompleteness =
-    profileCompleted === 100
-      ? 'profileCompleted'
-      : profileCompleted > 60
+  profileCompleteness = profileCompleted === 100
+    ? 'profileCompleted'
+    : profileCompleted > 60
       ? 'profileNotComplete'
       : 'profileNeedAttention';
 
