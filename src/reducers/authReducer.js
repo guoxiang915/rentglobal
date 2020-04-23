@@ -194,12 +194,6 @@ const authReducer = (currentState = INITIAL_STATE, action) => {
       error: { type: 'deleteDocument', msg: action.resp.msg },
     };
 
-  case 'REQUEST_DELETE_DOCUMENT':
-    return {
-      ...currentState,
-      isLoading: true,
-    };
-
   case 'DELETE_AVATAR_SUCCESS':
     return {
       ...currentState,
@@ -215,19 +209,16 @@ const authReducer = (currentState = INITIAL_STATE, action) => {
       error: { type: 'deleteAvatar', msg: action.resp.msg },
     };
 
-  case 'DELETE_DOCUMENT_SUCCESS':
+  case 'DELETE_ACCOUNT_SUCCESS':
+    // TODO: to be implement when /users/me/delete is done
     return {
-      ...currentState,
-      isLoading: false,
-      user: action.resp,
-      error: null,
+      ...currentState
     };
 
-  case 'DELETE_DOCUMENT_FAILED':
+  case 'DELETE_ACCOUNT_FAILED':
+    // TODO: to be implement when /users/me/delete is done
     return {
-      ...currentState,
-      isLoading: false,
-      error: { type: 'deleteDocument', msg: action.resp.msg },
+      ...currentState
     };
 
   default:

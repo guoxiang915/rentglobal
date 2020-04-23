@@ -238,6 +238,8 @@
     "pendingComments": "Pending comments",
     "confirmEdit": "Are you sure you want to edit?",
     "confirmDelete": "Are you sure you want to delete?",
+    "confirmDeleteAccount": "Are you sure you want to delete your account? Your data will be deleted permanently and it cannot be undone!",
+    "deleteAccount": "Delete Account",
 
     "services": "Services",
 

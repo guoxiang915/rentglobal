@@ -246,6 +246,8 @@
     "pendingComments": "Commentaires en attente",
     "confirmEdit": "Voulez-vous vraiment modifier?",
     "confirmDelete": "Etes-vous sûr que vous voulez supprimer?",
+    "confirmDeleteAccount": "Voulez-vous vraiment supprimer votre compte? Vos données seront supprimées définitivement et ne pourront pas être annulées!",
+    "deleteAccount": "Supprimer le compte",
     "services": "Services",
     "companyInfo": "Societe info",
     "companyDocuments": "Societe document",

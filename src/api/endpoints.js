@@ -53,6 +53,8 @@ export const deleteUserDocument = ({ userRole, docType, docFile }) => api.delete
   },
 });
 
+export const deleteUserAccount = () => api.delete(`/users/me/delete`);
+
 /** Call api to get office list */
 export const getOffices = () => api.get('/users/me/offices/');
 

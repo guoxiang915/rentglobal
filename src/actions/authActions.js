@@ -106,3 +106,8 @@ export const deleteDocument = (userRole, docType, docFile) => ({
 export const deleteAvatar = () => ({
   type: 'REQUEST_DELETE_AVATAR',
 });
+
+export const deleteAccount = (userRole) => ({
+  type: 'REQUEST_DELETE_ACCOUNT',
+  payload: { userRole },
+});

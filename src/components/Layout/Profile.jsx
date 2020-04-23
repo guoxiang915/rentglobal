@@ -224,6 +224,7 @@ class Profile extends PureComponent {
     updateUser: PropTypes.func,
     deleteAvatar: PropTypes.func,
     deleteDocument: PropTypes.func,
+    deleteAccount: PropTypes.func,
   };
 
   state = {
@@ -511,6 +512,39 @@ class Profile extends PureComponent {
     const address = { ...this.state.address, ...value };
     const postalCode = value.zipCode || '';
     this.setState({ address, postalCode });
+  };
+
+  handleDeleteAccount = () => {
+    const { t } = this.props;
+    this.setState({
+      dialog: (
+        <ConfirmDialog
+          variant="error"
+          text={t("confirmDeleteAccount")}
+          closeLabel={
+            <React.Fragment>
+              <CloseIcon style={{ width: 10, height: 10 }} />
+              <Typography paddingLeft>{t("cancel")}</Typography>
+            </React.Fragment>
+          }
+          confirmLabel={
+            <React.Fragment>
+              <DeleteIcon style={{ width: 15, height: 12 }} />
+              <Typography paddingLeft>{t("deleteAccount")}</Typography>
+            </React.Fragment>
+          }
+          onConfirm={this.deleteAccount}
+          onClose={this.handleCloseDialog}
+        />
+      )
+    });
+  };
+
+  deleteAccount = () => {
+    const {
+      userRole
+    } = this.props.auth;
+    this.props.deleteAccount(userRole);
   };
 
   /**
@@ -1041,7 +1075,19 @@ class Profile extends PureComponent {
             onToggleEdit={this.handleToggleEdit('privacyAndSharing')}
           />
         </Row>
-
+        <Row classes={{ box: s.profileTabWrapper }}>
+          <Button
+            link="errorRedNormal"
+            background="errorRed"
+            inverse
+            onClick={this.handleDeleteAccount}
+          >
+            <DeleteIcon style={{ width: 15, height: 12 }}/>
+            <Typography paddingLeft fontSizeS>
+              {t('deleteAccount')}
+            </Typography>
+          </Button>
+        </Row>
         {/* Show dialog */}
         {dialog}
       </Column>
