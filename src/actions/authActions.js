@@ -23,10 +23,11 @@ export const updateUser = (field, payload, history) => ({
   field,
 });
 
-export const setUserRole = (userRole, history) => ({
+export const setUserRole = (userRole, history, redirectPath) => ({
   type: 'SET_USER_ROLE',
   userRole,
   history,
+  redirectPath
 });
 
 export const registerUser = (payload, history) => ({

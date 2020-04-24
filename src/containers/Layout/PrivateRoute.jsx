@@ -16,7 +16,7 @@ const mapStateToProps = (state) => ({
 const mapDispatchToProps = (dispatch) => ({
   mappedAuthenticate: (token, history) => dispatch(authActions.authenticate(token, history)),
   mappedlogout: () => dispatch(authActions.logout()),
-  mappedToggleRole: (userRole, history) => dispatch(authActions.setUserRole(userRole, history)),
+  mappedToggleRole: (userRole, history, redirectPath) => dispatch(authActions.setUserRole(userRole, history, redirectPath)),
   mappedChangeLanguage: (language) => dispatch(appActions.changeLanguage(language)),
 });
 

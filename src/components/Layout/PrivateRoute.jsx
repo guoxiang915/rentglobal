@@ -211,7 +211,7 @@ class PrivateRoute extends React.Component {
   };
 
   /** Toggle userRole between landlord/company */
-  handleToggleRole = (setRole) => {
+  handleToggleRole = (setRole, redirecPath) => {
     const { user, userRole } = this.props.auth;
     const nextRole = typeof setRole === 'string'
       ? setRole
@@ -221,14 +221,14 @@ class PrivateRoute extends React.Component {
     if (nextRole && user?.roles.indexOf(nextRole) === -1) {
       const hideGuidance = storage.getBoolean(`${nextRole}HideGuide`);
       if (hideGuidance) {
-        this.props.mappedToggleRole(nextRole, this.props.history);
+        this.props.mappedToggleRole(nextRole, this.props.history, redirecPath);
       } else {
         this.setState({
           dialog: (
             <WelcomeRoleDialog
               role={nextRole}
               onClose={() => {
-                this.props.mappedToggleRole(nextRole, this.props.history);
+                this.props.mappedToggleRole(nextRole, this.props.history, redirecPath);
                 this.handleCloseDialog();
               }}
             />
@@ -236,7 +236,7 @@ class PrivateRoute extends React.Component {
         });
       }
     } else {
-      this.props.mappedToggleRole(nextRole, this.props.history);
+      this.props.mappedToggleRole(nextRole, this.props.history, redirecPath);
     }
     this.handleToggleSidebar(false);
   };
