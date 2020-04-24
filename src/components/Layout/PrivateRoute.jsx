@@ -204,7 +204,7 @@ class PrivateRoute extends React.Component {
       break;
 
     default:
-      this.props.history.push('/');
+      this.props.history.push(path);
       break;
     }
     this.handleToggleSidebar(false);

@@ -829,7 +829,7 @@ class AppHeader extends PureComponent {
                         <Button
                           variant="secondary"
                           shadow
-                          onClick={() => this.props.navigate('register/landlord')}
+                          onClick={() => this.props.navigate('/auth/register/landlord?referral=placetorentbutton')}
                         >
                           <Typography fontSizeS fontWeightBold>
                             {t('placeToRent')}
