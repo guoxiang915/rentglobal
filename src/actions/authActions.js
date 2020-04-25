@@ -104,6 +104,16 @@ export const deleteDocument = (userRole, docType, docFile) => ({
   payload: { userRole, docType, docFile },
 });
 
+export const verifyPhoneNumber = (phoneNumber) => ({
+  type: 'REQUEST_VERIFY_PHONE',
+  payload: { phoneNumber },
+});
+
+export const verifyPhoneCode = (phoneCode) => ({
+  type: 'REQUEST_VERIFY_CODE',
+  payload: phoneCode,
+});
+
 export const deleteAvatar = () => ({
   type: 'REQUEST_DELETE_AVATAR',
 });
