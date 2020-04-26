@@ -348,7 +348,7 @@ class Dashboard extends PureComponent {
     useEffect(() => {
       const intervalId = setInterval(() => setTime(new Date()), 1000 * 60);
       return () => clearInterval(intervalId);
-    }, [time, setTime]);
+    }, []);
 
     return (
       <Column alignChildrenEnd>

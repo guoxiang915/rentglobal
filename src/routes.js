@@ -1,6 +1,7 @@
 import React from 'react';
 import { Switch } from 'react-router-dom';
 import Home from './containers/Home';
+import Search from './components/Search';
 import AuthWrapper from './containers/Auth';
 import PrivateRoute from './containers/Layout/PrivateRoute';
 import Landlord from './containers/Landlord';
@@ -12,6 +13,7 @@ export default (
   <div>
     <Switch>
       <PrivateRoute exact path="/" component={Home} noSidebar />
+      <PrivateRoute exact path="/search" component={Search} noSidebar />
       <PrivateRoute
         exact
         path="/offices/:id"
