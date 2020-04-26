@@ -6,6 +6,10 @@ export const styleSheet = (theme) => ({
     height: '100%',
     background: theme.colors.primary.white,
     minHeight: 'calc(100vh - 245px)',
+    marginBottom: 200,
+    [theme.breakpoints.down('xs')]: {
+      marginBottom: 40,
+    },
   },
 
   container: {
@@ -156,6 +160,7 @@ export const styleSheet = (theme) => ({
 
   offices: {
     width: 1010,
+    marginBottom: 14,
     [theme.breakpoints.down('md')]: {
       width: 753,
     },
