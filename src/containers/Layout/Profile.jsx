@@ -10,6 +10,7 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => ({
   deleteDocument: (userRole, docType, docFile) => dispatch(authActions.deleteDocument(userRole, docType, docFile)),
+  deleteAvatar: () => dispatch(authActions.deleteAvatar()),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Profile);

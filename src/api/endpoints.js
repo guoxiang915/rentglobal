@@ -42,6 +42,9 @@ export const downloadFile = (fileId, fileName) => {
 /** Call api to get user profile */
 export const getProfile = () => api.get('/users/me/');
 
+/** Call api to delete user avatar */
+export const deleteUserAvatar = () => api.delete(`/users/me/delete/avatar`);
+
 /** Call api to delete user document */
 export const deleteUserDocument = ({ userRole, docType, docFile }) =>
   api.delete(`/users/me/delete/document?role=${userRole}`, {
@@ -163,3 +166,9 @@ export const getReviewsByOffice = () =>
  * @deprecated for now, admin doesn't exist, and call api for getting published offices
  */
 export const getSimilarOffices = () => getPublishedOffices();
+
+/** Call api to verify phone number */
+export const verifyPhoneNumber = (phoneNumber) => api.post('/users/me/verify-phone-number', phoneNumber);
+
+/** Call api to verify phone code */
+export const verifyPhoneCode = (phoneCode) => api.post('/users/me/confirm-phone-code', phoneCode);

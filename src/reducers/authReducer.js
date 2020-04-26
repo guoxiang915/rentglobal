@@ -8,6 +8,8 @@ const INITIAL_STATE = {
   successMsg: null,
   isActivated: false,
   isUpdating: null,
+  verifiedPhoneNumber: null,
+  phoneCodeSent: null
 };
 
 const authReducer = (currentState = INITIAL_STATE, action) => {
@@ -193,6 +195,80 @@ const authReducer = (currentState = INITIAL_STATE, action) => {
       isLoading: false,
       error: { type: 'deleteDocument', msg: action.resp.msg },
     };
+
+  case 'REQUEST_DELETE_DOCUMENT':
+    return {
+      ...currentState,
+      isLoading: true,
+    };
+
+  case 'DELETE_AVATAR_SUCCESS':
+    return {
+      ...currentState,
+      isLoading: false,
+      user: action.resp,
+      error: null,
+    };
+
+  case 'DELETE_AVATAR_FAILED':
+    return {
+      ...currentState,
+      isLoading: false,
+      error: { type: 'deleteAvatar', msg: action.resp.msg },
+    };
+
+  case 'DELETE_DOCUMENT_SUCCESS':
+    return {
+      ...currentState,
+      isLoading: false,
+      user: action.resp,
+      error: null,
+    };
+
+  case 'DELETE_DOCUMENT_FAILED':
+    return {
+      ...currentState,
+      isLoading: false,
+      error: { type: 'deleteDocument', msg: action.resp.msg },
+    };
+  case 'VERIFY_PHONE_SUCCESS':
+    return {
+      ...currentState,
+      isLoading: false,
+      phoneCodeSent: {
+        success: true
+      },
+      error: null,
+    };
+  
+  case 'VERIFY_PHONE_FAILED':
+    return {
+      ...currentState,
+      isLoading: false,
+      verifiedPhoneNumber: null,
+      phoneCodeSent: {
+        error: action.resp.msg
+      },
+      error: { type: 'verifyPhoneNumber', msg: action.resp.msg },
+    };
+  
+  case 'VERIFY_CODE_SUCCESS':
+    return {
+      ...currentState,
+      isLoading: false,
+      verifiedPhoneNumber: action.phoneNumber,
+      error: null,
+    };
+  
+  case 'VERIFY_CODE_FAILED':
+    return {
+      ...currentState,
+      isLoading: false,
+      verifiedPhoneNumber: {
+        error: action.resp.msg
+      },
+      error: { type: 'verifyPhoneCode', msg: action.resp.msg },
+  };
 
   default:
     return currentState;

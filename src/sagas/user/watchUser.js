@@ -1,7 +1,7 @@
 import { takeLatest, put, call } from 'redux-saga/effects';
 import api from '../../api/api';
 import flushMessage from '../flushMessages';
-import { deleteUserDocument } from '../../api/endpoints';
+import { deleteUserAvatar, deleteUserDocument, verifyPhoneNumber, verifyPhoneCode } from '../../api/endpoints';
 import { callApi } from '../../utils/api';
 
 const updateUserRequest = async ({ field, data }) => {
@@ -70,6 +70,29 @@ function* setUserRole(action) {
   yield call(flushMessage);
 }
 
+function* deleteAvatar(action) {
+  try {
+    const response = yield call(callApi, deleteUserAvatar, {});
+    if (response.status === 200) {
+      yield put({
+        type: 'DELETE_AVATAR_SUCCESS',
+        resp: response.data,
+      });
+    } else {
+      yield put({
+        type: 'DELETE_AVATAR_FAILED',
+        resp: response.data,
+      });
+    }
+  } catch (error) {
+    yield put({
+      type: 'DELETE_AVATAR_FAILED',
+      resp: { msg: error },
+    });
+  }
+  yield call(flushMessage);
+}
+
 function* deleteDocument(action) {
   try {
     const response = yield call(callApi, deleteUserDocument, action.payload);
@@ -93,8 +116,61 @@ function* deleteDocument(action) {
   yield call(flushMessage);
 }
 
+function* verifyPhone(action) {
+  try {
+    const response = yield call(callApi, verifyPhoneNumber, action.payload);
+    if (response.status === 200) {
+      yield put({
+        type: 'VERIFY_PHONE_SUCCESS',
+        resp: response.data,
+      });
+    } else {
+      yield put({
+        type: 'VERIFY_PHONE_FAILED',
+        resp: response.data,
+      });
+    }
+  } catch (error) {
+    yield put({
+      type: 'VERIFY_PHONE_FAILED',
+      resp: { msg: error },
+    });
+  }
+  yield call(flushMessage);
+}
+
+function* verifyCode(action) {
+  try {
+    const response = yield call(callApi, verifyPhoneCode, action.payload);
+    if (response.status === 200) {
+      yield put({
+        type: 'VERIFY_CODE_SUCCESS',
+        resp: response.data,
+        phoneNumber: {
+          number: action.payload.phoneNumber,
+          verified: true
+        }
+      });
+    } else {
+      yield put({
+        type: 'VERIFY_CODE_FAILED',
+        resp: response.data,
+      });
+    }
+  } catch (error) {
+    yield put({
+      type: 'VERIFY_CODE_FAILED',
+      resp: { msg: error },
+    });
+  }
+  yield call(flushMessage);
+}
+
 export default function* watchUpdateUser() {
   yield takeLatest('REQUEST_UPDATE_USER', updateUser);
   yield takeLatest('SET_USER_ROLE', setUserRole);
+  yield takeLatest('REQUEST_DELETE_AVATAR', deleteAvatar);
   yield takeLatest('REQUEST_DELETE_DOCUMENT', deleteDocument);
+  yield takeLatest('REQUEST_VERIFY_PHONE', verifyPhone);
+  yield takeLatest('REQUEST_VERIFY_CODE', verifyCode);
 }
