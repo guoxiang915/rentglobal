@@ -194,11 +194,21 @@ class Search extends PureComponent {
     });
 
     this.setState({ loading: true });
-    getPublishedOffices(params).then((response) => {
-      if (response.status === 200) {
-        this.setState({ offices: response.data, loading: false });
+    getPublishedOffices(params).then(
+      (response) => {
+        console.log(response);
+        if (response.status === 200) {
+          this.setState({ offices: response.data, loading: false });
+        } else if (response.status === 404) {
+          this.setState({ offices: [], loading: false });
+        }
+      },
+      (error) => {
+        if (error.response.status === 404) {
+          this.setState({ offices: [], loading: false });
+        }
       }
-    });
+    );
   };
 
   /** Navigate to office detail */

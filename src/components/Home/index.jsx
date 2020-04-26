@@ -438,7 +438,10 @@ class Home extends PureComponent {
                     }
                   >
                     <Grid item>
-                      <Button className={s.landingButton}>
+                      <Button
+                        className={s.landingButton}
+                        onClick={() => this.props.history.push('/search')}
+                      >
                         <Typography
                           fontSizeS
                           fontWeightBold
