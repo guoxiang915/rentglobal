@@ -134,6 +134,7 @@ const NavItem = ({
 const AccountInfo = ({
   user,
   role,
+  userRole,
   profileProgress,
   navigate,
   onToggleRole,
@@ -228,7 +229,7 @@ const AccountInfo = ({
               classes={s}
             />
           )}
-          {location.pathname !== '/' && (
+          {!!userRole && (
             <NavItem
               onClick={navigate('dashboard')}
               icon={DashboardIcon}
@@ -244,7 +245,7 @@ const AccountInfo = ({
                 onClick={onToggleRole(r)}
                 icon={r === 'company' ? UsersIcon : BuildingsIcon}
                 text={r === 'company' ? t('companyPanel') : t('landlordPanel')}
-                active={role === r}
+                active={userRole === r}
                 classes={s}
               />
             </React.Fragment>

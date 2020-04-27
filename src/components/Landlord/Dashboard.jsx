@@ -43,7 +43,6 @@ import {
 import { withCarousel as CarouselWrapper } from '../../common/base-services';
 import { ConditionalWrapper } from '../../utils/helpers';
 
-
 const styleSheet = (theme) => ({
   root: {
     paddingLeft: theme.spacing(5),
@@ -283,19 +282,20 @@ class Dashboard extends PureComponent {
 
         this.officeFilters.allOffices.value = response.data;
         this.officeFilters.leasedOffices.value = response.data.filter(
-          (o) => !!o.leasedBy,
+          (o) => !!o.leasedBy
         );
         this.officeFilters.availableOffices.value = response.data.filter(
-          (o) => !o.leasedBy,
+          (o) => !o.leasedBy
         );
 
         Object.keys(this.officeTypes).forEach(
-          (key) => (this.officeTypes[key].value = response.data.filter(
-            (o) => o.officeType === key,
-          )),
+          (key) =>
+            (this.officeTypes[key].value = response.data.filter(
+              (o) => o.officeType === key
+            ))
         );
       },
-      () => {},
+      () => {}
     );
   }
 
@@ -387,6 +387,9 @@ class Dashboard extends PureComponent {
     } = profileStatus;
 
     const DateTime = this.renderDateTime;
+    const filteredOffices = offices.filter(
+      (office) => office.location?.coordinates
+    );
 
     return (
       <Column
@@ -449,8 +452,8 @@ class Dashboard extends PureComponent {
               box: s.accountAvatar,
             }}
           >
-            {!user.avatar
-              && (userRole === 'landlord' ? (
+            {!user.avatar &&
+              (userRole === 'landlord' ? (
                 <ImageIcon className={s.smallIcon} variant="normal" />
               ) : (
                 <UserIcon className={s.smallIcon} variant="normal" />
@@ -526,16 +529,23 @@ class Dashboard extends PureComponent {
             <Row classes={{ box: s.officesMap }}>
               <Column stretch fullHeight noOverflow relative>
                 <GoogleMap
-                  coordinates={offices
-                    .filter(
-                      (office) => office.location && office.location.coordinates,
-                    )
-                    .map((office) => office.location.coordinates)}
-                  markers={offices
-                    .filter(
-                      (office) => office.location && office.location.coordinates,
-                    )
-                    .map((office, index) => (
+                  coordinates={
+                    filteredOffices && filteredOffices.length
+                      ? filteredOffices.map(
+                          (office) => office.location?.coordinates
+                        )
+                      : []
+                  }
+                  center={
+                    filteredOffices &&
+                    filteredOffices.length &&
+                    filteredOffices[filteredOffices.length - 1]?.location
+                      ?.coordinates
+                  }
+                  markers={
+                    filteredOffices &&
+                    filteredOffices.length &&
+                    filteredOffices.map((office, index) => (
                       <GoogleMapMarker
                         key={index}
                         size={30}
@@ -548,9 +558,9 @@ class Dashboard extends PureComponent {
                           office.leasedBy && office.leasedBy.overduePayment
                         }
                         tooltip={
-                          (currentOffice === office
-                            || selectedOfficeTypes.indexOf(office.officeType)
-                              !== -1) && (
+                          (currentOffice === office ||
+                            selectedOfficeTypes.indexOf(office.officeType) !==
+                              -1) && (
                             <MUIBox
                               component={() => {
                                 const Icon = this.officeTypes[office.officeType]
@@ -564,7 +574,8 @@ class Dashboard extends PureComponent {
                         }
                         onClick={this.handleSelectOffice(office)}
                       />
-                    ))}
+                    ))
+                  }
                 />
 
                 {currentOffice && (
@@ -596,18 +607,15 @@ class Dashboard extends PureComponent {
                               <Checkbox
                                 variant="outlined"
                                 isChecked={key === currentOfficeFilter}
-                                label={
-                                  `${t(filter.name)
-                                  } (${
-                                    filter.value ? filter.value.length : 0
-                                  })`
-                                }
+                                label={`${t(filter.name)} (${
+                                  filter.value ? filter.value.length : 0
+                                })`}
                                 onChange={this.handleSelectOfficeFilter(key)}
                                 className={s.officeFilter}
                               />
                             </Box>
                           </React.Fragment>
-                        ),
+                        )
                       )}
                       {Object.entries(this.officeTypes).map(([key, type]) => (
                         <React.Fragment key={key}>
@@ -617,12 +625,9 @@ class Dashboard extends PureComponent {
                               isChecked={
                                 selectedOfficeTypes.indexOf(key) !== -1
                               }
-                              label={
-                                `${t(type.name)
-                                } (${
-                                  type.value ? type.value.length : 0
-                                })`
-                              }
+                              label={`${t(type.name)} (${
+                                type.value ? type.value.length : 0
+                              })`}
                               onChange={this.handleToggleOfficeTypes(key)}
                               className={s.officeFilter}
                             />
@@ -694,48 +699,48 @@ class Dashboard extends PureComponent {
           >
             <Box classes={{ box: s.statisticBox }}>
               <StatisticIconBox
-                icon={(
+                icon={
                   <FavoriteIcon
                     className={s.lightIcon}
                     style={{ width: 14, height: 13 }}
                   />
-                )}
+                }
                 title={t('favoriteOffice')}
                 statistics={[{ value: 0, variant: 'primary' }]}
               />
             </Box>
             <Box classes={{ box: s.statisticBox }}>
               <StatisticIconBox
-                icon={(
+                icon={
                   <NoteIcon
                     className={s.lightIcon}
                     style={{ width: 14, height: 16 }}
                   />
-                )}
+                }
                 title={t('totalContracts')}
                 statistics={[{ value: 2, variant: 'primary' }]}
               />
             </Box>
             <Box classes={{ box: s.statisticBox }}>
               <StatisticIconBox
-                icon={(
+                icon={
                   <OptimizationIcon
                     className={s.lightIcon}
                     style={{ width: 17, height: 19 }}
                   />
-                )}
+                }
                 title={t('totalOptimization')}
                 statistics={[{ value: 1, variant: 'primary' }]}
               />
             </Box>
             <Box classes={{ box: s.statisticBox }}>
               <StatisticIconBox
-                icon={(
+                icon={
                   <CalendarIcon
                     className={s.lightIcon}
                     style={{ width: 16, height: 15 }}
                   />
-                )}
+                }
                 title={t('calendarEvents')}
                 statistics={[{ value: 4, variant: 'primary' }]}
               />
@@ -748,5 +753,5 @@ class Dashboard extends PureComponent {
 }
 
 export default withWidth()(
-  withRouter(withStyles(styleSheet)(withTranslation('common')(Dashboard))),
+  withRouter(withStyles(styleSheet)(withTranslation('common')(Dashboard)))
 );

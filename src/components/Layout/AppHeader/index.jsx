@@ -513,6 +513,7 @@ class AppHeader extends PureComponent {
                       <Paper className={classes.accountInfoContentWrapper}>
                         <AccountInfo
                           role={role}
+                          userRole={userRole}
                           user={user}
                           profileProgress={{
                             profileCompleteness,

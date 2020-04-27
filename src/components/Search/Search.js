@@ -6,10 +6,6 @@ export const styleSheet = (theme) => ({
     height: '100%',
     background: theme.colors.primary.white,
     minHeight: 'calc(100vh - 245px)',
-    marginBottom: 200,
-    [theme.breakpoints.down('xs')]: {
-      marginBottom: 40,
-    },
   },
 
   container: {
@@ -143,6 +139,7 @@ export const styleSheet = (theme) => ({
     width: '100%',
     position: 'relative',
     background: theme.colors.primary.white,
+    minHeight: 500,
   },
 
   officesContainer: {
@@ -152,7 +149,9 @@ export const styleSheet = (theme) => ({
   officesWrapper: {
     alignItems: 'flex-start',
     marginTop: 24,
+    marginBottom: 200,
     [theme.breakpoints.down('xs')]: {
+      marginBottom: 40,
       marginLeft: 22,
       marginRight: 22,
     },
@@ -178,7 +177,7 @@ export const styleSheet = (theme) => ({
       width: 272,
     },
     [theme.breakpoints.down('sm')]: {
-      width: 502,
+      width: 272,
     },
     [theme.breakpoints.down('xs')]: {
       width: '100%',
@@ -206,8 +205,9 @@ export const styleSheet = (theme) => ({
   searchByMapWrapper: {
     position: 'absolute',
     top: 0,
-    right: 0,
     bottom: 0,
+    right: 0,
+    zIndex: 2,
     width: '50%',
     [theme.breakpoints.down('xs')]: {
       width: '100%',

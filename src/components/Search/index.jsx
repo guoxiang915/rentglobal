@@ -221,6 +221,10 @@ class Search extends PureComponent {
     const { width, classes: s, t } = this.props;
     const { searchByMap, filters, offices } = this.state;
 
+    const filteredOffices = offices?.filter(
+      (office) => office.location?.coordinates
+    );
+
     return (
       <Column classes={{ box: s.root }}>
         <div className={clsx(s.container, s.searchboxWrapper)}>
@@ -287,29 +291,43 @@ class Search extends PureComponent {
           ) : null}
         </div>
 
-        <div className={s.valuesWrapper}>
+        <div
+          style={{ height: searchByMap ? 'calc(100vh - 300px)' : 'auto' }}
+          className={s.valuesWrapper}
+        >
           {searchByMap && (
             <div className={s.searchByMapWrapper}>
               <GoogleMap
-                coordinates={offices
-                  .filter((office) => office.location?.coordinates)
-                  .map((office) => office.location.coordinates)}
-                markers={offices
-                  .filter((office) => office.location?.coordinates)
-                  .map((office, index) => (
-                    <GoogleMapMarker
-                      key={index}
-                      lat={office.location.coordinates.lat}
-                      lng={office.location.coordinates.lng}
-                      badge={office.leasedBy?.overduePayment}
-                      onClick={this.handleNavigateOfficeDetail(office)}
-                    />
-                  ))}
+                coordinates={
+                  filteredOffices && filteredOffices.length
+                    ? filteredOffices.map(
+                        (office) => office.location.coordinates
+                      )
+                    : []
+                }
+                center={
+                  filteredOffices &&
+                  filteredOffices.length &&
+                  filteredOffices[0].location?.coordinates
+                }
+                markers={
+                  filteredOffices && filteredOffices.length
+                    ? filteredOffices.map((office, index) => (
+                        <GoogleMapMarker
+                          key={index}
+                          lat={office.location.coordinates.lat}
+                          lng={office.location.coordinates.lng}
+                          badge={office.leasedBy?.overduePayment}
+                          onClick={this.handleNavigateOfficeDetail(office)}
+                        />
+                      ))
+                    : []
+                }
               />
             </div>
           )}
 
-          <Column>
+          <Column fullHeight style={{ overflowY: 'auto' }}>
             <Column
               classes={{
                 box: clsx(
@@ -333,7 +351,7 @@ class Search extends PureComponent {
                     <Grid
                       item
                       xs={12}
-                      sm={6}
+                      sm={searchByMap ? 12 : 6}
                       md={searchByMap ? 12 : 4}
                       lg={searchByMap ? 6 : 3}
                       key={index}
