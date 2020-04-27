@@ -114,6 +114,7 @@ class RegisterForm extends PureComponent {
   handleSignup = async (e) => {
     e.preventDefault();
     const validForm = await this.validateForm();
+    const searchParams = new URLSearchParams(window.location.search);
     if (!validForm) {
       return;
     }
@@ -122,6 +123,7 @@ class RegisterForm extends PureComponent {
       password: this.state.password,
       role: this.props.registerMode,
       passwordLastUpdated: new Date(),
+      redirect: searchParams.get("redirect")
     };
     this.props.mappedRegister(user);
   };

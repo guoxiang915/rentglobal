@@ -95,9 +95,13 @@ class AuthWrapper extends PureComponent {
 
   renderVerifyForm = ({ match, classes: s }) => {
     const { token } = match.params;
+
+    const searchParams = new URLSearchParams(window.location.search);
+    const redirect = searchParams.get("redirect");
+
     React.useMemo(() => {
       console.log(token);
-      this.props.mappedVerifyEmail({ token }, this.props.history);
+      this.props.mappedVerifyEmail({ token, redirect }, this.props.history);
     }, [token]);
     return (
       <Column classes={{ box: s.loginCard }}>
@@ -168,7 +172,7 @@ class AuthWrapper extends PureComponent {
                 path="/auth/verify-email-success"
                 render={({ location }) => (location.state && location.state.success ? (
                   <Column classes={{ box: s.loginCard }}>
-                    <VerifyEmailSuccessForm navigate={this.navigate} />
+                    <VerifyEmailSuccessForm navigate={this.navigate} redirect={location.state.redirect}/>
                   </Column>
                 ) : (
                   <Redirect to="/auth/login" />
