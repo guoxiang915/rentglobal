@@ -532,8 +532,8 @@ class Dashboard extends PureComponent {
                   coordinates={
                     filteredOffices && filteredOffices.length
                       ? filteredOffices.map(
-                          (office) => office.location?.coordinates
-                        )
+                        (office) => office.location?.coordinates
+                      )
                       : []
                   }
                   center={

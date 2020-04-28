@@ -110,6 +110,27 @@ export const styleSheet = (theme) => ({
     },
   },
 
+  filterPanel: {
+    padding: '14px 18px',
+  },
+
+  filterLine: {
+    marginBottom: 4,
+  },
+
+  checkIcon: {
+    borderRadius: '50%',
+    border: `1px solid ${theme.colors.primary.mainColor}`,
+    boxShadow: `0px 6px 12px ${theme.colors.primary.mainColor}4D`,
+    color: theme.colors.primary.white,
+    background: theme.colors.primary.mainColor,
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
+    width: 28,
+    height: 28,
+  },
+
   filterButton: {
     width: 'auto',
     color: `${theme.colors.primary.darkGrey} !important`,
@@ -123,7 +144,7 @@ export const styleSheet = (theme) => ({
   },
 
   filterSelectedButton: {
-    border: theme.colors.primary.darkGrey,
+    border: `1px solid ${theme.colors.primary.darkGrey}`,
   },
 
   filterValuesWrapper: {
@@ -133,6 +154,10 @@ export const styleSheet = (theme) => ({
   filterValue: {
     marginRight: 10,
     color: theme.colors.primary.white,
+  },
+
+  checkbox: {
+    borderColor: theme.colors.primary.borderGrey,
   },
 
   valuesWrapper: {

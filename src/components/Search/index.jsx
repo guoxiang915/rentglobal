@@ -17,7 +17,10 @@ import {
   SearchIcon,
   GoogleMap,
   GoogleMapMarker,
+  UncheckIcon,
+  CheckIcon,
 } from '../../common/base-components';
+import { officeTypes } from '../../utils/constants';
 
 import { styleSheet } from './Search';
 import { OfficeItem } from '../../common/base-layouts';
@@ -58,12 +61,77 @@ const Searchbox = ({ classes: s, t, onSearch }) => {
   );
 };
 
-const FilterPanel = () => <div></div>;
+const TypeFilterPanel = ({ classes: s, t, types, onApply }) => {
+  const handleClickType = (type) => {
+    if (!types) types = [];
+    if (types.indexOf(type) !== -1) {
+      types.splice(types.indexOf(type), 1);
+      if (!types || !types.length) types = null;
+    } else {
+      types.push(type);
+    }
+    onApply(types);
+  };
+
+  return (
+    <Column classes={{ box: s.filterPanel }} alignChildrenStart>
+      {officeTypes.map((type, index) => (
+        <React.Fragment key={index}>
+          <Row classes={{ box: s.filterLine }}>
+            <Checkbox
+              classes={{ label: s.checkbox }}
+              color="primary"
+              isChecked={(types && types.indexOf(type) !== -1) || false}
+              onChange={() => handleClickType(type)}
+              icon={UncheckIcon}
+              checkedIcon={(props) => (
+                <div className={s.checkIcon}>
+                  <CheckIcon style={{ width: 14, height: 10 }} />
+                </div>
+              )}
+              label={
+                <Typography
+                  fontSizeS
+                  textPrimary={types && types.indexOf(type) !== -1}
+                  textSecondary
+                  paddingLeft
+                >
+                  {t(type)}
+                </Typography>
+              }
+            />
+          </Row>
+        </React.Fragment>
+      ))}
+    </Column>
+  );
+};
+
+const FilterPanel = ({ classes, t, filter, value, onChangeFilter }) => {
+  if (filter.type === 'officeTypes') {
+    return (
+      <TypeFilterPanel
+        classes={classes}
+        t={t}
+        types={value}
+        onApply={onChangeFilter('officeTypes')}
+      />
+    );
+  }
+  return null;
+};
 
 const FilterWrapper = ({ classes: s, t, filter, value, onChangeFilter }) => {
   const [anchorEl, setAnchorEl] = React.useState(null);
   const openAnchor = React.useCallback((e) => setAnchorEl(e.currentTarget), []);
   const closeAnchor = React.useCallback(() => setAnchorEl(null), []);
+  const handleChangeFilter = React.useCallback(
+    (filter) => (value) => {
+      onChangeFilter(filter, value);
+      closeAnchor();
+    },
+    [onChangeFilter, closeAnchor]
+  );
 
   return (
     <div className={s.filterWrapper}>
@@ -99,7 +167,7 @@ const FilterWrapper = ({ classes: s, t, filter, value, onChangeFilter }) => {
             t={t}
             filter={filter}
             value={value}
-            onChangeFilter={onChangeFilter}
+            onChangeFilter={handleChangeFilter}
           />
         </Paper>
       </Popover>
@@ -127,7 +195,7 @@ class Search extends PureComponent {
       title: 'location',
     },
     {
-      type: 'type',
+      type: 'officeTypes',
       title: 'type',
     },
     {
@@ -152,6 +220,29 @@ class Search extends PureComponent {
     },
   ];
 
+  /** Search office by text, filters, map... */
+  searchOffices = () => {
+    const params = { q: this.state.q };
+    Object.entries(this.state.filters).forEach(([key, filter]) => {
+      params[key] = filter;
+    });
+    this.setState({ loading: true });
+    getPublishedOffices(params).then(
+      (response) => {
+        if (response.status === 200) {
+          this.setState({ offices: response.data, loading: false });
+        } else if (response.status === 404) {
+          this.setState({ offices: [], loading: false });
+        }
+      },
+      (error) => {
+        if (error.response.status === 404) {
+          this.setState({ offices: [], loading: false });
+        }
+      }
+    );
+  };
+
   componentDidMount() {
     this.searchOffices();
   }
@@ -168,9 +259,9 @@ class Search extends PureComponent {
   };
 
   /** Change filter event handler */
-  handleChangeFilter = (filter) => (value) => {
+  handleChangeFilter = (filter, value) => {
     const { filters } = this.state;
-    filters[filter.type] = value;
+    filters[filter] = value;
     this.setState({ filters }, this.searchOffices);
   };
 
@@ -186,29 +277,11 @@ class Search extends PureComponent {
     this.setState({ filters: {} }, this.searchOffices);
   };
 
-  /** Search office by text, filters, map... */
-  searchOffices = () => {
-    const params = { q: this.state.q };
-    Object.entries(this.state.filters).forEach(([key, filter]) => {
-      params[key] = filter.value;
-    });
-
-    this.setState({ loading: true });
-    getPublishedOffices(params).then(
-      (response) => {
-        console.log(response);
-        if (response.status === 200) {
-          this.setState({ offices: response.data, loading: false });
-        } else if (response.status === 404) {
-          this.setState({ offices: [], loading: false });
-        }
-      },
-      (error) => {
-        if (error.response.status === 404) {
-          this.setState({ offices: [], loading: false });
-        }
-      }
-    );
+  /** Get chip text */
+  getChipText = (filter, value) => {
+    if (filter === 'officeTypes') {
+      return value.map((v) => this.props.t(v)).join(', ');
+    }
   };
 
   /** Navigate to office detail */
@@ -231,7 +304,7 @@ class Search extends PureComponent {
           <Row>
             <Searchbox classes={s} t={t} onSearch={this.handleSearchByText} />
             {!isWidthDown('xs', width) && (
-              <>
+              <React.Fragment>
                 <Stretch />
                 <Checkbox
                   variant="outlined"
@@ -240,7 +313,7 @@ class Search extends PureComponent {
                   isChecked={searchByMap}
                   onChange={this.handleSearchByMap}
                 />
-              </>
+              </React.Fragment>
             )}
           </Row>
         </div>
@@ -254,25 +327,27 @@ class Search extends PureComponent {
                   t={t}
                   filter={filter}
                   value={filters[filter.type]}
-                  onChangeFilter={this.handleChangeFilter(filter)}
+                  onChangeFilter={this.handleChangeFilter}
                 />
               </React.Fragment>
             ))}
           </Row>
 
-          {filters && Object.keys(filters).length ? (
+          {filters && Object.values(filters).map((f) => !!f).length ? (
             <Row classes={{ box: s.filterValuesWrapper }}>
               <Column>
                 <Row>
-                  {Object.entries(filters).map(([key, filter]) => (
-                    <Chip
-                      key={key}
-                      label={filter.label}
-                      onDelete={this.handleRemoveFilter(key)}
-                      className={s.filterValue}
-                      color="primary"
-                    />
-                  ))}
+                  {Object.entries(filters).map(([filter, value]) =>
+                    value ? (
+                      <Chip
+                        key={filter}
+                        label={this.getChipText(filter, value)}
+                        onDelete={this.handleRemoveFilter(filter)}
+                        className={s.filterValue}
+                        color="primary"
+                      />
+                    ) : null
+                  )}
                 </Row>
               </Column>
               <Stretch />

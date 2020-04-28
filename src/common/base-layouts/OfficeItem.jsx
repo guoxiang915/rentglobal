@@ -220,10 +220,10 @@ const OfficeItem = React.memo(
     const dots = React.useMemo(() => {
       return office.coverPhotos
         ? office.coverPhotos.map((content, key) => (
-            <React.Fragment key={key}>
-              <Dot classes={s} />
-            </React.Fragment>
-          ))
+          <React.Fragment key={key}>
+            <Dot classes={s} />
+          </React.Fragment>
+        ))
         : [];
     }, [office, s]);
 
@@ -234,12 +234,12 @@ const OfficeItem = React.memo(
       status === 'approved'
         ? null
         : status === 'rejected'
-        ? 'rejectedByConsultant'
-        : status === 'unpublished'
-        ? 'unpublished'
-        : status === 'incomplete'
-        ? 'mustCompleteData'
-        : null;
+          ? 'rejectedByConsultant'
+          : status === 'unpublished'
+            ? 'unpublished'
+            : status === 'incomplete'
+              ? 'mustCompleteData'
+              : null;
     const progress =
       officeStatus && officeStatus.progress < 100
         ? officeStatus.progress

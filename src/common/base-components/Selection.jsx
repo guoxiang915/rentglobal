@@ -99,11 +99,11 @@ const Selection = withStyles(styleSheet, { name: 'Selection' })(
     static propTypes = {
       isChecked: PropTypes.bool,
       onChange: PropTypes.func,
-      label: PropTypes.string,
+      label: PropTypes.any,
       control: PropTypes.any,
       classes: PropTypes.object.isRequired,
-      icon: PropTypes.object,
-      checkedIcon: PropTypes.object,
+      icon: PropTypes.any,
+      checkedIcon: PropTypes.any,
       variant: PropTypes.string,
     };
 
@@ -122,9 +122,9 @@ const Selection = withStyles(styleSheet, { name: 'Selection' })(
 
       return (
         <FormControlLabel
-          control={(
+          control={
             <Control
-              icon={(
+              icon={
                 <Icon
                   classes={{
                     root: clsx(s.icon, {
@@ -133,23 +133,23 @@ const Selection = withStyles(styleSheet, { name: 'Selection' })(
                     }),
                   }}
                 />
-              )}
-              checkedIcon={(
+              }
+              checkedIcon={
                 <CheckedIcon
                   classes={{
                     root: clsx(
                       s.checkedIcon,
                       variant === 'outlined' && s.primaryIcon,
-                      variant === 'contained' && s.whiteIcon,
+                      variant === 'contained' && s.whiteIcon
                     ),
                   }}
                 />
-              )}
+              }
               checked={isChecked}
               onChange={onChange}
               className={s.controlStyle}
             />
-          )}
+          }
           label={label}
           classes={{
             root: clsx(s.root, {
@@ -164,7 +164,7 @@ const Selection = withStyles(styleSheet, { name: 'Selection' })(
         />
       );
     }
-  },
+  }
 );
 
 export const Radio = (props) => (

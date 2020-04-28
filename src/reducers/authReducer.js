@@ -248,7 +248,7 @@ const authReducer = (currentState = INITIAL_STATE, action) => {
         error: action.resp.msg
       },
       error: { type: 'verifyPhoneCode', msg: action.resp.msg },
-  };
+    };
 
   default:
     return currentState;
