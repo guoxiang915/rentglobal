@@ -436,5 +436,9 @@
     "employees": "Employees",
     "howLong": "How long",
     "moreFilter": "More filter",
-    "resultsWithNumber": "{{count}} Results"
+    "resultsWithNumber": "{{count}} Results",
+    "employeesWithNumber": "{{count}} Employees",
+    "roomsWithNumber": "{{count}} Rooms",
+    "apply": "Apply",
+    "clear": "Clear"
 }

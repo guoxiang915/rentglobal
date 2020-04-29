@@ -163,6 +163,14 @@ export const styleSheet = (theme) => ({
     borderColor: theme.colors.primary.borderGrey,
   },
 
+  numberField: {
+    width: 175,
+  },
+
+  applyButton: {
+    width: 175,
+  },
+
   valuesWrapper: {
     width: '100%',
     position: 'relative',

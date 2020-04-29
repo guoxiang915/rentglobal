@@ -13,6 +13,8 @@ import {
   Typography,
   TextField,
   Checkbox,
+  NumberField,
+  Divider,
   CloseIcon,
   SearchIcon,
   GoogleMap,
@@ -152,6 +154,119 @@ const ContractTypeFilterPanel = ({ classes: s, t, types, onApply }) => {
   );
 };
 
+const RoomsFilterPanel = ({ classes: s, t, rooms: r, onApply }) => {
+  const [rooms, setRooms] = React.useState(r);
+  React.useEffect(() => setRooms(r), [r]);
+
+  return (
+    <Column alignChildrenStart style={{ width: 400 }}>
+      <Grid
+        container
+        direction="row"
+        justify="space-between"
+        alignItems="center"
+        className={s.filterPanel}
+      >
+        <Typography fontSizeS textSecondary>
+          {t('rooms')}
+        </Typography>
+        <NumberField
+          inputProps={{ min: 0 }}
+          value={rooms}
+          onChange={(e) => setRooms(e.target.value)}
+          className={s.numberField}
+        />
+      </Grid>
+      <Divider />
+
+      <Grid
+        container
+        direction="row"
+        justify="space-between"
+        alignItems="center"
+        className={s.filterPanel}
+      >
+        <Button
+          link="errorRed"
+          background="secondaryLight"
+          onClick={() => onApply()}
+        >
+          <Typography fontSizeS alignChildrenCenter>
+            <CloseIcon style={{ width: 10, height: 10 }} />
+            <Typography paddingLeft>{t('clear')}</Typography>
+          </Typography>
+        </Button>
+        <Button
+          variant="primary"
+          onClick={() => onApply(rooms)}
+          className={s.applyButton}
+        >
+          <Typography fontSizeS alignChildrenCenter>
+            <CheckIcon style={{ width: 16, height: 12 }} />
+            <Typography paddingLeft>{t('apply')}</Typography>
+          </Typography>
+        </Button>
+      </Grid>
+    </Column>
+  );
+};
+
+const EmployeesFilterPanel = ({ classes: s, t, employees: e, onApply }) => {
+  const [employees, setEmployees] = React.useState(e);
+  React.useEffect(() => setEmployees(e), [e]);
+
+  return (
+    <Column alignChildrenStart style={{ width: 400 }}>
+      <Grid
+        container
+        direction="row"
+        justify="space-between"
+        alignItems="center"
+        className={s.filterPanel}
+      >
+        <Typography fontSizeS textSecondary>
+          {t('numberOfEmployees')}
+        </Typography>
+        <NumberField
+          value={employees}
+          onChange={(e) => setEmployees(e.target.value)}
+          className={s.numberField}
+        />
+      </Grid>
+      <Divider />
+
+      <Grid
+        container
+        direction="row"
+        justify="space-between"
+        alignItems="center"
+        className={s.filterPanel}
+      >
+        <Button
+          link="errorRed"
+          background="secondaryLight"
+          onClick={() => onApply()}
+        >
+          <Typography fontSizeS alignChildrenCenter>
+            <CloseIcon style={{ width: 10, height: 10 }} />
+            <Typography paddingLeft>{t('clear')}</Typography>
+          </Typography>
+        </Button>
+        <Button
+          variant="primary"
+          onClick={() => onApply(employees)}
+          className={s.applyButton}
+        >
+          <Typography fontSizeS alignChildrenCenter>
+            <CheckIcon style={{ width: 16, height: 12 }} />
+            <Typography paddingLeft>{t('apply')}</Typography>
+          </Typography>
+        </Button>
+      </Grid>
+    </Column>
+  );
+};
+
 const FilterPanel = React.memo(
   ({ classes, t, filter, value, onChangeFilter }) => {
     switch (filter.type) {
@@ -172,6 +287,26 @@ const FilterPanel = React.memo(
             t={t}
             types={value}
             onApply={onChangeFilter('typeOfContracts')}
+          />
+        );
+
+      case 'rooms':
+        return (
+          <RoomsFilterPanel
+            classes={classes}
+            t={t}
+            rooms={value}
+            onApply={onChangeFilter('rooms')}
+          />
+        );
+
+      case 'employees':
+        return (
+          <EmployeesFilterPanel
+            classes={classes}
+            t={t}
+            employees={value}
+            onApply={onChangeFilter('employees')}
           />
         );
 
@@ -250,6 +385,8 @@ const FilterChip = React.memo(({ classes: s, t, filter, value, onChange }) => {
       ) {
         value.splice(params.index, 1);
         onChange(value);
+      } else {
+        onChange();
       }
     },
     [value, onChange]
@@ -284,6 +421,28 @@ const FilterChip = React.memo(({ classes: s, t, filter, value, onChange }) => {
             />
           ))}
         </>
+      );
+
+    case 'rooms':
+      return (
+        <Chip
+          key={filter}
+          label={t('roomsWithNumber', { count: value })}
+          onDelete={() => handleRemoveFilter({ filter })}
+          className={s.filterValue}
+          color="primary"
+        />
+      );
+
+    case 'employees':
+      return (
+        <Chip
+          key={filter}
+          label={t('employeesWithNumber', { count: value })}
+          onDelete={() => handleRemoveFilter({ filter })}
+          className={s.filterValue}
+          color="primary"
+        />
       );
 
     default:
@@ -389,7 +548,7 @@ class Search extends PureComponent {
   handleChangeFilter = (filter, value) => {
     const { filters } = this.state;
     filters[filter] = value;
-    if (Array.isArray(value) && !value.length) {
+    if (!value || (Array.isArray(value) && !value.length)) {
       delete filters[filter];
     }
     this.setState({ filters }, this.searchOffices);
