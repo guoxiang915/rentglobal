@@ -328,7 +328,7 @@ class AppSidebar extends PureComponent {
                     background="primary"
                     outline="primaryDark"
                     inverse
-                    onClick={() => this.navigate('register/company')}
+                    onClick={() => this.navigate('/auth/register/landlord?redirect=/landlord/offices/add')}
                     className={classes.fullWidthButton}
                   >
                     <Typography fontSizeS>{t('placeToRent')}</Typography>
@@ -347,7 +347,10 @@ class AppSidebar extends PureComponent {
                         background="primary"
                         outline="primaryDark"
                         inverse
-                        onClick={this.props.onToggleRole}
+                        onClick={() =>{
+                          const roleToSet = userRole === 'landlord' ? 'company' : 'landlord';
+                          this.props.onToggleRole(roleToSet, roleToSet === 'landlord' ? "/landlord/offices/add": null);
+                        }}
                         className={classes.fullWidthButton}
                       >
                         <Typography fontSizeS>
