@@ -421,5 +421,15 @@
     "companyProfileWelcome3": "Lorem ipsum dolor sit amet, consectetur ipsum",
     "consultantProfileWelcome1": "Lorem ipsum dolor sit amet, consectetur",
     "consultantProfileWelcome2": "Lorem ipsum dolor sit amet",
-    "consultantProfileWelcome3": "Lorem ipsum dolor sit amet, consectetur ipsum"
+    "consultantProfileWelcome3": "Lorem ipsum dolor sit amet, consectetur ipsum",
+
+    "advancedSearchboxText": "Search offices...",
+    "searchByMap": "Search by map",
+    "clearAllFilters": "Clear all filters",
+    "type": "Type",
+    "price": "Price",
+    "employees": "Employees",
+    "howLong": "How long",
+    "moreFilter": "More filter",
+    "resultsWithNumber": "{{count}} Results"
 }

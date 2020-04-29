@@ -763,7 +763,7 @@ class Profile extends PureComponent {
                                       />
                                     )}
                                   </Box>
-                                )}
+                                );}
                               }
                             </Dropzone>
                           )}
