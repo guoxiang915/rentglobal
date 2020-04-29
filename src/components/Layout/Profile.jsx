@@ -5,7 +5,6 @@ import clsx from 'clsx';
 import PropTypes from 'prop-types';
 import withWidth, { isWidthDown } from '@material-ui/core/withWidth';
 import { Grid, Card } from '@material-ui/core';
-import Dropzone from 'react-dropzone';
 import {
   Box,
   Row,
@@ -37,8 +36,13 @@ import {
 import { withCarousel } from '../../common/base-services';
 import { ConditionalWrapper } from '../../utils/helpers';
 import { CropperDialog } from '.';
+import Dropzone from 'react-dropzone';
+import PhoneNumber from 'awesome-phonenumber';
 import { Alert } from '@material-ui/lab';
 import { maxFileSize } from '../../utils/constants';
+import MobileDetect from 'mobile-detect';
+
+const md = new MobileDetect(window.navigator.userAgent);
 
 /** Show save and cancel buttons for form */
 const SaveButtons = ({
@@ -225,11 +229,16 @@ class Profile extends PureComponent {
     deleteAvatar: PropTypes.func,
     deleteDocument: PropTypes.func,
     deleteAccount: PropTypes.func,
+    verifyPhoneNumber: PropTypes.func,
+    confirmPhoneCode: PropTypes.func,
+    verifiedPhoneNumber: PropTypes.object
   };
 
   state = {
     avatar: null,
     username: '',
+    phoneNumberError: '',
+    phoneCode: '',
     phoneNumber: '',
     phoneNumberVerified: false,
     address: {},
@@ -250,6 +259,7 @@ class Profile extends PureComponent {
     uploadingDocument: null,
 
     dialog: null,
+    phoneTooltip: false,
   };
 
   /** landlord/company profile documents */
@@ -277,12 +287,17 @@ class Profile extends PureComponent {
     ],
   };
 
-  UNSAFE_componentWillReceiveProps(newProps) {
-    this.handleResetProfileInfo(newProps.auth);
-  }
-
   UNSAFE_componentWillMount() {
     this.handleResetProfileInfo(this.props.auth);
+  }
+
+  componentDidUpdate(prevProps) {
+    if (prevProps.verifiedPhoneNumber !== this.props.verifiedPhoneNumber && !this.props.verifiedPhoneNumber.error) {
+      this.setState({
+        phoneNumber: this.props.verifiedPhoneNumber?.number,
+        phoneNumberVerified: this.props.verifiedPhoneNumber?.verified
+      });
+    }
   }
 
   handleStateChange = (field) => (value) => {
@@ -331,7 +346,7 @@ class Profile extends PureComponent {
   /** Save general info */
   handleSaveGeneralInfo = () => {
     const {
-      avatar, username, phoneNumber, address, postalCode,
+      avatar, username, phoneNumber, phoneNumberVerified, address, postalCode
     } = this.state;
     const { user } = this.props.auth;
 
@@ -352,6 +367,7 @@ class Profile extends PureComponent {
         profile: {
           username,
           phoneNumber,
+          phoneNumberVerified,
           address: { ...address, postalCode },
         },
       });
@@ -441,7 +457,50 @@ class Profile extends PureComponent {
     }
   };
 
-  handleSendPhoneVerification = () => {};
+  handleSendPhoneVerification = () => {
+    const { 
+      phoneNumber, 
+      phoneNumberError,
+    } = this.state;
+    this.validateForm();
+    if (phoneNumberError) {
+      return;
+    }
+
+    // verify number
+    this.props.verifyPhoneNumber(phoneNumber);
+  };
+
+  verifyCode = () => {
+    const { 
+      phoneCode,
+      phoneNumber
+    } = this.state;
+
+    if (!phoneCode) {
+      return;
+    }
+
+    this.props.verifyPhoneCode({code: phoneCode, phoneNumber});
+  }
+
+  onPhoneTooltipOpen = () => {
+    // open the tooltip with tap instead of the default hover event
+    if (!md.mobile()) {
+      this.setState({
+        phoneTooltip: true
+      });
+    }
+  }
+
+  onPhoneTooltipClose = () => {
+    // close the tooltip with tap instead of the default hover event
+    if (!md.mobile()) {
+      this.setState({
+        phoneTooltip: false
+      });
+    }
+  }
 
   /** Set and resize avatar image */
   handleClickAvatar = (avatar) => {
@@ -546,12 +605,45 @@ class Profile extends PureComponent {
     } = this.props.auth;
     this.props.deleteAccount(userRole);
   };
+  handleChangePhone = () => (e) => {
+    this.setState({
+      phoneNumber: e.target.value,
+      phoneNumberVerified: false
+    });
+  };
+
+  validateForm = () => {
+    const {
+      phoneNumber
+    } = this.state;
+    const {
+      t
+    } = this.props;
+    let num = phoneNumber || '';
+    if (!num.startsWith("+") && num.length > 0) {
+      num = "+" + num;
+      this.setState({
+        phoneNumber: num
+      });
+    }
+
+    let pn = new PhoneNumber(num);
+    if (!pn.isValid()) {
+
+      this.setState({ phoneNumberError: t("invalidNumberError") });
+      return false;
+    } else {
+      this.setState({ phoneNumberError: '' });
+    }
+
+    return true;
+  }
 
   /**
    * Render function
    */
   render() {
-    const { width, classes: s, t } = this.props;
+    const { width, classes: s, t, phoneCodeSent, verifiedPhoneNumber } = this.props;
     const {
       user, userRole, isUpdating: updatingTab, error,
     } = this.props.auth;
@@ -572,6 +664,9 @@ class Profile extends PureComponent {
       password,
       passwordError,
       confirmPassword,
+      phoneNumberError,
+      phoneCode,
+      phoneTooltip
     } = this.state;
     const { email } = user;
 
@@ -584,6 +679,23 @@ class Profile extends PureComponent {
       }/${
         passwordLastUpdated.getDate()}`;
     }
+
+    let closeTooltipButton = md.mobile() ? (
+      <Button
+        variant="icon"
+        link="errorRed"
+        background="errorRedLight"
+        onClick={() => {
+          this.setState({
+            phoneTooltip: false
+          });
+        }}
+      >
+        <Typography>
+          <CloseIcon style={{ width: 30, height: 12 }} />
+        </Typography>
+      </Button>
+    ) : null;
 
     return (
       <Column
@@ -684,7 +796,7 @@ class Profile extends PureComponent {
                                       />
                                     )}
                                   </Box>
-                                )}
+                                );}
                               }
                             </Dropzone>
                           )}
@@ -764,48 +876,130 @@ class Profile extends PureComponent {
                       <TextField
                         variant="outlined"
                         placeholder={t('phoneNumber')}
-                        onChange={this.handleStateChangeByInput('phoneNumber')}
+                        onChange={this.handleChangePhone()}
                         value={phoneNumber || ''}
                         className={s.profileInput}
                         startAdornment={<PhoneIcon className={s.outlineIcon} />}
                         endAdornment={
-                          phoneNumber && !phoneNumberVerified ? (
+                          phoneNumber && !phoneNumberVerified && !phoneNumberError ? (
+                            <Tooltip
+                              placement={
+                                isWidthDown('xs', width) ? (md.mobile() ? 'bottom-end':'left') : 'bottom'
+                              }
+                              borderType="errorRed"
+                              open={phoneTooltip}
+                              onClose={this.onPhoneTooltipClose}
+                              onOpen={this.onPhoneTooltipOpen}
+                              title={(
+                                <TooltipContent
+                                  title={
+                                    phoneCodeSent && phoneCodeSent.success? (
+                                      <Column>
+                                        <Typography textErrorRed>
+                                          {t("enterCode")}
+                                        </Typography>
+                                        <Box paddingTop>
+                                          <TextField
+                                            variant="outlined"
+                                            placeholder={"code"}
+                                            onChange={this.handleStateChangeByInput('phoneCode')}
+                                            value={phoneCode}
+                                          />
+                                          <Button
+                                            link="normal"
+                                            background="secondaryLight"
+                                            onClick={
+                                              this.verifyCode
+                                            }
+                                          >
+                                            <Typography fontSizeXS>
+                                              {t("verify")}
+                                            </Typography>
+                                          </Button>
+                                          <Button
+                                            link="normal"
+                                            background="secondaryLight"
+                                            onClick={
+                                              this.handleSendPhoneVerification
+                                            }
+                                          >
+                                            <Typography fontSizeXS>
+                                              {t("resend")}
+                                            </Typography>
+                                          </Button>
+                                          {closeTooltipButton}
+                                        </Box>
+                                        {verifiedPhoneNumber && verifiedPhoneNumber.error ? <Typography textErrorRed>{verifiedPhoneNumber.error}</Typography> : null}
+                                      </Column>
+                                    ) : (
+                                      <Column>
+                                        <Typography textErrorRed>
+                                          {t('phoneMustApproved')}
+                                        </Typography>
+                                        <Box paddingTop>
+                                          {
+                                            editTab === 'generalInfo' ? t("saveToVerify") : (
+                                              <React.Fragment>
+                                                <Button
+                                                  link="normal"
+                                                  background="secondaryLight"
+                                                  onClick={
+                                                    this.handleSendPhoneVerification
+                                                  }
+                                                  disabled={editTab === 'generalInfo'}
+                                                >
+                                                  <Typography fontSizeXS>
+                                                    {t('sendVerificationCode')}
+                                                  </Typography>
+                                                </Button>
+                                                {closeTooltipButton}
+                                              </React.Fragment>
+                                            )
+                                          }
+                                        </Box>
+                                        {phoneCodeSent && phoneCodeSent.error ? <Typography textErrorRed>{phoneCodeSent.error}</Typography> : null}
+                                      </Column>
+                                    )
+                                  }
+                                />
+                              )}
+                              interactive
+                            >
+                              <div onClick={() => {
+                                this.setState({
+                                  phoneTooltip: true
+                                });
+                              }} className={s.errorIcon}>!</div>
+                            </Tooltip>
+                          ) : phoneNumberVerified ? (
                             <Tooltip
                               placement={
                                 isWidthDown('xs', width) ? 'left' : 'bottom'
                               }
-                              borderType="errorRed"
+                              borderType="primary"
                               title={(
                                 <TooltipContent
                                   title={(
                                     <Column>
-                                      <Typography textErrorRed>
-                                        {t('phoneMustApproved')}
+                                      <Typography textSecondary>
+                                        {t("Your phone number confirmed")}
                                       </Typography>
-                                      <Box paddingTop>
-                                        <Button
-                                          link="normal"
-                                          background="secondaryLight"
-                                          onClick={
-                                            this.handleSendPhoneVerification
-                                          }
-                                        >
-                                          <Typography fontSizeXS>
-                                            {t('sendVerificationCode')}
-                                          </Typography>
-                                        </Button>
-                                      </Box>
                                     </Column>
                                   )}
                                 />
                               )}
                               interactive
                             >
-                              <div className={s.errorIcon}>!</div>
+                              <div className={s.approveIcon}>
+                                <CheckIcon style={{ width: 11, height: 8 }} />
+                              </div>
                             </Tooltip>
                           ) : null
                         }
                         readOnly={editTab !== 'generalInfo'}
+                        onBlur={() => editTab === 'generalInfo' && this.validateForm()}
+                        helperText={phoneNumberError}
+                        error={phoneNumberError ? true : false}
                       />
                     </Row>
                     <Row paddingTopHalf>

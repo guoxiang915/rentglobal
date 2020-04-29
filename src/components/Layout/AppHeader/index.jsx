@@ -4,40 +4,29 @@ import { withTranslation } from 'react-i18next';
 import PropTypes from 'prop-types';
 import clsx from 'clsx';
 import withWidth, { isWidthDown } from '@material-ui/core/withWidth';
-import { withRouter } from 'react-router-dom';
-import {
-  MenuItem, Grid, Menu, Popover, Paper, Badge,
-} from '@material-ui/core';
+import { MenuItem, Grid, Menu, Popover, Paper, Badge } from '@material-ui/core';
 import {
   Button,
   Link,
   Row,
   Column,
   Box,
-  Stretch,
   Typography,
-  Divider,
-  LinearProgress,
-  HomeIcon,
   UsersIcon,
   BuildingsIcon,
-  PowerIcon,
-  ArrowRightAltIcon,
   EmailIcon,
   AlarmIcon,
   UserIcon,
   CloseIcon,
   MenuIcon,
   ArrowDownIcon,
-  DashboardIcon,
-  ImageIcon,
   ConsultantIcon,
-} from '../../common/base-components';
-import { getProfileStatus } from '../../utils/validators';
+} from '../../../common/base-components';
+import AccountInfo from './AccountInfo';
+import { getProfileStatus } from '../../../utils/validators';
 
-import './style.css';
-import Logo from '../../assets/logo.svg';
-import MiniLogo from '../../assets/mini-logo.svg';
+import Logo from '../../../assets/logo.svg';
+import MiniLogo from '../../../assets/mini-logo.svg';
 
 const styleSheet = (theme) => ({
   root: {
@@ -147,70 +136,14 @@ const styleSheet = (theme) => ({
     },
   },
 
-  accountInfoContent: {
-    paddingTop: 30,
-  },
-
-  profileCompletenessWrapper: {
-    background: theme.colors.primary.whiteGrey,
-  },
-
-  accountBlockWrapper: {
-    width: '100%',
-    padding: 14,
-    paddingLeft: 18,
-  },
-
-  accountAvatar: {
-    width: 80,
-    height: 80,
-  },
-
-  profileProgress: {
-    marginBottom: 10,
-  },
-
-  attentionIcon: {
-    marginLeft: 25,
-    width: 11,
-    height: 8,
-  },
-
-  menuIcon: {
-    marginRight: 25,
-  },
-
-  accountNavItem: {
-    paddingTop: 12,
-    paddingBottom: 12,
-  },
-
   smallIcon: {
     width: 16,
     height: 16,
   },
 
-  accountNavIcon: {
-    marginRight: 25,
-    color: theme.colors.primary.borderGrey,
-    opacity: 1,
-  },
-
-  errorRedIcon: {
-    color: theme.colors.primary.errorRed,
-    opacity: 1,
-  },
-
   arrowDownIcon: {
     width: 12,
     height: 7,
-  },
-
-  divider: {
-    left: -18,
-    right: -14,
-    position: 'relative',
-    width: 'calc(100% + 32px)',
   },
 
   iconButton: {
@@ -256,25 +189,21 @@ class AppHeader extends PureComponent {
   };
 
   handleMenu = (el) => (event) => {
-    const newState = {};
-    newState[el] = event.currentTarget;
-    this.setState(newState);
+    this.setState({[el]: event.currentTarget});
   };
 
   handleCloseMenu = (el) => () => {
-    const newState = {};
-    newState[el] = null;
-    this.setState(newState);
+    this.setState({ [el]: null });
   };
 
   handleSelectLocation = (location) => () => {
     this.props.onSelectLocation(location);
-    this.handleCloseMenu('locationEl')();
+    this.setState({locationEl: null});
   };
 
   handleSelectLanguage = (language) => () => {
     this.props.onSelectLanguage(language);
-    this.handleCloseMenu('languageEl')();
+    this.setState({languageEl: null});
   };
 
   handleHelp = () => {
@@ -291,207 +220,18 @@ class AppHeader extends PureComponent {
 
   /** Navigate from Account Info panel */
   handleAccountInfoNavigate = (path) => () => {
-    this.handleCloseMenu('accountInfoEl')();
+    this.setState({accountInfoEl: null});
     this.props.navigate(path);
   };
 
   /** Toggle role when user selects another role in Account Info panel */
   handleAccountInfoToggleRole = (userRole) => () => {
-    this.handleCloseMenu('accountInfoEl')();
+    this.setState({accountInfoEl: null});
     // const userRole = this.props.auth.userRole;
     // if (role !== userRole) {
     //   this.props.onToggleRole();
     // }
     this.props.onToggleRole(userRole);
-  };
-
-  /**
-   * Render Account Navigation Item
-   * @typedef Props
-   * @property  {function}  onClick
-   * @property  {component} icon
-   * @property  {string}    text
-   * @property  {boolean}   errorRed
-   * @property  {object}    classes
-   */
-  renderAccountNavItem = ({
-    onClick,
-    icon,
-    text,
-    errorRed,
-    active,
-    classes,
-  }) => {
-    const NavIcon = icon;
-    return (
-      <Row classes={{ box: classes.accountNavItem }}>
-        <Link to="#" onClick={onClick}>
-          <Typography
-            fontSizeS
-            textErrorRed={errorRed}
-            textPrimary={active}
-            alignChildrenCenter
-          >
-            <Box>
-              <NavIcon
-                className={clsx(
-                  classes.smallIcon,
-                  classes.accountNavIcon,
-                  errorRed && classes.errorRedIcon,
-                )}
-              />
-            </Box>
-            {text}
-          </Typography>
-        </Link>
-      </Row>
-    );
-  };
-
-  /**
-   * Render Account Info Form
-   * @typedef Props
-   * @property  {object}    user
-   * @property  {object}    profileProgress
-   * @property  {function}  navigate
-   * @property  {function}  onToggleRole
-   * @property  {object}    classes
-   * @property  {function}  t
-   */
-  renderAccountInfo = ({
-    user,
-    role,
-    profileProgress,
-    navigate,
-    onToggleRole,
-    location,
-    classes: s,
-    t,
-  }) => {
-    const NavItem = this.renderAccountNavItem;
-    const {
-      profileCompleted,
-      profileCharged,
-      profileCompleteness,
-    } = profileProgress;
-
-    return (
-      <Column alignChildrenStart classes={{ box: s.accountInfoContent }}>
-        {/* user avatar */}
-        <Row justifyChildrenCenter fullWidth>
-          <Box
-            alignChildrenCenter
-            justifyChildrenCenter
-            style={{
-              borderRadius: role === 'landlord' ? 8 : '50%',
-              backgroundImage: user.avatar
-                ? `url("${user.avatar.bucketPath}")`
-                : 'none',
-              backgroundSize: 'cover',
-              backgroundPosition: 'center',
-            }}
-            border
-            classes={{
-              box: clsx(s.accountAvatar),
-            }}
-          >
-            {!user.avatar
-              && (role === 'landlord' ? (
-                <ImageIcon className={s.smallIcon} variant="normal" />
-              ) : (
-                <UserIcon className={s.smallIcon} variant="normal" />
-              ))}
-          </Box>
-        </Row>
-
-        {/* username */}
-        <Row
-          paddingTop
-          classes={{ box: s.accountBlockWrapper }}
-          justifyChildrenCenter
-        >
-          <Typography fontSizeS textSecondary>
-            {user.generalInfo?.username || 'Unknown'}
-          </Typography>
-        </Row>
-
-        {/* profile completeness */}
-        <Row classes={{ box: s.profileCompletenessWrapper }} fullWidth>
-          <Column classes={{ box: s.accountBlockWrapper }}>
-            <LinearProgress
-              value={profileCompleted}
-              valueBuffer={profileCharged}
-              styles={{
-                root: s.profileProgress,
-              }}
-            />
-            <Link to="#" onClick={navigate('profile')}>
-              <Box
-                fullWidth
-                textPrimary={profileCompleteness === 'profileCompleted'}
-                textMediumGrey={profileCompleteness === 'profileNotComplete'}
-                textErrorRed={profileCompleteness === 'profileNeedAttention'}
-              >
-                <Typography fontSizeXS>{t(profileCompleteness)}</Typography>
-                <Stretch />
-                <Typography fontSizeS alignChildrenCenter>
-                  <ArrowRightAltIcon
-                    className={s.attentionIcon}
-                    variant={profileCompleted < 100 ? 'errorRed' : 'normal'}
-                  />
-                </Typography>
-              </Box>
-            </Link>
-          </Column>
-        </Row>
-
-        {/* links */}
-        <Row fullWidth>
-          <Column classes={{ box: s.accountBlockWrapper }} alignChildrenStart>
-            {location.pathname !== '/' && (
-              <NavItem
-                onClick={navigate('home')}
-                icon={HomeIcon}
-                text={t('home')}
-                classes={s}
-              />
-            )}
-            {location.pathname !== '/' && (
-              <NavItem
-                onClick={navigate('dashboard')}
-                icon={DashboardIcon}
-                text={t('dashboard')}
-                classes={s}
-              />
-            )}
-            <Box padding2 />
-            <Divider className={s.divider} />
-            {user.roles.map((r, index) => (
-              <React.Fragment key={index}>
-                <NavItem
-                  onClick={onToggleRole(r)}
-                  icon={r === 'company' ? UsersIcon : BuildingsIcon}
-                  text={
-                    r === 'company' ? t('companyPanel') : t('landlordPanel')
-                  }
-                  active={role === r}
-                  classes={s}
-                />
-              </React.Fragment>
-            ))}
-            <Divider className={s.divider} />
-            <Box padding2 />
-            <NavItem
-              onClick={navigate('logout')}
-              icon={PowerIcon}
-              text={t('signOut')}
-              classes={s}
-              errorRed
-            />
-          </Column>
-        </Row>
-      </Column>
-    );
   };
 
   /** Renderer function */
@@ -507,12 +247,8 @@ class AppHeader extends PureComponent {
       t,
     } = this.props;
     const { isLoggedIn, user, userRole } = this.props.auth;
-    const {
-      locationEl, languageEl, accountInfoEl, dialog,
-    } = this.state;
+    const { locationEl, languageEl, accountInfoEl, dialog } = this.state;
     const role = userRole || user?.role;
-
-    const AccountInfo = withRouter(this.renderAccountInfo);
 
     // calculate profile completeness
     let profileCompleted = 0;
@@ -589,7 +325,7 @@ class AppHeader extends PureComponent {
                         alignChildrenCenter
                       >
                         {t(language)}
-&nbsp;&nbsp;
+                        &nbsp;&nbsp;
                         <ArrowDownIcon className={classes.arrowDownIcon} />
                       </Typography>
                     </Button>
@@ -624,7 +360,7 @@ class AppHeader extends PureComponent {
                         alignChildrenCenter
                       >
                         {location}
-&nbsp;&nbsp;
+                        &nbsp;&nbsp;
                         <ArrowDownIcon className={classes.arrowDownIcon} />
                       </Typography>
                     </Button>
@@ -682,15 +418,15 @@ class AppHeader extends PureComponent {
                         <Button
                           variant="secondary"
                           shadow
-                          onClick={() => this.props.onToggleRole(
-                            role === 'landlord' ? 'company' : 'landlord',
-                          )}
+                          onClick={() =>
+                            this.props.onToggleRole(
+                              role === 'landlord' ? 'company' : 'landlord'
+                            )
+                          }
                         >
                           <Typography fontSizeS fontWeightBold>
                             {t(
-                              role === 'landlord'
-                                ? 'needOffice'
-                                : 'placeToRent',
+                              role === 'landlord' ? 'needOffice' : 'placeToRent'
                             )}
                           </Typography>
                         </Button>
@@ -704,8 +440,8 @@ class AppHeader extends PureComponent {
                       <Badge
                         color="primary"
                         badgeContent={
-                          mails
-                          && (mails.length > 3 ? `${mails.length}+` : mails.length)
+                          mails &&
+                          (mails.length > 3 ? `${mails.length}+` : mails.length)
                         }
                       >
                         <EmailIcon className={classes.smallIcon} />
@@ -719,8 +455,8 @@ class AppHeader extends PureComponent {
                       <Badge
                         color="primary"
                         badgeContent={
-                          notifications
-                          && (notifications.length > 9
+                          notifications &&
+                          (notifications.length > 9
                             ? `${notifications.length}+`
                             : notifications.length)
                         }
@@ -739,7 +475,7 @@ class AppHeader extends PureComponent {
                       onClick={this.handleMenu('accountInfoEl')}
                       className={clsx(
                         classes.iconButton,
-                        classes.accountButton,
+                        classes.accountButton
                       )}
                     >
                       {!isWidthDown('sm', width) && (
@@ -777,6 +513,7 @@ class AppHeader extends PureComponent {
                       <Paper className={classes.accountInfoContentWrapper}>
                         <AccountInfo
                           role={role}
+                          userRole={userRole}
                           user={user}
                           profileProgress={{
                             profileCompleteness,
@@ -785,8 +522,6 @@ class AppHeader extends PureComponent {
                           }}
                           navigate={this.handleAccountInfoNavigate}
                           onToggleRole={this.handleAccountInfoToggleRole}
-                          classes={classes}
-                          t={t}
                         />
                       </Paper>
                     </Popover>
@@ -828,7 +563,9 @@ class AppHeader extends PureComponent {
                         <Button
                           variant="secondary"
                           shadow
-                          onClick={() => this.props.navigate('register/landlord')}
+                          onClick={() =>
+                            this.props.navigate('register/landlord')
+                          }
                         >
                           <Typography fontSizeS fontWeightBold>
                             {t('placeToRent')}
@@ -884,5 +621,5 @@ class AppHeader extends PureComponent {
 }
 
 export default withWidth()(
-  withStyles(styleSheet)(withTranslation('common')(AppHeader)),
+  withStyles(styleSheet)(withTranslation('common')(AppHeader))
 );

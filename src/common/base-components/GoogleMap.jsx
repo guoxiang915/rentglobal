@@ -19,6 +19,7 @@ const SimpleMap = ({
   borderRadius = 5,
   onClick,
   markers = null,
+  center: c = null,
   onClickMarker,
 }) => {
   const classes = useStyles({ shadowWidth, borderRadius });
@@ -27,7 +28,9 @@ const SimpleMap = ({
   /** get center of coordinates */
   let center = { lat: 0, lng: 0 };
   let zoom = 11;
-  if (coordinates) {
+  if (c) {
+    center = c;
+  } else if (coordinates) {
     if (coordinates.length === 1) {
       center = coordinates[0];
     } else {
@@ -62,8 +65,8 @@ const SimpleMap = ({
         zoom={zoom}
         onClick={onClick}
       >
-        {markers
-          || coordinates.map((coord, index) => (
+        {markers ||
+          coordinates.map((coord, index) => (
             <GoogleMapMarker
               key={index}
               lat={coord.lat}

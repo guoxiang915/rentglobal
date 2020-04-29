@@ -4,9 +4,7 @@ import clsx from 'clsx';
 import PropTypes from 'prop-types';
 import { Trans, withTranslation } from 'react-i18next';
 import withWidth, { isWidthDown } from '@material-ui/core/withWidth';
-import {
-  Grid, Card, Hidden, MobileStepper, Collapse,
-} from '@material-ui/core';
+import { Grid, Card, Hidden, MobileStepper, Collapse } from '@material-ui/core';
 import {
   LinkedIn,
   Facebook,
@@ -104,9 +102,7 @@ class Home extends PureComponent {
    * Text stepper component
    */
   textStepper = withWidth()(
-    ({
-      active, index, label, content, onClick, width,
-    }) => (
+    ({ active, index, label, content, onClick, width }) => (
       <div onClick={() => onClick(index)} style={{ cursor: 'pointer' }}>
         {!isWidthDown('sm', width) ? (
           <Box classes={{ box: this.props.classes.textStepWrapper }}>
@@ -115,7 +111,7 @@ class Home extends PureComponent {
                 classes={{
                   box: clsx(
                     this.props.classes.textStepIcon,
-                    active && this.props.classes.textStepActiveIcon,
+                    active && this.props.classes.textStepActiveIcon
                   ),
                 }}
                 alignChildrenCenter
@@ -159,7 +155,7 @@ class Home extends PureComponent {
                 classes={{
                   box: clsx(
                     this.props.classes.textStepIcon,
-                    active && this.props.classes.textStepActiveIcon,
+                    active && this.props.classes.textStepActiveIcon
                   ),
                 }}
                 alignChildrenCenter
@@ -194,7 +190,7 @@ class Home extends PureComponent {
           </Column>
         )}
       </div>
-    ),
+    )
   );
 
   /**
@@ -205,7 +201,7 @@ class Home extends PureComponent {
       classes={{
         box: clsx(
           this.props.classes.imgHelpStep,
-          !active && this.props.classes.imgHelpStepHidden,
+          !active && this.props.classes.imgHelpStepHidden
         ),
       }}
     >
@@ -213,11 +209,22 @@ class Home extends PureComponent {
     </Box>
   );
 
+  handleChatOrSearch = (tessiQuery) => {
+    if (/hi/i.test(tessiQuery)) {
+      // TODO: goto chat page
+    } else if (tessiQuery) {
+      this.props.history.push({
+        pathname: '/search',
+        state: { query: tessiQuery },
+      });
+    }
+  };
+
   renderLandingCard = ({ classes: s, t }) => {
     const [tessiQuery, setTessiQuery] = React.useState('');
     const changeTessiQuery = React.useCallback(
       (e) => setTessiQuery(e.target.value),
-      [],
+      []
     );
 
     return (
@@ -260,10 +267,10 @@ class Home extends PureComponent {
             styles={{
               input: clsx(
                 s.searchInputProps,
-                tessiQuery && s.limitedSearchInputProps,
+                tessiQuery && s.limitedSearchInputProps
               ),
             }}
-            endAdornment={(
+            endAdornment={
               <Button
                 variant="icon"
                 background="primary"
@@ -271,9 +278,10 @@ class Home extends PureComponent {
                 className={clsx(
                   s.inputButtonIcon,
                   s.searchInputIcon,
-                  tessiQuery && s.landingButton,
+                  tessiQuery && s.landingButton
                 )}
                 shadow
+                onClick={() => this.handleChatOrSearch(tessiQuery)}
               >
                 {!tessiQuery ? (
                   <ArrowRightAltIcon
@@ -305,7 +313,7 @@ class Home extends PureComponent {
                   </Typography>
                 )}
               </Button>
-            )}
+            }
           />
         </Column>
       </Card>
@@ -317,16 +325,18 @@ class Home extends PureComponent {
     const LandingCard = this.renderLandingCard;
     const [active, setActive] = React.useState(0);
     const landingBlock = this.landingBlocks[active];
+
     /** Set timer for active landing block (every 5 seconds) */
     React.useEffect(() => {
       const intervalId = setInterval(
-        () => setActive(active === this.landingBlocks.length - 1 ? 0 : active + 1),
-        5000,
+        () =>
+          setActive(active === this.landingBlocks.length - 1 ? 0 : active + 1),
+        5000
       );
       return () => {
         if (intervalId) clearInterval(intervalId);
       };
-    });
+    }, [active]);
 
     return (
       <React.Fragment>
@@ -338,7 +348,7 @@ class Home extends PureComponent {
               src={block.img}
               className={clsx(
                 s.landingBoardImage,
-                index !== active && s.landingBoardImageHidden,
+                index !== active && s.landingBoardImageHidden
               )}
               alt=""
             />
@@ -431,7 +441,10 @@ class Home extends PureComponent {
                     }
                   >
                     <Grid item>
-                      <Button className={s.landingButton}>
+                      <Button
+                        className={s.landingButton}
+                        onClick={() => this.props.history.push('/search')}
+                      >
                         <Typography
                           fontSizeS
                           fontWeightBold
@@ -591,7 +604,7 @@ class Home extends PureComponent {
         { title: '2.', content: t('homeRegisterContent') },
         { title: '3.', content: t('homeRegisterContent') },
       ],
-      [t],
+      [t]
     );
 
     return (
@@ -613,7 +626,7 @@ class Home extends PureComponent {
               slidesPerPage={1}
               keepDirectionWhenDragging
               addArrowClickHandler
-              arrowLeft={(
+              arrowLeft={
                 <Box
                   style={{
                     left: isWidthDown('sm', width) ? '-60px' : '-124px',
@@ -622,8 +635,8 @@ class Home extends PureComponent {
                 >
                   <KeyboardArrowLeft className={s.homeRegisterArrowButton} />
                 </Box>
-              )}
-              arrowRight={(
+              }
+              arrowRight={
                 <Box
                   style={{
                     right: isWidthDown('sm', width) ? '-60px' : '-124px',
@@ -632,7 +645,7 @@ class Home extends PureComponent {
                 >
                   <KeyboardArrowRight className={s.homeRegisterArrowButton} />
                 </Box>
-              )}
+              }
             >
               {registerBlocks.map((val, index) => (
                 <React.Fragment key={index}>
@@ -680,14 +693,12 @@ class Home extends PureComponent {
   };
 
   /** Render following block */
-  renderFollowingBlock = ({
-    classes: s, t, width, onSubmit,
-  }) => {
+  renderFollowingBlock = ({ classes: s, t, width, onSubmit }) => {
     const [news, setNews] = React.useState('');
     const [newsError, setNewsError] = React.useState(null);
     const changeNewsLetter = React.useCallback(
       (e) => setNews(e.target.value),
-      [],
+      []
     );
     const submitReceiveNewsLetter = React.useCallback(() => {
       console.log('callback!');
@@ -720,7 +731,7 @@ class Home extends PureComponent {
                   onChange={changeNewsLetter}
                   error={!!newsError}
                   helperText={newsError}
-                  endAdornment={(
+                  endAdornment={
                     <Button
                       variant="icon"
                       style={{ margin: 0 }}
@@ -738,7 +749,7 @@ class Home extends PureComponent {
                         }}
                       />
                     </Button>
-                  )}
+                  }
                 />
               </Row>
             </Column>
@@ -1142,5 +1153,5 @@ class Home extends PureComponent {
 }
 
 export default withWidth()(
-  withStyles(styleSheet)(withTranslation(['home', 'common'])(Home)),
+  withStyles(styleSheet)(withTranslation(['home', 'common'])(Home))
 );

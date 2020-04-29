@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { LinearProgress, withStyles } from '@material-ui/core';
 import { withTranslation } from 'react-i18next';
+import clsx from 'clsx';
 import { KeyboardArrowLeft, KeyboardArrowRight } from '@material-ui/icons';
 import Carousel, { Dots } from '@brainhubeu/react-carousel';
 import { withLogin } from '../base-services';
@@ -19,12 +20,16 @@ import { favoriteOffice } from '../../api/endpoints';
 
 const styleSheet = (theme) => ({
   officeWrapper: {
-    // width: 235,
+    width: 235,
     // marginRight: 20,
   },
 
+  fullWidth: {
+    width: '100%',
+  },
+
   officeCarousel: {
-    width: 235,
+    width: '100%',
     height: 175,
     borderRadius: 8,
     border: `1px solid ${theme.colors.primary.borderGrey}`,
@@ -100,14 +105,14 @@ const styleSheet = (theme) => ({
   },
 
   officeImage: {
-    width: 235,
+    width: '100%',
     height: 175,
   },
 
   officeEmptyImage: {
     background: theme.colors.primary.whiteGrey,
     color: theme.colors.primary.borderGrey,
-    width: 235,
+    width: '100%',
     height: 175,
   },
 
@@ -182,6 +187,8 @@ const OfficeItem = React.memo(
     horizontal,
     passLoginDialog,
     onClick,
+    fullWidth,
+    className,
   }) => {
     /** Changing position of carousel */
     const [, setState] = useState();
@@ -223,28 +230,32 @@ const OfficeItem = React.memo(
     /** Get status of office */
     const officeStatus = getOfficeStatus(office);
     let status = officeStatus ? officeStatus.status : null;
-    status = status === 'approved'
-      ? null
-      : status === 'rejected'
-        ? 'rejectedByConsultant'
-        : status === 'unpublished'
-          ? 'unpublished'
-          : status === 'incomplete'
-            ? 'mustCompleteData'
-            : null;
-    const progress = officeStatus && officeStatus.progress < 100
-      ? officeStatus.progress
-      : null;
+    status =
+      status === 'approved'
+        ? null
+        : status === 'rejected'
+          ? 'rejectedByConsultant'
+          : status === 'unpublished'
+            ? 'unpublished'
+            : status === 'incomplete'
+              ? 'mustCompleteData'
+              : null;
+    const progress =
+      officeStatus && officeStatus.progress < 100
+        ? officeStatus.progress
+        : null;
 
     return (
       <Box
-        classes={{ box: s.officeWrapper }}
+        classes={{
+          box: clsx(s.officeWrapper, className, fullWidth && s.fullWidth),
+        }}
         alignChildrenStart
         row={!!horizontal}
         column={!horizontal}
         onClick={onClick}
       >
-        <Box classes={{ box: s.officeCarousel }}>
+        <Box classes={{ box: clsx(s.officeCarousel) }}>
           <div className={s.hoverWrapper}>
             {/** favorite icon */}
             {setFavorite ? (
@@ -275,9 +286,7 @@ const OfficeItem = React.memo(
               textWhite
               classes={{ box: s.officeLocation }}
             >
-              {office.location.fullAddress}
-              {' '}
-              {office.location.fullAddress}
+              {office.location.fullAddress} {office.location.fullAddress}
             </Typography>
 
             {/** arrows */}
@@ -377,9 +386,7 @@ const OfficeItem = React.memo(
                 <StarIcon style={{ width: 12, height: 12 }} />
               </Typography>
               <Typography fontSizeS textMediumGrey paddingLeftHalf>
-                3.5
-                {' '}
-                {/* office.rating */}
+                3.5 {/* office.rating */}
               </Typography>
             </Row>
           )}
@@ -419,9 +426,9 @@ const OfficeItem = React.memo(
         </Column>
       </Box>
     );
-  },
+  }
 );
 
 export default withStyles(styleSheet, { name: 'OfficeItem' })(
-  withTranslation('common')(withLogin(OfficeItem)),
+  withTranslation('common')(withLogin(OfficeItem))
 );

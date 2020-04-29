@@ -46,12 +46,13 @@ export const getProfile = () => api.get('/users/me/');
 export const deleteUserAvatar = () => api.delete(`/users/me/delete/avatar`);
 
 /** Call api to delete user document */
-export const deleteUserDocument = ({ userRole, docType, docFile }) => api.delete(`/users/me/delete/document?role=${userRole}`, {
-  data: {
-    document: docType,
-    documentFileId: docFile._id,
-  },
-});
+export const deleteUserDocument = ({ userRole, docType, docFile }) =>
+  api.delete(`/users/me/delete/document?role=${userRole}`, {
+    data: {
+      document: docType,
+      documentFileId: docFile._id,
+    },
+  });
 
 export const deleteUserAccount = () => api.delete(`/users/me/delete`);
 
@@ -71,22 +72,27 @@ export const getAvailableOffices = () => getOffices();
 export const getUnpublishedOffices = () => getOffices();
 
 /** Call api to get office from id */
-export const getOfficeById = (officeId) => api.get(`/users/me/offices/${officeId}/`);
+export const getOfficeById = (officeId) =>
+  api.get(`/users/me/offices/${officeId}/`);
 
 /** Call api to create office */
 export const createOffice = (office) => api.post('/offices/', office);
 
 /** Call api to update office */
-export const updateOffice = (office) => api.put(`/users/me/offices/${office._id}/`, { office });
+export const updateOffice = (office) =>
+  api.put(`/users/me/offices/${office._id}/`, { office });
 
 /** Call api to save services & amenities of office */
-export const createOfficeServicesAmenities = (officeId, payload) => api.put(`/offices/${officeId}/services-amenities/`, payload);
+export const createOfficeServicesAmenities = (officeId, payload) =>
+  api.put(`/offices/${officeId}/services-amenities/`, payload);
 
 /** Call api to publish office */
-export const publishOffice = (officeId) => api.put(`/offices/${officeId}/publish/`);
+export const publishOffice = (officeId) =>
+  api.put(`/offices/${officeId}/publish/`);
 
 /** Call api to unpublish office */
-export const unpublishOffice = (officeId) => api.put(`/offices/${officeId}/unpublish/`);
+export const unpublishOffice = (officeId) =>
+  api.put(`/offices/${officeId}/unpublish/`);
 
 /** Call api to upload office photo */
 export const uploadOfficePhoto = (officeId, file) => {
@@ -96,21 +102,23 @@ export const uploadOfficePhoto = (officeId, file) => {
   return api.post(
     `/offices/${officeId}/cover-photos/upload/`,
     formData,
-    config,
+    config
   );
 };
 
 /** Call api to delete office photo */
-export const deleteOfficePhoto = (officeId, photoId) => api.delete(`/offices/${officeId}/cover-photos/${photoId}/`);
+export const deleteOfficePhoto = (officeId, photoId) =>
+  api.delete(`/offices/${officeId}/cover-photos/${photoId}/`);
 
 /** Call api to delete office */
 export const deleteOffice = (officeId) => api.delete(`/offices/${officeId}/`);
 
 /** Call api to set favorite office */
-export const favoriteOffice = (officeId) => api.put(`/offices/${officeId}/favorite/`);
+export const favoriteOffice = (officeId) =>
+  api.put(`/offices/${officeId}/favorite/`);
 
 /** Call api to get all published offices */
-export const getPublishedOffices = () => api.get('/offices/');
+export const getPublishedOffices = (params) => api.get('/offices/', { params });
 
 /**
  * Call api to get all approved offices
@@ -127,7 +135,8 @@ export const getRecommendedOffices = () => getPublishedOffices();
 /**
  * Call api to get office by id
  */
-export const getApprovedOfficeById = (officeId) => api.get(`/offices/${officeId}/`);
+export const getApprovedOfficeById = (officeId) =>
+  api.get(`/offices/${officeId}/`);
 
 /**
  * Call api to get consultant for office by office id
@@ -151,10 +160,17 @@ export const getConsultantByOffice = () =>
 /**
  * Call api to get reviews of office
  */
-export const getReviewsByOffice = () => Promise.resolve({ status: 200, data: reviewsMockData });
+export const getReviewsByOffice = () =>
+  Promise.resolve({ status: 200, data: reviewsMockData });
 
 /**
  * Call api to get similar offices
  * @deprecated for now, admin doesn't exist, and call api for getting published offices
  */
 export const getSimilarOffices = () => getPublishedOffices();
+
+/** Call api to verify phone number */
+export const verifyPhoneNumber = (phoneNumber) => api.post('/users/me/verify-phone-number', phoneNumber);
+
+/** Call api to verify phone code */
+export const verifyPhoneCode = (phoneCode) => api.post('/users/me/confirm-phone-code', phoneCode);

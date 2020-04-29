@@ -662,15 +662,15 @@ class OfficeDetailForm extends PureComponent {
                   {t('typeOfContract')}
                 </Column>
                 <Column classes={{ box: s.infoValue }}>
-                  {office.contractType}
+                  {t(office.typeOfContract)}
                 </Column>
               </Row>
               <Row classes={{ box: s.infoRow }}>
                 <Column classes={{ box: s.infoLabel }}>
-                  {t('guaranteesOrSecurityDeposit')}
+                  {t('guaranteesAndSecurityDeposit')}
                 </Column>
                 <Column classes={{ box: s.infoValue }}>
-                  {office.guarantees}
+                  {t(office.guaranteesAndSecurityDeposit)}
                 </Column>
               </Row>
               <Row classes={{ box: s.infoRow }}>
@@ -678,7 +678,7 @@ class OfficeDetailForm extends PureComponent {
                   {t('checkOutNotice')}
                 </Column>
                 <Column classes={{ box: s.infoValue }}>
-                  {office.checkOutNotice}
+                  {t(office.checkOutNotice)}
                 </Column>
               </Row>
             </TabWrapper>
