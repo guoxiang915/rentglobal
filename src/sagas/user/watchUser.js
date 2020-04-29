@@ -171,6 +171,29 @@ function* verifyCode(action) {
   yield call(flushMessage);
 }
 
+function* deleteAccount() {
+  try {
+    const response = yield call(callApi, deleteUserAccount, {});
+    if (response.status === 200) {
+      yield put({
+        type: 'DELETE_ACCOUNT_SUCCESS',
+        resp: response.data,
+      });
+    } else {
+      yield put({
+        type: 'DELETE_ACCOUNT_FAILED',
+        resp: response.data,
+      });
+    }
+  } catch (error) {
+    yield put({
+      type: 'DELETE_ACCOUNT_FAILED',
+      resp: { msg: error },
+    });
+  }
+  yield call(flushMessage);
+}
+
 export default function* watchUpdateUser() {
   yield takeLatest('REQUEST_UPDATE_USER', updateUser);
   yield takeLatest('SET_USER_ROLE', setUserRole);
