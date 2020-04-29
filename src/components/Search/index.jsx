@@ -66,7 +66,6 @@ const TypeFilterPanel = ({ classes: s, t, types, onApply }) => {
     if (!types) types = [];
     if (types.indexOf(type) !== -1) {
       types.splice(types.indexOf(type), 1);
-      if (!types || !types.length) types = null;
     } else {
       types.push(type);
     }
@@ -175,6 +174,36 @@ const FilterWrapper = ({ classes: s, t, filter, value, onChangeFilter }) => {
   );
 };
 
+/** Get filter chips */
+const FilterChip = ({ classes: s, t, filter, value, onChange }) => {
+  const handleRemoveFilter = React.useCallback(
+    ({ filter, ...params }) => {
+      if (filter === 'officeTypes' && typeof params.index === 'number') {
+        value.splice(params.index, 1);
+        onChange(value);
+      }
+    },
+    [value, onChange]
+  );
+
+  if (filter === 'officeTypes') {
+    return (
+      <>
+        {value.map((v, index) => (
+          <Chip
+            key={filter + index}
+            label={t(v)}
+            onDelete={() => handleRemoveFilter({ filter, index })}
+            className={s.filterValue}
+            color="primary"
+          />
+        ))}
+      </>
+    );
+  }
+
+  return null;
+};
 class Search extends PureComponent {
   static propTypes = {
     classes: PropTypes.object,
@@ -261,6 +290,9 @@ class Search extends PureComponent {
   /** Change filter event handler */
   handleChangeFilter = (filter, value) => {
     const { filters } = this.state;
+    if (Array.isArray(value) && !value.length) {
+      value = null;
+    }
     filters[filter] = value;
     this.setState({ filters }, this.searchOffices);
   };
@@ -275,13 +307,6 @@ class Search extends PureComponent {
   /** Remove all filters */
   handleRemoveAllFilters = () => {
     this.setState({ filters: {} }, this.searchOffices);
-  };
-
-  /** Get chip text */
-  getChipText = (filter, value) => {
-    if (filter === 'officeTypes') {
-      return value.map((v) => this.props.t(v)).join(', ');
-    }
   };
 
   /** Navigate to office detail */
@@ -339,12 +364,15 @@ class Search extends PureComponent {
                 <Row>
                   {Object.entries(filters).map(([filter, value]) =>
                     value ? (
-                      <Chip
+                      <FilterChip
                         key={filter}
-                        label={this.getChipText(filter, value)}
-                        onDelete={this.handleRemoveFilter(filter)}
-                        className={s.filterValue}
-                        color="primary"
+                        classes={s}
+                        t={t}
+                        filter={filter}
+                        value={value}
+                        onChange={(value) =>
+                          this.handleChangeFilter(filter, value)
+                        }
                       />
                     ) : null
                   )}
