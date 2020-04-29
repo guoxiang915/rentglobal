@@ -100,9 +100,8 @@ class AuthWrapper extends PureComponent {
     const redirect = searchParams.get("redirect");
 
     React.useMemo(() => {
-      console.log(token);
       this.props.mappedVerifyEmail({ token, redirect }, this.props.history);
-    }, [token]);
+    }, [token, redirect]);
     return (
       <Column classes={{ box: s.loginCard }}>
         <Column paddingTop fullWidth>
