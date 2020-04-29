@@ -20,7 +20,7 @@ import {
   UncheckIcon,
   CheckIcon,
 } from '../../common/base-components';
-import { officeTypes } from '../../utils/constants';
+import { officeTypes, contractTypes } from '../../utils/constants';
 
 import { styleSheet } from './Search';
 import { OfficeItem } from '../../common/base-layouts';
@@ -62,7 +62,7 @@ const Searchbox = ({ classes: s, t, q, onSearch }) => {
   );
 };
 
-const TypeFilterPanel = ({ classes: s, t, types, onApply }) => {
+const OfficeTypeFilterPanel = ({ classes: s, t, types, onApply }) => {
   const handleClickType = (type) => {
     if (!types) types = [];
     if (types.indexOf(type) !== -1) {
@@ -107,79 +107,147 @@ const TypeFilterPanel = ({ classes: s, t, types, onApply }) => {
   );
 };
 
-const FilterPanel = ({ classes, t, filter, value, onChangeFilter }) => {
-  if (filter.type === 'officeTypes') {
-    return (
-      <TypeFilterPanel
-        classes={classes}
-        t={t}
-        types={value}
-        onApply={onChangeFilter('officeTypes')}
-      />
-    );
-  }
-  return null;
-};
-
-const FilterWrapper = ({ classes: s, t, filter, value, onChangeFilter }) => {
-  const [anchorEl, setAnchorEl] = React.useState(null);
-  const openAnchor = React.useCallback((e) => setAnchorEl(e.currentTarget), []);
-  const closeAnchor = React.useCallback(() => setAnchorEl(null), []);
-  const handleChangeFilter = React.useCallback(
-    (filter) => (value) => {
-      onChangeFilter(filter, value);
-      closeAnchor();
-    },
-    [onChangeFilter, closeAnchor]
-  );
+const ContractTypeFilterPanel = ({ classes: s, t, types, onApply }) => {
+  const handleClickType = (type) => {
+    if (!types) types = [];
+    if (types.indexOf(type) !== -1) {
+      types.splice(types.indexOf(type), 1);
+    } else {
+      types.push(type);
+    }
+    onApply(types);
+  };
 
   return (
-    <div className={s.filterWrapper}>
-      <Button
-        onClick={openAnchor}
-        classes={{
-          root: clsx(s.filterButton, !!value && s.filterSelectedButton),
-        }}
-        rounded
-      >
-        {t(filter.title)}
-      </Button>
-
-      {/* account info panel */}
-      <Popover
-        id="accountinfo-popover"
-        open={Boolean(anchorEl)}
-        anchorEl={anchorEl}
-        onClose={closeAnchor}
-        anchorOrigin={{
-          vertical: 'bottom',
-          horizontal: 'left',
-        }}
-        transformOrigin={{
-          vertical: 'top',
-          horizontal: 'left',
-        }}
-        classes={{ paper: s.filterPaneWrapper }}
-      >
-        <Paper className={s.filterContentWrapper}>
-          <FilterPanel
-            classes={s}
-            t={t}
-            filter={filter}
-            value={value}
-            onChangeFilter={handleChangeFilter}
-          />
-        </Paper>
-      </Popover>
-    </div>
+    <Column classes={{ box: s.filterPanel }} alignChildrenStart>
+      {contractTypes.map((type, index) => (
+        <React.Fragment key={index}>
+          <Row classes={{ box: s.filterLine }}>
+            <Checkbox
+              classes={{ label: s.checkbox }}
+              color="primary"
+              isChecked={(types && types.indexOf(type) !== -1) || false}
+              onChange={() => handleClickType(type)}
+              icon={UncheckIcon}
+              checkedIcon={(props) => (
+                <div className={s.checkIcon}>
+                  <CheckIcon style={{ width: 14, height: 10 }} />
+                </div>
+              )}
+              label={
+                <Typography
+                  fontSizeS
+                  textPrimary={types && types.indexOf(type) !== -1}
+                  textSecondary
+                  paddingLeft
+                >
+                  {t(type)}
+                </Typography>
+              }
+            />
+          </Row>
+        </React.Fragment>
+      ))}
+    </Column>
   );
 };
 
+const FilterPanel = React.memo(
+  ({ classes, t, filter, value, onChangeFilter }) => {
+    switch (filter.type) {
+      case 'officeTypes':
+        return (
+          <OfficeTypeFilterPanel
+            classes={classes}
+            t={t}
+            types={value}
+            onApply={onChangeFilter('officeTypes')}
+          />
+        );
+
+      case 'typeOfContracts':
+        return (
+          <ContractTypeFilterPanel
+            classes={classes}
+            t={t}
+            types={value}
+            onApply={onChangeFilter('typeOfContracts')}
+          />
+        );
+
+      default:
+        return null;
+    }
+  }
+);
+
+const FilterWrapper = React.memo(
+  ({ classes: s, t, filter, value, onChangeFilter }) => {
+    const [anchorEl, setAnchorEl] = React.useState(null);
+    const openAnchor = React.useCallback(
+      (e) => setAnchorEl(e.currentTarget),
+      []
+    );
+    const closeAnchor = React.useCallback(() => setAnchorEl(null), []);
+    const handleChangeFilter = React.useCallback(
+      (filter) => (value) => {
+        onChangeFilter(filter, value);
+        closeAnchor();
+      },
+      [onChangeFilter, closeAnchor]
+    );
+
+    return (
+      <div className={s.filterWrapper}>
+        <Button
+          onClick={openAnchor}
+          classes={{
+            root: clsx(s.filterButton, !!value && s.filterSelectedButton),
+          }}
+          rounded
+        >
+          {t(filter.title)}
+        </Button>
+
+        {/* account info panel */}
+        <Popover
+          id="accountinfo-popover"
+          open={Boolean(anchorEl)}
+          anchorEl={anchorEl}
+          onClose={closeAnchor}
+          anchorOrigin={{
+            vertical: 'bottom',
+            horizontal: 'left',
+          }}
+          transformOrigin={{
+            vertical: 'top',
+            horizontal: 'left',
+          }}
+          classes={{ paper: s.filterPaneWrapper }}
+        >
+          <Paper className={s.filterContentWrapper}>
+            <FilterPanel
+              classes={s}
+              t={t}
+              filter={filter}
+              value={value}
+              onChangeFilter={handleChangeFilter}
+            />
+          </Paper>
+        </Popover>
+      </div>
+    );
+  }
+);
+
 /** Get filter chips */
-const FilterChip = ({ classes: s, t, filter, value, onChange }) => {
+const FilterChip = React.memo(({ classes: s, t, filter, value, onChange }) => {
   const handleRemoveFilter = React.useCallback(
     ({ filter, ...params }) => {
-      if (filter === 'officeTypes' && typeof params.index === 'number') {
+      if (
+        (filter === 'officeTypes' || filter === 'typeOfContracts') &&
+        typeof params.index === 'number'
+      ) {
         value.splice(params.index, 1);
         onChange(value);
       }
@@ -187,24 +255,42 @@ const FilterChip = ({ classes: s, t, filter, value, onChange }) => {
     [value, onChange]
   );
 
-  if (filter === 'officeTypes') {
-    return (
-      <>
-        {value.map((v, index) => (
-          <Chip
-            key={filter + index}
-            label={t(v)}
-            onDelete={() => handleRemoveFilter({ filter, index })}
-            className={s.filterValue}
-            color="primary"
-          />
-        ))}
-      </>
-    );
-  }
+  switch (filter) {
+    case 'officeTypes':
+      return (
+        <>
+          {value.map((v, index) => (
+            <Chip
+              key={filter + index}
+              label={t(v)}
+              onDelete={() => handleRemoveFilter({ filter, index })}
+              className={s.filterValue}
+              color="primary"
+            />
+          ))}
+        </>
+      );
 
-  return null;
-};
+    case 'typeOfContracts':
+      return (
+        <>
+          {value.map((v, index) => (
+            <Chip
+              key={filter + index}
+              label={t(v)}
+              onDelete={() => handleRemoveFilter({ filter, index })}
+              className={s.filterValue}
+              color="primary"
+            />
+          ))}
+        </>
+      );
+
+    default:
+      return null;
+  }
+});
+
 class Search extends PureComponent {
   static propTypes = {
     classes: PropTypes.object,
@@ -241,7 +327,7 @@ class Search extends PureComponent {
       title: 'rooms',
     },
     {
-      type: 'duration',
+      type: 'typeOfContracts',
       title: 'howLong',
     },
     {
