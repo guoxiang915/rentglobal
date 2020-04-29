@@ -26,8 +26,9 @@ import { styleSheet } from './Search';
 import { OfficeItem } from '../../common/base-layouts';
 import { getPublishedOffices } from '../../api/endpoints';
 
-const Searchbox = ({ classes: s, t, onSearch }) => {
-  const [query, setQuery] = React.useState('');
+const Searchbox = ({ classes: s, t, q, onSearch }) => {
+  const [query, setQuery] = React.useState(q);
+  React.useEffect(() => setQuery(q), [q]);
   const handleKeyPress = React.useCallback(
     (e) => {
       if (e.key === 'Enter') onSearch(query);
@@ -273,7 +274,18 @@ class Search extends PureComponent {
   };
 
   componentDidMount() {
-    this.searchOffices();
+    const { state } = this.props.location;
+    if (state?.query) {
+      this.setState({ q: state.query }, () => {
+        this.props.history.replace({
+          pathname: '/search',
+          state: null,
+        });
+        this.searchOffices();
+      });
+    } else {
+      this.searchOffices();
+    }
   }
 
   /** Search offices by text */
@@ -317,7 +329,7 @@ class Search extends PureComponent {
   /** Render component */
   render() {
     const { width, classes: s, t } = this.props;
-    const { searchByMap, filters, offices } = this.state;
+    const { searchByMap, filters, q, offices } = this.state;
 
     const filteredOffices = offices?.filter(
       (office) => office.location?.coordinates
@@ -327,7 +339,12 @@ class Search extends PureComponent {
       <Column classes={{ box: s.root }}>
         <div className={clsx(s.container, s.searchboxWrapper)}>
           <Row>
-            <Searchbox classes={s} t={t} onSearch={this.handleSearchByText} />
+            <Searchbox
+              classes={s}
+              t={t}
+              q={q}
+              onSearch={this.handleSearchByText}
+            />
             {!isWidthDown('xs', width) && (
               <React.Fragment>
                 <Stretch />

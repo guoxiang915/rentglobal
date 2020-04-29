@@ -213,7 +213,10 @@ class Home extends PureComponent {
     if (/hi/i.test(tessiQuery)) {
       // TODO: goto chat page
     } else if (tessiQuery) {
-      this.props.history.push('/search');
+      this.props.history.push({
+        pathname: '/search',
+        state: { query: tessiQuery },
+      });
     }
   };
 
