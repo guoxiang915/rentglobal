@@ -290,10 +290,10 @@ class Search extends PureComponent {
   /** Change filter event handler */
   handleChangeFilter = (filter, value) => {
     const { filters } = this.state;
-    if (Array.isArray(value) && !value.length) {
-      value = null;
-    }
     filters[filter] = value;
+    if (Array.isArray(value) && !value.length) {
+      delete filters[filter];
+    }
     this.setState({ filters }, this.searchOffices);
   };
 
@@ -344,7 +344,7 @@ class Search extends PureComponent {
         </div>
 
         <div className={clsx(s.container, s.filtersWrapper)}>
-          <Row>
+          <Row wrap>
             {this.filters.map((filter, index) => (
               <React.Fragment key={index}>
                 <FilterWrapper
@@ -361,7 +361,7 @@ class Search extends PureComponent {
           {filters && Object.values(filters).map((f) => !!f).length ? (
             <Row classes={{ box: s.filterValuesWrapper }}>
               <Column>
-                <Row>
+                <Row wrap>
                   {Object.entries(filters).map(([filter, value]) =>
                     value ? (
                       <FilterChip
@@ -378,17 +378,25 @@ class Search extends PureComponent {
                   )}
                 </Row>
               </Column>
+              {/* {!isWidthDown('xs', width) && <Stretch />} */}
               <Stretch />
               <Button
                 link="errorRed"
                 background="errorRedLight"
                 inverse
+                variant={isWidthDown('xs', width) ? 'icon' : ''}
                 onClick={this.handleRemoveAllFilters}
               >
                 <CloseIcon style={{ width: 9, height: 9 }} />
-                <Typography paddingLeft fontSizeS>
-                  {t('clearAllFilters')}
-                </Typography>
+                {!isWidthDown('xs', width) && (
+                  <Typography
+                    paddingLeft
+                    fontSizeS
+                    style={{ whiteSpace: 'nowrap' }}
+                  >
+                    {t('clearAllFilters')}
+                  </Typography>
+                )}
               </Button>
             </Row>
           ) : null}

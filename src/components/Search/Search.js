@@ -71,14 +71,15 @@ export const styleSheet = (theme) => ({
 
   filtersWrapper: {
     paddingTop: 12,
-    paddingBottom: 12,
+    paddingBottom: 4,
     background: theme.colors.primary.white,
     borderBottom: `1px solid ${theme.colors.primary.borderGrey}`,
-    overflowX: 'auto',
+    // overflowX: 'auto',
   },
 
   filterWrapper: {
     marginRight: 10,
+    marginBottom: 6,
   },
 
   filterPaneWrapper: {
@@ -148,11 +149,13 @@ export const styleSheet = (theme) => ({
   },
 
   filterValuesWrapper: {
-    marginTop: 14,
+    marginTop: 8,
+    width: '100%',
   },
 
   filterValue: {
     marginRight: 10,
+    marginBottom: 6,
     color: theme.colors.primary.white,
   },
 
