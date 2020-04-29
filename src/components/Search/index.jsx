@@ -672,19 +672,18 @@ class Search extends PureComponent {
             <div className={s.searchByMapWrapper}>
               <GoogleMap
                 coordinates={
-                  filteredOffices && filteredOffices.length
+                  filteredOffices?.length
                     ? filteredOffices.map(
                         (office) => office.location.coordinates
                       )
                     : []
                 }
                 center={
-                  filteredOffices &&
-                  filteredOffices.length &&
-                  filteredOffices[0].location?.coordinates
+                  filteredOffices?.length &&
+                  filteredOffices[0]?.location?.coordinates
                 }
                 markers={
-                  filteredOffices && filteredOffices.length
+                  filteredOffices?.length
                     ? filteredOffices.map((office, index) => (
                         <GoogleMapMarker
                           key={index}

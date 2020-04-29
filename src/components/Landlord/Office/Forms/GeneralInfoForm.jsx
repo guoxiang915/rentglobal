@@ -733,18 +733,18 @@ class GeneralInfoForm extends PureComponent {
           <GridRow classes={s} title={t('typeOfContract')}>
             <NormalFormField
               tag="select"
-              field="contractType"
+              field="typeOfContract"
               className={s.textField350}
               options={contractTypes}
             />
           </GridRow>
           {/** guarantees / security deposit */}
-          <GridRow classes={s} title={t('guaranteesOrSecurityDeposit')}>
+          <GridRow classes={s} title={t('guaranteesAndSecurityDeposit')}>
             <NormalFormField
               tag="select"
               className={s.textField350}
               options={guarantees}
-              field="guarantees"
+              field="guaranteesAndSecurityDeposit"
             />
           </GridRow>
           {/** check out notice */}
