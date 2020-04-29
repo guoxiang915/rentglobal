@@ -50,10 +50,10 @@ function* login(action) {
 
         if (action.payload.redirect) {
           // if a redirect is specified, then overwrite the default redirect
-          route = action.payload.redirect;
+          window.location.href = action.payload.redirect;
+        } else {
+          action.history.push(route);
         }
-
-        action.history.push(route);
       } else {
         yield put({
           type: 'LOGIN_FAILED',

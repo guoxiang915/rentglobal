@@ -62,6 +62,10 @@ const styleSheet = (theme) => ({
     color: theme.colors.primary.mainColor,
   },
 
+  button: {
+      width: 200
+  },
+
   footer: {
     width: '100%',
     padding: '12px 40px',
@@ -144,30 +148,28 @@ class LandlordDialog extends PureComponent {
         <DialogContent className={s.content}>
           <Column>
             <Typography fontSizeM fontWeightBold textSecondary>
-                Thank you for choosing us
+                {t("welcomeRoleTitle")}
             </Typography>
             <Typography fontSizeS textMediumGrey textCenter paddingTop>
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut …
+                {/** please put more meaningful description here */}
             </Typography>
             <Row style={{ marginTop: 27 }}>
                 <BuildingsIcon fontSize="large" className={s.outlineIcon}/>
             </Row>
             <Row style={{ marginTop: 10 }}>
                 <Typography fontSizeL textPrimary fontWeightBold>
-                    Landlord panel
+                    {t("landlordPanel")}
                 </Typography>
             </Row>
             <Row style={{ marginTop: 10 }}>
                 <Button
                     variant="primary"
                     fullWidth
-                    style={{
-                        width: 200
-                    }}
+                    className={s.button}
                     onClick={this.handleEnter}
                 >
                     <Typography fontSizeS>
-                        Enter
+                        {t("enter")}
                     </Typography>
                 </Button>
             </Row>
