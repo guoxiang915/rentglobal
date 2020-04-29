@@ -54,11 +54,6 @@ function* login(action) {
         }
 
         action.history.push(route);
-        yield put({
-          type: 'SET_USER_ROLE',
-          userRole: response.data.role,
-          history: action.history,
-        });
       } else {
         yield put({
           type: 'LOGIN_FAILED',
