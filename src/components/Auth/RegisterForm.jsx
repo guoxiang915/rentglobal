@@ -114,6 +114,7 @@ class RegisterForm extends PureComponent {
   handleSignup = async (e) => {
     e.preventDefault();
     const validForm = await this.validateForm();
+    const searchParams = new URLSearchParams(window.location.search);
     if (!validForm) {
       return;
     }
@@ -122,6 +123,7 @@ class RegisterForm extends PureComponent {
       password: this.state.password,
       role: this.props.registerMode,
       passwordLastUpdated: new Date(),
+      redirect: searchParams.get("redirect")
     };
     this.props.mappedRegister(user);
   };
@@ -144,6 +146,11 @@ class RegisterForm extends PureComponent {
   render() {
     const { error, isLoading, registerMode } = this.props;
     const { classes, t } = this.props;
+    const searchParams = new URLSearchParams(window.location.search);
+    const loginParams = new URLSearchParams("");
+    if (searchParams.get("redirect")) {
+      loginParams.set("redirect", "/landlord/offices/add");
+    }
 
     return (
       <form noValidate autoComplete="off" className={classes.formWrapper}>
@@ -275,7 +282,7 @@ class RegisterForm extends PureComponent {
           <Box paddingTop>
             <Typography textMediumGrey fontSizeXS>
               {t('alreadyHaveAccount')}
-              <Link to="/auth/login" variant="primary">
+              <Link to={{ pathname: "/auth/login", search: loginParams.toString() ? "?" + loginParams.toString() : "" }} variant="primary">
                 &nbsp;
                 {t('login')}
               </Link>

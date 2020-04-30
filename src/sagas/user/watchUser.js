@@ -64,14 +64,32 @@ function* updateUser(action) {
 
 function* setUserRole(action) {
   let pathname = action.history && action.history.location.pathname;
-  if (pathname.startsWith('/company')) {
+  if (action.redirectPath) {
+    pathname = action.redirectPath;
+  } if (pathname.startsWith('/company')) {
     pathname = `/${action.userRole}${pathname.substring('/company'.length)}`;
   } else if (pathname.startsWith('/landlord')) {
     pathname = `/${action.userRole}${pathname.substring('/landlord'.length)}`;
   } else {
     pathname = `/${action.userRole}`;
   }
+
   action.history.push(pathname);
+
+  // adding userRole to user.roles if it is not already added
+  const response = yield call(updateUserRequest, {
+    field: 'profile',
+    data: { profile: {}, userRole: action.userRole }
+  });
+
+  if (response.status === 200) {
+    yield put({
+      type: 'UPDATE_USER_SUCCESS',
+      field: 'profile',
+      resp: response.data,
+    });
+  }
+  
   yield call(flushMessage);
 }
 

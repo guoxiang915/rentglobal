@@ -4,7 +4,6 @@ import {
   Button as MUIButton,
   CircularProgress,
   withStyles,
-  withTheme,
 } from '@material-ui/core';
 import clsx from 'clsx';
 import { Box } from '.';
@@ -134,7 +133,6 @@ const Button = forwardRef(
 Button.propTypes = {
   classes: PropTypes.object.isRequired,
   rounded: PropTypes.bool,
-  theme: PropTypes.object,
   variant: PropTypes.string,
   link: PropTypes.string,
   background: PropTypes.string,
@@ -143,4 +141,4 @@ Button.propTypes = {
   styles: PropTypes.object,
 };
 
-export default withStyles(styleSheet, { name: 'Button' })(withTheme(Button));
+export default withStyles(styleSheet, { name: 'Button' })(Button);

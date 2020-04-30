@@ -1014,7 +1014,7 @@ class Profile extends PureComponent {
                                   title={(
                                     <Column>
                                       <Typography textSecondary>
-                                        {t("Your phone number confirmed")}
+                                        {t("phoneNumberConfirmed")}
                                       </Typography>
                                     </Column>
                                   )}

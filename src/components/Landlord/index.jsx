@@ -150,18 +150,11 @@ class Landlord extends PureComponent {
 
   /** Render function */
   render() {
-    const { classes, location } = this.props;
-    const { user, userRole, phoneCodeSent, verifiedPhoneNumber } = this.props.auth;
+    const { classes } = this.props;
+    const { userRole, phoneCodeSent, verifiedPhoneNumber } = this.props.auth;
     const { dialog } = this.state;
 
     // TODO: requirements not specified when toggling roles
-    if (
-      user.roles.indexOf('landlord') === -1
-      && location.pathname !== '/landlord/profile'
-    ) {
-      return <Redirect to="/landlord/profile/" />;
-    }
-
     if (userRole !== 'landlord') {
       this.props.onToggleRole('landlord');
     }

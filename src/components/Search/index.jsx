@@ -4,11 +4,13 @@ import clsx from 'clsx';
 import PropTypes from 'prop-types';
 import { withTranslation } from 'react-i18next';
 import withWidth, { isWidthDown } from '@material-ui/core/withWidth';
-import { Grid, Popover, Paper, Chip } from '@material-ui/core';
+import { Grid, Popover, Paper, Chip, Slider } from '@material-ui/core';
+import { KeyboardArrowLeft, KeyboardArrowRight } from '@material-ui/icons';
 import {
   Row,
   Column,
   Stretch,
+  Box,
   Button,
   Typography,
   TextField,
@@ -159,7 +161,7 @@ const RoomsFilterPanel = ({ classes: s, t, rooms: r, onApply }) => {
   React.useEffect(() => setRooms(r), [r]);
 
   return (
-    <Column alignChildrenStart style={{ width: 400 }}>
+    <Column alignChildrenStart classes={{ box: s.numberFilterPanel }}>
       <Grid
         container
         direction="row"
@@ -216,7 +218,7 @@ const EmployeesFilterPanel = ({ classes: s, t, employees: e, onApply }) => {
   React.useEffect(() => setEmployees(e), [e]);
 
   return (
-    <Column alignChildrenStart style={{ width: 400 }}>
+    <Column alignChildrenStart classes={{ box: s.numberFilterPanel }}>
       <Grid
         container
         direction="row"
@@ -255,6 +257,223 @@ const EmployeesFilterPanel = ({ classes: s, t, employees: e, onApply }) => {
         <Button
           variant="primary"
           onClick={() => onApply(employees)}
+          className={s.applyButton}
+        >
+          <Typography fontSizeS alignChildrenCenter>
+            <CheckIcon style={{ width: 16, height: 12 }} />
+            <Typography paddingLeft>{t('apply')}</Typography>
+          </Typography>
+        </Button>
+      </Grid>
+    </Column>
+  );
+};
+
+const MIN_PRICE = 0;
+const MAX_PRICE = 50000; // undefined
+
+const AirbnbThumbComponent = ({ ...props }) => {
+  const index = props['data-index'];
+  return (
+    <span {...props}>
+      {index === 0 ? (
+        <KeyboardArrowLeft style={{ fontSize: '30px' }} />
+      ) : (
+        <KeyboardArrowRight style={{ fontSize: '30px' }} />
+      )}
+      {props.children}
+    </span>
+  );
+};
+
+const AirbnbSlider = withStyles((theme) => ({
+  root: {
+    color: theme.colors.primary.mainColor,
+    height: 1,
+    padding: '13px 0',
+  },
+  thumb: {
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    height: 37,
+    width: 37,
+    marginTop: -18,
+    marginLeft: -18,
+    background: theme.colors.primary.borderGrey,
+    color: theme.colors.primary.grey,
+    boxShadow: '#ebebeb 0px 2px 2px',
+    '&:focus, &:hover, &$active': {
+      boxShadow: '#ccc 0px 2px 3px 1px',
+      background: theme.colors.primary.mainColor,
+      color: theme.colors.primary.white,
+    },
+  },
+  active: {},
+  valueLabel: {
+    top: -20,
+    ...theme.fonts.size.fontSizeS,
+    '& *': {
+      background: 'transparent',
+      color: theme.colors.primary.mainColor,
+    },
+  },
+  track: {
+    height: 1.5,
+  },
+  rail: {
+    color: theme.colors.primary.borderGrey,
+    opacity: 1,
+    height: 1,
+  },
+  mark: {
+    background: theme.colors.primary.borderGrey,
+    width: 7,
+    height: 7,
+    marginLeft: -3,
+    marginTop: -3,
+    borderRadius: '50%',
+  },
+  markActive: {
+    background: theme.colors.primary.mainColor,
+  },
+}))(({ min, max, ...props }) => (
+  <Slider
+    min={min}
+    max={max}
+    marks={[{ value: min }, { value: max }]}
+    defaultValue={[min, max]}
+    valueLabelDisplay="on"
+    ThumbComponent={AirbnbThumbComponent}
+    {...props}
+  />
+));
+
+const PriceFilterPanel = ({ classes: s, t, price: p, onApply }) => {
+  const [priceMin, setPriceMin] = React.useState(p?.priceMin || MIN_PRICE);
+  const [priceMax, setPriceMax] = React.useState(p?.priceMax || MAX_PRICE);
+  React.useEffect(() => {
+    setPriceMin(p?.priceMin || MIN_PRICE);
+    setPriceMax(p?.priceMax || MAX_PRICE);
+  }, [p]);
+  const getValueLabelFormat = React.useCallback((val) => {
+    return val === MIN_PRICE || val === MAX_PRICE ? '' : val + '$';
+  }, []);
+  const onSliderChange = React.useCallback((e, val) => {
+    setPriceMin(Number(val[0]));
+    setPriceMax(Number(val[1]));
+  }, []);
+
+  return (
+    <Column alignChildrenStart classes={{ box: s.priceFilterPanel }}>
+      <Grid container direction="column" className={s.priceFilters}>
+        <Grid
+          container
+          direction="row"
+          justify="space-between"
+          alignItems="center"
+        >
+          <Typography fontSizeS textSecondary>
+            {t('monthlyPrice')}
+          </Typography>
+          <Typography fontSizeXS textMediumGrey>
+            {t('averageMonthlyPrice', { price: 3243 })}
+          </Typography>
+        </Grid>
+        <AirbnbSlider
+          min={MIN_PRICE}
+          max={MAX_PRICE}
+          value={[priceMin, priceMax]}
+          valueLabelFormat={getValueLabelFormat}
+          onChange={onSliderChange}
+          className={s.priceSlider}
+        />
+        <Typography fontSizeXS textMediumGrey style={{ marginTop: 48 }}>
+          {t('orUseInputRange')}
+        </Typography>
+        <Grid container spacing={4} className={s.priceInputWrapper}>
+          <Grid item xs={12} sm={6}>
+            <Row alignChildrenCenter fullWidth>
+              <Typography fontSizeS textSecondary paddingRight>
+                {t('min')}
+              </Typography>
+              <Box stretch>
+                <TextField
+                  fullWidth
+                  variant="outlined"
+                  value={priceMin === MIN_PRICE ? '' : priceMin}
+                  type="number"
+                  inputProps={{
+                    min: MIN_PRICE,
+                    max: priceMax,
+                  }}
+                  onChange={(e) => setPriceMin(Number(e.target.value))}
+                  endAdornment={
+                    <Typography
+                      fontSizeS
+                      textMediumGrey
+                      style={{ whiteSpace: 'nowrap' }}
+                    >
+                      {t('$/month')}
+                    </Typography>
+                  }
+                />
+              </Box>
+            </Row>
+          </Grid>
+          <Grid item xs={12} sm={6}>
+            <Row alignChildrenCenter fullWidth>
+              <Typography fontSizeS textSecondary paddingRight>
+                {t('max')}
+              </Typography>
+              <Box stretch>
+                <TextField
+                  fullWidth
+                  variant="outlined"
+                  value={priceMax === MAX_PRICE ? '' : priceMax}
+                  type="number"
+                  inputProps={{
+                    min: priceMin,
+                    max: MAX_PRICE,
+                  }}
+                  onChange={(e) => setPriceMax(Number(e.target.value))}
+                  endAdornment={
+                    <Typography
+                      fontSizeS
+                      textMediumGrey
+                      style={{ whiteSpace: 'nowrap' }}
+                    >
+                      {t('$/month')}
+                    </Typography>
+                  }
+                />
+              </Box>
+            </Row>
+          </Grid>
+        </Grid>
+      </Grid>
+      <Divider />
+
+      <Grid
+        container
+        direction="row"
+        justify="space-between"
+        alignItems="center"
+        className={s.filterPanel}
+      >
+        <Button
+          link="errorRed"
+          background="secondaryLight"
+          onClick={() => onApply()}
+        >
+          <Typography fontSizeS alignChildrenCenter>
+            <CloseIcon style={{ width: 10, height: 10 }} />
+            <Typography paddingLeft>{t('clear')}</Typography>
+          </Typography>
+        </Button>
+        <Button
+          variant="primary"
+          onClick={() => onApply({ priceMin, priceMax })}
           className={s.applyButton}
         >
           <Typography fontSizeS alignChildrenCenter>
@@ -307,6 +526,16 @@ const FilterPanel = React.memo(
             t={t}
             employees={value}
             onApply={onChangeFilter('employees')}
+          />
+        );
+
+      case 'price':
+        return (
+          <PriceFilterPanel
+            classes={classes}
+            t={t}
+            price={value}
+            onApply={onChangeFilter('price')}
           />
         );
 
@@ -445,6 +674,17 @@ const FilterChip = React.memo(({ classes: s, t, filter, value, onChange }) => {
         />
       );
 
+    case 'price':
+      return (
+        <Chip
+          key={filter}
+          label={[value?.priceMin || '', value?.priceMax || ''].join(' - ')}
+          onDelete={() => handleRemoveFilter({ filter })}
+          className={s.filterValue}
+          color="primary"
+        />
+      );
+
     default:
       return null;
   }
@@ -498,8 +738,17 @@ class Search extends PureComponent {
   /** Search office by text, filters, map... */
   searchOffices = () => {
     const params = { q: this.state.q };
-    Object.entries(this.state.filters).forEach(([key, filter]) => {
-      params[key] = filter;
+    Object.entries(this.state.filters).forEach(([filter, value]) => {
+      if (filter === 'price') {
+        if (value?.priceMin) {
+          params['priceMin'] = value.priceMin;
+        }
+        if (value?.priceMax) {
+          params['priceMax'] = value.priceMax;
+        }
+      } else {
+        params[filter] = value;
+      }
     });
     this.setState({ loading: true });
     getPublishedOffices(params).then(
@@ -550,6 +799,11 @@ class Search extends PureComponent {
     filters[filter] = value;
     if (!value || (Array.isArray(value) && !value.length)) {
       delete filters[filter];
+    }
+    if (filter === 'price') {
+      if (value?.priceMin === MIN_PRICE) value.priceMin = null;
+      if (value?.priceMax === MAX_PRICE) value.priceMax = null;
+      if (!value?.priceMin && !value?.priceMax) delete filters[filter];
     }
     this.setState({ filters }, this.searchOffices);
   };

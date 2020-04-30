@@ -147,12 +147,15 @@ class LoginForm extends PureComponent {
   handleLogin = async (e) => {
     e.preventDefault();
     const validForm = await this.validateForm();
+    const searchParams = new URLSearchParams(window.location.search);
     if (!validForm) {
       return;
     }
+
     const payload = {
       email: this.state.email,
       password: this.state.password,
+      redirect: searchParams.get("redirect")
     };
     if (payload.email !== '' && payload.password !== '') {
       this.props.mappedLogin(payload, this.props.history);

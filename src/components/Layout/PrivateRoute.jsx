@@ -10,7 +10,7 @@ import {
   AppHeader, AppFooter, AppSidebar, HelpDialog,
 } from '.';
 import { Column, Spinner } from '../../common/base-components';
-import { WelcomeRoleDialog } from './Dialogs';
+import { WelcomeRoleDialog, LandlordDialog } from './Dialogs';
 import SendVerificationForm from '../Auth/SendVerificationForm';
 import { Storage } from '../../utils/storage';
 
@@ -204,39 +204,59 @@ class PrivateRoute extends React.Component {
       break;
 
     default:
-      this.props.history.push('/');
+      this.props.history.push(path);
       break;
     }
     this.handleToggleSidebar(false);
   };
 
   /** Toggle userRole between landlord/company */
-  handleToggleRole = (setRole) => {
+  handleToggleRole = (setRole, redirecPath) => {
     const { user, userRole } = this.props.auth;
     const nextRole = typeof setRole === 'string'
       ? setRole
       : userRole === 'landlord'
         ? 'company'
         : 'landlord';
+
     if (nextRole && user?.roles.indexOf(nextRole) === -1) {
       const hideGuidance = storage.getBoolean(`${nextRole}HideGuide`);
       if (hideGuidance) {
-        this.props.mappedToggleRole(nextRole, this.props.history);
+        if (nextRole === 'landlord') {
+          // first time going on lanlord page
+          this.setState({
+            dialog: (
+              <LandlordDialog
+                onClose={() => {
+                  this.handleCloseDialog();
+                }}
+                onEnter={() => {
+                  this.props.mappedToggleRole(nextRole, this.props.history, redirecPath);
+                  this.handleCloseDialog();
+                }}
+              />
+            ),
+          });
+        } else {
+          this.props.mappedToggleRole(nextRole, this.props.history, redirecPath);
+        }
+        //this.props.mappedToggleRole(nextRole, this.props.history, redirecPath);
       } else {
         this.setState({
           dialog: (
             <WelcomeRoleDialog
               role={nextRole}
               onClose={() => {
-                this.props.mappedToggleRole(nextRole, this.props.history);
+                this.props.mappedToggleRole(nextRole, this.props.history, redirecPath);
                 this.handleCloseDialog();
               }}
             />
           ),
         });
       }
+
     } else {
-      this.props.mappedToggleRole(nextRole, this.props.history);
+      this.props.mappedToggleRole(nextRole, this.props.history, redirecPath);
     }
     this.handleToggleSidebar(false);
   };

@@ -33,7 +33,17 @@ const styleSheet = () => ({
 
 class VerifyEmailSuccessForm extends PureComponent {
   handleLogin = () => {
-    this.props.navigate('login');
+    const { navigate, redirect } = this.props;
+    const searchParams = new URLSearchParams(window.location.search);
+    const redirectPath = searchParams.get("redirect");
+    if (redirect) {
+      navigate(`login?redirect=${redirect}`);
+    } else if (redirectPath) {
+      // in case user refresh the page, we read it from query param
+      navigate(`login?redirect=${redirectPath}`);
+    } else {
+      navigate('login');
+    }
   };
 
   render() {
