@@ -246,6 +246,8 @@
     "accountDeleted": "Account Deleted",
     "accountDeletedSuccess": "Your account is deleted!",
     "backToHome": "Back to home",
+    "error": "Error",
+    "errorDeleteAccount": "Cannot delete account!",
 
     "services": "Services",
 

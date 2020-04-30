@@ -253,6 +253,8 @@
     "adknowledgeDelete": "Je sais que cette action est irréversible",
     "accountDeleted": "Compte Supprimé",
     "accountDeletedSuccess": "Votre compte est supprimé!",
+    "error": "Erreur",
+    "errorDeleteAccount": "Impossible de supprimer le compte!",
     "backToHome": "Retourner à l'index",
     "services": "Services",
     "companyInfo": "Societe info",

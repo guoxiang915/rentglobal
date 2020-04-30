@@ -300,6 +300,7 @@ class Profile extends PureComponent {
   }
 
   componentDidUpdate(prevProps) {
+    const { t, width, auth } = this.props;
     if (prevProps.verifiedPhoneNumber !== this.props.verifiedPhoneNumber && !this.props.verifiedPhoneNumber.error) {
       this.setState({
         phoneNumber: this.props.verifiedPhoneNumber?.number,
@@ -307,8 +308,7 @@ class Profile extends PureComponent {
       });
     }
 
-    if (prevProps.auth.userDeleted !== this.props.auth.userDeleted && this.props.auth.userDeleted) {
-      const { t, width } = this.props;
+    if (prevProps.auth.userDeleted !== auth.userDeleted && auth.userDeleted) {
       this.setState({
         dialog: (
           <Dialog 
@@ -338,6 +338,43 @@ class Profile extends PureComponent {
                 color="primary"
               >
                 {t("backToHome")}
+              </Button>
+            </DialogActions>
+          </Dialog>
+        )
+      });
+    }
+
+    if (auth.error && auth.error.type === 'deleteAccount' && (!prevProps.auth.error || prevProps.auth.error.type !== 'deleteAccount')) {
+      this.setState({
+        dialog: (
+          <Dialog 
+            onClose={() =>  this.setState({dialog: null})}
+            aria-labelledby="account-deleted-error" 
+            open={true}
+          >
+            <DialogTitle id="account-deleted-error" 
+              onClose={() =>  this.setState({dialog: null})}
+            >
+              {t("error")}
+            </DialogTitle>
+            <DialogContent dividers>
+              <Typography
+                fontSizeM={!isWidthDown('xs', width)}
+                fontSizeS={isWidthDown('xs', width)}
+                textSecondary
+                fontWeightBold
+                textCenter
+              >
+                {typeof auth.error.msg === 'string' ? auth.error.msg : auth.error.msg.message || t("errorDeleteAccount")}
+              </Typography>
+            </DialogContent>
+            <DialogActions>
+              <Button
+                color="primary"
+                onClick={() =>  this.setState({dialog: null})}
+              >
+                {t("close")}
               </Button>
             </DialogActions>
           </Dialog>
