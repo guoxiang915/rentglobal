@@ -418,11 +418,10 @@ class AppHeader extends PureComponent {
                         <Button
                           variant="secondary"
                           shadow
-                          onClick={() =>
-                            this.props.onToggleRole(
-                              role === 'landlord' ? 'company' : 'landlord'
-                            )
-                          }
+                          onClick={() =>{
+                            const roleToSet = role === 'landlord' ? 'company' : 'landlord';
+                            this.props.onToggleRole(roleToSet, roleToSet === 'landlord' ? "/landlord/offices/add": null);
+                          }}
                         >
                           <Typography fontSizeS fontWeightBold>
                             {t(
@@ -563,9 +562,7 @@ class AppHeader extends PureComponent {
                         <Button
                           variant="secondary"
                           shadow
-                          onClick={() =>
-                            this.props.navigate('register/landlord')
-                          }
+                          onClick={() => this.props.navigate('/auth/register/landlord?redirect=/landlord/offices/add')}
                         >
                           <Typography fontSizeS fontWeightBold>
                             {t('placeToRent')}

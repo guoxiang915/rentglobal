@@ -47,12 +47,13 @@ function* login(action) {
         if (!response.data.profile) {
           route += '/profile';
         }
-        action.history.push(route);
-        yield put({
-          type: 'SET_USER_ROLE',
-          userRole: response.data.role,
-          history: action.history,
-        });
+
+        if (action.payload.redirect) {
+          // if a redirect is specified, then overwrite the default redirect
+          window.location.href = action.payload.redirect;
+        } else {
+          action.history.push(route);
+        }
       } else {
         yield put({
           type: 'LOGIN_FAILED',

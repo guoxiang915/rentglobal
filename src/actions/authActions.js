@@ -23,10 +23,11 @@ export const updateUser = (field, payload, history) => ({
   field,
 });
 
-export const setUserRole = (userRole, history) => ({
+export const setUserRole = (userRole, history, redirectPath) => ({
   type: 'SET_USER_ROLE',
   userRole,
   history,
+  redirectPath
 });
 
 export const registerUser = (payload, history) => ({
@@ -44,8 +45,15 @@ export const verifyEmail = (payload, history, dispatch) => {
   api
     .get(`/auth/activate/${payload.token}`)
     .then((response) => {
-      history.push('/auth/verify-email-success', {
+      let path = '/auth/verify-email-success';
+
+      if (payload.redirect) {
+        path = `/auth/verify-email-success?redirect=${payload.redirect}`;
+      }
+
+      history.push(path, {
         success: true,
+        redirect: payload.redirect
       });
       dispatch(verifyEmailResponse(response));
     })
