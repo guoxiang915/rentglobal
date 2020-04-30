@@ -9,7 +9,8 @@ const INITIAL_STATE = {
   isActivated: false,
   isUpdating: null,
   verifiedPhoneNumber: null,
-  phoneCodeSent: null
+  phoneCodeSent: null,
+  userDeleted: false
 };
 
 const authReducer = (currentState = INITIAL_STATE, action) => {
@@ -212,16 +213,17 @@ const authReducer = (currentState = INITIAL_STATE, action) => {
     };
 
   case 'DELETE_ACCOUNT_SUCCESS':
-    // TODO: to be implement when /users/me/delete is done
     return {
-      ...currentState
+      ...currentState,
+      userDeleted: true
     };
 
   case 'DELETE_ACCOUNT_FAILED':
-    // TODO: to be implement when /users/me/delete is done
     return {
-      ...currentState
+      ...currentState,
+      error: { type: 'deleteAccount', msg: action.resp.msg },
     };
+
   case 'VERIFY_PHONE_SUCCESS':
     return {
       ...currentState,
@@ -259,6 +261,12 @@ const authReducer = (currentState = INITIAL_STATE, action) => {
         error: action.resp.msg
       },
       error: { type: 'verifyPhoneCode', msg: action.resp.msg },
+    };
+
+  case 'REQUEST_DELETE_ACCOUNT':
+    return {
+      ...currentState,
+      isLoading: true,
     };
 
   default:

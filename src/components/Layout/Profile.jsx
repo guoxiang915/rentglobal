@@ -4,7 +4,14 @@ import { withTranslation } from 'react-i18next';
 import clsx from 'clsx';
 import PropTypes from 'prop-types';
 import withWidth, { isWidthDown } from '@material-ui/core/withWidth';
-import { Grid, Card } from '@material-ui/core';
+import { 
+  Grid, 
+  Card,
+  Dialog,
+  DialogTitle,
+  DialogContent,
+  DialogActions,
+} from '@material-ui/core';
 import {
   Box,
   Row,
@@ -41,6 +48,7 @@ import PhoneNumber from 'awesome-phonenumber';
 import { Alert } from '@material-ui/lab';
 import { maxFileSize } from '../../utils/constants';
 import MobileDetect from 'mobile-detect';
+import { DeleteAccountDialog } from './Dialogs';
 
 const md = new MobileDetect(window.navigator.userAgent);
 
@@ -296,6 +304,44 @@ class Profile extends PureComponent {
       this.setState({
         phoneNumber: this.props.verifiedPhoneNumber?.number,
         phoneNumberVerified: this.props.verifiedPhoneNumber?.verified
+      });
+    }
+
+    if (prevProps.auth.userDeleted !== this.props.auth.userDeleted && this.props.auth.userDeleted) {
+      const { t, width } = this.props;
+      this.setState({
+        dialog: (
+          <Dialog 
+            onClose={() => window.location.href = '/'}
+            aria-labelledby="account-deleted" 
+            open={true}
+          >
+            <DialogTitle id="account-deleted" 
+              onClose={() => window.location.href = '/'}
+            >
+              {t("accountDeleted")}
+            </DialogTitle>
+            <DialogContent dividers>
+              <Typography
+                fontSizeM={!isWidthDown('xs', width)}
+                fontSizeS={isWidthDown('xs', width)}
+                textSecondary
+                fontWeightBold
+                textCenter
+              >
+                {t("accountDeletedSuccess")}
+              </Typography>
+            </DialogContent>
+            <DialogActions>
+              <Button 
+                onClick={() => window.location.href = '/'} 
+                color="primary"
+              >
+                {t("backToHome")}
+              </Button>
+            </DialogActions>
+          </Dialog>
+        )
       });
     }
   }
@@ -574,24 +620,9 @@ class Profile extends PureComponent {
   };
 
   handleDeleteAccount = () => {
-    const { t } = this.props;
     this.setState({
       dialog: (
-        <ConfirmDialog
-          variant="error"
-          text={t("confirmDeleteAccount")}
-          closeLabel={
-            <React.Fragment>
-              <CloseIcon style={{ width: 10, height: 10 }} />
-              <Typography paddingLeft>{t("cancel")}</Typography>
-            </React.Fragment>
-          }
-          confirmLabel={
-            <React.Fragment>
-              <DeleteIcon style={{ width: 15, height: 12 }} />
-              <Typography paddingLeft>{t("deleteAccount")}</Typography>
-            </React.Fragment>
-          }
+        <DeleteAccountDialog
           onConfirm={this.deleteAccount}
           onClose={this.handleCloseDialog}
         />
@@ -605,6 +636,7 @@ class Profile extends PureComponent {
     } = this.props.auth;
     this.props.deleteAccount(userRole);
   };
+
   handleChangePhone = () => (e) => {
     this.setState({
       phoneNumber: e.target.value,

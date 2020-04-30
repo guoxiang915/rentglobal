@@ -5,3 +5,4 @@ export { default as ShareOfficeDialog } from './ShareOfficeDialog';
 export { default as LocationDialog } from './LocationDialog';
 export { default as CropperDialog } from './CropperDialog';
 export { default as WelcomeRoleDialog } from './WelcomeRoleDialog';
+export { default as DeleteAccountDialog } from './DeleteAccountDialog';
