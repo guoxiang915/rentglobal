@@ -15,8 +15,6 @@ import {
   Divider,
   UserIcon,
   EditDocumentIcon,
-  MapPointerIcon,
-  HelpIcon,
   DashboardIcon,
   OfficeIcon,
   CalendarIcon,
@@ -335,31 +333,9 @@ class AppSidebar extends PureComponent {
                         <MenuItem
                           active={false}
                           item={{
-                            text: 'montreal',
-                            link: 'location',
-                            icon: MapPointerIcon,
-                          }}
-                          navigate={this.navigate}
-                          classes={classes}
-                          t={t}
-                        />
-                        <MenuItem
-                          active={false}
-                          item={{
                             text: 'english',
                             link: 'language',
                             icon: () => <Typography>EN</Typography>,
-                          }}
-                          navigate={this.navigate}
-                          classes={classes}
-                          t={t}
-                        />
-                        <MenuItem
-                          active={false}
-                          item={{
-                            text: 'help',
-                            link: 'help',
-                            icon: HelpIcon,
                           }}
                           navigate={this.navigate}
                           classes={classes}
