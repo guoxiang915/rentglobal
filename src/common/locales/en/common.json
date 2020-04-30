@@ -441,5 +441,10 @@
     "employeesWithNumber": "{{count}} Employees",
     "roomsWithNumber": "{{count}} Rooms",
     "apply": "Apply",
-    "clear": "Clear"
+    "clear": "Clear",
+    "monthlyPrice": "Monthly price",
+    "averageMonthlyPrice": "The average monthly price is ${{price}} CAD",
+    "orUseInputRange": "Or use by input the range",
+    "min": "Min",
+    "max": "Max"
 }

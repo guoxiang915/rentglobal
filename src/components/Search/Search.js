@@ -86,16 +86,16 @@ export const styleSheet = (theme) => ({
     background: 'transparent',
     boxShadow: 'none',
     overflow: 'visible',
+    [theme.breakpoints.down('xs')]: {
+      width: '100%',
+    },
   },
 
   filterContentWrapper: {
     position: 'relative',
     top: 15,
-    boxShadow: '0px 2px 4px #00000014',
+    boxShadow: '0px 2px 24px #0000001A',
     border: `1px solid ${theme.colors.primary.borderGrey}`,
-    [theme.breakpoints.down('sm')]: {
-      left: -29,
-    },
     '&::before': {
       position: 'absolute',
       top: -8,
@@ -163,12 +163,45 @@ export const styleSheet = (theme) => ({
     borderColor: theme.colors.primary.borderGrey,
   },
 
+  numberFilterPanel: {
+    width: 400,
+    [theme.breakpoints.down('xs')]: {
+      width: '100%',
+    },
+  },
+
   numberField: {
     width: 175,
   },
 
+  priceSlider: {
+    width: 'calc(100% - 32px)',
+    marginTop: 50,
+    marginLeft: 16,
+    marginRight: 16,
+  },
+
+  priceFilterPanel: {
+    width: 532,
+    [theme.breakpoints.down('xs')]: {
+      width: '100%',
+    },
+  },
+
+  priceFilters: {
+    padding: 24,
+  },
+
+  priceInputWrapper: {
+    marginTop: 20,
+    marginBottom: 20,
+  },
+
   applyButton: {
     width: 175,
+    [theme.breakpoints.down('xs')]: {
+      width: 'auto',
+    },
   },
 
   valuesWrapper: {
