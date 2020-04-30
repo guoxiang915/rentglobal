@@ -356,15 +356,6 @@ class AppHeader extends PureComponent {
                 <React.Fragment>
                   {!isWidthDown('sm', width) && (
                     <React.Fragment>
-                      {/* chat with TESSI */}
-                      <Column paddingLeftDouble>
-                        <Typography fontSizeS fontWeightBold>
-                          <Link variant="primary" to="/">
-                            {t('chatWithTessi')}
-                          </Link>
-                        </Typography>
-                      </Column>
-
                       {/* role switcher */}
                       <Column paddingLeftDouble>
                         <Button

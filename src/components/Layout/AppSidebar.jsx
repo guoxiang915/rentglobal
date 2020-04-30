@@ -15,18 +15,11 @@ import {
   Divider,
   UserIcon,
   EditDocumentIcon,
-  HomeIcon,
-  TessiIcon,
   MapPointerIcon,
   HelpIcon,
-  OptimizationIcon,
   DashboardIcon,
   OfficeIcon,
-  NoteIcon,
   CalendarIcon,
-  TicketIcon,
-  ChatIcon,
-  SettingIcon,
   ArrowUpIcon,
 } from '../../common/base-components';
 
@@ -169,43 +162,20 @@ class AppSidebar extends PureComponent {
 
   menus = {
     '': [
-      {
-        text: 'home', link: '', role: false, icon: HomeIcon, exact: true,
-      },
-      { text: 'chatWithTessi', link: 'chat', icon: TessiIcon },
       { text: 'login', link: 'login', icon: UserIcon },
       { text: 'register', link: 'register', icon: EditDocumentIcon },
     ],
     landlord: [
-      {
-        text: 'home', link: '', role: false, icon: HomeIcon, exact: true,
-      },
       { text: 'dashboard', link: 'dashboard', icon: DashboardIcon },
       { text: 'offices', link: 'offices', icon: OfficeIcon },
-      { text: 'contracts', link: 'contracts', icon: NoteIcon },
-      {
-        text: 'optimization',
-        link: 'optimization',
-        icon: OptimizationIcon,
-      },
       { text: 'calendar', link: 'calendar', icon: CalendarIcon },
-      { text: 'financials', link: 'financial', icon: TicketIcon },
-      { text: 'support', link: 'support', icon: ChatIcon },
       { text: 'profile', link: 'profile', icon: UserIcon },
-      { text: 'setting', link: 'settings', icon: SettingIcon },
     ],
     company: [
-      {
-        text: 'home', link: '', role: false, icon: HomeIcon, exact: true,
-      },
       { text: 'dashboard', link: 'dashboard', icon: DashboardIcon },
       { text: 'offices', link: 'offices', icon: OfficeIcon },
-      { text: 'contracts', link: 'contracts', icon: NoteIcon },
       { text: 'calendar', link: 'calendar', icon: CalendarIcon },
-      { text: 'financials', link: 'financial', icon: TicketIcon },
-      { text: 'support', link: 'support', icon: ChatIcon },
       { text: 'profile', link: 'profile', icon: UserIcon },
-      { text: 'setting', link: 'settings', icon: SettingIcon },
     ],
   };
 
@@ -396,21 +366,7 @@ class AppSidebar extends PureComponent {
                           t={t}
                         />
                       </React.Fragment>
-                    ) : (
-                      <Row classes={{ box: classes.chatItem }} fullWidth>
-                        <MenuItem
-                          active={false}
-                          item={{
-                            text: 'chatWithTessi',
-                            link: '',
-                            icon: TessiIcon,
-                          }}
-                          navigate={this.navigate}
-                          classes={classes}
-                          t={t}
-                        />
-                      </Row>
-                    )}
+                    ) : null }
                   </Column>
                 </Row>
 
