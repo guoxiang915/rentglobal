@@ -239,6 +239,15 @@
     "pendingComments": "Pending comments",
     "confirmEdit": "Are you sure you want to edit?",
     "confirmDelete": "Are you sure you want to delete?",
+    "confirmDeleteAccount": "Are you sure you want to delete your account?",
+    "deleteAccount": "Delete Account",
+    "deleteImplication": "This action will delete all of your data from the plateform which mean you will need to start new if come back later.",
+    "adknowledgeDelete": "I know this action is irreversible",
+    "accountDeleted": "Account Deleted",
+    "accountDeletedSuccess": "Your account is deleted!",
+    "backToHome": "Back to home",
+    "error": "Error",
+    "errorDeleteAccount": "Cannot delete account!",
 
     "services": "Services",
 
