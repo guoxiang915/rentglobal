@@ -63,7 +63,7 @@ const styleSheet = (theme) => ({
   },
 
   button: {
-      width: 200
+    width: 200
   },
 
   footer: {
@@ -112,7 +112,7 @@ class LandlordDialog extends PureComponent {
   /** Render function */
   render() {
     const {
-        className, classes: s, t,
+      className, classes: s, t,
     } = this.props;
 
     return (
@@ -148,30 +148,30 @@ class LandlordDialog extends PureComponent {
         <DialogContent className={s.content}>
           <Column>
             <Typography fontSizeM fontWeightBold textSecondary>
-                {t("welcomeRoleTitle")}
+              {t("welcomeRoleTitle")}
             </Typography>
             <Typography fontSizeS textMediumGrey textCenter paddingTop>
-                {/** please put more meaningful description here */}
+              {/** please put more meaningful description here */}
             </Typography>
             <Row style={{ marginTop: 27 }}>
-                <BuildingsIcon fontSize="large" className={s.outlineIcon}/>
+              <BuildingsIcon fontSize="large" className={s.outlineIcon}/>
             </Row>
             <Row style={{ marginTop: 10 }}>
-                <Typography fontSizeL textPrimary fontWeightBold>
-                    {t("landlordPanel")}
+              <Typography fontSizeL textPrimary fontWeightBold>
+                {t("landlordPanel")}
+              </Typography>
+            </Row>
+            <Row style={{ marginTop: 10 }}>
+              <Button
+                variant="primary"
+                fullWidth
+                className={s.button}
+                onClick={this.handleEnter}
+              >
+                <Typography fontSizeS>
+                  {t("enter")}
                 </Typography>
-            </Row>
-            <Row style={{ marginTop: 10 }}>
-                <Button
-                    variant="primary"
-                    fullWidth
-                    className={s.button}
-                    onClick={this.handleEnter}
-                >
-                    <Typography fontSizeS>
-                        {t("enter")}
-                    </Typography>
-                </Button>
+              </Button>
             </Row>
           </Column>
         </DialogContent>

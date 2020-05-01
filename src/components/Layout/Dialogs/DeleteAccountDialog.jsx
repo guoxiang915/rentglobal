@@ -58,9 +58,9 @@ const styleSheet = (theme) => ({
 
 class DeleteAccountDialog extends PureComponent {
   static propTypes = {
-  open: PropTypes.bool,
-  onConfirm: PropTypes.func,
-  onClose: PropTypes.func,
+    open: PropTypes.bool,
+    onConfirm: PropTypes.func,
+    onClose: PropTypes.func,
   };
 
   static defaultProps = {
@@ -73,11 +73,11 @@ class DeleteAccountDialog extends PureComponent {
 
   buttonStyles = {
     primary: {
-        variant: 'primary',
+      variant: 'primary',
     },
     error: {
-        link: 'errorRedNormal',
-        background: 'secondaryLight',
+      link: 'errorRedNormal',
+      background: 'secondaryLight',
     },
   };
 
@@ -187,5 +187,5 @@ class DeleteAccountDialog extends PureComponent {
 }
 
 export default withStyles(styleSheet, { name: 'DeleteAccountDialog' })(
-    withTranslation('common')(withWidth()(DeleteAccountDialog)),
+  withTranslation('common')(withWidth()(DeleteAccountDialog)),
 );
