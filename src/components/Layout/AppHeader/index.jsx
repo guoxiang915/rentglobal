@@ -238,7 +238,6 @@ class AppHeader extends PureComponent {
   render() {
     const {
       sidebarOpened,
-      location,
       language,
       notifications,
       mails,
@@ -247,7 +246,7 @@ class AppHeader extends PureComponent {
       t,
     } = this.props;
     const { isLoggedIn, user, userRole } = this.props.auth;
-    const { locationEl, languageEl, accountInfoEl, dialog } = this.state;
+    const { languageEl, accountInfoEl, dialog } = this.state;
     const role = userRole || user?.role;
 
     // calculate profile completeness
@@ -345,53 +344,6 @@ class AppHeader extends PureComponent {
                       </MenuItem>
                     </Menu>
                   </Column>
-                  <Column>
-                    <Button
-                      aria-controls="location-menu"
-                      aria-haspopup="true"
-                      onClick={this.handleMenu('locationEl')}
-                      color="secondary"
-                      transparent
-                      className={classes.grayButton}
-                    >
-                      <Typography
-                        fontSizeS
-                        fontWeightMedium
-                        alignChildrenCenter
-                      >
-                        {location}
-                        &nbsp;&nbsp;
-                        <ArrowDownIcon className={classes.arrowDownIcon} />
-                      </Typography>
-                    </Button>
-                    <Menu
-                      id="location-menu"
-                      anchorEl={locationEl}
-                      keepMounted
-                      open={Boolean(locationEl)}
-                      onClose={this.handleCloseMenu('locationEl')}
-                      className={classes.headerMenu}
-                    >
-                      <MenuItem onClick={this.handleSelectLocation('Montreal')}>
-                        {t('montreal')}
-                      </MenuItem>
-                      <MenuItem onClick={this.handleSelectLocation('Toronto')}>
-                        {t('toronto')}
-                      </MenuItem>
-                    </Menu>
-                  </Column>
-                  <Column>
-                    <Button
-                      onClick={this.handleHelp}
-                      color="secondary"
-                      transparent
-                      className={classes.grayButton}
-                    >
-                      <Typography fontSizeS fontWeightMedium>
-                        {t('help')}
-                      </Typography>
-                    </Button>
-                  </Column>
                 </Box>
               )}
             </div>
@@ -404,15 +356,6 @@ class AppHeader extends PureComponent {
                 <React.Fragment>
                   {!isWidthDown('sm', width) && (
                     <React.Fragment>
-                      {/* chat with TESSI */}
-                      <Column paddingLeftDouble>
-                        <Typography fontSizeS fontWeightBold>
-                          <Link variant="primary" to="/">
-                            {t('chatWithTessi')}
-                          </Link>
-                        </Typography>
-                      </Column>
-
                       {/* role switcher */}
                       <Column paddingLeftDouble>
                         <Button
@@ -529,20 +472,6 @@ class AppHeader extends PureComponent {
               ) : (
                 !isWidthDown('sm', width) && (
                   <React.Fragment>
-                    <Column>
-                      <Typography fontSizeS>
-                        <Link variant="body2" to="/">
-                          {t('home')}
-                        </Link>
-                      </Typography>
-                    </Column>
-                    <Column paddingLeftDouble>
-                      <Typography fontSizeS fontWeightBold>
-                        <Link variant="primary" to="/">
-                          {t('chatWithTessi')}
-                        </Link>
-                      </Typography>
-                    </Column>
                     <Column paddingLeftDouble>
                       <Typography fontSizeS>
                         <Link variant="body2" to="/auth/login">
