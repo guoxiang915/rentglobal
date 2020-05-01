@@ -455,5 +455,8 @@
     "averageMonthlyPrice": "The average monthly price is ${{price}} CAD",
     "orUseInputRange": "Or use by input the range",
     "min": "Min",
-    "max": "Max"
+    "max": "Max",
+    "moreFilterOptions": "More filter options",
+    "showMoreItems": "Show more items ...",
+    "showLessItems": "Show less items ..."
 }

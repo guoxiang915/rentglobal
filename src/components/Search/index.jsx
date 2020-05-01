@@ -4,7 +4,17 @@ import clsx from 'clsx';
 import PropTypes from 'prop-types';
 import { withTranslation } from 'react-i18next';
 import withWidth, { isWidthDown } from '@material-ui/core/withWidth';
-import { Grid, Popover, Paper, Chip, Slider } from '@material-ui/core';
+import {
+  Grid,
+  Popover,
+  Paper,
+  Chip,
+  Slider,
+  Dialog,
+  DialogTitle,
+  DialogContent,
+  DialogActions,
+} from '@material-ui/core';
 import { KeyboardArrowLeft, KeyboardArrowRight } from '@material-ui/icons';
 import {
   Row,
@@ -17,10 +27,11 @@ import {
   Checkbox,
   NumberField,
   Divider,
-  CloseIcon,
-  SearchIcon,
+  Link,
   GoogleMap,
   GoogleMapMarker,
+  CloseIcon,
+  SearchIcon,
   UncheckIcon,
   CheckIcon,
 } from '../../common/base-components';
@@ -29,6 +40,7 @@ import { officeTypes, contractTypes } from '../../utils/constants';
 import { styleSheet } from './Search';
 import { OfficeItem } from '../../common/base-layouts';
 import { getPublishedOffices } from '../../api/endpoints';
+import ServicesAmenitiesForm from '../Landlord/Office/Forms/ServicesAmenitiesForm';
 
 const Searchbox = ({ classes: s, t, q, onSearch }) => {
   const [query, setQuery] = React.useState(q);
@@ -88,7 +100,7 @@ const OfficeTypeFilterPanel = ({ classes: s, t, types, onApply }) => {
               isChecked={(types && types.indexOf(type) !== -1) || false}
               onChange={() => handleClickType(type)}
               icon={UncheckIcon}
-              checkedIcon={(props) => (
+              checkedIcon={() => (
                 <div className={s.checkIcon}>
                   <CheckIcon style={{ width: 14, height: 10 }} />
                 </div>
@@ -133,7 +145,7 @@ const ContractTypeFilterPanel = ({ classes: s, t, types, onApply }) => {
               isChecked={(types && types.indexOf(type) !== -1) || false}
               onChange={() => handleClickType(type)}
               icon={UncheckIcon}
-              checkedIcon={(props) => (
+              checkedIcon={() => (
                 <div className={s.checkIcon}>
                   <CheckIcon style={{ width: 14, height: 10 }} />
                 </div>
@@ -489,58 +501,58 @@ const PriceFilterPanel = ({ classes: s, t, price: p, onApply }) => {
 const FilterPanel = React.memo(
   ({ classes, t, filter, value, onChangeFilter }) => {
     switch (filter.type) {
-      case 'officeTypes':
-        return (
-          <OfficeTypeFilterPanel
-            classes={classes}
-            t={t}
-            types={value}
-            onApply={onChangeFilter('officeTypes')}
-          />
-        );
+    case 'officeTypes':
+      return (
+        <OfficeTypeFilterPanel
+          classes={classes}
+          t={t}
+          types={value}
+          onApply={onChangeFilter('officeTypes')}
+        />
+      );
 
-      case 'typeOfContracts':
-        return (
-          <ContractTypeFilterPanel
-            classes={classes}
-            t={t}
-            types={value}
-            onApply={onChangeFilter('typeOfContracts')}
-          />
-        );
+    case 'typeOfContracts':
+      return (
+        <ContractTypeFilterPanel
+          classes={classes}
+          t={t}
+          types={value}
+          onApply={onChangeFilter('typeOfContracts')}
+        />
+      );
 
-      case 'rooms':
-        return (
-          <RoomsFilterPanel
-            classes={classes}
-            t={t}
-            rooms={value}
-            onApply={onChangeFilter('rooms')}
-          />
-        );
+    case 'rooms':
+      return (
+        <RoomsFilterPanel
+          classes={classes}
+          t={t}
+          rooms={value}
+          onApply={onChangeFilter('rooms')}
+        />
+      );
 
-      case 'employees':
-        return (
-          <EmployeesFilterPanel
-            classes={classes}
-            t={t}
-            employees={value}
-            onApply={onChangeFilter('employees')}
-          />
-        );
+    case 'employees':
+      return (
+        <EmployeesFilterPanel
+          classes={classes}
+          t={t}
+          employees={value}
+          onApply={onChangeFilter('employees')}
+        />
+      );
 
-      case 'price':
-        return (
-          <PriceFilterPanel
-            classes={classes}
-            t={t}
-            price={value}
-            onApply={onChangeFilter('price')}
-          />
-        );
+    case 'price':
+      return (
+        <PriceFilterPanel
+          classes={classes}
+          t={t}
+          price={value}
+          onApply={onChangeFilter('price')}
+        />
+      );
 
-      default:
-        return null;
+    default:
+      return null;
     }
   }
 );
@@ -604,6 +616,127 @@ const FilterWrapper = React.memo(
   }
 );
 
+const MIN_AREA = 0;
+const MAX_AREA = 1000;
+const MoreFilterDialog = ({
+  classes: s,
+  t,
+  value,
+  onChangeFilter,
+  onClose,
+}) => {
+  const [areaMin, setAreaMin] = React.useState(
+    value?.area?.areaMin || MIN_AREA
+  );
+  const [areaMax, setAreaMax] = React.useState(
+    value?.area?.areaMax || MAX_AREA
+  );
+  const [servicesAndAmenities, setServicesAndAmenities] = React.useState(
+    value?.servicesAndAmenities || []
+  );
+  const [showMore, setShowMore] = React.useState(false);
+  const onAreaSliderChange = React.useCallback((e, val) => {
+    setAreaMin(Number(val[0]));
+    setAreaMax(Number(val[1]));
+  }, []);
+  const changeServicesAndAmenities = (field, value) => {
+    setServicesAndAmenities(value);
+  };
+  const onApply = (value) => {
+    onChangeFilter(value);
+  };
+
+  return (
+    <Dialog open onClose={onClose} classes={{ paper: s.moreFilterDialog }}>
+      <DialogTitle id="help-dialog-title" className={s.header}>
+        <Row fullWidth>
+          <Typography fontSizeM textSecondary fontWeightBold>
+            {t('moreFilterOptions')}
+          </Typography>
+          <Stretch />
+          <Button link="errorRed" background="secondaryLight" onClick={onClose}>
+            <Typography fontSizeS alignChildrenCenter>
+              <CloseIcon style={{ width: 10, height: 10 }} />
+              <Typography paddingLeft>{t('close')}</Typography>
+            </Typography>
+          </Button>
+        </Row>
+      </DialogTitle>
+      <DialogContent style={{ padding: 0 }}>
+        <Grid container direction="column">
+          <Grid container direction="column" className={s.priceFilters}>
+            <Typography fontSizeS textSecondary>
+              {t('area') + ' (m x m)'}
+            </Typography>
+            <AirbnbSlider
+              min={MIN_AREA}
+              max={MAX_AREA}
+              value={[areaMin, areaMax]}
+              onChange={onAreaSliderChange}
+              className={s.priceSlider}
+            />
+          </Grid>
+          <Divider />
+          <Grid container direction="column" className={s.priceFilters}>
+            <Typography fontSizeXS textSecondary>
+              {t('servicesAndAmenities')}
+            </Typography>
+            <Row fullWidth style={{ marginTop: 28 }}>
+              <ServicesAmenitiesForm
+                office={{ servicesAndAmenities }}
+                onChangeField={changeServicesAndAmenities}
+                showMore={showMore}
+              />
+            </Row>
+            <Link
+              to="#"
+              onClick={() => setShowMore(!showMore)}
+              variant="normalLight"
+              style={{ marginTop: 28 }}
+            >
+              <Typography fontSizeS>
+                {showMore ? t('showLessItems') : t('showMoreItems')}
+              </Typography>
+            </Link>
+          </Grid>
+        </Grid>
+      </DialogContent>
+      <DialogActions style={{ padding: 0 }}>
+        <Grid
+          container
+          direction="row"
+          justify="space-between"
+          alignItems="center"
+          className={s.filterPanel}
+        >
+          <Button
+            link="errorRed"
+            background="secondaryLight"
+            onClick={() => onApply({ area: null, servicesAndAmenities: null })}
+          >
+            <Typography fontSizeS alignChildrenCenter>
+              <CloseIcon style={{ width: 10, height: 10 }} />
+              <Typography paddingLeft>{t('clear')}</Typography>
+            </Typography>
+          </Button>
+          <Button
+            variant="primary"
+            onClick={() =>
+              onApply({ area: { areaMin, areaMax }, servicesAndAmenities })
+            }
+            className={s.applyButton}
+          >
+            <Typography fontSizeS alignChildrenCenter>
+              <CheckIcon style={{ width: 16, height: 12 }} />
+              <Typography paddingLeft>{t('apply')}</Typography>
+            </Typography>
+          </Button>
+        </Grid>
+      </DialogActions>
+    </Dialog>
+  );
+};
+
 /** Get filter chips */
 const FilterChip = React.memo(({ classes: s, t, filter, value, onChange }) => {
   const handleRemoveFilter = React.useCallback(
@@ -614,6 +747,16 @@ const FilterChip = React.memo(({ classes: s, t, filter, value, onChange }) => {
       ) {
         value.splice(params.index, 1);
         onChange(value);
+      } else if (filter === 'servicesAndAmenities') {
+        const category = params.category;
+        const index = params.index;
+        if (value[category] && value[category].length) {
+          value[category].splice(index, 1);
+          if (!value[category].length) {
+            delete value[category];
+          }
+          onChange(value);
+        }
       } else {
         onChange();
       }
@@ -622,71 +765,105 @@ const FilterChip = React.memo(({ classes: s, t, filter, value, onChange }) => {
   );
 
   switch (filter) {
-    case 'officeTypes':
-      return (
-        <>
-          {value.map((v, index) => (
-            <Chip
-              key={filter + index}
-              label={t(v)}
-              onDelete={() => handleRemoveFilter({ filter, index })}
-              className={s.filterValue}
-              color="primary"
-            />
-          ))}
-        </>
-      );
+  case 'officeTypes':
+    return (
+      <React.Fragment>
+        {value.map((v, index) => (
+          <Chip
+            key={filter + index}
+            label={t(v)}
+            onDelete={() => handleRemoveFilter({ filter, index })}
+            className={s.filterValue}
+            color="primary"
+          />
+        ))}
+      </React.Fragment>
+    );
 
-    case 'typeOfContracts':
-      return (
-        <>
-          {value.map((v, index) => (
-            <Chip
-              key={filter + index}
-              label={t(v)}
-              onDelete={() => handleRemoveFilter({ filter, index })}
-              className={s.filterValue}
-              color="primary"
-            />
-          ))}
-        </>
-      );
+  case 'typeOfContracts':
+    return (
+      <React.Fragment>
+        {value.map((v, index) => (
+          <Chip
+            key={filter + index}
+            label={t(v)}
+            onDelete={() => handleRemoveFilter({ filter, index })}
+            className={s.filterValue}
+            color="primary"
+          />
+        ))}
+      </React.Fragment>
+    );
 
-    case 'rooms':
-      return (
-        <Chip
-          key={filter}
-          label={t('roomsWithNumber', { count: value })}
-          onDelete={() => handleRemoveFilter({ filter })}
-          className={s.filterValue}
-          color="primary"
-        />
-      );
+  case 'rooms':
+    return (
+      <Chip
+        key={filter}
+        label={t('roomsWithNumber', { count: value })}
+        onDelete={() => handleRemoveFilter({ filter })}
+        className={s.filterValue}
+        color="primary"
+      />
+    );
 
-    case 'employees':
-      return (
-        <Chip
-          key={filter}
-          label={t('employeesWithNumber', { count: value })}
-          onDelete={() => handleRemoveFilter({ filter })}
-          className={s.filterValue}
-          color="primary"
-        />
-      );
+  case 'employees':
+    return (
+      <Chip
+        key={filter}
+        label={t('employeesWithNumber', { count: value })}
+        onDelete={() => handleRemoveFilter({ filter })}
+        className={s.filterValue}
+        color="primary"
+      />
+    );
 
-    case 'price':
-      return (
-        <Chip
-          key={filter}
-          label={[value?.priceMin || '', value?.priceMax || ''].join(' - ')}
-          onDelete={() => handleRemoveFilter({ filter })}
-          className={s.filterValue}
-          color="primary"
-        />
-      );
+  case 'price':
+    return (
+      <Chip
+        key={filter}
+        label={[value?.priceMin || '', value?.priceMax || ''].join(' - ')}
+        onDelete={() => handleRemoveFilter({ filter })}
+        className={s.filterValue}
+        color="primary"
+      />
+    );
 
-    default:
-      return null;
+  case 'area':
+    return (
+      <Chip
+        key={filter}
+        label={[value?.areaMin || '', value?.areaMax || ''].join(' - ')}
+        onDelete={() => handleRemoveFilter({ filter })}
+        className={s.filterValue}
+        color="primary"
+      />
+    );
+
+  case 'servicesAndAmenities':
+    return (
+      <React.Fragment>
+        {Object.entries(value).map(([category, options]) => (
+          <React.Fragment key={category}>
+            {options && options.length
+              ? options.map((opt, index) => (
+                <Chip
+                  key={index}
+                  label={t(opt)}
+                  onDelete={() =>
+                    handleRemoveFilter({ filter, category, index })
+                  }
+                  className={s.filterValue}
+                  color="primary"
+                />
+              ))
+              : null}
+          </React.Fragment>
+        ))}
+      </React.Fragment>
+    );
+
+  default:
+    return null;
   }
 });
 
@@ -700,6 +877,7 @@ class Search extends PureComponent {
     searchByMap: false,
     q: '',
     filters: {},
+    dialog: null,
     offices: [],
     loading: false,
   };
@@ -729,10 +907,6 @@ class Search extends PureComponent {
       type: 'typeOfContracts',
       title: 'howLong',
     },
-    {
-      type: 'moreFilter',
-      title: 'moreFilter',
-    },
   ];
 
   /** Search office by text, filters, map... */
@@ -746,6 +920,18 @@ class Search extends PureComponent {
         if (value?.priceMax) {
           params['priceMax'] = value.priceMax;
         }
+      } else if (filter === 'area') {
+        if (value?.areaMin) {
+          params['areaMin'] = value.areaMin;
+        }
+        if (value?.areaMax) {
+          params['areaMax'] = value.areaMax;
+        }
+      } else if (filter === 'servicesAndAmenities') {
+        params[filter] = [];
+        Object.values(value).forEach((category) => {
+          params[filter].push(...(category || []));
+        });
       } else {
         params[filter] = value;
       }
@@ -788,9 +974,30 @@ class Search extends PureComponent {
   };
 
   /** Search offices by map */
-  handleSearchByMap = (e) => {
+  handleSearchByMap = () => {
     const searchByMap = !this.state.searchByMap;
     this.setState({ searchByMap }, this.searchOffices);
+  };
+
+  /** Open more filter dialog */
+  handleMoreFilter = () => {
+    this.setState({
+      dialog: (
+        <MoreFilterDialog
+          classes={this.props.classes}
+          t={this.props.t}
+          value={this.state.filters}
+          onChangeFilter={(value) => {
+            this.handleChangeFilters(value);
+            this.handleCloseDialog();
+          }}
+          onClose={this.handleCloseDialog}
+        />
+      ),
+    });
+  };
+  handleCloseDialog = () => {
+    this.setState({ dialog: null });
   };
 
   /** Change filter event handler */
@@ -804,8 +1011,18 @@ class Search extends PureComponent {
       if (value?.priceMin === MIN_PRICE) value.priceMin = null;
       if (value?.priceMax === MAX_PRICE) value.priceMax = null;
       if (!value?.priceMin && !value?.priceMax) delete filters[filter];
+    } else if (filter === 'area') {
+      if (value?.areaMin === MIN_AREA) value.areaMin = null;
+      if (value?.areaMax === MAX_AREA) value.areaMax = null;
+      if (!value?.areaMin && !value?.areaMax) delete filters[filter];
     }
     this.setState({ filters }, this.searchOffices);
+  };
+
+  handleChangeFilters = (filters) => {
+    Object.entries(filters).forEach(([filter, value]) => {
+      this.handleChangeFilter(filter, value);
+    });
   };
 
   /** Remove filter */
@@ -828,7 +1045,7 @@ class Search extends PureComponent {
   /** Render component */
   render() {
     const { width, classes: s, t } = this.props;
-    const { searchByMap, filters, q, offices } = this.state;
+    const { searchByMap, filters, q, offices, dialog } = this.state;
 
     const filteredOffices = offices?.filter(
       (office) => office.location?.coordinates
@@ -872,6 +1089,16 @@ class Search extends PureComponent {
                 />
               </React.Fragment>
             ))}
+            <div className={s.filterWrapper}>
+              <Button
+                onClick={this.handleMoreFilter}
+                classes={{ root: s.filterButton }}
+                rounded
+              >
+                {t('moreFilter')}
+              </Button>
+              {dialog}
+            </div>
           </Row>
 
           {filters && Object.values(filters).map((f) => !!f).length ? (
@@ -928,8 +1155,8 @@ class Search extends PureComponent {
                 coordinates={
                   filteredOffices?.length
                     ? filteredOffices.map(
-                        (office) => office.location.coordinates
-                      )
+                      (office) => office.location.coordinates
+                    )
                     : []
                 }
                 center={
@@ -939,14 +1166,14 @@ class Search extends PureComponent {
                 markers={
                   filteredOffices?.length
                     ? filteredOffices.map((office, index) => (
-                        <GoogleMapMarker
-                          key={index}
-                          lat={office.location.coordinates.lat}
-                          lng={office.location.coordinates.lng}
-                          badge={office.leasedBy?.overduePayment}
-                          onClick={this.handleNavigateOfficeDetail(office)}
-                        />
-                      ))
+                      <GoogleMapMarker
+                        key={index}
+                        lat={office.location.coordinates.lat}
+                        lng={office.location.coordinates.lng}
+                        badge={office.leasedBy?.overduePayment}
+                        onClick={this.handleNavigateOfficeDetail(office)}
+                      />
+                    ))
                     : []
                 }
               />

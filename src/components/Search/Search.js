@@ -189,12 +189,19 @@ export const styleSheet = (theme) => ({
   },
 
   priceFilters: {
-    padding: 24,
+    padding: '28px 24px',
   },
 
   priceInputWrapper: {
     marginTop: 20,
     marginBottom: 20,
+  },
+
+  moreFilterDialog: {
+    width: 590,
+    [theme.breakpoints.down('xs')]: {
+      width: '100%',
+    },
   },
 
   applyButton: {

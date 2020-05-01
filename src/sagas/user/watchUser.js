@@ -93,7 +93,7 @@ function* setUserRole(action) {
   yield call(flushMessage);
 }
 
-function* deleteAvatar(action) {
+function* deleteAvatar() {
   try {
     const response = yield call(callApi, deleteUserAvatar, {});
     if (response.status === 200) {
