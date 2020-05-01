@@ -15,6 +15,7 @@ const styleSheet = (theme) => {
       padding: '7px 27px',
       textTransform: 'none',
       color: 'white',
+      whiteSpace: 'nowrap',
       '&:hover': {
         color: 'white',
         background: `${theme.colors.primary.darkColor}`,
@@ -71,13 +72,13 @@ const styleSheet = (theme) => {
   };
 
   Object.entries(theme.links).forEach(
-    ([key, val]) => (styles[`link${key}`] = val),
+    ([key, val]) => (styles[`link${key}`] = val)
   );
   Object.entries(theme.linksBackground).forEach(
-    ([key, val]) => (styles[`bk${key}`] = val),
+    ([key, val]) => (styles[`bk${key}`] = val)
   );
   Object.entries(theme.linksOutline).forEach(
-    ([key, val]) => (styles[`bd${key}`] = val),
+    ([key, val]) => (styles[`bd${key}`] = val)
   );
 
   return styles;
@@ -100,7 +101,7 @@ const Button = forwardRef(
       styles,
       ...props
     },
-    ref,
+    ref
   ) => (
     <MUIButton
       classes={{
@@ -114,7 +115,7 @@ const Button = forwardRef(
           outline && classes[`bd${outline}`],
           transparent && classes.transparent,
           shadow && classes.shadowButton,
-          styles,
+          styles
         ),
       }}
       ref={ref}
@@ -127,7 +128,7 @@ const Button = forwardRef(
       )}
       {children}
     </MUIButton>
-  ),
+  )
 );
 
 Button.propTypes = {
