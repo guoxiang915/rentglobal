@@ -100,7 +100,7 @@ const OfficeTypeFilterPanel = ({ classes: s, t, types, onApply }) => {
               isChecked={(types && types.indexOf(type) !== -1) || false}
               onChange={() => handleClickType(type)}
               icon={UncheckIcon}
-              checkedIcon={(props) => (
+              checkedIcon={() => (
                 <div className={s.checkIcon}>
                   <CheckIcon style={{ width: 14, height: 10 }} />
                 </div>
@@ -145,7 +145,7 @@ const ContractTypeFilterPanel = ({ classes: s, t, types, onApply }) => {
               isChecked={(types && types.indexOf(type) !== -1) || false}
               onChange={() => handleClickType(type)}
               icon={UncheckIcon}
-              checkedIcon={(props) => (
+              checkedIcon={() => (
                 <div className={s.checkIcon}>
                   <CheckIcon style={{ width: 14, height: 10 }} />
                 </div>
@@ -501,58 +501,58 @@ const PriceFilterPanel = ({ classes: s, t, price: p, onApply }) => {
 const FilterPanel = React.memo(
   ({ classes, t, filter, value, onChangeFilter }) => {
     switch (filter.type) {
-      case 'officeTypes':
-        return (
-          <OfficeTypeFilterPanel
-            classes={classes}
-            t={t}
-            types={value}
-            onApply={onChangeFilter('officeTypes')}
-          />
-        );
+    case 'officeTypes':
+      return (
+        <OfficeTypeFilterPanel
+          classes={classes}
+          t={t}
+          types={value}
+          onApply={onChangeFilter('officeTypes')}
+        />
+      );
 
-      case 'typeOfContracts':
-        return (
-          <ContractTypeFilterPanel
-            classes={classes}
-            t={t}
-            types={value}
-            onApply={onChangeFilter('typeOfContracts')}
-          />
-        );
+    case 'typeOfContracts':
+      return (
+        <ContractTypeFilterPanel
+          classes={classes}
+          t={t}
+          types={value}
+          onApply={onChangeFilter('typeOfContracts')}
+        />
+      );
 
-      case 'rooms':
-        return (
-          <RoomsFilterPanel
-            classes={classes}
-            t={t}
-            rooms={value}
-            onApply={onChangeFilter('rooms')}
-          />
-        );
+    case 'rooms':
+      return (
+        <RoomsFilterPanel
+          classes={classes}
+          t={t}
+          rooms={value}
+          onApply={onChangeFilter('rooms')}
+        />
+      );
 
-      case 'employees':
-        return (
-          <EmployeesFilterPanel
-            classes={classes}
-            t={t}
-            employees={value}
-            onApply={onChangeFilter('employees')}
-          />
-        );
+    case 'employees':
+      return (
+        <EmployeesFilterPanel
+          classes={classes}
+          t={t}
+          employees={value}
+          onApply={onChangeFilter('employees')}
+        />
+      );
 
-      case 'price':
-        return (
-          <PriceFilterPanel
-            classes={classes}
-            t={t}
-            price={value}
-            onApply={onChangeFilter('price')}
-          />
-        );
+    case 'price':
+      return (
+        <PriceFilterPanel
+          classes={classes}
+          t={t}
+          price={value}
+          onApply={onChangeFilter('price')}
+        />
+      );
 
-      default:
-        return null;
+    default:
+      return null;
     }
   }
 );
@@ -765,105 +765,105 @@ const FilterChip = React.memo(({ classes: s, t, filter, value, onChange }) => {
   );
 
   switch (filter) {
-    case 'officeTypes':
-      return (
-        <>
-          {value.map((v, index) => (
-            <Chip
-              key={filter + index}
-              label={t(v)}
-              onDelete={() => handleRemoveFilter({ filter, index })}
-              className={s.filterValue}
-              color="primary"
-            />
-          ))}
-        </>
-      );
+  case 'officeTypes':
+    return (
+      <React.Fragment>
+        {value.map((v, index) => (
+          <Chip
+            key={filter + index}
+            label={t(v)}
+            onDelete={() => handleRemoveFilter({ filter, index })}
+            className={s.filterValue}
+            color="primary"
+          />
+        ))}
+      </React.Fragment>
+    );
 
-    case 'typeOfContracts':
-      return (
-        <>
-          {value.map((v, index) => (
-            <Chip
-              key={filter + index}
-              label={t(v)}
-              onDelete={() => handleRemoveFilter({ filter, index })}
-              className={s.filterValue}
-              color="primary"
-            />
-          ))}
-        </>
-      );
+  case 'typeOfContracts':
+    return (
+      <React.Fragment>
+        {value.map((v, index) => (
+          <Chip
+            key={filter + index}
+            label={t(v)}
+            onDelete={() => handleRemoveFilter({ filter, index })}
+            className={s.filterValue}
+            color="primary"
+          />
+        ))}
+      </React.Fragment>
+    );
 
-    case 'rooms':
-      return (
-        <Chip
-          key={filter}
-          label={t('roomsWithNumber', { count: value })}
-          onDelete={() => handleRemoveFilter({ filter })}
-          className={s.filterValue}
-          color="primary"
-        />
-      );
+  case 'rooms':
+    return (
+      <Chip
+        key={filter}
+        label={t('roomsWithNumber', { count: value })}
+        onDelete={() => handleRemoveFilter({ filter })}
+        className={s.filterValue}
+        color="primary"
+      />
+    );
 
-    case 'employees':
-      return (
-        <Chip
-          key={filter}
-          label={t('employeesWithNumber', { count: value })}
-          onDelete={() => handleRemoveFilter({ filter })}
-          className={s.filterValue}
-          color="primary"
-        />
-      );
+  case 'employees':
+    return (
+      <Chip
+        key={filter}
+        label={t('employeesWithNumber', { count: value })}
+        onDelete={() => handleRemoveFilter({ filter })}
+        className={s.filterValue}
+        color="primary"
+      />
+    );
 
-    case 'price':
-      return (
-        <Chip
-          key={filter}
-          label={[value?.priceMin || '', value?.priceMax || ''].join(' - ')}
-          onDelete={() => handleRemoveFilter({ filter })}
-          className={s.filterValue}
-          color="primary"
-        />
-      );
+  case 'price':
+    return (
+      <Chip
+        key={filter}
+        label={[value?.priceMin || '', value?.priceMax || ''].join(' - ')}
+        onDelete={() => handleRemoveFilter({ filter })}
+        className={s.filterValue}
+        color="primary"
+      />
+    );
 
-    case 'area':
-      return (
-        <Chip
-          key={filter}
-          label={[value?.areaMin || '', value?.areaMax || ''].join(' - ')}
-          onDelete={() => handleRemoveFilter({ filter })}
-          className={s.filterValue}
-          color="primary"
-        />
-      );
+  case 'area':
+    return (
+      <Chip
+        key={filter}
+        label={[value?.areaMin || '', value?.areaMax || ''].join(' - ')}
+        onDelete={() => handleRemoveFilter({ filter })}
+        className={s.filterValue}
+        color="primary"
+      />
+    );
 
-    case 'servicesAndAmenities':
-      return (
-        <>
-          {Object.entries(value).map(([category, options]) => (
-            <React.Fragment key={category}>
-              {options && options.length
-                ? options.map((opt, index) => (
-                    <Chip
-                      key={index}
-                      label={t(opt)}
-                      onDelete={() =>
-                        handleRemoveFilter({ filter, category, index })
-                      }
-                      className={s.filterValue}
-                      color="primary"
-                    />
-                  ))
-                : null}
-            </React.Fragment>
-          ))}
-        </>
-      );
+  case 'servicesAndAmenities':
+    return (
+      <React.Fragment>
+        {Object.entries(value).map(([category, options]) => (
+          <React.Fragment key={category}>
+            {options && options.length
+              ? options.map((opt, index) => (
+                <Chip
+                  key={index}
+                  label={t(opt)}
+                  onDelete={() =>
+                    handleRemoveFilter({ filter, category, index })
+                  }
+                  className={s.filterValue}
+                  color="primary"
+                />
+              ))
+              : null}
+          </React.Fragment>
+        ))}
+      </React.Fragment>
+    );
 
-    default:
-      return null;
+  default:
+    return null;
   }
 });
 
@@ -974,7 +974,7 @@ class Search extends PureComponent {
   };
 
   /** Search offices by map */
-  handleSearchByMap = (e) => {
+  handleSearchByMap = () => {
     const searchByMap = !this.state.searchByMap;
     this.setState({ searchByMap }, this.searchOffices);
   };
@@ -1155,8 +1155,8 @@ class Search extends PureComponent {
                 coordinates={
                   filteredOffices?.length
                     ? filteredOffices.map(
-                        (office) => office.location.coordinates
-                      )
+                      (office) => office.location.coordinates
+                    )
                     : []
                 }
                 center={
@@ -1166,14 +1166,14 @@ class Search extends PureComponent {
                 markers={
                   filteredOffices?.length
                     ? filteredOffices.map((office, index) => (
-                        <GoogleMapMarker
-                          key={index}
-                          lat={office.location.coordinates.lat}
-                          lng={office.location.coordinates.lng}
-                          badge={office.leasedBy?.overduePayment}
-                          onClick={this.handleNavigateOfficeDetail(office)}
-                        />
-                      ))
+                      <GoogleMapMarker
+                        key={index}
+                        lat={office.location.coordinates.lat}
+                        lng={office.location.coordinates.lng}
+                        badge={office.leasedBy?.overduePayment}
+                        onClick={this.handleNavigateOfficeDetail(office)}
+                      />
+                    ))
                     : []
                 }
               />

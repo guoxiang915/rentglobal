@@ -166,7 +166,7 @@ class ServicesAmenitiesForm extends PureComponent {
         )}
 
         {showMore !== false && (
-          <>
+          <React.Fragment>
             <Row paddingTop />
             <Divider />
 
@@ -207,7 +207,7 @@ class ServicesAmenitiesForm extends PureComponent {
                 </Grid>
               </Grid>
             </Row>
-          </>
+          </React.Fragment>
         )}
       </Column>
     );
