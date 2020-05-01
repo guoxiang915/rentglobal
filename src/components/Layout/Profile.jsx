@@ -1308,36 +1308,6 @@ class Profile extends PureComponent {
             </Row>
           </TabWrapper>
         </Row>
-
-        {/* payments and payouts tab */}
-        <Row fullWidth classes={{ box: s.profileTabWrapper }}>
-          <TabWrapper
-            title={t('paymentsAndPayouts')}
-            open={openedTab === 'paymentsAndPayouts'}
-            onToggleOpen={this.handleToggleOpen('paymentsAndPayouts')}
-            isEdit={
-              editTab === 'paymentsAndPayouts'
-              || updatingTab === 'paymentsAndPayouts'
-            }
-            isEditable={editTab === null}
-            onToggleEdit={this.handleToggleEdit('paymentsAndPayouts')}
-          />
-        </Row>
-
-        {/* privacy & sharing tab */}
-        <Row fullWidth classes={{ box: s.profileTabWrapper }}>
-          <TabWrapper
-            title={t('privacyAndSharing')}
-            open={openedTab === 'privacyAndSharing'}
-            onToggleOpen={this.handleToggleOpen('privacyAndSharing')}
-            isEdit={
-              editTab === 'privacyAndSharing'
-              || updatingTab === 'privacyAndSharing'
-            }
-            isEditable={editTab === null}
-            onToggleEdit={this.handleToggleEdit('privacyAndSharing')}
-          />
-        </Row>
         <Row classes={{ box: s.profileTabWrapper }}>
           <Button
             link="errorRedNormal"
