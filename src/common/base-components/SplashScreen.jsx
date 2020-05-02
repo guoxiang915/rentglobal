@@ -14,9 +14,9 @@ const styleSheet = (theme) => ({
 
 const SplashScreen = () => {
   return (
-    <div class="load-wrapper">
-      <img class="loader-image" src="/SplashScreen.png" alt={"RENTGLOBAL"}/>
-      <div class="app-version">Version 1.0</div>
+    <div className="load-wrapper">
+      <img className="loader-image" src="/SplashScreen.png" alt={"RENTGLOBAL"}/>
+      <div className="app-version">Version 1.0</div>
     </div>
   );
 };
