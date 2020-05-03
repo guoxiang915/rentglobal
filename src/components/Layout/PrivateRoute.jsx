@@ -9,7 +9,7 @@ import Auth from '../../utils/auth';
 import {
   AppHeader, AppFooter, AppSidebar, HelpDialog,
 } from '.';
-import { Column, Spinner } from '../../common/base-components';
+import { Column, SplashScreen } from '../../common/base-components';
 import { WelcomeRoleDialog, LandlordDialog } from './Dialogs';
 import SendVerificationForm from '../Auth/SendVerificationForm';
 import { Storage } from '../../utils/storage';
@@ -298,7 +298,7 @@ class PrivateRoute extends React.Component {
     }
 
     if (!loaded) {
-      return <Spinner />;
+      return <SplashScreen />;
     }
 
     const { sidebarOpened } = this.state;
