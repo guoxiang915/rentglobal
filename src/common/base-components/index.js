@@ -7,6 +7,7 @@ export * from './Tooltip';
 export * from './Select';
 export * from './ConfirmDialog';
 export * from './VideoPlayer';
+export * from './CarouselWrapper';
 export { default as Button } from './Button';
 export { default as IconButton } from './IconButton';
 export { default as Link } from './Link';

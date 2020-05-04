@@ -15,6 +15,8 @@ const styleSheet = (theme) => {
       padding: '7px 27px',
       textTransform: 'none',
       color: 'white',
+      alignItems: 'center',
+      justifyContent: 'center',
       whiteSpace: 'nowrap',
       '&:hover': {
         color: 'white',

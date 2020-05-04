@@ -214,7 +214,7 @@ const CoverPhotos = React.memo(({ classes: s, coverPhotos, width }) => {
     <React.Fragment>
       {isWidthDown('xs', width) ? (
         <div className={s.imageWrapper}>
-          <Carousel keepDirectionWhenDragging itemWidth={285} offset={20}>
+          <Carousel keepDirectionWhenDragging itemWidth={285} offset={0}>
             {coverPhotos
               && coverPhotos.map((photo, index) => (
                 <div className={s.coverPhotoWrapper} key={index}>

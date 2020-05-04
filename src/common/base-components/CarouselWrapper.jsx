@@ -1,7 +1,7 @@
 import React from 'react';
 import Carousel from '@brainhubeu/react-carousel';
 
-export const withCarousel = ({
+export const CarouselWrapper = ({
   children, itemWidth, itemOffset, ...props
 }) => {
   return (

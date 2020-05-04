@@ -32,6 +32,7 @@ import {
   PrivateOfficeIcon,
   AssignedOfficeIcon,
   UnassignedOfficeIcon,
+  CarouselWrapper,
 } from '../../common/base-components';
 import { formatDate, getWeekday } from '../../utils/formatters';
 import { getProfileStatus } from '../../utils/validators';
@@ -40,7 +41,6 @@ import {
   StatisticIconBox,
   OfficeDetailItem,
 } from '../../common/base-layouts';
-import { withCarousel as CarouselWrapper } from '../../common/base-services';
 import { ConditionalWrapper } from '../../utils/helpers';
 
 const styleSheet = (theme) => ({
@@ -691,7 +691,7 @@ class Dashboard extends PureComponent {
                 title={t('stat')}
                 bodyClass={s.tabWrapper}
               >
-                <CarouselWrapper itemWidth={200} itemOffset={10}>
+                <CarouselWrapper itemWidth={200} itemOffset={0}>
                   {children}
                 </CarouselWrapper>
               </TabWrapper>

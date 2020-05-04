@@ -437,7 +437,7 @@ class OfficeDetail extends PureComponent {
                 <div style={{ width: '100%', height: '100%' }}>
                   <Carousel
                     itemWidth={255}
-                    offset={20}
+                    offset={0}
                     keepDirectionWhenDragging
                   >
                     {similarOffices.map((office, index) => (
