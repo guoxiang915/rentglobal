@@ -71,30 +71,31 @@ export const styleSheet = (theme) => ({
 
   filtersWrapper: {
     paddingTop: 12,
-    paddingBottom: 12,
+    paddingBottom: 4,
     background: theme.colors.primary.white,
     borderBottom: `1px solid ${theme.colors.primary.borderGrey}`,
-    overflowX: 'auto',
+    // overflowX: 'auto',
   },
 
   filterWrapper: {
     marginRight: 10,
+    marginBottom: 6,
   },
 
   filterPaneWrapper: {
     background: 'transparent',
     boxShadow: 'none',
     overflow: 'visible',
+    [theme.breakpoints.down('xs')]: {
+      width: '100%',
+    },
   },
 
   filterContentWrapper: {
     position: 'relative',
     top: 15,
-    boxShadow: '0px 2px 4px #00000014',
+    boxShadow: '0px 2px 24px #0000001A',
     border: `1px solid ${theme.colors.primary.borderGrey}`,
-    [theme.breakpoints.down('sm')]: {
-      left: -29,
-    },
     '&::before': {
       position: 'absolute',
       top: -8,
@@ -148,16 +149,66 @@ export const styleSheet = (theme) => ({
   },
 
   filterValuesWrapper: {
-    marginTop: 14,
+    marginTop: 8,
+    width: '100%',
   },
 
   filterValue: {
     marginRight: 10,
+    marginBottom: 6,
     color: theme.colors.primary.white,
   },
 
   checkbox: {
     borderColor: theme.colors.primary.borderGrey,
+  },
+
+  numberFilterPanel: {
+    width: 400,
+    [theme.breakpoints.down('xs')]: {
+      width: '100%',
+    },
+  },
+
+  numberField: {
+    width: 175,
+  },
+
+  priceSlider: {
+    width: 'calc(100% - 32px)',
+    marginTop: 50,
+    marginLeft: 16,
+    marginRight: 16,
+  },
+
+  priceFilterPanel: {
+    width: 532,
+    [theme.breakpoints.down('xs')]: {
+      width: '100%',
+    },
+  },
+
+  priceFilters: {
+    padding: '28px 24px',
+  },
+
+  priceInputWrapper: {
+    marginTop: 20,
+    marginBottom: 20,
+  },
+
+  moreFilterDialog: {
+    width: 590,
+    [theme.breakpoints.down('xs')]: {
+      width: '100%',
+    },
+  },
+
+  applyButton: {
+    width: 175,
+    [theme.breakpoints.down('xs')]: {
+      width: 'auto',
+    },
   },
 
   valuesWrapper: {

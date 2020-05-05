@@ -213,7 +213,10 @@ class Home extends PureComponent {
     if (/hi/i.test(tessiQuery)) {
       // TODO: goto chat page
     } else if (tessiQuery) {
-      this.props.history.push('/search');
+      this.props.history.push({
+        pathname: '/search',
+        state: { query: tessiQuery },
+      });
     }
   };
 
@@ -849,7 +852,7 @@ class Home extends PureComponent {
               fullWidth
             >
               <div style={{ width: '100%', height: '100%' }}>
-                <Carousel itemWidth={255} offset={20} keepDirectionWhenDragging>
+                <Carousel itemWidth={255} offset={0} keepDirectionWhenDragging>
                   {recommendedOffices.map((office, index) => (
                     <div
                       style={{

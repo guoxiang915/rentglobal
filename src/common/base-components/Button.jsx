@@ -4,7 +4,6 @@ import {
   Button as MUIButton,
   CircularProgress,
   withStyles,
-  withTheme,
 } from '@material-ui/core';
 import clsx from 'clsx';
 import { Box } from '.';
@@ -16,6 +15,9 @@ const styleSheet = (theme) => {
       padding: '7px 27px',
       textTransform: 'none',
       color: 'white',
+      alignItems: 'center',
+      justifyContent: 'center',
+      whiteSpace: 'nowrap',
       '&:hover': {
         color: 'white',
         background: `${theme.colors.primary.darkColor}`,
@@ -72,13 +74,13 @@ const styleSheet = (theme) => {
   };
 
   Object.entries(theme.links).forEach(
-    ([key, val]) => (styles[`link${key}`] = val),
+    ([key, val]) => (styles[`link${key}`] = val)
   );
   Object.entries(theme.linksBackground).forEach(
-    ([key, val]) => (styles[`bk${key}`] = val),
+    ([key, val]) => (styles[`bk${key}`] = val)
   );
   Object.entries(theme.linksOutline).forEach(
-    ([key, val]) => (styles[`bd${key}`] = val),
+    ([key, val]) => (styles[`bd${key}`] = val)
   );
 
   return styles;
@@ -101,7 +103,7 @@ const Button = forwardRef(
       styles,
       ...props
     },
-    ref,
+    ref
   ) => (
     <MUIButton
       classes={{
@@ -115,7 +117,7 @@ const Button = forwardRef(
           outline && classes[`bd${outline}`],
           transparent && classes.transparent,
           shadow && classes.shadowButton,
-          styles,
+          styles
         ),
       }}
       ref={ref}
@@ -128,13 +130,12 @@ const Button = forwardRef(
       )}
       {children}
     </MUIButton>
-  ),
+  )
 );
 
 Button.propTypes = {
   classes: PropTypes.object.isRequired,
   rounded: PropTypes.bool,
-  theme: PropTypes.object,
   variant: PropTypes.string,
   link: PropTypes.string,
   background: PropTypes.string,
@@ -143,4 +144,4 @@ Button.propTypes = {
   styles: PropTypes.object,
 };
 
-export default withStyles(styleSheet, { name: 'Button' })(withTheme(Button));
+export default withStyles(styleSheet, { name: 'Button' })(Button);

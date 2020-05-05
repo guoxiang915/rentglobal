@@ -214,7 +214,7 @@ const CoverPhotos = React.memo(({ classes: s, coverPhotos, width }) => {
     <React.Fragment>
       {isWidthDown('xs', width) ? (
         <div className={s.imageWrapper}>
-          <Carousel keepDirectionWhenDragging itemWidth={285} offset={20}>
+          <Carousel keepDirectionWhenDragging itemWidth={285} offset={0}>
             {coverPhotos
               && coverPhotos.map((photo, index) => (
                 <div className={s.coverPhotoWrapper} key={index}>
@@ -307,15 +307,20 @@ class OfficeDetailForm extends PureComponent {
     t: PropTypes.func,
   };
 
-  state = { dialog: null };
+  state = { dialog: null, office: this.props.office };
 
   /** Favorite office */
   handleSetFavorite = () => {
     if (this.props.passLoginDialog()) {
       favoriteOffice(this.props.office._id).then((response) => {
         if (response.status === 200) {
-          this.props.office.favorite = response.data.favorite;
-          this.setState({});
+          const { office } = this.state;
+          this.setState({
+            office: {
+              ...office,
+              favorite: response.data.favorite
+            }
+          });
         }
       });
     }
@@ -362,6 +367,7 @@ class OfficeDetailForm extends PureComponent {
         dialog: (
           <LocationDialog
             location={this.props.office.location}
+            description={this.props.office.description}
             onClose={this.handleCloseDialog}
           />
         ),
@@ -374,14 +380,20 @@ class OfficeDetailForm extends PureComponent {
     this.setState({ dialog: null });
   };
 
+  componentDidUpdate(prevProps) {
+    if (JSON.stringify(prevProps.office) !== JSON.stringify(this.props.office)) {
+      this.setState({ office: this.props.office });
+    }
+  }
+
   /**
    * Renderer function
    */
   render() {
     const {
-      office, classes: s, t, width,
+      classes: s, t, width,
     } = this.props;
-    const { dialog } = this.state;
+    const { dialog, office } = this.state;
 
     return (
       <Column classes={{ box: s.root }} fullWidth alignChildrenStart>
@@ -662,15 +674,15 @@ class OfficeDetailForm extends PureComponent {
                   {t('typeOfContract')}
                 </Column>
                 <Column classes={{ box: s.infoValue }}>
-                  {office.contractType}
+                  {t(office.typeOfContract)}
                 </Column>
               </Row>
               <Row classes={{ box: s.infoRow }}>
                 <Column classes={{ box: s.infoLabel }}>
-                  {t('guaranteesOrSecurityDeposit')}
+                  {t('guaranteesAndSecurityDeposit')}
                 </Column>
                 <Column classes={{ box: s.infoValue }}>
-                  {office.guarantees}
+                  {t(office.guaranteesAndSecurityDeposit)}
                 </Column>
               </Row>
               <Row classes={{ box: s.infoRow }}>
@@ -678,7 +690,7 @@ class OfficeDetailForm extends PureComponent {
                   {t('checkOutNotice')}
                 </Column>
                 <Column classes={{ box: s.infoValue }}>
-                  {office.checkOutNotice}
+                  {t(office.checkOutNotice)}
                 </Column>
               </Row>
             </TabWrapper>

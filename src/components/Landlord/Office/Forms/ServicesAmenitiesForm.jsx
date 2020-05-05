@@ -59,6 +59,7 @@ class ServicesAmenitiesForm extends PureComponent {
   static propTypes = {
     classes: PropTypes.object,
     t: PropTypes.func,
+    showMore: PropTypes.bool,
   };
 
   state = {
@@ -112,101 +113,107 @@ class ServicesAmenitiesForm extends PureComponent {
    * Renderer function
    */
   render() {
-    const { classes: s, office, t } = this.props;
+    const { classes: s, showMore, office, t } = this.props;
 
     return (
       <Column classes={{ box: s.root }} fullWidth alignChildrenStart>
         {servicesCategories.map(
-          (category, index) => category.value !== 'custom' && (
-            <React.Fragment key={index}>
-              <Row fullWidth paddingBottom>
-                <TabWrapper
-                  title={(
-                    <Typography alignChildrenCenter fontSizeS textMediumGrey>
-                      <category.icon className={s.categoryIcon} />
-                      <Typography paddingLeft>{t(category.name)}</Typography>
-                    </Typography>
-                  )}
-                  open
-                  insideOpen
-                >
-                  <Row fullWidth wrap paddingTop>
-                    {category.options.map((opt, optIndex) => (
-                      <React.Fragment key={optIndex}>
-                        <Box classes={{ box: s.optionWrapper }}>
-                          <Checkbox
-                            variant="outlined"
-                            label={t(opt.name)}
-                            className={s.textField250Fixed}
-                            isChecked={
-                              !!(
-                                office.servicesAndAmenities
-                                  && office.servicesAndAmenities[category.value]
-                                  && office.servicesAndAmenities[
+          (category, index) =>
+            category.value !== 'custom' &&
+            (showMore !== false || index < 2) && (
+              <React.Fragment key={index}>
+                <Row fullWidth paddingBottom>
+                  <TabWrapper
+                    title={
+                      <Typography alignChildrenCenter fontSizeS textMediumGrey>
+                        <category.icon className={s.categoryIcon} />
+                        <Typography paddingLeft>{t(category.name)}</Typography>
+                      </Typography>
+                    }
+                    open
+                    insideOpen
+                  >
+                    <Row fullWidth wrap paddingTop>
+                      {category.options.map((opt, optIndex) => (
+                        <React.Fragment key={optIndex}>
+                          <Box classes={{ box: s.optionWrapper }}>
+                            <Checkbox
+                              variant="outlined"
+                              label={t(opt.name)}
+                              className={s.textField250Fixed}
+                              isChecked={
+                                !!(
+                                  office.servicesAndAmenities &&
+                                  office.servicesAndAmenities[category.value] &&
+                                  office.servicesAndAmenities[
                                     category.value
                                   ].indexOf(opt.value) !== -1
-                              )
-                            }
-                            onChange={this.handleToggleOption(
-                              category.value,
-                              opt.value,
-                            )}
-                          />
-                        </Box>
-                      </React.Fragment>
-                    ))}
-                  </Row>
-                </TabWrapper>
-              </Row>
-            </React.Fragment>
-          ),
+                                )
+                              }
+                              onChange={this.handleToggleOption(
+                                category.value,
+                                opt.value
+                              )}
+                            />
+                          </Box>
+                        </React.Fragment>
+                      ))}
+                    </Row>
+                  </TabWrapper>
+                </Row>
+              </React.Fragment>
+            )
         )}
 
-        <Row paddingTop />
-        <Divider />
+        {showMore !== false && (
+          <React.Fragment>
+            <Row paddingTop />
+            <Divider />
 
-        {/** Render custom feature form */}
-        <Row paddingTopDouble fullWidth>
-          <Grid container className={s.gridRow}>
-            <Grid item md={4} sm={6} xs={12}>
-              <Typography
-                fullHeight
-                paddingTopHalf
-                paddingBottomHalf
-                alignChildrenCenter
-                classes={{ box: s.gridRowHeader }}
-              >
-                {t('enterCustomFeature')}
-              </Typography>
-            </Grid>
-            <Grid item md={8} sm={6} xs={12} className={s.gridRowValues}>
-              <TextField
-                placeholder={t('featureName')}
-                fullWidth
-                onKeyPress={this.handleAddCustomFeature}
-                value={this.state.customFeature}
-                onChange={this.handleChangeByEventValue('customFeature')}
-              />
-              <Row paddingTopHalf />
-              {office.servicesAndAmenities
-                && office.servicesAndAmenities.custom
-                && office.servicesAndAmenities.custom.map((feature, index) => (
-                  <React.Fragment key={index}>
-                    <Chip
-                      className={s.textField250Fixed}
-                      label={feature}
-                      onDelete={this.handleDeleteCustomFeature(feature)}
-                    />
-                  </React.Fragment>
-                ))}
-            </Grid>
-          </Grid>
-        </Row>
+            {/** Render custom feature form */}
+            <Row paddingTopDouble fullWidth>
+              <Grid container className={s.gridRow}>
+                <Grid item md={4} sm={6} xs={12}>
+                  <Typography
+                    fullHeight
+                    paddingTopHalf
+                    paddingBottomHalf
+                    alignChildrenCenter
+                    classes={{ box: s.gridRowHeader }}
+                  >
+                    {t('enterCustomFeature')}
+                  </Typography>
+                </Grid>
+                <Grid item md={8} sm={6} xs={12} className={s.gridRowValues}>
+                  <TextField
+                    placeholder={t('featureName')}
+                    fullWidth
+                    onKeyPress={this.handleAddCustomFeature}
+                    value={this.state.customFeature}
+                    onChange={this.handleChangeByEventValue('customFeature')}
+                  />
+                  <Row paddingTopHalf />
+                  {office.servicesAndAmenities &&
+                    office.servicesAndAmenities.custom &&
+                    office.servicesAndAmenities.custom.map((feature, index) => (
+                      <React.Fragment key={index}>
+                        <Chip
+                          className={s.textField250Fixed}
+                          label={feature}
+                          onDelete={this.handleDeleteCustomFeature(feature)}
+                        />
+                      </React.Fragment>
+                    ))}
+                </Grid>
+              </Grid>
+            </Row>
+          </React.Fragment>
+        )}
       </Column>
     );
   }
 }
 
 export default withWidth()(
-  withStyles(styleSheet)(withTranslation('common')(ServicesAmenitiesForm)),
+  withStyles(styleSheet)(withTranslation('common')(ServicesAmenitiesForm))
 );

@@ -64,12 +64,18 @@
       display: flex;
       justify-content: center;
       align-items: center;
-      background: white;
+      background: #a3b100;
     }
 
     .loader-image {
-      width: 100px;
-      height: 100px;
+      width: 300px;
+      height: 300px;
+    }
+
+    .app-version {
+      position: absolute;
+      bottom: 20px;
+      color: white;
     }
   </style>
 </head>
@@ -81,7 +87,8 @@
   <!-- Filler HTML as our app starts up -->
   <div id="root">
     <div class="load-wrapper">
-      <img class="loader-image" src="%PUBLIC_URL%/logo-512.png" />
+      <img class="loader-image" src="%PUBLIC_URL%/SplashScreen.png" />
+      <div class="app-version">Version 1.0</div>
     </div>
     <!-- <div class="App"> -->
     <!-- <div class="App-header">        

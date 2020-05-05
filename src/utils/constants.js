@@ -29,20 +29,20 @@ const officeTypes = [
   'unassignedWorkstation',
 ];
 const contractTypes = [
-  ['months', { months: 3 }],
-  ['months', { months: 6 }],
-  ['months', { months: 9 }],
-  'sublease',
+  'threeMonths',
+  'sixMonths',
+  'nineMonths',
+  'sublease'
 ];
 const guarantees = [
-  ['months', { months: 1 }],
-  ['months', { months: 2 }],
-  ['months', { months: 3 }],
+  'oneMonth',
+  'twoMonths',
+  'threeMonths'
 ];
 const checkOutNotices = [
-  ['months', { months: 1 }],
-  ['months', { months: 2 }],
-  ['months', { months: 3 }],
+  'oneMonth',
+  'twoMonths',
+  'threeMonths'
 ];
 
 /** Categories */

@@ -9,7 +9,8 @@ const INITIAL_STATE = {
   isActivated: false,
   isUpdating: null,
   verifiedPhoneNumber: null,
-  phoneCodeSent: null
+  phoneCodeSent: null,
+  userDeleted: false
 };
 
 const authReducer = (currentState = INITIAL_STATE, action) => {
@@ -211,6 +212,18 @@ const authReducer = (currentState = INITIAL_STATE, action) => {
       error: { type: 'deleteAvatar', msg: action.resp.msg },
     };
 
+  case 'DELETE_ACCOUNT_SUCCESS':
+    return {
+      ...currentState,
+      userDeleted: true
+    };
+
+  case 'DELETE_ACCOUNT_FAILED':
+    return {
+      ...currentState,
+      error: { type: 'deleteAccount', msg: action.resp.msg },
+    };
+
   case 'VERIFY_PHONE_SUCCESS':
     return {
       ...currentState,
@@ -248,6 +261,12 @@ const authReducer = (currentState = INITIAL_STATE, action) => {
         error: action.resp.msg
       },
       error: { type: 'verifyPhoneCode', msg: action.resp.msg },
+    };
+
+  case 'REQUEST_DELETE_ACCOUNT':
+    return {
+      ...currentState,
+      isLoading: true,
     };
 
   default:

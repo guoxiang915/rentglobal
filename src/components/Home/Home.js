@@ -111,7 +111,7 @@ export const styleSheet = (theme) => ({
     height: 37,
     position: 'absolute',
     right: 5,
-    bottom: 5,
+    bottom: 4,
     margin: 0,
   },
 
