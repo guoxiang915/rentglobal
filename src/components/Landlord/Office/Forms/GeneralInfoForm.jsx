@@ -346,6 +346,7 @@ class GeneralInfoForm extends PureComponent {
     return (
       <Column classes={{ box: s.root }} fullWidth alignChildrenStart>
         {/** import office data from another url */}
+        {/**
         <Typography
           fontSizeS
           textMediumGrey
@@ -376,6 +377,7 @@ class GeneralInfoForm extends PureComponent {
 
         <Divider />
         <Row paddingTop />
+        */}
 
         {/** office name */}
         <GridRow classes={s} title={t('title')} required>
