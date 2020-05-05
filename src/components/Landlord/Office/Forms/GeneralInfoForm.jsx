@@ -14,9 +14,9 @@ import {
   Checkbox,
   Button,
   Select,
-  ArrowDownIcon,
+  // ArrowDownIcon,
   Divider,
-  Chip,
+  // Chip,
   GooglePlaceField,
   GoogleMap,
   EditIcon,
@@ -105,7 +105,6 @@ class GeneralInfoForm extends PureComponent {
 
   state = {
     importOfficeUrl: '',
-    spokenLanguage: '',
     editAddressMode: !(
       this.props.office
       && this.props.office.location
@@ -175,29 +174,6 @@ class GeneralInfoForm extends PureComponent {
     this.setState({ editAddressMode: false }, () => {
       this.handleChangeProps('location')(location);
     });
-  };
-
-  /** Add/Delete spoken languages */
-  handleAddLanguage = (e) => {
-    if (e.key === 'Enter') {
-      const languages = this.props.office.spokenLanguages;
-      const language = e.target.value;
-      if (!(languages && languages.indexOf(language) !== -1)) {
-        this.handleChangeProps('spokenLanguages')([
-          ...(languages || []),
-          language,
-        ]);
-      }
-      this.setState({ spokenLanguage: '' });
-    }
-  };
-
-  handleDeleteLanguage = (language) => () => {
-    const languages = this.props.office.spokenLanguages;
-    if (languages && languages.indexOf(language) !== -1) {
-      languages.splice(languages.indexOf(language), 1);
-      this.handleChangeProps('spokenLanguages')(languages);
-    }
   };
 
   /**
@@ -339,7 +315,10 @@ class GeneralInfoForm extends PureComponent {
     const {
       office, classes: s, t, width,
     } = this.props;
-    const { importOfficeUrl, editAddressMode } = this.state;
+    const {
+      // importOfficeUrl,
+      editAddressMode
+    } = this.state;
     const GridRow = this.renderGridRow;
     const NormalFormField = this.renderFormField;
 
@@ -532,27 +511,6 @@ class GeneralInfoForm extends PureComponent {
               !office.fullTimeAccessibility,
             )}
           />
-        </GridRow>
-        {/** spoken language */}
-        <GridRow classes={s} title={t('spokenLanguage')}>
-          <TextField
-            placeholder={t('enterLanguage')}
-            className={s.textField350}
-            onKeyPress={this.handleAddLanguage}
-            value={this.state.spokenLanguage}
-            onChange={this.handleChangeByEventValue('spokenLanguage')}
-          />
-          <Row paddingTopHalf />
-          {office.spokenLanguages
-            && office.spokenLanguages.map((language, index) => (
-              <React.Fragment key={index}>
-                <Chip
-                  className={s.textField250Fixed}
-                  label={language}
-                  onDelete={this.handleDeleteLanguage(language)}
-                />
-              </React.Fragment>
-            ))}
         </GridRow>
         {/** lease duration / months */}
         <GridRow classes={s} title={t('leaseDurationPerMonths')}>
