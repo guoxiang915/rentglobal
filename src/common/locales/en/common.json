@@ -458,5 +458,15 @@
     "max": "Max",
     "moreFilterOptions": "More filter options",
     "showMoreItems": "Show more items ...",
-    "showLessItems": "Show less items ..."
+    "showLessItems": "Show less items ...",
+
+    "setTimeForDay": "Set time for each day of this week",
+    "visitAvailability": "Visit availability",
+    "monday": "Monday",
+    "tuesday": "Tuesday",
+    "wednesday": "Wednesday",
+    "thursday": "Thursday",
+    "friday": "Friday",
+    "saturday": "Saturday",
+    "sunday": "Sunday"
 }

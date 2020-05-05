@@ -1,4 +1,17 @@
 /**
+ * Convert date to mm:dd AM/PM format
+ * @param {Date} date Date object to be converted
+ */
+export function formatHrMin(date) {
+  const d = new Date(date);
+  return d.toLocaleString('en-US', {
+    hour: 'numeric',
+    minute: 'numeric',
+    hour12: true,
+  });
+}
+
+/**
  * Convert date to yyyy-mm-dd format
  * @param {Date} date Date object to be converted
  */
@@ -57,6 +70,15 @@ export function getWeekday(date) {
     'Saturday',
   ];
   return weekdays[new Date(date).getDay()];
+}
+
+/**
+ * Get first day of week from date
+ * @param {Date} date Date object for getting weekday
+ */
+export function getFirstDayOfWeek(date) {
+  const d = new Date(date);
+  return new Date(d.setDate(d.getDate() - d.getDay()));
 }
 
 /**

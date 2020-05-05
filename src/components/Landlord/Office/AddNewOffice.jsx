@@ -31,6 +31,7 @@ import {
   GeneralInfoForm,
   PictureGalleryForm,
   ServicesAmenitiesForm,
+  VisitAvailabilityForm,
 } from './Forms';
 import OfficeDetailForm from '../../Layout/OfficeDetailForm';
 
@@ -58,11 +59,11 @@ const styleSheet = (theme) => ({
   },
 
   stepper: {
-    width: '150%',
+    width: '133%',
     background: 'transparent',
     padding: 0,
-    marginLeft: 'calc(-25% + 35px)',
-    marginRight: 'calc(-25% + 35px)',
+    marginLeft: 'calc(-16.67% + 35px)',
+    marginRight: 'calc(-16.67% + 35px)',
   },
 
   stepIcon: {
@@ -121,14 +122,12 @@ const StepperConnector = withStyles((theme) => ({
 }))(StepConnector);
 
 /** Stepper icon component */
-const StepperIcon = ({
-  classes, icon, active, completed,
-}) => (
+const StepperIcon = ({ classes, icon, active, completed }) => (
   <Box
     classes={{
       box: clsx(
         classes.stepIcon,
-        (active || completed) && classes.stepActiveIcon,
+        (active || completed) && classes.stepActiveIcon
       ),
     }}
     alignChildrenCenter
@@ -172,6 +171,7 @@ class AddNewOffice extends PureComponent {
       title: this.props.t('servicesAndAmenities'),
       form: ServicesAmenitiesForm,
     },
+    { title: this.props.t('visitAvailability'), form: VisitAvailabilityForm },
   ];
 
   /**
@@ -211,7 +211,7 @@ class AddNewOffice extends PureComponent {
           //     }
           //   });
           // }
-          if (!editMode) currentStep = 3;
+          if (!editMode) currentStep = this.steps.length;
           this.setState({ office, currentStep });
         }
       });
@@ -261,18 +261,18 @@ class AddNewOffice extends PureComponent {
         <ConfirmDialog
           variant="error"
           text={this.props.t('confirmLeavePage')}
-          closeLabel={(
+          closeLabel={
             <React.Fragment>
               <CloseIcon style={{ width: 10, height: 10 }} />
               <Typography paddingLeft>{this.props.t('cancel')}</Typography>
             </React.Fragment>
-          )}
-          confirmLabel={(
+          }
+          confirmLabel={
             <React.Fragment>
               <CheckIcon style={{ width: 15, height: 12 }} />
               <Typography paddingLeft>{this.props.t('leave')}</Typography>
             </React.Fragment>
-          )}
+          }
           onConfirm={this.navigate('offices')}
           onClose={this.closeDialog}
         />
@@ -315,12 +315,17 @@ class AddNewOffice extends PureComponent {
       if (this.state.office) {
         result = this.props.createOfficeServicesAmenities(
           this.state.office._id,
-          this.state.office.servicesAndAmenities,
+          this.state.office.servicesAndAmenities
         );
       }
       break;
-    case 3:
-      if (this.state.office) result = this.props.publishOffice(this.state.office._id);
+      // case 3:
+      //   if (this.state.office)
+      //   result = this.props.saveVisibility(this.state.office._id);
+      //   break;
+    case 4:
+      if (this.state.office)
+        result = this.props.publishOffice(this.state.office._id);
       break;
     default:
       break;
@@ -349,7 +354,7 @@ class AddNewOffice extends PureComponent {
           },
         });
         return Promise.reject(error);
-      },
+      }
     );
   };
 
@@ -359,10 +364,10 @@ class AddNewOffice extends PureComponent {
     if (this.state.office) {
       /** Check photos count when current step is 1 */
       if (
-        currentStep === 3
-        && (!this.state.office.coverPhotos
-          || this.state.office.coverPhotos.length < 3
-          || this.state.office.coverPhotos.length > 15)
+        currentStep === this.steps.length &&
+        (!this.state.office.coverPhotos ||
+          this.state.office.coverPhotos.length < 3 ||
+          this.state.office.coverPhotos.length > 15)
       ) {
         this.setState({
           snackMsg: {
@@ -373,7 +378,7 @@ class AddNewOffice extends PureComponent {
         return;
       }
       this.saveCurrentStep().then(() => {
-        if (currentStep === 3) {
+        if (currentStep === this.steps.length) {
           // navigate to office detail page
           this.props.navigate('offices', this.state.office._id);
         } else {
@@ -427,9 +432,7 @@ class AddNewOffice extends PureComponent {
    * Renderer function
    */
   render() {
-    const {
-      classes: s, t, width, editMode = false,
-    } = this.props;
+    const { classes: s, t, width, editMode = false } = this.props;
     const {
       office,
       error,
@@ -438,7 +441,10 @@ class AddNewOffice extends PureComponent {
       dialog,
       snackMsg,
     } = this.state;
-    const CurrentForm = currentStep < 3 ? this.steps[currentStep].form : OfficeDetailForm;
+    const CurrentForm =
+      currentStep < this.steps.length
+        ? this.steps[currentStep].form
+        : OfficeDetailForm;
 
     return (
       <Column
@@ -451,7 +457,7 @@ class AddNewOffice extends PureComponent {
         <Row fullWidth paddingBottom>
           {/** title */}
           <Typography fontSizeM textSecondary>
-            {currentStep === 3
+            {currentStep === this.steps.length
               ? t('preview')
               : editMode
                 ? t('editOffice')
@@ -470,7 +476,7 @@ class AddNewOffice extends PureComponent {
           </Button>
         </Row>
 
-        {currentStep === 3 ? (
+        {currentStep === this.steps.length ? (
           <Row fullWidth paddingBottom>
             {/** Show publish button */}
             <Button
@@ -593,7 +599,7 @@ class AddNewOffice extends PureComponent {
           </Row>
 
           {/** form buttons */}
-          {currentStep === 3 ? (
+          {currentStep === this.steps.length ? (
             <Row
               fullWidth
               classes={{ box: clsx(s.addOfficeTabWrapper, s.formButtons) }}
@@ -631,7 +637,7 @@ class AddNewOffice extends PureComponent {
               <Stretch />
 
               {/** Show save button */}
-              {currentStep < 2 && (
+              {currentStep < this.steps.length - 1 && (
                 <Button
                   link="primary"
                   background="normalLight"
@@ -656,7 +662,11 @@ class AddNewOffice extends PureComponent {
                 shadow
               >
                 <Typography fontSizeS>
-                  {t(currentStep < 2 ? 'nextStep' : 'saveAndPreview')}
+                  {t(
+                    currentStep < this.steps.length - 1
+                      ? 'nextStep'
+                      : 'saveAndPreview'
+                  )}
                 </Typography>
               </Button>
             </Row>
@@ -687,5 +697,5 @@ class AddNewOffice extends PureComponent {
 }
 
 export default withWidth()(
-  withStyles(styleSheet)(withTranslation('common')(AddNewOffice)),
+  withStyles(styleSheet)(withTranslation('common')(AddNewOffice))
 );
