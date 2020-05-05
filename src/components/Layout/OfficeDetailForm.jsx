@@ -569,14 +569,6 @@ class OfficeDetailForm extends PureComponent {
               </Row>
               <Row classes={{ box: s.infoRow }}>
                 <Column classes={{ box: s.infoLabel }}>
-                  {t('spokenLanguage')}
-                </Column>
-                <Column classes={{ box: s.infoValue }}>
-                  {office.spokenLanguages && office.spokenLanguages.join(' / ')}
-                </Column>
-              </Row>
-              <Row classes={{ box: s.infoRow }}>
-                <Column classes={{ box: s.infoLabel }}>
                   {t('leaseDurationPerMonths')}
                 </Column>
                 <Column classes={{ box: s.infoValue }}>
