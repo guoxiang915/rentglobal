@@ -429,5 +429,13 @@
     "calendarEvents": "Calendrier des événements",
     "fullView": "Vue complète",
     "map": "Carte",
-    "stat": "Statistique"
+    "stat": "Statistique",
+    "refID": "Ref ID",
+    "welcome": "Welcome",
+    "dontShowAgain": "Don't show again",
+    "welcomeRoleTitle": "Encore merci pour votre confiance",
+    "welcomeRoleSubtitle": "Vous avez un bureau que vous voulez sous-louer, voici les étapes que vous devez suivre.",
+    "landlordProfileWelcome1": "Voici quelques informations que vous devez fournir dans votre profil avant de devenir propriétaire.",
+    "landlordProfileWelcome2": "Ajoutez votre bureau en mois de 5 min et laissez l'intelligence artificielle et nos différents experts géré votre le reste.",
+    "landlordProfileWelcome3": "C'est parti pour une nouvelle expérience."
 }
