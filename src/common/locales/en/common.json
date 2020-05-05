@@ -462,11 +462,14 @@
 
     "setTimeForDay": "Set time for each day of this week",
     "visitAvailability": "Visit availability",
+    "addTime": "Add time",
+    "add": "Add",
     "monday": "Monday",
     "tuesday": "Tuesday",
     "wednesday": "Wednesday",
     "thursday": "Thursday",
     "friday": "Friday",
     "saturday": "Saturday",
-    "sunday": "Sunday"
+    "sunday": "Sunday",
+    "availableHours": "Available Hours"
 }
