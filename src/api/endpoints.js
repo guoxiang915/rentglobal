@@ -123,6 +123,10 @@ export const deleteOffice = (officeId) => api.delete(`/offices/${officeId}/`);
 export const favoriteOffice = (officeId) =>
   api.put(`/offices/${officeId}/favorite/`);
 
+/** Call api to search offices with advanced filters */
+export const advancedSearchOffices = (payload) =>
+  api.post("/offices/advanced-search/", payload);
+
 /** Call api to get all published offices */
 export const getPublishedOffices = (params) => api.get("/offices/", { params });
 
