@@ -1,5 +1,5 @@
-import api from './api';
-import { reviews as reviewsMockData } from '../common/mock/officeMockData';
+import api from "./api";
+import { reviews as reviewsMockData } from "../common/mock/officeMockData";
 
 /**
  * Upload file to the api
@@ -8,14 +8,14 @@ import { reviews as reviewsMockData } from '../common/mock/officeMockData';
  */
 export const uploadFile = (file, permission) => {
   const formData = new FormData();
-  formData.append('file', file);
+  formData.append("file", file);
   if (permission) {
-    formData.append('permission', permission);
+    formData.append("permission", permission);
   }
   const config = {
-    headers: { 'Content-Type': undefined },
+    headers: { "Content-Type": undefined },
   };
-  return api.post('/file/upload/', formData, config);
+  return api.post("/file/upload/", formData, config);
 };
 
 /**
@@ -24,13 +24,13 @@ export const uploadFile = (file, permission) => {
  * @param {string} fileName name of file to be downloaded
  */
 export const downloadFile = (fileId, fileName) => {
-  api.get(`/file/${fileId}/`, { responseType: 'blob' }).then((response) => {
+  api.get(`/file/${fileId}/`, { responseType: "blob" }).then((response) => {
     const url = window.URL.createObjectURL(response.data);
-    const el = document.createElement('a');
+    const el = document.createElement("a");
 
     el.href = url;
     el.download = fileName;
-    el.style.display = 'none';
+    el.style.display = "none";
     document.body.appendChild(el);
     el.click();
 
@@ -40,7 +40,7 @@ export const downloadFile = (fileId, fileName) => {
 };
 
 /** Call api to get user profile */
-export const getProfile = () => api.get('/users/me/');
+export const getProfile = () => api.get("/users/me/");
 
 /** Call api to delete user avatar */
 export const deleteUserAvatar = () => api.delete(`/users/me/delete/avatar`);
@@ -57,7 +57,7 @@ export const deleteUserDocument = ({ userRole, docType, docFile }) =>
 export const deleteUserAccount = () => api.delete(`/users/me/delete`);
 
 /** Call api to get office list */
-export const getOffices = () => api.get('/users/me/offices/');
+export const getOffices = () => api.get("/users/me/offices/");
 
 /**
  * Call api to get available office list
@@ -76,7 +76,7 @@ export const getOfficeById = (officeId) =>
   api.get(`/users/me/offices/${officeId}/`);
 
 /** Call api to create office */
-export const createOffice = (office) => api.post('/offices/', office);
+export const createOffice = (office) => api.post("/offices/", office);
 
 /** Call api to update office */
 export const updateOffice = (office) =>
@@ -85,6 +85,12 @@ export const updateOffice = (office) =>
 /** Call api to save services & amenities of office */
 export const createOfficeServicesAmenities = (officeId, payload) =>
   api.put(`/offices/${officeId}/services-amenities/`, payload);
+
+/** Mock api to save visibility */
+export const saveVisibility = (officeId, payload) => {
+  // api.put(`/offices/${officeId}/services-amenities/`, payload);
+  return Promise.resolve({ data: payload });
+};
 
 /** Call api to publish office */
 export const publishOffice = (officeId) =>
@@ -97,8 +103,8 @@ export const unpublishOffice = (officeId) =>
 /** Call api to upload office photo */
 export const uploadOfficePhoto = (officeId, file) => {
   const formData = new FormData();
-  formData.append('file', file);
-  const config = { headers: { 'Content-Type': undefined } };
+  formData.append("file", file);
+  const config = { headers: { "Content-Type": undefined } };
   return api.post(
     `/offices/${officeId}/cover-photos/upload/`,
     formData,
@@ -117,8 +123,12 @@ export const deleteOffice = (officeId) => api.delete(`/offices/${officeId}/`);
 export const favoriteOffice = (officeId) =>
   api.put(`/offices/${officeId}/favorite/`);
 
+/** Call api to search offices with advanced filters */
+export const advancedSearchOffices = (payload) =>
+  api.post("/offices/advanced-search/", payload);
+
 /** Call api to get all published offices */
-export const getPublishedOffices = (params) => api.get('/offices/', { params });
+export const getPublishedOffices = (params) => api.get("/offices/", { params });
 
 /**
  * Call api to get all approved offices
@@ -147,12 +157,12 @@ export const getConsultantByOffice = () =>
     status: 200,
     data: {
       generalInfo: {
-        username: 'Consultant Name',
-        phoneNumber: { number: '111-222-3333', verified: false },
+        username: "Consultant Name",
+        phoneNumber: { number: "111-222-3333", verified: false },
       },
       avatar: {},
       description:
-        'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.\nLorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
+        "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.\nLorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
     },
   });
 // return api.get(`/offices/${officeId}/user/`);
@@ -170,7 +180,9 @@ export const getReviewsByOffice = () =>
 export const getSimilarOffices = () => getPublishedOffices();
 
 /** Call api to verify phone number */
-export const verifyPhoneNumber = (phoneNumber) => api.post('/users/me/verify-phone-number', phoneNumber);
+export const verifyPhoneNumber = (phoneNumber) =>
+  api.post("/users/me/verify-phone-number", phoneNumber);
 
 /** Call api to verify phone code */
-export const verifyPhoneCode = (phoneCode) => api.post('/users/me/confirm-phone-code', phoneCode);
+export const verifyPhoneCode = (phoneCode) =>
+  api.post("/users/me/confirm-phone-code", phoneCode);

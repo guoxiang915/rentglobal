@@ -446,9 +446,13 @@
     "employees": "Employees",
     "howLong": "How long",
     "moreFilter": "More filter",
+    "room": "Room",
     "resultsWithNumber": "{{count}} Results",
     "employeesWithNumber": "{{count}} Employees",
     "roomsWithNumber": "{{count}} Rooms",
+    "priceRange": "{{min}} - {{max}} $",
+    "roomsRange": "{{min}} - {{max}} rooms",
+    "employeesRange": "{{min}} - {{max}} employees",
     "apply": "Apply",
     "clear": "Clear",
     "monthlyPrice": "Monthly price",
@@ -458,5 +462,18 @@
     "max": "Max",
     "moreFilterOptions": "More filter options",
     "showMoreItems": "Show more items ...",
-    "showLessItems": "Show less items ..."
+    "showLessItems": "Show less items ...",
+
+    "setTimeForDay": "Set time for each day of this week",
+    "visitAvailability": "Visit availability",
+    "addTime": "Add time",
+    "add": "Add",
+    "monday": "Monday",
+    "tuesday": "Tuesday",
+    "wednesday": "Wednesday",
+    "thursday": "Thursday",
+    "friday": "Friday",
+    "saturday": "Saturday",
+    "sunday": "Sunday",
+    "availableHours": "Available Hours"
 }

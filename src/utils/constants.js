@@ -15,9 +15,10 @@ import {
  * API url
  * In development mode, url is local server's url
  */
-const API = process.env.NODE_ENV === 'production'
-  ? 'https://rentglobal-backend.herokuapp.com'
-  : 'http://localhost:3001';
+const API =
+  process.env.NODE_ENV === 'production'
+    ? 'https://rentglobal-backend.herokuapp.com'
+    : 'http://localhost:3001';
 
 /**
  * Office types
@@ -28,22 +29,9 @@ const officeTypes = [
   'assignedWorkstation',
   'unassignedWorkstation',
 ];
-const contractTypes = [
-  'threeMonths',
-  'sixMonths',
-  'nineMonths',
-  'sublease'
-];
-const guarantees = [
-  'oneMonth',
-  'twoMonths',
-  'threeMonths'
-];
-const checkOutNotices = [
-  'oneMonth',
-  'twoMonths',
-  'threeMonths'
-];
+const contractTypes = ['threeMonths', 'sixMonths', 'nineMonths', 'sublease'];
+const guarantees = ['oneMonth', 'twoMonths', 'threeMonths'];
+const checkOutNotices = ['oneMonth', 'twoMonths', 'threeMonths'];
 
 /** Categories */
 const servicesCategories = [
@@ -194,6 +182,16 @@ const servicesCategories = [
 
 const maxFileSize = 10485760; // 10 MB
 
+const weekdays = [
+  'sunday',
+  'monday',
+  'tuesday',
+  'wednesday',
+  'thursday',
+  'friday',
+  'saturday',
+];
+
 export {
   API,
   officeTypes,
@@ -202,4 +200,5 @@ export {
   checkOutNotices,
   servicesCategories,
   maxFileSize,
+  weekdays,
 };

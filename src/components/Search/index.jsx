@@ -1,9 +1,9 @@
-import React, { PureComponent } from 'react';
-import { withStyles } from '@material-ui/core/styles';
-import clsx from 'clsx';
-import PropTypes from 'prop-types';
-import { withTranslation } from 'react-i18next';
-import withWidth, { isWidthDown } from '@material-ui/core/withWidth';
+import React, { PureComponent } from "react";
+import { withStyles } from "@material-ui/core/styles";
+import clsx from "clsx";
+import PropTypes from "prop-types";
+import { withTranslation } from "react-i18next";
+import withWidth, { isWidthDown } from "@material-ui/core/withWidth";
 import {
   Grid,
   Popover,
@@ -14,8 +14,8 @@ import {
   DialogTitle,
   DialogContent,
   DialogActions,
-} from '@material-ui/core';
-import { KeyboardArrowLeft, KeyboardArrowRight } from '@material-ui/icons';
+} from "@material-ui/core";
+import { KeyboardArrowLeft, KeyboardArrowRight } from "@material-ui/icons";
 import {
   Row,
   Column,
@@ -25,7 +25,6 @@ import {
   Typography,
   TextField,
   Checkbox,
-  NumberField,
   Divider,
   Link,
   GoogleMap,
@@ -34,20 +33,20 @@ import {
   SearchIcon,
   UncheckIcon,
   CheckIcon,
-} from '../../common/base-components';
-import { officeTypes, contractTypes } from '../../utils/constants';
+} from "../../common/base-components";
+import { officeTypes, contractTypes } from "../../utils/constants";
 
-import { styleSheet } from './Search';
-import { OfficeItem } from '../../common/base-layouts';
-import { getPublishedOffices } from '../../api/endpoints';
-import ServicesAmenitiesForm from '../Landlord/Office/Forms/ServicesAmenitiesForm';
+import { styleSheet } from "./Search";
+import { OfficeItem } from "../../common/base-layouts";
+import { advancedSearchOffices } from "../../api/endpoints";
+import ServicesAmenitiesForm from "../Landlord/Office/Forms/ServicesAmenitiesForm";
 
 const Searchbox = ({ classes: s, t, q, onSearch }) => {
   const [query, setQuery] = React.useState(q);
   React.useEffect(() => setQuery(q), [q]);
   const handleKeyPress = React.useCallback(
     (e) => {
-      if (e.key === 'Enter') onSearch(query);
+      if (e.key === "Enter") onSearch(query);
     },
     [onSearch, query]
   );
@@ -55,17 +54,17 @@ const Searchbox = ({ classes: s, t, q, onSearch }) => {
 
   return (
     <TextField
-      variant="outlined"
+      variant='outlined'
       value={query}
       onChange={handleChange}
       onKeyPress={handleKeyPress}
-      placeholder={t('advancedSearchboxText')}
+      placeholder={t("advancedSearchboxText")}
       className={s.searchInput}
       styles={{ input: s.searchInputProps }}
       endAdornment={
         <Button
-          variant="icon"
-          background="primary"
+          variant='icon'
+          background='primary'
           style={{ margin: 0 }}
           className={s.searchInputIcon}
           shadow
@@ -96,7 +95,7 @@ const OfficeTypeFilterPanel = ({ classes: s, t, types, onApply }) => {
           <Row classes={{ box: s.filterLine }}>
             <Checkbox
               classes={{ label: s.checkbox }}
-              color="primary"
+              color='primary'
               isChecked={(types && types.indexOf(type) !== -1) || false}
               onChange={() => handleClickType(type)}
               icon={UncheckIcon}
@@ -141,7 +140,7 @@ const ContractTypeFilterPanel = ({ classes: s, t, types, onApply }) => {
           <Row classes={{ box: s.filterLine }}>
             <Checkbox
               classes={{ label: s.checkbox }}
-              color="primary"
+              color='primary'
               isChecked={(types && types.indexOf(type) !== -1) || false}
               onChange={() => handleClickType(type)}
               icon={UncheckIcon}
@@ -168,130 +167,78 @@ const ContractTypeFilterPanel = ({ classes: s, t, types, onApply }) => {
   );
 };
 
-const RoomsFilterPanel = ({ classes: s, t, rooms: r, onApply }) => {
-  const [rooms, setRooms] = React.useState(r);
-  React.useEffect(() => setRooms(r), [r]);
+// const RoomsFilterPanel = ({ classes: s, t, rooms: r, onApply }) => {
+//   const [rooms, setRooms] = React.useState(r);
+//   React.useEffect(() => setRooms(r), [r]);
 
-  return (
-    <Column alignChildrenStart classes={{ box: s.numberFilterPanel }}>
-      <Grid
-        container
-        direction="row"
-        justify="space-between"
-        alignItems="center"
-        className={s.filterPanel}
-      >
-        <Typography fontSizeS textSecondary>
-          {t('rooms')}
-        </Typography>
-        <NumberField
-          inputProps={{ min: 0 }}
-          value={rooms}
-          onChange={(e) => setRooms(e.target.value)}
-          className={s.numberField}
-        />
-      </Grid>
-      <Divider />
+//   return (
+//     <Column alignChildrenStart classes={{ box: s.numberFilterPanel }}>
+//       <Grid
+//         container
+//         direction='row'
+//         justify='space-between'
+//         alignItems='center'
+//         className={s.filterPanel}
+//       >
+//         <Typography fontSizeS textSecondary>
+//           {t("rooms")}
+//         </Typography>
+//         <NumberField
+//           inputProps={{ min: 0 }}
+//           value={rooms}
+//           onChange={(e) => setRooms(e.target.value)}
+//           className={s.numberField}
+//         />
+//       </Grid>
+//       <Divider />
 
-      <Grid
-        container
-        direction="row"
-        justify="space-between"
-        alignItems="center"
-        className={s.filterPanel}
-      >
-        <Button
-          link="errorRed"
-          background="secondaryLight"
-          onClick={() => onApply()}
-        >
-          <Typography fontSizeS alignChildrenCenter>
-            <CloseIcon style={{ width: 10, height: 10 }} />
-            <Typography paddingLeft>{t('clear')}</Typography>
-          </Typography>
-        </Button>
-        <Button
-          variant="primary"
-          onClick={() => onApply(rooms)}
-          className={s.applyButton}
-        >
-          <Typography fontSizeS alignChildrenCenter>
-            <CheckIcon style={{ width: 16, height: 12 }} />
-            <Typography paddingLeft>{t('apply')}</Typography>
-          </Typography>
-        </Button>
-      </Grid>
-    </Column>
-  );
-};
-
-const EmployeesFilterPanel = ({ classes: s, t, employees: e, onApply }) => {
-  const [employees, setEmployees] = React.useState(e);
-  React.useEffect(() => setEmployees(e), [e]);
-
-  return (
-    <Column alignChildrenStart classes={{ box: s.numberFilterPanel }}>
-      <Grid
-        container
-        direction="row"
-        justify="space-between"
-        alignItems="center"
-        className={s.filterPanel}
-      >
-        <Typography fontSizeS textSecondary>
-          {t('numberOfEmployees')}
-        </Typography>
-        <NumberField
-          value={employees}
-          onChange={(e) => setEmployees(e.target.value)}
-          className={s.numberField}
-        />
-      </Grid>
-      <Divider />
-
-      <Grid
-        container
-        direction="row"
-        justify="space-between"
-        alignItems="center"
-        className={s.filterPanel}
-      >
-        <Button
-          link="errorRed"
-          background="secondaryLight"
-          onClick={() => onApply()}
-        >
-          <Typography fontSizeS alignChildrenCenter>
-            <CloseIcon style={{ width: 10, height: 10 }} />
-            <Typography paddingLeft>{t('clear')}</Typography>
-          </Typography>
-        </Button>
-        <Button
-          variant="primary"
-          onClick={() => onApply(employees)}
-          className={s.applyButton}
-        >
-          <Typography fontSizeS alignChildrenCenter>
-            <CheckIcon style={{ width: 16, height: 12 }} />
-            <Typography paddingLeft>{t('apply')}</Typography>
-          </Typography>
-        </Button>
-      </Grid>
-    </Column>
-  );
-};
+//       <Grid
+//         container
+//         direction='row'
+//         justify='space-between'
+//         alignItems='center'
+//         className={s.filterPanel}
+//       >
+//         <Button
+//           link='errorRed'
+//           background='secondaryLight'
+//           onClick={() => onApply()}
+//         >
+//           <Typography fontSizeS alignChildrenCenter>
+//             <CloseIcon style={{ width: 10, height: 10 }} />
+//             <Typography paddingLeft>{t("clear")}</Typography>
+//           </Typography>
+//         </Button>
+//         <Button
+//           variant='primary'
+//           onClick={() => onApply(rooms)}
+//           className={s.applyButton}
+//         >
+//           <Typography fontSizeS alignChildrenCenter>
+//             <CheckIcon style={{ width: 16, height: 12 }} />
+//             <Typography paddingLeft>{t("apply")}</Typography>
+//           </Typography>
+//         </Button>
+//       </Grid>
+//     </Column>
+//   );
+// };
 
 const MIN_PRICE = 0;
 const MAX_PRICE = 50000; // undefined
+const MIN_ROOMS = 0;
+const MAX_ROOMS = 100; // undefined
+const MIN_EMPLOYEES = 0;
+const MAX_EMPLOYEES = 5000; // undefined
 
 const AirbnbThumbComponent = ({ ...props }) => {
-  const index = props['data-index'];
+  const index = props["data-index"];
   return (
     <span {...props}>
       {index === 0 ? (
-        <KeyboardArrowLeft style={{ fontSize: '30px' }} />
+        <KeyboardArrowLeft style={{ fontSize: "30px" }} />
       ) : (
-        <KeyboardArrowRight style={{ fontSize: '30px' }} />
+        <KeyboardArrowRight style={{ fontSize: "30px" }} />
       )}
       {props.children}
     </span>
@@ -302,21 +249,21 @@ const AirbnbSlider = withStyles((theme) => ({
   root: {
     color: theme.colors.primary.mainColor,
     height: 1,
-    padding: '13px 0',
+    padding: "13px 0",
   },
   thumb: {
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
     height: 37,
     width: 37,
     marginTop: -18,
     marginLeft: -18,
     background: theme.colors.primary.borderGrey,
     color: theme.colors.primary.grey,
-    boxShadow: '#ebebeb 0px 2px 2px',
-    '&:focus, &:hover, &$active': {
-      boxShadow: '#ccc 0px 2px 3px 1px',
+    boxShadow: "#ebebeb 0px 2px 2px",
+    "&:focus, &:hover, &$active": {
+      boxShadow: "#ccc 0px 2px 3px 1px",
       background: theme.colors.primary.mainColor,
       color: theme.colors.primary.white,
     },
@@ -325,8 +272,8 @@ const AirbnbSlider = withStyles((theme) => ({
   valueLabel: {
     top: -20,
     ...theme.fonts.size.fontSizeS,
-    '& *': {
-      background: 'transparent',
+    "& *": {
+      background: "transparent",
       color: theme.colors.primary.mainColor,
     },
   },
@@ -344,7 +291,7 @@ const AirbnbSlider = withStyles((theme) => ({
     height: 7,
     marginLeft: -3,
     marginTop: -3,
-    borderRadius: '50%',
+    borderRadius: "50%",
   },
   markActive: {
     background: theme.colors.primary.mainColor,
@@ -355,78 +302,89 @@ const AirbnbSlider = withStyles((theme) => ({
     max={max}
     marks={[{ value: min }, { value: max }]}
     defaultValue={[min, max]}
-    valueLabelDisplay="on"
+    valueLabelDisplay='on'
     ThumbComponent={AirbnbThumbComponent}
     {...props}
   />
 ));
 
-const PriceFilterPanel = ({ classes: s, t, price: p, onApply }) => {
-  const [priceMin, setPriceMin] = React.useState(p?.priceMin || MIN_PRICE);
-  const [priceMax, setPriceMax] = React.useState(p?.priceMax || MAX_PRICE);
+const RangeFilterPanel = ({
+  classes: s,
+  t,
+  data,
+  min,
+  max,
+  title,
+  subtitle,
+  sliderUnit,
+  inputUnit,
+  onApply,
+}) => {
+  const [minVal, setMinVal] = React.useState(data?.min || min);
+  const [maxVal, setMaxVal] = React.useState(data?.max || max);
   React.useEffect(() => {
-    setPriceMin(p?.priceMin || MIN_PRICE);
-    setPriceMax(p?.priceMax || MAX_PRICE);
-  }, [p]);
-  const getValueLabelFormat = React.useCallback((val) => {
-    return val === MIN_PRICE || val === MAX_PRICE ? '' : val + '$';
-  }, []);
-  const onSliderChange = React.useCallback((e, val) => {
-    setPriceMin(Number(val[0]));
-    setPriceMax(Number(val[1]));
-  }, []);
+    setMinVal(data?.min || min);
+    setMaxVal(data?.max || max);
+  }, [data, min, max]);
+  const getValueLabelFormat = (val) => {
+    return val === min || val === max ? "" : val + (sliderUnit || "");
+  };
+  const onSliderChange = (e, val) => {
+    setMinVal(Number(val[0]));
+    setMaxVal(Number(val[1]));
+  };
 
   return (
     <Column alignChildrenStart classes={{ box: s.priceFilterPanel }}>
-      <Grid container direction="column" className={s.priceFilters}>
+      <Grid container direction='column' className={s.priceFilters}>
         <Grid
           container
-          direction="row"
-          justify="space-between"
-          alignItems="center"
+          direction='row'
+          justify='space-between'
+          alignItems='center'
         >
           <Typography fontSizeS textSecondary>
-            {t('monthlyPrice')}
+            {title}
           </Typography>
           <Typography fontSizeXS textMediumGrey>
-            {t('averageMonthlyPrice', { price: 3243 })}
+            {subtitle || ""}
           </Typography>
         </Grid>
         <AirbnbSlider
-          min={MIN_PRICE}
-          max={MAX_PRICE}
-          value={[priceMin, priceMax]}
+          min={min}
+          max={max}
+          value={[minVal, maxVal]}
           valueLabelFormat={getValueLabelFormat}
           onChange={onSliderChange}
           className={s.priceSlider}
         />
         <Typography fontSizeXS textMediumGrey style={{ marginTop: 48 }}>
-          {t('orUseInputRange')}
+          {t("orUseInputRange")}
         </Typography>
         <Grid container spacing={4} className={s.priceInputWrapper}>
           <Grid item xs={12} sm={6}>
             <Row alignChildrenCenter fullWidth>
               <Typography fontSizeS textSecondary paddingRight>
-                {t('min')}
+                {t("min")}
               </Typography>
               <Box stretch>
                 <TextField
                   fullWidth
-                  variant="outlined"
-                  value={priceMin === MIN_PRICE ? '' : priceMin}
-                  type="number"
+                  variant='outlined'
+                  value={minVal === min ? "" : minVal}
+                  type='number'
                   inputProps={{
-                    min: MIN_PRICE,
-                    max: priceMax,
+                    min: min,
+                    max: maxVal,
                   }}
-                  onChange={(e) => setPriceMin(Number(e.target.value))}
+                  onChange={(e) => setMinVal(Number(e.target.value))}
                   endAdornment={
                     <Typography
                       fontSizeS
                       textMediumGrey
-                      style={{ whiteSpace: 'nowrap' }}
+                      style={{ whiteSpace: "nowrap" }}
                     >
-                      {t('$/month')}
+                      {inputUnit || ""}
                     </Typography>
                   }
                 />
@@ -436,26 +394,26 @@ const PriceFilterPanel = ({ classes: s, t, price: p, onApply }) => {
           <Grid item xs={12} sm={6}>
             <Row alignChildrenCenter fullWidth>
               <Typography fontSizeS textSecondary paddingRight>
-                {t('max')}
+                {t("max")}
               </Typography>
               <Box stretch>
                 <TextField
                   fullWidth
-                  variant="outlined"
-                  value={priceMax === MAX_PRICE ? '' : priceMax}
-                  type="number"
+                  variant='outlined'
+                  value={maxVal === max ? "" : maxVal}
+                  type='number'
                   inputProps={{
-                    min: priceMin,
-                    max: MAX_PRICE,
+                    min: minVal,
+                    max: max,
                   }}
-                  onChange={(e) => setPriceMax(Number(e.target.value))}
+                  onChange={(e) => setMaxVal(Number(e.target.value))}
                   endAdornment={
                     <Typography
                       fontSizeS
                       textMediumGrey
-                      style={{ whiteSpace: 'nowrap' }}
+                      style={{ whiteSpace: "nowrap" }}
                     >
-                      {t('$/month')}
+                      {inputUnit || ""}
                     </Typography>
                   }
                 />
@@ -468,29 +426,29 @@ const PriceFilterPanel = ({ classes: s, t, price: p, onApply }) => {
 
       <Grid
         container
-        direction="row"
-        justify="space-between"
-        alignItems="center"
+        direction='row'
+        justify='space-between'
+        alignItems='center'
         className={s.filterPanel}
       >
         <Button
-          link="errorRed"
-          background="secondaryLight"
+          link='errorRed'
+          background='secondaryLight'
           onClick={() => onApply()}
         >
           <Typography fontSizeS alignChildrenCenter>
             <CloseIcon style={{ width: 10, height: 10 }} />
-            <Typography paddingLeft>{t('clear')}</Typography>
+            <Typography paddingLeft>{t("clear")}</Typography>
           </Typography>
         </Button>
         <Button
-          variant="primary"
-          onClick={() => onApply({ priceMin, priceMax })}
+          variant='primary'
+          onClick={() => onApply({ min: minVal, max: maxVal })}
           className={s.applyButton}
         >
           <Typography fontSizeS alignChildrenCenter>
             <CheckIcon style={{ width: 16, height: 12 }} />
-            <Typography paddingLeft>{t('apply')}</Typography>
+            <Typography paddingLeft>{t("apply")}</Typography>
           </Typography>
         </Button>
       </Grid>
@@ -498,61 +456,131 @@ const PriceFilterPanel = ({ classes: s, t, price: p, onApply }) => {
   );
 };
 
+const RoomsFilterPanel = ({ classes: s, t, rooms, onApply }) => {
+  const handleApply = (data) => {
+    if (!data) {
+      onApply();
+    } else {
+      onApply({ roomsMin: data?.min, roomsMax: data?.max });
+    }
+  };
+
+  return (
+    <RangeFilterPanel
+      classes={s}
+      t={t}
+      min={MIN_ROOMS}
+      max={MAX_ROOMS}
+      data={{ min: rooms?.roomsMin, max: rooms?.roomsMax }}
+      title={t("rooms")}
+      inputUnit={t("room")}
+      onApply={handleApply}
+    />
+  );
+};
+
+const EmployeesFilterPanel = ({ classes: s, t, employees, onApply }) => {
+  const handleApply = (data) => {
+    if (!data) {
+      onApply();
+    } else {
+      onApply({ employeesMin: data?.min, employeesMax: data?.max });
+    }
+  };
+
+  return (
+    <RangeFilterPanel
+      classes={s}
+      t={t}
+      min={MIN_EMPLOYEES}
+      max={MAX_EMPLOYEES}
+      data={{ min: employees?.employeesMin, max: employees?.employeesMax }}
+      title={t("numberOfEmployees")}
+      inputUnit={t("employees")}
+      onApply={handleApply}
+    />
+  );
+};
+
+const PriceFilterPanel = ({ classes: s, t, price, onApply }) => {
+  const handleApply = (data) => {
+    if (!data) {
+      onApply();
+    } else {
+      onApply({ priceMin: data?.min, priceMax: data?.max });
+    }
+  };
+
+  return (
+    <RangeFilterPanel
+      classes={s}
+      t={t}
+      min={MIN_PRICE}
+      max={MAX_PRICE}
+      data={{ min: price?.priceMin, max: price?.priceMax }}
+      title={t("monthlyPrice")}
+      sliderUnit='$'
+      inputUnit={t("$/month")}
+      onApply={handleApply}
+    />
+  );
+};
+
 const FilterPanel = React.memo(
   ({ classes, t, filter, value, onChangeFilter }) => {
     switch (filter.type) {
-    case 'officeTypes':
-      return (
-        <OfficeTypeFilterPanel
-          classes={classes}
-          t={t}
-          types={value}
-          onApply={onChangeFilter('officeTypes')}
-        />
-      );
+      case "officeTypes":
+        return (
+          <OfficeTypeFilterPanel
+            classes={classes}
+            t={t}
+            types={value}
+            onApply={onChangeFilter("officeTypes")}
+          />
+        );
 
-    case 'typeOfContracts':
-      return (
-        <ContractTypeFilterPanel
-          classes={classes}
-          t={t}
-          types={value}
-          onApply={onChangeFilter('typeOfContracts')}
-        />
-      );
+      case "typeOfContracts":
+        return (
+          <ContractTypeFilterPanel
+            classes={classes}
+            t={t}
+            types={value}
+            onApply={onChangeFilter("typeOfContracts")}
+          />
+        );
 
-    case 'rooms':
-      return (
-        <RoomsFilterPanel
-          classes={classes}
-          t={t}
-          rooms={value}
-          onApply={onChangeFilter('rooms')}
-        />
-      );
+      case "rooms":
+        return (
+          <RoomsFilterPanel
+            classes={classes}
+            t={t}
+            rooms={value}
+            onApply={onChangeFilter("rooms")}
+          />
+        );
 
-    case 'employees':
-      return (
-        <EmployeesFilterPanel
-          classes={classes}
-          t={t}
-          employees={value}
-          onApply={onChangeFilter('employees')}
-        />
-      );
+      case "employees":
+        return (
+          <EmployeesFilterPanel
+            classes={classes}
+            t={t}
+            employees={value}
+            onApply={onChangeFilter("employees")}
+          />
+        );
 
-    case 'price':
-      return (
-        <PriceFilterPanel
-          classes={classes}
-          t={t}
-          price={value}
-          onApply={onChangeFilter('price')}
-        />
-      );
+      case "price":
+        return (
+          <PriceFilterPanel
+            classes={classes}
+            t={t}
+            price={value}
+            onApply={onChangeFilter("price")}
+          />
+        );
 
-    default:
-      return null;
+      default:
+        return null;
     }
   }
 );
@@ -568,7 +596,9 @@ const FilterWrapper = React.memo(
     const handleChangeFilter = React.useCallback(
       (filter) => (value) => {
         onChangeFilter(filter, value);
-        closeAnchor();
+        if (filter !== "officeTypes" && filter !== "typeOfContracts") {
+          closeAnchor();
+        }
       },
       [onChangeFilter, closeAnchor]
     );
@@ -587,17 +617,17 @@ const FilterWrapper = React.memo(
 
         {/* account info panel */}
         <Popover
-          id="accountinfo-popover"
+          id='accountinfo-popover'
           open={Boolean(anchorEl)}
           anchorEl={anchorEl}
           onClose={closeAnchor}
           anchorOrigin={{
-            vertical: 'bottom',
-            horizontal: 'left',
+            vertical: "bottom",
+            horizontal: "left",
           }}
           transformOrigin={{
-            vertical: 'top',
-            horizontal: 'left',
+            vertical: "top",
+            horizontal: "left",
           }}
           classes={{ paper: s.filterPaneWrapper }}
         >
@@ -648,25 +678,25 @@ const MoreFilterDialog = ({
 
   return (
     <Dialog open onClose={onClose} classes={{ paper: s.moreFilterDialog }}>
-      <DialogTitle id="help-dialog-title" className={s.header}>
+      <DialogTitle id='help-dialog-title' className={s.header}>
         <Row fullWidth>
           <Typography fontSizeM textSecondary fontWeightBold>
-            {t('moreFilterOptions')}
+            {t("moreFilterOptions")}
           </Typography>
           <Stretch />
-          <Button link="errorRed" background="secondaryLight" onClick={onClose}>
+          <Button link='errorRed' background='secondaryLight' onClick={onClose}>
             <Typography fontSizeS alignChildrenCenter>
               <CloseIcon style={{ width: 10, height: 10 }} />
-              <Typography paddingLeft>{t('close')}</Typography>
+              <Typography paddingLeft>{t("close")}</Typography>
             </Typography>
           </Button>
         </Row>
       </DialogTitle>
       <DialogContent style={{ padding: 0 }}>
-        <Grid container direction="column">
-          <Grid container direction="column" className={s.priceFilters}>
+        <Grid container direction='column'>
+          <Grid container direction='column' className={s.priceFilters}>
             <Typography fontSizeS textSecondary>
-              {t('area') + ' (m x m)'}
+              {t("area") + " (m x m)"}
             </Typography>
             <AirbnbSlider
               min={MIN_AREA}
@@ -677,9 +707,9 @@ const MoreFilterDialog = ({
             />
           </Grid>
           <Divider />
-          <Grid container direction="column" className={s.priceFilters}>
+          <Grid container direction='column' className={s.priceFilters}>
             <Typography fontSizeXS textSecondary>
-              {t('servicesAndAmenities')}
+              {t("servicesAndAmenities")}
             </Typography>
             <Row fullWidth style={{ marginTop: 28 }}>
               <ServicesAmenitiesForm
@@ -689,13 +719,13 @@ const MoreFilterDialog = ({
               />
             </Row>
             <Link
-              to="#"
+              to='#'
               onClick={() => setShowMore(!showMore)}
-              variant="normalLight"
+              variant='normalLight'
               style={{ marginTop: 28 }}
             >
               <Typography fontSizeS>
-                {showMore ? t('showLessItems') : t('showMoreItems')}
+                {showMore ? t("showLessItems") : t("showMoreItems")}
               </Typography>
             </Link>
           </Grid>
@@ -704,23 +734,23 @@ const MoreFilterDialog = ({
       <DialogActions style={{ padding: 0 }}>
         <Grid
           container
-          direction="row"
-          justify="space-between"
-          alignItems="center"
+          direction='row'
+          justify='space-between'
+          alignItems='center'
           className={s.filterPanel}
         >
           <Button
-            link="errorRed"
-            background="secondaryLight"
+            link='errorRed'
+            background='secondaryLight'
             onClick={() => onApply({ area: null, servicesAndAmenities: null })}
           >
             <Typography fontSizeS alignChildrenCenter>
               <CloseIcon style={{ width: 10, height: 10 }} />
-              <Typography paddingLeft>{t('clear')}</Typography>
+              <Typography paddingLeft>{t("clear")}</Typography>
             </Typography>
           </Button>
           <Button
-            variant="primary"
+            variant='primary'
             onClick={() =>
               onApply({ area: { areaMin, areaMax }, servicesAndAmenities })
             }
@@ -728,7 +758,7 @@ const MoreFilterDialog = ({
           >
             <Typography fontSizeS alignChildrenCenter>
               <CheckIcon style={{ width: 16, height: 12 }} />
-              <Typography paddingLeft>{t('apply')}</Typography>
+              <Typography paddingLeft>{t("apply")}</Typography>
             </Typography>
           </Button>
         </Grid>
@@ -742,12 +772,12 @@ const FilterChip = React.memo(({ classes: s, t, filter, value, onChange }) => {
   const handleRemoveFilter = React.useCallback(
     ({ filter, ...params }) => {
       if (
-        (filter === 'officeTypes' || filter === 'typeOfContracts') &&
-        typeof params.index === 'number'
+        (filter === "officeTypes" || filter === "typeOfContracts") &&
+        typeof params.index === "number"
       ) {
         value.splice(params.index, 1);
         onChange(value);
-      } else if (filter === 'servicesAndAmenities') {
+      } else if (filter === "servicesAndAmenities") {
         const category = params.category;
         const index = params.index;
         if (value[category] && value[category].length) {
@@ -765,105 +795,125 @@ const FilterChip = React.memo(({ classes: s, t, filter, value, onChange }) => {
   );
 
   switch (filter) {
-  case 'officeTypes':
-    return (
-      <React.Fragment>
-        {value.map((v, index) => (
-          <Chip
-            key={filter + index}
-            label={t(v)}
-            onDelete={() => handleRemoveFilter({ filter, index })}
-            className={s.filterValue}
-            color="primary"
-          />
-        ))}
-      </React.Fragment>
-    );
+    case "officeTypes":
+      return (
+        <React.Fragment>
+          {value.map((v, index) => (
+            <Chip
+              key={filter + index}
+              label={t(v)}
+              onDelete={() => handleRemoveFilter({ filter, index })}
+              className={s.filterValue}
+              color='primary'
+            />
+          ))}
+        </React.Fragment>
+      );
 
-  case 'typeOfContracts':
-    return (
-      <React.Fragment>
-        {value.map((v, index) => (
-          <Chip
-            key={filter + index}
-            label={t(v)}
-            onDelete={() => handleRemoveFilter({ filter, index })}
-            className={s.filterValue}
-            color="primary"
-          />
-        ))}
-      </React.Fragment>
-    );
+    case "typeOfContracts":
+      return (
+        <React.Fragment>
+          {value.map((v, index) => (
+            <Chip
+              key={filter + index}
+              label={t(v)}
+              onDelete={() => handleRemoveFilter({ filter, index })}
+              className={s.filterValue}
+              color='primary'
+            />
+          ))}
+        </React.Fragment>
+      );
 
-  case 'rooms':
-    return (
-      <Chip
-        key={filter}
-        label={t('roomsWithNumber', { count: value })}
-        onDelete={() => handleRemoveFilter({ filter })}
-        className={s.filterValue}
-        color="primary"
-      />
-    );
+    // case "rooms":
+    //   return (
+    //     <Chip
+    //       key={filter}
+    //       label={t("roomsWithNumber", { count: value })}
+    //       onDelete={() => handleRemoveFilter({ filter })}
+    //       className={s.filterValue}
+    //       color='primary'
+    //     />
+    //   );
 
-  case 'employees':
-    return (
-      <Chip
-        key={filter}
-        label={t('employeesWithNumber', { count: value })}
-        onDelete={() => handleRemoveFilter({ filter })}
-        className={s.filterValue}
-        color="primary"
-      />
-    );
+    case "price":
+      return (
+        <Chip
+          key={filter}
+          label={t("priceRange", {
+            min: value?.priceMin || "",
+            max: value?.priceMax,
+          })}
+          onDelete={() => handleRemoveFilter({ filter })}
+          className={s.filterValue}
+          color='primary'
+        />
+      );
 
-  case 'price':
-    return (
-      <Chip
-        key={filter}
-        label={[value?.priceMin || '', value?.priceMax || ''].join(' - ')}
-        onDelete={() => handleRemoveFilter({ filter })}
-        className={s.filterValue}
-        color="primary"
-      />
-    );
+    case "rooms":
+      return (
+        <Chip
+          key={filter}
+          label={t("roomsRange", {
+            min: value?.roomsMin || "",
+            max: value?.roomsMax,
+          })}
+          onDelete={() => handleRemoveFilter({ filter })}
+          className={s.filterValue}
+          color='primary'
+        />
+      );
 
-  case 'area':
-    return (
-      <Chip
-        key={filter}
-        label={[value?.areaMin || '', value?.areaMax || ''].join(' - ')}
-        onDelete={() => handleRemoveFilter({ filter })}
-        className={s.filterValue}
-        color="primary"
-      />
-    );
+    case "employees":
+      return (
+        <Chip
+          key={filter}
+          label={t("employeesRange", {
+            min: value?.employeesMin || "",
+            max: value?.employeesMax,
+          })}
+          onDelete={() => handleRemoveFilter({ filter })}
+          className={s.filterValue}
+          color='primary'
+        />
+      );
 
-  case 'servicesAndAmenities':
-    return (
-      <React.Fragment>
-        {Object.entries(value).map(([category, options]) => (
-          <React.Fragment key={category}>
-            {options && options.length
-              ? options.map((opt, index) => (
-                <Chip
-                  key={index}
-                  label={t(opt)}
-                  onDelete={() =>
-                    handleRemoveFilter({ filter, category, index })
-                  }
-                  className={s.filterValue}
-                  color="primary"
-                />
-              ))
-              : null}
-          </React.Fragment>
-        ))}
-      </React.Fragment>
-    );
+    case "area":
+      return (
+        <Chip
+          key={filter}
+          label={[value?.areaMin || "", value?.areaMax || ""].join(" - ")}
+          onDelete={() => handleRemoveFilter({ filter })}
+          className={s.filterValue}
+          color='primary'
+        />
+      );
 
-  default:
-    return null;
+    case "servicesAndAmenities":
+      return (
+        <React.Fragment>
+          {Object.entries(value).map(([category, options]) => (
+            <React.Fragment key={category}>
+              {options && options.length
+                ? options.map((opt, index) => (
+                    <Chip
+                      key={index}
+                      label={t(opt)}
+                      onDelete={() =>
+                        handleRemoveFilter({ filter, category, index })
+                      }
+                      className={s.filterValue}
+                      color='primary'
+                    />
+                  ))
+                : null}
+            </React.Fragment>
+          ))}
+        </React.Fragment>
+      );
+
+    default:
+      return null;
   }
 });
 
@@ -875,7 +925,7 @@ class Search extends PureComponent {
 
   state = {
     searchByMap: false,
-    q: '',
+    q: "",
     filters: {},
     dialog: null,
     offices: [],
@@ -884,28 +934,28 @@ class Search extends PureComponent {
 
   filters = [
     {
-      type: 'location',
-      title: 'location',
+      type: "location",
+      title: "location",
     },
     {
-      type: 'officeTypes',
-      title: 'type',
+      type: "officeTypes",
+      title: "type",
     },
     {
-      type: 'price',
-      title: 'price',
+      type: "price",
+      title: "price",
     },
     {
-      type: 'employees',
-      title: 'employees',
+      type: "employees",
+      title: "employees",
     },
     {
-      type: 'rooms',
-      title: 'rooms',
+      type: "rooms",
+      title: "rooms",
     },
     {
-      type: 'typeOfContracts',
-      title: 'howLong',
+      type: "typeOfContracts",
+      title: "howLong",
     },
   ];
 
@@ -913,21 +963,35 @@ class Search extends PureComponent {
   searchOffices = () => {
     const params = { q: this.state.q };
     Object.entries(this.state.filters).forEach(([filter, value]) => {
-      if (filter === 'price') {
+      if (filter === "price") {
         if (value?.priceMin) {
-          params['priceMin'] = value.priceMin;
+          params["priceMin"] = value.priceMin;
         }
         if (value?.priceMax) {
-          params['priceMax'] = value.priceMax;
+          params["priceMax"] = value.priceMax;
         }
-      } else if (filter === 'area') {
+      } else if (filter === "rooms") {
+        if (value?.roomsMin) {
+          params["roomsMin"] = value.roomsMin;
+        }
+        if (value?.roomsMax) {
+          params["roomsMax"] = value.roomsMax;
+        }
+      } else if (filter === "employees") {
+        if (value?.employeesMin) {
+          params["employeesMin"] = value.employeesMin;
+        }
+        if (value?.employeesMax) {
+          params["employeesMax"] = value.employeesMax;
+        }
+      } else if (filter === "area") {
         if (value?.areaMin) {
-          params['areaMin'] = value.areaMin;
+          params["areaMin"] = value.areaMin;
         }
         if (value?.areaMax) {
-          params['areaMax'] = value.areaMax;
+          params["areaMax"] = value.areaMax;
         }
-      } else if (filter === 'servicesAndAmenities') {
+      } else if (filter === "servicesAndAmenities") {
         params[filter] = [];
         Object.values(value).forEach((category) => {
           params[filter].push(...(category || []));
@@ -937,7 +1001,7 @@ class Search extends PureComponent {
       }
     });
     this.setState({ loading: true });
-    getPublishedOffices(params).then(
+    advancedSearchOffices(params).then(
       (response) => {
         if (response.status === 200) {
           this.setState({ offices: response.data, loading: false });
@@ -958,7 +1022,7 @@ class Search extends PureComponent {
     if (state?.query) {
       this.setState({ q: state.query }, () => {
         this.props.history.replace({
-          pathname: '/search',
+          pathname: "/search",
           state: null,
         });
         this.searchOffices();
@@ -1007,11 +1071,19 @@ class Search extends PureComponent {
     if (!value || (Array.isArray(value) && !value.length)) {
       delete filters[filter];
     }
-    if (filter === 'price') {
+    if (filter === "price") {
       if (value?.priceMin === MIN_PRICE) value.priceMin = null;
       if (value?.priceMax === MAX_PRICE) value.priceMax = null;
       if (!value?.priceMin && !value?.priceMax) delete filters[filter];
-    } else if (filter === 'area') {
+    } else if (filter === "rooms") {
+      if (value?.roomsMin === MIN_ROOMS) value.roomsMin = null;
+      if (value?.roomsMax === MAX_ROOMS) value.roomsMax = null;
+      if (!value?.roomsMin && !value?.roomsMax) delete filters[filter];
+    } else if (filter === "employees") {
+      if (value?.employeesMin === MIN_EMPLOYEES) value.employeesMin = null;
+      if (value?.employeesMax === MAX_EMPLOYEES) value.employeesMax = null;
+      if (!value?.employeesMin && !value?.employeesMax) delete filters[filter];
+    } else if (filter === "area") {
       if (value?.areaMin === MIN_AREA) value.areaMin = null;
       if (value?.areaMax === MAX_AREA) value.areaMax = null;
       if (!value?.areaMin && !value?.areaMax) delete filters[filter];
@@ -1039,7 +1111,7 @@ class Search extends PureComponent {
 
   /** Navigate to office detail */
   handleNavigateOfficeDetail = (office) => () => {
-    this.props.navigate('offices', office._id);
+    this.props.navigate("offices", office._id);
   };
 
   /** Render component */
@@ -1061,12 +1133,12 @@ class Search extends PureComponent {
               q={q}
               onSearch={this.handleSearchByText}
             />
-            {!isWidthDown('xs', width) && (
+            {!isWidthDown("xs", width) && (
               <React.Fragment>
                 <Stretch />
                 <Checkbox
-                  variant="outlined"
-                  label={t('searchByMap')}
+                  variant='outlined'
+                  label={t("searchByMap")}
                   className={s.searchByMap}
                   isChecked={searchByMap}
                   onChange={this.handleSearchByMap}
@@ -1095,7 +1167,7 @@ class Search extends PureComponent {
                 classes={{ root: s.filterButton }}
                 rounded
               >
-                {t('moreFilter')}
+                {t("moreFilter")}
               </Button>
               {dialog}
             </div>
@@ -1124,20 +1196,20 @@ class Search extends PureComponent {
               {/* {!isWidthDown('xs', width) && <Stretch />} */}
               <Stretch />
               <Button
-                link="errorRed"
-                background="errorRedLight"
+                link='errorRed'
+                background='errorRedLight'
                 inverse
-                variant={isWidthDown('xs', width) ? 'icon' : ''}
+                variant={isWidthDown("xs", width) ? "icon" : ""}
                 onClick={this.handleRemoveAllFilters}
               >
                 <CloseIcon style={{ width: 9, height: 9 }} />
-                {!isWidthDown('xs', width) && (
+                {!isWidthDown("xs", width) && (
                   <Typography
                     paddingLeft
                     fontSizeS
-                    style={{ whiteSpace: 'nowrap' }}
+                    style={{ whiteSpace: "nowrap" }}
                   >
-                    {t('clearAllFilters')}
+                    {t("clearAllFilters")}
                   </Typography>
                 )}
               </Button>
@@ -1146,7 +1218,7 @@ class Search extends PureComponent {
         </div>
 
         <div
-          style={{ height: searchByMap ? 'calc(100vh - 300px)' : 'auto' }}
+          style={{ height: searchByMap ? "calc(100vh - 300px)" : "auto" }}
           className={s.valuesWrapper}
         >
           {searchByMap && (
@@ -1155,8 +1227,8 @@ class Search extends PureComponent {
                 coordinates={
                   filteredOffices?.length
                     ? filteredOffices.map(
-                      (office) => office.location.coordinates
-                    )
+                        (office) => office.location.coordinates
+                      )
                     : []
                 }
                 center={
@@ -1166,21 +1238,21 @@ class Search extends PureComponent {
                 markers={
                   filteredOffices?.length
                     ? filteredOffices.map((office, index) => (
-                      <GoogleMapMarker
-                        key={index}
-                        lat={office.location.coordinates.lat}
-                        lng={office.location.coordinates.lng}
-                        badge={office.leasedBy?.overduePayment}
-                        onClick={this.handleNavigateOfficeDetail(office)}
-                      />
-                    ))
+                        <GoogleMapMarker
+                          key={index}
+                          lat={office.location.coordinates.lat}
+                          lng={office.location.coordinates.lng}
+                          badge={office.leasedBy?.overduePayment}
+                          onClick={this.handleNavigateOfficeDetail(office)}
+                        />
+                      ))
                     : []
                 }
               />
             </div>
           )}
 
-          <Column fullHeight style={{ overflowY: 'auto' }}>
+          <Column fullHeight style={{ overflowY: "auto" }}>
             <Column
               classes={{
                 box: clsx(
@@ -1190,14 +1262,14 @@ class Search extends PureComponent {
               }}
             >
               <Typography textSecondary fontSizeS style={{ marginBottom: 24 }}>
-                {t('resultsWithNumber', { count: offices.length })}
+                {t("resultsWithNumber", { count: offices.length })}
               </Typography>
               <div className={clsx(s.offices)}>
                 <Grid
                   container
-                  direction="row"
+                  direction='row'
                   spacing={2}
-                  wrap="wrap"
+                  wrap='wrap'
                   className={clsx(s.offices, searchByMap && s.officesWithMap)}
                 >
                   {offices.map((office, index) => (
@@ -1230,5 +1302,5 @@ class Search extends PureComponent {
 }
 
 export default withWidth()(
-  withStyles(styleSheet)(withTranslation(['home', 'common'])(Search))
+  withStyles(styleSheet)(withTranslation(["home", "common"])(Search))
 );
