@@ -4,6 +4,7 @@ import { withTranslation } from 'react-i18next';
 import PropTypes from 'prop-types';
 import withWidth, { isWidthDown } from '@material-ui/core/withWidth';
 import Carousel from '@brainhubeu/react-carousel';
+import ImageGallery from 'react-image-gallery';
 import {
   Box,
   Row,
@@ -98,6 +99,9 @@ const styleSheet = (theme) => ({
     border: `1px solid ${theme.colors.primary.borderGrey}`,
     borderRadius: 8,
     marginBottom: 15,
+    '&:last-of-type': {
+      marginBottom: 0,
+    },
   },
 
   detailsWrapper: {
@@ -227,6 +231,7 @@ const CoverPhotos = React.memo(({ classes: s, coverPhotos, width }) => {
                       }
                       className={s.coverPhotoContent}
                       alt=""
+                      onClick={() => setCurrentPhoto(index)}
                     />
                   </div>
                 </div>
@@ -235,59 +240,16 @@ const CoverPhotos = React.memo(({ classes: s, coverPhotos, width }) => {
         </div>
       ) : (
         <Row fullWidth relative>
-          <Box classes={{ box: s.imageWrapper }}>
-            <div className={s.coverPhotoWrapper}>
-              <div className={s.coverPhoto}>
-                <img
-                  src={
-                    coverPhotos?.[currentPhoto]?.desktop?.bucketPath
-                    || coverPhotos?.[currentPhoto]?.bucketPath
-                    || null
-                  }
-                  className={s.coverPhotoContent}
-                  alt=""
-                />
-              </div>
-            </div>
-          </Box>
-          <Column absolute classes={{ box: s.imageNavWrapper }}>
-            <Link
-              to="#"
-              variant="normalLight"
-              onClick={prevPhoto}
-              disabled={currentPhoto <= 0}
-            >
-              <ArrowUpIcon className={s.imageNavButton} />
-            </Link>
-            <Box classes={{ box: s.imageNav }}>
-              <Column
-                style={{ top: -currentPhoto * 140 }}
-                classes={{ box: s.imageNavList }}
-              >
-                {coverPhotos
-                  && coverPhotos.map((photo, index) => (
-                    <img
-                      key={index}
-                      src={
-                        photo.mobile
-                          ? photo.mobile.bucketPath
-                          : photo.bucketPath
-                      }
-                      className={s.coverPhotoNav}
-                      alt=""
-                    />
-                  ))}
-              </Column>
-            </Box>
-            <Link
-              to="#"
-              variant="normalLight"
-              onClick={nextPhoto}
-              disabled={currentPhoto <= 0}
-            >
-              <ArrowDownIcon className={s.imageNavButton} />
-            </Link>
-          </Column>
+          <ImageGallery
+            items={coverPhotos ? coverPhotos.map(coverPhoto => ({ original: coverPhoto.desktop?.bucketPath, thumbnail: coverPhoto.mobile?.bucketPath, thumbnailClass: s.coverPhotoContent })) : []}
+            infinite={false}
+            lazyLoad={true}
+            showNav={false}
+            thumbnailPosition={'right'}
+            showFullscreenButton={false}
+            useBrowserFullscreen={false}
+            showPlayButton={false}
+          />
         </Row>
       )}
     </React.Fragment>

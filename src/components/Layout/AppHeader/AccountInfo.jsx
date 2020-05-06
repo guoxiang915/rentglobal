@@ -12,7 +12,7 @@ import {
   Typography,
   Divider,
   LinearProgress,
-  HomeIcon,
+  // HomeIcon,
   UsersIcon,
   BuildingsIcon,
   PowerIcon,
