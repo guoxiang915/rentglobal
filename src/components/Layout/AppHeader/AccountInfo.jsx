@@ -221,14 +221,6 @@ const AccountInfo = ({
       {/* links */}
       <Row fullWidth>
         <Column classes={{ box: s.accountBlockWrapper }} alignChildrenStart>
-          {location.pathname !== '/' && (
-            <NavItem
-              onClick={navigate('home')}
-              icon={HomeIcon}
-              text={t('home')}
-              classes={s}
-            />
-          )}
           {!!userRole && (
             <NavItem
               onClick={navigate('dashboard')}
