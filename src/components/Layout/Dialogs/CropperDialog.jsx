@@ -110,7 +110,7 @@ class CropperDialog extends PureComponent {
       crop.width*scaleX,
       crop.height*scaleY,
     );
-    return new Promise((resolve, reject) => {
+    return new Promise((resolve) => {
       canvas.toBlob(blob => {
         blob.name = fileName;
         resolve(blob);

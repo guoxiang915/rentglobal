@@ -138,7 +138,6 @@ const AccountInfo = ({
   profileProgress,
   navigate,
   onToggleRole,
-  location,
   classes: s,
   t,
 }) => {

@@ -10,8 +10,6 @@ import {
   Row,
   Column,
   Typography,
-  ArrowUpIcon,
-  ArrowDownIcon,
   StarIcon,
   MapPointerIcon,
   Link,
@@ -206,14 +204,6 @@ const styleSheet = (theme) => ({
 
 /** Render cover photos */
 const CoverPhotos = React.memo(({ classes: s, coverPhotos, width }) => {
-  const [currentPhoto, setCurrentPhoto] = React.useState(0);
-  const prevPhoto = () => {
-    setCurrentPhoto(Math.max(currentPhoto - 1, 0));
-  };
-  const nextPhoto = () => {
-    setCurrentPhoto(Math.min(currentPhoto + 1, (coverPhotos?.length || 0) - 1));
-  };
-
   return (
     <React.Fragment>
       {isWidthDown('xs', width) ? (
@@ -231,7 +221,6 @@ const CoverPhotos = React.memo(({ classes: s, coverPhotos, width }) => {
                       }
                       className={s.coverPhotoContent}
                       alt=""
-                      onClick={() => setCurrentPhoto(index)}
                     />
                   </div>
                 </div>
