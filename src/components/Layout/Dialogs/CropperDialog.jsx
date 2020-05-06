@@ -92,34 +92,29 @@ class CropperDialog extends PureComponent {
 
   /** Get cropped image from crop config */
   getCroppedImage = (image, crop, fileName) => {
+    let img = this.imageRef;
     const canvas = document.createElement('canvas');
-    const scaleX = image.naturalWidth / image.width;
-    const scaleY = image.naturalHeight / image.height;
-    canvas.width = crop.width;
-    canvas.height = crop.height;
+    const scaleX = img.naturalWidth / img.width;
+    const scaleY = img.naturalHeight / img.height;
+    canvas.width = Math.ceil(crop.width*scaleX);
+    canvas.height = Math.ceil(crop.height*scaleY);
     const ctx = canvas.getContext('2d');
-
     ctx.drawImage(
-      image,
+      img,
       crop.x * scaleX,
       crop.y * scaleY,
       crop.width * scaleX,
       crop.height * scaleY,
       0,
       0,
-      crop.width,
-      crop.height,
+      crop.width*scaleX,
+      crop.height*scaleY,
     );
-
     return new Promise((resolve, reject) => {
-      canvas.toBlob((blob) => {
-        if (!blob) {
-          reject(new Error('Canvas is empty'));
-          return;
-        }
+      canvas.toBlob(blob => {
         blob.name = fileName;
         resolve(blob);
-      }, 'image/jpeg');
+      }, 'image/jpeg',1);
     });
   };
 
