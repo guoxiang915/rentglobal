@@ -113,9 +113,13 @@ class CallConsultantDialog extends PureComponent {
       this.props.onClose();
     }
   };
-
-  /** Share office via social */
-  handleShareSocial = () => () => {};
+  
+  /**
+   * Event handler for skype call
+   */
+  handleCall = () => {
+    window.open("skype:+16612716484?call");
+  };
 
   /** Copy phone number */
   handleCopy = (text) => {
@@ -127,6 +131,7 @@ class CallConsultantDialog extends PureComponent {
       this.setState({ isCopied: false });
     }, 2000);
   }
+
 
   /** Render function */
   render() {
@@ -227,7 +232,7 @@ class CallConsultantDialog extends PureComponent {
           <Box fullWidth paddingTop>
             <Button
               variant="primary"
-              onClick={this.handleFollowUp}
+              onClick={this.handleCall}
               shadow
               fullWidth
               className={s.callButton}
