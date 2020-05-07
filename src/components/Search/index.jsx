@@ -78,6 +78,7 @@ const Searchbox = ({ classes: s, t, q, onSearch }) => {
 };
 
 const OfficeTypeFilterPanel = ({ classes: s, t, types, onApply }) => {
+  console.log(types);
   const handleClickType = (type) => {
     if (!types) types = [];
     if (types.indexOf(type) !== -1) {
@@ -85,6 +86,7 @@ const OfficeTypeFilterPanel = ({ classes: s, t, types, onApply }) => {
     } else {
       types.push(type);
     }
+    console.log(types);
     onApply(types);
   };
 
@@ -526,125 +528,118 @@ const PriceFilterPanel = ({ classes: s, t, price, onApply }) => {
   );
 };
 
-const FilterPanel = React.memo(
-  ({ classes, t, filter, value, onChangeFilter }) => {
-    switch (filter.type) {
-      case "officeTypes":
-        return (
-          <OfficeTypeFilterPanel
-            classes={classes}
-            t={t}
-            types={value}
-            onApply={onChangeFilter("officeTypes")}
-          />
-        );
+const FilterPanel = ({ classes, t, filter, value, onChangeFilter }) => {
+  switch (filter.type) {
+    case "officeTypes":
+      return (
+        <OfficeTypeFilterPanel
+          classes={classes}
+          t={t}
+          types={value}
+          onApply={onChangeFilter("officeTypes")}
+        />
+      );
 
-      case "typeOfContracts":
-        return (
-          <ContractTypeFilterPanel
-            classes={classes}
-            t={t}
-            types={value}
-            onApply={onChangeFilter("typeOfContracts")}
-          />
-        );
+    case "typeOfContracts":
+      return (
+        <ContractTypeFilterPanel
+          classes={classes}
+          t={t}
+          types={value}
+          onApply={onChangeFilter("typeOfContracts")}
+        />
+      );
 
-      case "rooms":
-        return (
-          <RoomsFilterPanel
-            classes={classes}
-            t={t}
-            rooms={value}
-            onApply={onChangeFilter("rooms")}
-          />
-        );
+    case "rooms":
+      return (
+        <RoomsFilterPanel
+          classes={classes}
+          t={t}
+          rooms={value}
+          onApply={onChangeFilter("rooms")}
+        />
+      );
 
-      case "employees":
-        return (
-          <EmployeesFilterPanel
-            classes={classes}
-            t={t}
-            employees={value}
-            onApply={onChangeFilter("employees")}
-          />
-        );
+    case "employees":
+      return (
+        <EmployeesFilterPanel
+          classes={classes}
+          t={t}
+          employees={value}
+          onApply={onChangeFilter("employees")}
+        />
+      );
 
-      case "price":
-        return (
-          <PriceFilterPanel
-            classes={classes}
-            t={t}
-            price={value}
-            onApply={onChangeFilter("price")}
-          />
-        );
+    case "price":
+      return (
+        <PriceFilterPanel
+          classes={classes}
+          t={t}
+          price={value}
+          onApply={onChangeFilter("price")}
+        />
+      );
 
-      default:
-        return null;
-    }
+    default:
+      return null;
   }
-);
+};
 
-const FilterWrapper = React.memo(
-  ({ classes: s, t, filter, value, onChangeFilter }) => {
-    const [anchorEl, setAnchorEl] = React.useState(null);
-    const openAnchor = React.useCallback(
-      (e) => setAnchorEl(e.currentTarget),
-      []
-    );
-    const closeAnchor = React.useCallback(() => setAnchorEl(null), []);
-    const handleChangeFilter = React.useCallback(
-      (filter) => (value) => {
-        onChangeFilter(filter, value);
-        if (filter !== "officeTypes" && filter !== "typeOfContracts") {
-          closeAnchor();
-        }
-      },
-      [onChangeFilter, closeAnchor]
-    );
+const FilterWrapper = ({ classes: s, t, filter, value, onChangeFilter }) => {
+  const [anchorEl, setAnchorEl] = React.useState(null);
+  const openAnchor = React.useCallback((e) => setAnchorEl(e.currentTarget), []);
+  const closeAnchor = React.useCallback(() => setAnchorEl(null), []);
+  const handleChangeFilter = React.useCallback(
+    (filter) => (value) => {
+      onChangeFilter(filter, value);
+      if (filter !== "officeTypes" && filter !== "typeOfContracts") {
+        closeAnchor();
+      }
+    },
+    [onChangeFilter, closeAnchor]
+  );
 
-    return (
-      <div className={s.filterWrapper}>
-        <Button
-          onClick={openAnchor}
-          classes={{
-            root: clsx(s.filterButton, !!value && s.filterSelectedButton),
-          }}
-          rounded
-        >
-          {t(filter.title)}
-        </Button>
+  return (
+    <div className={s.filterWrapper}>
+      <Button
+        onClick={openAnchor}
+        classes={{
+          root: clsx(s.filterButton, !!value && s.filterSelectedButton),
+        }}
+        rounded
+      >
+        {t(filter.title)}
+      </Button>
 
-        {/* account info panel */}
-        <Popover
-          id='accountinfo-popover'
-          open={Boolean(anchorEl)}
-          anchorEl={anchorEl}
-          onClose={closeAnchor}
-          anchorOrigin={{
-            vertical: "bottom",
-            horizontal: "left",
-          }}
-          transformOrigin={{
-            vertical: "top",
-            horizontal: "left",
-          }}
-          classes={{ paper: s.filterPaneWrapper }}
-        >
-          <Paper className={s.filterContentWrapper}>
-            <FilterPanel
-              classes={s}
-              t={t}
-              filter={filter}
-              value={value}
-              onChangeFilter={handleChangeFilter}
-            />
-          </Paper>
-        </Popover>
-      </div>
-    );
-  }
-);
+      {/* account info panel */}
+      <Popover
+        id='accountinfo-popover'
+        open={Boolean(anchorEl)}
+        anchorEl={anchorEl}
+        onClose={closeAnchor}
+        anchorOrigin={{
+          vertical: "bottom",
+          horizontal: "left",
+        }}
+        transformOrigin={{
+          vertical: "top",
+          horizontal: "left",
+        }}
+        classes={{ paper: s.filterPaneWrapper }}
+      >
+        <Paper className={s.filterContentWrapper}>
+          <FilterPanel
+            classes={s}
+            t={t}
+            filter={filter}
+            value={value}
+            onChangeFilter={handleChangeFilter}
+          />
+        </Paper>
+      </Popover>
+    </div>
+  );
+};
 
 const MIN_AREA = 0;
 const MAX_AREA = 1000;
