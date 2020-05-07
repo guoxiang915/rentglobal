@@ -231,7 +231,6 @@ class OfficeDetail extends PureComponent {
   /** Render related consultant info */
   renderConsultant = ({ classes: s, t, consultant }) => {
     const [showMore, setShowMore] = React.useState(false);
-    console.log('consultant!');
     return (
       <Column classes={{ box: s.consultantInfo }}>
         <Row fullWidth alignChildrenStart>
