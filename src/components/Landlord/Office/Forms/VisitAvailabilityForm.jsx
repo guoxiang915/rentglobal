@@ -1,17 +1,17 @@
-import React, { PureComponent } from 'react';
-import { withStyles } from '@material-ui/core/styles';
-import { withTranslation } from 'react-i18next';
-import PropTypes from 'prop-types';
-import withWidth from '@material-ui/core/withWidth';
-import { Column, Typography } from '../../../../common/base-components';
-import CalendarForm from '../../../Layout/CalendarForm';
+import React, { PureComponent } from "react";
+import { withStyles } from "@material-ui/core/styles";
+import { withTranslation } from "react-i18next";
+import PropTypes from "prop-types";
+import withWidth from "@material-ui/core/withWidth";
+import { Column, Typography } from "../../../../common/base-components";
+import CalendarForm from "../../../Layout/CalendarForm";
 
 const styleSheet = () => ({
   root: {},
 
   calendarWrapper: {
     marginTop: 58,
-    width: '100%',
+    width: "100%",
   },
 });
 
@@ -27,7 +27,7 @@ class VisitAvailabilityForm extends PureComponent {
     t: PropTypes.func,
   };
 
-  state = { isLoading: false, dialog: null };
+  state = { isLoading: false, visits: [] };
 
   /**
    * Update state
@@ -52,24 +52,30 @@ class VisitAvailabilityForm extends PureComponent {
     this.setState({ dialog: null });
   };
 
-  /** Save visits info */
-  handleSave = () => {};
+  /** Change visits info */
+  handleChangeVisits = (data) => {
+    this.setState({ visits: data });
+  };
 
   /**
    * Renderer function
    */
   render() {
     const { classes: s, t } = this.props;
-    const { dialog } = this.state;
+    const { visits, dialog } = this.state;
 
     return (
       <Column classes={{ box: s.root }} fullWidth alignChildrenStart>
         <Typography fontSizeS textMediumGrey>
-          {t('setTimeForDay')}
+          {t("setTimeForDay")}
         </Typography>
 
         <div className={s.calendarWrapper}>
-          <CalendarForm startDate={new Date()} onSave={this.handleSave} />
+          <CalendarForm
+            startDate={new Date()}
+            visits={visits}
+            onChange={this.handleChangeVisits}
+          />
         </div>
 
         {/* show dialog */}
@@ -80,5 +86,5 @@ class VisitAvailabilityForm extends PureComponent {
 }
 
 export default withWidth()(
-  withStyles(styleSheet)(withTranslation('common')(VisitAvailabilityForm))
+  withStyles(styleSheet)(withTranslation("common")(VisitAvailabilityForm))
 );

@@ -87,10 +87,8 @@ export const createOfficeServicesAmenities = (officeId, payload) =>
   api.put(`/offices/${officeId}/services-amenities/`, payload);
 
 /** Mock api to save visibility */
-export const saveVisibility = (officeId, payload) => {
-  // api.put(`/offices/${officeId}/services-amenities/`, payload);
-  return Promise.resolve({ data: payload });
-};
+export const saveVisibility = (officeId, payload) =>
+  api.put(`/offices/${officeId}/visit-hours/`, payload);
 
 /** Call api to publish office */
 export const publishOffice = (officeId) =>

@@ -115,7 +115,10 @@ class AddTimeDialog extends PureComponent {
     onClose: PropTypes.func,
   };
 
-  state = { start: new Date(), end: new Date() };
+  state = {
+    start: new Date(0, 0, 0, 0, 0, 0),
+    end: new Date(0, 0, 0, 12, 0, 0),
+  };
 
   /**
    * Event handler for closing dialog
@@ -210,6 +213,7 @@ class AddTimeDialog extends PureComponent {
                     endAdornment={InputProps.endAdornment}
                   />
                 )}
+                minutesStep={10}
               />
               <KeyboardTimePicker
                 value={end}
@@ -228,6 +232,7 @@ class AddTimeDialog extends PureComponent {
                     endAdornment={InputProps.endAdornment}
                   />
                 )}
+                minutesStep={10}
               />
             </Column>
           </DialogContent>

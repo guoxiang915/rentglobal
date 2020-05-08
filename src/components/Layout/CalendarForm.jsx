@@ -128,19 +128,17 @@ class CalendarForm extends PureComponent {
     /** Date info */
     startDate: PropTypes.object.isRequired,
     /** visits info */
-    visits: PropTypes.object,
-    /** save function */
-    onSave: PropTypes.func,
+    visits: PropTypes.array,
+    /** change function */
+    onChange: PropTypes.func,
 
     classes: PropTypes.object,
     t: PropTypes.func,
   };
 
-  state = { availabilities: [], dialog: null };
+  state = { dialog: null };
 
-  componentDidUpdate() {
-    // this.setState({ availabilities: this.props.visits || [] });
-  }
+  componentDidUpdate() {}
 
   handleAdd = (index) => {
     const { startDate } = this.props;
@@ -159,7 +157,9 @@ class CalendarForm extends PureComponent {
   };
 
   handleAddAvailability = (e) => {
-    this.setState({ availabilities: [...this.state.availabilities, e] });
+    if (this.props.onChange) {
+      this.props.onChange([...this.props.visits, e]);
+    }
     this.handleCloseDialog();
   };
 
@@ -171,8 +171,8 @@ class CalendarForm extends PureComponent {
    * Renderer function
    */
   render() {
-    const { startDate, onSave, classes: s, t } = this.props;
-    const { availabilities, dialog } = this.state;
+    const { visits, startDate, onChange, classes: s, t } = this.props;
+    const { dialog } = this.state;
     const firstWeekday = getFirstDayOfWeek(startDate);
 
     return (
@@ -197,7 +197,7 @@ class CalendarForm extends PureComponent {
               <TableCell key={index} className={s.dataCell}>
                 <DataCell
                   classes={s}
-                  visits={availabilities.filter(
+                  visits={visits.filter(
                     (v) =>
                       new Date(
                         v.date.getFullYear(),
@@ -210,7 +210,7 @@ class CalendarForm extends PureComponent {
                         firstWeekday.getDate() + index
                       ).getTime()
                   )}
-                  onAdd={onSave ? () => this.handleAdd(index) : null}
+                  onAdd={onChange ? () => this.handleAdd(index) : null}
                 />
               </TableCell>
             ))}
