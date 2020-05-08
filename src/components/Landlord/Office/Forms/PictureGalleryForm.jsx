@@ -122,6 +122,7 @@ class PictureGalleryForm extends PureComponent {
         <CropperDialog
           fileName={file.name}
           src={reader.result}
+          aspectRatio={2/1}
           onClose={this.handleCloseDialog}
           onSave={this.handleUploadPhoto}
         />
