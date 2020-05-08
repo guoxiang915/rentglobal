@@ -15,7 +15,12 @@ import {
   DialogContent,
   DialogActions,
 } from "@material-ui/core";
-import { KeyboardArrowLeft, KeyboardArrowRight } from "@material-ui/icons";
+import {
+  LocationOnOutlined,
+  GpsFixedOutlined,
+  KeyboardArrowLeft,
+  KeyboardArrowRight,
+} from "@material-ui/icons";
 import {
   Row,
   Column,
@@ -62,22 +67,29 @@ const Searchbox = ({ classes: s, t, q, onSearch }) => {
       className={s.searchInput}
       styles={{ input: s.searchInputProps }}
       endAdornment={
-        <Button
-          variant='icon'
-          background='primary'
-          style={{ margin: 0 }}
-          className={s.searchInputIcon}
-          shadow
-          onClick={() => onSearch(query)}
-        >
-          <SearchIcon style={{ width: 16, height: 16 }} />
-        </Button>
+        <Row classes={{ box: s.searchInputWrapper }} alignChildrenCenter>
+          <GpsFixedOutlined color='secondary' fontSize='small' />
+          <Button
+            variant='icon'
+            background='primary'
+            style={{ margin: 0, marginLeft: 16 }}
+            className={s.searchInputIcon}
+            shadow
+            onClick={() => onSearch(query)}
+          >
+            <SearchIcon style={{ width: 16, height: 16 }} />
+            <Typography paddingLeft fontSizeS>
+              {t("search")}
+            </Typography>
+          </Button>
+        </Row>
       }
     />
   );
 };
 
 const OfficeTypeFilterPanel = ({ classes: s, t, types, onApply }) => {
+  console.log(types);
   const handleClickType = (type) => {
     if (!types) types = [];
     if (types.indexOf(type) !== -1) {
@@ -85,6 +97,7 @@ const OfficeTypeFilterPanel = ({ classes: s, t, types, onApply }) => {
     } else {
       types.push(type);
     }
+    console.log(types);
     onApply(types);
   };
 
@@ -227,9 +240,9 @@ const ContractTypeFilterPanel = ({ classes: s, t, types, onApply }) => {
 const MIN_PRICE = 0;
 const MAX_PRICE = 50000; // undefined
 const MIN_ROOMS = 0;
-const MAX_ROOMS = 100; // undefined
+const MAX_ROOMS = 50; // undefined
 const MIN_EMPLOYEES = 0;
-const MAX_EMPLOYEES = 5000; // undefined
+const MAX_EMPLOYEES = 200; // undefined
 
 const AirbnbThumbComponent = ({ ...props }) => {
   const index = props["data-index"];
@@ -526,9 +539,8 @@ const PriceFilterPanel = ({ classes: s, t, price, onApply }) => {
   );
 };
 
-const FilterPanel = React.memo(
-  ({ classes, t, filter, value, onChangeFilter }) => {
-    switch (filter.type) {
+const FilterPanel = ({ classes, t, filter, value, onChangeFilter }) => {
+  switch (filter.type) {
     case "officeTypes":
       return (
         <OfficeTypeFilterPanel
@@ -581,70 +593,64 @@ const FilterPanel = React.memo(
 
     default:
       return null;
-    }
   }
-);
+};
 
-const FilterWrapper = React.memo(
-  ({ classes: s, t, filter, value, onChangeFilter }) => {
-    const [anchorEl, setAnchorEl] = React.useState(null);
-    const openAnchor = React.useCallback(
-      (e) => setAnchorEl(e.currentTarget),
-      []
-    );
-    const closeAnchor = React.useCallback(() => setAnchorEl(null), []);
-    const handleChangeFilter = React.useCallback(
-      (filter) => (value) => {
-        onChangeFilter(filter, value);
-        if (filter !== "officeTypes" && filter !== "typeOfContracts") {
-          closeAnchor();
-        }
-      },
-      [onChangeFilter, closeAnchor]
-    );
+const FilterWrapper = ({ classes: s, t, filter, value, onChangeFilter }) => {
+  const [anchorEl, setAnchorEl] = React.useState(null);
+  const openAnchor = React.useCallback((e) => setAnchorEl(e.currentTarget), []);
+  const closeAnchor = React.useCallback(() => setAnchorEl(null), []);
+  const handleChangeFilter = React.useCallback(
+    (filter) => (value) => {
+      onChangeFilter(filter, value);
+      if (filter !== "officeTypes" && filter !== "typeOfContracts") {
+        closeAnchor();
+      }
+    },
+    [onChangeFilter, closeAnchor]
+  );
 
-    return (
-      <div className={s.filterWrapper}>
-        <Button
-          onClick={openAnchor}
-          classes={{
-            root: clsx(s.filterButton, !!value && s.filterSelectedButton),
-          }}
-          rounded
-        >
-          {t(filter.title)}
-        </Button>
+  return (
+    <div className={s.filterWrapper}>
+      <Button
+        onClick={openAnchor}
+        classes={{
+          root: clsx(s.filterButton, !!value && s.filterSelectedButton),
+        }}
+        rounded
+      >
+        {t(filter.title)}
+      </Button>
 
-        {/* account info panel */}
-        <Popover
-          id='accountinfo-popover'
-          open={Boolean(anchorEl)}
-          anchorEl={anchorEl}
-          onClose={closeAnchor}
-          anchorOrigin={{
-            vertical: "bottom",
-            horizontal: "left",
-          }}
-          transformOrigin={{
-            vertical: "top",
-            horizontal: "left",
-          }}
-          classes={{ paper: s.filterPaneWrapper }}
-        >
-          <Paper className={s.filterContentWrapper}>
-            <FilterPanel
-              classes={s}
-              t={t}
-              filter={filter}
-              value={value}
-              onChangeFilter={handleChangeFilter}
-            />
-          </Paper>
-        </Popover>
-      </div>
-    );
-  }
-);
+      {/* account info panel */}
+      <Popover
+        id='accountinfo-popover'
+        open={Boolean(anchorEl)}
+        anchorEl={anchorEl}
+        onClose={closeAnchor}
+        anchorOrigin={{
+          vertical: "bottom",
+          horizontal: "left",
+        }}
+        transformOrigin={{
+          vertical: "top",
+          horizontal: "left",
+        }}
+        classes={{ paper: s.filterPaneWrapper }}
+      >
+        <Paper className={s.filterContentWrapper}>
+          <FilterPanel
+            classes={s}
+            t={t}
+            filter={filter}
+            value={value}
+            onChangeFilter={handleChangeFilter}
+          />
+        </Paper>
+      </Popover>
+    </div>
+  );
+};
 
 const MIN_AREA = 0;
 const MAX_AREA = 1000;
@@ -924,7 +930,7 @@ class Search extends PureComponent {
   };
 
   state = {
-    searchByMap: false,
+    showOnMap: false,
     q: "",
     filters: {},
     dialog: null,
@@ -933,10 +939,6 @@ class Search extends PureComponent {
   };
 
   filters = [
-    {
-      type: "location",
-      title: "location",
-    },
     {
       type: "officeTypes",
       title: "type",
@@ -1038,9 +1040,9 @@ class Search extends PureComponent {
   };
 
   /** Search offices by map */
-  handleSearchByMap = () => {
-    const searchByMap = !this.state.searchByMap;
-    this.setState({ searchByMap }, this.searchOffices);
+  handleShowOnMap = () => {
+    const showOnMap = !this.state.showOnMap;
+    this.setState({ showOnMap }, this.searchOffices);
   };
 
   /** Open more filter dialog */
@@ -1117,7 +1119,7 @@ class Search extends PureComponent {
   /** Render component */
   render() {
     const { width, classes: s, t } = this.props;
-    const { searchByMap, filters, q, offices, dialog } = this.state;
+    const { showOnMap, filters, q, offices, dialog } = this.state;
 
     const filteredOffices = offices?.filter(
       (office) => office.location?.coordinates
@@ -1138,10 +1140,12 @@ class Search extends PureComponent {
                 <Stretch />
                 <Checkbox
                   variant='outlined'
-                  label={t("searchByMap")}
-                  className={s.searchByMap}
-                  isChecked={searchByMap}
-                  onChange={this.handleSearchByMap}
+                  label={t("showOnMap")}
+                  className={s.showOnMap}
+                  isChecked={showOnMap}
+                  onChange={this.handleShowOnMap}
+                  icon={LocationOnOutlined}
+                  checkedIcon={LocationOnOutlined}
                 />
               </React.Fragment>
             )}
@@ -1218,11 +1222,11 @@ class Search extends PureComponent {
         </div>
 
         <div
-          style={{ height: searchByMap ? "calc(100vh - 300px)" : "auto" }}
+          style={{ height: showOnMap ? "calc(100vh - 300px)" : "auto" }}
           className={s.valuesWrapper}
         >
-          {searchByMap && (
-            <div className={s.searchByMapWrapper}>
+          {showOnMap && (
+            <div className={s.showOnMapWrapper}>
               <GoogleMap
                 coordinates={
                   filteredOffices?.length
@@ -1255,10 +1259,7 @@ class Search extends PureComponent {
           <Column fullHeight style={{ overflowY: "auto" }}>
             <Column
               classes={{
-                box: clsx(
-                  s.officesWrapper,
-                  searchByMap && s.smallOfficesWrapper
-                ),
+                box: clsx(s.officesWrapper, showOnMap && s.smallOfficesWrapper),
               }}
             >
               <Typography textSecondary fontSizeS style={{ marginBottom: 24 }}>
@@ -1270,15 +1271,15 @@ class Search extends PureComponent {
                   direction='row'
                   spacing={2}
                   wrap='wrap'
-                  className={clsx(s.offices, searchByMap && s.officesWithMap)}
+                  className={clsx(s.offices, showOnMap && s.officesWithMap)}
                 >
                   {offices.map((office, index) => (
                     <Grid
                       item
                       xs={12}
-                      sm={searchByMap ? 12 : 6}
-                      md={searchByMap ? 12 : 4}
-                      lg={searchByMap ? 6 : 3}
+                      sm={showOnMap ? 12 : 6}
+                      md={showOnMap ? 12 : 4}
+                      lg={showOnMap ? 6 : 3}
                       key={index}
                     >
                       <div className={s.officeWrapper}>

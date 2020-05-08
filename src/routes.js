@@ -1,39 +1,39 @@
-import React from 'react';
-import { Switch } from 'react-router-dom';
-import Home from './containers/Home';
-import Search from './components/Search';
-import AuthWrapper from './containers/Auth';
-import PrivateRoute from './containers/Layout/PrivateRoute';
-import Landlord from './containers/Landlord';
-import Company from './containers/Company';
-import PageNotFound from './containers/Landlord';
-import OfficeDetail from './components/Home/OfficeDetail';
+import React from "react";
+import { Switch } from "react-router-dom";
+import Home from "./containers/Home";
+import Search from "./components/Search";
+import AuthWrapper from "./containers/Auth";
+import PrivateRoute from "./containers/Layout/PrivateRoute";
+import Landlord from "./containers/Landlord";
+import Company from "./containers/Company";
+import PageNotFound from "./components/Layout/PageNotFound";
+import OfficeDetail from "./components/Home/OfficeDetail";
 
 export default (
   <div>
     <Switch>
-      <PrivateRoute exact path="/" component={Home} noSidebar />
-      <PrivateRoute exact path="/search" component={Search} noSidebar />
+      <PrivateRoute exact path='/' component={Home} noSidebar />
+      <PrivateRoute exact path='/search' component={Search} noSidebar />
       <PrivateRoute
         exact
-        path="/offices/:id"
+        path='/offices/:id'
         component={({ match, ...props }) => (
           <OfficeDetail officeId={match.params.id} {...props} />
         )}
         noSidebar
       />
-      <PrivateRoute path="/auth" component={AuthWrapper} noSidebar />
+      <PrivateRoute path='/auth' component={AuthWrapper} noSidebar />
       <PrivateRoute
-        path="/landlord"
+        path='/landlord'
         component={Landlord}
         authRequired
-        userRole="landlord"
+        userRole='landlord'
       />
       <PrivateRoute
-        path="/company"
+        path='/company'
         component={Company}
         authRequired
-        userRole="company"
+        userRole='company'
       />
       <PrivateRoute component={PageNotFound} />
     </Switch>
