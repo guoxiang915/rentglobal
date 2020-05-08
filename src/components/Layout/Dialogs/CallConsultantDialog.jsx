@@ -117,8 +117,8 @@ class CallConsultantDialog extends PureComponent {
   /**
    * Event handler for skype call
    */
-  handleCall = () => {
-    window.open("skype:+16612716484?call");
+  handleCall = (phoneNumber) => {
+    window.open("skype:" + phoneNumber + "?call");
   };
 
   /** Copy phone number */
@@ -192,7 +192,7 @@ class CallConsultantDialog extends PureComponent {
             <Row fullWidth>
               <TextField
                 variant="outlined"
-                value={'123 456 7890'}
+                value={office.consultantInfo ? office.consultantInfo.phoneNumber : ''}
                 className={s.profileInput}
                 fullWidth
                 startAdornment={<PhoneIcon className={s.outlineIcon} />}
@@ -217,8 +217,9 @@ class CallConsultantDialog extends PureComponent {
                   >
                     <Button
                       variant="primary"
-                      onClick={() => this.handleCopy('123 456 7890')}
+                      onClick={() => this.handleCopy(office.consultantInfo ? office.consultantInfo.phoneNumber : '')}
                       className={s.copyButton}
+                      disabled={!office.consultantInfo || !office.consultantInfo.phoneNumber}
                     >
                       <CopyIcon style={{ width: 24, height: 24 }} />
                     </Button>
@@ -232,10 +233,11 @@ class CallConsultantDialog extends PureComponent {
           <Box fullWidth paddingTop>
             <Button
               variant="primary"
-              onClick={this.handleCall}
+              onClick={() => this.handleCall(office.consultantInfo ? office.consultantInfo.phoneNumber : '')}
               shadow
               fullWidth
               className={s.callButton}
+              disabled={!office.consultantInfo || !office.consultantInfo.phoneNumber}
             >
               <SkypeIcon style={{ width: 24, height: 24 }} />
               <Typography paddingLeftHalf fontSizeM fontWeightBold>
