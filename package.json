@@ -13,6 +13,7 @@
     "awesome-phonenumber": "^2.30.0",
     "axios": "^0.18.1",
     "babel-eslint": "^10.0.3",
+    "clipboard-copy": "^3.1.0",
     "clsx": "^1.0.4",
     "connected-react-router": "^4.3.0",
     "eslint": "^6.8.0",

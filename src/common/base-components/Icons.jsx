@@ -80,6 +80,8 @@ export { default as IndependentOfficeIcon } from '../../assets/icon/icon_indepen
 export { default as PrivateOfficeIcon } from '../../assets/icon/icon_private_office';
 export { default as AssignedOfficeIcon } from '../../assets/icon/icon_assigned_workstation';
 export { default as UnassignedOfficeIcon } from '../../assets/icon/icon_unassigned_workstation';
+export { default as CopyIcon } from '../../assets/icon/icon_copy';
+export { default as SkypeIcon } from '../../assets/icon/icon_skype';
 
 export const ProgressIcon = (props) => (
   <CircularProgress color="primary" size={36} {...props} />
