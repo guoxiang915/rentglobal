@@ -1,7 +1,11 @@
-import React, { PureComponent, forwardRef } from 'react';
-import PropTypes from 'prop-types';
-import clsx from 'clsx';
-import { TextField as MUITextField, withStyles } from '@material-ui/core';
+import React, { PureComponent, forwardRef } from "react";
+import PropTypes from "prop-types";
+import clsx from "clsx";
+import {
+  TextField as MUITextField,
+  withStyles,
+  InputAdornment,
+} from "@material-ui/core";
 
 const styleSheet = (theme) => ({
   root: {
@@ -10,7 +14,7 @@ const styleSheet = (theme) => ({
 
   label: {
     ...theme.typography.secondaryBody,
-    textAlign: 'left',
+    textAlign: "left",
   },
 
   asterisk: {
@@ -20,7 +24,7 @@ const styleSheet = (theme) => ({
   errorMessage: {
     ...theme.typography.errorMessage,
     color: `${theme.colors.primary.errorRed} !important`,
-    textAlign: 'right',
+    textAlign: "right",
   },
 
   inputError: {
@@ -29,7 +33,7 @@ const styleSheet = (theme) => ({
 
   input: {
     ...theme.typography.primaryBody,
-    padding: '14px 16px',
+    padding: "14px 16px",
   },
 
   multiline: {
@@ -41,7 +45,7 @@ const styleSheet = (theme) => ({
   },
 
   fullWidth: {
-    width: '100%',
+    width: "100%",
   },
 });
 
@@ -66,7 +70,7 @@ class TextField extends PureComponent {
   };
 
   static defaultProps = {
-    variant: 'outlined',
+    variant: "outlined",
   };
 
   handleChange = (e) => {
@@ -116,13 +120,15 @@ class TextField extends PureComponent {
       <MUITextField
         // defaultValue={type === "number" ? 0 : ""}
         // fix bug of default value
-        value={value ?? ''}
+        value={value ?? ""}
         onChange={this.handleChange}
         type={type}
         label={label}
         InputProps={{
           startAdornment,
-          endAdornment,
+          endAdornment: (
+            <InputAdornment>{endAdornment || <></>}</InputAdornment>
+          ),
           classes: {
             root: clsx(s.root, styles && styles.root),
             input: clsx(s.input, styles && styles.input),
@@ -152,6 +158,6 @@ class TextField extends PureComponent {
   }
 }
 
-export default withStyles(styleSheet, { name: 'TextField' })(
+export default withStyles(styleSheet, { name: "TextField" })(
   forwardRef((props, ref) => <TextField innerRef={ref} {...props} />)
 );
