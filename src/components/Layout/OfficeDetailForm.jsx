@@ -135,7 +135,8 @@ const styleSheet = (theme) => ({
     flexDirection: 'column',
     alignItems: 'center',
     height: '100%',
-    justifyContent: 'space-between'
+    justifyContent: 'space-between',
+    pointerEvents: 'none'
   },
 
   navigationButton: {
@@ -147,7 +148,8 @@ const styleSheet = (theme) => ({
     backgroundColor: 'rgba(255, 255, 255, 0.5)',
     cursor: 'pointer',
     padding: 0,
-    borderRadius: 0
+    borderRadius: 0,
+    pointerEvents: 'all'
   },
 
   navigationButtonUp: {},
