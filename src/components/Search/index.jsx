@@ -541,58 +541,58 @@ const PriceFilterPanel = ({ classes: s, t, price, onApply }) => {
 
 const FilterPanel = ({ classes, t, filter, value, onChangeFilter }) => {
   switch (filter.type) {
-    case "officeTypes":
-      return (
-        <OfficeTypeFilterPanel
-          classes={classes}
-          t={t}
-          types={value}
-          onApply={onChangeFilter("officeTypes")}
-        />
-      );
+  case "officeTypes":
+    return (
+      <OfficeTypeFilterPanel
+        classes={classes}
+        t={t}
+        types={value}
+        onApply={onChangeFilter("officeTypes")}
+      />
+    );
 
-    case "typeOfContracts":
-      return (
-        <ContractTypeFilterPanel
-          classes={classes}
-          t={t}
-          types={value}
-          onApply={onChangeFilter("typeOfContracts")}
-        />
-      );
+  case "typeOfContracts":
+    return (
+      <ContractTypeFilterPanel
+        classes={classes}
+        t={t}
+        types={value}
+        onApply={onChangeFilter("typeOfContracts")}
+      />
+    );
 
-    case "rooms":
-      return (
-        <RoomsFilterPanel
-          classes={classes}
-          t={t}
-          rooms={value}
-          onApply={onChangeFilter("rooms")}
-        />
-      );
+  case "rooms":
+    return (
+      <RoomsFilterPanel
+        classes={classes}
+        t={t}
+        rooms={value}
+        onApply={onChangeFilter("rooms")}
+      />
+    );
 
-    case "employees":
-      return (
-        <EmployeesFilterPanel
-          classes={classes}
-          t={t}
-          employees={value}
-          onApply={onChangeFilter("employees")}
-        />
-      );
+  case "employees":
+    return (
+      <EmployeesFilterPanel
+        classes={classes}
+        t={t}
+        employees={value}
+        onApply={onChangeFilter("employees")}
+      />
+    );
 
-    case "price":
-      return (
-        <PriceFilterPanel
-          classes={classes}
-          t={t}
-          price={value}
-          onApply={onChangeFilter("price")}
-        />
-      );
+  case "price":
+    return (
+      <PriceFilterPanel
+        classes={classes}
+        t={t}
+        price={value}
+        onApply={onChangeFilter("price")}
+      />
+    );
 
-    default:
-      return null;
+  default:
+    return null;
   }
 };
 

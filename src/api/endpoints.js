@@ -175,7 +175,8 @@ export const getReviewsByOffice = () =>
  * Call api to get similar offices
  * @deprecated for now, admin doesn't exist, and call api for getting published offices
  */
-export const getSimilarOffices = () => getPublishedOffices();
+export const getSimilarOffices = (officeId) => 
+  api.get(`/offices/${officeId}/similar/`);
 
 /** Call api to verify phone number */
 export const verifyPhoneNumber = (phoneNumber) =>

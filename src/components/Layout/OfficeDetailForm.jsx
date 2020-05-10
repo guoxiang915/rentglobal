@@ -18,8 +18,9 @@ import {
   ShareIcon,
   Button,
   CallIcon,
+  Divider,
 } from '../../common/base-components';
-import { TabWrapper, StatisticBox } from '../../common/base-layouts';
+import { TabWrapper, StatisticBox, OfficeItem } from '../../common/base-layouts';
 import { servicesCategories } from '../../utils/constants';
 import {
   ContactInfoDialog,
@@ -27,7 +28,7 @@ import {
   CallConsultantDialog,
   LocationDialog,
 } from './Dialogs';
-import { favoriteOffice } from '../../api/endpoints';
+import { favoriteOffice, getSimilarOffices } from '../../api/endpoints';
 import { numberWithSpaces } from '../../utils/formatters';
 import { withLogin } from '../../common/base-services';
 
@@ -251,6 +252,8 @@ class OfficeDetailForm extends PureComponent {
   static propTypes = {
     /** Office info */
     office: PropTypes.object.isRequired,
+    /** Navigate to another office detail page */
+    goDetail: PropTypes.func,
     /** Auth info */
     auth: PropTypes.object,
     /** Login function */
@@ -260,7 +263,7 @@ class OfficeDetailForm extends PureComponent {
     t: PropTypes.func,
   };
 
-  state = { dialog: null, office: this.props.office };
+  state = { dialog: null, office: this.props.office, similarOffices: [] };
 
   /** Favorite office */
   handleSetFavorite = () => {
@@ -350,6 +353,18 @@ class OfficeDetailForm extends PureComponent {
   componentDidUpdate(prevProps) {
     if (JSON.stringify(prevProps.office) !== JSON.stringify(this.props.office)) {
       this.setState({ office: this.props.office });
+
+      const { office } = this.props;
+  
+      /** Get similar offices */
+      // this.props.
+      if (office && office._id) {
+        getSimilarOffices(office._id).then((response) => {
+          if (response.status === 200) {
+            this.setState({ similarOffices: response.data });
+          }
+        });
+      }
     }
   }
 
@@ -358,9 +373,9 @@ class OfficeDetailForm extends PureComponent {
    */
   render() {
     const {
-      classes: s, t, width,
+      classes: s, t, width, goDetail,
     } = this.props;
-    const { dialog, office } = this.state;
+    const { dialog, office, similarOffices } = this.state;
 
     return (
       <Column classes={{ box: s.root }} fullWidth alignChildrenStart>
@@ -744,6 +759,42 @@ class OfficeDetailForm extends PureComponent {
           </Column>
         </Row>
 
+        {/** Show similar offices */}
+        <Divider />
+        <Row fullWidth classes={{ box: s.similarOfficesWrapper }}>
+          <Column fullWidth alignChildrenStart>
+            <Typography fontSizeM textBlackGrey fontWeightBold>
+              {t('similarOffice')}
+            </Typography>
+            <Row fullWidth classes={{ box: s.similarOffices }}>
+              <div style={{ width: '100%', height: '100%' }}>
+                <Carousel
+                  itemWidth={255}
+                  offset={0}
+                  keepDirectionWhenDragging
+                >
+                  {similarOffices.map((office, index) => (
+                    <div
+                      style={{
+                        position: 'relative',
+                        cursor: 'pointer',
+                        height: '100%',
+                      }}
+                      key={index}
+                    >
+                      <OfficeItem
+                        office={office}
+                        setFavorite
+                        // onClick={goDetail(office._id)}
+                      />
+                    </div>
+                  ))}
+                </Carousel>
+              </div>
+            </Row>
+          </Column>
+        </Row>
+        
         {/** Show dialog */}
         {dialog}
       </Column>
