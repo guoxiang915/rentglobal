@@ -127,7 +127,7 @@ class TextField extends PureComponent {
         InputProps={{
           startAdornment,
           endAdornment: (
-            <InputAdornment>{endAdornment || <></>}</InputAdornment>
+            <InputAdornment>{endAdornment || <React.Fragment></React.Fragment>}</InputAdornment>
           ),
           classes: {
             root: clsx(s.root, styles && styles.root),

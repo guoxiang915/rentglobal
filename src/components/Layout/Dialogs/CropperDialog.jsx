@@ -74,6 +74,8 @@ class CropperDialog extends PureComponent {
     title: PropTypes.string,
     /** Image name */
     fileName: PropTypes.string,
+    /** Aspect ratio of cropping range */
+    aspectRatio: PropTypes.number,
     /** Image source */
     src: PropTypes.oneOfType([PropTypes.string, PropTypes.object]).isRequired,
     /** Style of dialog */
@@ -86,7 +88,7 @@ class CropperDialog extends PureComponent {
     onClose: PropTypes.func,
   };
 
-  state = { crop: { unit: '%', width: 100, height: 100 } };
+  state = { crop: { unit: '%', width: 100, height: 100, aspect: this.props.aspectRatio } };
 
   imageRef = React.createRef(null);
 

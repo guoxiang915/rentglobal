@@ -27,6 +27,7 @@ import {
   CopyIcon,
   SkypeIcon,
 } from '../../../common/base-components/Icons';
+import { numberWithSpaces } from '../../../utils/formatters';
 
 const styleSheet = (theme) => ({
   root: {
@@ -152,7 +153,7 @@ class CallConsultantDialog extends PureComponent {
           <Row fullWidth>
             {/** header title */}
             <Typography fontSizeM textSecondary fontWeightBold>
-              {title || t('call')} #{(office.refId + 1).toString().padStart(9, '0').replace(/(\d{3})/g, '$1 ').replace(/(^\s+|\s+$)/,'')}
+              {title || t('call')} #{numberWithSpaces(office.refId + 1, 9)}
             </Typography>
             <Stretch />
             {/** close button */}
