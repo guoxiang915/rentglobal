@@ -602,6 +602,7 @@ class Profile extends PureComponent {
           <CropperDialog
             fileName={avatar.name}
             src={reader.result}
+            aspectRatio={1}
             onClose={this.handleCloseDialog}
             onSave={this.handleUploadAvatar}
           />
