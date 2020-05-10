@@ -144,13 +144,6 @@ class PictureGalleryForm extends PureComponent {
     this.props.uploadPhoto(this.props.office._id, file).then(() => {
       this.setState({ isLoading: false });
     });
-    // this.props.uploadFile(file, 'public-read').then((response) => {
-    //   this.setState({ isLoading: false });
-    //   this.props.onChangeField('coverPhotos', [
-    //     ...(this.props.office.coverPhotos || []),
-    //     response.data,
-    //   ]);
-    // });
   };
 
   /** Select/Deselect picture */
@@ -164,25 +157,13 @@ class PictureGalleryForm extends PureComponent {
 
   /** Remove selected picture */
   handleRemoveSelectedPicture = () => {
-    // const { office = {} } = this.props;
-    // const { coverPhotos = [] } = office;
     const { selectedPicture } = this.state;
-    console.log(selectedPicture);
     this.setState({ isLoading: true });
     this.props
       .deletePhoto(this.props.office._id, selectedPicture.original._id)
       .then(() => {
         this.setState({ isLoading: false, selectedPicture: null });
       });
-    // const selectedPictureIndex = coverPhotos.findIndex(
-    //   (photo) => photo._id === selectedPicture._id
-    // );
-    // if (selectedPictureIndex >= 0) {
-    //   coverPhotos.splice(selectedPictureIndex, 1);
-    // }
-    // this.setState({ selectedPicture: null }, () => {
-    //   this.props.onChangeField('coverPhotos', coverPhotos);
-    // });
   };
 
   /**

@@ -91,6 +91,10 @@ export function numberWithCommas(x) {
 /**
  * Format number with spaces per thousands
  */
-export function numberWithSpaces(x) {
-  return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ' ');
+export function numberWithSpaces(x, length) {
+  if (length) {
+    return x.toString().padStart(length, '0').replace(/\B(?=(\d{3})+(?!\d))/g, ' ');
+  } else {
+    return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ' ');
+  }
 }

@@ -1,3 +1,4 @@
+import clsx from 'clsx';
 import React, { PureComponent } from 'react';
 import { withStyles } from '@material-ui/core/styles';
 import { withTranslation } from 'react-i18next';
@@ -18,6 +19,8 @@ import {
   ShareIcon,
   Button,
   CallIcon,
+  ArrowDownIcon,
+  ArrowUpIcon,
 } from '../../common/base-components';
 import { TabWrapper, StatisticBox } from '../../common/base-layouts';
 import { servicesCategories } from '../../utils/constants';
@@ -124,6 +127,33 @@ const styleSheet = (theme) => ({
     },
   },
 
+  navigationContainer: {
+    position: 'absolute',
+    right: 0,
+    width: 110,
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'center',
+    height: '100%',
+    justifyContent: 'space-between'
+  },
+
+  navigationButton: {
+    display: 'block',
+    height: 24,
+    width: 100,
+    textAlign: 'center',
+    color: '#E5E5E5',
+    backgroundColor: 'rgba(255, 255, 255, 0.5)',
+    cursor: 'pointer',
+    padding: 0,
+    borderRadius: 0
+  },
+
+  navigationButtonUp: {},
+
+  navigationButtonDown: {},
+
   infoRow: {
     width: '100%',
     alignItems: 'center',
@@ -206,6 +236,14 @@ const styleSheet = (theme) => ({
 
 /** Render cover photos */
 const CoverPhotos = React.memo(({ classes: s, coverPhotos, width }) => {
+  const galleryRef = React.createRef();
+  const handlePrevCoverPhoto = () => {
+    galleryRef.current.slideLeft();
+  };
+  const handleNextCoverPhoto = () => {
+    galleryRef.current.slideRight();
+  };
+
   return (
     <React.Fragment>
       {isWidthDown('xs', width) ? (
@@ -240,7 +278,16 @@ const CoverPhotos = React.memo(({ classes: s, coverPhotos, width }) => {
             showFullscreenButton={false}
             useBrowserFullscreen={false}
             showPlayButton={false}
+            ref={galleryRef}
           />
+          <Box classes={{ box: s.navigationContainer }}>
+            <Button background={'rgba(255,255,255,0.5)'} className={clsx(s.navigationButton, s.navigationButtonUp)} onClick={handlePrevCoverPhoto}>
+              <ArrowUpIcon />
+            </Button>
+            <Button background={'rgba(255,255,255,0.5)'} className={clsx(s.navigationButton, s.navigationButtonButton)} onClick={handleNextCoverPhoto}>
+              <ArrowDownIcon />
+            </Button>
+          </Box>
         </Row>
       )}
     </React.Fragment>
@@ -478,7 +525,7 @@ class OfficeDetailForm extends PureComponent {
                     </Typography>
                     <Typography fontSizeM fontWeightBold textSecondary>
                       #
-                      {numberWithSpaces('001234567')}
+                      {numberWithSpaces(office.refId + 1, 9)}
                       {' '}
                       {/* office.refID */}
                     </Typography>
