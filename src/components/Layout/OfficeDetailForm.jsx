@@ -17,12 +17,14 @@ import {
   FavoriteFilledIcon,
   ShareIcon,
   Button,
+  CallIcon,
 } from '../../common/base-components';
 import { TabWrapper, StatisticBox } from '../../common/base-layouts';
 import { servicesCategories } from '../../utils/constants';
 import {
   ContactInfoDialog,
   ShareOfficeDialog,
+  CallConsultantDialog,
   LocationDialog,
 } from './Dialogs';
 import { favoriteOffice } from '../../api/endpoints';
@@ -291,6 +293,20 @@ class OfficeDetailForm extends PureComponent {
     }
   };
 
+  /** Call to Consultant */
+  handleCall = () => {
+    if (this.props.passLoginDialog()) {
+      this.setState({
+        dialog: (
+          <CallConsultantDialog
+            office={this.props.office}
+            onClose={this.handleCloseDialog}
+          />
+        )
+      });
+    }
+  }
+
   /** Follow up office */
   handleFollowUp = () => {
     if (this.props.passLoginDialog()) {
@@ -399,6 +415,21 @@ class OfficeDetailForm extends PureComponent {
                   {!isWidthDown('xs', width) ? (
                     <Typography paddingLeft fontSizeS fontWeightBold>
                       {t('share')}
+                    </Typography>
+                  ) : null}
+                </Button>
+
+                <Box paddingLeftHalf />
+
+                <Button
+                  link="secondary"
+                  background="secondaryLight"
+                  onClick={this.handleCall}
+                >
+                  <CallIcon style={{ width: 13, height: 15 }} />
+                  {!isWidthDown('xs', width) ? (
+                    <Typography paddingLeft fontSizeS fontWeightBold>
+                      {t('call')}
                     </Typography>
                   ) : null}
                 </Button>
