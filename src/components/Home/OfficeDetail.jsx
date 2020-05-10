@@ -215,7 +215,6 @@ class OfficeDetail extends PureComponent {
 
   /** Goto office detail of similar offices */
   goDetail = (officeId) => () => {
-    console.log(officeId);
     this.props.navigate('offices', officeId);
   };
 
@@ -414,7 +413,7 @@ class OfficeDetail extends PureComponent {
 
           {/** Show office detail form */}
           <Row fullWidth classes={{ box: clsx(s.addOfficeTabWrapper) }}>
-            {office && <OfficeDetailForm office={office} />}
+            {office && <OfficeDetailForm office={office} goDetail={this.goDetail} />}
           </Row>
 
           {/** Show office created consultant info */}

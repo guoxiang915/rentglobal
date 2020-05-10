@@ -67,12 +67,23 @@ class OfficeDetail extends PureComponent {
   /** Get office from id */
   componentDidMount() {
     const { officeId } = this.props;
-
     this.props.getOfficeById(officeId).then((response) => {
       if (response.status === 200) {
         this.setState({ office: response.data });
       }
     });
+  }
+
+  componentDidUpdate(prevProps) {
+    const { officeId } = this.props;
+
+    if (officeId != prevProps.officeId) {
+      this.props.getOfficeById(officeId).then((response) => {
+        if (response.status === 200) {
+          this.setState({ office: response.data });
+        }
+      });
+    }
   }
 
   /** Close dialog */
@@ -102,6 +113,11 @@ class OfficeDetail extends PureComponent {
   /** Event for delete office */
   handleDeleteOffice = () => {
     this.props.onDeleteOffice(this.state.office._id);
+  };
+
+  /** Goto office detail of similar offices */
+  goDetail = (officeId) => () => {
+    this.props.navigate('offices', officeId);
   };
 
   /**
@@ -188,7 +204,7 @@ class OfficeDetail extends PureComponent {
         </Row>
 
         <Row fullWidth classes={{ box: clsx(s.addOfficeTabWrapper) }}>
-          {office && <OfficeDetailForm office={office} />}
+          {office && <OfficeDetailForm office={office} goDetail={this.goDetail} />}
         </Row>
 
         <Row
