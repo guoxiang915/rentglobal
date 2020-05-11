@@ -125,6 +125,10 @@ export const favoriteOffice = (officeId) =>
 export const advancedSearchOffices = (payload) =>
   api.post("/offices/advanced-search/", payload);
 
+/** Call api to summary locations */
+export const locationSummary = (params) =>
+  api.get("/offices/location-summary/", { params });
+
 /** Call api to get all published offices */
 export const getPublishedOffices = (params) => api.get("/offices/", { params });
 
@@ -175,7 +179,7 @@ export const getReviewsByOffice = () =>
  * Call api to get similar offices
  * @deprecated for now, admin doesn't exist, and call api for getting published offices
  */
-export const getSimilarOffices = (officeId) => 
+export const getSimilarOffices = (officeId) =>
   api.get(`/offices/${officeId}/similar/`);
 
 /** Call api to verify phone number */

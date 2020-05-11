@@ -77,7 +77,7 @@ class OfficeDetail extends PureComponent {
   componentDidUpdate(prevProps) {
     const { officeId } = this.props;
 
-    if (officeId != prevProps.officeId) {
+    if (officeId !== prevProps.officeId) {
       this.props.getOfficeById(officeId).then((response) => {
         if (response.status === 200) {
           this.setState({ office: response.data });

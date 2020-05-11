@@ -14,6 +14,7 @@ import {
   DialogTitle,
   DialogContent,
   DialogActions,
+  Collapse,
 } from "@material-ui/core";
 import {
   LocationOnOutlined,
@@ -34,6 +35,7 @@ import {
   Link,
   GoogleMap,
   GoogleMapMarker,
+  GooglePlaceField,
   CloseIcon,
   SearchIcon,
   UncheckIcon,
@@ -43,48 +45,214 @@ import { officeTypes, contractTypes } from "../../utils/constants";
 
 import { styleSheet } from "./Search";
 import { OfficeItem } from "../../common/base-layouts";
-import { advancedSearchOffices } from "../../api/endpoints";
+import { advancedSearchOffices, locationSummary } from "../../api/endpoints";
 import ServicesAmenitiesForm from "../Landlord/Office/Forms/ServicesAmenitiesForm";
 
-const Searchbox = ({ classes: s, t, q, onSearch }) => {
-  const [query, setQuery] = React.useState(q);
-  React.useEffect(() => setQuery(q), [q]);
-  const handleKeyPress = React.useCallback(
-    (e) => {
-      if (e.key === "Enter") onSearch(query);
-    },
-    [onSearch, query]
+const Searchbar = ({
+  classes: s,
+  t,
+  value,
+  inputRef,
+  selectedLocations,
+  onKeyUp,
+  onSelectLocation,
+  onChangeQuery,
+  onSearch,
+  onRemoveSelectedLocations,
+}) => {
+  return (
+    <GooglePlaceField
+      value={value}
+      onSelect={onSelectLocation}
+      onChange={onChangeQuery}
+      inputProps={{
+        variant: "standard",
+        onKeyUp: onKeyUp,
+        placeholder: t("advancedSearchboxText"),
+        className: s.searchInput,
+        styles: { root: s.searchRootProps, input: s.searchInputProps },
+        inputRef,
+        endAdornment: (
+          <Row classes={{ box: s.searchInputWrapper }} alignChildrenCenter>
+            {selectedLocations ? (
+              <Button
+                variant='icon'
+                link='secondary'
+                style={{ margin: 0, marginRight: 16 }}
+                onClick={onRemoveSelectedLocations}
+                className={s.locationsSelected}
+                color='secondary'
+              >
+                <Typography textPrimary paddingRight>
+                  <CloseIcon style={{ width: 10, height: 10 }} />
+                </Typography>
+                {t("locationsSelected", { count: selectedLocations })}
+              </Button>
+            ) : null}
+            <GpsFixedOutlined color='secondary' fontSize='small' />
+            <Button
+              variant='icon'
+              background='primary'
+              style={{ margin: 0, marginLeft: 16 }}
+              className={s.searchInputIcon}
+              shadow
+              onClick={onSearch}
+            >
+              <SearchIcon style={{ width: 16, height: 16 }} />
+              <Typography paddingLeft fontSizeS>
+                {t("search")}
+              </Typography>
+            </Button>
+          </Row>
+        ),
+      }}
+    />
   );
-  const handleChange = React.useCallback((e) => setQuery(e.target.value), []);
+};
+
+const Searchbox = ({
+  classes: s,
+  t,
+  selectedLocations: selectedlocations,
+  q,
+  onSearch,
+}) => {
+  const [query, setQuery] = React.useState(q);
+  const [locations, setLocations] = React.useState([]);
+  const [locationPane, setLocationPane] = React.useState(false);
+  const [selectedLocations, setSelectedLocations] = React.useState(
+    selectedlocations
+  );
+  const searchRef = React.useRef(null);
+
+  React.useEffect(() => setQuery(q), [q]);
+  const handleSearch = () => {
+    setLocationPane(false);
+    onSearch(query, selectedLocations);
+  };
+  const handleKeyUp = (e) => {
+    if (e.key === "Enter") {
+      handleSearch();
+    }
+  };
+  const handleSelectLocation = React.useCallback((location) => {
+    if (location) {
+      setQuery("");
+      locationSummary({
+        zipCode: location.zipCode,
+        streetName: location.streetName || undefined,
+        city: location.city,
+        state: location.state,
+        country: location.country,
+      }).then((res) => {
+        if (res.status === 200) {
+          setLocations(res.data);
+          setLocationPane(true);
+        } else if (res.status === 404) {
+          setLocations([]);
+          setLocationPane(true);
+        }
+      });
+    }
+  }, []);
+  const handleChangeQuery = React.useCallback((e) => {
+    setQuery(e.target.value);
+  }, []);
+  const handleToggleSelection = (location) => {
+    if (selectedLocations.indexOf(location) === -1) {
+      setSelectedLocations([...selectedLocations, location]);
+    } else {
+      selectedLocations.splice(selectedLocations.indexOf(location), 1);
+      setSelectedLocations([...selectedLocations]);
+    }
+  };
+  const handleRemoveSelectedLocations = () => {
+    setSelectedLocations([]);
+    setQuery("");
+    setLocationPane(false);
+    onSearch("", []);
+  };
 
   return (
-    <TextField
-      variant='outlined'
-      value={query}
-      onChange={handleChange}
-      onKeyPress={handleKeyPress}
-      placeholder={t("advancedSearchboxText")}
-      className={s.searchInput}
-      styles={{ input: s.searchInputProps }}
-      endAdornment={
-        <Row classes={{ box: s.searchInputWrapper }} alignChildrenCenter>
-          <GpsFixedOutlined color='secondary' fontSize='small' />
-          <Button
-            variant='icon'
-            background='primary'
-            style={{ margin: 0, marginLeft: 16 }}
-            className={s.searchInputIcon}
-            shadow
-            onClick={() => onSearch(query)}
-          >
-            <SearchIcon style={{ width: 16, height: 16 }} />
-            <Typography paddingLeft fontSizeS>
-              {t("search")}
-            </Typography>
-          </Button>
-        </Row>
-      }
-    />
+    <div className={s.locationWrapper}>
+      <Column
+        classes={{
+          box: clsx(s.locationPaneWrapper, locationPane && s.boxShadow),
+        }}
+      >
+        <div style={{ width: "100%" }}>
+          <Searchbar
+            classes={s}
+            t={t}
+            value={query}
+            onKeyUp={handleKeyUp}
+            onSelectLocation={handleSelectLocation}
+            onChangeQuery={handleChangeQuery}
+            onSearch={handleSearch}
+            inputRef={searchRef}
+            selectedLocations={selectedLocations.length}
+            onRemoveSelectedLocations={handleRemoveSelectedLocations}
+          />
+        </div>
+
+        <Collapse in={locationPane} className={s.locationContentWrapper}>
+          {locations &&
+            locations.map(
+              (location, index) =>
+                location && (
+                  <React.Fragment key={index}>
+                    <Row classes={{ box: s.locationList }}>
+                      <Checkbox
+                        classes={{ label: s.checkbox }}
+                        color='primary'
+                        isChecked={
+                          (selectedLocations &&
+                            selectedLocations.indexOf(location) !== -1) ||
+                          false
+                        }
+                        onChange={() => handleToggleSelection(location)}
+                        icon={UncheckIcon}
+                        checkedIcon={() => (
+                          <div className={s.checkIcon}>
+                            <CheckIcon style={{ width: 14, height: 10 }} />
+                          </div>
+                        )}
+                        label={
+                          <Typography fontSizeS textSecondary paddingLeft>
+                            {[
+                              location.streetName,
+                              location.streetName && ", ",
+                              location.city,
+                              location.city && ", ",
+                              location.state,
+                              location.state && ", ",
+                              location.country,
+                            ].join("")}
+                          </Typography>
+                        }
+                      />
+                      <Stretch />
+                      <Typography
+                        fontSizeS
+                        textMediumGrey
+                        textRight
+                        justifyChildrenEnd
+                        style={{ width: 40 }}
+                      >
+                        {location.count}
+                      </Typography>
+                      <div className={s.rightArrow}>
+                        <Typography textMediumGrey textRight justifyChildrenEnd>
+                          <KeyboardArrowRight />
+                        </Typography>
+                      </div>
+                    </Row>
+                  </React.Fragment>
+                )
+            )}
+        </Collapse>
+      </Column>
+    </div>
   );
 };
 
@@ -541,58 +709,58 @@ const PriceFilterPanel = ({ classes: s, t, price, onApply }) => {
 
 const FilterPanel = ({ classes, t, filter, value, onChangeFilter }) => {
   switch (filter.type) {
-  case "officeTypes":
-    return (
-      <OfficeTypeFilterPanel
-        classes={classes}
-        t={t}
-        types={value}
-        onApply={onChangeFilter("officeTypes")}
-      />
-    );
+    case "officeTypes":
+      return (
+        <OfficeTypeFilterPanel
+          classes={classes}
+          t={t}
+          types={value}
+          onApply={onChangeFilter("officeTypes")}
+        />
+      );
 
-  case "typeOfContracts":
-    return (
-      <ContractTypeFilterPanel
-        classes={classes}
-        t={t}
-        types={value}
-        onApply={onChangeFilter("typeOfContracts")}
-      />
-    );
+    case "typeOfContracts":
+      return (
+        <ContractTypeFilterPanel
+          classes={classes}
+          t={t}
+          types={value}
+          onApply={onChangeFilter("typeOfContracts")}
+        />
+      );
 
-  case "rooms":
-    return (
-      <RoomsFilterPanel
-        classes={classes}
-        t={t}
-        rooms={value}
-        onApply={onChangeFilter("rooms")}
-      />
-    );
+    case "rooms":
+      return (
+        <RoomsFilterPanel
+          classes={classes}
+          t={t}
+          rooms={value}
+          onApply={onChangeFilter("rooms")}
+        />
+      );
 
-  case "employees":
-    return (
-      <EmployeesFilterPanel
-        classes={classes}
-        t={t}
-        employees={value}
-        onApply={onChangeFilter("employees")}
-      />
-    );
+    case "employees":
+      return (
+        <EmployeesFilterPanel
+          classes={classes}
+          t={t}
+          employees={value}
+          onApply={onChangeFilter("employees")}
+        />
+      );
 
-  case "price":
-    return (
-      <PriceFilterPanel
-        classes={classes}
-        t={t}
-        price={value}
-        onApply={onChangeFilter("price")}
-      />
-    );
+    case "price":
+      return (
+        <PriceFilterPanel
+          classes={classes}
+          t={t}
+          price={value}
+          onApply={onChangeFilter("price")}
+        />
+      );
 
-  default:
-    return null;
+    default:
+      return null;
   }
 };
 
@@ -801,35 +969,35 @@ const FilterChip = React.memo(({ classes: s, t, filter, value, onChange }) => {
   );
 
   switch (filter) {
-  case "officeTypes":
-    return (
-      <React.Fragment>
-        {value.map((v, index) => (
-          <Chip
-            key={filter + index}
-            label={t(v)}
-            onDelete={() => handleRemoveFilter({ filter, index })}
-            className={s.filterValue}
-            color='primary'
-          />
-        ))}
-      </React.Fragment>
-    );
+    case "officeTypes":
+      return (
+        <React.Fragment>
+          {value.map((v, index) => (
+            <Chip
+              key={filter + index}
+              label={t(v)}
+              onDelete={() => handleRemoveFilter({ filter, index })}
+              className={s.filterValue}
+              color='primary'
+            />
+          ))}
+        </React.Fragment>
+      );
 
-  case "typeOfContracts":
-    return (
-      <React.Fragment>
-        {value.map((v, index) => (
-          <Chip
-            key={filter + index}
-            label={t(v)}
-            onDelete={() => handleRemoveFilter({ filter, index })}
-            className={s.filterValue}
-            color='primary'
-          />
-        ))}
-      </React.Fragment>
-    );
+    case "typeOfContracts":
+      return (
+        <React.Fragment>
+          {value.map((v, index) => (
+            <Chip
+              key={filter + index}
+              label={t(v)}
+              onDelete={() => handleRemoveFilter({ filter, index })}
+              className={s.filterValue}
+              color='primary'
+            />
+          ))}
+        </React.Fragment>
+      );
 
     // case "rooms":
     //   return (
@@ -842,84 +1010,84 @@ const FilterChip = React.memo(({ classes: s, t, filter, value, onChange }) => {
     //     />
     //   );
 
-  case "price":
-    return (
-      <Chip
-        key={filter}
-        label={t("priceRange", {
-          min: value?.priceMin || "",
-          max: value?.priceMax,
-        })}
-        onDelete={() => handleRemoveFilter({ filter })}
-        className={s.filterValue}
-        color='primary'
-      />
-    );
+    case "price":
+      return (
+        <Chip
+          key={filter}
+          label={t("priceRange", {
+            min: value?.priceMin || "",
+            max: value?.priceMax,
+          })}
+          onDelete={() => handleRemoveFilter({ filter })}
+          className={s.filterValue}
+          color='primary'
+        />
+      );
 
-  case "rooms":
-    return (
-      <Chip
-        key={filter}
-        label={t("roomsRange", {
-          min: value?.roomsMin || "",
-          max: value?.roomsMax,
-        })}
-        onDelete={() => handleRemoveFilter({ filter })}
-        className={s.filterValue}
-        color='primary'
-      />
-    );
+    case "rooms":
+      return (
+        <Chip
+          key={filter}
+          label={t("roomsRange", {
+            min: value?.roomsMin || "",
+            max: value?.roomsMax,
+          })}
+          onDelete={() => handleRemoveFilter({ filter })}
+          className={s.filterValue}
+          color='primary'
+        />
+      );
 
-  case "employees":
-    return (
-      <Chip
-        key={filter}
-        label={t("employeesRange", {
-          min: value?.employeesMin || "",
-          max: value?.employeesMax,
-        })}
-        onDelete={() => handleRemoveFilter({ filter })}
-        className={s.filterValue}
-        color='primary'
-      />
-    );
+    case "employees":
+      return (
+        <Chip
+          key={filter}
+          label={t("employeesRange", {
+            min: value?.employeesMin || "",
+            max: value?.employeesMax,
+          })}
+          onDelete={() => handleRemoveFilter({ filter })}
+          className={s.filterValue}
+          color='primary'
+        />
+      );
 
-  case "area":
-    return (
-      <Chip
-        key={filter}
-        label={[value?.areaMin || "", value?.areaMax || ""].join(" - ")}
-        onDelete={() => handleRemoveFilter({ filter })}
-        className={s.filterValue}
-        color='primary'
-      />
-    );
+    case "area":
+      return (
+        <Chip
+          key={filter}
+          label={[value?.areaMin || "", value?.areaMax || ""].join(" - ")}
+          onDelete={() => handleRemoveFilter({ filter })}
+          className={s.filterValue}
+          color='primary'
+        />
+      );
 
-  case "servicesAndAmenities":
-    return (
-      <React.Fragment>
-        {Object.entries(value).map(([category, options]) => (
-          <React.Fragment key={category}>
-            {options && options.length
-              ? options.map((opt, index) => (
-                <Chip
-                  key={index}
-                  label={t(opt)}
-                  onDelete={() =>
-                    handleRemoveFilter({ filter, category, index })
-                  }
-                  className={s.filterValue}
-                  color='primary'
-                />
-              ))
-              : null}
-          </React.Fragment>
-        ))}
-      </React.Fragment>
-    );
+    case "servicesAndAmenities":
+      return (
+        <React.Fragment>
+          {Object.entries(value).map(([category, options]) => (
+            <React.Fragment key={category}>
+              {options && options.length
+                ? options.map((opt, index) => (
+                    <Chip
+                      key={index}
+                      label={t(opt)}
+                      onDelete={() =>
+                        handleRemoveFilter({ filter, category, index })
+                      }
+                      className={s.filterValue}
+                      color='primary'
+                    />
+                  ))
+                : null}
+            </React.Fragment>
+          ))}
+        </React.Fragment>
+      );
 
-  default:
-    return null;
+    default:
+      return null;
   }
 });
 
@@ -932,6 +1100,7 @@ class Search extends PureComponent {
   state = {
     showOnMap: false,
     q: "",
+    selectedLocations: [],
     filters: {},
     dialog: null,
     offices: [],
@@ -964,6 +1133,15 @@ class Search extends PureComponent {
   /** Search office by text, filters, map... */
   searchOffices = () => {
     const params = { q: this.state.q };
+    if (this.state.selectedLocations?.length) {
+      params["locations"] = this.state.selectedLocations.map((location) => ({
+        zipCode: location.zipCode,
+        streetName: location.streetName,
+        city: location.city,
+        state: location.state,
+        country: location.country,
+      }));
+    }
     Object.entries(this.state.filters).forEach(([filter, value]) => {
       if (filter === "price") {
         if (value?.priceMin) {
@@ -1035,8 +1213,8 @@ class Search extends PureComponent {
   }
 
   /** Search offices by text */
-  handleSearchByText = (q) => {
-    this.setState({ q }, this.searchOffices);
+  handleSearchByTextAndLocation = (q, selectedLocations) => {
+    this.setState({ q, selectedLocations }, this.searchOffices);
   };
 
   /** Search offices by map */
@@ -1119,7 +1297,14 @@ class Search extends PureComponent {
   /** Render component */
   render() {
     const { width, classes: s, t } = this.props;
-    const { showOnMap, filters, q, offices, dialog } = this.state;
+    const {
+      showOnMap,
+      filters,
+      q,
+      selectedLocations,
+      offices,
+      dialog,
+    } = this.state;
 
     const filteredOffices = offices?.filter(
       (office) => office.location?.coordinates
@@ -1133,7 +1318,8 @@ class Search extends PureComponent {
               classes={s}
               t={t}
               q={q}
-              onSearch={this.handleSearchByText}
+              selectedLocations={selectedLocations}
+              onSearch={this.handleSearchByTextAndLocation}
             />
             {!isWidthDown("xs", width) && (
               <React.Fragment>
@@ -1231,8 +1417,8 @@ class Search extends PureComponent {
                 coordinates={
                   filteredOffices?.length
                     ? filteredOffices.map(
-                      (office) => office.location.coordinates
-                    )
+                        (office) => office.location.coordinates
+                      )
                     : []
                 }
                 center={
@@ -1242,14 +1428,14 @@ class Search extends PureComponent {
                 markers={
                   filteredOffices?.length
                     ? filteredOffices.map((office, index) => (
-                      <GoogleMapMarker
-                        key={index}
-                        lat={office.location.coordinates.lat}
-                        lng={office.location.coordinates.lng}
-                        badge={office.leasedBy?.overduePayment}
-                        onClick={this.handleNavigateOfficeDetail(office)}
-                      />
-                    ))
+                        <GoogleMapMarker
+                          key={index}
+                          lat={office.location.coordinates.lat}
+                          lng={office.location.coordinates.lng}
+                          badge={office.leasedBy?.overduePayment}
+                          onClick={this.handleNavigateOfficeDetail(office)}
+                        />
+                      ))
                     : []
                 }
               />

@@ -24,6 +24,7 @@ export const styleSheet = (theme) => ({
     justifyContent: "center",
     paddingTop: 19,
     paddingBottom: 19,
+    overflow: "visible",
     [theme.breakpoints.down("xs")]: {
       paddingTop: 15,
       paddingBottom: 15,
@@ -35,13 +36,23 @@ export const styleSheet = (theme) => ({
     width: "100%",
   },
 
+  searchRootProps: {
+    border: "none",
+    "&::before": {
+      border: "none !important",
+    },
+    "&::after": {
+      border: "none !important",
+    },
+  },
+
   searchInputProps: {
     fontSize: "17px",
     lineHeight: "23px",
     padding: "16px 26px",
     fontWeight: 500,
-    fontStyle: "bold",
     color: theme.colors.primary.darkGrey,
+    border: "none",
     [theme.breakpoints.down("xs")]: {
       fontSize: "15px",
       lineHeight: "20px",
@@ -59,6 +70,16 @@ export const styleSheet = (theme) => ({
     minWidth: 43,
     height: 43,
     color: theme.colors.primary.white,
+    [theme.breakpoints.down("xs")]: {
+      minWidth: 37,
+      height: 37,
+    },
+  },
+
+  locationsSelected: {
+    height: 43,
+    minWidth: 200,
+    background: theme.colors.primary.white,
     [theme.breakpoints.down("xs")]: {
       minWidth: 37,
       height: 37,
@@ -111,6 +132,41 @@ export const styleSheet = (theme) => ({
       borderRight: "none",
       transform: "rotate(45deg)",
     },
+  },
+
+  locationWrapper: {
+    width: "100%",
+    height: 52,
+    position: "relative",
+  },
+
+  locationPaneWrapper: {
+    position: "absolute",
+    width: "100%",
+    border: `1px solid ${theme.colors.primary.mainColor}`,
+    borderRadius: 27,
+    background: theme.colors.primary.white,
+    zIndex: 1,
+  },
+
+  boxShadow: {
+    boxShadow: "5px 5px 6px #0000000A",
+  },
+
+  locationContentWrapper: {
+    width: "100%",
+  },
+
+  locationList: {
+    borderTop: `1px solid ${theme.colors.primary.borderGrey}`,
+    marginLeft: 20,
+    marginRight: 20,
+    paddingTop: 25,
+    paddingBottom: 20,
+  },
+
+  rightArrow: {
+    width: 290,
   },
 
   filterPanel: {

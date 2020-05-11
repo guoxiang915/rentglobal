@@ -479,5 +479,6 @@
     "call": "Call",
     "copy": "Copy",
     "copied": "Copied",
-    "callViaSkype": "Call via Skype"
+    "callViaSkype": "Call via Skype",
+    "locationsSelected": "{{count}} locations selected"
 }

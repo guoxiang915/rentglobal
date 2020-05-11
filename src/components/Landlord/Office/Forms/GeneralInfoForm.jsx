@@ -170,6 +170,7 @@ class GeneralInfoForm extends PureComponent {
   };
 
   handleSelectLocation = (value) => {
+    console.log(this.props.office.location);
     const location = { ...this.props.office.location, ...value };
     this.setState({ editAddressMode: false }, () => {
       this.handleChangeProps("location")(location);
@@ -275,7 +276,7 @@ class GeneralInfoForm extends PureComponent {
         <GooglePlaceField
           variant='outlined'
           value={office[field]}
-          onChange={this.handleChangePropsByEventValue(field)}
+          // onChange={this.handleChangePropsByEventValue(field)}
           {...props}
           inputProps={{
             ...props.inputProps,
@@ -574,7 +575,7 @@ class GeneralInfoForm extends PureComponent {
                     tag='address'
                     field='location'
                     value={office.location && office.location.fullAddress}
-                    onChange={this.handleChangeLocation("fullAddress")}
+                    // onChange={this.handleChangeLocation("fullAddress")}
                     onSelect={this.handleSelectLocation}
                     inputProps={{
                       placeholder: t("officeAddress"),
