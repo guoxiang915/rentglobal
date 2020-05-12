@@ -1,5 +1,5 @@
 import clsx from 'clsx';
-import React, { PureComponent } from 'react';
+import React, { PureComponent, useState } from 'react';
 import { withStyles } from '@material-ui/core/styles';
 import { withTranslation } from 'react-i18next';
 import PropTypes from 'prop-types';
@@ -245,6 +245,14 @@ const CoverPhotos = React.memo(({ classes: s, coverPhotos, width }) => {
   const handleNextCoverPhoto = () => {
     galleryRef.current.slideRight();
   };
+  const [showArrows, setShowArrowsStatus] = useState(false);
+  const showHideArrowButtons = () => {
+    const galleryWrapperHeight = galleryRef.current.thumbnailsWrapper.current.offsetHeight;
+    const galleryHeight = galleryRef.current.thumbnails.current.offsetHeight;
+    if (galleryWrapperHeight < galleryHeight) {
+      setShowArrowsStatus(true);
+    }
+  };
 
   return (
     <React.Fragment>
@@ -281,15 +289,18 @@ const CoverPhotos = React.memo(({ classes: s, coverPhotos, width }) => {
             useBrowserFullscreen={false}
             showPlayButton={false}
             ref={galleryRef}
+            onImageLoad={showHideArrowButtons}
           />
-          <Box classes={{ box: s.navigationContainer }}>
-            <Button background={'rgba(255,255,255,0.5)'} className={clsx(s.navigationButton, s.navigationButtonUp)} onClick={handlePrevCoverPhoto}>
-              <ArrowUpIcon />
-            </Button>
-            <Button background={'rgba(255,255,255,0.5)'} className={clsx(s.navigationButton, s.navigationButtonButton)} onClick={handleNextCoverPhoto}>
-              <ArrowDownIcon />
-            </Button>
-          </Box>
+          {showArrows && (
+            <Box classes={{ box: s.navigationContainer }}>
+              <Button background={'rgba(255,255,255,0.5)'} className={clsx(s.navigationButton, s.navigationButtonUp)} onClick={handlePrevCoverPhoto}>
+                <ArrowUpIcon />
+              </Button>
+              <Button background={'rgba(255,255,255,0.5)'} className={clsx(s.navigationButton, s.navigationButtonButton)} onClick={handleNextCoverPhoto}>
+                <ArrowDownIcon />
+              </Button>
+            </Box>
+          )}
         </Row>
       )}
     </React.Fragment>
