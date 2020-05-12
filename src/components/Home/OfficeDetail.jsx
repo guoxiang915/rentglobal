@@ -203,6 +203,42 @@ class OfficeDetail extends PureComponent {
     });
   }
 
+  componentDidUpdate(prevProps) {
+    const { officeId } = this.props;
+    const { officeId: oldOfficeId } = prevProps;
+    if (officeId !== oldOfficeId) {
+      getApprovedOfficeById(officeId).then((response) => {
+        if (response.status === 200) {
+          this.setState({ office: response.data });
+        }
+      });
+  
+      /** Get consultant info from office */
+      // this.props.
+      getConsultantByOffice(officeId).then((response) => {
+        if (response.status === 200) {
+          this.setState({ consultant: response.data });
+        }
+      });
+  
+      /** Get reviews from office */
+      // this.props.
+      getReviewsByOffice(officeId).then((response) => {
+        if (response.status === 200) {
+          this.setState({ reviews: response.data });
+        }
+      });
+  
+      /** Get similar offices */
+      // this.props.
+      getSimilarOffices(officeId).then((response) => {
+        if (response.status === 200) {
+          this.setState({ similarOffices: response.data });
+        }
+      });
+    }
+  }
+
   /** Close dialog */
   closeDialog = () => {
     this.setState({ dialog: null });

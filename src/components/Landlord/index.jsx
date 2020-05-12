@@ -21,6 +21,7 @@ import {
   getAvailableOffices,
   getUnpublishedOffices,
   getOfficeById,
+  getSimilarOffices,
   createOffice,
   updateOffice,
   createOfficeServicesAmenities,
@@ -241,6 +242,7 @@ class Landlord extends PureComponent {
                       navigate={this.props.navigate}
                       officeId={match.params.id}
                       getOfficeById={getOfficeById}
+                      getSimilarOffices={getSimilarOffices}
                       unpublishOffice={unpublishOffice}
                       onDeleteOffice={this.handleDeleteOffice}
                       onEditOffice={this.handleEditOffice}
