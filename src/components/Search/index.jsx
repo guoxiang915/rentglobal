@@ -1291,7 +1291,7 @@ class Search extends PureComponent {
 
   /** Navigate to office detail */
   handleNavigateOfficeDetail = (office) => () => {
-    this.props.navigate("offices", office._id);
+    this.props.navigate("offices", `${office._id}/${office.location.country}-${office.officeType}-${office.numberOfEmployees}`);
   };
 
   /** Render component */

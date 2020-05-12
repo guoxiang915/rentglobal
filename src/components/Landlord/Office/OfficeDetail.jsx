@@ -131,14 +131,14 @@ class OfficeDetail extends PureComponent {
   handleUnpublish = () => {
     this.props.unpublishOffice(this.state.office._id).then((response) => {
       if (response.status === 200) {
-        this.props.navigate('offices/add', this.state.office._id);
+        this.props.navigate('offices/add', `${this.state.office._id}/${this.state.office.location.country}-${this.state.office.officeType}-${this.state.office.numberOfEmployees}`);
       }
     });
   };
 
   /** Event for edit office */
   handleEditOffice = () => {
-    this.props.onEditOffice(this.state.office._id);
+    this.props.onEditOffice(this.state.office);
   };
 
   /** Event for delete office */

@@ -302,9 +302,9 @@ class Dashboard extends PureComponent {
   /** navigate to office detail page */
   handleNavigateOfficeDetail = (office) => () => {
     if (office.published === true) {
-      this.props.navigate('offices', office._id);
+      this.props.navigate('offices', `${office._id}/${office.location.country}-${office.officeType}-${office.numberOfEmployees}`);
     } else {
-      this.props.navigate('offices', `${office._id}/edit`);
+      this.props.navigate('offices', `${office._id}/${office.location.country}-${office.officeType}-${office.numberOfEmployees}/edit`);
     }
   };
 

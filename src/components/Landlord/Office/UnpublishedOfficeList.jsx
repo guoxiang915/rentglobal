@@ -199,7 +199,7 @@ class UnpublishedOfficeList extends PureComponent {
               <Row fullWidth classes={{ box: s.officeItemWrapper }}>
                 <OfficeListItem
                   office={item}
-                  goDetail={this.navigate('offices', item._id)}
+                  goDetail={this.navigate('offices', `${item._id}/${item.location.country}-${item.officeType}-${item.numberOfEmployees}`)}
                 />
               </Row>
             </React.Fragment>

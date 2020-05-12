@@ -802,8 +802,8 @@ class Home extends PureComponent {
   };
 
   /** Navigate to office detail page */
-  handleOfficeDetail = (officeId) => () => {
-    this.props.navigate('offices', officeId);
+  handleOfficeDetail = (office) => () => {
+    this.props.navigate('offices', `${office._id}/${office.location.country}-${office.officeType}-${office.numberOfEmployees}`);
   };
 
   render() {
@@ -865,7 +865,7 @@ class Home extends PureComponent {
                       <OfficeItem
                         office={office}
                         setFavorite
-                        onClick={this.handleOfficeDetail(office._id)}
+                        onClick={this.handleOfficeDetail(office)}
                       />
                     </div>
                   ))}

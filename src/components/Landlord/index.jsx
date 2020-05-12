@@ -85,14 +85,14 @@ class Landlord extends PureComponent {
    * Edit office
    * @deprecated
    */
-  editOffice = (officeId) => () => {
+  editOffice = (office) => () => {
     this.setState({ dialog: null }, () => {
-      this.props.navigate("offices", `${officeId}/edit`);
+      this.props.navigate("offices", `${office._id}/${office.location.country}-${office.officeType}-${office.numberOfEmployees}/edit`);
     });
   };
 
   /** Event handler for edit office */
-  handleEditOffice = (officeId) => {
+  handleEditOffice = (office) => {
     this.setState({
       dialog: (
         <ConfirmDialog
@@ -110,7 +110,7 @@ class Landlord extends PureComponent {
               <Typography paddingLeft>{this.props.t("ok")}</Typography>
             </React.Fragment>
           }
-          onConfirm={this.editOffice(officeId)}
+          onConfirm={this.editOffice(office)}
           onClose={this.closeDialog}
         />
       ),
@@ -194,7 +194,7 @@ class Landlord extends PureComponent {
                 />
                 <Route
                   exact
-                  path={["/landlord/offices/add/:id", "/landlord/offices/add"]}
+                  path={["/landlord/offices/add/:id/:officeName", "/landlord/offices/add"]}
                   render={({ match }) => (
                     <AddNewOffice
                       officeId={match.params.id}
@@ -236,7 +236,7 @@ class Landlord extends PureComponent {
                 />
                 <Route
                   exact
-                  path='/landlord/offices/:id'
+                  path='/landlord/offices/:id/:officeName'
                   render={({ match }) => (
                     <OfficeDetail
                       navigate={this.props.navigate}
@@ -251,7 +251,7 @@ class Landlord extends PureComponent {
                 />
                 <Route
                   exact
-                  path='/landlord/offices/:id/edit'
+                  path='/landlord/offices/:id/:officeName/edit'
                   render={({ match }) => (
                     <AddNewOffice
                       officeId={match.params.id}
