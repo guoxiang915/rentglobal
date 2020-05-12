@@ -385,7 +385,7 @@ class AddNewOffice extends PureComponent {
       this.saveCurrentStep().then(() => {
         if (currentStep === this.steps.length) {
           // navigate to office detail page
-          this.props.navigate("offices", this.state.office._id);
+          this.props.navigate("offices", `${this.state.office._id}/${this.state.office.location.country}-${this.state.office.officeType}-${this.state.office.numberOfEmployees}`);
         } else {
           this.setState({ currentStep: currentStep + 1 });
         }
@@ -395,7 +395,7 @@ class AddNewOffice extends PureComponent {
 
   /** Event for edit office */
   handleEditOffice = () => {
-    this.props.onEditOffice(this.state.office._id);
+    this.props.onEditOffice(this.state.office);
   };
 
   /** Event for delete office */

@@ -250,8 +250,8 @@ class OfficeDetail extends PureComponent {
   };
 
   /** Goto office detail of similar offices */
-  goDetail = (officeId) => () => {
-    this.props.navigate('offices', officeId);
+  goDetail = (office) => () => {
+    this.props.navigate('offices', `${office._id}/${office.location.country}-${office.officeType}-${office.numberOfEmployees}`);
   };
 
   /** Send message to consultant */
@@ -449,7 +449,7 @@ class OfficeDetail extends PureComponent {
 
           {/** Show office detail form */}
           <Row fullWidth classes={{ box: clsx(s.addOfficeTabWrapper) }}>
-            {office && <OfficeDetailForm office={office} goDetail={this.goDetail} />}
+            {office && <OfficeDetailForm office={office} />}
           </Row>
 
           {/** Show office created consultant info */}
@@ -486,7 +486,7 @@ class OfficeDetail extends PureComponent {
                         <OfficeItem
                           office={office}
                           setFavorite
-                          onClick={this.goDetail(office._id)}
+                          onClick={this.goDetail(office)}
                         />
                       </div>
                     ))}

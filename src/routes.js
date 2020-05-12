@@ -16,7 +16,7 @@ export default (
       <PrivateRoute exact path='/search' component={Search} noSidebar />
       <PrivateRoute
         exact
-        path='/offices/:id'
+        path='/offices/:id/:officeName'
         component={({ match, ...props }) => (
           <OfficeDetail officeId={match.params.id} {...props} />
         )}
