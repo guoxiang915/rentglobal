@@ -57,7 +57,7 @@ class GooglePlaceField extends PureComponent {
                   addressComponents.find(
                     (component) => component.types[0] === "route"
                   )?.long_name
-                } `
+              } `
               : "" +
                 `${
                   addressComponents.find(

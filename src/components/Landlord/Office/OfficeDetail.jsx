@@ -4,6 +4,7 @@ import { withTranslation } from 'react-i18next';
 import clsx from 'clsx';
 import PropTypes from 'prop-types';
 import withWidth, { isWidthDown } from '@material-ui/core/withWidth';
+import Carousel from '@brainhubeu/react-carousel';
 import { KeyboardBackspace } from '@material-ui/icons';
 import {
   Row,
@@ -15,7 +16,9 @@ import {
   EyeDisIcon,
   DeleteIcon,
   EditIcon,
+  Divider,
 } from '../../../common/base-components';
+import { OfficeItem } from '../../../common/base-layouts';
 import OfficeDetailForm from '../../Layout/OfficeDetailForm';
 
 const styleSheet = (theme) => ({
@@ -47,12 +50,23 @@ const styleSheet = (theme) => ({
       paddingTop: 64,
     },
   },
+
+  similarOfficesWrapper: {
+    paddingTop: 46,
+    paddingBottom: 74,
+  },
+
+  similarOffices: {
+    paddingTop: 54,
+    overflow: 'hidden',
+  },
 });
 
 class OfficeDetail extends PureComponent {
   static propTypes = {
     officeId: PropTypes.string.isRequired,
     getOfficeById: PropTypes.func.isRequired,
+    getSimilarOffices: PropTypes.func.isRequired,
     onEditOffice: PropTypes.func,
     onDeleteOffice: PropTypes.func,
     classes: PropTypes.object,
@@ -61,6 +75,7 @@ class OfficeDetail extends PureComponent {
 
   state = {
     office: {},
+    similarOffices: [],
     dialog: null,
   };
 
@@ -72,6 +87,14 @@ class OfficeDetail extends PureComponent {
         this.setState({ office: response.data });
       }
     });
+
+    /** Get similar offices */
+    // this.props.
+    this.props.getSimilarOffices(officeId).then((response) => {
+      if (response.status === 200) {
+        this.setState({ similarOffices: response.data });
+      }
+    });
   }
 
   componentDidUpdate(prevProps) {
@@ -81,6 +104,14 @@ class OfficeDetail extends PureComponent {
       this.props.getOfficeById(officeId).then((response) => {
         if (response.status === 200) {
           this.setState({ office: response.data });
+        }
+      });
+
+      /** Get similar offices */
+      // this.props.
+      this.props.getSimilarOffices(officeId).then((response) => {
+        if (response.status === 200) {
+          this.setState({ similarOffices: response.data });
         }
       });
     }
@@ -115,17 +146,12 @@ class OfficeDetail extends PureComponent {
     this.props.onDeleteOffice(this.state.office._id);
   };
 
-  /** Goto office detail of similar offices */
-  goDetail = (officeId) => () => {
-    this.props.navigate('offices', officeId);
-  };
-
   /**
    * Renderer function
    */
   render() {
     const { classes: s, t, width } = this.props;
-    const { office, dialog } = this.state;
+    const { office, dialog, similarOffices } = this.state;
 
     return (
       <Column
@@ -204,7 +230,42 @@ class OfficeDetail extends PureComponent {
         </Row>
 
         <Row fullWidth classes={{ box: clsx(s.addOfficeTabWrapper) }}>
-          {office && <OfficeDetailForm office={office} goDetail={this.goDetail} />}
+          {office && <OfficeDetailForm office={office} />}
+        </Row>
+
+        {/** Show similar offices */}
+        <Divider />
+        <Row fullWidth classes={{ box: s.similarOfficesWrapper }}>
+          <Column fullWidth alignChildrenStart>
+            <Typography fontSizeM textBlackGrey fontWeightBold>
+              {t('similarOffice')}
+            </Typography>
+            <Row fullWidth classes={{ box: s.similarOffices }}>
+              <div style={{ width: '100%', height: '100%' }}>
+                <Carousel
+                  itemWidth={255}
+                  offset={0}
+                  keepDirectionWhenDragging
+                >
+                  {similarOffices.map((office, index) => (
+                    <div
+                      style={{
+                        position: 'relative',
+                        cursor: 'pointer',
+                        height: '100%',
+                      }}
+                      key={index}
+                    >
+                      <OfficeItem
+                        office={office}
+                        setFavorite
+                      />
+                    </div>
+                  ))}
+                </Carousel>
+              </div>
+            </Row>
+          </Column>
         </Row>
 
         <Row
