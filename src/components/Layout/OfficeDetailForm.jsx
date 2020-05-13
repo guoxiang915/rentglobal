@@ -5,7 +5,6 @@ import { withTranslation } from 'react-i18next';
 import PropTypes from 'prop-types';
 import withWidth, { isWidthDown } from '@material-ui/core/withWidth';
 import Carousel from '@brainhubeu/react-carousel';
-import ImageGallery from 'react-image-gallery';
 import {
   Box,
   Row,
@@ -21,6 +20,7 @@ import {
   CallIcon,
   ArrowDownIcon,
   ArrowUpIcon,
+  FullScreenImageCarousel,
 } from '../../common/base-components';
 import { TabWrapper, StatisticBox } from '../../common/base-layouts';
 import { servicesCategories } from '../../utils/constants';
@@ -127,10 +127,46 @@ const styleSheet = (theme) => ({
     },
   },
 
+  galleryCoverPhoto: {
+    width: '75%',
+    marginRight: 20,
+    cursor: 'pointer'
+  },
+
+  galleryThumbnailWrapper: {
+    width: '25%',
+    paddingTop: 'calc(37% + 7px)',
+    position: 'relative',
+    overflow: 'hidden',
+    height: 0
+  },
+
+  galleryThumbnailImageContainer: {
+    position: 'absolute',
+    left: 0,
+    right: 0,
+    transition: '1s'
+  },
+
+  galleryThumbnailImage: {
+    width: '100%',
+    marginBottom: 15,
+    display: 'block',
+    cursor: 'pointer',
+
+    '&:last-of-type': {
+      marginBottom: 0
+    }
+  },
+
+  selectedGalleryThumbnailImage: {
+    border: '3px solid #d7df23'
+  },
+
   navigationContainer: {
     position: 'absolute',
     right: 0,
-    width: 110,
+    width: 'calc(25% - 20px)',
     display: 'flex',
     flexDirection: 'column',
     alignItems: 'center',
@@ -142,7 +178,7 @@ const styleSheet = (theme) => ({
   navigationButton: {
     display: 'block',
     height: 24,
-    width: 100,
+    width: '100%',
     textAlign: 'center',
     color: '#E5E5E5',
     backgroundColor: 'rgba(255, 255, 255, 0.5)',
@@ -238,20 +274,16 @@ const styleSheet = (theme) => ({
 
 /** Render cover photos */
 const CoverPhotos = React.memo(({ classes: s, coverPhotos, width }) => {
-  const galleryRef = React.createRef();
+  const [currentCoverPhoto, setCurrentCoverPhoto] = useState(0);
+  const [showFullScreen, setShowFullScreen] = useState(false);
   const handlePrevCoverPhoto = () => {
-    galleryRef.current.slideLeft();
+    setCurrentCoverPhoto(Math.max(currentCoverPhoto - 1, 0));
   };
   const handleNextCoverPhoto = () => {
-    galleryRef.current.slideRight();
+    setCurrentCoverPhoto(Math.min(currentCoverPhoto + 1, coverPhotos.length - 1));
   };
-  const [showArrows, setShowArrowsStatus] = useState(false);
-  const showHideArrowButtons = () => {
-    const galleryWrapperHeight = galleryRef.current.thumbnailsWrapper.current.offsetHeight;
-    const galleryHeight = galleryRef.current.thumbnails.current.offsetHeight;
-    if (galleryWrapperHeight < galleryHeight) {
-      setShowArrowsStatus(true);
-    }
+  const handleClickThumb = (index) => {
+    setCurrentCoverPhoto(index);
   };
 
   return (
@@ -279,19 +311,24 @@ const CoverPhotos = React.memo(({ classes: s, coverPhotos, width }) => {
         </div>
       ) : (
         <Row fullWidth relative>
-          <ImageGallery
-            items={coverPhotos ? coverPhotos.map(coverPhoto => ({ original: coverPhoto.desktop?.bucketPath, thumbnail: coverPhoto.mobile?.bucketPath, thumbnailClass: s.coverPhotoContent })) : []}
-            infinite={false}
-            lazyLoad={true}
-            showNav={false}
-            thumbnailPosition={'right'}
-            showFullscreenButton={false}
-            useBrowserFullscreen={false}
-            showPlayButton={false}
-            ref={galleryRef}
-            onImageLoad={showHideArrowButtons}
-          />
-          {showArrows && (
+          {coverPhotos &&
+            <React.Fragment>
+              <img src={coverPhotos[currentCoverPhoto].desktop?.bucketPath} className={s.galleryCoverPhoto} onClick={() => setShowFullScreen(true)} />
+              <div className={s.galleryThumbnailWrapper}>
+                <div className={s.galleryThumbnailImageContainer} style={{ top: `calc(-${Math.max(0, currentCoverPhoto - 2) * 100 / 3}% - ${Math.max(0, currentCoverPhoto - 3) * 5}px` }}>
+                  {coverPhotos.map((coverPhoto, index) => (
+                    <img
+                      key={index}
+                      src={coverPhoto.desktop?.bucketPath}
+                      className={clsx(s.galleryThumbnailImage, index === currentCoverPhoto ? s.selectedGalleryThumbnailImage : '')}
+                      onClick={() => handleClickThumb(index)}
+                    />
+                  ))}
+                </div>
+              </div>
+            </React.Fragment>
+          }
+          {coverPhotos && coverPhotos.length > 3 && (
             <Box classes={{ box: s.navigationContainer }}>
               <Button background={'rgba(255,255,255,0.5)'} className={clsx(s.navigationButton, s.navigationButtonUp)} onClick={handlePrevCoverPhoto}>
                 <ArrowUpIcon />
@@ -301,6 +338,9 @@ const CoverPhotos = React.memo(({ classes: s, coverPhotos, width }) => {
               </Button>
             </Box>
           )}
+          {coverPhotos && showFullScreen &&
+            <FullScreenImageCarousel image={coverPhotos[currentCoverPhoto].desktop?.bucketPath} open={showFullScreen} onClose={() => setShowFullScreen(false)} />
+          }
         </Row>
       )}
     </React.Fragment>

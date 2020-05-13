@@ -23,3 +23,4 @@ export { default as GoogleMapMarker } from './GoogleMapMarker';
 export { default as LazyLoadImage } from './LazyLoadImage';
 export { default as LinearProgress } from './LinearProgress';
 export { default as SplashScreen } from './SplashScreen';
+export { default as FullScreenImageCarousel } from './FullScreenImageCarousel';
