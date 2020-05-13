@@ -315,7 +315,7 @@ const CoverPhotos = React.memo(({ classes: s, coverPhotos, width }) => {
             <React.Fragment>
               <img src={coverPhotos[currentCoverPhoto].desktop?.bucketPath} className={s.galleryCoverPhoto} onClick={() => setShowFullScreen(true)} />
               <div className={s.galleryThumbnailWrapper}>
-                <div className={s.galleryThumbnailImageContainer} style={{ top: `calc(-${Math.max(0, currentCoverPhoto - 2) * 100 / 3}% - ${Math.max(0, currentCoverPhoto - 2) * 5}px` }}>
+                <div className={s.galleryThumbnailImageContainer} style={{ top: `calc(-${Math.max(0, currentCoverPhoto - 2) * 100 / 3}% - ${Math.max(0, currentCoverPhoto - 3) * 5}px` }}>
                   {coverPhotos.map((coverPhoto, index) => (
                     <img
                       key={index}

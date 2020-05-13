@@ -143,6 +143,8 @@ class PictureGalleryForm extends PureComponent {
     this.setState({ isLoading: true });
     this.props.uploadPhoto(this.props.office._id, file).then(() => {
       this.setState({ isLoading: false });
+    }).catch(() => {
+      this.setState({ isLoading: false });
     });
   };
 
