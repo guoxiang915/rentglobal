@@ -9,10 +9,19 @@ import {
   TableBody,
   TableRow,
   TableCell,
+  Grid,
 } from "@material-ui/core";
 import { Add } from "@material-ui/icons";
 import { withLogin } from "../../common/base-services";
-import { Column, Typography, Button } from "../../common/base-components";
+import {
+  Row,
+  Column,
+  Typography,
+  Button,
+  EditIcon,
+  DeleteIcon,
+  DeleteConfirmDialog,
+} from "../../common/base-components";
 import { weekdays } from "../../utils/constants";
 import {
   formatDate,
@@ -27,6 +36,30 @@ const styleSheet = (theme) => ({
   datetimeWrapper: {
     padding: "24px 0px",
     borderBottom: `1px solid ${theme.colors.primary.borderGrey}`,
+  },
+
+  actionButtons: {
+    position: "absolute",
+    top: 8,
+    left: 8,
+    bottom: 8,
+    right: 8,
+    width: "calc(100% - 8px)",
+    borderRadius: 16,
+    zIndex: 1,
+    background: `${theme.colors.primary.darkGrey}a0`,
+    opacity: 0,
+    "&:hover": {
+      opacity: 1,
+    },
+  },
+
+  actionButton: {
+    borderRadius: 8,
+    minWidth: 36,
+    width: 36,
+    height: 36,
+    padding: 0,
   },
 
   table: {
@@ -50,6 +83,8 @@ const styleSheet = (theme) => ({
     border: "none",
     background: theme.colors.primary.white,
     verticalAlign: "top",
+    padding: 0,
+    width: "calc(100% / 7)",
   },
 
   addButton: {
@@ -79,20 +114,57 @@ const HeaderCell = React.memo(({ t, firstWeekday, weekday }) => {
 });
 
 /** Render available time */
-const VisitDateTime = React.memo(({ classes: s, start, end, onEdit }) => {
-  return (
-    <Column classes={{ box: s.datetimeWrapper }} onClick={onEdit || (() => {})}>
-      <Typography fontSizeS textSecondary>
-        {formatHrMin(start)}
-      </Typography>
-      <Typography fontSizeS textSecondary>
-        {formatHrMin(end)}
-      </Typography>
-    </Column>
-  );
-});
+const VisitDateTime = React.memo(
+  ({ classes: s, start, end, onEdit, onDelete }) => {
+    return (
+      <Row fullWidth justifyChildrenCenter relative>
+        {onEdit || onDelete ? (
+          <Grid
+            container
+            direction='row'
+            className={s.actionButtons}
+            alignItems='center'
+            justify='center'
+            spacing={1}
+          >
+            {onDelete ? (
+              <Grid item>
+                <Button
+                  variant='primary'
+                  className={s.actionButton}
+                  onClick={onDelete}
+                >
+                  <DeleteIcon style={{ width: 15, height: 13 }} />
+                </Button>
+              </Grid>
+            ) : null}
+            {onEdit ? (
+              <Grid item>
+                <Button
+                  variant='primary'
+                  className={s.actionButton}
+                  onClick={onEdit}
+                >
+                  <EditIcon style={{ width: 15, height: 13 }} />
+                </Button>
+              </Grid>
+            ) : null}
+          </Grid>
+        ) : null}
+        <Column classes={{ box: s.datetimeWrapper }}>
+          <Typography fontSizeS textSecondary>
+            {formatHrMin(start)}
+          </Typography>
+          <Typography fontSizeS textSecondary>
+            {formatHrMin(end)}
+          </Typography>
+        </Column>
+      </Row>
+    );
+  }
+);
 
-const DataCell = ({ classes: s, visits, onAdd, onEdit }) => {
+const DataCell = ({ classes: s, visits, onAdd, onEdit, onDelete }) => {
   return (
     <Column>
       {visits.map((v, index) => (
@@ -101,7 +173,8 @@ const DataCell = ({ classes: s, visits, onAdd, onEdit }) => {
             classes={s}
             start={v.start}
             end={v.end}
-            onEdit={onEdit}
+            onEdit={() => onEdit(v)}
+            onDelete={() => onDelete(v)}
           />
         </React.Fragment>
       ))}
@@ -150,7 +223,33 @@ class CalendarForm extends PureComponent {
         <AddTimeDialog
           date={firstWeekday}
           onClose={this.handleCloseDialog}
-          onAdd={this.handleAddAvailability}
+          onSave={this.handleAddAvailability}
+        />
+      ),
+    });
+  };
+
+  handleEdit = (v) => {
+    this.setState({
+      dialog: (
+        <AddTimeDialog
+          date={v.date}
+          start={v.start}
+          end={v.end}
+          onClose={this.handleCloseDialog}
+          onSave={this.handleEditAvailability(v)}
+        />
+      ),
+    });
+  };
+
+  handleDelete = (v) => {
+    this.setState({
+      dialog: (
+        <DeleteConfirmDialog
+          text={this.props.t("confirmDelete")}
+          onClose={this.handleCloseDialog}
+          onConfirm={() => this.handleDeleteAvailability(v)}
         />
       ),
     });
@@ -159,6 +258,24 @@ class CalendarForm extends PureComponent {
   handleAddAvailability = (e) => {
     if (this.props.onChange) {
       this.props.onChange([...this.props.visits, e]);
+    }
+    this.handleCloseDialog();
+  };
+
+  handleEditAvailability = (v) => (e) => {
+    if (this.props.onChange) {
+      const visits = this.props.visits;
+      visits[visits.indexOf(v)] = e;
+      this.props.onChange([...visits]);
+    }
+    this.handleCloseDialog();
+  };
+
+  handleDeleteAvailability = (v) => {
+    if (this.props.onChange) {
+      const visits = this.props.visits;
+      visits.splice(visits.indexOf(v), 1);
+      this.props.onChange([...visits]);
     }
     this.handleCloseDialog();
   };
@@ -211,6 +328,8 @@ class CalendarForm extends PureComponent {
                       ).getTime()
                   )}
                   onAdd={onChange ? () => this.handleAdd(index) : null}
+                  onEdit={onChange ? this.handleEdit : null}
+                  onDelete={onChange ? this.handleDelete : null}
                 />
               </TableCell>
             ))}

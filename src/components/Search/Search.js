@@ -25,6 +25,7 @@ export const styleSheet = (theme) => ({
     paddingTop: 19,
     paddingBottom: 19,
     overflow: "visible",
+    background: theme.colors.primary.whiteGrey,
     [theme.breakpoints.down("xs")]: {
       paddingTop: 15,
       paddingBottom: 15,
@@ -90,6 +91,7 @@ export const styleSheet = (theme) => ({
     width: 215,
     height: 53,
     marginLeft: 16,
+    background: theme.colors.primary.white,
   },
 
   filtersWrapper: {
