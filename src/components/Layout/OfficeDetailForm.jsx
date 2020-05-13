@@ -245,14 +245,6 @@ const CoverPhotos = React.memo(({ classes: s, coverPhotos, width }) => {
   const handleNextCoverPhoto = () => {
     galleryRef.current.slideRight();
   };
-  const [showArrows, setShowArrowsStatus] = useState(false);
-  const showHideArrowButtons = () => {
-    const galleryWrapperHeight = galleryRef.current.thumbnailsWrapper.current.offsetHeight;
-    const galleryHeight = galleryRef.current.thumbnails.current.offsetHeight;
-    if (galleryWrapperHeight < galleryHeight) {
-      setShowArrowsStatus(true);
-    }
-  };
 
   return (
     <React.Fragment>
@@ -280,7 +272,7 @@ const CoverPhotos = React.memo(({ classes: s, coverPhotos, width }) => {
       ) : (
         <Row fullWidth relative>
           <ImageGallery
-            items={coverPhotos ? coverPhotos.map(coverPhoto => ({ original: coverPhoto.desktop?.bucketPath, thumbnail: coverPhoto.mobile?.bucketPath, thumbnailClass: s.coverPhotoContent })) : []}
+            items={coverPhotos ? coverPhotos.map(coverPhoto => ({ original: coverPhoto.desktop?.bucketPath, thumbnail: coverPhoto.mobile?.bucketPath, thumbnailClass: s.coverPhotoContent, sizes: { width: 150 } })) : []}
             infinite={false}
             lazyLoad={true}
             showNav={false}
@@ -289,9 +281,13 @@ const CoverPhotos = React.memo(({ classes: s, coverPhotos, width }) => {
             useBrowserFullscreen={false}
             showPlayButton={false}
             ref={galleryRef}
-            onImageLoad={showHideArrowButtons}
+            showFullscreenButton={true}
+            additionalClass
+            renderThumbInner={image => {
+              return (<img src={image.thumbnail} />);
+            }}
           />
-          {showArrows && (
+          {coverPhotos && coverPhotos.length > 3 && (
             <Box classes={{ box: s.navigationContainer }}>
               <Button background={'rgba(255,255,255,0.5)'} className={clsx(s.navigationButton, s.navigationButtonUp)} onClick={handlePrevCoverPhoto}>
                 <ArrowUpIcon />
