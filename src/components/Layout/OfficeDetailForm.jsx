@@ -129,13 +129,13 @@ const styleSheet = (theme) => ({
 
   galleryCoverPhoto: {
     width: '75%',
-    marginRight: 20,
+    marginRight: 15,
     cursor: 'pointer'
   },
 
   galleryThumbnailWrapper: {
-    width: '25%',
-    paddingTop: 'calc(37% + 7px)',
+    width: 'calc(25% - 21px)',
+    paddingTop: 'calc(37% + 6px)',
     position: 'relative',
     overflow: 'hidden',
     height: 0
@@ -166,7 +166,7 @@ const styleSheet = (theme) => ({
   navigationContainer: {
     position: 'absolute',
     right: 0,
-    width: 'calc(25% - 20px)',
+    width: 'calc(25% - 15px)',
     display: 'flex',
     flexDirection: 'column',
     alignItems: 'center',
@@ -315,7 +315,7 @@ const CoverPhotos = React.memo(({ classes: s, coverPhotos, width }) => {
             <React.Fragment>
               <img src={coverPhotos[currentCoverPhoto].desktop?.bucketPath} className={s.galleryCoverPhoto} onClick={() => setShowFullScreen(true)} />
               <div className={s.galleryThumbnailWrapper}>
-                <div className={s.galleryThumbnailImageContainer} style={{ top: `calc(-${Math.max(0, currentCoverPhoto - 2) * 100 / 3}% - ${Math.max(0, currentCoverPhoto - 3) * 5}px` }}>
+                <div className={s.galleryThumbnailImageContainer} style={{ top: `calc(-${Math.max(0, currentCoverPhoto - 2) * 100 / 3}% - ${Math.max(0, currentCoverPhoto - 2) * 5}px` }}>
                   {coverPhotos.map((coverPhoto, index) => (
                     <img
                       key={index}
@@ -339,7 +339,12 @@ const CoverPhotos = React.memo(({ classes: s, coverPhotos, width }) => {
             </Box>
           )}
           {coverPhotos && showFullScreen &&
-            <FullScreenImageCarousel image={coverPhotos[currentCoverPhoto].desktop?.bucketPath} open={showFullScreen} onClose={() => setShowFullScreen(false)} />
+            <FullScreenImageCarousel
+              images={coverPhotos.map(coverPhoto => coverPhoto.desktop?.bucketPath)}
+              index={currentCoverPhoto}
+              open={showFullScreen}
+              onClose={() => setShowFullScreen(false)}
+            />
           }
         </Row>
       )}
