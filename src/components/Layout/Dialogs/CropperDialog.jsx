@@ -9,7 +9,7 @@ import {
 } from '@material-ui/core';
 import clsx from 'clsx';
 import { withTranslation } from 'react-i18next';
-import ReactCrop from 'react-image-crop';
+import { Cropper } from 'react-image-cropper';
 import {
   Button,
   Typography,
@@ -20,12 +20,12 @@ import {
   CheckIcon,
   CloseIcon,
 } from '../../../common/base-components';
-import 'react-image-crop/dist/ReactCrop.css';
+// import 'react-image-crop/dist/ReactCrop.css';
 
 const styleSheet = (theme) => ({
   root: {
-    maxWidth: 1056,
-    maxHeight: '80%',
+    // maxWidth: 1056,
+    // maxHeight: '80%',
     padding: 0,
     minWidth: 565,
     minHeight: 395,
@@ -88,36 +88,19 @@ class CropperDialog extends PureComponent {
     onClose: PropTypes.func,
   };
 
-  state = { crop: { unit: '%', width: 100, height: 100, aspect: this.props.aspectRatio } };
-
   imageRef = React.createRef(null);
+  cropperRef = React.createRef();
 
-  /** Get cropped image from crop config */
-  getCroppedImage = (image, crop, fileName) => {
-    let img = this.imageRef;
-    const canvas = document.createElement('canvas');
-    const scaleX = img.naturalWidth / img.width;
-    const scaleY = img.naturalHeight / img.height;
-    canvas.width = Math.ceil(crop.width*scaleX);
-    canvas.height = Math.ceil(crop.height*scaleY);
-    const ctx = canvas.getContext('2d');
-    ctx.drawImage(
-      img,
-      crop.x * scaleX,
-      crop.y * scaleY,
-      crop.width * scaleX,
-      crop.height * scaleY,
-      0,
-      0,
-      crop.width*scaleX,
-      crop.height*scaleY,
-    );
-    return new Promise((resolve) => {
-      canvas.toBlob(blob => {
-        blob.name = fileName;
-        resolve(blob);
-      }, 'image/jpeg',1);
-    });
+  /** Base64 to blob */
+  base64ToBlob = (image) => {
+    const byteString = atob(image.split(',')[1]);
+    const ab = new ArrayBuffer(byteString.length);
+    const ia = new Uint8Array(ab);
+
+    for (let i = 0; i < byteString.length; i++) {
+      ia[i] = byteString.charCodeAt(i);
+    }
+    return new Blob([ab], { type: 'image/jpeg' });
   };
 
   /**
@@ -126,11 +109,9 @@ class CropperDialog extends PureComponent {
    */
   handleSave = () => {
     if (this.props.onSave) {
-      this.getCroppedImage(
-        this.imageRef,
-        this.state.crop,
-        this.props.fileName || 'image.jpg',
-      ).then((imageUrl) => this.props.onSave(imageUrl));
+      const image = this.cropperRef.crop();
+      const blob = this.base64ToBlob(image);
+      this.props.onSave(blob);
     }
     this.handleClose();
   };
@@ -160,9 +141,8 @@ class CropperDialog extends PureComponent {
    */
   render() {
     const {
-      title, src, className, classes: s, t,
+      title, src, className, classes: s, t, aspectRatio,
     } = this.props;
-    const { crop } = this.state;
 
     return (
       <Dialog
@@ -196,12 +176,10 @@ class CropperDialog extends PureComponent {
         {/** dialog content */}
         <DialogContent className={s.content}>
           <Column classes={{ box: s.cropperWrapper }}>
-            <ReactCrop
+            <Cropper
               src={src}
-              crop={crop}
-              onImageLoaded={this.handleImageLoaded}
-              onChange={this.handleCropChange}
-              className={s.cropper}
+              ratio={aspectRatio}
+              ref={ref => { this.cropperRef = ref; }}
             />
           </Column>
         </DialogContent>

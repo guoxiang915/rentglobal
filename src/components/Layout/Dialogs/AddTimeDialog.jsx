@@ -19,13 +19,12 @@ import {
   Column,
   TextField,
 } from "../../../common/base-components";
-import { CloseIcon } from "../../../common/base-components/Icons";
+import { CloseIcon, CheckIcon } from "../../../common/base-components/Icons";
 import MomentUtils from "@date-io/moment";
 import {
   MuiPickersUtilsProvider,
   KeyboardTimePicker,
 } from "@material-ui/pickers";
-import { Add } from "@material-ui/icons";
 import { weekdays } from "../../../utils/constants";
 import { formatDate } from "../../../utils/formatters";
 
@@ -107,17 +106,23 @@ class AddTimeDialog extends PureComponent {
     title: PropTypes.string,
     /** Selected date */
     date: PropTypes.object,
+    /** Selected start time */
+    start: PropTypes.any,
+    /** Selected end time */
+    end: PropTypes.any,
     /** Style of dialog */
     className: PropTypes.string,
     /** Boolean for dialog is opened/closed */
     open: PropTypes.bool,
+    /** Event handler for saving time */
+    onSave: PropTypes.func,
     /** Event handler for closing dialog */
     onClose: PropTypes.func,
   };
 
   state = {
-    start: new Date(0, 0, 0, 0, 0, 0),
-    end: new Date(0, 0, 0, 12, 0, 0),
+    start: this.props.start || new Date(0, 0, 0, 0, 0, 0),
+    end: this.props.end || new Date(0, 0, 0, 12, 0, 0),
   };
 
   /**
@@ -133,9 +138,9 @@ class AddTimeDialog extends PureComponent {
   /**
    * Event handler for add start, end time
    */
-  handleAdd = () => {
-    if (this.props.onAdd) {
-      this.props.onAdd({
+  handleSave = () => {
+    if (this.props.onSave) {
+      this.props.onSave({
         date: new Date(this.props.date),
         start: new Date(this.state.start),
         end: new Date(this.state.end),
@@ -258,12 +263,12 @@ class AddTimeDialog extends PureComponent {
               </Button>
               <Button
                 variant='primary'
-                onClick={this.handleAdd}
+                onClick={this.handleSave}
                 className={s.applyButton}
               >
                 <Typography fontSizeS alignChildrenCenter>
-                  <Add fontSize='small' />
-                  <Typography paddingLeft>{t("addTime")}</Typography>
+                  <CheckIcon fontSize='small' />
+                  <Typography paddingLeft>{t("saveTime")}</Typography>
                 </Typography>
               </Button>
             </Grid>

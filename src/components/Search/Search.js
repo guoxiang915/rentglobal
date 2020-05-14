@@ -25,6 +25,7 @@ export const styleSheet = (theme) => ({
     paddingTop: 19,
     paddingBottom: 19,
     overflow: "visible",
+    background: theme.colors.primary.whiteGrey,
     [theme.breakpoints.down("xs")]: {
       paddingTop: 15,
       paddingBottom: 15,
@@ -90,6 +91,7 @@ export const styleSheet = (theme) => ({
     width: 215,
     height: 53,
     marginLeft: 16,
+    background: theme.colors.primary.white,
   },
 
   filtersWrapper: {
@@ -146,7 +148,7 @@ export const styleSheet = (theme) => ({
     border: `1px solid ${theme.colors.primary.mainColor}`,
     borderRadius: 27,
     background: theme.colors.primary.white,
-    zIndex: 1,
+    zIndex: 3,
   },
 
   boxShadow: {
@@ -155,6 +157,8 @@ export const styleSheet = (theme) => ({
 
   locationContentWrapper: {
     width: "100%",
+    maxHeight: 300,
+    overflowY: "auto",
   },
 
   locationList: {
@@ -341,7 +345,7 @@ export const styleSheet = (theme) => ({
     top: 0,
     bottom: 0,
     right: 0,
-    zIndex: 2,
+    zIndex: 0,
     width: "50%",
     [theme.breakpoints.down("xs")]: {
       width: "100%",
