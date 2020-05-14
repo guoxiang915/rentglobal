@@ -128,17 +128,17 @@ const styleSheet = (theme) => ({
   },
 
   galleryCoverPhoto: {
-    width: '75%',
+    width: "75%",
     marginRight: 15,
-    cursor: 'pointer'
+    cursor: "pointer",
   },
 
   galleryThumbnailWrapper: {
-    width: 'calc(25% - 21px)',
-    paddingTop: 'calc(37% + 6px)',
-    position: 'relative',
-    overflow: 'hidden',
-    height: 0
+    width: "calc(25% - 21px)",
+    paddingTop: "calc(37% + 6px)",
+    position: "relative",
+    overflow: "hidden",
+    height: 0,
   },
 
   galleryThumbnailImageContainer: {
@@ -166,13 +166,13 @@ const styleSheet = (theme) => ({
   navigationContainer: {
     position: "absolute",
     right: 0,
-    width: 'calc(25% - 15px)',
-    display: 'flex',
-    flexDirection: 'column',
-    alignItems: 'center',
-    height: '100%',
-    justifyContent: 'space-between',
-    pointerEvents: 'none'
+    width: "calc(25% - 15px)",
+    display: "flex",
+    flexDirection: "column",
+    alignItems: "center",
+    height: "100%",
+    justifyContent: "space-between",
+    pointerEvents: "none",
   },
 
   navigationButton: {
@@ -316,18 +316,25 @@ const CoverPhotos = React.memo(({ classes: s, coverPhotos, width }) => {
           {coverPhotos && (
             <React.Fragment>
               <img
-                src={coverPhotos[currentCoverPhoto].desktop?.bucketPath}
+                src={coverPhotos[currentCoverPhoto]?.desktop?.bucketPath}
                 alt=''
                 className={s.galleryCoverPhoto}
                 onClick={() => setShowFullScreen(true)}
               />
               <div className={s.galleryThumbnailWrapper}>
-                <div className={s.galleryThumbnailImageContainer} style={{ top: `calc(-${Math.max(0, currentCoverPhoto - 2) * 100 / 3}% - ${Math.max(0, currentCoverPhoto - 2) * 5}px` }}>
+                <div
+                  className={s.galleryThumbnailImageContainer}
+                  style={{
+                    top: `calc(-${
+                      (Math.max(0, currentCoverPhoto - 2) * 100) / 3
+                    }% - ${Math.max(0, currentCoverPhoto - 2) * 5}px`,
+                  }}
+                >
                   {coverPhotos.map((coverPhoto, index) => (
                     <img
                       key={index}
                       alt=''
-                      src={coverPhoto.desktop?.bucketPath}
+                      src={coverPhoto?.desktop?.bucketPath}
                       className={clsx(
                         s.galleryThumbnailImage,
                         index === currentCoverPhoto
@@ -359,14 +366,16 @@ const CoverPhotos = React.memo(({ classes: s, coverPhotos, width }) => {
               </Button>
             </Box>
           )}
-          {coverPhotos && showFullScreen &&
+          {coverPhotos && showFullScreen && (
             <FullScreenImageCarousel
-              images={coverPhotos.map(coverPhoto => coverPhoto.desktop?.bucketPath)}
+              images={coverPhotos.map(
+                (coverPhoto) => coverPhoto?.desktop?.bucketPath
+              )}
               index={currentCoverPhoto}
               open={showFullScreen}
               onClose={() => setShowFullScreen(false)}
             />
-          }
+          )}
         </Row>
       )}
     </React.Fragment>
