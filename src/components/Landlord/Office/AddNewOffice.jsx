@@ -299,41 +299,41 @@ class AddNewOffice extends PureComponent {
     let result = Promise.reject("");
 
     switch (this.state.currentStep) {
-      case 0:
-        if (this.state.office._id) {
-          result = this.props.updateOffice(this.state.office);
-        } else {
-          result = this.props.createOffice(this.state.office);
-        }
-        break;
-      case 1:
-        if (this.state.office) {
-          result = Promise.resolve({ data: this.state.office });
-        }
-        break;
-      case 2:
-        if (this.state.office) {
-          result = this.props.createOfficeServicesAmenities(
-            this.state.office._id,
-            this.state.office.servicesAndAmenities
-          );
-        }
-        break;
-      case 3:
-        if (this.state.office) {
-          result = this.props.saveVisibility(
-            this.state.office._id,
-            this.state.office
-          );
-        }
-        break;
-      case 4:
-        if (this.state.office) {
-          result = this.props.publishOffice(this.state.office._id);
-        }
-        break;
-      default:
-        break;
+    case 0:
+      if (this.state.office._id) {
+        result = this.props.updateOffice(this.state.office);
+      } else {
+        result = this.props.createOffice(this.state.office);
+      }
+      break;
+    case 1:
+      if (this.state.office) {
+        result = Promise.resolve({ data: this.state.office });
+      }
+      break;
+    case 2:
+      if (this.state.office) {
+        result = this.props.createOfficeServicesAmenities(
+          this.state.office._id,
+          this.state.office.servicesAndAmenities
+        );
+      }
+      break;
+    case 3:
+      if (this.state.office) {
+        result = this.props.saveVisibility(
+          this.state.office._id,
+          this.state.office
+        );
+      }
+      break;
+    case 4:
+      if (this.state.office) {
+        result = this.props.publishOffice(this.state.office._id);
+      }
+      break;
+    default:
+      break;
     }
 
     return result.then(
@@ -468,8 +468,8 @@ class AddNewOffice extends PureComponent {
             {currentStep === this.steps.length
               ? t("preview")
               : editMode
-              ? t("editOffice")
-              : t("addNewOffice")}
+                ? t("editOffice")
+                : t("addNewOffice")}
           </Typography>
           <Stretch />
           <Button

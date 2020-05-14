@@ -246,7 +246,7 @@ class OfficeDetail extends PureComponent {
 
   /** Goto previous step */
   handleBack = () => {
-    this.props.history.push('/');
+    this.props.history.goBack();
   };
 
   /** Goto office detail of similar offices */
