@@ -11,6 +11,11 @@ import clsx from 'clsx';
 import { withTranslation } from 'react-i18next';
 import withWidth, { isWidthDown } from '@material-ui/core/withWidth';
 import {
+  TwitterShareButton,
+  FacebookShareButton,
+  LinkedinShareButton,
+} from 'react-share';
+import {
   Button,
   Typography,
   Row,
@@ -139,37 +144,21 @@ class ShareOfficeDialog extends PureComponent {
         {/** dialog footer */}
         <DialogActions className={s.footer}>
           <Row fullWidth justifyChildrenCenter>
-            <Button
-              variant="icon"
-              onClick={this.handleShareSocial('twitter')}
-              className={s.socialIcon}
-            >
+            <TwitterShareButton url={window.location.href} className={s.socialIcon}>
               <TwitterBorderIcon style={{ width: 17, height: 14 }} />
-            </Button>
+            </TwitterShareButton>
             <Box paddingLeftHalf />
-            <Button
-              variant="icon"
-              onClick={this.handleShareSocial('facebook')}
-              className={s.socialIcon}
-            >
+            <FacebookShareButton url={window.location.href} className={s.socialIcon}>
               <FacebookBorderIcon style={{ width: 10, height: 17 }} />
-            </Button>
-            <Box paddingLeftHalf />
-            <Button
-              variant="icon"
-              onClick={this.handleShareSocial('instagram')}
-              className={s.socialIcon}
-            >
+            </FacebookShareButton>
+            {/* <Box paddingLeftHalf />
+            <InstapaperShareButton url={window.location.href} className={s.socialIcon}>
               <InstagramBorderIcon style={{ width: 17, height: 17 }} />
-            </Button>
+            </InstapaperShareButton> */}
             <Box paddingLeftHalf />
-            <Button
-              variant="icon"
-              onClick={this.handleShareSocial('linkedin')}
-              className={s.socialIcon}
-            >
+            <LinkedinShareButton url={window.location.href} className={s.socialIcon}>
               <LinkedinBorderIcon style={{ width: 15, height: 17 }} />
-            </Button>
+            </LinkedinShareButton>
             <Box paddingLeftHalf />
             <Button
               variant="icon"
