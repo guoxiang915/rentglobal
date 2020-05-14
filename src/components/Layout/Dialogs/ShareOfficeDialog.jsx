@@ -25,7 +25,6 @@ import {
 import { OfficeItem } from '../../../common/base-layouts';
 import {
   CloseIcon,
-  InstagramBorderIcon,
   TwitterBorderIcon,
   FacebookBorderIcon,
   LinkedinBorderIcon,
