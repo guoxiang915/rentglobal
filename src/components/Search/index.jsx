@@ -179,7 +179,7 @@ const Searchbox = ({
     onSearch("", []);
   };
 
-  window.addEventListener("click", function (e) {
+  window.addEventListener("click", () => {
     if (locationPane) {
       setLocationPane(!locationPane);
     }
