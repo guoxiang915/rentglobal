@@ -1,10 +1,10 @@
-import clsx from 'clsx';
-import React, { PureComponent, useState } from 'react';
-import { withStyles } from '@material-ui/core/styles';
-import { withTranslation } from 'react-i18next';
-import PropTypes from 'prop-types';
-import withWidth, { isWidthDown } from '@material-ui/core/withWidth';
-import Carousel from '@brainhubeu/react-carousel';
+import clsx from "clsx";
+import React, { PureComponent, useState } from "react";
+import { withStyles } from "@material-ui/core/styles";
+import { withTranslation } from "react-i18next";
+import PropTypes from "prop-types";
+import withWidth, { isWidthDown } from "@material-ui/core/withWidth";
+import Carousel from "@brainhubeu/react-carousel";
 import {
   Box,
   Row,
@@ -21,53 +21,53 @@ import {
   ArrowDownIcon,
   ArrowUpIcon,
   FullScreenImageCarousel,
-} from '../../common/base-components';
-import { TabWrapper, StatisticBox } from '../../common/base-layouts';
-import { servicesCategories } from '../../utils/constants';
+} from "../../common/base-components";
+import { TabWrapper, StatisticBox } from "../../common/base-layouts";
+import { servicesCategories } from "../../utils/constants";
 import {
   ContactInfoDialog,
   ShareOfficeDialog,
   CallConsultantDialog,
   LocationDialog,
-} from './Dialogs';
-import { favoriteOffice } from '../../api/endpoints';
-import { numberWithSpaces } from '../../utils/formatters';
-import { withLogin } from '../../common/base-services';
+} from "./Dialogs";
+import { favoriteOffice } from "../../api/endpoints";
+import { numberWithSpaces } from "../../utils/formatters";
+import { withLogin } from "../../common/base-services";
 
 const styleSheet = (theme) => ({
   root: {},
 
   imageWrapper: {
-    width: 'calc(100% - 188px)',
-    [theme.breakpoints.down('xs')]: {
-      width: '100%',
-      position: 'relative',
+    width: "calc(100% - 188px)",
+    [theme.breakpoints.down("xs")]: {
+      width: "100%",
+      position: "relative",
       left: -10,
     },
   },
 
   coverPhotoWrapper: {
-    width: '100%',
-    position: 'relative',
-    paddingTop: '50%',
+    width: "100%",
+    position: "relative",
+    paddingTop: "50%",
     border: `1px solid ${theme.colors.primary.borderGrey}`,
     borderRadius: 8,
   },
 
   coverPhoto: {
-    position: 'absolute',
+    position: "absolute",
     top: 0,
     left: 0,
     bottom: 0,
     right: 0,
-    overflow: 'hidden',
+    overflow: "hidden",
     borderRadius: 8,
   },
 
   coverPhotoContent: {
-    width: '100%',
-    height: '100%',
-    objectFit: 'cover',
+    width: "100%",
+    height: "100%",
+    objectFit: "cover",
     borderRadius: 8,
   },
 
@@ -85,15 +85,15 @@ const styleSheet = (theme) => ({
   },
 
   imageNav: {
-    width: '100%',
-    height: 'calc(100% - 50px)',
-    margin: '10px 5px',
-    overflow: 'hidden',
-    position: 'relative',
+    width: "100%",
+    height: "calc(100% - 50px)",
+    margin: "10px 5px",
+    overflow: "hidden",
+    position: "relative",
   },
 
   imageNavList: {
-    position: 'absolute',
+    position: "absolute",
   },
 
   coverPhotoNav: {
@@ -102,16 +102,16 @@ const styleSheet = (theme) => ({
     border: `1px solid ${theme.colors.primary.borderGrey}`,
     borderRadius: 8,
     marginBottom: 15,
-    '&:last-of-type': {
+    "&:last-of-type": {
       marginBottom: 0,
     },
   },
 
   detailsWrapper: {
-    width: '100%',
+    width: "100%",
     paddingTop: 50,
-    [theme.breakpoints.down('sm')]: {
-      flexWrap: 'wrap',
+    [theme.breakpoints.down("sm")]: {
+      flexWrap: "wrap",
     },
   },
 
@@ -120,72 +120,72 @@ const styleSheet = (theme) => ({
   },
 
   detailsTabWrapper: {
-    width: '100%',
+    width: "100%",
     paddingBottom: 60,
-    [theme.breakpoints.down('sm')]: {
+    [theme.breakpoints.down("sm")]: {
       paddingBottom: 45,
     },
   },
 
   galleryCoverPhoto: {
-    width: '75%',
+    width: "75%",
     marginRight: 20,
-    cursor: 'pointer'
+    cursor: "pointer",
   },
 
   galleryThumbnailWrapper: {
-    width: '25%',
-    paddingTop: 'calc(37% + 7px)',
-    position: 'relative',
-    overflow: 'hidden',
-    height: 0
+    width: "25%",
+    paddingTop: "calc(37% + 7px)",
+    position: "relative",
+    overflow: "hidden",
+    height: 0,
   },
 
   galleryThumbnailImageContainer: {
-    position: 'absolute',
+    position: "absolute",
     left: 0,
     right: 0,
-    transition: '1s'
+    transition: "1s",
   },
 
   galleryThumbnailImage: {
-    width: '100%',
+    width: "100%",
     marginBottom: 15,
-    display: 'block',
-    cursor: 'pointer',
+    display: "block",
+    cursor: "pointer",
 
-    '&:last-of-type': {
-      marginBottom: 0
-    }
+    "&:last-of-type": {
+      marginBottom: 0,
+    },
   },
 
   selectedGalleryThumbnailImage: {
-    border: '3px solid #d7df23'
+    border: "3px solid #d7df23",
   },
 
   navigationContainer: {
-    position: 'absolute',
+    position: "absolute",
     right: 0,
-    width: 'calc(25% - 20px)',
-    display: 'flex',
-    flexDirection: 'column',
-    alignItems: 'center',
-    height: '100%',
-    justifyContent: 'space-between',
-    pointerEvents: 'none'
+    width: "calc(25% - 20px)",
+    display: "flex",
+    flexDirection: "column",
+    alignItems: "center",
+    height: "100%",
+    justifyContent: "space-between",
+    pointerEvents: "none",
   },
 
   navigationButton: {
-    display: 'block',
+    display: "block",
     height: 24,
-    width: '100%',
-    textAlign: 'center',
-    color: '#E5E5E5',
-    backgroundColor: 'rgba(255, 255, 255, 0.5)',
-    cursor: 'pointer',
+    width: "100%",
+    textAlign: "center",
+    color: "#E5E5E5",
+    backgroundColor: "rgba(255, 255, 255, 0.5)",
+    cursor: "pointer",
     padding: 0,
     borderRadius: 0,
-    pointerEvents: 'all'
+    pointerEvents: "all",
   },
 
   navigationButtonUp: {},
@@ -193,10 +193,10 @@ const styleSheet = (theme) => ({
   navigationButtonDown: {},
 
   infoRow: {
-    width: '100%',
-    alignItems: 'center',
-    flexWrap: 'wrap',
-    [theme.breakpoints.down('sm')]: {
+    width: "100%",
+    alignItems: "center",
+    flexWrap: "wrap",
+    [theme.breakpoints.down("sm")]: {
       marginBottom: 8,
     },
   },
@@ -205,24 +205,24 @@ const styleSheet = (theme) => ({
     // minWidth: 210,
     // width: "45%",
     width: 210,
-    fontSize: '15px',
-    lineHeight: '20px',
+    fontSize: "15px",
+    lineHeight: "20px",
     minHeight: 20,
     marginBottom: 4,
-    alignItems: 'flex-start',
+    alignItems: "flex-start",
     color: theme.colors.primary.darkGrey,
   },
 
   infoValue: {
     // width: "54%",
     minWidth: 210,
-    width: 'calc(100% - 210px)',
-    fontSize: '19px',
-    lineHeight: '26px',
+    width: "calc(100% - 210px)",
+    fontSize: "19px",
+    lineHeight: "26px",
     minHeight: 26,
     marginBottom: 4,
-    fontWeight: 'bold',
-    alignItems: 'flex-start',
+    fontWeight: "bold",
+    alignItems: "flex-start",
     color: theme.colors.primary.darkGrey,
   },
 
@@ -237,13 +237,13 @@ const styleSheet = (theme) => ({
 
   servicesWrapper: {
     flexGrow: 1,
-    padding: '0px 22px',
+    padding: "0px 22px",
     borderLeft: `1px solid ${theme.colors.primary.borderGrey}`,
     marginLeft: 37,
-    [theme.breakpoints.down('sm')]: {
-      border: 'none',
+    [theme.breakpoints.down("sm")]: {
+      border: "none",
       borderTop: `1px solid ${theme.colors.primary.borderGrey}`,
-      padding: '42px 0px 0px',
+      padding: "42px 0px 0px",
       margin: 0,
     },
   },
@@ -280,7 +280,9 @@ const CoverPhotos = React.memo(({ classes: s, coverPhotos, width }) => {
     setCurrentCoverPhoto(Math.max(currentCoverPhoto - 1, 0));
   };
   const handleNextCoverPhoto = () => {
-    setCurrentCoverPhoto(Math.min(currentCoverPhoto + 1, coverPhotos.length - 1));
+    setCurrentCoverPhoto(
+      Math.min(currentCoverPhoto + 1, coverPhotos.length - 1)
+    );
   };
   const handleClickThumb = (index) => {
     setCurrentCoverPhoto(index);
@@ -288,11 +290,11 @@ const CoverPhotos = React.memo(({ classes: s, coverPhotos, width }) => {
 
   return (
     <React.Fragment>
-      {isWidthDown('xs', width) ? (
+      {isWidthDown("xs", width) ? (
         <div className={s.imageWrapper}>
           <Carousel keepDirectionWhenDragging itemWidth={285} offset={0}>
-            {coverPhotos
-              && coverPhotos.map((photo, index) => (
+            {coverPhotos &&
+              coverPhotos.map((photo, index) => (
                 <div className={s.coverPhotoWrapper} key={index}>
                   <div className={s.coverPhoto}>
                     <img
@@ -302,7 +304,7 @@ const CoverPhotos = React.memo(({ classes: s, coverPhotos, width }) => {
                           : photo.bucketPath
                       }
                       className={s.coverPhotoContent}
-                      alt=""
+                      alt=''
                     />
                   </div>
                 </div>
@@ -311,36 +313,66 @@ const CoverPhotos = React.memo(({ classes: s, coverPhotos, width }) => {
         </div>
       ) : (
         <Row fullWidth relative>
-          {coverPhotos &&
+          {coverPhotos && (
             <React.Fragment>
-              <img src={coverPhotos[currentCoverPhoto].desktop?.bucketPath} className={s.galleryCoverPhoto} onClick={() => setShowFullScreen(true)} />
+              <img
+                src={coverPhotos[currentCoverPhoto].desktop?.bucketPath}
+                alt=''
+                className={s.galleryCoverPhoto}
+                onClick={() => setShowFullScreen(true)}
+              />
               <div className={s.galleryThumbnailWrapper}>
-                <div className={s.galleryThumbnailImageContainer} style={{ top: `calc(-${Math.max(0, currentCoverPhoto - 2) * 100 / 3}% - ${Math.max(0, currentCoverPhoto - 3) * 5}px` }}>
+                <div
+                  className={s.galleryThumbnailImageContainer}
+                  style={{
+                    top: `calc(-${
+                      (Math.max(0, currentCoverPhoto - 2) * 100) / 3
+                    }% - ${Math.max(0, currentCoverPhoto - 3) * 5}px`,
+                  }}
+                >
                   {coverPhotos.map((coverPhoto, index) => (
                     <img
                       key={index}
+                      alt=''
                       src={coverPhoto.desktop?.bucketPath}
-                      className={clsx(s.galleryThumbnailImage, index === currentCoverPhoto ? s.selectedGalleryThumbnailImage : '')}
+                      className={clsx(
+                        s.galleryThumbnailImage,
+                        index === currentCoverPhoto
+                          ? s.selectedGalleryThumbnailImage
+                          : ""
+                      )}
                       onClick={() => handleClickThumb(index)}
                     />
                   ))}
                 </div>
               </div>
             </React.Fragment>
-          }
+          )}
           {coverPhotos && coverPhotos.length > 3 && (
             <Box classes={{ box: s.navigationContainer }}>
-              <Button background={'rgba(255,255,255,0.5)'} className={clsx(s.navigationButton, s.navigationButtonUp)} onClick={handlePrevCoverPhoto}>
+              <Button
+                background={"rgba(255,255,255,0.5)"}
+                className={clsx(s.navigationButton, s.navigationButtonUp)}
+                onClick={handlePrevCoverPhoto}
+              >
                 <ArrowUpIcon />
               </Button>
-              <Button background={'rgba(255,255,255,0.5)'} className={clsx(s.navigationButton, s.navigationButtonButton)} onClick={handleNextCoverPhoto}>
+              <Button
+                background={"rgba(255,255,255,0.5)"}
+                className={clsx(s.navigationButton, s.navigationButtonButton)}
+                onClick={handleNextCoverPhoto}
+              >
                 <ArrowDownIcon />
               </Button>
             </Box>
           )}
-          {coverPhotos && showFullScreen &&
-            <FullScreenImageCarousel image={coverPhotos[currentCoverPhoto].desktop?.bucketPath} open={showFullScreen} onClose={() => setShowFullScreen(false)} />
-          }
+          {coverPhotos && showFullScreen && (
+            <FullScreenImageCarousel
+              image={coverPhotos[currentCoverPhoto].desktop?.bucketPath}
+              open={showFullScreen}
+              onClose={() => setShowFullScreen(false)}
+            />
+          )}
         </Row>
       )}
     </React.Fragment>
@@ -371,8 +403,8 @@ class OfficeDetailForm extends PureComponent {
           this.setState({
             office: {
               ...office,
-              favorite: response.data.favorite
-            }
+              favorite: response.data.favorite,
+            },
           });
         }
       });
@@ -402,10 +434,10 @@ class OfficeDetailForm extends PureComponent {
             office={this.props.office}
             onClose={this.handleCloseDialog}
           />
-        )
+        ),
       });
     }
-  }
+  };
 
   /** Follow up office */
   handleFollowUp = () => {
@@ -413,12 +445,12 @@ class OfficeDetailForm extends PureComponent {
       this.setState({
         dialog: (
           <ContactInfoDialog
-            title={this.props.t('followUp')}
+            title={this.props.t("followUp")}
             contact={{
-              username: 'Name Family',
-              type: 'Consultant',
-              phoneNumber: '(123) 123-4567',
-              email: 'consultantname@domainanme.com',
+              username: "Name Family",
+              type: "Consultant",
+              phoneNumber: "(123) 123-4567",
+              email: "consultantname@domainanme.com",
             }}
             onClose={this.handleCloseDialog}
           />
@@ -448,7 +480,9 @@ class OfficeDetailForm extends PureComponent {
   };
 
   componentDidUpdate(prevProps) {
-    if (JSON.stringify(prevProps.office) !== JSON.stringify(this.props.office)) {
+    if (
+      JSON.stringify(prevProps.office) !== JSON.stringify(this.props.office)
+    ) {
       this.setState({ office: this.props.office });
     }
   }
@@ -457,11 +491,7 @@ class OfficeDetailForm extends PureComponent {
    * Renderer function
    */
   render() {
-    const {
-      classes: s,
-      t,
-      width,
-    } = this.props;
+    const { classes: s, t, width } = this.props;
     const { dialog, office } = this.state;
 
     return (
@@ -478,16 +508,16 @@ class OfficeDetailForm extends PureComponent {
           paddingTopHalf
           fullWidth
           wrap
-          style={{ flexDirection: 'row-reverse' }}
+          style={{ flexDirection: "row-reverse" }}
           alignChildrenStart
         >
           {/** Show favorite, share, follow up buttons */}
-          <Column alignChildrenEnd fullWidth={isWidthDown('xs', width)}>
+          <Column alignChildrenEnd fullWidth={isWidthDown("xs", width)}>
             {office.published && (
-              <Row style={{ float: 'right' }} paddingTopHalf>
+              <Row style={{ float: "right" }} paddingTopHalf>
                 <Button
-                  link="secondary"
-                  background="secondaryLight"
+                  link='secondary'
+                  background='secondaryLight'
                   onClick={this.handleSetFavorite}
                 >
                   {office.favorite ? (
@@ -499,9 +529,9 @@ class OfficeDetailForm extends PureComponent {
                     <FavoriteIcon className={s.favoriteIcon} />
                   )}
                   {/* <FavoriteIcon style={{ width: 16, height: 15 }} /> */}
-                  {!isWidthDown('xs', width) ? (
+                  {!isWidthDown("xs", width) ? (
                     <Typography paddingLeft fontSizeS fontWeightBold>
-                      {t('favorite')}
+                      {t("favorite")}
                     </Typography>
                   ) : null}
                 </Button>
@@ -509,14 +539,14 @@ class OfficeDetailForm extends PureComponent {
                 <Box paddingLeftHalf />
 
                 <Button
-                  link="secondary"
-                  background="secondaryLight"
+                  link='secondary'
+                  background='secondaryLight'
                   onClick={this.handleShare}
                 >
                   <ShareIcon style={{ width: 13, height: 15 }} />
-                  {!isWidthDown('xs', width) ? (
+                  {!isWidthDown("xs", width) ? (
                     <Typography paddingLeft fontSizeS fontWeightBold>
-                      {t('share')}
+                      {t("share")}
                     </Typography>
                   ) : null}
                 </Button>
@@ -524,22 +554,22 @@ class OfficeDetailForm extends PureComponent {
                 <Box paddingLeftHalf />
 
                 <Button
-                  link="secondary"
-                  background="secondaryLight"
+                  link='secondary'
+                  background='secondaryLight'
                   onClick={this.handleCall}
                 >
                   <CallIcon style={{ width: 13, height: 15 }} />
-                  {!isWidthDown('xs', width) ? (
+                  {!isWidthDown("xs", width) ? (
                     <Typography paddingLeft fontSizeS fontWeightBold>
-                      {t('call')}
+                      {t("call")}
                     </Typography>
                   ) : null}
                 </Button>
 
                 <Box paddingLeftHalf />
 
-                <Button variant="primary" onClick={this.handleFollowUp} shadow>
-                  {t('followUp')}
+                <Button variant='primary' onClick={this.handleFollowUp} shadow>
+                  {t("followUp")}
                 </Button>
               </Row>
             )}
@@ -554,7 +584,7 @@ class OfficeDetailForm extends PureComponent {
               {t(office.officeType)}
             </Row>
             <Row paddingTopHalf fontSizeS textPrimary>
-              {t('dollarPerMonth', { dollar: office.priceMonthly || 0 })}
+              {t("dollarPerMonth", { dollar: office.priceMonthly || 0 })}
             </Row>
             {office.published && (
               <React.Fragment>
@@ -565,9 +595,7 @@ class OfficeDetailForm extends PureComponent {
                       <StarIcon style={{ width: 12, height: 12 }} />
                     </Typography>
                     <Typography fontSizeS textSecondary paddingLeftHalf>
-                      3.5
-                      {' '}
-                      {/* office.rating */}
+                      3.5 {/* office.rating */}
                     </Typography>
                   </Row>
                 }
@@ -575,13 +603,11 @@ class OfficeDetailForm extends PureComponent {
                   // office.refID &&
                   <Row paddingTopHalf>
                     <Typography fontSizeS textSecondary>
-                      {t('refID')}
+                      {t("refID")}
                       :&nbsp;
                     </Typography>
                     <Typography fontSizeM fontWeightBold textSecondary>
-                      #
-                      {numberWithSpaces(office.refId + 1, 9)}
-                      {' '}
+                      #{numberWithSpaces(office.refId + 1, 9)}{" "}
                       {/* office.refID */}
                     </Typography>
                   </Row>
@@ -599,33 +625,31 @@ class OfficeDetailForm extends PureComponent {
               open
               insideOpen
               className={s.detailsTabWrapper}
-              title={t('generalInfo')}
+              title={t("generalInfo")}
             >
               <Row classes={{ box: s.infoRow }}>
                 <Column classes={{ box: s.infoLabel }}>
-                  {t('businessOtherFees')}
+                  {t("businessOtherFees")}
                 </Column>
                 <Column classes={{ box: s.infoValue }}>
-                  {t('dollarPerMonth', {
+                  {t("dollarPerMonth", {
                     dollar: office.businessOtherFees || 0,
                   })}
                 </Column>
               </Row>
               <Row classes={{ box: s.infoRow }}>
-                <Column classes={{ box: s.infoLabel }}>{t('area')}</Column>
+                <Column classes={{ box: s.infoLabel }}>{t("area")}</Column>
                 <Column classes={{ box: s.infoValue }}>
-                  {`${
-                    office.area || 0
-                  } mxm`}
+                  {`${office.area || 0} mxm`}
                 </Column>
               </Row>
               <Row classes={{ box: s.infoRow }}>
-                <Column classes={{ box: s.infoLabel }}>{t('rooms')}</Column>
+                <Column classes={{ box: s.infoLabel }}>{t("rooms")}</Column>
                 <Column classes={{ box: s.infoValue }}>{office.rooms}</Column>
               </Row>
               <Row classes={{ box: s.infoRow }}>
                 <Column classes={{ box: s.infoLabel }}>
-                  {t('numberOfEmployees')}
+                  {t("numberOfEmployees")}
                 </Column>
                 <Column classes={{ box: s.infoValue }}>
                   {office.numberOfEmployees}
@@ -633,19 +657,19 @@ class OfficeDetailForm extends PureComponent {
               </Row>
               <Row classes={{ box: s.infoRow }}>
                 <Column classes={{ box: s.infoLabel }}>
-                  {t('businessHours')}
+                  {t("businessHours")}
                 </Column>
                 <Column classes={{ box: s.infoValue }}>
-                  {office.businessHours
-                    && `${`${office.businessHours?.from} AM` || ''} - ${
-                      `${office.businessHours?.to} PM` || ''
+                  {office.businessHours &&
+                    `${`${office.businessHours?.from} AM` || ""} - ${
+                      `${office.businessHours?.to} PM` || ""
                     }`}
-                  {!office.businessHours && '-'}
+                  {!office.businessHours && "-"}
                 </Column>
               </Row>
               <Row classes={{ box: s.infoRow }}>
                 <Column classes={{ box: s.infoLabel }}>
-                  {t('24HourAccessibility')}
+                  {t("24HourAccessibility")}
                 </Column>
                 <Column classes={{ box: s.infoValue }}>
                   {office.fullTimeAccessibility}
@@ -653,7 +677,7 @@ class OfficeDetailForm extends PureComponent {
               </Row>
               <Row classes={{ box: s.infoRow }}>
                 <Column classes={{ box: s.infoLabel }}>
-                  {t('leaseDurationPerMonths')}
+                  {t("leaseDurationPerMonths")}
                 </Column>
                 <Column classes={{ box: s.infoValue }}>
                   {office.leaseDurationPerMonths}
@@ -664,7 +688,7 @@ class OfficeDetailForm extends PureComponent {
 
               <Row classes={{ box: s.infoRow }}>
                 <Column classes={{ box: s.infoLabel }}>
-                  {t('officeNumber')}
+                  {t("officeNumber")}
                 </Column>
                 <Column classes={{ box: s.infoValue }}>
                   {office.officeNumber}
@@ -672,7 +696,7 @@ class OfficeDetailForm extends PureComponent {
               </Row>
               <Row classes={{ box: s.infoRow }}>
                 <Column classes={{ box: s.infoLabel }}>
-                  {t('officeFloor')}
+                  {t("officeFloor")}
                 </Column>
                 <Column classes={{ box: s.infoValue }}>
                   {office.officeFloor}
@@ -680,48 +704,48 @@ class OfficeDetailForm extends PureComponent {
               </Row>
               <Row classes={{ box: s.infoRow }}>
                 <Column classes={{ box: s.infoLabel }}>
-                  {t('streetAddress')}
+                  {t("streetAddress")}
                 </Column>
                 <Column classes={{ box: s.infoValue }}>
                   {office.location && office.location.streetName}
                 </Column>
               </Row>
               <Row classes={{ box: s.infoRow }}>
-                <Column classes={{ box: s.infoLabel }}>{t('city')}</Column>
+                <Column classes={{ box: s.infoLabel }}>{t("city")}</Column>
                 <Column classes={{ box: s.infoValue }}>
                   {office.location && office.location.city}
                 </Column>
               </Row>
               <Row classes={{ box: s.infoRow }}>
-                <Column classes={{ box: s.infoLabel }}>{t('state')}</Column>
+                <Column classes={{ box: s.infoLabel }}>{t("state")}</Column>
                 <Column classes={{ box: s.infoValue }}>
                   {office.location && office.location.state}
                 </Column>
               </Row>
               <Row classes={{ box: s.infoRow }}>
-                <Column classes={{ box: s.infoLabel }}>{t('zipCode')}</Column>
+                <Column classes={{ box: s.infoLabel }}>{t("zipCode")}</Column>
                 <Column classes={{ box: s.infoValue }}>
                   {office.location && office.location.zipCode}
                 </Column>
               </Row>
               <Row classes={{ box: s.infoRow }}>
-                <Column classes={{ box: s.infoLabel }}>{t('country')}</Column>
+                <Column classes={{ box: s.infoLabel }}>{t("country")}</Column>
                 <Column classes={{ box: s.infoValue }}>
                   {office.location && office.location.country}
                 </Column>
               </Row>
               <Row classes={{ box: s.infoRow }}>
-                <Column classes={{ box: s.infoLabel }}>{t('location')}</Column>
+                <Column classes={{ box: s.infoLabel }}>{t("location")}</Column>
                 <Row classes={{ box: s.infoValue }} paddingTopHalf>
                   <Link
-                    to="#"
+                    to='#'
                     onClick={this.handleShowLocationOnMap}
-                    variant="primary"
+                    variant='primary'
                   >
                     <Typography fontSizeS>
                       <MapPointerIcon style={{ width: 15, height: 20 }} />
                       <Box paddingLeft />
-                      {t('showOnMap')}
+                      {t("showOnMap")}
                     </Typography>
                   </Link>
                 </Row>
@@ -743,11 +767,11 @@ class OfficeDetailForm extends PureComponent {
               open
               insideOpen
               className={s.detailsTabWrapper}
-              title={t('moreInfo')}
+              title={t("moreInfo")}
             >
               <Row classes={{ box: s.infoRow }}>
                 <Column classes={{ box: s.infoLabel }}>
-                  {t('typeOfContract')}
+                  {t("typeOfContract")}
                 </Column>
                 <Column classes={{ box: s.infoValue }}>
                   {t(office.typeOfContract)}
@@ -755,7 +779,7 @@ class OfficeDetailForm extends PureComponent {
               </Row>
               <Row classes={{ box: s.infoRow }}>
                 <Column classes={{ box: s.infoLabel }}>
-                  {t('guaranteesAndSecurityDeposit')}
+                  {t("guaranteesAndSecurityDeposit")}
                 </Column>
                 <Column classes={{ box: s.infoValue }}>
                   {t(office.guaranteesAndSecurityDeposit)}
@@ -763,7 +787,7 @@ class OfficeDetailForm extends PureComponent {
               </Row>
               <Row classes={{ box: s.infoRow }}>
                 <Column classes={{ box: s.infoLabel }}>
-                  {t('checkOutNotice')}
+                  {t("checkOutNotice")}
                 </Column>
                 <Column classes={{ box: s.infoValue }}>
                   {t(office.checkOutNotice)}
@@ -777,9 +801,9 @@ class OfficeDetailForm extends PureComponent {
                 open
                 insideOpen
                 className={s.detailsTabWrapper}
-                title={
-                  `${t('reviews')} (${Object.keys(office.reviews).length})`
-                }
+                title={`${t("reviews")} (${
+                  Object.keys(office.reviews).length
+                })`}
               >
                 <Row
                   fullWidth
@@ -799,18 +823,18 @@ class OfficeDetailForm extends PureComponent {
           <Column classes={{ box: s.servicesWrapper }} alignChildrenStart>
             {/** Show services & amenities */}
             <Typography textSecondary fontSizeS paddingBottom>
-              {t('servicesAndAmenities')}
+              {t("servicesAndAmenities")}
             </Typography>
-            {office.servicesAndAmenities
-              && Object.entries(office.servicesAndAmenities).map(
+            {office.servicesAndAmenities &&
+              Object.entries(office.servicesAndAmenities).map(
                 ([key, options]) => {
                   const category = servicesCategories.find(
-                    (item) => item.value === key,
+                    (item) => item.value === key
                   );
                   return category && options.length ? (
                     <React.Fragment key={key}>
                       <TabWrapper
-                        title={(
+                        title={
                           <Typography
                             alignChildrenCenter
                             fontSizeS
@@ -821,7 +845,7 @@ class OfficeDetailForm extends PureComponent {
                               {t(category.name)}
                             </Typography>
                           </Typography>
-                        )}
+                        }
                         open
                         insideOpen
                         className={s.serviceCategoryWrapper}
@@ -841,11 +865,11 @@ class OfficeDetailForm extends PureComponent {
                       </TabWrapper>
                     </React.Fragment>
                   ) : null;
-                },
+                }
               )}
           </Column>
         </Row>
-        
+
         {/** Show dialog */}
         {dialog}
       </Column>
@@ -854,5 +878,5 @@ class OfficeDetailForm extends PureComponent {
 }
 
 export default withWidth()(
-  withLogin(withStyles(styleSheet)(withTranslation('common')(OfficeDetailForm))),
+  withLogin(withStyles(styleSheet)(withTranslation("common")(OfficeDetailForm)))
 );

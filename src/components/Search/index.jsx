@@ -726,58 +726,58 @@ const PriceFilterPanel = ({ classes: s, t, price, onApply }) => {
 
 const FilterPanel = ({ classes, t, filter, value, onChangeFilter }) => {
   switch (filter.type) {
-    case "officeTypes":
-      return (
-        <OfficeTypeFilterPanel
-          classes={classes}
-          t={t}
-          types={value}
-          onApply={onChangeFilter("officeTypes")}
-        />
-      );
+  case "officeTypes":
+    return (
+      <OfficeTypeFilterPanel
+        classes={classes}
+        t={t}
+        types={value}
+        onApply={onChangeFilter("officeTypes")}
+      />
+    );
 
-    case "typeOfContracts":
-      return (
-        <ContractTypeFilterPanel
-          classes={classes}
-          t={t}
-          types={value}
-          onApply={onChangeFilter("typeOfContracts")}
-        />
-      );
+  case "typeOfContracts":
+    return (
+      <ContractTypeFilterPanel
+        classes={classes}
+        t={t}
+        types={value}
+        onApply={onChangeFilter("typeOfContracts")}
+      />
+    );
 
-    case "rooms":
-      return (
-        <RoomsFilterPanel
-          classes={classes}
-          t={t}
-          rooms={value}
-          onApply={onChangeFilter("rooms")}
-        />
-      );
+  case "rooms":
+    return (
+      <RoomsFilterPanel
+        classes={classes}
+        t={t}
+        rooms={value}
+        onApply={onChangeFilter("rooms")}
+      />
+    );
 
-    case "employees":
-      return (
-        <EmployeesFilterPanel
-          classes={classes}
-          t={t}
-          employees={value}
-          onApply={onChangeFilter("employees")}
-        />
-      );
+  case "employees":
+    return (
+      <EmployeesFilterPanel
+        classes={classes}
+        t={t}
+        employees={value}
+        onApply={onChangeFilter("employees")}
+      />
+    );
 
-    case "price":
-      return (
-        <PriceFilterPanel
-          classes={classes}
-          t={t}
-          price={value}
-          onApply={onChangeFilter("price")}
-        />
-      );
+  case "price":
+    return (
+      <PriceFilterPanel
+        classes={classes}
+        t={t}
+        price={value}
+        onApply={onChangeFilter("price")}
+      />
+    );
 
-    default:
-      return null;
+  default:
+    return null;
   }
 };
 
@@ -986,35 +986,35 @@ const FilterChip = React.memo(({ classes: s, t, filter, value, onChange }) => {
   );
 
   switch (filter) {
-    case "officeTypes":
-      return (
-        <React.Fragment>
-          {value.map((v, index) => (
-            <Chip
-              key={filter + index}
-              label={t(v)}
-              onDelete={() => handleRemoveFilter({ filter, index })}
-              className={s.filterValue}
-              color='primary'
-            />
-          ))}
-        </React.Fragment>
-      );
+  case "officeTypes":
+    return (
+      <React.Fragment>
+        {value.map((v, index) => (
+          <Chip
+            key={filter + index}
+            label={t(v)}
+            onDelete={() => handleRemoveFilter({ filter, index })}
+            className={s.filterValue}
+            color='primary'
+          />
+        ))}
+      </React.Fragment>
+    );
 
-    case "typeOfContracts":
-      return (
-        <React.Fragment>
-          {value.map((v, index) => (
-            <Chip
-              key={filter + index}
-              label={t(v)}
-              onDelete={() => handleRemoveFilter({ filter, index })}
-              className={s.filterValue}
-              color='primary'
-            />
-          ))}
-        </React.Fragment>
-      );
+  case "typeOfContracts":
+    return (
+      <React.Fragment>
+        {value.map((v, index) => (
+          <Chip
+            key={filter + index}
+            label={t(v)}
+            onDelete={() => handleRemoveFilter({ filter, index })}
+            className={s.filterValue}
+            color='primary'
+          />
+        ))}
+      </React.Fragment>
+    );
 
     // case "rooms":
     //   return (
@@ -1027,84 +1027,84 @@ const FilterChip = React.memo(({ classes: s, t, filter, value, onChange }) => {
     //     />
     //   );
 
-    case "price":
-      return (
-        <Chip
-          key={filter}
-          label={t("priceRange", {
-            min: value?.priceMin || "",
-            max: value?.priceMax,
-          })}
-          onDelete={() => handleRemoveFilter({ filter })}
-          className={s.filterValue}
-          color='primary'
-        />
-      );
+  case "price":
+    return (
+      <Chip
+        key={filter}
+        label={t("priceRange", {
+          min: value?.priceMin || "",
+          max: value?.priceMax,
+        })}
+        onDelete={() => handleRemoveFilter({ filter })}
+        className={s.filterValue}
+        color='primary'
+      />
+    );
 
-    case "rooms":
-      return (
-        <Chip
-          key={filter}
-          label={t("roomsRange", {
-            min: value?.roomsMin || "",
-            max: value?.roomsMax,
-          })}
-          onDelete={() => handleRemoveFilter({ filter })}
-          className={s.filterValue}
-          color='primary'
-        />
-      );
+  case "rooms":
+    return (
+      <Chip
+        key={filter}
+        label={t("roomsRange", {
+          min: value?.roomsMin || "",
+          max: value?.roomsMax,
+        })}
+        onDelete={() => handleRemoveFilter({ filter })}
+        className={s.filterValue}
+        color='primary'
+      />
+    );
 
-    case "employees":
-      return (
-        <Chip
-          key={filter}
-          label={t("employeesRange", {
-            min: value?.employeesMin || "",
-            max: value?.employeesMax,
-          })}
-          onDelete={() => handleRemoveFilter({ filter })}
-          className={s.filterValue}
-          color='primary'
-        />
-      );
+  case "employees":
+    return (
+      <Chip
+        key={filter}
+        label={t("employeesRange", {
+          min: value?.employeesMin || "",
+          max: value?.employeesMax,
+        })}
+        onDelete={() => handleRemoveFilter({ filter })}
+        className={s.filterValue}
+        color='primary'
+      />
+    );
 
-    case "area":
-      return (
-        <Chip
-          key={filter}
-          label={[value?.areaMin || "", value?.areaMax || ""].join(" - ")}
-          onDelete={() => handleRemoveFilter({ filter })}
-          className={s.filterValue}
-          color='primary'
-        />
-      );
+  case "area":
+    return (
+      <Chip
+        key={filter}
+        label={[value?.areaMin || "", value?.areaMax || ""].join(" - ")}
+        onDelete={() => handleRemoveFilter({ filter })}
+        className={s.filterValue}
+        color='primary'
+      />
+    );
 
-    case "servicesAndAmenities":
-      return (
-        <React.Fragment>
-          {Object.entries(value).map(([category, options]) => (
-            <React.Fragment key={category}>
-              {options && options.length
-                ? options.map((opt, index) => (
-                    <Chip
-                      key={index}
-                      label={t(opt)}
-                      onDelete={() =>
-                        handleRemoveFilter({ filter, category, index })
-                      }
-                      className={s.filterValue}
-                      color='primary'
-                    />
-                  ))
-                : null}
-            </React.Fragment>
-          ))}
-        </React.Fragment>
-      );
+  case "servicesAndAmenities":
+    return (
+      <React.Fragment>
+        {Object.entries(value).map(([category, options]) => (
+          <React.Fragment key={category}>
+            {options && options.length
+              ? options.map((opt, index) => (
+                <Chip
+                  key={index}
+                  label={t(opt)}
+                  onDelete={() =>
+                    handleRemoveFilter({ filter, category, index })
+                  }
+                  className={s.filterValue}
+                  color='primary'
+                />
+              ))
+              : null}
+          </React.Fragment>
+        ))}
+      </React.Fragment>
+    );
 
-    default:
-      return null;
+  default:
+    return null;
   }
 });
 
@@ -1437,8 +1437,8 @@ class Search extends PureComponent {
                 coordinates={
                   filteredOffices?.length
                     ? filteredOffices.map(
-                        (office) => office.location.coordinates
-                      )
+                      (office) => office.location.coordinates
+                    )
                     : []
                 }
                 center={
@@ -1448,14 +1448,14 @@ class Search extends PureComponent {
                 markers={
                   filteredOffices?.length
                     ? filteredOffices.map((office, index) => (
-                        <GoogleMapMarker
-                          key={index}
-                          lat={office.location.coordinates.lat}
-                          lng={office.location.coordinates.lng}
-                          badge={office.leasedBy?.overduePayment}
-                          onClick={this.handleNavigateOfficeDetail(office)}
-                        />
-                      ))
+                      <GoogleMapMarker
+                        key={index}
+                        lat={office.location.coordinates.lat}
+                        lng={office.location.coordinates.lng}
+                        badge={office.leasedBy?.overduePayment}
+                        onClick={this.handleNavigateOfficeDetail(office)}
+                      />
+                    ))
                     : []
                 }
               />
