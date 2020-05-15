@@ -1,21 +1,18 @@
-import React from 'react';
-import {
-  Switch, Route, withRouter, Redirect,
-} from 'react-router-dom';
-import PropTypes from 'prop-types';
-import clsx from 'clsx';
-import { withStyles } from '@material-ui/core';
-import Auth from '../../utils/auth';
-import {
-  AppHeader, AppFooter, AppSidebar, HelpDialog,
-} from '.';
-import { Column, SplashScreen } from '../../common/base-components';
-import { WelcomeRoleDialog, LandlordDialog } from './Dialogs';
-import SendVerificationForm from '../Auth/SendVerificationForm';
-import { Storage } from '../../utils/storage';
+import React from "react";
+import { Switch, Route, withRouter, Redirect } from "react-router-dom";
+import PropTypes from "prop-types";
+import clsx from "clsx";
+import { withStyles } from "@material-ui/core";
+import Auth from "../../utils/auth";
+import { AppHeader, AppFooter, AppSidebar, HelpDialog } from ".";
+import { Column, SplashScreen } from "../../common/base-components";
+import { WelcomeRoleDialog, LandlordDialog } from "./Dialogs";
+import SendVerificationForm from "../Auth/SendVerificationForm";
+import { Storage } from "../../utils/storage";
 
-import HeaderImage from '../../assets/img/img_header@2x.jpg';
-import i18n from '../../i18n';
+import HeaderImage from "../../assets/img/img_header@2x.jpg";
+import i18n from "../../i18n";
+import { StickyContainer } from "react-sticky";
 
 /** Token-based auth object */
 const authObj = new Auth();
@@ -25,82 +22,82 @@ const storage = new Storage();
 
 const styleSheet = (theme) => ({
   root: {
-    height: '100vh',
-    width: '100%',
+    height: "100vh",
+    width: "100%",
   },
 
   headerWrapper: {
-    position: 'sticky',
+    position: "sticky",
     top: 0,
     zIndex: 1100,
     height: 95,
   },
 
   bodyWrapper: {
-    height: '100%',
-    width: '100%',
-    position: 'relative',
-    overflow: 'hidden',
+    height: "100%",
+    width: "100%",
+    position: "relative",
+    overflow: "hidden",
   },
 
   bodyHeaderOffset: {
-    height: 'calc(100% - 95px)',
+    height: "calc(100% - 95px)",
   },
 
   bodyContent: {
-    width: '100%',
-    height: '100%',
-    overflowY: 'scroll',
-    '-webkit-overflow-scrolling': 'touch',
+    width: "100%",
+    height: "100%",
+    overflowY: "scroll",
+    "-webkit-overflow-scrolling": "touch",
   },
 
   contentWrapper: {
     background: theme.colors.primary.whiteGrey,
-    minHeight: 'calc(100vh - 245px)',
+    minHeight: "calc(100vh - 245px)",
   },
 
   footerWrapper: {
     height: 150,
-    background: 'white',
-    [theme.breakpoints.down('sm')]: {
+    background: "white",
+    [theme.breakpoints.down("sm")]: {
       height: 100,
     },
   },
 
   sendVerificationWrapper: {
     background: theme.colors.primary.white,
-    minHeight: 'calc(100vh - 245px)',
+    minHeight: "calc(100vh - 245px)",
   },
 
   backgroundWrapper: {
-    width: '100%',
+    width: "100%",
     height: theme.spacing(6),
     background: `transparent url(${HeaderImage}) 0% 0% no-repeat padding-box`,
-    backgroundSize: 'cover',
-    [theme.breakpoints.down('sm')]: {
-      background: 'white',
+    backgroundSize: "cover",
+    [theme.breakpoints.down("sm")]: {
+      background: "white",
     },
   },
 
   loginWrapper: {
-    textAlign: 'center',
-    alignItems: 'center',
-    padding: '20px 0px',
-    backgroundColor: 'white',
+    textAlign: "center",
+    alignItems: "center",
+    padding: "20px 0px",
+    backgroundColor: "white",
   },
 
   loginCard: {
-    width: '100%',
+    width: "100%",
     maxWidth: 450,
     borderRadius: 8,
     border: `1px solid ${theme.colors.primary.borderGrey}`,
-    padding: '10px 40px 20px 40px',
+    padding: "10px 40px 20px 40px",
     marginTop: theme.spacing(2),
     marginBottom: theme.spacing(4),
-    marginLeft: 'auto',
-    marginRight: 'auto',
-    [theme.breakpoints.down('sm')]: {
-      border: 'none',
+    marginLeft: "auto",
+    marginRight: "auto",
+    [theme.breakpoints.down("sm")]: {
+      border: "none",
     },
   },
 });
@@ -143,69 +140,64 @@ class PrivateRoute extends React.Component {
     const { isLoggedIn, userRole, user } = this.props.auth;
 
     switch (path) {
-    case 'back':
-      this.props.history.goBack();
-      break;
+      case "back":
+        this.props.history.goBack();
+        break;
 
-    case 'home':
-      this.props.history.push('/');
-      break;
+      case "home":
+        this.props.history.push("/");
+        break;
 
-    case 'help':
-      this.showHelpDialog();
-      break;
+      case "help":
+        this.showHelpDialog();
+        break;
 
-    case 'login':
-    case 'register':
-    case 'register/landlord':
-    case 'register/company':
-    case 'forgot-password':
-      this.props.history.push(`/auth/${path}`);
-      break;
-    case 'logout':
-      authObj.removeToken();
-      authObj.removeRefreshToken();
-      this.props.mappedlogout();
-      this.props.history.push('/');
-      break;
-    case 'profile':
-      if (isLoggedIn) {
-        if (userRole === '') {
-          const { history } = this.props;
-          history.location.pathname = `/${user.roles[0]}/profile`;
-          this.props.mappedToggleRole(user.roles[0], history);
-        } else {
-          this.props.history.push(
-            `/${userRole}/${path}/${payload || ''}`,
-          );
+      case "login":
+      case "register":
+      case "register/landlord":
+      case "register/company":
+      case "forgot-password":
+        this.props.history.push(`/auth/${path}`);
+        break;
+      case "logout":
+        authObj.removeToken();
+        authObj.removeRefreshToken();
+        this.props.mappedlogout();
+        this.props.history.push("/");
+        break;
+      case "profile":
+        if (isLoggedIn) {
+          if (userRole === "") {
+            const { history } = this.props;
+            history.location.pathname = `/${user.roles[0]}/profile`;
+            this.props.mappedToggleRole(user.roles[0], history);
+          } else {
+            this.props.history.push(`/${userRole}/${path}/${payload || ""}`);
+          }
         }
-      }
-      break;
+        break;
 
-    case 'dashboard':
-    case 'offices/add':
-    case 'offices/all':
-    case 'offices/unpublish':
-    case 'contracts':
-    case 'optimization':
-      if (isLoggedIn) {
+      case "dashboard":
+      case "offices/add":
+      case "offices/all":
+      case "offices/unpublish":
+      case "contracts":
+      case "optimization":
+        if (isLoggedIn) {
+          this.props.history.push(`/${userRole}/${path}/${payload || ""}`);
+          break;
+        }
+        this.props.history.push("/");
+        break;
+      case "offices":
         this.props.history.push(
-          `/${userRole}/${path}/${payload || ''}`,
+          `${userRole ? `/${userRole}` : ""}/${path}/${payload || ""}`
         );
         break;
-      }
-      this.props.history.push('/');
-      break;
-    case 'offices':
-      this.props.history.push(
-        `${userRole ? `/${userRole}` : ''
-        }/${path}/${payload || ''}`,
-      );
-      break;
 
-    default:
-      this.props.history.push(path);
-      break;
+      default:
+        this.props.history.push(path);
+        break;
     }
     this.handleToggleSidebar(false);
   };
@@ -213,16 +205,17 @@ class PrivateRoute extends React.Component {
   /** Toggle userRole between landlord/company */
   handleToggleRole = (setRole, redirecPath) => {
     const { user, userRole } = this.props.auth;
-    const nextRole = typeof setRole === 'string'
-      ? setRole
-      : userRole === 'landlord'
-        ? 'company'
-        : 'landlord';
+    const nextRole =
+      typeof setRole === "string"
+        ? setRole
+        : userRole === "landlord"
+        ? "company"
+        : "landlord";
 
     if (nextRole && user?.roles.indexOf(nextRole) === -1) {
       const hideGuidance = storage.getBoolean(`${nextRole}HideGuide`);
       if (hideGuidance) {
-        if (nextRole === 'landlord') {
+        if (nextRole === "landlord") {
           // first time going on lanlord page
           this.setState({
             dialog: (
@@ -231,14 +224,22 @@ class PrivateRoute extends React.Component {
                   this.handleCloseDialog();
                 }}
                 onEnter={() => {
-                  this.props.mappedToggleRole(nextRole, this.props.history, redirecPath);
+                  this.props.mappedToggleRole(
+                    nextRole,
+                    this.props.history,
+                    redirecPath
+                  );
                   this.handleCloseDialog();
                 }}
               />
             ),
           });
         } else {
-          this.props.mappedToggleRole(nextRole, this.props.history, redirecPath);
+          this.props.mappedToggleRole(
+            nextRole,
+            this.props.history,
+            redirecPath
+          );
         }
         //this.props.mappedToggleRole(nextRole, this.props.history, redirecPath);
       } else {
@@ -247,14 +248,17 @@ class PrivateRoute extends React.Component {
             <WelcomeRoleDialog
               role={nextRole}
               onClose={() => {
-                this.props.mappedToggleRole(nextRole, this.props.history, redirecPath);
+                this.props.mappedToggleRole(
+                  nextRole,
+                  this.props.history,
+                  redirecPath
+                );
                 this.handleCloseDialog();
               }}
             />
           ),
         });
       }
-
     } else {
       this.props.mappedToggleRole(nextRole, this.props.history, redirecPath);
     }
@@ -285,12 +289,10 @@ class PrivateRoute extends React.Component {
       noHeader,
       noFooter,
       authRequired,
-      userRole: requiredRole = '',
+      userRole: requiredRole = "",
       ...rest
     } = this.props;
-    const {
-      isLoggedIn, user, userRole, loaded,
-    } = this.props.auth;
+    const { isLoggedIn, user, userRole, loaded } = this.props.auth;
     const { dialog } = this.state;
 
     if (userRole !== requiredRole) {
@@ -310,7 +312,7 @@ class PrivateRoute extends React.Component {
           return (
             <React.Fragment>
               {authRequired && !isLoggedIn ? (
-                <Redirect to="/auth/login" />
+                <Redirect to='/auth/login' />
               ) : (
                 <div className={classes.root}>
                   {/* show header bar */}
@@ -319,7 +321,7 @@ class PrivateRoute extends React.Component {
                       <AppHeader
                         auth={this.props.auth}
                         sidebarOpened={sidebarOpened}
-                        location="Montreal"
+                        location='Montreal'
                         language={this.props.app.language}
                         onToggleRole={this.handleToggleRole}
                         onToggleSidebar={this.handleToggleSidebar}
@@ -337,7 +339,7 @@ class PrivateRoute extends React.Component {
                   <div
                     className={clsx(
                       classes.bodyWrapper,
-                      !noHeader && classes.bodyHeaderOffset,
+                      !noHeader && classes.bodyHeaderOffset
                     )}
                   >
                     {/* show sidebar for mobile */}
@@ -350,21 +352,19 @@ class PrivateRoute extends React.Component {
                       />
                     )}
 
-                    <div className={classes.bodyContent}>
+                    <StickyContainer className={classes.bodyContent}>
                       {/* show content wrapper */}
                       <div className={classes.contentWrapper}>
                         {isLoggedIn && !user.active ? (
                           /** for not activated user, show send-verification page */
                           <Switch>
                             <Route
-                              path="/auth/send-verification"
+                              path='/auth/send-verification'
                               render={() => (
                                 <div
                                   className={classes.sendVerificationWrapper}
                                 >
-                                  <div
-                                    className={classes.backgroundWrapper}
-                                  />
+                                  <div className={classes.backgroundWrapper} />
                                   <div className={classes.loginWrapper}>
                                     <Column
                                       classes={{ box: classes.loginCard }}
@@ -380,7 +380,7 @@ class PrivateRoute extends React.Component {
                             />
                             <Route
                               render={() => (
-                                <Redirect to="/auth/send-verification" />
+                                <Redirect to='/auth/send-verification' />
                               )}
                             />
                           </Switch>
@@ -399,7 +399,7 @@ class PrivateRoute extends React.Component {
                           <AppFooter className={classes.footerWrapper} />
                         </div>
                       )}
-                    </div>
+                    </StickyContainer>
                   </div>
 
                   {/* show dialog */}

@@ -1,11 +1,11 @@
-import React, { PureComponent } from 'react';
-import { withStyles } from '@material-ui/core/styles';
-import { withTranslation } from 'react-i18next';
-import clsx from 'clsx';
-import PropTypes from 'prop-types';
-import { withRouter } from 'react-router-dom';
-import { KeyboardBackspace } from '@material-ui/icons';
-import Carousel from '@brainhubeu/react-carousel';
+import React, { PureComponent } from "react";
+import { withStyles } from "@material-ui/core/styles";
+import { withTranslation } from "react-i18next";
+import clsx from "clsx";
+import PropTypes from "prop-types";
+import { withRouter } from "react-router-dom";
+import { KeyboardBackspace } from "@material-ui/icons";
+import Carousel from "@brainhubeu/react-carousel";
 import {
   Row,
   Column,
@@ -18,45 +18,47 @@ import {
   UserIcon,
   ArrowUpIcon,
   ArrowDownIcon,
-} from '../../common/base-components';
-import { TabWrapper, OfficeItem } from '../../common/base-layouts';
-import OfficeDetailForm from '../Layout/OfficeDetailForm';
-import { formatDate1 } from '../../utils/formatters';
+} from "../../common/base-components";
+import { TabWrapper, OfficeItem } from "../../common/base-layouts";
+import OfficeDetailForm from "../Layout/OfficeDetailForm";
+import { formatDate1 } from "../../utils/formatters";
 import {
   getApprovedOfficeById,
   getConsultantByOffice,
   getReviewsByOffice,
   getSimilarOffices,
-} from '../../api/endpoints';
+} from "../../api/endpoints";
+import { ContactInfoDialog } from "../Layout/Dialogs";
+import { withLogin } from "../../common/base-services";
 
 const styleSheet = (theme) => ({
   root: {
-    width: '100%',
-    height: '100%',
+    width: "100%",
+    height: "100%",
     background: theme.colors.primary.white,
-    minHeight: 'calc(100vh - 245px)',
+    minHeight: "calc(100vh - 245px)",
   },
 
   fixedWidth: {
     maxWidth: 1024 + 44,
-    width: '100%',
+    width: "100%",
     paddingLeft: 22,
     paddingRight: 22,
-    overflow: 'hidden',
-    [theme.breakpoints.down('sm')]: {
+    overflow: "hidden",
+    [theme.breakpoints.down("sm")]: {
       paddingLeft: 22,
       paddingRight: 22,
     },
   },
 
   fullWidth: {
-    width: '100%',
+    width: "100%",
   },
 
   addOfficeTabWrapper: {
     paddingTop: 20,
     paddingBottom: 106,
-    [theme.breakpoints.down('xs')]: {
+    [theme.breakpoints.down("xs")]: {
       paddingTop: 8,
       paddingBottom: 50,
     },
@@ -64,7 +66,7 @@ const styleSheet = (theme) => ({
 
   formButtons: {
     paddingTop: 160,
-    [theme.breakpoints.down('xs')]: {
+    [theme.breakpoints.down("xs")]: {
       paddingTop: 64,
     },
   },
@@ -77,19 +79,19 @@ const styleSheet = (theme) => ({
   consultantAvatarWrapper: {
     width: 67,
     height: 67,
-    borderRadius: '50%',
+    borderRadius: "50%",
     border: `1px solid ${theme.colors.primary.borderGrey}`,
-    display: 'flex',
-    justifyContent: 'center',
-    alignItems: 'center',
-    overflow: 'hidden',
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center",
+    overflow: "hidden",
     marginRight: 26,
   },
 
   consultantAvatar: {
     width: 67,
     height: 67,
-    objectFit: 'contain',
+    objectFit: "contain",
   },
 
   consultantMoreInfo: {
@@ -108,32 +110,32 @@ const styleSheet = (theme) => ({
 
   similarOffices: {
     paddingTop: 54,
-    overflow: 'hidden',
+    overflow: "hidden",
   },
 
   reviewCompanyInfo: {
     marginRight: 68,
-    [theme.breakpoints.down('xs')]: {
-      width: '100%',
+    [theme.breakpoints.down("xs")]: {
+      width: "100%",
     },
   },
 
   reviewAvatarWrapper: {
     width: 39,
     height: 39,
-    borderRadius: '50%',
+    borderRadius: "50%",
     border: `1px solid ${theme.colors.primary.borderGrey}`,
-    display: 'flex',
-    justifyContent: 'center',
-    alignItems: 'center',
-    overflow: 'hidden',
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center",
+    overflow: "hidden",
     marginRight: 20,
   },
 
   reviewAvatar: {
     width: 39,
     height: 39,
-    objectFit: 'contain',
+    objectFit: "contain",
   },
 
   divider: {
@@ -212,7 +214,7 @@ class OfficeDetail extends PureComponent {
           this.setState({ office: response.data });
         }
       });
-  
+
       /** Get consultant info from office */
       // this.props.
       getConsultantByOffice(officeId).then((response) => {
@@ -220,7 +222,7 @@ class OfficeDetail extends PureComponent {
           this.setState({ consultant: response.data });
         }
       });
-  
+
       /** Get reviews from office */
       // this.props.
       getReviewsByOffice(officeId).then((response) => {
@@ -228,7 +230,7 @@ class OfficeDetail extends PureComponent {
           this.setState({ reviews: response.data });
         }
       });
-  
+
       /** Get similar offices */
       // this.props.
       getSimilarOffices(officeId).then((response) => {
@@ -251,14 +253,37 @@ class OfficeDetail extends PureComponent {
 
   /** Goto office detail of similar offices */
   goDetail = (office) => () => {
-    this.props.navigate('offices', `${office._id}/${office.location.country}-${office.officeType}-${office.numberOfEmployees}`);
+    this.props.navigate(
+      "offices",
+      `${office._id}/${office.location.country}-${office.officeType}-${office.numberOfEmployees}`
+    );
   };
 
   /** Send message to consultant */
-  handleSendMessage = () => {};
+  handleSendMessage = () => {
+    if (this.props.passLoginDialog()) {
+    }
+  };
 
-  /** Follow up of consultant */
-  handleFollowUp = () => {};
+  /** Contact info of consultant */
+  handleContactInfo = () => {
+    if (this.props.passLoginDialog()) {
+      this.setState({
+        dialog: (
+          <ContactInfoDialog
+            title={this.props.t("followUp")}
+            contact={{
+              username: "Name Family",
+              type: "Consultant",
+              phoneNumber: "(123) 123-4567",
+              email: "consultantname@domainanme.com",
+            }}
+            onClose={this.closeDialog}
+          />
+        ),
+      });
+    }
+  };
 
   /** Load more reviews */
   handleMoreReviews = () => {};
@@ -274,11 +299,11 @@ class OfficeDetail extends PureComponent {
             {consultant.avatar && consultant.avatar.bucketPath ? (
               <img
                 src={consultant.avatar.bucketPath}
-                alt=""
+                alt=''
                 className={s.consultantAvatar}
               />
             ) : (
-              <UserIcon color="secondary" style={{ width: 27, height: 35 }} />
+              <UserIcon color='secondary' style={{ width: 27, height: 35 }} />
             )}
           </Box>
           <Column alignChildrenStart stretch>
@@ -289,7 +314,7 @@ class OfficeDetail extends PureComponent {
               fontSizeS
               textSecondary
               paddingTopHalf
-              style={{ overflow: 'hidden', height: showMore ? 'auto' : 32 }}
+              style={{ overflow: "hidden", height: showMore ? "auto" : 32 }}
             >
               {consultant.description}
             </Typography>
@@ -304,13 +329,13 @@ class OfficeDetail extends PureComponent {
           wrap
         >
           <Link
-            to="#"
+            to='#'
             onClick={() => setShowMore(!showMore)}
-            variant="normalLight"
+            variant='normalLight'
           >
             <Typography alignChildrenCenter>
               <Typography fontSizeS paddingRight>
-                {t('loadMore')}
+                {t("loadMore")}
               </Typography>
               {showMore ? (
                 <ArrowUpIcon style={{ width: 12, height: 7 }} />
@@ -324,16 +349,16 @@ class OfficeDetail extends PureComponent {
             {/** Show consultant request buttons */}
             <Box paddingLeftHalf paddingBottomHalf>
               <Button
-                variant="secondary"
+                variant='secondary'
                 onClick={this.handleSendMessage}
                 shadow
               >
-                {t('sendMessage')}
+                {t("sendMessage")}
               </Button>
             </Box>
             <Box paddingLeft paddingBottomHalf>
-              <Button variant="primary" onClick={this.handleFollowUp} shadow>
-                {t('followUp')}
+              <Button variant='primary' onClick={this.handleContactInfo} shadow>
+                {t("contactInfo")}
               </Button>
             </Box>
           </Box>
@@ -360,11 +385,11 @@ class OfficeDetail extends PureComponent {
               {company.avatar && company.avatar.bucketPath ? (
                 <img
                   src={company.avatar.bucketPath}
-                  alt=""
+                  alt=''
                   className={s.reviewAvatar}
                 />
               ) : (
-                <UserIcon color="secondary" style={{ width: 16, height: 21 }} />
+                <UserIcon color='secondary' style={{ width: 16, height: 21 }} />
               )}
             </Box>
             <Column alignChildrenStart>
@@ -394,7 +419,7 @@ class OfficeDetail extends PureComponent {
     return (
       <Row fullWidth classes={{ box: s.reviewsWrapper }}>
         <TabWrapper
-          title={`${t('reviews')} (${reviews.length})`}
+          title={`${t("reviews")} (${reviews.length})`}
           open
           insideOpen
         >
@@ -405,8 +430,8 @@ class OfficeDetail extends PureComponent {
               </Row>
             </React.Fragment>
           ))}
-          <Link to="#" onClick={this.handleMoreReviews} variant="normalLight">
-            <Typography fontSizeS>{t('loadMore')}</Typography>
+          <Link to='#' onClick={this.handleMoreReviews} variant='normalLight'>
+            <Typography fontSizeS>{t("loadMore")}</Typography>
           </Link>
         </TabWrapper>
       </Row>
@@ -418,9 +443,7 @@ class OfficeDetail extends PureComponent {
    */
   render() {
     const { classes: s, t } = this.props;
-    const {
-      office, consultant, reviews, similarOffices, dialog,
-    } = this.state;
+    const { office, consultant, reviews, similarOffices, dialog } = this.state;
     const ConsultantInfo = this.renderConsultant;
     const ReviewList = this.renderReviewList;
 
@@ -436,13 +459,13 @@ class OfficeDetail extends PureComponent {
           <Row fullWidth paddingBottom>
             <Stretch />
             <Button
-              link="secondary"
-              background="secondaryLight"
+              link='secondary'
+              background='secondaryLight'
               onClick={this.handleBack}
             >
               <KeyboardBackspace />
               <Typography paddingLeft fontSizeS>
-                {t('back')}
+                {t("back")}
               </Typography>
             </Button>
           </Row>
@@ -465,10 +488,10 @@ class OfficeDetail extends PureComponent {
           <Row fullWidth classes={{ box: s.similarOfficesWrapper }}>
             <Column fullWidth alignChildrenStart>
               <Typography fontSizeM textBlackGrey fontWeightBold>
-                {t('similarOffice')}
+                {t("similarOffice")}
               </Typography>
               <Row fullWidth classes={{ box: s.similarOffices }}>
-                <div style={{ width: '100%', height: '100%' }}>
+                <div style={{ width: "100%", height: "100%" }}>
                   <Carousel
                     itemWidth={255}
                     offset={0}
@@ -477,9 +500,9 @@ class OfficeDetail extends PureComponent {
                     {similarOffices.map((office, index) => (
                       <div
                         style={{
-                          position: 'relative',
-                          cursor: 'pointer',
-                          height: '100%',
+                          position: "relative",
+                          cursor: "pointer",
+                          height: "100%",
                         }}
                         key={index}
                       >
@@ -505,5 +528,5 @@ class OfficeDetail extends PureComponent {
 }
 
 export default withRouter(
-  withStyles(styleSheet)(withTranslation('common')(OfficeDetail)),
+  withLogin(withStyles(styleSheet)(withTranslation("common")(OfficeDetail)))
 );

@@ -538,8 +538,8 @@ class Dashboard extends PureComponent {
                   coordinates={
                     filteredOffices && filteredOffices.length
                       ? filteredOffices.map(
-                        (office) => office.location?.coordinates
-                      )
+                          (office) => office.location?.coordinates
+                        )
                       : []
                   }
                   center={
@@ -560,11 +560,12 @@ class Dashboard extends PureComponent {
                         color={
                           currentOffice === office ? "mainColor" : undefined
                         }
-                        badge={{
-                          title:
-                            office.leasedBy && office.leasedBy.overduePayment,
-                          color: "error",
-                        }}
+                        badge={
+                          office.leasedBy && {
+                            title: office.leasedBy.overduePayment,
+                            color: "error",
+                          }
+                        }
                         tooltip={
                           (currentOffice === office ||
                             selectedOfficeTypes.indexOf(office.officeType) !==

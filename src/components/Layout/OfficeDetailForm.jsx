@@ -21,6 +21,8 @@ import {
   ArrowDownIcon,
   ArrowUpIcon,
   FullScreenImageCarousel,
+  EmailIcon,
+  BuildingsIcon,
 } from "../../common/base-components";
 import { TabWrapper, StatisticBox } from "../../common/base-layouts";
 import { servicesCategories } from "../../utils/constants";
@@ -33,6 +35,7 @@ import {
 import { favoriteOffice } from "../../api/endpoints";
 import { numberWithSpaces } from "../../utils/formatters";
 import { withLogin } from "../../common/base-services";
+import Sticky from "react-sticky";
 
 const styleSheet = (theme) => ({
   root: {},
@@ -270,6 +273,27 @@ const styleSheet = (theme) => ({
     width: 17,
     height: 16,
   },
+
+  titleBarWrapper: {
+    maxWidth: 1024,
+  },
+
+  stickyBox: {
+    background: theme.colors.primary.mainColor,
+    paddingTop: 8,
+    paddingBottom: 24,
+    zIndex: 3,
+  },
+
+  titleBar: {
+    flexDirection: "row-reverse",
+    position: "relative",
+  },
+
+  stickyTitleBar: {
+    width: "calc(100% - 44px)",
+    maxWidth: 1024,
+  },
 });
 
 /** Render cover photos */
@@ -442,7 +466,9 @@ class OfficeDetailForm extends PureComponent {
     }
   };
 
-  /** Follow up office */
+  /** Follow up office
+   * @deprecated
+   */
   handleFollowUp = () => {
     if (this.props.passLoginDialog()) {
       this.setState({
@@ -459,6 +485,22 @@ class OfficeDetailForm extends PureComponent {
           />
         ),
       });
+    }
+  };
+
+  /** Send message
+   * @ignore
+   */
+  handleSendMessage = () => {
+    if (this.props.passLoginDialog()) {
+    }
+  };
+
+  /** Visit office
+   * @ignore
+   */
+  handleVisitOffice = () => {
+    if (this.props.passLoginDialog()) {
     }
   };
 
@@ -507,118 +549,165 @@ class OfficeDetailForm extends PureComponent {
         />
 
         <Row paddingTop />
-        <Row
-          paddingTopHalf
-          fullWidth
-          wrap
-          style={{ flexDirection: "row-reverse" }}
-          alignChildrenStart
-        >
-          {/** Show favorite, share, follow up buttons */}
-          <Column alignChildrenEnd fullWidth={isWidthDown("xs", width)}>
-            {office.published && (
-              <Row style={{ float: "right" }} paddingTopHalf>
-                <Button
-                  link='secondary'
-                  background='secondaryLight'
-                  onClick={this.handleSetFavorite}
-                >
-                  {office.favorite ? (
-                    <FavoriteFilledIcon
-                      className={s.favoriteIcon}
-                      style={{ opacity: 1 }}
-                    />
-                  ) : (
-                    <FavoriteIcon className={s.favoriteIcon} />
+        <Sticky topOffset={20} style={{ width: "100%" }} relative>
+          {({ style, isSticky }) => (
+            <div
+              style={{
+                ...style,
+                top: 95,
+                left: 0,
+                width: isSticky ? "100vw" : "calc(100vw - 44px)",
+                maxWidth: isSticky ? "none" : 1024,
+              }}
+              className={clsx(isSticky && s.stickyBox)}
+            >
+              <Row
+                paddingTopHalf
+                // fullWidth
+                wrap
+                alignChildrenCenter
+                style={{
+                  left: style.left,
+                }}
+                classes={{
+                  box: clsx(s.titleBar, isSticky && s.stickyTitleBar),
+                }}
+              >
+                {/** Show favorite, share, follow up buttons */}
+                <Column alignChildrenEnd fullWidth={isWidthDown("xs", width)}>
+                  {office.published && (
+                    <Row style={{ float: "right" }} paddingTopHalf>
+                      <Button
+                        variant={isSticky ? "primary" : null}
+                        link={!isSticky ? "secondary" : null}
+                        background={!isSticky ? "secondaryLight" : null}
+                        onClick={this.handleSetFavorite}
+                      >
+                        {office.favorite ? (
+                          <FavoriteFilledIcon
+                            className={s.favoriteIcon}
+                            style={{ opacity: 1 }}
+                          />
+                        ) : (
+                          <FavoriteIcon className={s.favoriteIcon} />
+                        )}
+                        {/* <FavoriteIcon style={{ width: 16, height: 15 }} /> */}
+                        {!isWidthDown("xs", width) ? (
+                          <Typography paddingLeft fontSizeS fontWeightBold>
+                            {t("favorite")}
+                          </Typography>
+                        ) : null}
+                      </Button>
+
+                      <Box paddingLeftHalf />
+
+                      <Button
+                        variant={isSticky ? "primary" : null}
+                        link={!isSticky ? "secondary" : null}
+                        background={!isSticky ? "secondaryLight" : null}
+                        onClick={this.handleShare}
+                      >
+                        <ShareIcon style={{ width: 13, height: 15 }} />
+                        {!isWidthDown("xs", width) ? (
+                          <Typography paddingLeft fontSizeS fontWeightBold>
+                            {t("share")}
+                          </Typography>
+                        ) : null}
+                      </Button>
+
+                      <Box paddingLeftHalf />
+
+                      <Button
+                        variant={isSticky ? "primary" : null}
+                        link={!isSticky ? "secondary" : null}
+                        background={!isSticky ? "secondaryLight" : null}
+                        onClick={this.handleCall}
+                      >
+                        <CallIcon style={{ width: 15, height: 17 }} />
+                        {!isWidthDown("xs", width) ? (
+                          <Typography paddingLeft fontSizeS fontWeightBold>
+                            {t("call")}
+                          </Typography>
+                        ) : null}
+                      </Button>
+
+                      <Box paddingLeftHalf />
+
+                      <Button
+                        variant={"secondary"}
+                        background={isSticky ? "primary" : null}
+                        style={{ borderColor: isSticky ? "white" : null }}
+                        onClick={this.handleSendMessage}
+                        shadow
+                      >
+                        {!isWidthDown("xs", width) ? (
+                          t("sendMessage")
+                        ) : (
+                          <EmailIcon style={{ width: 13, height: 15 }} />
+                        )}
+                      </Button>
+
+                      <Box paddingLeftHalf />
+
+                      <Button
+                        variant={isSticky ? "secondary" : "primary"}
+                        onClick={this.handleVisitOffice}
+                        shadow
+                      >
+                        {!isWidthDown("xs", width) ? (
+                          t("visitAnOffice")
+                        ) : (
+                          <BuildingsIcon style={{ width: 17, height: 19 }} />
+                        )}
+                      </Button>
+                    </Row>
                   )}
-                  {/* <FavoriteIcon style={{ width: 16, height: 15 }} /> */}
-                  {!isWidthDown("xs", width) ? (
-                    <Typography paddingLeft fontSizeS fontWeightBold>
-                      {t("favorite")}
-                    </Typography>
-                  ) : null}
-                </Button>
+                </Column>
 
-                <Box paddingLeftHalf />
-
-                <Button
-                  link='secondary'
-                  background='secondaryLight'
-                  onClick={this.handleShare}
-                >
-                  <ShareIcon style={{ width: 13, height: 15 }} />
-                  {!isWidthDown("xs", width) ? (
-                    <Typography paddingLeft fontSizeS fontWeightBold>
-                      {t("share")}
-                    </Typography>
-                  ) : null}
-                </Button>
-
-                <Box paddingLeftHalf />
-
-                <Button
-                  link='secondary'
-                  background='secondaryLight'
-                  onClick={this.handleCall}
-                >
-                  <CallIcon style={{ width: 13, height: 15 }} />
-                  {!isWidthDown("xs", width) ? (
-                    <Typography paddingLeft fontSizeS fontWeightBold>
-                      {t("call")}
-                    </Typography>
-                  ) : null}
-                </Button>
-
-                <Box paddingLeftHalf />
-
-                <Button variant='primary' onClick={this.handleFollowUp} shadow>
-                  {t("followUp")}
-                </Button>
+                {/** Show office main info (title, type, priceMonthly, rating) */}
+                <Column alignChildrenStart stretch>
+                  <Row paddingTopHalf fontSizeM textBlackGrey fontWeightBold>
+                    {office.title}
+                  </Row>
+                </Column>
               </Row>
-            )}
-          </Column>
+            </div>
+          )}
+        </Sticky>
 
-          {/** Show office main info (title, type, priceMonthly, rating) */}
-          <Column alignChildrenStart stretch>
-            <Row paddingTopHalf fontSizeM textBlackGrey fontWeightBold>
-              {office.title}
-            </Row>
-            <Row paddingTopHalf fontSizeM textSecondary>
-              {t(office.officeType)}
-            </Row>
-            <Row paddingTopHalf fontSizeS textPrimary>
-              {t("dollarPerMonth", { dollar: office.priceMonthly || 0 })}
-            </Row>
-            {office.published && (
-              <React.Fragment>
-                {
-                  // office.rating &&
-                  <Row paddingTopHalf>
-                    <Typography textPrimary>
-                      <StarIcon style={{ width: 12, height: 12 }} />
-                    </Typography>
-                    <Typography fontSizeS textSecondary paddingLeftHalf>
-                      3.5 {/* office.rating */}
-                    </Typography>
-                  </Row>
-                }
-                {
-                  // office.refID &&
-                  <Row paddingTopHalf>
-                    <Typography fontSizeS textSecondary>
-                      {t("refID")}
-                      :&nbsp;
-                    </Typography>
-                    <Typography fontSizeM fontWeightBold textSecondary>
-                      #{numberWithSpaces(office.refId + 1, 9)}{" "}
-                      {/* office.refID */}
-                    </Typography>
-                  </Row>
-                }
-              </React.Fragment>
-            )}
-          </Column>
+        <Row paddingTopHalf fontSizeM textSecondary>
+          {t(office.officeType)}
         </Row>
+        <Row paddingTopHalf fontSizeS textPrimary>
+          {t("dollarPerMonth", { dollar: office.priceMonthly || 0 })}
+        </Row>
+        {office.published && (
+          <React.Fragment>
+            {
+              // office.rating &&
+              <Row paddingTopHalf>
+                <Typography textPrimary>
+                  <StarIcon style={{ width: 12, height: 12 }} />
+                </Typography>
+                <Typography fontSizeS textSecondary paddingLeftHalf>
+                  3.5 {/* office.rating */}
+                </Typography>
+              </Row>
+            }
+            {
+              // office.refID &&
+              <Row paddingTopHalf>
+                <Typography fontSizeS textSecondary>
+                  {t("refID")}
+                  :&nbsp;
+                </Typography>
+                <Typography fontSizeM fontWeightBold textSecondary>
+                  #{numberWithSpaces(office.refId + 1, 9)} {/* office.refID */}
+                </Typography>
+              </Row>
+            }
+          </React.Fragment>
+        )}
 
         {/** Show office details */}
         <Row classes={{ box: s.detailsWrapper }} alignChildrenStart>
