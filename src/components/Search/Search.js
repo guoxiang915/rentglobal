@@ -277,7 +277,6 @@ export const styleSheet = (theme) => ({
     width: "100%",
     position: "relative",
     background: theme.colors.primary.white,
-    minHeight: 500,
   },
 
   officesContainer: {
@@ -287,9 +286,7 @@ export const styleSheet = (theme) => ({
   officesWrapper: {
     alignItems: "flex-start",
     marginTop: 24,
-    marginBottom: 200,
     [theme.breakpoints.down("xs")]: {
-      marginBottom: 40,
       marginLeft: 22,
       marginRight: 22,
     },
@@ -297,7 +294,6 @@ export const styleSheet = (theme) => ({
 
   offices: {
     width: 1010,
-    marginBottom: 14,
     [theme.breakpoints.down("md")]: {
       width: 753,
     },
@@ -342,7 +338,7 @@ export const styleSheet = (theme) => ({
 
   showOnMapWrapper: {
     position: "absolute",
-    top: 0,
+    top: 112,
     bottom: 0,
     right: 0,
     zIndex: 0,
@@ -350,5 +346,21 @@ export const styleSheet = (theme) => ({
     [theme.breakpoints.down("xs")]: {
       width: "100%",
     },
+  },
+
+  viewModeItem: {
+    width: 36,
+    height: 36,
+    cursor: "pointer",
+  },
+
+  sorter: {
+    height: 47,
+    width: 174,
+  },
+
+  pagination: {
+    marginTop: 20,
+    marginBottom: 60,
   },
 });

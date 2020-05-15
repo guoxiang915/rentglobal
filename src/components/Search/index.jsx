@@ -16,11 +16,14 @@ import {
   DialogActions,
   Collapse,
 } from "@material-ui/core";
+import { Pagination } from "@material-ui/lab";
 import {
   LocationOnOutlined,
   GpsFixedOutlined,
   KeyboardArrowLeft,
   KeyboardArrowRight,
+  Apps,
+  ViewList,
 } from "@material-ui/icons";
 import {
   Row,
@@ -40,13 +43,20 @@ import {
   SearchIcon,
   UncheckIcon,
   CheckIcon,
+  Select,
 } from "../../common/base-components";
-import { officeTypes, contractTypes } from "../../utils/constants";
+import {
+  officeTypes,
+  contractTypes,
+  officeSortOptions,
+} from "../../utils/constants";
 
 import { styleSheet } from "./Search";
 import { OfficeItem } from "../../common/base-layouts";
 import { advancedSearchOffices, locationSummary } from "../../api/endpoints";
 import ServicesAmenitiesForm from "../Landlord/Office/Forms/ServicesAmenitiesForm";
+
+const OFFICES_PER_PAGE = 8;
 
 const Searchbar = ({
   classes: s,
@@ -726,58 +736,58 @@ const PriceFilterPanel = ({ classes: s, t, price, onApply }) => {
 
 const FilterPanel = ({ classes, t, filter, value, onChangeFilter }) => {
   switch (filter.type) {
-  case "officeTypes":
-    return (
-      <OfficeTypeFilterPanel
-        classes={classes}
-        t={t}
-        types={value}
-        onApply={onChangeFilter("officeTypes")}
-      />
-    );
+    case "officeTypes":
+      return (
+        <OfficeTypeFilterPanel
+          classes={classes}
+          t={t}
+          types={value}
+          onApply={onChangeFilter("officeTypes")}
+        />
+      );
 
-  case "typeOfContracts":
-    return (
-      <ContractTypeFilterPanel
-        classes={classes}
-        t={t}
-        types={value}
-        onApply={onChangeFilter("typeOfContracts")}
-      />
-    );
+    case "typeOfContracts":
+      return (
+        <ContractTypeFilterPanel
+          classes={classes}
+          t={t}
+          types={value}
+          onApply={onChangeFilter("typeOfContracts")}
+        />
+      );
 
-  case "rooms":
-    return (
-      <RoomsFilterPanel
-        classes={classes}
-        t={t}
-        rooms={value}
-        onApply={onChangeFilter("rooms")}
-      />
-    );
+    case "rooms":
+      return (
+        <RoomsFilterPanel
+          classes={classes}
+          t={t}
+          rooms={value}
+          onApply={onChangeFilter("rooms")}
+        />
+      );
 
-  case "employees":
-    return (
-      <EmployeesFilterPanel
-        classes={classes}
-        t={t}
-        employees={value}
-        onApply={onChangeFilter("employees")}
-      />
-    );
+    case "employees":
+      return (
+        <EmployeesFilterPanel
+          classes={classes}
+          t={t}
+          employees={value}
+          onApply={onChangeFilter("employees")}
+        />
+      );
 
-  case "price":
-    return (
-      <PriceFilterPanel
-        classes={classes}
-        t={t}
-        price={value}
-        onApply={onChangeFilter("price")}
-      />
-    );
+    case "price":
+      return (
+        <PriceFilterPanel
+          classes={classes}
+          t={t}
+          price={value}
+          onApply={onChangeFilter("price")}
+        />
+      );
 
-  default:
-    return null;
+    default:
+      return null;
   }
 };
 
@@ -986,35 +996,35 @@ const FilterChip = React.memo(({ classes: s, t, filter, value, onChange }) => {
   );
 
   switch (filter) {
-  case "officeTypes":
-    return (
-      <React.Fragment>
-        {value.map((v, index) => (
-          <Chip
-            key={filter + index}
-            label={t(v)}
-            onDelete={() => handleRemoveFilter({ filter, index })}
-            className={s.filterValue}
-            color='primary'
-          />
-        ))}
-      </React.Fragment>
-    );
+    case "officeTypes":
+      return (
+        <React.Fragment>
+          {value.map((v, index) => (
+            <Chip
+              key={filter + index}
+              label={t(v)}
+              onDelete={() => handleRemoveFilter({ filter, index })}
+              className={s.filterValue}
+              color='primary'
+            />
+          ))}
+        </React.Fragment>
+      );
 
-  case "typeOfContracts":
-    return (
-      <React.Fragment>
-        {value.map((v, index) => (
-          <Chip
-            key={filter + index}
-            label={t(v)}
-            onDelete={() => handleRemoveFilter({ filter, index })}
-            className={s.filterValue}
-            color='primary'
-          />
-        ))}
-      </React.Fragment>
-    );
+    case "typeOfContracts":
+      return (
+        <React.Fragment>
+          {value.map((v, index) => (
+            <Chip
+              key={filter + index}
+              label={t(v)}
+              onDelete={() => handleRemoveFilter({ filter, index })}
+              className={s.filterValue}
+              color='primary'
+            />
+          ))}
+        </React.Fragment>
+      );
 
     // case "rooms":
     //   return (
@@ -1027,84 +1037,84 @@ const FilterChip = React.memo(({ classes: s, t, filter, value, onChange }) => {
     //     />
     //   );
 
-  case "price":
-    return (
-      <Chip
-        key={filter}
-        label={t("priceRange", {
-          min: value?.priceMin || "",
-          max: value?.priceMax,
-        })}
-        onDelete={() => handleRemoveFilter({ filter })}
-        className={s.filterValue}
-        color='primary'
-      />
-    );
+    case "price":
+      return (
+        <Chip
+          key={filter}
+          label={t("priceRange", {
+            min: value?.priceMin || "",
+            max: value?.priceMax,
+          })}
+          onDelete={() => handleRemoveFilter({ filter })}
+          className={s.filterValue}
+          color='primary'
+        />
+      );
 
-  case "rooms":
-    return (
-      <Chip
-        key={filter}
-        label={t("roomsRange", {
-          min: value?.roomsMin || "",
-          max: value?.roomsMax,
-        })}
-        onDelete={() => handleRemoveFilter({ filter })}
-        className={s.filterValue}
-        color='primary'
-      />
-    );
+    case "rooms":
+      return (
+        <Chip
+          key={filter}
+          label={t("roomsRange", {
+            min: value?.roomsMin || "",
+            max: value?.roomsMax,
+          })}
+          onDelete={() => handleRemoveFilter({ filter })}
+          className={s.filterValue}
+          color='primary'
+        />
+      );
 
-  case "employees":
-    return (
-      <Chip
-        key={filter}
-        label={t("employeesRange", {
-          min: value?.employeesMin || "",
-          max: value?.employeesMax,
-        })}
-        onDelete={() => handleRemoveFilter({ filter })}
-        className={s.filterValue}
-        color='primary'
-      />
-    );
+    case "employees":
+      return (
+        <Chip
+          key={filter}
+          label={t("employeesRange", {
+            min: value?.employeesMin || "",
+            max: value?.employeesMax,
+          })}
+          onDelete={() => handleRemoveFilter({ filter })}
+          className={s.filterValue}
+          color='primary'
+        />
+      );
 
-  case "area":
-    return (
-      <Chip
-        key={filter}
-        label={[value?.areaMin || "", value?.areaMax || ""].join(" - ")}
-        onDelete={() => handleRemoveFilter({ filter })}
-        className={s.filterValue}
-        color='primary'
-      />
-    );
+    case "area":
+      return (
+        <Chip
+          key={filter}
+          label={[value?.areaMin || "", value?.areaMax || ""].join(" - ")}
+          onDelete={() => handleRemoveFilter({ filter })}
+          className={s.filterValue}
+          color='primary'
+        />
+      );
 
-  case "servicesAndAmenities":
-    return (
-      <React.Fragment>
-        {Object.entries(value).map(([category, options]) => (
-          <React.Fragment key={category}>
-            {options && options.length
-              ? options.map((opt, index) => (
-                <Chip
-                  key={index}
-                  label={t(opt)}
-                  onDelete={() =>
-                    handleRemoveFilter({ filter, category, index })
-                  }
-                  className={s.filterValue}
-                  color='primary'
-                />
-              ))
-              : null}
-          </React.Fragment>
-        ))}
-      </React.Fragment>
-    );
+    case "servicesAndAmenities":
+      return (
+        <React.Fragment>
+          {Object.entries(value).map(([category, options]) => (
+            <React.Fragment key={category}>
+              {options && options.length
+                ? options.map((opt, index) => (
+                    <Chip
+                      key={index}
+                      label={t(opt)}
+                      onDelete={() =>
+                        handleRemoveFilter({ filter, category, index })
+                      }
+                      className={s.filterValue}
+                      color='primary'
+                    />
+                  ))
+                : null}
+            </React.Fragment>
+          ))}
+        </React.Fragment>
+      );
 
-  default:
-    return null;
+    default:
+      return null;
   }
 });
 
@@ -1122,6 +1132,9 @@ class Search extends PureComponent {
     dialog: null,
     offices: [],
     loading: false,
+    viewMode: "grid",
+    sorter: officeSortOptions[0],
+    page: 1,
   };
 
   filters = [
@@ -1149,7 +1162,14 @@ class Search extends PureComponent {
 
   /** Search office by text, filters, map... */
   searchOffices = () => {
-    const params = { q: this.state.q };
+    const params = {
+      q: this.state.q,
+      page: this.state.page,
+      limit: OFFICES_PER_PAGE,
+      // TODO: add sort
+      // sort: '',
+      // sortDirection: ''
+    };
     if (this.state.selectedLocations?.length) {
       params["locations"] = this.state.selectedLocations.map((location) => ({
         zipCode: location.zipCode,
@@ -1314,6 +1334,18 @@ class Search extends PureComponent {
     );
   };
 
+  handleChangeSort = (e) => {
+    this.setState({ sorter: e.target.value });
+  };
+
+  handleChangeViewMode = (viewMode) => () => {
+    this.setState({ viewMode }, this.searchOffices);
+  };
+
+  handleChangePage = (event, page) => {
+    this.setState({ page }, this.searchOffices);
+  };
+
   /** Render component */
   render() {
     const { width, classes: s, t } = this.props;
@@ -1323,8 +1355,14 @@ class Search extends PureComponent {
       q,
       selectedLocations,
       offices,
+      viewMode,
+      sorter,
+      page,
       dialog,
     } = this.state;
+
+    const totalLength = 134;
+    const pageCount = Math.ceil(totalLength / OFFICES_PER_PAGE);
 
     const filteredOffices = offices?.filter(
       (office) => office.location?.coordinates
@@ -1343,8 +1381,6 @@ class Search extends PureComponent {
         countedOffices[countedOffices.indexOf(sameOffice)].count += 1;
       }
     });
-
-    console.log(countedOffices);
 
     return (
       <Column classes={{ box: s.root }}>
@@ -1443,56 +1479,105 @@ class Search extends PureComponent {
           ) : null}
         </div>
 
-        <div
-          style={{ height: showOnMap ? "calc(100vh - 300px)" : "auto" }}
-          className={s.valuesWrapper}
-        >
-          {showOnMap && (
-            <div className={s.showOnMapWrapper}>
-              <GoogleMap
-                coordinates={
-                  countedOffices?.length
-                    ? countedOffices.map(
-                      (office) => office.location.coordinates
-                    )
-                    : []
-                }
-                center={
-                  countedOffices?.length &&
-                  countedOffices[0]?.location?.coordinates
-                }
-                markers={
-                  countedOffices?.length
-                    ? countedOffices.map((office, index) => (
-                      <GoogleMapMarker
-                        key={index}
-                        lat={office.location.coordinates.lat}
-                        lng={office.location.coordinates.lng}
-                        onClick={this.handleNavigateOfficeDetail(office)}
-                        badge={
-                          office.count > 1 && {
-                            title: office.count,
-                            color: "primary",
-                          }
-                        }
-                      />
-                    ))
-                    : []
-                }
-              />
-            </div>
-          )}
-
-          <Column fullHeight style={{ overflowY: "auto" }}>
+        <div className={s.valuesWrapper}>
+          <Column fullHeight>
             <Column
               classes={{
                 box: clsx(s.officesWrapper, showOnMap && s.smallOfficesWrapper),
               }}
             >
-              <Typography textSecondary fontSizeS style={{ marginBottom: 24 }}>
-                {t("resultsWithNumber", { count: offices.length })}
-              </Typography>
-              <div className={clsx(s.offices)}>
+              {showOnMap && (
+                <div className={s.showOnMapWrapper}>
+                  <GoogleMap
+                    coordinates={
+                      countedOffices?.length
+                        ? countedOffices.map(
+                            (office) => office.location.coordinates
+                          )
+                        : []
+                    }
+                    center={
+                      countedOffices?.length &&
+                      countedOffices[0]?.location?.coordinates
+                    }
+                    markers={
+                      countedOffices?.length
+                        ? countedOffices.map((office, index) => (
+                            <GoogleMapMarker
+                              key={index}
+                              lat={office.location.coordinates.lat}
+                              lng={office.location.coordinates.lng}
+                              onClick={this.handleNavigateOfficeDetail(office)}
+                              badge={
+                                office.count > 1 && {
+                                  title: office.count,
+                                  color: "primary",
+                                }
+                              }
+                            />
+                          ))
+                        : []
+                    }
+                  />
+                </div>
+              )}
+
+              <Row
+                fullWidth
+                paddingTopHalf
+                paddingBottomDouble
+                alignChildrenCenter
+              >
+                <Typography
+                  textSecondary={viewMode === "grid"}
+                  textMediumGrey={viewMode !== "grid"}
+                >
+                  <Apps
+                    className={s.viewModeItem}
+                    onClick={this.handleChangeViewMode("grid")}
+                  />
+                </Typography>
+                <Typography
+                  paddingRight
+                  textSecondary={viewMode === "list"}
+                  textMediumGrey={viewMode !== "list"}
+                >
+                  <ViewList
+                    className={s.viewModeItem}
+                    onClick={this.handleChangeViewMode("list")}
+                  />
+                </Typography>
+                <Typography textSecondary fontSizeS>
+                  {t("resultsWithNumber", { count: totalLength })}
+                </Typography>
+                <Stretch />
+                <Select
+                  options={officeSortOptions}
+                  renderOption={(item) => (
+                    <Typography fontSizeS textMediumGrey>
+                      {!item
+                        ? t("selectOne")
+                        : typeof item === "object"
+                        ? t(...item)
+                        : t(item)}
+                    </Typography>
+                  )}
+                  displayEmpty
+                  value={sorter}
+                  onChange={this.handleChangeSort}
+                  className={s.sorter}
+                />
+              </Row>
+
+              <div
+                className={clsx(s.offices)}
+                style={{
+                  minHeight: 500,
+                  marginBottom: 40,
+                  height: showOnMap ? "calc(100vh - 300px)" : "auto",
+                  overflowY: "auto",
+                }}
+              >
                 <Grid
                   container
                   direction='row'
@@ -1519,6 +1604,23 @@ class Search extends PureComponent {
                       </div>
                     </Grid>
                   ))}
+                </Grid>
+              </div>
+
+              <div className={clsx(s.offices)}>
+                <Grid container>
+                  <Grid item xs={12} sm={showOnMap ? 6 : 12}>
+                    <Divider />
+                    <Column>
+                      <Pagination
+                        count={pageCount}
+                        shape='rounded'
+                        className={s.pagination}
+                        onChange={this.handleChangePage}
+                        page={page}
+                      />
+                    </Column>
+                  </Grid>
                 </Grid>
               </div>
             </Column>

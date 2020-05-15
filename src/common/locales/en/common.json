@@ -483,5 +483,10 @@
   "copied": "Copied",
   "callViaSkype": "Call via Skype",
   "locationsSelected": "{{count}} locations selected",
-  "callFromDevice": "Call from this device"
+  "callFromDevice": "Call from this device",
+  "topRatedFirst": "Top rated first",
+  "priceHighToLow": "Price, High to low",
+  "priceLowToHigh": "Price, Low to high",
+  "dateNewToOld": "Date, New to old",
+  "dateOldToNew": "Date, Old to new"
 }

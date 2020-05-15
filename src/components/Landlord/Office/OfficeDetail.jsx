@@ -1,12 +1,12 @@
-import React, { PureComponent } from 'react';
-import { withStyles } from '@material-ui/core/styles';
-import { withTranslation } from 'react-i18next';
-import clsx from 'clsx';
-import PropTypes from 'prop-types';
-import withWidth, { isWidthDown } from '@material-ui/core/withWidth';
-import Carousel from '@brainhubeu/react-carousel';
-import { KeyboardBackspace } from '@material-ui/icons';
-import { Helmet } from 'react-helmet';
+import React, { PureComponent } from "react";
+import { withStyles } from "@material-ui/core/styles";
+import { withTranslation } from "react-i18next";
+import clsx from "clsx";
+import PropTypes from "prop-types";
+import withWidth, { isWidthDown } from "@material-ui/core/withWidth";
+import Carousel from "@brainhubeu/react-carousel";
+import { KeyboardBackspace } from "@material-ui/icons";
+import { Helmet } from "react-helmet";
 import {
   Row,
   Column,
@@ -18,28 +18,28 @@ import {
   DeleteIcon,
   EditIcon,
   Divider,
-} from '../../../common/base-components';
-import { OfficeItem } from '../../../common/base-layouts';
-import OfficeDetailForm from '../../Layout/OfficeDetailForm';
+} from "../../../common/base-components";
+import { OfficeItem } from "../../../common/base-layouts";
+import OfficeDetailForm from "../../Layout/OfficeDetailForm";
 
 const styleSheet = (theme) => ({
   root: {
     paddingLeft: theme.spacing(5),
     paddingRight: theme.spacing(5),
-    [theme.breakpoints.down('sm')]: {
+    [theme.breakpoints.down("sm")]: {
       paddingLeft: 27,
       paddingRight: 27,
     },
   },
 
   fullWidth: {
-    width: '100%',
+    width: "100%",
   },
 
   addOfficeTabWrapper: {
     paddingTop: 20,
     paddingBottom: 56,
-    [theme.breakpoints.down('xs')]: {
+    [theme.breakpoints.down("xs")]: {
       paddingTop: 8,
       paddingBottom: 24,
     },
@@ -47,7 +47,7 @@ const styleSheet = (theme) => ({
 
   formButtons: {
     paddingTop: 160,
-    [theme.breakpoints.down('xs')]: {
+    [theme.breakpoints.down("xs")]: {
       paddingTop: 64,
     },
   },
@@ -59,7 +59,7 @@ const styleSheet = (theme) => ({
 
   similarOffices: {
     paddingTop: 54,
-    overflow: 'hidden',
+    overflow: "hidden",
   },
 });
 
@@ -125,14 +125,17 @@ class OfficeDetail extends PureComponent {
 
   /** Goto previous step */
   handleBack = () => {
-    this.props.navigate('offices');
+    this.props.navigate("offices");
   };
 
   /** Unpublish office */
   handleUnpublish = () => {
     this.props.unpublishOffice(this.state.office._id).then((response) => {
       if (response.status === 200) {
-        this.props.navigate('offices/add', `${this.state.office._id}/${this.state.office.location.country}-${this.state.office.officeType}-${this.state.office.numberOfEmployees}`);
+        this.props.navigate(
+          "offices/add",
+          `${this.state.office._id}/${this.state.office.location.country}-${this.state.office.officeType}-${this.state.office.numberOfEmployees}`
+        );
       }
     });
   };
@@ -163,25 +166,28 @@ class OfficeDetail extends PureComponent {
         paddingBottomDouble
       >
         <Helmet>
-          <meta property="og:title" content={office.title} />
-          {office.coverPhotos && office.coverPhotos.length > 0 &&
-            <meta property="og:image" content={office.coverPhotos [0].desktop?.bucketPath} />
-          }
+          <meta property='og:title' content={office.title} />
+          {office.coverPhotos && office.coverPhotos.length > 0 && (
+            <meta
+              property='og:image'
+              content={office.coverPhotos[0].desktop?.bucketPath}
+            />
+          )}
         </Helmet>
         <Row fullWidth paddingBottom>
           {/** title */}
           <Typography fontSizeM textSecondary>
-            {t('office')}
+            {t("office")}
           </Typography>
           <Stretch />
           <Button
-            link="secondary"
-            background="secondaryLight"
+            link='secondary'
+            background='secondaryLight'
             onClick={this.handleBack}
           >
             <KeyboardBackspace />
             <Typography paddingLeft fontSizeS>
-              {t('back')}
+              {t("back")}
             </Typography>
           </Button>
         </Row>
@@ -189,31 +195,31 @@ class OfficeDetail extends PureComponent {
         <Row fullWidth paddingBottom>
           {/** Show unpublish button */}
           <Button
-            link="errorRedNormal"
-            background="errorRedLight"
+            link='errorRedNormal'
+            background='errorRedLight'
             inverse
             onClick={this.handleUnpublish}
-            variant={isWidthDown('xs', width) ? 'icon' : ''}
+            variant={isWidthDown("xs", width) ? "icon" : ""}
           >
             <EyeDisIcon style={{ width: 16, height: 16 }} />
             <Typography fontSizeS paddingLeft>
-              {t('unpublish')}
+              {t("unpublish")}
             </Typography>
           </Button>
           <Stretch />
 
           {/** Show delete button */}
           <Button
-            link="errorRedNormal"
-            background="errorRedLight"
+            link='errorRedNormal'
+            background='errorRedLight'
             inverse
             onClick={this.handleDeleteOffice}
-            variant={isWidthDown('xs', width) ? 'icon' : ''}
+            variant={isWidthDown("xs", width) ? "icon" : ""}
           >
             <DeleteIcon style={{ width: 20, height: 18 }} />
-            {!isWidthDown('xs', width) ? (
+            {!isWidthDown("xs", width) ? (
               <Typography paddingLeft fontSizeS>
-                {t('delete')}
+                {t("delete")}
               </Typography>
             ) : null}
           </Button>
@@ -221,16 +227,16 @@ class OfficeDetail extends PureComponent {
 
           {/** Show edit button */}
           <Button
-            link="primary"
-            background="normalLight"
+            link='primary'
+            background='normalLight'
             inverse
             onClick={this.handleEditOffice}
-            variant={isWidthDown('xs', width) ? 'icon' : ''}
+            variant={isWidthDown("xs", width) ? "icon" : ""}
           >
             <EditIcon style={{ width: 20, height: 18 }} />
-            {!isWidthDown('xs', width) ? (
+            {!isWidthDown("xs", width) ? (
               <Typography paddingLeft fontSizeS>
-                {t('edit')}
+                {t("edit")}
               </Typography>
             ) : null}
           </Button>
@@ -245,28 +251,21 @@ class OfficeDetail extends PureComponent {
         <Row fullWidth classes={{ box: s.similarOfficesWrapper }}>
           <Column fullWidth alignChildrenStart>
             <Typography fontSizeM textBlackGrey fontWeightBold>
-              {t('similarOffice')}
+              {t("similarOffice")}
             </Typography>
             <Row fullWidth classes={{ box: s.similarOffices }}>
-              <div style={{ width: '100%', height: '100%' }}>
-                <Carousel
-                  itemWidth={255}
-                  offset={0}
-                  keepDirectionWhenDragging
-                >
+              <div style={{ width: "100%", height: "100%" }}>
+                <Carousel itemWidth={255} offset={0} keepDirectionWhenDragging>
                   {similarOffices.map((office, index) => (
                     <div
                       style={{
-                        position: 'relative',
-                        cursor: 'pointer',
-                        height: '100%',
+                        position: "relative",
+                        cursor: "pointer",
+                        height: "100%",
                       }}
                       key={index}
                     >
-                      <OfficeItem
-                        office={office}
-                        setFavorite
-                      />
+                      <OfficeItem office={office} setFavorite />
                     </div>
                   ))}
                 </Carousel>
@@ -281,15 +280,15 @@ class OfficeDetail extends PureComponent {
         >
           {/** Show unpublish button */}
           <Button
-            link="errorRedNormal"
-            background="errorRedLight"
+            link='errorRedNormal'
+            background='errorRedLight'
             inverse
             onClick={this.handleUnpublish}
-            variant={isWidthDown('xs', width) ? 'icon' : ''}
+            variant={isWidthDown("xs", width) ? "icon" : ""}
           >
             <EyeDisIcon style={{ width: 16, height: 16 }} />
             <Typography fontSizeS paddingLeft>
-              {t('unpublish')}
+              {t("unpublish")}
             </Typography>
           </Button>
         </Row>
@@ -300,5 +299,5 @@ class OfficeDetail extends PureComponent {
 }
 
 export default withWidth()(
-  withStyles(styleSheet)(withTranslation('common')(OfficeDetail)),
+  withStyles(styleSheet)(withTranslation("common")(OfficeDetail))
 );
