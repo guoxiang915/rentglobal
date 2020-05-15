@@ -25,7 +25,7 @@ import {
   CloseIcon,
   PhoneIcon,
   CopyIcon,
-  SkypeIcon,
+  CallIcon,
 } from '../../../common/base-components/Icons';
 import { numberWithSpaces } from '../../../utils/formatters';
 
@@ -119,7 +119,7 @@ class CallConsultantDialog extends PureComponent {
    * Event handler for skype call
    */
   handleCall = (phoneNumber) => {
-    window.open("skype:" + phoneNumber + "?call");
+    window.open("tel:" + phoneNumber);
   };
 
   /** Copy phone number */
@@ -140,6 +140,8 @@ class CallConsultantDialog extends PureComponent {
       title, office, className, width, classes: s, t,
     } = this.props;
     const { isCopied } = this.state;
+
+    console.log(office);
 
     return (
       <Dialog
@@ -193,7 +195,7 @@ class CallConsultantDialog extends PureComponent {
             <Row fullWidth>
               <TextField
                 variant="outlined"
-                value={office.consultantInfo ? office.consultantInfo.phoneNumber : ''}
+                value={(office.consultant && office.consultant.generalInfo && office.consultant.generalInfo.phoneNumber && office.consultant.generalInfo.phoneNumber.number) ? office.consultant.generalInfo.phoneNumber.number : ''}
                 className={s.profileInput}
                 fullWidth
                 startAdornment={<PhoneIcon className={s.outlineIcon} />}
@@ -218,9 +220,9 @@ class CallConsultantDialog extends PureComponent {
                   >
                     <Button
                       variant="primary"
-                      onClick={() => this.handleCopy(office.consultantInfo ? office.consultantInfo.phoneNumber : '')}
+                      onClick={() => this.handleCopy((office.consultant && office.consultant.generalInfo && office.consultant.generalInfo.phoneNumber && office.consultant.generalInfo.phoneNumber.number) ? office.consultant.generalInfo.phoneNumber.number : '')}
                       className={s.copyButton}
-                      disabled={!office.consultantInfo || !office.consultantInfo.phoneNumber}
+                      disabled={!(office.consultant && office.consultant.generalInfo && office.consultant.generalInfo.phoneNumber && office.consultant.generalInfo.phoneNumber.number)}
                     >
                       <CopyIcon style={{ width: 24, height: 24 }} />
                     </Button>
@@ -234,15 +236,15 @@ class CallConsultantDialog extends PureComponent {
           <Box fullWidth paddingTop>
             <Button
               variant="primary"
-              onClick={() => this.handleCall(office.consultantInfo ? office.consultantInfo.phoneNumber : '')}
+              onClick={() => this.handleCall((office.consultant && office.consultant.generalInfo && office.consultant.generalInfo.phoneNumber && office.consultant.generalInfo.phoneNumber.number) ? office.consultant.generalInfo.phoneNumber.number : '')}
               shadow
               fullWidth
               className={s.callButton}
-              disabled={!office.consultantInfo || !office.consultantInfo.phoneNumber}
+              disabled={!(office.consultant && office.consultant.generalInfo && office.consultant.generalInfo.phoneNumber && office.consultant.generalInfo.phoneNumber.number)}
             >
-              <SkypeIcon style={{ width: 24, height: 24 }} />
+              <CallIcon style={{ width: 24, height: 24 }} />
               <Typography paddingLeftHalf fontSizeM fontWeightBold>
-                {t('callViaSkype')}
+                {t('callFromDevice')}
               </Typography>
             </Button>
           </Box>

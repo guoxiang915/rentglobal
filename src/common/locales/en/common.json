@@ -481,5 +481,6 @@
     "copy": "Copy",
     "copied": "Copied",
     "callViaSkype": "Call via Skype",
+    "callFromDevice": "Call from this device",
     "locationsSelected": "{{count}} locations selected"
 }
