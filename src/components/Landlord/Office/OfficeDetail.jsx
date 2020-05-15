@@ -6,6 +6,7 @@ import PropTypes from 'prop-types';
 import withWidth, { isWidthDown } from '@material-ui/core/withWidth';
 import Carousel from '@brainhubeu/react-carousel';
 import { KeyboardBackspace } from '@material-ui/icons';
+import { Helmet } from 'react-helmet';
 import {
   Row,
   Column,
@@ -161,6 +162,12 @@ class OfficeDetail extends PureComponent {
         paddingTopDouble
         paddingBottomDouble
       >
+        <Helmet>
+          <meta property="og:title" content={office.title} />
+          {office.coverPhotos && office.coverPhotos.length > 0 &&
+            <meta property="og:image" content={office.coverPhotos [0].desktop?.bucketPath} />
+          }
+        </Helmet>
         <Row fullWidth paddingBottom>
           {/** title */}
           <Typography fontSizeM textSecondary>
