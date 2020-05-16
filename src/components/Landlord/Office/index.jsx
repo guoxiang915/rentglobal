@@ -70,7 +70,7 @@ class Offices extends PureComponent {
   /** Get landlord offices */
   componentDidMount() {
     this.props.getOffices().then(
-      (response) => this.setState({ offices: response.data }),
+      (response) => this.setState({ offices: response.data.docs }),
       () => {}
     );
   }

@@ -1,11 +1,11 @@
-import React, { PureComponent } from 'react';
-import { withStyles } from '@material-ui/core/styles';
-import { withTranslation } from 'react-i18next';
-import clsx from 'clsx';
-import PropTypes from 'prop-types';
-import withWidth, { isWidthDown } from '@material-ui/core/withWidth';
-import { KeyboardBackspace } from '@material-ui/icons';
-import { Tabs, Tab } from '@material-ui/core';
+import React, { PureComponent } from "react";
+import { withStyles } from "@material-ui/core/styles";
+import { withTranslation } from "react-i18next";
+import clsx from "clsx";
+import PropTypes from "prop-types";
+import withWidth, { isWidthDown } from "@material-ui/core/withWidth";
+import { KeyboardBackspace } from "@material-ui/icons";
+import { Tabs, Tab } from "@material-ui/core";
 import {
   Row,
   Column,
@@ -14,27 +14,27 @@ import {
   Typography,
   Button,
   Divider,
-} from '../../../common/base-components';
-import { OfficeListItem } from '../../../common/base-layouts';
+} from "../../../common/base-components";
+import { OfficeListItem } from "../../../common/base-layouts";
 
 const styleSheet = (theme) => ({
   root: {
     paddingLeft: theme.spacing(5),
     paddingRight: theme.spacing(5),
-    [theme.breakpoints.down('sm')]: {
+    [theme.breakpoints.down("sm")]: {
       paddingLeft: 27,
       paddingRight: 27,
     },
   },
 
   addButton: {
-    width: '100%',
+    width: "100%",
     marginTop: 25,
   },
 
   tabs: {
     marginTop: 12,
-    width: '100%',
+    width: "100%",
     borderBottom: `1px solid ${theme.colors.primary.borderGrey}`,
   },
 
@@ -44,11 +44,11 @@ const styleSheet = (theme) => ({
   },
 
   tab: {
-    textTransform: 'none',
+    textTransform: "none",
     minWidth: 0,
-    padding: '25px 0px',
+    padding: "25px 0px",
     marginRight: 70,
-    [theme.breakpoints.down('xs')]: {
+    [theme.breakpoints.down("xs")]: {
       marginRight: 30,
     },
   },
@@ -77,8 +77,8 @@ class OfficeList extends PureComponent {
   /** Get office from id */
   componentDidMount() {
     this.props.getOffices().then(
-      (response) => this.setState({ offices: response.data }),
-      () => {},
+      (response) => this.setState({ offices: response.data.docs }),
+      () => {}
     );
   }
 
@@ -89,7 +89,7 @@ class OfficeList extends PureComponent {
 
   /** Goto previous step */
   handleBack = () => {
-    this.props.navigate('offices');
+    this.props.navigate("offices");
   };
 
   /** Change tab value */
@@ -107,9 +107,10 @@ class OfficeList extends PureComponent {
     const availableOffices = offices.filter((item) => !item.leasedBy);
 
     const filteredOffices = offices.filter(
-      (item) => currentTab === 0
-        || (currentTab === 1 && !!item.leasedBy)
-        || (currentTab === 2 && !item.leasedBy),
+      (item) =>
+        currentTab === 0 ||
+        (currentTab === 1 && !!item.leasedBy) ||
+        (currentTab === 2 && !item.leasedBy)
     );
 
     return (
@@ -123,27 +124,27 @@ class OfficeList extends PureComponent {
         <Row fullWidth paddingBottom wrap>
           {/** title */}
           <Typography fontSizeM textSecondary>
-            {t('offices')}
+            {t("offices")}
           </Typography>
           <Stretch />
           <Button
-            link="secondary"
-            background="secondaryLight"
+            link='secondary'
+            background='secondaryLight'
             onClick={this.handleBack}
           >
             <KeyboardBackspace />
             <Typography paddingLeft fontSizeS>
-              {t('back')}
+              {t("back")}
             </Typography>
           </Button>
           <Box paddingLeftHalf />
           <Button
-            variant="secondary"
+            variant='secondary'
             shadow
-            onClick={this.navigate('offices/add')}
-            className={clsx(isWidthDown('xs', width) && s.addButton)}
+            onClick={this.navigate("offices/add")}
+            className={clsx(isWidthDown("xs", width) && s.addButton)}
           >
-            {t('addNewOffice')}
+            {t("addNewOffice")}
           </Button>
         </Row>
 
@@ -151,24 +152,24 @@ class OfficeList extends PureComponent {
         <Tabs
           value={currentTab}
           onChange={this.handleChangeTab}
-          aria-label="wrapped label tabs"
-          indicatorColor="primary"
-          textColor="primary"
+          aria-label='wrapped label tabs'
+          indicatorColor='primary'
+          textColor='primary'
           classes={{ root: s.tabs, indicator: s.indicator }}
         >
           <Tab
             value={0}
-            label={`${t('allOfficesList')} (${offices.length})`}
+            label={`${t("allOfficesList")} (${offices.length})`}
             classes={{ root: s.tab }}
           />
           <Tab
             value={1}
-            label={`${t('leased')} (${leasedOffices.length})`}
+            label={`${t("leased")} (${leasedOffices.length})`}
             classes={{ root: s.tab }}
           />
           <Tab
             value={2}
-            label={`${t('available')} (${availableOffices.length})`}
+            label={`${t("available")} (${availableOffices.length})`}
             classes={{ root: s.tab }}
           />
         </Tabs>
@@ -181,7 +182,10 @@ class OfficeList extends PureComponent {
               <Row fullWidth classes={{ box: s.officeItemWrapper }}>
                 <OfficeListItem
                   office={item}
-                  goDetail={this.navigate('offices', `${item._id}/${item.location.country}-${item.officeType}-${item.numberOfEmployees}`)}
+                  goDetail={this.navigate(
+                    "offices",
+                    `${item._id}/${item.location.country}-${item.officeType}-${item.numberOfEmployees}`
+                  )}
                 />
               </Row>
             </React.Fragment>
@@ -193,5 +197,5 @@ class OfficeList extends PureComponent {
 }
 
 export default withWidth()(
-  withStyles(styleSheet)(withTranslation('common')(OfficeList)),
+  withStyles(styleSheet)(withTranslation("common")(OfficeList))
 );

@@ -1130,6 +1130,7 @@ class Search extends PureComponent {
     selectedLocations: [],
     filters: {},
     dialog: null,
+    totalLength: 0,
     offices: [],
     loading: false,
     viewMode: "grid",
@@ -1166,9 +1167,8 @@ class Search extends PureComponent {
       q: this.state.q,
       page: this.state.page,
       limit: OFFICES_PER_PAGE,
-      // TODO: add sort
-      // sort: '',
-      // sortDirection: ''
+      sortby: this.state.sorter.field,
+      sortDirection: this.state.sorter.direction,
     };
     if (this.state.selectedLocations?.length) {
       params["locations"] = this.state.selectedLocations.map((location) => ({
@@ -1221,14 +1221,18 @@ class Search extends PureComponent {
     advancedSearchOffices(params).then(
       (response) => {
         if (response.status === 200) {
-          this.setState({ offices: response.data, loading: false });
+          this.setState({
+            offices: response.data.docs,
+            totalLength: response.data.total,
+            loading: false,
+          });
         } else if (response.status === 404) {
           this.setState({ offices: [], loading: false });
         }
       },
       (error) => {
         if (error.response.status === 404) {
-          this.setState({ offices: [], loading: false });
+          this.setState({ offices: [], totalLength: 0, loading: false });
         }
       }
     );
@@ -1335,11 +1339,11 @@ class Search extends PureComponent {
   };
 
   handleChangeSort = (e) => {
-    this.setState({ sorter: e.target.value });
+    this.setState({ sorter: e.target.value }, this.searchOffices);
   };
 
   handleChangeViewMode = (viewMode) => () => {
-    this.setState({ viewMode }, this.searchOffices);
+    this.setState({ viewMode });
   };
 
   handleChangePage = (event, page) => {
@@ -1355,13 +1359,12 @@ class Search extends PureComponent {
       q,
       selectedLocations,
       offices,
+      totalLength,
       viewMode,
       sorter,
       page,
       dialog,
     } = this.state;
-
-    const totalLength = 134;
     const pageCount = Math.ceil(totalLength / OFFICES_PER_PAGE);
 
     const filteredOffices = offices?.filter(
@@ -1486,6 +1489,64 @@ class Search extends PureComponent {
                 box: clsx(s.officesWrapper, showOnMap && s.smallOfficesWrapper),
               }}
             >
+              <Row
+                fullWidth
+                paddingTopHalf
+                paddingBottomDouble
+                alignChildrenCenter
+              >
+                {!isWidthDown("xs", width) && (
+                  <>
+                    <Typography
+                      textSecondary={viewMode === "grid"}
+                      textMediumGrey={viewMode !== "grid"}
+                    >
+                      <Apps
+                        className={s.viewModeItem}
+                        onClick={this.handleChangeViewMode("grid")}
+                      />
+                    </Typography>
+                    <Typography
+                      paddingRight
+                      textSecondary={viewMode === "list"}
+                      textMediumGrey={viewMode !== "list"}
+                    >
+                      <ViewList
+                        className={s.viewModeItem}
+                        onClick={this.handleChangeViewMode("list")}
+                      />
+                    </Typography>
+                  </>
+                )}
+                <Typography textSecondary fontSizeS>
+                  {t("resultsWithNumber", { count: totalLength })}
+                </Typography>
+                <Stretch />
+                <Select
+                  options={officeSortOptions}
+                  renderOption={(item) => (
+                    <Typography fontSizeS textMediumGrey>
+                      {t(item.title)}
+                    </Typography>
+                  )}
+                  displayEmpty
+                  value={sorter}
+                  onChange={this.handleChangeSort}
+                  className={s.sorter}
+                />
+                {isWidthDown("xs", width) && (
+                  <Checkbox
+                    variant='outlined'
+                    label={t("map")}
+                    className={s.showOnMap}
+                    isChecked={showOnMap}
+                    onChange={this.handleShowOnMap}
+                    icon={LocationOnOutlined}
+                    checkedIcon={LocationOnOutlined}
+                  />
+                )}
+              </Row>
+
               {showOnMap && (
                 <div className={s.showOnMapWrapper}>
                   <GoogleMap
@@ -1522,107 +1583,95 @@ class Search extends PureComponent {
                 </div>
               )}
 
-              <Row
-                fullWidth
-                paddingTopHalf
-                paddingBottomDouble
-                alignChildrenCenter
-              >
-                <Typography
-                  textSecondary={viewMode === "grid"}
-                  textMediumGrey={viewMode !== "grid"}
-                >
-                  <Apps
-                    className={s.viewModeItem}
-                    onClick={this.handleChangeViewMode("grid")}
-                  />
-                </Typography>
-                <Typography
-                  paddingRight
-                  textSecondary={viewMode === "list"}
-                  textMediumGrey={viewMode !== "list"}
-                >
-                  <ViewList
-                    className={s.viewModeItem}
-                    onClick={this.handleChangeViewMode("list")}
-                  />
-                </Typography>
-                <Typography textSecondary fontSizeS>
-                  {t("resultsWithNumber", { count: totalLength })}
-                </Typography>
-                <Stretch />
-                <Select
-                  options={officeSortOptions}
-                  renderOption={(item) => (
-                    <Typography fontSizeS textMediumGrey>
-                      {!item
-                        ? t("selectOne")
-                        : typeof item === "object"
-                        ? t(...item)
-                        : t(item)}
-                    </Typography>
-                  )}
-                  displayEmpty
-                  value={sorter}
-                  onChange={this.handleChangeSort}
-                  className={s.sorter}
-                />
-              </Row>
-
-              <div
-                className={clsx(s.offices)}
-                style={{
-                  minHeight: 500,
-                  marginBottom: 40,
-                  height: showOnMap ? "calc(100vh - 300px)" : "auto",
-                  overflowY: "auto",
-                }}
-              >
-                <Grid
-                  container
-                  direction='row'
-                  spacing={2}
-                  wrap='wrap'
-                  className={clsx(s.offices, showOnMap && s.officesWithMap)}
-                >
-                  {offices.map((office, index) => (
+              {!(showOnMap && isWidthDown("xs", width)) && (
+                <>
+                  <div
+                    className={clsx(s.offices)}
+                    style={{
+                      minHeight: 500,
+                      marginBottom: 40,
+                      height: showOnMap ? "calc(100vh - 300px)" : "auto",
+                      overflowY: showOnMap && "auto",
+                    }}
+                  >
                     <Grid
-                      item
-                      xs={12}
-                      sm={showOnMap ? 12 : 6}
-                      md={showOnMap ? 12 : 4}
-                      lg={showOnMap ? 6 : 3}
-                      key={index}
+                      container
+                      direction='row'
+                      spacing={2}
+                      wrap='wrap'
+                      className={clsx(s.offices, showOnMap && s.officesWithMap)}
                     >
-                      <div className={s.officeWrapper}>
-                        <OfficeItem
-                          office={office}
-                          setFavorite
-                          onClick={this.handleNavigateOfficeDetail(office)}
-                          fullWidth
-                        />
-                      </div>
+                      {viewMode === "grid" ? (
+                        offices.map((office, index) => (
+                          <Grid
+                            item
+                            xs={12}
+                            sm={showOnMap ? 12 : 6}
+                            md={showOnMap ? 12 : 4}
+                            lg={showOnMap ? 6 : 3}
+                            key={index}
+                          >
+                            <div className={s.officeWrapper}>
+                              <OfficeItem
+                                office={office}
+                                setFavorite
+                                onClick={this.handleNavigateOfficeDetail(
+                                  office
+                                )}
+                                fullWidth
+                              />
+                            </div>
+                          </Grid>
+                        ))
+                      ) : viewMode === "list" ? (
+                        <Grid item xs={12}>
+                          <Column classes={{ box: s.officeList }} fullWidth>
+                            {offices.map((office, index) => (
+                              <React.Fragment key={index}>
+                                {index > 0 && <Divider />}
+                                <Row
+                                  fullWidth
+                                  classes={{ box: s.officeListItemWrapper }}
+                                >
+                                  <OfficeItem
+                                    office={office}
+                                    setFavorite
+                                    onClick={this.handleNavigateOfficeDetail(
+                                      office
+                                    )}
+                                    fullWidth
+                                    horizontal={
+                                      !isWidthDown("xs", width) &&
+                                      !(isWidthDown("md", width) && showOnMap)
+                                    }
+                                  />
+                                </Row>
+                              </React.Fragment>
+                            ))}
+                          </Column>
+                        </Grid>
+                      ) : null}
                     </Grid>
-                  ))}
-                </Grid>
-              </div>
+                  </div>
 
-              <div className={clsx(s.offices)}>
-                <Grid container>
-                  <Grid item xs={12} sm={showOnMap ? 6 : 12}>
-                    <Divider />
-                    <Column>
-                      <Pagination
-                        count={pageCount}
-                        shape='rounded'
-                        className={s.pagination}
-                        onChange={this.handleChangePage}
-                        page={page}
-                      />
-                    </Column>
-                  </Grid>
-                </Grid>
-              </div>
+                  <div className={clsx(s.offices)}>
+                    <Grid container>
+                      <Grid item xs={12} sm={showOnMap ? 6 : 12}>
+                        <Divider />
+                        <Column>
+                          <Pagination
+                            count={pageCount}
+                            shape='rounded'
+                            classes={{ root: s.pagination }}
+                            onChange={this.handleChangePage}
+                            page={page}
+                          />
+                        </Column>
+                      </Grid>
+                    </Grid>
+                  </div>
+                </>
+              )}
             </Column>
           </Column>
         </div>

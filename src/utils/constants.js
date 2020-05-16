@@ -193,11 +193,11 @@ const weekdays = [
 ];
 
 const officeSortOptions = [
-  "topRatedFirst",
-  "priceHighToLow",
-  "priceLowToHigh",
-  "dateNewToOld",
-  "dateOldToNew",
+  { title: "priceHighToLow", field: "priceMonthly", direction: "desc" },
+  { title: "priceLowToHigh", field: "priceMonthly", direction: "asc" },
+  { title: "dateNewToOld", field: "createdAt", direction: "desc" },
+  { title: "dateOldToNew", field: "createdAt", direction: "asc" },
+  { title: "topRatedFirst", field: "rating", direction: "desc" },
 ];
 
 export {

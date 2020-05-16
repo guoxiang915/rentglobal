@@ -278,19 +278,20 @@ class Dashboard extends PureComponent {
   componentDidMount() {
     this.props.getOffices().then(
       (response) => {
-        this.setState({ offices: response.data });
+        const offices = response.data.docs;
+        this.setState({ offices });
 
-        this.officeFilters.allOffices.value = response.data;
-        this.officeFilters.leasedOffices.value = response.data.filter(
+        this.officeFilters.allOffices.value = offices;
+        this.officeFilters.leasedOffices.value = offices.filter(
           (o) => !!o.leasedBy
         );
-        this.officeFilters.availableOffices.value = response.data.filter(
+        this.officeFilters.availableOffices.value = offices.filter(
           (o) => !o.leasedBy
         );
 
         Object.keys(this.officeTypes).forEach(
           (key) =>
-            (this.officeTypes[key].value = response.data.filter(
+            (this.officeTypes[key].value = offices.filter(
               (o) => o.officeType === key
             ))
         );

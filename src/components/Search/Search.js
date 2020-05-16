@@ -92,6 +92,10 @@ export const styleSheet = (theme) => ({
     height: 53,
     marginLeft: 16,
     background: theme.colors.primary.white,
+    [theme.breakpoints.down("xs")]: {
+      width: "auto",
+      height: 36,
+    },
   },
 
   filtersWrapper: {
@@ -314,14 +318,15 @@ export const styleSheet = (theme) => ({
       width: 272,
     },
     [theme.breakpoints.down("xs")]: {
-      width: "100%",
+      // width: "100%",
+      width: "calc(100vw - 30px)",
     },
   },
 
   smallOfficesWrapper: {
-    marginRight: 35,
+    // marginRight: 35,
     [theme.breakpoints.down("sm")]: {
-      marginRight: 22,
+      // marginRight: 22,
     },
   },
 
@@ -344,7 +349,9 @@ export const styleSheet = (theme) => ({
     zIndex: 0,
     width: "50%",
     [theme.breakpoints.down("xs")]: {
-      width: "100%",
+      position: "static",
+      width: "calc(100vw - 44px)",
+      height: 450,
     },
   },
 
@@ -357,10 +364,25 @@ export const styleSheet = (theme) => ({
   sorter: {
     height: 47,
     width: 174,
+    [theme.breakpoints.down("xs")]: {
+      height: 36,
+      width: "auto",
+    },
   },
 
   pagination: {
     marginTop: 20,
     marginBottom: 60,
+    color: theme.colors.primary.grey,
+  },
+
+  officeList: {
+    marginTop: -30,
+    marginBottom: -27,
+  },
+
+  officeListItemWrapper: {
+    marginTop: 30,
+    marginBottom: 27,
   },
 });

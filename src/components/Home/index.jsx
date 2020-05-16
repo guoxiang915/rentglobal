@@ -1,10 +1,10 @@
-import React, { PureComponent } from 'react';
-import { withStyles } from '@material-ui/core/styles';
-import clsx from 'clsx';
-import PropTypes from 'prop-types';
-import { Trans, withTranslation } from 'react-i18next';
-import withWidth, { isWidthDown } from '@material-ui/core/withWidth';
-import { Grid, Card, Hidden, MobileStepper, Collapse } from '@material-ui/core';
+import React, { PureComponent } from "react";
+import { withStyles } from "@material-ui/core/styles";
+import clsx from "clsx";
+import PropTypes from "prop-types";
+import { Trans, withTranslation } from "react-i18next";
+import withWidth, { isWidthDown } from "@material-ui/core/withWidth";
+import { Grid, Card, Hidden, MobileStepper, Collapse } from "@material-ui/core";
 import {
   LinkedIn,
   Facebook,
@@ -12,8 +12,8 @@ import {
   Twitter,
   KeyboardArrowLeft,
   KeyboardArrowRight,
-} from '@material-ui/icons';
-import Carousel from '@brainhubeu/react-carousel';
+} from "@material-ui/icons";
+import Carousel from "@brainhubeu/react-carousel";
 import {
   Box,
   Row,
@@ -33,19 +33,19 @@ import {
   CalendarIcon,
   ArrowRightAltIcon,
   CheckIcon,
-} from '../../common/base-components';
-import { OfficeItem } from '../../common/base-layouts';
-import { emailValidation } from '../../utils/validators';
-import { getRecommendedOffices } from '../../api/endpoints';
+} from "../../common/base-components";
+import { OfficeItem } from "../../common/base-layouts";
+import { emailValidation } from "../../utils/validators";
+import { getRecommendedOffices } from "../../api/endpoints";
 
 // load assets
-import headerimg from '../../assets/img/img_header.jpg';
-import headerimgL from '../../assets/img/img_header@2x.jpg';
-import gallery1 from '../../assets/img/img_gallery_01@2x.png';
-import gallery2 from '../../assets/img/img_gallery_02@2x.png';
-import gallery3 from '../../assets/img/img_gallery_03@2x.png';
+import headerimg from "../../assets/img/img_header.jpg";
+import headerimgL from "../../assets/img/img_header@2x.jpg";
+import gallery1 from "../../assets/img/img_gallery_01@2x.png";
+import gallery2 from "../../assets/img/img_gallery_02@2x.png";
+import gallery3 from "../../assets/img/img_gallery_03@2x.png";
 
-import { styleSheet } from './Home';
+import { styleSheet } from "./Home";
 
 class Home extends PureComponent {
   static propTypes = {
@@ -63,20 +63,20 @@ class Home extends PureComponent {
     {
       img: headerimg,
       imgL: headerimgL,
-      title: this.props.t('needSpaceForBusiness'),
-      subtitle: this.props.t('needSpaceForBusinessSub'),
+      title: this.props.t("needSpaceForBusiness"),
+      subtitle: this.props.t("needSpaceForBusinessSub"),
     },
     {
       img: headerimg,
       imgL: headerimgL,
-      title: this.props.t('havePlaceAsOffice'),
-      subtitle: this.props.t('havePlaceAsOfficeSub'),
+      title: this.props.t("havePlaceAsOffice"),
+      subtitle: this.props.t("havePlaceAsOfficeSub"),
     },
     {
       img: headerimg,
       imgL: headerimgL,
-      title: this.props.t('consultant'),
-      subtitle: this.props.t('consultantSub'),
+      title: this.props.t("consultant"),
+      subtitle: this.props.t("consultantSub"),
     },
     // {img: headerimg, imgL: headerimgL, title: this.props.t("needSpaceForBusiness"), subtitle: this.props.t("needSpaceForBusinessSub")}
   ];
@@ -86,7 +86,7 @@ class Home extends PureComponent {
     if (getRecommendedOffices) {
       getRecommendedOffices().then((response) => {
         if (response.status === 200) {
-          this.setState({ recommendedOffices: response.data });
+          this.setState({ recommendedOffices: response.data.docs });
         }
       });
     }
@@ -103,8 +103,8 @@ class Home extends PureComponent {
    */
   textStepper = withWidth()(
     ({ active, index, label, content, onClick, width }) => (
-      <div onClick={() => onClick(index)} style={{ cursor: 'pointer' }}>
-        {!isWidthDown('sm', width) ? (
+      <div onClick={() => onClick(index)} style={{ cursor: "pointer" }}>
+        {!isWidthDown("sm", width) ? (
           <Box classes={{ box: this.props.classes.textStepWrapper }}>
             <Box classes={{ box: this.props.classes.textStepIconWrapper }}>
               <Box
@@ -205,7 +205,7 @@ class Home extends PureComponent {
         ),
       }}
     >
-      <img src={imgSrc} alt="Gallery" />
+      <img src={imgSrc} alt='Gallery' />
     </Box>
   );
 
@@ -214,14 +214,14 @@ class Home extends PureComponent {
       // TODO: goto chat page
     } else if (tessiQuery) {
       this.props.history.push({
-        pathname: '/search',
+        pathname: "/search",
         state: { query: tessiQuery },
       });
     }
   };
 
   renderLandingCard = ({ classes: s, t }) => {
-    const [tessiQuery, setTessiQuery] = React.useState('');
+    const [tessiQuery, setTessiQuery] = React.useState("");
     const changeTessiQuery = React.useCallback(
       (e) => setTessiQuery(e.target.value),
       []
@@ -237,7 +237,7 @@ class Home extends PureComponent {
             classes={{ box: s.landingTitle }}
             block
           >
-            <Trans i18nKey="dashboardLandingTitle">
+            <Trans i18nKey='dashboardLandingTitle'>
               <Typography
                 // fontSizeXL
                 textPrimary
@@ -245,7 +245,7 @@ class Home extends PureComponent {
                 classes={{ box: s.landingTitle }}
                 span
               >
-                {{ name: 'TESSI' }}
+                {{ name: "TESSI" }}
               </Typography>
               <br />
             </Trans>
@@ -255,14 +255,14 @@ class Home extends PureComponent {
             // fontSizeS
             className={{ box: s.landingSubtitle }}
           >
-            {t('dashboardLandingSubtitle')}
+            {t("dashboardLandingSubtitle")}
           </Typography>
           <TextField
             fullWidth
-            variant="outlined"
+            variant='outlined'
             value={tessiQuery}
             onChange={changeTessiQuery}
-            placeholder={t('sayHiOrSearch')}
+            placeholder={t("sayHiOrSearch")}
             className={clsx(s.searchInput)}
             styles={{
               input: clsx(
@@ -272,8 +272,8 @@ class Home extends PureComponent {
             }}
             endAdornment={
               <Button
-                variant="icon"
-                background="primary"
+                variant='icon'
+                background='primary'
                 style={{ margin: 0 }}
                 className={clsx(
                   s.inputButtonIcon,
@@ -286,7 +286,7 @@ class Home extends PureComponent {
                 {!tessiQuery ? (
                   <ArrowRightAltIcon
                     style={{
-                      color: 'white',
+                      color: "white",
                       width: 18,
                       height: 18,
                     }}
@@ -298,8 +298,8 @@ class Home extends PureComponent {
                     textWhite
                     alignChildrenCenter
                   >
-                    <TessiIcon style={{ stroke: 'white' }} />
-                    <Typography paddingLeft>{t('chatWithTessi')}</Typography>
+                    <TessiIcon style={{ stroke: "white" }} />
+                    <Typography paddingLeft>{t("chatWithTessi")}</Typography>
                   </Typography>
                 ) : (
                   <Typography
@@ -309,7 +309,7 @@ class Home extends PureComponent {
                     alignChildrenCenter
                   >
                     <SearchIcon />
-                    <Typography paddingLeft>{t('advancedSearch')}</Typography>
+                    <Typography paddingLeft>{t("advancedSearch")}</Typography>
                   </Typography>
                 )}
               </Button>
@@ -350,18 +350,18 @@ class Home extends PureComponent {
                 s.landingBoardImage,
                 index !== active && s.landingBoardImageHidden
               )}
-              alt=""
+              alt=''
             />
           ))}
           <Column
             fullWidth
             absolute
-            style={{ top: 0, left: 0, height: '100%' }}
+            style={{ top: 0, left: 0, height: "100%" }}
           >
             <Row
               style={{
-                width: 'fit-content',
-                height: '100%',
+                width: "fit-content",
+                height: "100%",
               }}
               alignChildrenStart
             >
@@ -370,21 +370,21 @@ class Home extends PureComponent {
                   <LandingCard classes={s} t={t} />
                 </Row>
                 <Stretch />
-                {!isWidthDown('sm', width) && (
+                {!isWidthDown("sm", width) && (
                   <Row
                     fullWidth
                     relative
-                    style={{ height: isWidthDown('sm', width) ? 20 : 34 }}
+                    style={{ height: isWidthDown("sm", width) ? 20 : 34 }}
                   >
                     <Typography
                       textSecondary
                       fontWeightBold
-                      fontSizeL={!isWidthDown('sm', width)}
-                      fontSizeS={isWidthDown('sm', width)}
+                      fontSizeL={!isWidthDown("sm", width)}
+                      fontSizeS={isWidthDown("sm", width)}
                       fullWidth
                       style={{
-                        overflow: 'visible',
-                        whiteSpace: 'nowrap',
+                        overflow: "visible",
+                        whiteSpace: "nowrap",
                       }}
                       absolute
                     >
@@ -392,21 +392,21 @@ class Home extends PureComponent {
                     </Typography>
                   </Row>
                 )}
-                {!isWidthDown('sm', width) && (
+                {!isWidthDown("sm", width) && (
                   <Row
                     fullWidth
                     relative
-                    style={{ height: isWidthDown('sm', width) ? 26 : 28 }}
+                    style={{ height: isWidthDown("sm", width) ? 26 : 28 }}
                   >
                     <Typography
                       textSecondary
                       fontWeightBold
-                      fontSizeS={!isWidthDown('sm', width)}
-                      fontSizeXS={isWidthDown('sm', width)}
+                      fontSizeS={!isWidthDown("sm", width)}
+                      fontSizeXS={isWidthDown("sm", width)}
                       fullWidth
                       style={{
-                        overflow: 'visible',
-                        whiteSpace: 'nowrap',
+                        overflow: "visible",
+                        whiteSpace: "nowrap",
                       }}
                       absolute
                     >
@@ -414,12 +414,12 @@ class Home extends PureComponent {
                     </Typography>
                   </Row>
                 )}
-                <Row paddingTop fullWidth style={{ flexWrap: 'wrap' }}>
-                  {!isWidthDown('sm', width) && (
+                <Row paddingTop fullWidth style={{ flexWrap: "wrap" }}>
+                  {!isWidthDown("sm", width) && (
                     <React.Fragment>
-                      <Column style={{ height: '100%', left: -6 }} relative>
+                      <Column style={{ height: "100%", left: -6 }} relative>
                         <MobileStepper
-                          variant="dots"
+                          variant='dots'
                           steps={this.landingBlocks.length}
                           activeStep={active}
                           classes={{
@@ -435,15 +435,15 @@ class Home extends PureComponent {
                   <Grid
                     className={s.landingButtonsWrapper}
                     container
-                    direction="row-reverse"
+                    direction='row-reverse'
                     justify={
-                      isWidthDown('xs', width) ? 'center' : 'space-between'
+                      isWidthDown("xs", width) ? "center" : "space-between"
                     }
                   >
                     <Grid item>
                       <Button
                         className={s.landingButton}
-                        onClick={() => this.props.history.push('/search')}
+                        onClick={() => this.props.history.push("/search")}
                       >
                         <Typography
                           fontSizeS
@@ -453,7 +453,7 @@ class Home extends PureComponent {
                         >
                           <SearchIcon />
                           <Typography paddingLeft>
-                            {t('advancedSearch')}
+                            {t("advancedSearch")}
                           </Typography>
                         </Typography>
                       </Button>
@@ -466,9 +466,9 @@ class Home extends PureComponent {
                           textWhite
                           alignChildrenCenter
                         >
-                          <TessiIcon style={{ stroke: 'white' }} />
+                          <TessiIcon style={{ stroke: "white" }} />
                           <Typography paddingLeft>
-                            {t('chatWithTessi')}
+                            {t("chatWithTessi")}
                           </Typography>
                         </Typography>
                       </Button>
@@ -481,13 +481,13 @@ class Home extends PureComponent {
         </div>
 
         {/** header slider for mobile */}
-        {isWidthDown('sm', width) && (
+        {isWidthDown("sm", width) && (
           <Row fullWidth>
             <Column
               style={{ paddingBottom: 20 }}
               classes={{ box: clsx(s.fixedWith, s.blockWrapper) }}
-              alignChildrenCenter={!isWidthDown('xs', width)}
-              alignChildrenStart={isWidthDown('xs', width)}
+              alignChildrenCenter={!isWidthDown("xs", width)}
+              alignChildrenStart={isWidthDown("xs", width)}
             >
               <Typography textSecondary fontWeightBold fontSizeM>
                 {landingBlock.title}
@@ -497,7 +497,7 @@ class Home extends PureComponent {
               </Typography>
               <Row fullWidth justifyChildrenCenter>
                 <MobileStepper
-                  variant="dots"
+                  variant='dots'
                   steps={this.landingBlocks.length}
                   activeStep={active}
                   style={{ padding: 10, zIndex: 1 }}
@@ -525,34 +525,34 @@ class Home extends PureComponent {
       <Column classes={{ box: clsx(s.fixedWith, s.blockWrapper) }}>
         <Row classes={{ box: s.blockTitleWrapper }}>
           <Typography classes={{ box: s.blockTitle }} textSecondary block>
-            <Trans i18nKey="howHelpFind">
+            <Trans i18nKey='howHelpFind'>
               <Typography classes={{ box: s.blockTitle }} textPrimary span>
-                {{ name: 'RENTGLOBAL' }}
+                {{ name: "RENTGLOBAL" }}
               </Typography>
             </Trans>
           </Typography>
         </Row>
         <Row classes={{ box: s.blockContentWrapper }}>
-          <Grid container direction="row">
+          <Grid container direction='row'>
             <Grid item className={s.textHelpStepper} md={6} sm={12}>
               <TextStepComponent
-                index="1"
-                label={t('howHelpFind1_title')}
-                content={t('howHelpFind1_content')}
+                index='1'
+                label={t("howHelpFind1_title")}
+                content={t("howHelpFind1_content")}
                 active={activeHelpStep === 0}
                 onClick={() => setActive(0)}
               />
               <TextStepComponent
-                index="2"
-                label={t('howHelpFind2_title')}
-                content={t('howHelpFind2_content')}
+                index='2'
+                label={t("howHelpFind2_title")}
+                content={t("howHelpFind2_content")}
                 active={activeHelpStep === 1}
                 onClick={() => setActive(1)}
               />
               <TextStepComponent
-                index="3"
-                label={t('howHelpFind3_title')}
-                content={t('howHelpFind3_content')}
+                index='3'
+                label={t("howHelpFind3_title")}
+                content={t("howHelpFind3_content")}
                 active={activeHelpStep === 2}
                 onClick={() => setActive(2)}
               />
@@ -576,9 +576,9 @@ class Home extends PureComponent {
                 <Box classes={{ box: s.imgHelpBkWrapper }}>
                   <Box classes={{ box: s.imgHelpBk }}>
                     <MobileStepper
-                      variant="dots"
+                      variant='dots'
                       steps={3}
-                      position="static"
+                      position='static'
                       activeStep={activeHelpStep}
                       classes={{
                         root: s.dotStepper,
@@ -600,9 +600,9 @@ class Home extends PureComponent {
   renderRegisterBlock = ({ classes: s, t, width }) => {
     const registerBlocks = React.useMemo(
       () => [
-        { title: '1.', content: t('homeRegisterContent') },
-        { title: '2.', content: t('homeRegisterContent') },
-        { title: '3.', content: t('homeRegisterContent') },
+        { title: "1.", content: t("homeRegisterContent") },
+        { title: "2.", content: t("homeRegisterContent") },
+        { title: "3.", content: t("homeRegisterContent") },
       ],
       [t]
     );
@@ -611,7 +611,7 @@ class Home extends PureComponent {
       <Column classes={{ box: clsx(s.fixedWith, s.blockWrapper) }}>
         <Row classes={{ box: s.homeRegisterTitle }}>
           <Typography classes={{ box: s.blockTitle }} textWhite>
-            {t('homeRegisterTitle')}
+            {t("homeRegisterTitle")}
           </Typography>
         </Row>
         <Row
@@ -620,7 +620,7 @@ class Home extends PureComponent {
           textWhite
           textCenter
         >
-          <div style={{ width: '100%', height: '100%' }}>
+          <div style={{ width: "100%", height: "100%" }}>
             <Carousel
               infinite
               slidesPerPage={1}
@@ -629,7 +629,7 @@ class Home extends PureComponent {
               arrowLeft={
                 <Box
                   style={{
-                    left: isWidthDown('sm', width) ? '-60px' : '-124px',
+                    left: isWidthDown("sm", width) ? "-60px" : "-124px",
                   }}
                   classes={{ box: s.homeRegisterArrow }}
                 >
@@ -639,7 +639,7 @@ class Home extends PureComponent {
               arrowRight={
                 <Box
                   style={{
-                    right: isWidthDown('sm', width) ? '-60px' : '-124px',
+                    right: isWidthDown("sm", width) ? "-60px" : "-124px",
                   }}
                   classes={{ box: s.homeRegisterArrow }}
                 >
@@ -652,14 +652,14 @@ class Home extends PureComponent {
                   <Column>
                     <Typography
                       paddingBottom
-                      fontSizeM={isWidthDown('sm', width)}
-                      fontSizeL={!isWidthDown('sm', width)}
+                      fontSizeM={isWidthDown("sm", width)}
+                      fontSizeL={!isWidthDown("sm", width)}
                     >
                       {val.title}
                     </Typography>
                     <Typography
-                      fontSizeXS={isWidthDown('sm', width)}
-                      fontSizeS={!isWidthDown('sm', width)}
+                      fontSizeXS={isWidthDown("sm", width)}
+                      fontSizeS={!isWidthDown("sm", width)}
                       fontWeightBold
                       fullWidth
                     >
@@ -675,15 +675,15 @@ class Home extends PureComponent {
           <Button
             // variant="secondary"
             className={s.whiteShadowButton}
-            onClick={() => this.props.history.push('/auth/register/landlord')}
+            onClick={() => this.props.history.push("/auth/register/landlord")}
           >
-            {isWidthDown('sm', width) ? (
+            {isWidthDown("sm", width) ? (
               <Typography fontSizeXS fontWeightBold>
-                {t('registerAndStart')}
+                {t("registerAndStart")}
               </Typography>
             ) : (
               <Typography fontSizeS fontWeightBold>
-                {t('registerAndStartRENTGLOBALConsultant')}
+                {t("registerAndStartRENTGLOBALConsultant")}
               </Typography>
             )}
           </Button>
@@ -694,16 +694,16 @@ class Home extends PureComponent {
 
   /** Render following block */
   renderFollowingBlock = ({ classes: s, t, width, onSubmit }) => {
-    const [news, setNews] = React.useState('');
+    const [news, setNews] = React.useState("");
     const [newsError, setNewsError] = React.useState(null);
     const changeNewsLetter = React.useCallback(
       (e) => setNews(e.target.value),
       []
     );
     const submitReceiveNewsLetter = React.useCallback(() => {
-      console.log('callback!');
+      console.log("callback!");
       if (!emailValidation(news)) {
-        setNewsError(t('invalidEmailAddress'));
+        setNewsError(t("invalidEmailAddress"));
       } else {
         onSubmit(news);
       }
@@ -711,39 +711,39 @@ class Home extends PureComponent {
 
     return (
       <Column
-        style={{ paddingTop: isWidthDown('xs', width) ? 30 : 16 }}
+        style={{ paddingTop: isWidthDown("xs", width) ? 30 : 16 }}
         classes={{ box: clsx(s.fixedWith) }}
         paddingBottom
       >
-        <Grid container justify="space-between">
+        <Grid container justify='space-between'>
           <Grid item xs={12} sm={6}>
             <Column paddingTop paddingBottom>
               <Typography fontSizeS textSecondary>
-                {t('receiveNewsletter')}
+                {t("receiveNewsletter")}
               </Typography>
               <Row paddingTopHalf fullWidth justifyChildrenCenter>
                 <TextField
-                  variant="outlined"
-                  placeholder={t('yourEmailAddress')}
+                  variant='outlined'
+                  placeholder={t("yourEmailAddress")}
                   className={s.receiveNewsletter}
-                  type="email"
+                  type='email'
                   value={news}
                   onChange={changeNewsLetter}
                   error={!!newsError}
                   helperText={newsError}
                   endAdornment={
                     <Button
-                      variant="icon"
+                      variant='icon'
                       style={{ margin: 0 }}
                       className={clsx(s.inputButtonIcon)}
-                      background={news ? 'primary' : 'borderLight'}
+                      background={news ? "primary" : "borderLight"}
                       shadow={!!news}
                       onClick={submitReceiveNewsLetter}
                       disabled={!news}
                     >
                       <CheckIcon
                         style={{
-                          color: 'white',
+                          color: "white",
                           width: 18,
                           height: 18,
                         }}
@@ -757,27 +757,27 @@ class Home extends PureComponent {
           <Grid item xs={12} sm={6}>
             <Column paddingTop paddingBottom>
               <Typography fontSizeS textSecondary>
-                {t('followUpSocials')}
+                {t("followUpSocials")}
               </Typography>
               <Row paddingTopHalf classes={{ box: s.socialIconsWrapper }}>
                 <Box paddingLeft paddingRight>
-                  <Link to="#" variant="normalXLight">
-                    <Twitter fontSize="large" />
+                  <Link to='#' variant='normalXLight'>
+                    <Twitter fontSize='large' />
                   </Link>
                 </Box>
                 <Box paddingLeft paddingRight>
-                  <Link to="#" variant="normalXLight">
-                    <Facebook fontSize="large" />
+                  <Link to='#' variant='normalXLight'>
+                    <Facebook fontSize='large' />
                   </Link>
                 </Box>
                 <Box paddingLeft paddingRight>
-                  <Link to="#" variant="normalXLight">
-                    <Instagram fontSize="large" />
+                  <Link to='#' variant='normalXLight'>
+                    <Instagram fontSize='large' />
                   </Link>
                 </Box>
                 <Box paddingLeft paddingRight>
-                  <Link to="#" variant="normalXLight">
-                    <LinkedIn fontSize="large" />
+                  <Link to='#' variant='normalXLight'>
+                    <LinkedIn fontSize='large' />
                   </Link>
                 </Box>
               </Row>
@@ -798,12 +798,15 @@ class Home extends PureComponent {
 
   /** Click submit button of news letter input box */
   handleReceiveNewsLetter = () => {
-    console.log('Submit receive news letter!');
+    console.log("Submit receive news letter!");
   };
 
   /** Navigate to office detail page */
   handleOfficeDetail = (office) => () => {
-    this.props.navigate('offices', `${office._id}/${office.location.country}-${office.officeType}-${office.numberOfEmployees}`);
+    this.props.navigate(
+      "offices",
+      `${office._id}/${office.location.country}-${office.officeType}-${office.numberOfEmployees}`
+    );
   };
 
   render() {
@@ -815,7 +818,7 @@ class Home extends PureComponent {
     const RegisterBlock = this.renderRegisterBlock;
     const FollowingBlock = this.renderFollowingBlock;
 
-    console.log('rendering!');
+    console.log("rendering!");
 
     return (
       <Column classes={{ box: s.root }}>
@@ -837,28 +840,28 @@ class Home extends PureComponent {
             <Row
               classes={{ box: s.blockTitleWrapper }}
               style={
-                isWidthDown('sm', width)
+                isWidthDown("sm", width)
                   ? { paddingBottom: 24, paddingTop: 0 }
                   : { paddingTop: 0 }
               }
             >
               <Typography classes={{ box: s.blockTitle }} textSecondary>
-                {t('latestRecommendOffice')}
+                {t("latestRecommendOffice")}
               </Typography>
             </Row>
             <Row
               classes={{ box: s.blockContentWrapper }}
-              style={{ overflowX: 'hidden' }}
+              style={{ overflowX: "hidden" }}
               fullWidth
             >
-              <div style={{ width: '100%', height: '100%' }}>
+              <div style={{ width: "100%", height: "100%" }}>
                 <Carousel itemWidth={255} offset={0} keepDirectionWhenDragging>
                   {recommendedOffices.map((office, index) => (
                     <div
                       style={{
-                        position: 'relative',
-                        cursor: 'pointer',
-                        height: '100%',
+                        position: "relative",
+                        cursor: "pointer",
+                        height: "100%",
                       }}
                       key={index}
                     >
@@ -873,9 +876,9 @@ class Home extends PureComponent {
               </div>
             </Row>
             <Row classes={{ box: s.allLatestButton }}>
-              <Button variant="secondary" shadow>
+              <Button variant='secondary' shadow>
                 <Typography fontSizeS fontWeightBold textSecondary>
-                  {t('allLatest', { count: '50+' })}
+                  {t("allLatest", { count: "50+" })}
                 </Typography>
               </Button>
             </Row>
@@ -890,9 +893,9 @@ class Home extends PureComponent {
         {/* RENTGLOBAL pros block */}
         <Row fullWidth justifyChildrenCenter>
           <Column classes={{ box: clsx(s.fixedWith, s.blockWrapper) }}>
-            <Grid container direction="row" className={s.prosWrapper}>
+            <Grid container direction='row' className={s.prosWrapper}>
               <Grid item xs={12} md={4}>
-                {isWidthDown('sm', width) ? (
+                {isWidthDown("sm", width) ? (
                   <Row>
                     <Column>
                       <EmojiIcon className={s.prosIcon} />
@@ -905,12 +908,12 @@ class Home extends PureComponent {
                           textSecondary
                           fontWeightBold
                         >
-                          {t('flexibility')}
+                          {t("flexibility")}
                         </Typography>
                       </Row>
                       <Row>
                         <Typography fontSizeXS uppercase textSecondary>
-                          {t('minimumCommitment')}
+                          {t("minimumCommitment")}
                         </Typography>
                       </Row>
                     </Column>
@@ -927,19 +930,19 @@ class Home extends PureComponent {
                         textSecondary
                         fontWeightBold
                       >
-                        {t('flexibility')}
+                        {t("flexibility")}
                       </Typography>
                     </Row>
                     <Row>
                       <Typography fontSizeS uppercase textSecondary>
-                        {t('minimumCommitment')}
+                        {t("minimumCommitment")}
                       </Typography>
                     </Row>
                   </Column>
                 )}
               </Grid>
               <Grid item xs={12} md={4}>
-                {isWidthDown('sm', width) ? (
+                {isWidthDown("sm", width) ? (
                   <Row paddingTopDouble>
                     <Column>
                       <CalendarIcon className={s.prosIcon} />
@@ -952,12 +955,12 @@ class Home extends PureComponent {
                           textSecondary
                           fontWeightBold
                         >
-                          {t('confiance')}
+                          {t("confiance")}
                         </Typography>
                       </Row>
                       <Row>
                         <Typography fontSizeXS uppercase textSecondary>
-                          {t('personalMonitoring')}
+                          {t("personalMonitoring")}
                         </Typography>
                       </Row>
                     </Column>
@@ -974,19 +977,19 @@ class Home extends PureComponent {
                         textSecondary
                         fontWeightBold
                       >
-                        {t('confiance')}
+                        {t("confiance")}
                       </Typography>
                     </Row>
                     <Row>
                       <Typography fontSizeS uppercase textSecondary>
-                        {t('personalMonitoring')}
+                        {t("personalMonitoring")}
                       </Typography>
                     </Row>
                   </Column>
                 )}
               </Grid>
               <Grid item xs={12} md={4}>
-                {isWidthDown('sm', width) ? (
+                {isWidthDown("sm", width) ? (
                   <Row paddingTopDouble>
                     <Column>
                       <HeartIcon className={s.prosIcon} />
@@ -999,12 +1002,12 @@ class Home extends PureComponent {
                           textSecondary
                           fontWeightBold
                         >
-                          {t('simplicity')}
+                          {t("simplicity")}
                         </Typography>
                       </Row>
                       <Row>
                         <Typography fontSizeXS uppercase textSecondary>
-                          {t('turnkeySolution')}
+                          {t("turnkeySolution")}
                         </Typography>
                       </Row>
                     </Column>
@@ -1021,12 +1024,12 @@ class Home extends PureComponent {
                         textSecondary
                         fontWeightBold
                       >
-                        {t('simplicity')}
+                        {t("simplicity")}
                       </Typography>
                     </Row>
                     <Row>
                       <Typography fontSizeS uppercase textSecondary>
-                        {t('turnkeySolution')}
+                        {t("turnkeySolution")}
                       </Typography>
                     </Row>
                   </Column>
@@ -1055,26 +1058,26 @@ class Home extends PureComponent {
           <Column classes={{ box: clsx(s.fixedWith, s.blockWrapper) }}>
             <Grid
               container
-              justify="space-between"
+              justify='space-between'
               className={s.contactInfoWrapper}
             >
               <Grid item xs={6} sm={3}>
                 <Column paddingTopDouble paddingBottomDouble alignChildrenStart>
                   <Typography fontSizeM fontWeightBold textSecondary>
-                    {t('rentglobal')}
+                    {t("rentglobal")}
                   </Typography>
                   <Column paddingTop alignChildrenStart>
-                    <Link to="/">
-                      <Typography fontSizeS>{t('aboutUs')}</Typography>
+                    <Link to='/'>
+                      <Typography fontSizeS>{t("aboutUs")}</Typography>
                     </Link>
-                    <Link to="/">
-                      <Typography fontSizeS>{t('news')}</Typography>
+                    <Link to='/'>
+                      <Typography fontSizeS>{t("news")}</Typography>
                     </Link>
-                    <Link to="/">
-                      <Typography fontSizeS>{t('careers')}</Typography>
+                    <Link to='/'>
+                      <Typography fontSizeS>{t("careers")}</Typography>
                     </Link>
-                    <Link to="/">
-                      <Typography fontSizeS>{t('contactUs')}</Typography>
+                    <Link to='/'>
+                      <Typography fontSizeS>{t("contactUs")}</Typography>
                     </Link>
                   </Column>
                 </Column>
@@ -1082,21 +1085,21 @@ class Home extends PureComponent {
               <Grid item xs={6} sm={3}>
                 <Column paddingTopDouble paddingBottomDouble alignChildrenStart>
                   <Typography fontSizeM fontWeightBold textSecondary>
-                    {t('discover')}
+                    {t("discover")}
                   </Typography>
                   <Column paddingTop alignChildrenStart>
-                    <Link to="/">
-                      <Typography fontSizeS>{t('howItWorks')}</Typography>
+                    <Link to='/'>
+                      <Typography fontSizeS>{t("howItWorks")}</Typography>
                     </Link>
-                    <Link to="/">
-                      <Typography fontSizeS>{t('legalNotice')}</Typography>
+                    <Link to='/'>
+                      <Typography fontSizeS>{t("legalNotice")}</Typography>
                     </Link>
-                    <Link to="/">
-                      <Typography fontSizeS>{t('privacyPolicy')}</Typography>
+                    <Link to='/'>
+                      <Typography fontSizeS>{t("privacyPolicy")}</Typography>
                     </Link>
-                    <Link to="/">
+                    <Link to='/'>
                       <Typography fontSizeS>
-                        {t('termsAndConditions')}
+                        {t("termsAndConditions")}
                       </Typography>
                     </Link>
                   </Column>
@@ -1105,20 +1108,20 @@ class Home extends PureComponent {
               <Grid item xs={6} sm={3}>
                 <Column paddingTopDouble paddingBottomDouble alignChildrenStart>
                   <Typography fontSizeM fontWeightBold textSecondary>
-                    {t('support')}
+                    {t("support")}
                   </Typography>
                   <Column paddingTop alignChildrenStart>
-                    <Link to="/">
-                      <Typography fontSizeS>{t('help')}</Typography>
+                    <Link to='/'>
+                      <Typography fontSizeS>{t("help")}</Typography>
                     </Link>
-                    <Link to="/auth/login">
-                      <Typography fontSizeS>{t('login')}</Typography>
+                    <Link to='/auth/login'>
+                      <Typography fontSizeS>{t("login")}</Typography>
                     </Link>
-                    <Link to="/auth/register">
-                      <Typography fontSizeS>{t('register')}</Typography>
+                    <Link to='/auth/register'>
+                      <Typography fontSizeS>{t("register")}</Typography>
                     </Link>
-                    <Link to="/">
-                      <Typography fontSizeS>{t('support')}</Typography>
+                    <Link to='/'>
+                      <Typography fontSizeS>{t("support")}</Typography>
                     </Link>
                   </Column>
                 </Column>
@@ -1126,7 +1129,7 @@ class Home extends PureComponent {
               <Grid item xs={6} sm={3}>
                 <Column paddingTopDouble paddingBottomDouble alignChildrenStart>
                   <Typography fontSizeM fontWeightBold textSecondary>
-                    {t('contact')}
+                    {t("contact")}
                   </Typography>
                   <Column paddingTop alignChildrenStart>
                     <Typography fontSizeS textSecondary>
@@ -1153,5 +1156,5 @@ class Home extends PureComponent {
 }
 
 export default withWidth()(
-  withStyles(styleSheet)(withTranslation(['home', 'common'])(Home))
+  withStyles(styleSheet)(withTranslation(["home", "common"])(Home))
 );
