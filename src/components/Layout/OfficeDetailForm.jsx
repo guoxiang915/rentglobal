@@ -492,16 +492,16 @@ class OfficeDetailForm extends PureComponent {
    * @ignore
    */
   handleSendMessage = () => {
-    if (this.props.passLoginDialog()) {
-    }
+    // if (this.props.passLoginDialog()) {
+    // }
   };
 
   /** Visit office
    * @ignore
    */
   handleVisitOffice = () => {
-    if (this.props.passLoginDialog()) {
-    }
+    // if (this.props.passLoginDialog()) {
+    // }
   };
 
   /** Show location dialog */

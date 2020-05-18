@@ -26,7 +26,7 @@ const renderMiddleware = () => (req, res) => {
   const htmlReplacements = {
     HTML_CONTENT: htmlContent,
     PRELOADED_STATE: serialize(store.getState(), { isJSON: true }),
-    HELMET_HTML_ATTRIBUTES: helmet.htmlAttributes.toString(),HELMET_HTML_ATTRIBUTES: helmet.htmlAttributes.toString(),
+    HELMET_HTML_ATTRIBUTES: helmet.htmlAttributes.toString(),
     HELMET_META_ATTRIBUTES: `
       ${helmet.title.toString()}
       ${helmet.meta.toString()}

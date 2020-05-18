@@ -261,8 +261,8 @@ class OfficeDetail extends PureComponent {
 
   /** Send message to consultant */
   handleSendMessage = () => {
-    if (this.props.passLoginDialog()) {
-    }
+    // if (this.props.passLoginDialog()) {
+    // }
   };
 
   /** Contact info of consultant */
