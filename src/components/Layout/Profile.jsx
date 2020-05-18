@@ -50,7 +50,10 @@ import { maxFileSize } from '../../utils/constants';
 import MobileDetect from 'mobile-detect';
 import { DeleteAccountDialog } from './Dialogs';
 
-const md = new MobileDetect(window.navigator.userAgent);
+let md;
+if (typeof window !== 'undefined') {
+  md = new MobileDetect(window.navigator.userAgent);
+}
 
 /** Show save and cancel buttons for form */
 const SaveButtons = ({ isUpdating, onSave, onCancel, disabled, t }) => (
@@ -293,7 +296,7 @@ class Profile extends PureComponent {
     ],
   };
 
-  UNSAFE_componentWillMount() {
+  componentDidMount() {
     this.handleResetProfileInfo(this.props.auth);
   }
 
@@ -455,7 +458,7 @@ class Profile extends PureComponent {
 
     if (
       username !== user.generalInfo?.username ||
-      phoneNumber !== user.generalInfo?.phoneNumber.number ||
+      phoneNumber !== user.generalInfo?.phoneNumber?.number ||
       address !== user.generalInfo?.address ||
       postalCode !== user.generalInfo?.address?.postalCode
     ) {
@@ -834,6 +837,7 @@ class Profile extends PureComponent {
                                 rejectedFiles,
                               }) => {
                                 const isFileTooLarge =
+                                  rejectedFiles &&
                                   rejectedFiles.length > 0 &&
                                   rejectedFiles[0].size > maxFileSize;
                                 let uploadMsg = null;
@@ -845,7 +849,7 @@ class Profile extends PureComponent {
                                   );
                                 } else if (
                                   isDragReject ||
-                                  rejectedFiles.length > 0
+                                  (rejectedFiles && rejectedFiles.length > 0)
                                 ) {
                                   uploadMsg = (
                                     <Alert severity="error">
@@ -1124,8 +1128,6 @@ class Profile extends PureComponent {
                             readOnly: editTab !== 'generalInfo',
                             fullWidth: true,
                             placeholder: t('currentAddress'),
-                            // error: !!validation
-                            // helperText: validation && validation.msg
                           }}
                         />
                       </div>

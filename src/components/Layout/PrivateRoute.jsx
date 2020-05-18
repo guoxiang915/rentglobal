@@ -124,8 +124,8 @@ class PrivateRoute extends React.Component {
     sidebarOpened: false,
     dialog: null,
   };
-
-  UNSAFE_componentWillMount() {
+  
+  componentDidMount() {
     this.authenticate();
   }
 
