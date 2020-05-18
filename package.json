@@ -84,6 +84,12 @@
         "statements": 90
       }
     },
-    "coverageReporters": ["text"]
+    "coverageReporters": [
+      "text"
+    ]
+  },
+  "devDependencies": {
+    "jest": "^26.0.1",
+    "jest-watch-typeahead": "^0.6.0"
   }
 }
