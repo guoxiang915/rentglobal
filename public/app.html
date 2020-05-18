@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en" __HELMET_HTML_ATTRIBUTES__>
+  <head>
+    <meta charset="utf-8" />
+    <link rel="shortcut icon" href="%ASSETS_PATH%/favicon.ico" />
+    <meta name="viewport" content="user-scalable=0, initial-scale=1, minimum-scale=1, width=device-width, height=device-height">
+    <meta name="theme-color" content="#000000" />
+    <meta
+      name="description"
+      content="Web site created using create-react-ssr-app"
+    />
+    <link rel="apple-touch-icon" href="logo192.png" />
+    <!--
+      manifest.json provides metadata used when your web app is installed on a
+      user's mobile device or desktop. See https://developers.google.com/web/fundamentals/web-app-manifest/
+    -->
+    <link rel="manifest" href="%ASSETS_PATH%/manifest.json" />
+    <!-- Tell the browser it's a PWA -->
+    <meta name="mobile-web-app-capable" content="yes">
+    <!-- Tell iOS it's a PWA -->
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="default">
+    <meta name="apple-mobile-web-app-title" content="RENTGLOBAL Real Estate">
+    <!-- Make sure theme-color is defined -->
+    <meta name="theme-color" content="#536878">
+    <meta property="og:title" content="__OG_TITLE__" />
+    <meta property="og:image" content="__OG_IMAGE__" />
+    <link rel="icon" href="%ASSETS_PATH%/logo.svg" />
+    <link rel="apple-touch-icon" href="%ASSETS_PATH%/logo.png" />
+    <!--
+      Notice the use of %ASSETS_PATH% in the tags above.
+      It will be replaced with the value of the ASSETS_PATH env var during the build.
+      The default value is '/' and can be configured by setting the ASSETS_PATH env var.
+    -->
+    <title>RENTGLOBAL Real Estate</title>
+    __HELMET_META_ATTRIBUTES__
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500" />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+    <!-- <script src="https://www.google.com/recaptcha/api.js" async defer></script> -->
+    <script type="text/javascript"
+      src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCFjI4tzrBQzlNgWorViS48057MOvcn_VY&libraries=drawing,places,geometry"></script>
+    <style type="text/css">
+      body {
+        margin: 0;
+        padding: 0;
+        font-family: sans-serif;
+      }
+
+      /* .App {
+        text-align: center;
+      }
+
+      .App-header {
+        background-color: #222;
+        height: '5%';
+        padding: 20px;
+        color: white;
+      }
+
+      .App-intro {
+        font-size: large;
+      } */
+      .load-wrapper {
+        width: 100vw;
+        height: 100vh;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        background: #a3b100;
+      }
+
+      .loader-image {
+        width: 300px;
+        height: 300px;
+      }
+
+      .app-version {
+        position: absolute;
+        bottom: 20px;
+        color: white;
+      }
+    </style>
+  </head>
+  <body __HELMET_BODY_ATTRIBUTES__>
+    <noscript>You need to enable JavaScript to run this app.</noscript>
+    <script>
+      window.PRELOADED_STATE = __PRELOADED_STATE__
+    </script>
+    <div id="root">__HTML_CONTENT__</div>
+    <!--
+      This HTML file is a template.
+      If you open it directly in the browser, you will see an empty page.
+
+      You can add webfonts, meta tags, or analytics to this file.
+      The build step will place the bundled scripts into the <body> tag.
+
+      To begin the development, run `npm start` or `yarn start`.
+      To create a production bundle, use `npm run build` or `yarn build`.
+    -->
+    <script>
+      if ('serviceWorker' in navigator) {
+        window.addEventListener('load', function () {
+          navigator.serviceWorker.register('service-worker.js').then(function (registration) {
+
+            console.log('Service Worker successfully registered');
+
+          }, function (err) {
+            console.log('Error when registering the Service Worker  ', err);
+
+          }).catch(function (err) {
+
+            console.log(err)
+
+          });
+
+        });
+      } else {
+
+        console.log('No Support For Service Workers');
+
+      }
+
+    </script>
+  </body>
+</html>

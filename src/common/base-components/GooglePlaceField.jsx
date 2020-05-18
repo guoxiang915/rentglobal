@@ -117,6 +117,7 @@ class GooglePlaceField extends PureComponent {
             <TextField
               {...inputProps}
               {...InputProps}
+              value={address}
               innerRef={this.mapRef}
               onChange={(e) => {
                 if (inputProps.onChange) {

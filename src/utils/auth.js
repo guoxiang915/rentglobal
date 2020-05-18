@@ -1,37 +1,49 @@
 class Auth {
   setToken = async (token) => {
-    localStorage.setItem('userToken', token);
+    if (typeof localStorage !== 'undefined') localStorage.setItem('userToken', token);
   };
 
   getToken = () => {
-    const token = localStorage.getItem('userToken');
-    return token;
+    if (typeof localStorage !== 'undefined') {
+      const token = localStorage.getItem('userToken');
+      return token;
+    } else {
+      return null;
+    }
   };
 
   removeToken = async () => {
-    localStorage.removeItem('userToken');
+    if (typeof localStorage !== 'undefined') localStorage.removeItem('userToken');
   };
 
   setRefreshToken = async (token) => {
-    localStorage.setItem('refreshToken', token);
+    if (typeof localStorage !== 'undefined') localStorage.setItem('refreshToken', token);
   };
 
   getRefreshToken = () => {
-    const token = localStorage.getItem('refreshToken');
-    return token;
+    if (typeof localStorage !== 'undefined') {
+      const token = localStorage.getItem('refreshToken');
+      return token;
+    } else {
+      return null;
+    }
   };
 
   removeRefreshToken = async () => {
-    localStorage.removeItem('refreshToken');
+    if (typeof localStorage !== 'undefined') localStorage.removeItem('refreshToken');
   };
 
   setRememberUser = async (rememberUser) => {
-    localStorage.setItem('rememberUser', rememberUser);
+    if (typeof localStorage !== 'undefined') localStorage.setItem('rememberUser', rememberUser);
   };
 
   getRememberUser = () => {
-    const rememberUser = localStorage.getItem('rememberUser');
-    return rememberUser;
+    if (typeof localStorage !== 'undefined') {
+      const rememberUser = localStorage.getItem('rememberUser');
+      return rememberUser;
+    } else {
+      return null;
+    }
   };
 }
 
