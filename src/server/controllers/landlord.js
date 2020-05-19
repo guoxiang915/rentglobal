@@ -1,12 +1,23 @@
+import fetch from 'node-fetch';
+
 class LandlordController {
-  getOfficePage(req, res, next) {
-    res.render('metaview', {
-      url: req.protocol + '://' + req.get('host') + req.originalUrl,
-      title: 'RentGlobal Real Estate Application',
-      description: 'This is a rentglobal real estate test page',
-      image: 'https://rentglobal.s3.amazonaws.com/2020/4/1181a21c684063daba/blob',
-      content: 'RentGlobalRealContent'
-    });
+  async getOfficePage(req, res, next) {
+    try {
+      const officeId = req.params.officeId;
+      const office = await fetch(`${process.env.REACT_APP_SERVER_URL}/offices/${officeId}/`);
+      const officeDetails = await office.json();
+      res.render('metaview', {
+        url: req.protocol + '://' + req.get('host') + req.originalUrl,
+        title: officeDetails.title,
+        description: officeDetails.description,
+        image: officeDetails.coverPhotos?.length > 0 && officeDetails.coverPhotos[0].desktop.bucketPath
+      });
+    } catch (err) {
+      console.log(err);
+      res.status(400).send({
+        msg: 'Failed'
+      });
+    }
   }
 }
 
