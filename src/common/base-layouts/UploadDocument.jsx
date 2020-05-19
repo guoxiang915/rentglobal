@@ -198,13 +198,13 @@ const UploadDocument = ({
             {({
               getRootProps, getInputProps, isDragReject, rejectedFiles,
             }) => {
-              const isFileTooLarge = rejectedFiles.length > 0 && rejectedFiles[0].size > maxFileSize;
+              const isFileTooLarge = rejectedFiles && rejectedFiles.length > 0 && rejectedFiles[0].size > maxFileSize;
               let uploadMsg = <Typography>{t('upload')}</Typography>;
               if (isFileTooLarge) {
                 uploadMsg = (
                   <Typography textErrorRed>{t('uploadTooLarge')}</Typography>
                 );
-              } else if (isDragReject || rejectedFiles.length > 0) {
+              } else if (isDragReject || (rejectedFiles && rejectedFiles.length > 0)) {
                 uploadMsg = (
                   <Typography textErrorRed>{t('uploadWrongType')}</Typography>
                 );

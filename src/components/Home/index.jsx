@@ -81,7 +81,7 @@ class Home extends PureComponent {
     // {img: headerimg, imgL: headerimgL, title: this.props.t("needSpaceForBusiness"), subtitle: this.props.t("needSpaceForBusinessSub")}
   ];
 
-  UNSAFE_componentWillMount() {
+  componentDidMount() {
     /** Get recommended offices */
     if (getRecommendedOffices) {
       getRecommendedOffices().then((response) => {

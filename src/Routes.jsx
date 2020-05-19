@@ -3,18 +3,18 @@ import { Switch } from "react-router-dom";
 import Home from "./containers/Home";
 import Search from "./components/Search";
 import AuthWrapper from "./containers/Auth";
-import PrivateRoute from "./containers/Layout/PrivateRoute";
+import Route from "./containers/Layout/PrivateRoute";
 import Landlord from "./containers/Landlord";
 import Company from "./containers/Company";
 import PageNotFound from "./components/Layout/PageNotFound";
 import OfficeDetail from "./components/Home/OfficeDetail";
 
-export default (
+const Routes = () => (
   <div>
     <Switch>
-      <PrivateRoute exact path='/' component={Home} noSidebar />
-      <PrivateRoute exact path='/search' component={Search} noSidebar />
-      <PrivateRoute
+      <Route exact path='/' component={Home} noSidebar />
+      <Route exact path='/search' component={Search} noSidebar />
+      <Route
         exact
         path='/offices/:id/:officeName'
         component={({ match, ...props }) => (
@@ -22,20 +22,22 @@ export default (
         )}
         noSidebar
       />
-      <PrivateRoute path='/auth' component={AuthWrapper} noSidebar />
-      <PrivateRoute
+      <Route path='/auth' component={AuthWrapper} noSidebar />
+      <Route
         path='/landlord'
         component={Landlord}
         authRequired
         userRole='landlord'
       />
-      <PrivateRoute
+      <Route
         path='/company'
         component={Company}
         authRequired
         userRole='company'
       />
-      <PrivateRoute component={PageNotFound} />
+      <Route component={PageNotFound} />
     </Switch>
   </div>
 );
+
+export default Routes;

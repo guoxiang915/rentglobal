@@ -1,8 +1,23 @@
-import React from 'react';
-import ReactDOM from 'react-dom';
-import App from './App';
-import registerServiceWorker from './registerServiceWorker';
-import '@brainhubeu/react-carousel/lib/style.css';
+import express from 'express';
 
-ReactDOM.render(<App />, document.getElementById('root'));
-registerServiceWorker();
+let app = require('./server').default;
+
+if (module.hot) {
+  module.hot.accept('./server', () => {
+    console.log('Server reloading...');
+
+    try {
+      app = require('./server').default;
+    } catch (error) {
+      // Do nothing
+    }
+  });
+}
+
+express()
+  .use((req, res) => app.handle(req, res))
+  .listen(process.env.PORT || 3000, () => {
+    console.log(
+      `React SSR App is running: http://localhost:${process.env.PORT || 3000}`
+    );
+  });
