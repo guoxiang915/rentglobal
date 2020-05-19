@@ -1,10 +1,8 @@
 import React, { PureComponent } from "react";
 import { withStyles } from "@material-ui/core/styles";
 import { withTranslation } from "react-i18next";
-import clsx from "clsx";
 import PropTypes from "prop-types";
 import withWidth, { isWidthDown } from "@material-ui/core/withWidth";
-import Carousel from "@brainhubeu/react-carousel";
 import { KeyboardBackspace } from "@material-ui/icons";
 import { Helmet } from "react-helmet";
 import {
@@ -17,10 +15,17 @@ import {
   EyeDisIcon,
   DeleteIcon,
   EditIcon,
+  ShareIcon,
   Divider,
 } from "../../../common/base-components";
-import { OfficeItem } from "../../../common/base-layouts";
-import OfficeDetailForm from "../../Layout/OfficeDetailForm";
+import {
+  OfficeTitlebar,
+  OfficeGeneralInfo,
+  OfficeGallery,
+  OfficeItem,
+} from "../../../common/base-layouts";
+import { ShareOfficeDialog } from "../../Layout/Dialogs";
+import Carousel from "@brainhubeu/react-carousel";
 
 const styleSheet = (theme) => ({
   root: {
@@ -42,13 +47,6 @@ const styleSheet = (theme) => ({
     [theme.breakpoints.down("xs")]: {
       paddingTop: 8,
       paddingBottom: 24,
-    },
-  },
-
-  formButtons: {
-    paddingTop: 160,
-    [theme.breakpoints.down("xs")]: {
-      paddingTop: 64,
     },
   },
 
@@ -76,9 +74,39 @@ class OfficeDetail extends PureComponent {
 
   state = {
     office: {},
-    similarOffices: [],
     dialog: null,
+    similarOffices: [],
   };
+
+  titlebarActions = [
+    {
+      title: this.props.t("share"),
+      icon: () => <ShareIcon style={{ width: 13, height: 15 }} />,
+      styles: {
+        variant: null,
+        link: "secondary",
+        background: "secondaryLight",
+      },
+      revertStyles: { variant: "primary", link: null, background: null },
+      onClick: this.handleShare,
+    },
+    {
+      title: this.props.t("checkVisitAvailabilites"),
+      // icon: () => <CalendarIcon style={{ width: 13, height: 15 }} />,
+      icon: () => (
+        <Typography fontSizeS textSecondary>
+          {this.props.t("visit")}
+        </Typography>
+      ),
+      styles: {
+        variant: "primary",
+        shadow: true,
+      },
+      revertStyles: { variant: "secondary" },
+      onClick: this.handleCheckVisit,
+      hideIcon: true,
+    },
+  ];
 
   /** Get office from id */
   componentDidMount() {
@@ -90,7 +118,6 @@ class OfficeDetail extends PureComponent {
     });
 
     /** Get similar offices */
-    // this.props.
     this.props.getSimilarOffices(officeId).then((response) => {
       if (response.status === 200) {
         this.setState({ similarOffices: response.data });
@@ -109,7 +136,6 @@ class OfficeDetail extends PureComponent {
       });
 
       /** Get similar offices */
-      // this.props.
       this.props.getSimilarOffices(officeId).then((response) => {
         if (response.status === 200) {
           this.setState({ similarOffices: response.data });
@@ -148,6 +174,26 @@ class OfficeDetail extends PureComponent {
   /** Event for delete office */
   handleDeleteOffice = () => {
     this.props.onDeleteOffice(this.state.office._id);
+  };
+
+  /** Share office */
+  handleShare = () => {
+    this.setState({
+      dialog: (
+        <ShareOfficeDialog
+          office={this.props.office}
+          onClose={this.handleCloseDialog}
+        />
+      ),
+    });
+  };
+
+  /** Check visit availabilites */
+  handleCheckVisit = () => {};
+
+  /** Close dialog */
+  handleCloseDialog = () => {
+    this.setState({ dialog: null });
   };
 
   /**
@@ -206,6 +252,11 @@ class OfficeDetail extends PureComponent {
               {t("unpublish")}
             </Typography>
           </Button>
+          {office.published && !isWidthDown("xs", width) && (
+            <Typography paddingLeft fontSizeS textMediumGrey>
+              {t("availableForLease")}
+            </Typography>
+          )}
           <Stretch />
 
           {/** Show delete button */}
@@ -242,8 +293,27 @@ class OfficeDetail extends PureComponent {
           </Button>
         </Row>
 
-        <Row fullWidth classes={{ box: clsx(s.addOfficeTabWrapper) }}>
-          {office && <OfficeDetailForm office={office} />}
+        <Row fullWidth paddingBottom>
+          {office && (
+            <OfficeTitlebar
+              office={office}
+              actions={this.titlebarActions}
+              maxWidth={
+                Math.min(
+                  1024,
+                  window.innerWidth - (isWidthDown("xs", width) ? 0 : 44)
+                ) - (isWidthDown("sm", width) ? 0 : 167)
+              }
+            />
+          )}
+        </Row>
+
+        <Row fullWidth paddingBottom>
+          {office && <OfficeGeneralInfo office={office} />}
+        </Row>
+
+        <Row fullWidth paddingBottomDouble>
+          {office && <OfficeGallery coverPhotos={office.coverPhotos} />}
         </Row>
 
         {/** Show similar offices */}
@@ -274,10 +344,7 @@ class OfficeDetail extends PureComponent {
           </Column>
         </Row>
 
-        <Row
-          fullWidth
-          classes={{ box: clsx(s.addOfficeTabWrapper, s.formButtons) }}
-        >
+        <Row fullWidth classes={{ box: s.addOfficeTabWrapper }}>
           {/** Show unpublish button */}
           <Button
             link='errorRedNormal'

@@ -1157,7 +1157,7 @@ class Search extends PureComponent {
     },
     {
       type: "typeOfContracts",
-      title: "howLong",
+      title: "typeOfContract",
     },
   ];
 
