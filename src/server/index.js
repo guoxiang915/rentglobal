@@ -13,7 +13,7 @@ app.set('view engine', 'jade');
 
 app.use((req, res, next) => {
   const userAgent = req.headers['user-agent'];
-  if (/^(facebookexternalhit)|(Twitterbot)|(Pinterest)/gi.test(userAgent)) {
+  if (/^(facebot)|(ia_archiver)|(facebookexternalhit)|(Twitterbot)|(Pinterest)|(InstagramBot)|(Googlebot)|(Googlebot-News)|(Googlebot-Image)|(Googlebot-Video)|(AdsBot-Googlebot)|(Bingbot)|(Slurp)|(Baiduspider)|(LinkedInBot)/gi.test(userAgent)) {
     nonSpaRouter(req, res, next);
   } else {
     next();
