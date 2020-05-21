@@ -79,10 +79,10 @@ const styleSheet = theme => ({
   tab: {
     textTransform: "none",
     minWidth: 0,
-    padding: "25px 0px",
-    marginRight: 70,
+    padding: "16px 0px",
+    marginRight: 28,
     [theme.breakpoints.down("xs")]: {
-      marginRight: 30
+      marginRight: 16
     }
   }
 });
@@ -105,35 +105,7 @@ class OfficeDetail extends PureComponent {
     currentTab: "generalInfo"
   };
 
-  titlebarActions = [
-    {
-      title: this.props.t("share"),
-      icon: () => <ShareIcon style={{ width: 13, height: 15 }} />,
-      styles: {
-        variant: null,
-        link: "secondary",
-        background: "secondaryLight"
-      },
-      revertStyles: { variant: "primary", link: null, background: null },
-      onClick: this.handleShare
-    },
-    {
-      title: this.props.t("checkVisitAvailabilites"),
-      // icon: () => <CalendarIcon style={{ width: 13, height: 15 }} />,
-      icon: () => (
-        <Typography fontSizeS textSecondary>
-          {this.props.t("visit")}
-        </Typography>
-      ),
-      styles: {
-        variant: "primary",
-        shadow: true
-      },
-      revertStyles: { variant: "secondary" },
-      onClick: this.handleCheckVisit,
-      hideIcon: true
-    }
-  ];
+  titlebarActions = [];
 
   /** Get office from id */
   componentDidMount() {
@@ -141,6 +113,36 @@ class OfficeDetail extends PureComponent {
     this.props.getOfficeById(officeId).then(response => {
       if (response.status === 200) {
         this.setState({ office: response.data });
+
+        this.titlebarActions = [
+          {
+            title: this.props.t("share"),
+            icon: () => <ShareIcon style={{ width: 13, height: 15 }} />,
+            styles: {
+              variant: null,
+              link: "secondary",
+              background: "secondaryLight"
+            },
+            revertStyles: { variant: "primary", link: null, background: null },
+            onClick: this.handleShare
+          },
+          {
+            title: this.props.t("checkVisitAvailabilites"),
+            // icon: () => <CalendarIcon style={{ width: 13, height: 15 }} />,
+            icon: () => (
+              <Typography fontSizeS textSecondary>
+                {this.props.t("visit")}
+              </Typography>
+            ),
+            styles: {
+              variant: "primary",
+              shadow: true
+            },
+            revertStyles: { variant: "secondary" },
+            onClick: this.handleCheckVisit,
+            hideIcon: true
+          }
+        ];
       }
     });
 
@@ -205,10 +207,11 @@ class OfficeDetail extends PureComponent {
 
   /** Share office */
   handleShare = () => {
+    console.log("Share dialog");
     this.setState({
       dialog: (
         <ShareOfficeDialog
-          office={this.props.office}
+          office={this.state.office}
           onClose={this.handleCloseDialog}
         />
       )
@@ -454,6 +457,8 @@ class OfficeDetail extends PureComponent {
             </Typography>
           </Button>
         </Row>
+
+        {/** Show dialog */}
         {dialog}
       </Column>
     );

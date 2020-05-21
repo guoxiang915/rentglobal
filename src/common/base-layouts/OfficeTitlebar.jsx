@@ -116,7 +116,7 @@ class OfficeTitlebar extends PureComponent {
                   style={{
                     left: style.left,
                     maxWidth: maxWidth,
-                    flexDirection: isSticky ? 'row' : 'row-reverse'
+                    flexDirection: isSticky ? "row" : "row-reverse"
                   }}
                   classes={{
                     box: clsx(s.titleBar, isSticky && s.stickyTitleBar)
@@ -146,7 +146,7 @@ class OfficeTitlebar extends PureComponent {
                             <Button
                               {...action.styles}
                               {...[(isSticky && action.revertStyles) || {}][0]}
-                              onClick={action.onClick}
+                              onClick={e => action.onClick?.(e)}
                               className={clsx(
                                 isWidthDown("xs", width) && s.iconButton
                               )}
