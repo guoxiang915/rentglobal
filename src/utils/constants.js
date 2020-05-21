@@ -29,7 +29,12 @@ const officeTypes = [
   "assignedWorkstation",
   "unassignedWorkstation",
 ];
-const contractTypes = ["threeMonths", "sixMonths", "nineMonths", "sublease"];
+const contractTypes = [
+  "serviceContract",
+  "sublease",
+  "shortTermLease",
+  "longTermLease",
+];
 const guarantees = ["oneMonth", "twoMonths", "threeMonths"];
 const checkOutNotices = ["oneMonth", "twoMonths", "threeMonths"];
 

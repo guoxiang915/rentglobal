@@ -488,5 +488,13 @@
   "priceHighToLow": "Price, High to low",
   "priceLowToHigh": "Price, Low to high",
   "dateNewToOld": "Date, New to old",
-  "dateOldToNew": "Date, Old to new"
+  "dateOldToNew": "Date, Old to new",
+  "checkVisitAvailabilites": "Check visit availabilities",
+  "availableForLease": "This office is currently available for lease",
+  "visit": "Visit",
+  "serviceContract": "Service contract",
+  "shortTermLease": "Short-term lease",
+  "longTermLease": "Long-term lease",
+  "generalInformation": "General information",
+  "report": "Report"
 }
