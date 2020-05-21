@@ -10,30 +10,30 @@ import {
   Column,
   Typography,
   StarIcon,
-  Button,
+  Button
 } from "../../common/base-components";
 import { numberWithSpaces } from "../../utils/formatters";
 import Sticky from "react-sticky";
 
-const styleSheet = (theme) => ({
+const styleSheet = theme => ({
   favoriteIcon: {
     width: 17,
-    height: 16,
+    height: 16
   },
 
   stickyBox: {
     background: theme.colors.primary.mainColor,
     paddingTop: 8,
     paddingBottom: 24,
-    zIndex: 3,
+    zIndex: 3
   },
 
   titleBar: {
-    flexDirection: "row-reverse",
-    position: "relative",
+    position: "relative"
   },
 
   stickyTitleBar: {
+    boxSizing: "content-box",
     marginLeft: -40,
     marginRight: -40,
     paddingLeft: 40,
@@ -42,16 +42,20 @@ const styleSheet = (theme) => ({
       marginLeft: -27,
       marginRight: -27,
       paddingLeft: 27,
-      paddingRight: 27,
-    },
+      paddingRight: 27
+    }
   },
 
   titleBarHolder: {
     height: 52,
     [theme.breakpoints.down("xs")]: {
-      height: 84,
-    },
+      height: 84
+    }
   },
+
+  iconButton: {
+    padding: "7px 14px"
+  }
 });
 
 class OfficeTitlebar extends PureComponent {
@@ -66,22 +70,32 @@ class OfficeTitlebar extends PureComponent {
         styles: PropTypes.any,
         revertStyles: PropTypes.any,
         onClick: PropTypes.func,
-        hideIcon: PropTypes.bool,
+        hideIcon: PropTypes.bool
       })
     ),
     /** form max-width */
     maxWidth: PropTypes.number,
+    /** top offset for sticky */
+    topOffset: PropTypes.number,
 
     classes: PropTypes.object,
-    t: PropTypes.func,
+    t: PropTypes.func
   };
 
   render() {
-    const { classes: s, t, width, office, actions, maxWidth } = this.props;
+    const {
+      classes: s,
+      t,
+      width,
+      office,
+      actions,
+      maxWidth,
+      topOffset
+    } = this.props;
 
     return (
       <Column alignChildrenStart fullWidth relative>
-        <Sticky topOffset={20} style={{ width: "100%" }} relative>
+        <Sticky topOffset={topOffset || 20} style={{ width: "100%" }} relative>
           {({ style, isSticky }) => (
             <div style={{ width: "100%" }}>
               <div
@@ -90,7 +104,7 @@ class OfficeTitlebar extends PureComponent {
                   position: isSticky ? style.position : "absolute",
                   top: isSticky ? 95 : 0,
                   left: 0,
-                  width: "100%",
+                  width: "100%"
                 }}
                 className={clsx(isSticky && s.stickyBox)}
               >
@@ -102,11 +116,26 @@ class OfficeTitlebar extends PureComponent {
                   style={{
                     left: style.left,
                     maxWidth: maxWidth,
+                    flexDirection: isSticky ? 'row' : 'row-reverse'
                   }}
                   classes={{
-                    box: clsx(s.titleBar, isSticky && s.stickyTitleBar),
+                    box: clsx(s.titleBar, isSticky && s.stickyTitleBar)
                   }}
                 >
+                  {/** Show office title */}
+                  {isSticky && (
+                    <Column alignChildrenStart stretch>
+                      <Row
+                        paddingTopHalf
+                        fontSizeM
+                        textBlackGrey
+                        fontWeightBold
+                      >
+                        {office.title}
+                      </Row>
+                    </Column>
+                  )}
+
                   {/** Show favorite, share, follow up buttons */}
                   <Column alignChildrenEnd fullWidth={isWidthDown("xs", width)}>
                     {office.published && (
@@ -118,6 +147,9 @@ class OfficeTitlebar extends PureComponent {
                               {...action.styles}
                               {...[(isSticky && action.revertStyles) || {}][0]}
                               onClick={action.onClick}
+                              className={clsx(
+                                isWidthDown("xs", width) && s.iconButton
+                              )}
                             >
                               {(!action.hideIcon ||
                                 isWidthDown("xs", width)) && <action.icon />}
@@ -137,12 +169,19 @@ class OfficeTitlebar extends PureComponent {
                     )}
                   </Column>
 
-                  {/** Show office main info (title, type, priceMonthly, rating) */}
-                  <Column alignChildrenStart stretch>
-                    <Row paddingTopHalf fontSizeM textBlackGrey fontWeightBold>
-                      {office.title}
-                    </Row>
-                  </Column>
+                  {/** Show office title */}
+                  {!isSticky && (
+                    <Column alignChildrenStart stretch>
+                      <Row
+                        paddingTopHalf
+                        fontSizeM
+                        textBlackGrey
+                        fontWeightBold
+                      >
+                        {office.title}
+                      </Row>
+                    </Column>
+                  )}
                 </Row>
               </div>
 
@@ -170,7 +209,7 @@ class OfficeTitlebar extends PureComponent {
                 </Typography>
               </Row>
             }
-            {office.refId && (
+            {office.refId ? (
               <Row paddingTopHalf>
                 <Typography fontSizeS textSecondary>
                   {t("refID")}
@@ -180,7 +219,7 @@ class OfficeTitlebar extends PureComponent {
                   #{numberWithSpaces(office.refId + 1, 3)}
                 </Typography>
               </Row>
-            )}
+            ) : null}
           </React.Fragment>
         )}
       </Column>

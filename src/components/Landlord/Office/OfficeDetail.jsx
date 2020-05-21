@@ -4,6 +4,7 @@ import { withTranslation } from "react-i18next";
 import PropTypes from "prop-types";
 import withWidth, { isWidthDown } from "@material-ui/core/withWidth";
 import { KeyboardBackspace } from "@material-ui/icons";
+import { Tabs, Tab } from "@material-ui/core";
 import { Helmet } from "react-helmet";
 import {
   Row,
@@ -17,28 +18,32 @@ import {
   EditIcon,
   ShareIcon,
   Divider,
+  ReviewIcon,
+  CalendarIcon,
+  GeneralInfoIcon,
+  ReportIcon
 } from "../../../common/base-components";
 import {
   OfficeTitlebar,
   OfficeGeneralInfo,
   OfficeGallery,
-  OfficeItem,
+  OfficeItem
 } from "../../../common/base-layouts";
 import { ShareOfficeDialog } from "../../Layout/Dialogs";
 import Carousel from "@brainhubeu/react-carousel";
 
-const styleSheet = (theme) => ({
+const styleSheet = theme => ({
   root: {
     paddingLeft: theme.spacing(5),
     paddingRight: theme.spacing(5),
     [theme.breakpoints.down("sm")]: {
       paddingLeft: 27,
-      paddingRight: 27,
-    },
+      paddingRight: 27
+    }
   },
 
   fullWidth: {
-    width: "100%",
+    width: "100%"
   },
 
   addOfficeTabWrapper: {
@@ -46,19 +51,40 @@ const styleSheet = (theme) => ({
     paddingBottom: 56,
     [theme.breakpoints.down("xs")]: {
       paddingTop: 8,
-      paddingBottom: 24,
-    },
+      paddingBottom: 24
+    }
   },
 
   similarOfficesWrapper: {
     paddingTop: 46,
-    paddingBottom: 74,
+    paddingBottom: 74
   },
 
   similarOffices: {
     paddingTop: 54,
-    overflow: "hidden",
+    overflow: "hidden"
   },
+
+  tabs: {
+    marginTop: 12,
+    width: "100%",
+    borderBottom: `1px solid ${theme.colors.primary.borderGrey}`
+  },
+
+  indicator: {
+    borderRadius: 2,
+    height: 4
+  },
+
+  tab: {
+    textTransform: "none",
+    minWidth: 0,
+    padding: "25px 0px",
+    marginRight: 70,
+    [theme.breakpoints.down("xs")]: {
+      marginRight: 30
+    }
+  }
 });
 
 class OfficeDetail extends PureComponent {
@@ -69,13 +95,14 @@ class OfficeDetail extends PureComponent {
     onEditOffice: PropTypes.func,
     onDeleteOffice: PropTypes.func,
     classes: PropTypes.object,
-    t: PropTypes.func,
+    t: PropTypes.func
   };
 
   state = {
     office: {},
     dialog: null,
     similarOffices: [],
+    currentTab: "generalInfo"
   };
 
   titlebarActions = [
@@ -85,10 +112,10 @@ class OfficeDetail extends PureComponent {
       styles: {
         variant: null,
         link: "secondary",
-        background: "secondaryLight",
+        background: "secondaryLight"
       },
       revertStyles: { variant: "primary", link: null, background: null },
-      onClick: this.handleShare,
+      onClick: this.handleShare
     },
     {
       title: this.props.t("checkVisitAvailabilites"),
@@ -100,25 +127,25 @@ class OfficeDetail extends PureComponent {
       ),
       styles: {
         variant: "primary",
-        shadow: true,
+        shadow: true
       },
       revertStyles: { variant: "secondary" },
       onClick: this.handleCheckVisit,
-      hideIcon: true,
-    },
+      hideIcon: true
+    }
   ];
 
   /** Get office from id */
   componentDidMount() {
     const { officeId } = this.props;
-    this.props.getOfficeById(officeId).then((response) => {
+    this.props.getOfficeById(officeId).then(response => {
       if (response.status === 200) {
         this.setState({ office: response.data });
       }
     });
 
     /** Get similar offices */
-    this.props.getSimilarOffices(officeId).then((response) => {
+    this.props.getSimilarOffices(officeId).then(response => {
       if (response.status === 200) {
         this.setState({ similarOffices: response.data });
       }
@@ -129,14 +156,14 @@ class OfficeDetail extends PureComponent {
     const { officeId } = this.props;
 
     if (officeId !== prevProps.officeId) {
-      this.props.getOfficeById(officeId).then((response) => {
+      this.props.getOfficeById(officeId).then(response => {
         if (response.status === 200) {
           this.setState({ office: response.data });
         }
       });
 
       /** Get similar offices */
-      this.props.getSimilarOffices(officeId).then((response) => {
+      this.props.getSimilarOffices(officeId).then(response => {
         if (response.status === 200) {
           this.setState({ similarOffices: response.data });
         }
@@ -156,7 +183,7 @@ class OfficeDetail extends PureComponent {
 
   /** Unpublish office */
   handleUnpublish = () => {
-    this.props.unpublishOffice(this.state.office._id).then((response) => {
+    this.props.unpublishOffice(this.state.office._id).then(response => {
       if (response.status === 200) {
         this.props.navigate(
           "offices/add",
@@ -184,7 +211,7 @@ class OfficeDetail extends PureComponent {
           office={this.props.office}
           onClose={this.handleCloseDialog}
         />
-      ),
+      )
     });
   };
 
@@ -196,12 +223,16 @@ class OfficeDetail extends PureComponent {
     this.setState({ dialog: null });
   };
 
+  handleChangeTab = (e, currentTab) => {
+    this.setState({ currentTab });
+  };
+
   /**
    * Renderer function
    */
   render() {
     const { classes: s, t, width } = this.props;
-    const { office, dialog, similarOffices } = this.state;
+    const { office, dialog, similarOffices, currentTab } = this.state;
 
     return (
       <Column
@@ -212,23 +243,23 @@ class OfficeDetail extends PureComponent {
         paddingBottomDouble
       >
         <Helmet>
-          <meta property='og:title' content={office.title} />
+          <meta property="og:title" content={office.title} />
           {office.coverPhotos && office.coverPhotos.length > 0 && (
             <meta
-              property='og:image'
+              property="og:image"
               content={office.coverPhotos[0].desktop?.bucketPath}
             />
           )}
         </Helmet>
-        <Row fullWidth paddingBottom>
+        <Row fullWidth style={{ marginBottom: 36 }}>
           {/** title */}
           <Typography fontSizeM textSecondary>
             {t("office")}
           </Typography>
           <Stretch />
           <Button
-            link='secondary'
-            background='secondaryLight'
+            link="secondary"
+            background="secondaryLight"
             onClick={this.handleBack}
           >
             <KeyboardBackspace />
@@ -238,11 +269,11 @@ class OfficeDetail extends PureComponent {
           </Button>
         </Row>
 
-        <Row fullWidth paddingBottom>
+        <Row fullWidth paddingBottomDouble>
           {/** Show unpublish button */}
           <Button
-            link='errorRedNormal'
-            background='errorRedLight'
+            link="errorRedNormal"
+            background="errorRedLight"
             inverse
             onClick={this.handleUnpublish}
             variant={isWidthDown("xs", width) ? "icon" : ""}
@@ -261,8 +292,8 @@ class OfficeDetail extends PureComponent {
 
           {/** Show delete button */}
           <Button
-            link='errorRedNormal'
-            background='errorRedLight'
+            link="errorRedNormal"
+            background="errorRedLight"
             inverse
             onClick={this.handleDeleteOffice}
             variant={isWidthDown("xs", width) ? "icon" : ""}
@@ -278,8 +309,8 @@ class OfficeDetail extends PureComponent {
 
           {/** Show edit button */}
           <Button
-            link='primary'
-            background='normalLight'
+            link="primary"
+            background="normalLight"
             inverse
             onClick={this.handleEditOffice}
             variant={isWidthDown("xs", width) ? "icon" : ""}
@@ -293,7 +324,7 @@ class OfficeDetail extends PureComponent {
           </Button>
         </Row>
 
-        <Row fullWidth paddingBottom>
+        <Row fullWidth style={{ marginBottom: 72 }}>
           {office && (
             <OfficeTitlebar
               office={office}
@@ -309,7 +340,70 @@ class OfficeDetail extends PureComponent {
         </Row>
 
         <Row fullWidth paddingBottom>
-          {office && <OfficeGeneralInfo office={office} />}
+          {/** Tabs */}
+          <Tabs
+            value={currentTab}
+            onChange={this.handleChangeTab}
+            aria-label="wrapped label tabs"
+            indicatorColor="primary"
+            textColor="primary"
+            classes={{ root: s.tabs, indicator: s.indicator }}
+          >
+            <Tab
+              value={"generalInfo"}
+              label={
+                <Row>
+                  <GeneralInfoIcon style={{ width: 16, height: 18 }} />
+                  <Typography paddingLeftHalf fontSizeS>
+                    {t("generalInformation")}
+                  </Typography>
+                </Row>
+              }
+              classes={{ root: s.tab }}
+            />
+            <Tab
+              value={"reviews"}
+              label={
+                <Row>
+                  <ReviewIcon style={{ width: 18, height: 16 }} />
+                  <Typography paddingLeftHalf fontSizeS>
+                    {t("reviews")}
+                  </Typography>
+                </Row>
+              }
+              classes={{ root: s.tab }}
+            />
+            <Tab
+              value={"calendar"}
+              label={
+                <Row>
+                  <CalendarIcon style={{ width: 17, height: 16 }} />
+                  <Typography paddingLeftHalf fontSizeS>
+                    {t("calendarEvents")}
+                  </Typography>
+                </Row>
+              }
+              classes={{ root: s.tab }}
+            />
+            <Tab
+              value={"report"}
+              label={
+                <Row>
+                  <ReportIcon style={{ width: 18, height: 20 }} />
+                  <Typography paddingLeftHalf fontSizeS>
+                    {t("report")}
+                  </Typography>
+                </Row>
+              }
+              classes={{ root: s.tab }}
+            />
+          </Tabs>
+        </Row>
+
+        <Row fullWidth paddingBottom>
+          {office && currentTab === "generalInfo" && (
+            <OfficeGeneralInfo office={office} />
+          )}
         </Row>
 
         <Row fullWidth paddingBottomDouble>
@@ -317,6 +411,7 @@ class OfficeDetail extends PureComponent {
         </Row>
 
         {/** Show similar offices */}
+        <Row paddingTopDouble />
         <Divider />
         <Row fullWidth classes={{ box: s.similarOfficesWrapper }}>
           <Column fullWidth alignChildrenStart>
@@ -331,7 +426,7 @@ class OfficeDetail extends PureComponent {
                       style={{
                         position: "relative",
                         cursor: "pointer",
-                        height: "100%",
+                        height: "100%"
                       }}
                       key={index}
                     >
@@ -347,8 +442,8 @@ class OfficeDetail extends PureComponent {
         <Row fullWidth classes={{ box: s.addOfficeTabWrapper }}>
           {/** Show unpublish button */}
           <Button
-            link='errorRedNormal'
-            background='errorRedLight'
+            link="errorRedNormal"
+            background="errorRedLight"
             inverse
             onClick={this.handleUnpublish}
             variant={isWidthDown("xs", width) ? "icon" : ""}

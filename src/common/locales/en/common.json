@@ -494,5 +494,7 @@
   "visit": "Visit",
   "serviceContract": "Service contract",
   "shortTermLease": "Short-term lease",
-  "longTermLease": "Long-term lease"
+  "longTermLease": "Long-term lease",
+  "generalInformation": "General information",
+  "report": "Report"
 }

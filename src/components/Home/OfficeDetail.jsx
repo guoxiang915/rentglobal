@@ -1,9 +1,10 @@
 import React, { PureComponent } from "react";
 import { withStyles } from "@material-ui/core/styles";
 import { withTranslation } from "react-i18next";
+import withWidth, { isWidthDown } from "@material-ui/core/withWidth";
+import { withRouter } from "react-router-dom";
 import clsx from "clsx";
 import PropTypes from "prop-types";
-import { withRouter } from "react-router-dom";
 import { KeyboardBackspace } from "@material-ui/icons";
 import Carousel from "@brainhubeu/react-carousel";
 import {
@@ -15,28 +16,43 @@ import {
   Button,
   Link,
   Divider,
+  FavoriteIcon,
+  FavoriteFilledIcon,
+  ShareIcon,
+  CallIcon,
   UserIcon,
   ArrowUpIcon,
   ArrowDownIcon,
+  MessageIcon
 } from "../../common/base-components";
-import { TabWrapper, OfficeItem } from "../../common/base-layouts";
-import OfficeDetailForm from "../Layout/OfficeDetailForm";
+import {
+  TabWrapper,
+  OfficeItem,
+  OfficeGallery,
+  OfficeTitlebar,
+  OfficeGeneralInfo
+} from "../../common/base-layouts";
 import { formatDate1 } from "../../utils/formatters";
 import {
+  favoriteOffice,
   getApprovedOfficeById,
   getConsultantByOffice,
   getReviewsByOffice,
-  getSimilarOffices,
+  getSimilarOffices
 } from "../../api/endpoints";
-import { ContactInfoDialog } from "../Layout/Dialogs";
+import {
+  ContactInfoDialog,
+  ShareOfficeDialog,
+  CallConsultantDialog
+} from "../Layout/Dialogs";
 import { withLogin } from "../../common/base-services";
 
-const styleSheet = (theme) => ({
+const styleSheet = theme => ({
   root: {
     width: "100%",
     height: "100%",
     background: theme.colors.primary.white,
-    minHeight: "calc(100vh - 245px)",
+    minHeight: "calc(100vh - 245px)"
   },
 
   fixedWidth: {
@@ -47,12 +63,12 @@ const styleSheet = (theme) => ({
     overflow: "hidden",
     [theme.breakpoints.down("sm")]: {
       paddingLeft: 22,
-      paddingRight: 22,
-    },
+      paddingRight: 22
+    }
   },
 
   fullWidth: {
-    width: "100%",
+    width: "100%"
   },
 
   addOfficeTabWrapper: {
@@ -60,20 +76,20 @@ const styleSheet = (theme) => ({
     paddingBottom: 106,
     [theme.breakpoints.down("xs")]: {
       paddingTop: 8,
-      paddingBottom: 50,
-    },
+      paddingBottom: 50
+    }
   },
 
   formButtons: {
     paddingTop: 160,
     [theme.breakpoints.down("xs")]: {
-      paddingTop: 64,
-    },
+      paddingTop: 64
+    }
   },
 
   consultantInfo: {
     paddingTop: 53,
-    paddingBottom: 58,
+    paddingBottom: 58
   },
 
   consultantAvatarWrapper: {
@@ -85,39 +101,39 @@ const styleSheet = (theme) => ({
     justifyContent: "center",
     alignItems: "center",
     overflow: "hidden",
-    marginRight: 26,
+    marginRight: 26
   },
 
   consultantAvatar: {
     width: 67,
     height: 67,
-    objectFit: "contain",
+    objectFit: "contain"
   },
 
   consultantMoreInfo: {
-    paddingLeft: 93,
+    paddingLeft: 93
   },
 
   reviewsWrapper: {
     paddingTop: 48,
-    paddingBottom: 48,
+    paddingBottom: 48
   },
 
   similarOfficesWrapper: {
     paddingTop: 46,
-    paddingBottom: 74,
+    paddingBottom: 74
   },
 
   similarOffices: {
     paddingTop: 54,
-    overflow: "hidden",
+    overflow: "hidden"
   },
 
   reviewCompanyInfo: {
     marginRight: 68,
     [theme.breakpoints.down("xs")]: {
-      width: "100%",
-    },
+      width: "100%"
+    }
   },
 
   reviewAvatarWrapper: {
@@ -129,18 +145,23 @@ const styleSheet = (theme) => ({
     justifyContent: "center",
     alignItems: "center",
     overflow: "hidden",
-    marginRight: 20,
+    marginRight: 20
   },
 
   reviewAvatar: {
     width: 39,
     height: 39,
-    objectFit: "contain",
+    objectFit: "contain"
   },
 
   divider: {
-    height: 1,
+    height: 1
   },
+
+  favoriteIcon: {
+    width: 17,
+    height: 16
+  }
 });
 
 class OfficeDetail extends PureComponent {
@@ -159,7 +180,7 @@ class OfficeDetail extends PureComponent {
     // getSimilarOffices: PropTypes.func,
 
     classes: PropTypes.object,
-    t: PropTypes.func,
+    t: PropTypes.func
   };
 
   state = {
@@ -167,22 +188,126 @@ class OfficeDetail extends PureComponent {
     consultant: {},
     reviews: [],
     similarOffices: [],
-    dialog: null,
+    dialog: null
   };
+
+  titlebarActions = [];
 
   componentDidMount() {
     /** Get office from id */
     const { officeId } = this.props;
     // this.props.
-    getApprovedOfficeById(officeId).then((response) => {
+    getApprovedOfficeById(officeId).then(response => {
       if (response.status === 200) {
-        this.setState({ office: response.data });
+        const office = response.data;
+        this.setState({ office }, () => {
+          this.titlebarActions = [
+            {
+              title: this.props.t("favorite"),
+              icon: () =>
+                office?.favorite ? (
+                  <FavoriteFilledIcon
+                    className={this.props.classes.favoriteIcon}
+                    style={{ opacity: 1 }}
+                  />
+                ) : (
+                  <FavoriteIcon className={this.props.classes.favoriteIcon} />
+                ),
+              styles: {
+                variant: null,
+                link: "secondary",
+                background: "secondaryLight"
+              },
+              revertStyles: {
+                variant: "primary",
+                link: null,
+                background: null
+              },
+              onClick: this.handleSetFavorite
+            },
+            {
+              title: this.props.t("share"),
+              icon: () => <ShareIcon style={{ width: 13, height: 15 }} />,
+              styles: {
+                variant: null,
+                link: "secondary",
+                background: "secondaryLight"
+              },
+              revertStyles: {
+                variant: "primary",
+                link: null,
+                background: null
+              },
+              onClick: this.handleShare
+            },
+            {
+              title: this.props.t("call"),
+              icon: () => <CallIcon style={{ width: 15, height: 17 }} />,
+              styles: {
+                variant: null,
+                link: "secondary",
+                background: "secondaryLight"
+              },
+              revertStyles: {
+                variant: "primary",
+                link: null,
+                background: null
+              },
+              onClick: this.handleCall
+            },
+            {
+              title: this.props.t("sendMessage"),
+              icon: () => <MessageIcon style={{ width: 18, height: 16 }} />,
+              styles: isWidthDown("xs", this.props.width)
+                ? {
+                    variant: null,
+                    link: "secondary",
+                    background: "secondaryLight"
+                  }
+                : {
+                    variant: "secondary",
+                    background: null,
+                    style: { borderColor: null }
+                  },
+              revertStyles: isWidthDown("xs", this.props.width)
+                ? {
+                    variant: "primary",
+                    link: null,
+                    background: null
+                  }
+                : {
+                    variant: "primary",
+                    link: null,
+                    background: "primary",
+                    style: { borderColor: "white" }
+                  },
+              onClick: this.handleSendMessage,
+              hideIcon: !isWidthDown("xs", this.props.width)
+            },
+            {
+              title: this.props.t("visitAnOffice"),
+              // icon: () => <CalendarIcon style={{ width: 13, height: 15 }} />,
+              icon: () => (
+                <Typography fontSizeS textSecondary>
+                  {this.props.t("visit")}
+                </Typography>
+              ),
+              styles: {
+                variant: "primary",
+                shadow: true
+              },
+              revertStyles: { variant: "secondary" },
+              onClick: this.handleVisitOffice,
+              hideIcon: true
+            }
+          ];
+        });
       }
     });
 
     /** Get consultant info from office */
     // this.props.
-    getConsultantByOffice(officeId).then((response) => {
+    getConsultantByOffice(officeId).then(response => {
       if (response.status === 200) {
         this.setState({ consultant: response.data });
       }
@@ -190,7 +315,7 @@ class OfficeDetail extends PureComponent {
 
     /** Get reviews from office */
     // this.props.
-    getReviewsByOffice(officeId).then((response) => {
+    getReviewsByOffice(officeId).then(response => {
       if (response.status === 200) {
         this.setState({ reviews: response.data });
       }
@@ -198,7 +323,7 @@ class OfficeDetail extends PureComponent {
 
     /** Get similar offices */
     // this.props.
-    getSimilarOffices(officeId).then((response) => {
+    getSimilarOffices(officeId).then(response => {
       if (response.status === 200) {
         this.setState({ similarOffices: response.data });
       }
@@ -209,7 +334,7 @@ class OfficeDetail extends PureComponent {
     const { officeId } = this.props;
     const { officeId: oldOfficeId } = prevProps;
     if (officeId !== oldOfficeId) {
-      getApprovedOfficeById(officeId).then((response) => {
+      getApprovedOfficeById(officeId).then(response => {
         if (response.status === 200) {
           this.setState({ office: response.data });
         }
@@ -217,7 +342,7 @@ class OfficeDetail extends PureComponent {
 
       /** Get consultant info from office */
       // this.props.
-      getConsultantByOffice(officeId).then((response) => {
+      getConsultantByOffice(officeId).then(response => {
         if (response.status === 200) {
           this.setState({ consultant: response.data });
         }
@@ -225,7 +350,7 @@ class OfficeDetail extends PureComponent {
 
       /** Get reviews from office */
       // this.props.
-      getReviewsByOffice(officeId).then((response) => {
+      getReviewsByOffice(officeId).then(response => {
         if (response.status === 200) {
           this.setState({ reviews: response.data });
         }
@@ -233,7 +358,7 @@ class OfficeDetail extends PureComponent {
 
       /** Get similar offices */
       // this.props.
-      getSimilarOffices(officeId).then((response) => {
+      getSimilarOffices(officeId).then(response => {
         if (response.status === 200) {
           this.setState({ similarOffices: response.data });
         }
@@ -252,15 +377,70 @@ class OfficeDetail extends PureComponent {
   };
 
   /** Goto office detail of similar offices */
-  goDetail = (office) => () => {
+  goDetail = office => () => {
     this.props.navigate(
       "offices",
       `${office._id}/${office.location.country}-${office.officeType}-${office.numberOfEmployees}`
     );
   };
 
-  /** Send message to consultant */
+  /** Favorite office */
+  handleSetFavorite = () => {
+    if (this.props.passLoginDialog()) {
+      favoriteOffice(this.state.office._id).then(response => {
+        if (response.status === 200) {
+          const { office } = this.state;
+          this.setState({
+            office: {
+              ...office,
+              favorite: response.data.favorite
+            }
+          });
+        }
+      });
+    }
+  };
+
+  /** Share office */
+  handleShare = () => {
+    if (this.props.passLoginDialog()) {
+      this.setState({
+        dialog: (
+          <ShareOfficeDialog
+            office={this.state.office}
+            onClose={this.handleCloseDialog}
+          />
+        )
+      });
+    }
+  };
+
+  /** Call to Consultant */
+  handleCall = () => {
+    if (this.props.passLoginDialog()) {
+      this.setState({
+        dialog: (
+          <CallConsultantDialog
+            office={this.state.office}
+            onClose={this.handleCloseDialog}
+          />
+        )
+      });
+    }
+  };
+
+  /** Send message
+   * @ignore
+   */
   handleSendMessage = () => {
+    // if (this.props.passLoginDialog()) {
+    // }
+  };
+
+  /** Visit office
+   * @ignore
+   */
+  handleVisitOffice = () => {
     // if (this.props.passLoginDialog()) {
     // }
   };
@@ -276,11 +456,11 @@ class OfficeDetail extends PureComponent {
               username: "Name Family",
               type: "Consultant",
               phoneNumber: "(123) 123-4567",
-              email: "consultantname@domainanme.com",
+              email: "consultantname@domainanme.com"
             }}
             onClose={this.closeDialog}
           />
-        ),
+        )
       });
     }
   };
@@ -299,11 +479,11 @@ class OfficeDetail extends PureComponent {
             {consultant.avatar && consultant.avatar.bucketPath ? (
               <img
                 src={consultant.avatar.bucketPath}
-                alt=''
+                alt=""
                 className={s.consultantAvatar}
               />
             ) : (
-              <UserIcon color='secondary' style={{ width: 27, height: 35 }} />
+              <UserIcon color="secondary" style={{ width: 27, height: 35 }} />
             )}
           </Box>
           <Column alignChildrenStart stretch>
@@ -329,9 +509,9 @@ class OfficeDetail extends PureComponent {
           wrap
         >
           <Link
-            to='#'
+            to="#"
             onClick={() => setShowMore(!showMore)}
-            variant='normalLight'
+            variant="normalLight"
           >
             <Typography alignChildrenCenter>
               <Typography fontSizeS paddingRight>
@@ -349,7 +529,7 @@ class OfficeDetail extends PureComponent {
             {/** Show consultant request buttons */}
             <Box paddingLeftHalf paddingBottomHalf>
               <Button
-                variant='secondary'
+                variant="secondary"
                 onClick={this.handleSendMessage}
                 shadow
               >
@@ -357,7 +537,7 @@ class OfficeDetail extends PureComponent {
               </Button>
             </Box>
             <Box paddingLeft paddingBottomHalf>
-              <Button variant='primary' onClick={this.handleContactInfo} shadow>
+              <Button variant="primary" onClick={this.handleContactInfo} shadow>
                 {t("contactInfo")}
               </Button>
             </Box>
@@ -385,11 +565,11 @@ class OfficeDetail extends PureComponent {
               {company.avatar && company.avatar.bucketPath ? (
                 <img
                   src={company.avatar.bucketPath}
-                  alt=''
+                  alt=""
                   className={s.reviewAvatar}
                 />
               ) : (
-                <UserIcon color='secondary' style={{ width: 16, height: 21 }} />
+                <UserIcon color="secondary" style={{ width: 16, height: 21 }} />
               )}
             </Box>
             <Column alignChildrenStart>
@@ -430,7 +610,7 @@ class OfficeDetail extends PureComponent {
               </Row>
             </React.Fragment>
           ))}
-          <Link to='#' onClick={this.handleMoreReviews} variant='normalLight'>
+          <Link to="#" onClick={this.handleMoreReviews} variant="normalLight">
             <Typography fontSizeS>{t("loadMore")}</Typography>
           </Link>
         </TabWrapper>
@@ -442,7 +622,7 @@ class OfficeDetail extends PureComponent {
    * Renderer function
    */
   render() {
-    const { classes: s, t } = this.props;
+    const { classes: s, t, width } = this.props;
     const { office, consultant, reviews, similarOffices, dialog } = this.state;
     const ConsultantInfo = this.renderConsultant;
     const ReviewList = this.renderReviewList;
@@ -459,8 +639,8 @@ class OfficeDetail extends PureComponent {
           <Row fullWidth paddingBottom>
             <Stretch />
             <Button
-              link='secondary'
-              background='secondaryLight'
+              link="secondary"
+              background="secondaryLight"
               onClick={this.handleBack}
             >
               <KeyboardBackspace />
@@ -470,10 +650,35 @@ class OfficeDetail extends PureComponent {
             </Button>
           </Row>
 
-          {/** Show office detail form */}
-          <Row fullWidth classes={{ box: clsx(s.addOfficeTabWrapper) }}>
+          {office && (
+            <Row fullWidth classes={{ box: clsx(s.addOfficeTabWrapper) }}>
+              <Column fullWidth alignChildrenStart>
+                {/** Show office gallery */}
+                <Row fullWidth paddingBottom>
+                  <OfficeGallery coverPhotos={office.coverPhotos} />
+                </Row>
+
+                {/** Show office title bar */}
+                <Row fullWidth paddingBottom>
+                  <OfficeTitlebar
+                    office={office}
+                    actions={this.titlebarActions}
+                    maxWidth={Math.min(1024, window.innerWidth - 44)}
+                    topOffset={150}
+                  />
+                </Row>
+
+                {/** Show office general info */}
+                <Row fullWidth paddingBottom>
+                  <OfficeGeneralInfo office={office} />
+                </Row>
+              </Column>
+            </Row>
+          )}
+
+          {/* <Row fullWidth classes={{ box: clsx(s.addOfficeTabWrapper) }}>
             {office && <OfficeDetailForm office={office} />}
-          </Row>
+          </Row> */}
 
           {/** Show office created consultant info */}
           <Divider className={s.divider} />
@@ -502,7 +707,7 @@ class OfficeDetail extends PureComponent {
                         style={{
                           position: "relative",
                           cursor: "pointer",
-                          height: "100%",
+                          height: "100%"
                         }}
                         key={index}
                       >
@@ -528,5 +733,7 @@ class OfficeDetail extends PureComponent {
 }
 
 export default withRouter(
-  withLogin(withStyles(styleSheet)(withTranslation("common")(OfficeDetail)))
+  withWidth()(
+    withLogin(withStyles(styleSheet)(withTranslation("common")(OfficeDetail)))
+  )
 );

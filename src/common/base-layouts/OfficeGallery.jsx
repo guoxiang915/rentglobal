@@ -20,6 +20,7 @@ const styleSheet = (theme) => ({
       width: "100%",
       position: "relative",
       left: -10,
+      height: '100%'
     },
   },
 
