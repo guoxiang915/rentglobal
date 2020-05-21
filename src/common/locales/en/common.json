@@ -496,5 +496,11 @@
   "shortTermLease": "Short-term lease",
   "longTermLease": "Long-term lease",
   "generalInformation": "General information",
-  "report": "Report"
+  "report": "Report",
+  "searchOnReviews": "Search on reviews",
+  "sorting": "Sorting",
+  "approve": "Approve",
+  "approved": "Approved",
+  "unapproved": "Unapproved",
+  "latest": "Latest"
 }

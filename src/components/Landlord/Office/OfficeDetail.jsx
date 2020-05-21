@@ -27,7 +27,8 @@ import {
   OfficeTitlebar,
   OfficeGeneralInfo,
   OfficeGallery,
-  OfficeItem
+  OfficeItem,
+  OfficeReviews
 } from "../../../common/base-layouts";
 import { ShareOfficeDialog } from "../../Layout/Dialogs";
 import Carousel from "@brainhubeu/react-carousel";
@@ -53,16 +54,6 @@ const styleSheet = theme => ({
       paddingTop: 8,
       paddingBottom: 24
     }
-  },
-
-  similarOfficesWrapper: {
-    paddingTop: 46,
-    paddingBottom: 74
-  },
-
-  similarOffices: {
-    paddingTop: 54,
-    overflow: "hidden"
   },
 
   tabs: {
@@ -91,7 +82,6 @@ class OfficeDetail extends PureComponent {
   static propTypes = {
     officeId: PropTypes.string.isRequired,
     getOfficeById: PropTypes.func.isRequired,
-    getSimilarOffices: PropTypes.func.isRequired,
     onEditOffice: PropTypes.func,
     onDeleteOffice: PropTypes.func,
     classes: PropTypes.object,
@@ -101,7 +91,6 @@ class OfficeDetail extends PureComponent {
   state = {
     office: {},
     dialog: null,
-    similarOffices: [],
     currentTab: "generalInfo"
   };
 
@@ -145,13 +134,6 @@ class OfficeDetail extends PureComponent {
         ];
       }
     });
-
-    /** Get similar offices */
-    this.props.getSimilarOffices(officeId).then(response => {
-      if (response.status === 200) {
-        this.setState({ similarOffices: response.data });
-      }
-    });
   }
 
   componentDidUpdate(prevProps) {
@@ -161,13 +143,6 @@ class OfficeDetail extends PureComponent {
       this.props.getOfficeById(officeId).then(response => {
         if (response.status === 200) {
           this.setState({ office: response.data });
-        }
-      });
-
-      /** Get similar offices */
-      this.props.getSimilarOffices(officeId).then(response => {
-        if (response.status === 200) {
-          this.setState({ similarOffices: response.data });
         }
       });
     }
@@ -235,7 +210,7 @@ class OfficeDetail extends PureComponent {
    */
   render() {
     const { classes: s, t, width } = this.props;
-    const { office, dialog, similarOffices, currentTab } = this.state;
+    const { office, dialog, currentTab } = this.state;
 
     return (
       <Column
@@ -407,39 +382,13 @@ class OfficeDetail extends PureComponent {
           {office && currentTab === "generalInfo" && (
             <OfficeGeneralInfo office={office} />
           )}
+          {office && currentTab === "reviews" && (
+            <OfficeReviews officeId={this.props.officeId} />
+          )}
         </Row>
 
         <Row fullWidth paddingBottomDouble>
           {office && <OfficeGallery coverPhotos={office.coverPhotos} />}
-        </Row>
-
-        {/** Show similar offices */}
-        <Row paddingTopDouble />
-        <Divider />
-        <Row fullWidth classes={{ box: s.similarOfficesWrapper }}>
-          <Column fullWidth alignChildrenStart>
-            <Typography fontSizeM textBlackGrey fontWeightBold>
-              {t("similarOffice")}
-            </Typography>
-            <Row fullWidth classes={{ box: s.similarOffices }}>
-              <div style={{ width: "100%", height: "100%" }}>
-                <Carousel itemWidth={255} offset={0} keepDirectionWhenDragging>
-                  {similarOffices.map((office, index) => (
-                    <div
-                      style={{
-                        position: "relative",
-                        cursor: "pointer",
-                        height: "100%"
-                      }}
-                      key={index}
-                    >
-                      <OfficeItem office={office} setFavorite />
-                    </div>
-                  ))}
-                </Carousel>
-              </div>
-            </Row>
-          </Column>
         </Row>
 
         <Row fullWidth classes={{ box: s.addOfficeTabWrapper }}>

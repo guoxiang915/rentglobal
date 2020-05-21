@@ -7,3 +7,5 @@ export { default as OfficeDetailItem } from "./OfficeDetailItem";
 export { default as OfficeTitlebar } from "./OfficeTitlebar";
 export { default as OfficeGallery } from "./OfficeGallery";
 export { default as OfficeGeneralInfo } from "./OfficeGeneralInfo";
+export { default as SearchbarWithSorter } from "./SearchbarWithSorter";
+export { default as OfficeReviews } from "./OfficeReviews";

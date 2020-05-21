@@ -8,7 +8,7 @@ import {
   CateringServiceIcon,
   EquipmentServiceIcon,
   CoolStuffServiceIcon,
-  RulesServiceIcon,
+  RulesServiceIcon
 } from "../common/base-components";
 
 /**
@@ -27,13 +27,13 @@ const officeTypes = [
   "independentOffice",
   "privateOffice",
   "assignedWorkstation",
-  "unassignedWorkstation",
+  "unassignedWorkstation"
 ];
 const contractTypes = [
   "serviceContract",
   "sublease",
   "shortTermLease",
-  "longTermLease",
+  "longTermLease"
 ];
 const guarantees = ["oneMonth", "twoMonths", "threeMonths"];
 const checkOutNotices = ["oneMonth", "twoMonths", "threeMonths"];
@@ -56,8 +56,8 @@ const servicesCategories = [
       { name: "cleaningService", value: "cleaningService" },
       { name: "furniture", value: "furniture" },
       { name: "heating", value: "heating" },
-      { name: "airConditioning", value: "airConditioning" },
-    ],
+      { name: "airConditioning", value: "airConditioning" }
+    ]
   },
   {
     name: "community",
@@ -72,8 +72,8 @@ const servicesCategories = [
       { name: "pitchingEvents", value: "pitchingEvents" },
       { name: "incubatorPrograms", value: "incubatorPrograms" },
       { name: "acceleratorPrograms", value: "acceleratorPrograms" },
-      { name: "toastmasters", value: "toastmasters" },
-    ],
+      { name: "toastmasters", value: "toastmasters" }
+    ]
   },
   {
     name: "zones",
@@ -84,8 +84,8 @@ const servicesCategories = [
       { name: "swimmingPool", value: "swimmingPool" },
       { name: "longueChilloutArea", value: "longueChilloutArea" },
       { name: "napRoom", value: "napRoom" },
-      { name: "meditationRoom", value: "meditationRoom" },
-    ],
+      { name: "meditationRoom", value: "meditationRoom" }
+    ]
   },
   {
     name: "facilities",
@@ -100,8 +100,8 @@ const servicesCategories = [
       { name: "personalLockers", value: "personalLockers" },
       { name: "showers", value: "showers" },
       { name: "phoneBooth", value: "phoneBooth" },
-      { name: "eventSpaceForRent", value: "eventSpaceForRent" },
-    ],
+      { name: "eventSpaceForRent", value: "eventSpaceForRent" }
+    ]
   },
   {
     name: "transportation",
@@ -115,14 +115,14 @@ const servicesCategories = [
       { name: "carShare", value: "carShare" },
       {
         name: "fiveMinuteWalkFromPublicTransit",
-        value: "fiveMinuteWalkFromPublicTransit",
+        value: "fiveMinuteWalkFromPublicTransit"
       },
       {
         name: "tenMinuteWalkFromPublicTransit",
-        value: "tenMinuteWalkFromPublicTransit",
+        value: "tenMinuteWalkFromPublicTransit"
       },
-      { name: "pluginForElectricCars", value: "pluginForElectricCars" },
-    ],
+      { name: "pluginForElectricCars", value: "pluginForElectricCars" }
+    ]
   },
   {
     name: "catering",
@@ -132,8 +132,8 @@ const servicesCategories = [
       { name: "freeDrinkingWater", value: "freeDrinkingWater" },
       { name: "freeCoffee", value: "freeCoffee" },
       { name: "microwave", value: "microwave" },
-      { name: "refrigerator", value: "refrigerator" },
-    ],
+      { name: "refrigerator", value: "refrigerator" }
+    ]
   },
   {
     name: "equipment",
@@ -145,8 +145,8 @@ const servicesCategories = [
       { name: "photocopier", value: "photocopier" },
       { name: "computersPcs", value: "computersPcs" },
       { name: "computersMacs", value: "computersMacs" },
-      { name: "projector", value: "projector" },
-    ],
+      { name: "projector", value: "projector" }
+    ]
   },
   {
     name: "coolStuff",
@@ -162,8 +162,8 @@ const servicesCategories = [
       { name: "boardGames", value: "boardGames" },
       { name: "darts", value: "darts" },
       { name: "arcadeGames", value: "arcadeGames" },
-      { name: "laundryService", value: "laundryService" },
-    ],
+      { name: "laundryService", value: "laundryService" }
+    ]
   },
   {
     name: "rules",
@@ -174,15 +174,15 @@ const servicesCategories = [
       { name: "noPets", value: "noPets" },
       { name: "noParties", value: "noParties" },
       { name: "mustClimbStairs", value: "mustClimbStairs" },
-      { name: "securityDeposit", value: "securityDeposit" },
-    ],
+      { name: "securityDeposit", value: "securityDeposit" }
+    ]
   },
   {
     name: "custom",
     value: "custom",
     icon: UserIcon,
-    options: [],
-  },
+    options: []
+  }
 ];
 
 const maxFileSize = 10485760; // 10 MB
@@ -194,7 +194,7 @@ const weekdays = [
   "wednesday",
   "thursday",
   "friday",
-  "saturday",
+  "saturday"
 ];
 
 const officeSortOptions = [
@@ -202,7 +202,12 @@ const officeSortOptions = [
   { title: "priceLowToHigh", field: "priceMonthly", direction: "asc" },
   { title: "dateNewToOld", field: "createdAt", direction: "desc" },
   { title: "dateOldToNew", field: "createdAt", direction: "asc" },
-  { title: "topRatedFirst", field: "rating", direction: "desc" },
+  { title: "topRatedFirst", field: "rating", direction: "desc" }
+];
+
+const reviewSortOptions = [
+  { title: "approved", field: "approved", direction: "desc" },
+  { title: "latest", field: "createdAt", direction: "desc" }
 ];
 
 export {
@@ -215,4 +220,5 @@ export {
   maxFileSize,
   weekdays,
   officeSortOptions,
+  reviewSortOptions
 };
