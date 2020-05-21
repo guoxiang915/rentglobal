@@ -17,7 +17,6 @@ import {
   DeleteIcon,
   EditIcon,
   ShareIcon,
-  Divider,
   ReviewIcon,
   CalendarIcon,
   GeneralInfoIcon,
@@ -27,11 +26,9 @@ import {
   OfficeTitlebar,
   OfficeGeneralInfo,
   OfficeGallery,
-  OfficeItem,
   OfficeReviews
 } from "../../../common/base-layouts";
 import { ShareOfficeDialog } from "../../Layout/Dialogs";
-import Carousel from "@brainhubeu/react-carousel";
 
 const styleSheet = theme => ({
   root: {
