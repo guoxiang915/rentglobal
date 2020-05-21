@@ -10,7 +10,7 @@ import {
 } from "../../common/base-layouts";
 import { withLogin } from "../../common/base-services";
 
-const styleSheet = theme => ({
+const styleSheet = () => ({
   root: {}
 });
 
