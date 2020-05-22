@@ -119,7 +119,7 @@ class CallConsultantDialog extends PureComponent {
    * Event handler for skype call
    */
   handleCall = (phoneNumber) => {
-    window.open("tel:" + phoneNumber);
+    window.open("tel:" + (phoneNumber || '+14507529733'));
   };
 
   /** Copy phone number */
