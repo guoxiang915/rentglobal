@@ -162,7 +162,7 @@ const ReviewPanel = withStyles(styleSheet)(
                 <DeleteIcon style={{ width: 20, height: 18 }} />
               </Button>
               {!review.approved && (
-                <>
+                <React.Fragment>
                   <Box paddingLeft />
                   <Button
                     variant="primary"
@@ -175,7 +175,7 @@ const ReviewPanel = withStyles(styleSheet)(
                       {t("approve")}
                     </Typography>
                   </Button>
-                </>
+                </React.Fragment>
               )}
             </Row>
           </CardActions>
@@ -217,9 +217,9 @@ class OfficeReviews extends PureComponent {
     }
   };
 
-  handleApproveReview = index => {};
+  handleApproveReview = () => {};
 
-  handleDeleteReview = index => {};
+  handleDeleteReview = () => {};
 
   handleFilterChange = filter => {
     this.setState(filter);

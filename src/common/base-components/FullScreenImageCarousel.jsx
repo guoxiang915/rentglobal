@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { Dialog, withStyles } from "@material-ui/core";
-import { ArrowRightAltIcon } from "../base-components/Icons"
+import { ArrowRightAltIcon } from "../base-components/Icons";
 import clsx from "clsx";
 
 const styleSheet = () => {

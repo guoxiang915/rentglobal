@@ -19,26 +19,26 @@ import {
   // Chip,
   GooglePlaceField,
   GoogleMap,
-  EditIcon,
+  EditIcon
 } from "../../../../common/base-components";
 import { TabWrapper } from "../../../../common/base-layouts";
 import {
   officeTypes,
   contractTypes,
   guarantees,
-  checkOutNotices,
+  checkOutNotices
 } from "../../../../utils/constants";
 
-const styleSheet = (theme) => ({
+const styleSheet = theme => ({
   root: {},
 
   gridRow: {
     width: "100%",
-    paddingBottom: 8,
+    paddingBottom: 8
   },
 
   gridRowHeader: {
-    maxHeight: 47,
+    maxHeight: 47
   },
 
   gridRowValues: {
@@ -48,8 +48,8 @@ const styleSheet = (theme) => ({
       marginRight: -15,
       maxWidth: "calc(100% + 30px)",
       width: "calc(100% + 30px)",
-      flexBasis: "auto",
-    },
+      flexBasis: "auto"
+    }
   },
 
   importOfficeButton: {
@@ -59,39 +59,39 @@ const styleSheet = (theme) => ({
     [theme.breakpoints.down("xs")]: {
       marginTop: 0,
       marginBottom: 32,
-      marginRight: -15,
-    },
+      marginRight: -15
+    }
   },
 
   textField350: {
     width: 350,
     [theme.breakpoints.down("sm")]: {
-      width: "100%",
-    },
+      width: "100%"
+    }
   },
 
   textField175: {
     width: 175,
     [theme.breakpoints.down("xs")]: {
-      width: "calc(50% - 10px)",
-    },
+      width: "calc(50% - 10px)"
+    }
   },
 
   textField250Fixed: {
     width: 249,
     marginRight: theme.spacing(1.5),
     marginTop: theme.spacing(0.5),
-    marginBottom: theme.spacing(0.5),
+    marginBottom: theme.spacing(0.5)
   },
 
   googleMap: {
     height: 215,
-    paddingBottom: 8,
+    paddingBottom: 8
   },
 
   fullWidth: {
-    width: "100%",
-  },
+    width: "100%"
+  }
 });
 
 class GeneralInfoForm extends PureComponent {
@@ -100,16 +100,12 @@ class GeneralInfoForm extends PureComponent {
     error: PropTypes.array,
     onChangeField: PropTypes.func.isRequired,
     classes: PropTypes.object,
-    t: PropTypes.func,
+    t: PropTypes.func
   };
 
   state = {
     // importOfficeUrl: '',
-    editAddressMode: !(
-      this.props.office &&
-      this.props.office.location &&
-      this.props.office.location.fullAddress
-    ),
+    editAddressMode: !this.props.office?.location?.fullAddress
   };
 
   /**
@@ -117,7 +113,7 @@ class GeneralInfoForm extends PureComponent {
    * @member
    * @param {string} field Name of field to be updated
    */
-  updateState = (field) => (value) => {
+  updateState = field => value => {
     this.setState({ [field]: value });
   };
 
@@ -126,7 +122,7 @@ class GeneralInfoForm extends PureComponent {
    * @member
    * @param {string} field Name of field to be updated
    */
-  handleChangeByEventValue = (field) => (e) => {
+  handleChangeByEventValue = field => e => {
     this.setState({ [field]: e.target.value });
   };
 
@@ -135,7 +131,7 @@ class GeneralInfoForm extends PureComponent {
    * @member
    * @param {string} field Name of field to be updated
    */
-  handleChangePropsByEvent = (field) => (value) => () => {
+  handleChangePropsByEvent = field => value => () => {
     this.props.onChangeField(field, value);
   };
 
@@ -144,7 +140,7 @@ class GeneralInfoForm extends PureComponent {
    * @member
    * @param {string} field Name of field to be updated
    */
-  handleChangePropsByEventValue = (field) => (e) => {
+  handleChangePropsByEventValue = field => e => {
     this.props.onChangeField(field, e.target.value);
   };
 
@@ -153,7 +149,7 @@ class GeneralInfoForm extends PureComponent {
    * @member
    * @param {string} field Name of field to be updated
    */
-  handleChangeProps = (field) => (value) => {
+  handleChangeProps = field => value => {
     console.log(field, value);
     this.props.onChangeField(field, value);
   };
@@ -164,12 +160,12 @@ class GeneralInfoForm extends PureComponent {
   };
 
   /** Change location fields */
-  handleChangeLocation = (field) => (e) => {
+  handleChangeLocation = field => e => {
     const location = { ...this.props.office.location, [field]: e.target.value };
     this.handleChangeProps("location")(location);
   };
 
-  handleSelectLocation = (value) => {
+  handleSelectLocation = value => {
     console.log(this.props.office.location);
     const location = { ...this.props.office.location, ...value };
     this.setState({ editAddressMode: false }, () => {
@@ -226,15 +222,17 @@ class GeneralInfoForm extends PureComponent {
     const { office, error, t } = this.props;
     let validation = null;
     try {
-      validation = error && error.find((item) => item.param === field);
+      validation = error && error.find(item => item.param === field);
     } catch (e) {
       validation = null;
     }
+
+    console.log(field, office);
     switch (tag) {
     case "textfield":
       return (
         <TextField
-          variant='outlined'
+          variant="outlined"
           value={office[field]}
           onChange={this.handleChangePropsByEventValue(field)}
           error={!!validation}
@@ -256,7 +254,7 @@ class GeneralInfoForm extends PureComponent {
       return (
         <Select
           options={["", ...options]}
-          renderOption={(item) =>
+          renderOption={item =>
             !item
               ? t("selectOne")
               : typeof item === "object"
@@ -274,14 +272,14 @@ class GeneralInfoForm extends PureComponent {
     case "address":
       return (
         <GooglePlaceField
-          variant='outlined'
+          variant="outlined"
           value={office[field]}
-          // onChange={this.handleChangePropsByEventValue(field)}
+          onChange={this.handleChangePropsByEventValue(field)}
           {...props}
           inputProps={{
             ...props.inputProps,
             error: !!validation,
-            helperText: validation && validation.msg,
+            helperText: validation && validation.msg
           }}
         />
       );
@@ -297,11 +295,7 @@ class GeneralInfoForm extends PureComponent {
     ) {
       state = {
         ...state,
-        editAddressMode: !(
-          this.props.office &&
-          this.props.office.location &&
-          this.props.office.location.fullAddress
-        ),
+        editAddressMode: !this.props.office?.location?.fullAddress
       };
     }
     if (Object.keys(state).length > 0) {
@@ -316,7 +310,7 @@ class GeneralInfoForm extends PureComponent {
     const { office, classes: s, t, width } = this.props;
     const {
       // importOfficeUrl,
-      editAddressMode,
+      editAddressMode
     } = this.state;
     const GridRow = this.renderGridRow;
     const NormalFormField = this.renderFormField;
@@ -360,9 +354,9 @@ class GeneralInfoForm extends PureComponent {
         {/** office name */}
         <GridRow classes={s} title={t("title")} required>
           <NormalFormField
-            tag='textfield'
+            tag="textfield"
             placeholder={t("officeName")}
-            field='title'
+            field="title"
             className={s.textField350}
             required
           />
@@ -370,8 +364,8 @@ class GeneralInfoForm extends PureComponent {
         {/** type of office */}
         <GridRow classes={s} title={t("typeOfOffice")} required>
           <NormalFormField
-            tag='select'
-            field='officeType'
+            tag="select"
+            field="officeType"
             className={s.textField350}
             options={officeTypes}
             required
@@ -380,9 +374,9 @@ class GeneralInfoForm extends PureComponent {
         {/** price / monthly */}
         <GridRow classes={s} title={t("pricePerMonth")} required>
           <NormalFormField
-            tag='textfield'
+            tag="textfield"
             className={s.textField350}
-            type='number'
+            type="number"
             inputProps={{ min: 0 }}
             endAdornment={
               <Typography
@@ -393,16 +387,16 @@ class GeneralInfoForm extends PureComponent {
                 {t("$/month")}
               </Typography>
             }
-            field='priceMonthly'
+            field="priceMonthly"
             required
           />
         </GridRow>
         {/** business / other fees */}
         <GridRow classes={s} title={t("businessOtherFees")}>
           <NormalFormField
-            tag='textfield'
+            tag="textfield"
             className={s.textField350}
-            type='number'
+            type="number"
             inputProps={{ min: 0 }}
             endAdornment={
               <Typography
@@ -413,7 +407,7 @@ class GeneralInfoForm extends PureComponent {
                 {t("$/month")}
               </Typography>
             }
-            field='businessOtherFees'
+            field="businessOtherFees"
           />
         </GridRow>
 
@@ -424,8 +418,8 @@ class GeneralInfoForm extends PureComponent {
         {/** area */}
         <GridRow classes={s} title={t("area")}>
           <NormalFormField
-            tag='textfield'
-            type='number'
+            tag="textfield"
+            type="number"
             inputProps={{ min: 1 }}
             placeholder={t("area")}
             className={s.textField350}
@@ -438,25 +432,25 @@ class GeneralInfoForm extends PureComponent {
                 mxm
               </Typography>
             }
-            field='area'
+            field="area"
           />
         </GridRow>
         {/** roms */}
         <GridRow classes={s} title={t("rooms")}>
           <NormalFormField
-            tag='numberfield'
+            tag="numberfield"
             inputProps={{ min: 0 }}
             className={s.textField175}
-            field='rooms'
+            field="rooms"
           />
         </GridRow>
         {/** number of employees */}
         <GridRow classes={s} title={t("numberOfEmployees")} required>
           <NormalFormField
-            tag='numberfield'
+            tag="numberfield"
             inputProps={{ min: 0 }}
             className={s.textField175}
-            field='numberOfEmployees'
+            field="numberOfEmployees"
             required
           />
         </GridRow>
@@ -465,8 +459,8 @@ class GeneralInfoForm extends PureComponent {
           <Grid container spacing={1}>
             <Grid item xs={6}>
               <NormalFormField
-                tag='textfield'
-                type='number'
+                tag="textfield"
+                type="number"
                 inputProps={{ min: 1, max: 12 }}
                 endAdornment={
                   <Typography
@@ -477,13 +471,13 @@ class GeneralInfoForm extends PureComponent {
                     {t("am")}
                   </Typography>
                 }
-                field='businessHoursFrom'
+                field="businessHoursFrom"
               />
             </Grid>
             <Grid item xs={6}>
               <NormalFormField
-                tag='textfield'
-                type='number'
+                tag="textfield"
+                type="number"
                 inputProps={{ min: 1, max: 12 }}
                 endAdornment={
                   <Typography
@@ -494,7 +488,7 @@ class GeneralInfoForm extends PureComponent {
                     {t("pm")}
                   </Typography>
                 }
-                field='businessHoursTo'
+                field="businessHoursTo"
               />
             </Grid>
           </Grid>
@@ -502,8 +496,8 @@ class GeneralInfoForm extends PureComponent {
         {/** 24 hour accessbility */}
         <GridRow classes={s} title={t("24HourAccessibility")}>
           <Checkbox
-            variant='outlined'
-            label='24x7'
+            variant="outlined"
+            label="24x7"
             className={s.textField250Fixed}
             isChecked={!!office.fullTimeAccessibility}
             onChange={this.handleChangePropsByEvent("fullTimeAccessibility")(
@@ -514,14 +508,14 @@ class GeneralInfoForm extends PureComponent {
         {/** lease duration / months */}
         <GridRow classes={s} title={t("leaseDurationPerMonths")}>
           <NormalFormField
-            tag='numberfield'
+            tag="numberfield"
             inputProps={{ min: 0 }}
             className={s.textField175}
-            field='leaseDurationPerMonths'
+            field="leaseDurationPerMonths"
           />
           <Row paddingTopHalf />
           <Checkbox
-            variant='outlined'
+            variant="outlined"
             label={t("undefineDuration")}
             className={s.textField250Fixed}
             isChecked={office.leaseDurationPerMonths === null}
@@ -544,12 +538,12 @@ class GeneralInfoForm extends PureComponent {
               labelMd={editAddressMode ? 4 : 6}
             >
               <NormalFormField
-                tag='textfield'
-                type='number'
+                tag="textfield"
+                type="number"
                 inputProps={{ min: 0 }}
                 placeholder={t("number")}
                 className={clsx(editAddressMode ? s.textField350 : s.fullWidth)}
-                field='officeNumber'
+                field="officeNumber"
               />
             </GridRow>
             {/** office floor */}
@@ -559,12 +553,12 @@ class GeneralInfoForm extends PureComponent {
               labelMd={editAddressMode ? 4 : 6}
             >
               <NormalFormField
-                tag='textfield'
-                type='number'
+                tag="textfield"
+                type="number"
                 inputProps={{ min: 1 }}
                 placeholder={t("floor")}
                 className={clsx(editAddressMode ? s.textField350 : s.fullWidth)}
-                field='officeFloor'
+                field="officeFloor"
               />
             </GridRow>
             {editAddressMode ? (
@@ -572,15 +566,15 @@ class GeneralInfoForm extends PureComponent {
                 {/** location */}
                 <GridRow classes={s} title={t("location")} required>
                   <NormalFormField
-                    tag='address'
-                    field='location'
-                    value={office.location && office.location.fullAddress}
+                    tag="address"
+                    field="locationAddress"
+                    value={office?.locationAddress}
                     // onChange={this.handleChangeLocation("fullAddress")}
                     onSelect={this.handleSelectLocation}
                     inputProps={{
                       placeholder: t("officeAddress"),
                       required: true,
-                      fullWidth: true,
+                      fullWidth: true
                     }}
                   />
                 </GridRow>
@@ -590,8 +584,8 @@ class GeneralInfoForm extends PureComponent {
                 {/** street address */}
                 <GridRow classes={s} title={t("streetAddress")} labelMd={6}>
                   <NormalFormField
-                    tag='textfield'
-                    field='streetName'
+                    tag="textfield"
+                    field="streetName"
                     fullWidth
                     value={office.location && office.location.streetName}
                   />
@@ -599,8 +593,8 @@ class GeneralInfoForm extends PureComponent {
                 {/** city */}
                 <GridRow classes={s} title={t("city")} labelMd={6}>
                   <NormalFormField
-                    tag='textfield'
-                    field='city'
+                    tag="textfield"
+                    field="city"
                     fullWidth
                     value={office.location && office.location.city}
                   />
@@ -608,8 +602,8 @@ class GeneralInfoForm extends PureComponent {
                 {/** state */}
                 <GridRow classes={s} title={t("state")} labelMd={6}>
                   <NormalFormField
-                    tag='textfield'
-                    field='state'
+                    tag="textfield"
+                    field="state"
                     fullWidth
                     value={office.location && office.location.state}
                   />
@@ -617,8 +611,8 @@ class GeneralInfoForm extends PureComponent {
                 {/** zipCode */}
                 <GridRow classes={s} title={t("zipCode")} labelMd={6}>
                   <NormalFormField
-                    tag='textfield'
-                    field='zipCode'
+                    tag="textfield"
+                    field="zipCode"
                     fullWidth
                     value={office.location && office.location.zipCode}
                   />
@@ -626,22 +620,22 @@ class GeneralInfoForm extends PureComponent {
                 {/** country */}
                 <GridRow classes={s} title={t("country")} labelMd={6}>
                   <NormalFormField
-                    tag='textfield'
-                    field='country'
+                    tag="textfield"
+                    field="country"
                     fullWidth
                     value={office.location && office.location.country}
                   />
                 </GridRow>
                 {/** edit button */}
-                <Grid container className={s.gridRow} justify='flex-end'>
+                <Grid container className={s.gridRow} justify="flex-end">
                   <Row>
                     <Button
-                      link='primary'
-                      background='normalLight'
+                      link="primary"
+                      background="normalLight"
                       inverse
                       onClick={this.handleEditAddress}
                       variant={isWidthDown("xs", width) ? "icon" : null}
-                      justify='flex-end'
+                      justify="flex-end"
                     >
                       <EditIcon style={{ width: 20, height: 18 }} />
                       {!isWidthDown("xs", width) && (
@@ -671,12 +665,12 @@ class GeneralInfoForm extends PureComponent {
         {/** description */}
         <GridRow classes={s} title={t("description")}>
           <NormalFormField
-            tag='textfield'
+            tag="textfield"
             placeholder={t("officeBriefDescription")}
             fullWidth
             rows={isWidthDown("xs", width) ? 6 : 16}
             multiline
-            field='description'
+            field="description"
           />
         </GridRow>
 
@@ -691,8 +685,8 @@ class GeneralInfoForm extends PureComponent {
           {/** type of contract */}
           <GridRow classes={s} title={t("typeOfContract")}>
             <NormalFormField
-              tag='select'
-              field='typeOfContract'
+              tag="select"
+              field="typeOfContract"
               className={s.textField350}
               options={contractTypes}
             />
@@ -700,19 +694,19 @@ class GeneralInfoForm extends PureComponent {
           {/** guarantees / security deposit */}
           <GridRow classes={s} title={t("guaranteesAndSecurityDeposit")}>
             <NormalFormField
-              tag='select'
+              tag="select"
               className={s.textField350}
               options={guarantees}
-              field='guaranteesAndSecurityDeposit'
+              field="guaranteesAndSecurityDeposit"
             />
           </GridRow>
           {/** check out notice */}
           <GridRow classes={s} title={t("checkOutNotice")}>
             <NormalFormField
-              tag='select'
+              tag="select"
               className={s.textField350}
               options={checkOutNotices}
-              field='checkOutNotice'
+              field="checkOutNotice"
             />
           </GridRow>
         </TabWrapper>
