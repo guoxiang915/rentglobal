@@ -1,34 +1,40 @@
-import React, { PureComponent } from 'react';
-import { withStyles } from '@material-ui/core/styles';
-import { withTranslation } from 'react-i18next';
-import PropTypes from 'prop-types';
-import clsx from 'clsx';
-import withWidth, { isWidthDown } from '@material-ui/core/withWidth';
-import { Hidden } from '@material-ui/core';
-import Dropzone from 'react-dropzone';
+import React, { PureComponent } from "react";
+import { withStyles } from "@material-ui/core/styles";
+import { withTranslation } from "react-i18next";
+import PropTypes from "prop-types";
+import clsx from "clsx";
+import withWidth, { isWidthDown } from "@material-ui/core/withWidth";
+import { Hidden } from "@material-ui/core";
+import Dropzone from "react-dropzone";
 import {
   Box,
   Row,
   Column,
+  Stretch,
   Typography,
   Button,
   UploadIcon,
   ProgressIcon,
   DeleteIcon,
   CloseIcon,
-} from '../../../../common/base-components';
-import { CropperDialog } from '../../../Layout';
+  CheckIcon
+} from "../../../../common/base-components";
+import { CropperDialog } from "../../../Layout";
+import {
+  uploadOfficePhoto,
+  deleteOfficePhoto
+} from "../../../../api/endpoints";
 
-const styleSheet = (theme) => ({
+const styleSheet = theme => ({
   root: {},
 
   dropzone: {
     borderRadius: 8,
     border: `1px dashed ${theme.colors.primary.grey}`,
     height: 300,
-    [theme.breakpoints.down('xs')]: {
-      height: 140,
-    },
+    [theme.breakpoints.down("xs")]: {
+      height: 140
+    }
   },
 
   coverPhotos: {
@@ -38,46 +44,55 @@ const styleSheet = (theme) => ({
     marginRight: 13,
     borderRadius: 8,
     border: `1px solid ${theme.colors.primary.borderGrey}`,
-    position: 'relative',
-    [theme.breakpoints.down('xs')]: {
-      marginRight: 0,
-    },
+    position: "relative",
+    [theme.breakpoints.down("xs")]: {
+      marginRight: 0
+    }
   },
 
   coverPhotosSelected: {
     borderColor: theme.colors.primary.errorRed,
-    borderWidth: 1.5,
+    borderWidth: 1.5
   },
 
   coverPhotosImage: {
-    width: '100%',
-    height: '100%',
-    borderRadius: 8,
+    width: "100%",
+    height: "100%",
+    borderRadius: 8
   },
 
   coverPhotosText: {
-    position: 'absolute',
+    position: "absolute",
     bottom: -8,
-    left: 'calc(50% - 44px)',
+    left: "calc(50% - 44px)",
     borderRadius: 12,
     fontSize: 11,
     height: 16,
-    padding: '1px 10px',
+    padding: "1px 10px",
     color: theme.colors.primary.white,
-    background: theme.colors.primary.grey,
+    background: theme.colors.primary.grey
   },
 
   coverPhotosRemoveSelection: {
-    position: 'absolute',
+    position: "absolute",
     padding: 0,
     height: 24,
     width: 24,
     bottom: -12,
-    left: 'calc(50% - 12px)',
+    left: "calc(50% - 12px)",
     color: `${theme.colors.primary.white} !important`,
     background: `${theme.colors.primary.errorRed} !important`,
-    border: 'none !important',
+    border: "none !important"
   },
+
+  formButtons: {
+    paddingTop: 56,
+    paddingBottom: 56,
+    [theme.breakpoints.down("xs")]: {
+      paddingTop: 24,
+      paddingBottom: 24
+    }
+  }
 });
 
 class PictureGalleryForm extends PureComponent {
@@ -85,14 +100,21 @@ class PictureGalleryForm extends PureComponent {
     office: PropTypes.object.isRequired,
     error: PropTypes.object,
     onChangeField: PropTypes.func,
-    uploadPhoto: PropTypes.func.isRequired,
-    deletePhoto: PropTypes.func.isRequired,
+    onSave: PropTypes.func,
+    onNext: PropTypes.func,
+    onCancel: PropTypes.func,
+    isLoading: PropTypes.bool,
 
     classes: PropTypes.object,
-    t: PropTypes.func,
+    t: PropTypes.func
   };
 
-  state = { isLoading: false, selectedPicture: null, dialog: null };
+  state = {
+    office: this.props.office || {},
+    isLoading: false,
+    selectedPicture: null,
+    dialog: null
+  };
 
   dropzoneRef = React.createRef();
 
@@ -101,7 +123,7 @@ class PictureGalleryForm extends PureComponent {
    * @member
    * @param {string} field Name of field to be updated
    */
-  updateState = (field) => (value) => {
+  updateState = field => value => {
     this.setState({ [field]: value });
   };
 
@@ -110,24 +132,26 @@ class PictureGalleryForm extends PureComponent {
    * @member
    * @param {string} field Name of field to be updated
    */
-  handleChangeByEvent = (field) => (value) => () => {
+  handleChangeByEvent = field => value => () => {
     this.setState({ [field]: value });
   };
 
   /** Set and crop/resize photo */
-  handleCropPhoto = (file) => {
+  handleCropPhoto = file => {
     const reader = new FileReader();
-    reader.addEventListener('load', () => this.setState({
-      dialog: (
-        <CropperDialog
-          fileName={file.name}
-          src={reader.result}
-          aspectRatio={2/1}
-          onClose={this.handleCloseDialog}
-          onSave={this.handleUploadPhoto}
-        />
-      ),
-    }));
+    reader.addEventListener("load", () =>
+      this.setState({
+        dialog: (
+          <CropperDialog
+            fileName={file.name}
+            src={reader.result}
+            aspectRatio={2 / 1}
+            onClose={this.handleCloseDialog}
+            onSave={this.handleUploadPhoto}
+          />
+        )
+      })
+    );
     reader.readAsDataURL(file);
   };
 
@@ -139,17 +163,23 @@ class PictureGalleryForm extends PureComponent {
   /**
    * Upload photos
    */
-  handleUploadPhoto = (file) => {
+  handleUploadPhoto = file => {
     this.setState({ isLoading: true });
-    this.props.uploadPhoto(this.props.office._id, file).then(() => {
-      this.setState({ isLoading: false });
-    }).catch(() => {
-      this.setState({ isLoading: false });
-    });
+    uploadOfficePhoto(this.state.office._id, file)
+      .then(response => {
+        if (response.status === 200) {
+          this.setState({ office: response.data, isLoading: false });
+        } else {
+          this.setState({ isLoading: false });
+        }
+      })
+      .catch(() => {
+        this.setState({ isLoading: false });
+      });
   };
 
   /** Select/Deselect picture */
-  handleSelectPicture = (picture) => () => {
+  handleSelectPicture = picture => () => {
     this.setState({ selectedPicture: picture });
   };
 
@@ -161,11 +191,21 @@ class PictureGalleryForm extends PureComponent {
   handleRemoveSelectedPicture = () => {
     const { selectedPicture } = this.state;
     this.setState({ isLoading: true });
-    this.props
-      .deletePhoto(this.props.office._id, selectedPicture.original._id)
-      .then(() => {
-        this.setState({ isLoading: false, selectedPicture: null });
-      });
+    deleteOfficePhoto(this.state.office._id, selectedPicture.original._id).then(
+      response => {
+        if (response.status === 200) {
+          this.setState({
+            isLoading: false,
+            office: response.data,
+            selectedPicture: null
+          });
+        } else {
+          this.setState({
+            isLoading: false
+          });
+        }
+      }
+    );
   };
 
   /**
@@ -173,9 +213,15 @@ class PictureGalleryForm extends PureComponent {
    */
   render() {
     const {
-      office, width, classes: s, t,
+      width,
+      classes: s,
+      t,
+      isLoading: saveLoading,
+      onSave,
+      onCancel,
+      onNext
     } = this.props;
-    const { isLoading, selectedPicture, dialog } = this.state;
+    const { office, isLoading, selectedPicture, dialog } = this.state;
 
     return (
       <Column classes={{ box: s.root }} fullWidth alignChildrenStart>
@@ -183,13 +229,13 @@ class PictureGalleryForm extends PureComponent {
         <Dropzone
           multiple={false}
           ref={this.dropzoneRef}
-          onDrop={(files) => this.handleCropPhoto(files[0])}
+          onDrop={files => this.handleCropPhoto(files[0])}
           noClick
         >
           {({ getRootProps, getInputProps }) => (
             <Box
               classes={{
-                box: clsx(s.dropzone, selectedPicture && s.coverPhotosSelected),
+                box: clsx(s.dropzone, selectedPicture && s.coverPhotosSelected)
               }}
               justifyChildrenCenter
               alignChildrenCenter
@@ -210,12 +256,12 @@ class PictureGalleryForm extends PureComponent {
                   <Typography paddingTop fontSizeS textSecondary>
                     {t(
                       selectedPicture
-                        ? 'dragAndDropOfficePictureToRemove'
-                        : 'dragAndDropOfficePicture',
+                        ? "dragAndDropOfficePictureToRemove"
+                        : "dragAndDropOfficePicture"
                     )}
                   </Typography>
                   <Typography paddingTop fontSizeS textSecondary>
-                    {t('or')}
+                    {t("or")}
                   </Typography>
                 </React.Fragment>
               </Hidden>
@@ -229,7 +275,7 @@ class PictureGalleryForm extends PureComponent {
                   onClick={this.handleRemoveSelectedPicture}
                   shadow
                 >
-                  {t('removeSelectedPicture')}
+                  {t("removeSelectedPicture")}
                 </Button>
               ) : (
                 <Button
@@ -237,7 +283,7 @@ class PictureGalleryForm extends PureComponent {
                   onClick={() => this.dropzoneRef.current.open()}
                   shadow
                 >
-                  {t('selectFromDevice')}
+                  {t("selectFromDevice")}
                 </Button>
               )}
               {selectedPicture && (
@@ -250,7 +296,7 @@ class PictureGalleryForm extends PureComponent {
                   >
                     <CloseIcon style={{ width: 9, height: 9 }} />
                     <Typography paddingLeft fontSizeS>
-                      {t('deselect')}
+                      {t("deselect")}
                     </Typography>
                   </Button>
                 </React.Fragment>
@@ -264,18 +310,18 @@ class PictureGalleryForm extends PureComponent {
           fullWidth
           paddingTop
           wrap
-          justifyChildrenSpaceBetween={isWidthDown('xs', width)}
+          justifyChildrenSpaceBetween={isWidthDown("xs", width)}
         >
-          {office
-            && office.coverPhotos
-            && office.coverPhotos.map((picture, index) => (
+          {office &&
+            office.coverPhotos &&
+            office.coverPhotos.map((picture, index) => (
               <React.Fragment key={index}>
                 <Box
                   classes={{
                     box: clsx(
                       s.coverPhotos,
-                      picture === selectedPicture && s.coverPhotosSelected,
-                    ),
+                      picture === selectedPicture && s.coverPhotosSelected
+                    )
                   }}
                   onClick={this.handleSelectPicture(picture)}
                 >
@@ -298,12 +344,61 @@ class PictureGalleryForm extends PureComponent {
                     </Button>
                   ) : index === 0 ? (
                     <Typography classes={{ box: s.coverPhotosText }}>
-                      {t('coverPicture')}
+                      {t("coverPicture")}
                     </Typography>
                   ) : null}
                 </Box>
               </React.Fragment>
             ))}
+        </Row>
+
+        {/** Show form buttons */}
+        <Row fullWidth classes={{ box: s.formButtons }}>
+          {/** Show cancel button */}
+          {onCancel && (
+            <Button
+              link="errorRed"
+              background="secondaryLight"
+              onClick={onCancel}
+            >
+              <CloseIcon style={{ width: 9, height: 9 }} />
+              <Typography paddingLeft fontSizeS>
+                {t("cancel")}
+              </Typography>
+            </Button>
+          )}
+
+          <Stretch />
+
+          {/** Show save button */}
+          {onSave && (
+            <Button
+              link="primary"
+              background="normalLight"
+              inverse
+              onClick={() => onSave(this.state.office)}
+              loading={saveLoading}
+            >
+              <CheckIcon style={{ width: 16, height: 16 }} />
+              <Typography paddingLeft fontSizeS>
+                {t("save")}
+              </Typography>
+            </Button>
+          )}
+
+          <Box paddingLeft />
+
+          {/** Show next button */}
+          {onNext && (
+            <Button
+              variant="primary"
+              onClick={() => onNext(this.state.office)}
+              style={{ width: 215 }}
+              shadow
+            >
+              <Typography fontSizeS>{t("nextStep")}</Typography>
+            </Button>
+          )}
         </Row>
 
         {/* show dialog */}
@@ -314,5 +409,5 @@ class PictureGalleryForm extends PureComponent {
 }
 
 export default withWidth()(
-  withStyles(styleSheet)(withTranslation('common')(PictureGalleryForm)),
+  withStyles(styleSheet)(withTranslation("common")(PictureGalleryForm))
 );

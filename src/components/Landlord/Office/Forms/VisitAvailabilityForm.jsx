@@ -3,28 +3,45 @@ import { withStyles } from "@material-ui/core/styles";
 import { withTranslation } from "react-i18next";
 import PropTypes from "prop-types";
 import withWidth from "@material-ui/core/withWidth";
-import { Column, Typography } from "../../../../common/base-components";
+import {
+  Row,
+  Stretch,
+  Column,
+  Button,
+  Typography,
+  CloseIcon,
+  CheckIcon
+} from "../../../../common/base-components";
 import CalendarForm from "../../../Layout/CalendarForm";
 
-const styleSheet = () => ({
+const styleSheet = theme => ({
   root: {},
 
   calendarWrapper: {
     marginTop: 58,
-    width: "100%",
+    width: "100%"
   },
+
+  formButtons: {
+    paddingTop: 72,
+    paddingBottom: 56,
+    [theme.breakpoints.down("xs")]: {
+      paddingTop: 36,
+      paddingBottom: 24
+    }
+  }
 });
 
 class VisitAvailabilityForm extends PureComponent {
   static propTypes = {
     office: PropTypes.object.isRequired,
     error: PropTypes.object,
-    onChangeField: PropTypes.func,
-    uploadPhoto: PropTypes.func.isRequired,
-    deletePhoto: PropTypes.func.isRequired,
-
+    isLoading: PropTypes.bool,
+    onSave: PropTypes.func,
+    onNext: PropTypes.func,
+    onCancel: PropTypes.func,
     classes: PropTypes.object,
-    t: PropTypes.func,
+    t: PropTypes.func
   };
 
   state = { isLoading: false, visits: [] };
@@ -34,7 +51,7 @@ class VisitAvailabilityForm extends PureComponent {
    * @member
    * @param {string} field Name of field to be updated
    */
-  updateState = (field) => (value) => {
+  updateState = field => value => {
     this.setState({ [field]: value });
   };
 
@@ -43,7 +60,7 @@ class VisitAvailabilityForm extends PureComponent {
    * @member
    * @param {string} field Name of field to be updated
    */
-  handleChangeByEvent = (field) => (value) => () => {
+  handleChangeByEvent = field => value => () => {
     this.setState({ [field]: value });
   };
 
@@ -53,7 +70,7 @@ class VisitAvailabilityForm extends PureComponent {
   };
 
   /** Change visits info */
-  handleChangeVisits = (data) => {
+  handleChangeVisits = data => {
     this.setState({ visits: data });
   };
 
@@ -61,7 +78,7 @@ class VisitAvailabilityForm extends PureComponent {
    * Renderer function
    */
   render() {
-    const { classes: s, t } = this.props;
+    const { classes: s, t, onCancel, onNext, isLoading } = this.props;
     const { visits, dialog } = this.state;
 
     return (
@@ -77,6 +94,43 @@ class VisitAvailabilityForm extends PureComponent {
             onChange={this.handleChangeVisits}
           />
         </div>
+
+        {/** Show form buttons */}
+        {(onCancel || onNext) && (
+          <Row fullWidth classes={{ box: s.formButtons }}>
+            {/** Show cancel button */}
+            {onCancel && (
+              <Button
+                link="errorRed"
+                background="secondaryLight"
+                onClick={onCancel}
+              >
+                <CloseIcon style={{ width: 9, height: 9 }} />
+                <Typography paddingLeft fontSizeS>
+                  {t("cancel")}
+                </Typography>
+              </Button>
+            )}
+
+            <Stretch />
+
+            {/** Show next button */}
+            {onNext && (
+              <Button
+                variant="primary"
+                onClick={() => onNext({ ...this.props.office, visits })}
+                style={{ width: 215 }}
+                shadow
+                loading={isLoading}
+              >
+                <CheckIcon style={{ width: 16, height: 16 }} />
+                <Typography paddingLeft fontSizeS>
+                  {t("saveAndPreview")}
+                </Typography>
+              </Button>
+            )}
+          </Row>
+        )}
 
         {/* show dialog */}
         {dialog}

@@ -98,8 +98,7 @@ class OfficeDetail extends PureComponent {
     const { officeId } = this.props;
     this.props.getOfficeById(officeId).then(response => {
       if (response.status === 200) {
-        this.setState({ office: response.data });
-
+        const office = response.data;
         this.titlebarActions = [
           {
             title: this.props.t("share"),
@@ -129,6 +128,7 @@ class OfficeDetail extends PureComponent {
             hideIcon: true
           }
         ];
+        this.setState({ office });
       }
     });
   }
