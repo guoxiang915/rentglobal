@@ -17,7 +17,6 @@ import {
   DeleteIcon,
   EditIcon,
   ShareIcon,
-  Divider,
   ReviewIcon,
   CalendarIcon,
   GeneralInfoIcon,
@@ -27,10 +26,9 @@ import {
   OfficeTitlebar,
   OfficeGeneralInfo,
   OfficeGallery,
-  OfficeItem
+  OfficeReviews
 } from "../../../common/base-layouts";
 import { ShareOfficeDialog } from "../../Layout/Dialogs";
-import Carousel from "@brainhubeu/react-carousel";
 
 const styleSheet = theme => ({
   root: {
@@ -55,16 +53,6 @@ const styleSheet = theme => ({
     }
   },
 
-  similarOfficesWrapper: {
-    paddingTop: 46,
-    paddingBottom: 74
-  },
-
-  similarOffices: {
-    paddingTop: 54,
-    overflow: "hidden"
-  },
-
   tabs: {
     marginTop: 12,
     width: "100%",
@@ -79,10 +67,10 @@ const styleSheet = theme => ({
   tab: {
     textTransform: "none",
     minWidth: 0,
-    padding: "25px 0px",
-    marginRight: 70,
+    padding: "16px 0px",
+    marginRight: 28,
     [theme.breakpoints.down("xs")]: {
-      marginRight: 30
+      marginRight: 16
     }
   }
 });
@@ -91,7 +79,6 @@ class OfficeDetail extends PureComponent {
   static propTypes = {
     officeId: PropTypes.string.isRequired,
     getOfficeById: PropTypes.func.isRequired,
-    getSimilarOffices: PropTypes.func.isRequired,
     onEditOffice: PropTypes.func,
     onDeleteOffice: PropTypes.func,
     classes: PropTypes.object,
@@ -101,39 +88,10 @@ class OfficeDetail extends PureComponent {
   state = {
     office: {},
     dialog: null,
-    similarOffices: [],
     currentTab: "generalInfo"
   };
 
-  titlebarActions = [
-    {
-      title: this.props.t("share"),
-      icon: () => <ShareIcon style={{ width: 13, height: 15 }} />,
-      styles: {
-        variant: null,
-        link: "secondary",
-        background: "secondaryLight"
-      },
-      revertStyles: { variant: "primary", link: null, background: null },
-      onClick: this.handleShare
-    },
-    {
-      title: this.props.t("checkVisitAvailabilites"),
-      // icon: () => <CalendarIcon style={{ width: 13, height: 15 }} />,
-      icon: () => (
-        <Typography fontSizeS textSecondary>
-          {this.props.t("visit")}
-        </Typography>
-      ),
-      styles: {
-        variant: "primary",
-        shadow: true
-      },
-      revertStyles: { variant: "secondary" },
-      onClick: this.handleCheckVisit,
-      hideIcon: true
-    }
-  ];
+  titlebarActions = [];
 
   /** Get office from id */
   componentDidMount() {
@@ -141,13 +99,36 @@ class OfficeDetail extends PureComponent {
     this.props.getOfficeById(officeId).then(response => {
       if (response.status === 200) {
         this.setState({ office: response.data });
-      }
-    });
 
-    /** Get similar offices */
-    this.props.getSimilarOffices(officeId).then(response => {
-      if (response.status === 200) {
-        this.setState({ similarOffices: response.data });
+        this.titlebarActions = [
+          {
+            title: this.props.t("share"),
+            icon: () => <ShareIcon style={{ width: 13, height: 15 }} />,
+            styles: {
+              variant: null,
+              link: "secondary",
+              background: "secondaryLight"
+            },
+            revertStyles: { variant: "primary", link: null, background: null },
+            onClick: this.handleShare
+          },
+          {
+            title: this.props.t("checkVisitAvailabilites"),
+            // icon: () => <CalendarIcon style={{ width: 13, height: 15 }} />,
+            icon: () => (
+              <Typography fontSizeS textSecondary>
+                {this.props.t("visit")}
+              </Typography>
+            ),
+            styles: {
+              variant: "primary",
+              shadow: true
+            },
+            revertStyles: { variant: "secondary" },
+            onClick: this.handleCheckVisit,
+            hideIcon: true
+          }
+        ];
       }
     });
   }
@@ -159,13 +140,6 @@ class OfficeDetail extends PureComponent {
       this.props.getOfficeById(officeId).then(response => {
         if (response.status === 200) {
           this.setState({ office: response.data });
-        }
-      });
-
-      /** Get similar offices */
-      this.props.getSimilarOffices(officeId).then(response => {
-        if (response.status === 200) {
-          this.setState({ similarOffices: response.data });
         }
       });
     }
@@ -205,10 +179,11 @@ class OfficeDetail extends PureComponent {
 
   /** Share office */
   handleShare = () => {
+    console.log("Share dialog");
     this.setState({
       dialog: (
         <ShareOfficeDialog
-          office={this.props.office}
+          office={this.state.office}
           onClose={this.handleCloseDialog}
         />
       )
@@ -232,7 +207,7 @@ class OfficeDetail extends PureComponent {
    */
   render() {
     const { classes: s, t, width } = this.props;
-    const { office, dialog, similarOffices, currentTab } = this.state;
+    const { office, dialog, currentTab } = this.state;
 
     return (
       <Column
@@ -404,39 +379,13 @@ class OfficeDetail extends PureComponent {
           {office && currentTab === "generalInfo" && (
             <OfficeGeneralInfo office={office} />
           )}
+          {office && currentTab === "reviews" && (
+            <OfficeReviews officeId={this.props.officeId} />
+          )}
         </Row>
 
         <Row fullWidth paddingBottomDouble>
           {office && <OfficeGallery coverPhotos={office.coverPhotos} />}
-        </Row>
-
-        {/** Show similar offices */}
-        <Row paddingTopDouble />
-        <Divider />
-        <Row fullWidth classes={{ box: s.similarOfficesWrapper }}>
-          <Column fullWidth alignChildrenStart>
-            <Typography fontSizeM textBlackGrey fontWeightBold>
-              {t("similarOffice")}
-            </Typography>
-            <Row fullWidth classes={{ box: s.similarOffices }}>
-              <div style={{ width: "100%", height: "100%" }}>
-                <Carousel itemWidth={255} offset={0} keepDirectionWhenDragging>
-                  {similarOffices.map((office, index) => (
-                    <div
-                      style={{
-                        position: "relative",
-                        cursor: "pointer",
-                        height: "100%"
-                      }}
-                      key={index}
-                    >
-                      <OfficeItem office={office} setFavorite />
-                    </div>
-                  ))}
-                </Carousel>
-              </div>
-            </Row>
-          </Column>
         </Row>
 
         <Row fullWidth classes={{ box: s.addOfficeTabWrapper }}>
@@ -454,6 +403,8 @@ class OfficeDetail extends PureComponent {
             </Typography>
           </Button>
         </Row>
+
+        {/** Show dialog */}
         {dialog}
       </Column>
     );

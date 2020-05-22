@@ -260,27 +260,27 @@ class OfficeDetail extends PureComponent {
               icon: () => <MessageIcon style={{ width: 18, height: 16 }} />,
               styles: isWidthDown("xs", this.props.width)
                 ? {
-                    variant: null,
-                    link: "secondary",
-                    background: "secondaryLight"
-                  }
+                  variant: null,
+                  link: "secondary",
+                  background: "secondaryLight"
+                }
                 : {
-                    variant: "secondary",
-                    background: null,
-                    style: { borderColor: null }
-                  },
+                  variant: "secondary",
+                  background: null,
+                  style: { borderColor: null }
+                },
               revertStyles: isWidthDown("xs", this.props.width)
                 ? {
-                    variant: "primary",
-                    link: null,
-                    background: null
-                  }
+                  variant: "primary",
+                  link: null,
+                  background: null
+                }
                 : {
-                    variant: "primary",
-                    link: null,
-                    background: "primary",
-                    style: { borderColor: "white" }
-                  },
+                  variant: "primary",
+                  link: null,
+                  background: "primary",
+                  style: { borderColor: "white" }
+                },
               onClick: this.handleSendMessage,
               hideIcon: !isWidthDown("xs", this.props.width)
             },
@@ -626,7 +626,7 @@ class OfficeDetail extends PureComponent {
    * Renderer function
    */
   render() {
-    const { classes: s, t, width } = this.props;
+    const { classes: s, t } = this.props;
     const { office, consultant, reviews, similarOffices, dialog } = this.state;
     const ConsultantInfo = this.renderConsultant;
     const ReviewList = this.renderReviewList;
