@@ -679,10 +679,6 @@ class OfficeDetail extends PureComponent {
             </Row>
           )}
 
-          {/* <Row fullWidth classes={{ box: clsx(s.addOfficeTabWrapper) }}>
-            {office && <OfficeDetailForm office={office} />}
-          </Row> */}
-
           {/** Show office created consultant info */}
           <Divider className={s.divider} />
           <ConsultantInfo classes={s} t={t} consultant={consultant} />

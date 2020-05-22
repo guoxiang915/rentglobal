@@ -337,8 +337,6 @@ class AddNewOffice extends PureComponent {
   /** Save and next current step */
   saveAndNextCurrentStep = office => {
     const { currentStep } = this.state;
-
-    console.log(office, currentStep);
     if (office) {
       /** Check photos count when current step is 1 */
       if (
@@ -598,62 +596,7 @@ class AddNewOffice extends PureComponent {
                 </Typography>
               </Button>
             </Row>
-          )
-          //  : (
-          //   <Row
-          //     fullWidth
-          //     classes={{ box: clsx(s.addOfficeTabWrapper, s.formButtons) }}
-          //   >
-          //     {/** Show cancel button */}
-          //     <Button
-          //       link="errorRed"
-          //       background="secondaryLight"
-          //       onClick={this.cancelAddOffice}
-          //     >
-          //       <CloseIcon style={{ width: 9, height: 9 }} />
-          //       <Typography paddingLeft fontSizeS>
-          //         {t("cancel")}
-          //       </Typography>
-          //     </Button>
-
-            //     <Stretch />
-
-            //     {/** Show save button */}
-            //     {currentStep < this.steps.length - 1 && (
-            //       <Button
-            //         link="primary"
-            //         background="normalLight"
-            //         inverse
-            //         onClick={this.saveCurrentStep}
-            //         loading={isLoading}
-            //       >
-            //         <CheckIcon style={{ width: 16, height: 16 }} />
-            //         <Typography paddingLeft fontSizeS>
-            //           {t("save")}
-            //         </Typography>
-            //       </Button>
-            //     )}
-
-            //     <Box paddingLeft />
-
-          //     {/** Show next button */}
-          //     <Button
-          //       variant="primary"
-          //       onClick={this.saveAndNextCurrentStep}
-          //       style={{ width: 215 }}
-          //       shadow
-          //     >
-          //       <Typography fontSizeS>
-          //         {t(
-          //           currentStep < this.steps.length - 1
-          //             ? "nextStep"
-          //             : "saveAndPreview"
-          //         )}
-          //       </Typography>
-          //     </Button>
-          //   </Row>
-          // )
-          }
+          )}
         </React.Fragment>
 
         {/** Show dialogs */}
