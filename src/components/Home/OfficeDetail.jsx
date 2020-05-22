@@ -468,6 +468,10 @@ class OfficeDetail extends PureComponent {
   /** Load more reviews */
   handleMoreReviews = () => {};
 
+  handleCloseDialog = () => {
+    this.setState({ dialog: null });
+  };
+
   /** Render related consultant info */
   renderConsultant = ({ classes: s, t, consultant }) => {
     const [showMore, setShowMore] = React.useState(false);

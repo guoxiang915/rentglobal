@@ -1,12 +1,15 @@
 import React, { useState } from "react";
 import { Dialog, withStyles } from "@material-ui/core";
-import { ArrowBackIos, ArrowForwardIos } from "@material-ui/icons";
+import { ArrowRightAltIcon } from "../base-components/Icons"
 import clsx from "clsx";
 
 const styleSheet = () => {
   return {
     dialog: {
       maxWidth: "calc(100% - 64px)",
+    },
+    paper: {
+      backgroundColor: 'black',
     },
     image: {
       maxWidth: "100%",
@@ -17,19 +20,34 @@ const styleSheet = () => {
       top: "50%",
       transform: "translateY(-50%)",
       border: "none",
-      backgroundColor: "transparent",
       cursor: "pointer",
-      color: "#b9b9b9",
-      transition: "0.5s",
+      color: "white",
+      transition: "0.1s",
       outline: "none",
+      borderRadius: '50%',
+      backgroundColor: 'black',
+      width: 32,
+      height: 32,
+      padding: 4,
 
       "&:hover": {
-        color: "black",
+        backgroundColor: '#d7df23',
       },
     },
-    navBackButton: {},
+    navBackButton: {
+      left: 10,
+    },
     navForwardButton: {
+      right: 10,
+    },
+    pageNumber: {
+      position: 'absolute',
       right: 0,
+      bottom: 0,
+      fontSize: 20,
+      backgroundColor: 'black',
+      padding: '3px 6px',
+      color: 'white',
     },
   };
 };
@@ -37,12 +55,12 @@ const styleSheet = () => {
 const FullScreenImageCarousel = ({ classes, images, index, open, onClose }) => {
   const [currentPhotoIndex, setCurrentPhotoIndex] = useState(index);
   return (
-    <Dialog open={open} onClose={onClose} classes={{ paper: classes.dialog }}>
+    <Dialog open={open} onClose={onClose} classes={{ paper: classes.dialog }} BackdropProps={{ className: classes.paper }}>
       <button
-        onClick={() => setCurrentPhotoIndex(Math.max(0, currentPhotoIndex - 1))}
+        onClick={() => setCurrentPhotoIndex((currentPhotoIndex - 1 + images.length) % images.length)}
         className={clsx(classes.navButton, classes.navBackButton)}
       >
-        <ArrowBackIos fontSize='large' />
+        <ArrowRightAltIcon style={{ transform: 'scaleX(-1)' }} />
       </button>
       <img
         src={images[currentPhotoIndex]}
@@ -53,13 +71,14 @@ const FullScreenImageCarousel = ({ classes, images, index, open, onClose }) => {
       <button
         onClick={() =>
           setCurrentPhotoIndex(
-            Math.min(images.length - 1, currentPhotoIndex + 1)
+            (currentPhotoIndex + 1) % images.length
           )
         }
         className={clsx(classes.navButton, classes.navForwardButton)}
       >
-        <ArrowForwardIos fontSize='large' />
+        <ArrowRightAltIcon />
       </button>
+      <span className={classes.pageNumber}>{currentPhotoIndex + 1} / {images.length}</span>
     </Dialog>
   );
 };

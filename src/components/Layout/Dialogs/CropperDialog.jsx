@@ -9,7 +9,7 @@ import {
 } from '@material-ui/core';
 import clsx from 'clsx';
 import { withTranslation } from 'react-i18next';
-import { Cropper } from 'react-image-cropper';
+import ReactCrop from 'react-image-crop';
 import {
   Button,
   Typography,
@@ -20,7 +20,7 @@ import {
   CheckIcon,
   CloseIcon,
 } from '../../../common/base-components';
-// import 'react-image-crop/dist/ReactCrop.css';
+import 'react-image-crop/dist/ReactCrop.css';
 
 const styleSheet = (theme) => ({
   root: {
@@ -88,6 +88,8 @@ class CropperDialog extends PureComponent {
     onClose: PropTypes.func,
   };
 
+  state = { crop: { aspect: this.props.aspectRatio } };
+
   imageRef = React.createRef(null);
   cropperRef = React.createRef();
 
@@ -103,15 +105,52 @@ class CropperDialog extends PureComponent {
     return new Blob([ab], { type: 'image/jpeg' });
   };
 
+  getCroppedImage = async (image, crop, fileName) => {
+    const canvas = document.createElement("canvas");
+    const scaleX = image.naturalWidth / image.width;
+    const scaleY = image.naturalHeight / image.height;
+    canvas.width = crop.width * scaleX;
+    canvas.height = crop.height * scaleY;
+    const ctx = canvas.getContext("2d");
+
+    ctx.drawImage(
+      image,
+      crop.x * scaleX,
+      crop.y * scaleY,
+      crop.width * scaleX,
+      crop.height * scaleY,
+      0,
+      0,
+      crop.width * scaleX,
+      crop.height * scaleY,
+    );
+
+    return new Promise((resolve, reject) => {
+      canvas.toBlob(blob => {
+        if (!blob) {
+          //reject(new Error('Canvas is empty'));
+          console.error("Canvas is empty");
+          return;
+        }
+        blob.name = fileName;
+        window.URL.revokeObjectURL(this.fileUrl);
+        this.fileUrl = window.URL.createObjectURL(blob);
+        resolve(blob);
+      }, "image/jpeg", scaleX);
+    });
+  };
+
   /**
    * Event handler for saving cropped image
    * @description Call props.onSave()
    */
   handleSave = () => {
     if (this.props.onSave) {
-      const image = this.cropperRef.crop();
-      const blob = this.base64ToBlob(image);
-      this.props.onSave(blob);
+      this.getCroppedImage(
+        this.imageRef,
+        this.state.crop,
+        this.props.fileName || 'image.jpg',
+      ).then((imageUrl) => this.props.onSave(imageUrl));
     }
     this.handleClose();
   };
@@ -129,11 +168,33 @@ class CropperDialog extends PureComponent {
   /** Event handler for image loaded */
   handleImageLoaded = (image) => {
     this.imageRef = image;
+    this.setState({
+      crop: {
+        width: image.width,
+        aspect: this.props.aspectRatio
+      }
+    });
+    return false;
+  };
+
+  handleCropComplete = crop => {
+    this.makeClientCrop(crop);
   };
 
   /** Event handler for crop change */
   handleCropChange = (crop) => {
     this.setState({ crop });
+  };
+
+  makeClientCrop = async (crop) => {
+    if (this.imageRef && crop.width && crop.height) {
+      const croppedImageUrl = await this.getCroppedImage(
+        this.imageRef,
+        crop,
+        "newFile.jpeg"
+      );
+      this.setState({ croppedImageUrl });
+    }
   };
 
   /**
@@ -143,6 +204,8 @@ class CropperDialog extends PureComponent {
     const {
       title, src, className, classes: s, t, aspectRatio,
     } = this.props;
+
+    const { crop } = this.state;
 
     return (
       <Dialog
@@ -176,11 +239,18 @@ class CropperDialog extends PureComponent {
         {/** dialog content */}
         <DialogContent className={s.content}>
           <Column classes={{ box: s.cropperWrapper }}>
-            <Cropper
+            <ReactCrop
               src={src}
-              ratio={aspectRatio}
-              ref={ref => { this.cropperRef = ref; }}
+              onImageLoaded={this.handleImageLoaded}
+              crop={crop}
+              onChange={this.handleCropChange}
+              onComplete={this.handleCropComplete}
+              style={{ width: '100%' }}
             />
+            {/* <Cropper
+              src={src}
+              ref={ref => { this.cropperRef = ref; }}
+            /> */}
           </Column>
         </DialogContent>
 
