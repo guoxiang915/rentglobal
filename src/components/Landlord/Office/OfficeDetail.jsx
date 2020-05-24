@@ -162,7 +162,7 @@ class OfficeDetail extends PureComponent {
       if (response.status === 200) {
         this.props.navigate(
           "offices/add",
-          `${this.state.office._id}/${this.state.office.location.country}-${this.state.office.officeType}-${this.state.office.numberOfEmployees}`
+          `${this.state.office._id}/${this.state.office.location.country}/${this.state.office.officeType}/${this.state.office.numberOfEmployees} postes/${this.state.office.refId}-${this.state.office.title}`
         );
       }
     });

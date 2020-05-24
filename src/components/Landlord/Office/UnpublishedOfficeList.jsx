@@ -202,7 +202,7 @@ class UnpublishedOfficeList extends PureComponent {
                   office={item}
                   goDetail={this.navigate(
                     "offices",
-                    `${item._id}/${item.location.country}-${item.officeType}-${item.numberOfEmployees}`
+                    `${item._id}/${item.location.country}/${item.officeType}/${item.numberOfEmployees} postes/${item.refId}-${item.title}`
                   )}
                 />
               </Row>

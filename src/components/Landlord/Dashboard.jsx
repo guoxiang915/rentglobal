@@ -305,12 +305,12 @@ class Dashboard extends PureComponent {
     if (office.published === true) {
       this.props.navigate(
         "offices",
-        `${office._id}/${office.location.country}-${office.officeType}-${office.numberOfEmployees}`
+        `${office._id}/${office.location.country}/${office.officeType}/${office.numberOfEmployees} postes/${office.refId}-${office.title}`
       );
     } else {
       this.props.navigate(
         "offices",
-        `${office._id}/${office.location.country}-${office.officeType}-${office.numberOfEmployees}/edit`
+        `${office._id}/edit`
       );
     }
   };

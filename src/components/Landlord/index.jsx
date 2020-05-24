@@ -87,7 +87,7 @@ class Landlord extends PureComponent {
    */
   editOffice = (office) => () => {
     this.setState({ dialog: null }, () => {
-      this.props.navigate("offices", `${office._id}/${office.location.country}-${office.officeType}-${office.numberOfEmployees}/edit`);
+      this.props.navigate("offices", `${office._id}/edit`);
     });
   };
 
@@ -194,7 +194,7 @@ class Landlord extends PureComponent {
                 />
                 <Route
                   exact
-                  path={["/landlord/offices/add/:id/:officeName", "/landlord/offices/add"]}
+                  path={["/landlord/offices/add/:id/:location/:officeType/:employeeNumber/:refId-:title", "/landlord/offices/add"]}
                   render={({ match }) => (
                     <AddNewOffice
                       officeId={match.params.id}
@@ -236,7 +236,7 @@ class Landlord extends PureComponent {
                 />
                 <Route
                   exact
-                  path='/landlord/offices/:id/:officeName'
+                  path='/landlord/offices/:id/:location/:officeType/:employeeNumber/:refId-:title'
                   render={({ match }) => (
                     <OfficeDetail
                       navigate={this.props.navigate}
@@ -251,7 +251,7 @@ class Landlord extends PureComponent {
                 />
                 <Route
                   exact
-                  path='/landlord/offices/:id/:officeName/edit'
+                  path='/landlord/offices/:id/edit'
                   render={({ match }) => (
                     <AddNewOffice
                       officeId={match.params.id}
