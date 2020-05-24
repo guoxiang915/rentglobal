@@ -358,7 +358,7 @@ class AddNewOffice extends PureComponent {
           // navigate to office detail page
           this.props.navigate(
             "offices",
-            `${office._id}/${office.location.country}-${office.officeType}-${office.numberOfEmployees}`
+            `${office._id}/${office.location.country}/${office.officeType}/${office.numberOfEmployees} postes/${office.refId}-${office.title}`
           );
         } else {
           this.setState({ currentStep: currentStep + 1 });

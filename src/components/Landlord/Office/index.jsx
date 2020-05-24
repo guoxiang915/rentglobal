@@ -78,9 +78,9 @@ class Offices extends PureComponent {
   /** navigate to office detail page */
   handleNavigateOfficeDetail = (office) => () => {
     if (office.published === true) {
-      this.props.navigate('offices', `${office._id}/${office.location.country}-${office.officeType}-${office.numberOfEmployees}`);
+      this.props.navigate('offices', `${office._id}/${office.location.country}/${office.officeType}/${office.numberOfEmployees} postes/${office.refId}-${office.title}`);
     } else {
-      this.props.navigate('offices', `${office._id}/${office.location.country}-${office.officeType}-${office.numberOfEmployees}/edit`);
+      this.props.navigate('offices', `${office._id}/edit`);
     }
   };
 
