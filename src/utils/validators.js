@@ -1,4 +1,4 @@
-import { servicesCategories } from './constants';
+import { servicesCategories } from "./constants";
 
 /** Check email validation */
 export function emailValidation(email) {
@@ -11,44 +11,44 @@ export function emailValidation(email) {
  */
 export function getOfficeStatus(office) {
   if (!office) return null;
-  if (office.approved) return { status: 'approved', progress: 100 };
-  if (office.rejected) return { status: 'rejected', progress: 100 };
-  if (office.published) return { status: 'pendingForApprove', progress: 100 };
+  if (office.approved) return { status: "approved", progress: 100 };
+  if (office.rejected) return { status: "rejected", progress: 100 };
+  if (office.published) return { status: "pendingForApprove", progress: 100 };
 
   if (
     !(
-      office.title
-      && office.officeType
-      && office.pricemonthly
-      && office.location
-      && office.numberOfEmployees
+      office.title &&
+      office.officeType &&
+      office.pricemonthly &&
+      office.location &&
+      office.numberOfEmployees
     )
   ) {
-    return { status: 'incomplete', progress: 20 };
+    return { status: "incomplete", progress: 20 };
   }
   if (
     !(
-      office.coverPhotos
-      && office.coverPhotos.length >= 3
-      && office.coverPhotos.length <= 15
+      office.coverPhotos &&
+      office.coverPhotos.length >= 3 &&
+      office.coverPhotos.length <= 15
     )
   ) {
-    return { status: 'incomplete', progress: 40 };
+    return { status: "incomplete", progress: 40 };
   }
   let servicesAndAmenities = false;
   if (office.servicesAndAmenities) {
-    servicesCategories.forEach((cat) => {
+    servicesCategories.forEach(cat => {
       if (
-        office.servicesAndAmenities[cat.name]
-        && office.servicesAndAmenities[cat.name].length
+        office.servicesAndAmenities[cat.name] &&
+        office.servicesAndAmenities[cat.name].length
       ) {
         servicesAndAmenities = true;
       }
     });
   }
-  if (!servicesAndAmenities) return { status: 'incomplete', progress: 60 };
+  if (!servicesAndAmenities) return { status: "incomplete", progress: 60 };
 
-  return { status: 'unpublish', progress: 80 };
+  return { status: "unpublish", progress: 80 };
 }
 
 /**
@@ -70,24 +70,24 @@ export function getProfileStatus(user, userRole) {
   }
 
   const documentTypes = {
-    landlord: ['legalStatusDocuments', 'checkSpecimen', 'leases'],
+    landlord: ["legalStatusDocuments", "checkSpecimen", "leases"],
     company: [
-      'legalStatusDocuments',
-      'checkSpecimen',
-      'copyOfPhotoIds',
-      'lastThreeBalances',
-      'commercialBrochures',
-    ],
+      "legalStatusDocuments",
+      "checkSpecimen",
+      "copyOfPhotoIds",
+      "lastThreeBalances",
+      "commercialBrochures"
+    ]
   };
   const profile = user[`${userRole}Profile`];
 
   if (profile) {
-    documentTypes[userRole].forEach((docType) => {
+    documentTypes[userRole].forEach(docType => {
       if (profile[docType] && profile[docType].length) {
         profileCompleted += 10;
         profileCharged += 15;
 
-        if (profile[docType].find((docItem) => docItem.approved === true)) {
+        if (profile[docType].find(docItem => docItem.approved === true)) {
           profileCompleted += 5;
         }
       }
@@ -98,15 +98,28 @@ export function getProfileStatus(user, userRole) {
     profileCompleted = 100;
   }
 
-  profileCompleteness = profileCompleted === 100
-    ? 'profileCompleted'
-    : profileCompleted > 60
-      ? 'profileNotComplete'
-      : 'profileNeedAttention';
+  profileCompleteness =
+    profileCompleted === 100
+      ? "profileCompleted"
+      : profileCompleted > 60
+      ? "profileNotComplete"
+      : "profileNeedAttention";
 
   return {
     completed: profileCompleted,
     charged: profileCharged,
-    completeness: profileCompleteness,
+    completeness: profileCompleteness
   };
 }
+
+/**
+ * Check same date
+ */
+export const checkEqualDate = (date1, date2) => {
+  const d1 = new Date(date1);
+  const d2 = new Date(date2);
+  return (
+    new Date(d1.getFullYear(), d1.getMonth(), d1.getDate()).getTime() ===
+    new Date(d2.getFullYear(), d2.getMonth(), d2.getDate()).getTime()
+  );
+};

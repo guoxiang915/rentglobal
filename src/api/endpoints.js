@@ -1,5 +1,8 @@
 import api from "./api";
-import { reviews as reviewsMockData } from "../common/mock/officeMockData";
+import {
+  events as eventsMockData,
+  reviews as reviewsMockData
+} from "../common/mock/officeMockData";
 
 /**
  * Upload file to the api
@@ -13,7 +16,7 @@ export const uploadFile = (file, permission) => {
     formData.append("permission", permission);
   }
   const config = {
-    headers: { "Content-Type": undefined },
+    headers: { "Content-Type": undefined }
   };
   return api.post("/file/upload/", formData, config);
 };
@@ -24,7 +27,7 @@ export const uploadFile = (file, permission) => {
  * @param {string} fileName name of file to be downloaded
  */
 export const downloadFile = (fileId, fileName) => {
-  api.get(`/file/${fileId}/`, { responseType: "blob" }).then((response) => {
+  api.get(`/file/${fileId}/`, { responseType: "blob" }).then(response => {
     const url = window.URL.createObjectURL(response.data);
     const el = document.createElement("a");
 
@@ -50,8 +53,8 @@ export const deleteUserDocument = ({ userRole, docType, docFile }) =>
   api.delete(`/users/me/delete/document?role=${userRole}`, {
     data: {
       document: docType,
-      documentFileId: docFile._id,
-    },
+      documentFileId: docFile._id
+    }
   });
 
 export const deleteUserAccount = () => api.delete(`/users/me/delete`);
@@ -72,14 +75,14 @@ export const getAvailableOffices = () => getOffices();
 export const getUnpublishedOffices = () => getOffices();
 
 /** Call api to get office from id */
-export const getOfficeById = (officeId) =>
+export const getOfficeById = officeId =>
   api.get(`/users/me/offices/${officeId}/`);
 
 /** Call api to create office */
-export const createOffice = (office) => api.post("/offices/", office);
+export const createOffice = office => api.post("/offices/", office);
 
 /** Call api to update office */
-export const updateOffice = (office) =>
+export const updateOffice = office =>
   api.put(`/users/me/offices/${office._id}/`, { office });
 
 /** Call api to save services & amenities of office */
@@ -91,11 +94,11 @@ export const saveVisibility = (officeId, payload) =>
   api.put(`/offices/${officeId}/visit-hours/`, payload);
 
 /** Call api to publish office */
-export const publishOffice = (officeId) =>
+export const publishOffice = officeId =>
   api.put(`/offices/${officeId}/publish/`);
 
 /** Call api to unpublish office */
-export const unpublishOffice = (officeId) =>
+export const unpublishOffice = officeId =>
   api.put(`/offices/${officeId}/unpublish/`);
 
 /** Call api to upload office photo */
@@ -115,22 +118,22 @@ export const deleteOfficePhoto = (officeId, photoId) =>
   api.delete(`/offices/${officeId}/cover-photos/${photoId}/`);
 
 /** Call api to delete office */
-export const deleteOffice = (officeId) => api.delete(`/offices/${officeId}/`);
+export const deleteOffice = officeId => api.delete(`/offices/${officeId}/`);
 
 /** Call api to set favorite office */
-export const favoriteOffice = (officeId) =>
+export const favoriteOffice = officeId =>
   api.put(`/offices/${officeId}/favorite/`);
 
 /** Call api to search offices with advanced filters */
-export const advancedSearchOffices = (payload) =>
+export const advancedSearchOffices = payload =>
   api.post("/offices/advanced-search/", payload);
 
 /** Call api to summary locations */
-export const locationSummary = (params) =>
+export const locationSummary = params =>
   api.get("/offices/location-summary/", { params });
 
 /** Call api to get all published offices */
-export const getPublishedOffices = (params) => api.get("/offices/", { params });
+export const getPublishedOffices = params => api.get("/offices/", { params });
 
 /**
  * Call api to get all approved offices
@@ -147,7 +150,7 @@ export const getRecommendedOffices = () => getPublishedOffices();
 /**
  * Call api to get office by id
  */
-export const getApprovedOfficeById = (officeId) =>
+export const getApprovedOfficeById = officeId =>
   api.get(`/offices/${officeId}/`);
 
 /**
@@ -160,12 +163,12 @@ export const getConsultantByOffice = () =>
     data: {
       generalInfo: {
         username: "Consultant Name",
-        phoneNumber: { number: "111-222-3333", verified: false },
+        phoneNumber: { number: "111-222-3333", verified: false }
       },
       avatar: {},
       description:
-        "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.\nLorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
-    },
+        "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.\nLorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
+    }
   });
 // return api.get(`/offices/${officeId}/user/`);
 
@@ -176,16 +179,23 @@ export const getReviewsByOffice = () =>
   Promise.resolve({ status: 200, data: reviewsMockData });
 
 /**
+ * Call api to get events of office
+ * @param {string} officeId Office id for getting events data
+ */
+export const getEventsByOffice = () =>
+  Promise.resolve({ status: 200, data: eventsMockData });
+
+/**
  * Call api to get similar offices
  * @deprecated for now, admin doesn't exist, and call api for getting published offices
  */
-export const getSimilarOffices = (officeId) =>
+export const getSimilarOffices = officeId =>
   api.get(`/offices/${officeId}/similar/`);
 
 /** Call api to verify phone number */
-export const verifyPhoneNumber = (phoneNumber) =>
+export const verifyPhoneNumber = phoneNumber =>
   api.post("/users/me/verify-phone-number", phoneNumber);
 
 /** Call api to verify phone code */
-export const verifyPhoneCode = (phoneCode) =>
+export const verifyPhoneCode = phoneCode =>
   api.post("/users/me/confirm-phone-code", phoneCode);

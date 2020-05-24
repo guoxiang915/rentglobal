@@ -56,18 +56,20 @@ export default withStyles(styleSheet, { name: "SearchbarWithSorter" })(
               fullWidth
             />
           </Column>
-          <Select
-            options={sortOptions}
-            renderOption={item => (
-              <Typography fontSizeS textMediumGrey>
-                {t(item.title)}
-              </Typography>
-            )}
-            displayEmpty
-            value={sorter}
-            onChange={handleChangeSort}
-            className={s.sorter}
-          />
+          {sortOptions && (
+            <Select
+              options={sortOptions}
+              renderOption={item => (
+                <Typography fontSizeS textMediumGrey>
+                  {t(item.title)}
+                </Typography>
+              )}
+              displayEmpty
+              value={sorter}
+              onChange={handleChangeSort}
+              className={s.sorter}
+            />
+          )}
         </Row>
       );
     }

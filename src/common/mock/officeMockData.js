@@ -48,6 +48,45 @@ export const offices = [
   }
 ];
 
+export const events = [
+  {
+    type: "visit",
+    date: new Date(2020, 4, 20),
+    start: new Date(0, 0, 0, 1, 0, 10),
+    end: new Date(0, 0, 0, 5, 0, 30),
+    name: "Company 1",
+    content:
+      "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
+  },
+  {
+    type: "event",
+    date: new Date(2020, 4, 20),
+    start: new Date(0, 0, 0, 16, 0, 0),
+    end: new Date(0, 0, 0, 18, 0, 30),
+    name: "Event 1",
+    content:
+      "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
+  },
+  {
+    type: "event",
+    date: new Date(2020, 4, 29),
+    start: new Date(0, 0, 0, 1, 0, 10),
+    end: new Date(0, 0, 0, 5, 0, 30),
+    name: "Event 2",
+    content:
+      "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
+  },
+  {
+    type: "visit",
+    date: new Date(2020, 4, 20),
+    start: new Date(0, 0, 0, 19, 0, 50),
+    end: new Date(0, 0, 0, 21, 0, 30),
+    name: "Company 3",
+    content:
+      "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
+  }
+];
+
 export const reviews = [
   {
     company: {

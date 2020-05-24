@@ -1,13 +1,14 @@
 /**
- * Convert date to mm:dd AM/PM format
+ * Convert date to hh:mm AM/PM format
  * @param {Date} date Date object to be converted
  */
 export function formatHrMin(date) {
   const d = new Date(date);
-  return d.toLocaleString('en-US', {
-    hour: 'numeric',
-    minute: 'numeric',
-    hour12: true,
+  return d.toLocaleTimeString("en-US", {
+    // hour: 'numeric',
+    // minute: 'numeric',
+    // hour12: true,
+    timeStyle: "short"
   });
 }
 
@@ -24,7 +25,7 @@ export function formatDate(date) {
   if (month.length < 2) month = `0${month}`;
   if (day.length < 2) day = `0${day}`;
 
-  return [year, month, day].join('-');
+  return [year, month, day].join("-");
 }
 
 /**
@@ -34,25 +35,25 @@ export function formatDate(date) {
 export function formatDate1(date) {
   // TODO: define this constants from i18n
   const months = [
-    'Jan',
-    'Feb',
-    'Mar',
-    'Apr',
-    'May',
-    'Jun',
-    'Jul',
-    'Aug',
-    'Sep',
-    'Oct',
-    'Nov',
-    'Dec',
+    "Jan",
+    "Feb",
+    "Mar",
+    "Apr",
+    "May",
+    "Jun",
+    "Jul",
+    "Aug",
+    "Sep",
+    "Oct",
+    "Nov",
+    "Dec"
   ];
   const d = new Date(date);
   const year = d.getFullYear();
   let day = `${d.getDate()}`;
   if (day.length < 2) day = `0${day}`;
 
-  return [year, months[d.getMonth()], day].join(' ');
+  return [year, months[d.getMonth()], day].join(" ");
 }
 
 /**
@@ -61,13 +62,13 @@ export function formatDate1(date) {
  */
 export function getWeekday(date) {
   const weekdays = [
-    'Sunday',
-    'Monday',
-    'Tuesday',
-    'Wednesday',
-    'Thursday',
-    'Friday',
-    'Saturday',
+    "Sunday",
+    "Monday",
+    "Tuesday",
+    "Wednesday",
+    "Thursday",
+    "Friday",
+    "Saturday"
   ];
   return weekdays[new Date(date).getDay()];
 }
@@ -85,7 +86,7 @@ export function getFirstDayOfWeek(date) {
  * Format number with commas per thousands
  */
 export function numberWithCommas(x) {
-  return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+  return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
 }
 
 /**
@@ -93,8 +94,11 @@ export function numberWithCommas(x) {
  */
 export function numberWithSpaces(x, length) {
   if (length) {
-    return x.toString().padStart(length, '0').replace(/\B(?=(\d{3})+(?!\d))/g, ' ');
+    return x
+      .toString()
+      .padStart(length, "0")
+      .replace(/\B(?=(\d{3})+(?!\d))/g, " ");
   } else {
-    return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ' ');
+    return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, " ");
   }
 }

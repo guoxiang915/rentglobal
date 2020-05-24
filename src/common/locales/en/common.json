@@ -502,5 +502,14 @@
   "approve": "Approve",
   "approved": "Approved",
   "unapproved": "Unapproved",
-  "latest": "Latest"
+  "latest": "Latest",
+  "searchOnCalendar": "Search on calendar",
+  "addEvent": "Add event",
+  "week": "Week",
+  "generalEvent": "General event",
+  "gotoToday": "Go to today",
+  "selectedDay": "Selected Day",
+  "requestForVisiting": "Request for visiting",
+  "decline": "Decline",
+  "accept": "Accept"
 }

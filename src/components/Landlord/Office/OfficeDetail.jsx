@@ -26,7 +26,8 @@ import {
   OfficeTitlebar,
   OfficeGeneralInfo,
   OfficeGallery,
-  OfficeReviews
+  OfficeReviews,
+  OfficeCalendar
 } from "../../../common/base-layouts";
 import { ShareOfficeDialog } from "../../Layout/Dialogs";
 
@@ -382,9 +383,12 @@ class OfficeDetail extends PureComponent {
           {office && currentTab === "reviews" && (
             <OfficeReviews officeId={this.props.officeId} />
           )}
+          {office && currentTab === "calendar" && (
+            <OfficeCalendar officeId={this.props.officeId} />
+          )}
         </Row>
 
-        <Row fullWidth paddingBottomDouble>
+        <Row fullWidth paddingTopDouble paddingBottomDouble>
           {office && <OfficeGallery coverPhotos={office.coverPhotos} />}
         </Row>
 
