@@ -805,7 +805,7 @@ class Home extends PureComponent {
   handleOfficeDetail = (office) => () => {
     this.props.navigate(
       "offices",
-      `${office._id}/${office.location.country}-${office.officeType}-${office.numberOfEmployees}`
+      `${office._id}/${office.location.country}/${office.officeType}/${office.numberOfEmployees} postes/${office.refId}-${office.title}`
     );
   };
 

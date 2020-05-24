@@ -16,7 +16,7 @@ const Routes = () => (
       <Route exact path='/search' component={Search} noSidebar />
       <Route
         exact
-        path='/offices/:id/:officeName'
+        path='/offices/:id/:location/:officeType/:employeeNumber/:refId-:title'
         component={({ match, ...props }) => (
           <OfficeDetail officeId={match.params.id} {...props} />
         )}
