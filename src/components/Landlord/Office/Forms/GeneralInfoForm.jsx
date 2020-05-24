@@ -6,8 +6,10 @@ import clsx from "clsx";
 import withWidth, { isWidthDown } from "@material-ui/core/withWidth";
 import { Grid } from "@material-ui/core";
 import {
+  Box,
   Row,
   Column,
+  Stretch,
   Typography,
   TextField,
   NumberField,
@@ -19,7 +21,9 @@ import {
   // Chip,
   GooglePlaceField,
   GoogleMap,
-  EditIcon
+  EditIcon,
+  CloseIcon,
+  CheckIcon
 } from "../../../../common/base-components";
 import { TabWrapper } from "../../../../common/base-layouts";
 import {
@@ -91,6 +95,15 @@ const styleSheet = theme => ({
 
   fullWidth: {
     width: "100%"
+  },
+
+  formButtons: {
+    paddingTop: 160,
+    paddingBottom: 56,
+    [theme.breakpoints.down("xs")]: {
+      paddingTop: 64,
+      paddingBottom: 24
+    }
   }
 });
 
@@ -98,14 +111,18 @@ class GeneralInfoForm extends PureComponent {
   static propTypes = {
     office: PropTypes.object.isRequired,
     error: PropTypes.array,
-    onChangeField: PropTypes.func.isRequired,
+    onCancel: PropTypes.func,
+    onSave: PropTypes.func,
+    onNext: PropTypes.func,
     classes: PropTypes.object,
     t: PropTypes.func
   };
 
   state = {
     // importOfficeUrl: '',
-    editAddressMode: !this.props.office?.location?.fullAddress
+    redraw: false,
+    editAddressMode: !this.props.office?.location?.fullAddress,
+    office: this.props.office || {}
   };
 
   /**
@@ -115,6 +132,17 @@ class GeneralInfoForm extends PureComponent {
    */
   updateState = field => value => {
     this.setState({ [field]: value });
+  };
+
+  /**
+   * Update parent value by event
+   * @member
+   * @param {string} field Name of field to be updated
+   */
+  handleChangeOffice = field => value => {
+    const { office } = this.state;
+    office[field] = value;
+    this.setState({ redraw: !this.state.redraw });
   };
 
   /**
@@ -131,8 +159,8 @@ class GeneralInfoForm extends PureComponent {
    * @member
    * @param {string} field Name of field to be updated
    */
-  handleChangePropsByEvent = field => value => () => {
-    this.props.onChangeField(field, value);
+  handleChangeOfficeByEvent = field => value => () => {
+    this.handleChangeOffice(field)(value);
   };
 
   /**
@@ -140,18 +168,8 @@ class GeneralInfoForm extends PureComponent {
    * @member
    * @param {string} field Name of field to be updated
    */
-  handleChangePropsByEventValue = field => e => {
-    this.props.onChangeField(field, e.target.value);
-  };
-
-  /**
-   * Update parent value by event
-   * @member
-   * @param {string} field Name of field to be updated
-   */
-  handleChangeProps = field => value => {
-    console.log(field, value);
-    this.props.onChangeField(field, value);
+  handleChangeOfficeByEventValue = field => e => {
+    this.handleChangeOffice(field)(e.target.value);
   };
 
   /** Toggle edit address mode */
@@ -161,15 +179,14 @@ class GeneralInfoForm extends PureComponent {
 
   /** Change location fields */
   handleChangeLocation = field => e => {
-    const location = { ...this.props.office.location, [field]: e.target.value };
-    this.handleChangeProps("location")(location);
+    const location = { ...this.state.office.location, [field]: e.target.value };
+    this.handleChangeOffice("location")(location);
   };
 
   handleSelectLocation = value => {
-    console.log(this.props.office.location);
-    const location = { ...this.props.office.location, ...value };
+    const location = { ...this.state.office.location, ...value };
     this.setState({ editAddressMode: false }, () => {
-      this.handleChangeProps("location")(location);
+      this.handleChangeOffice("location")(location);
     });
   };
 
@@ -219,22 +236,21 @@ class GeneralInfoForm extends PureComponent {
 
   /** Render general textfields */
   renderFormField = ({ tag, field, options, ...props }) => {
-    const { office, error, t } = this.props;
+    const { error, t } = this.props;
+    const { office } = this.state;
     let validation = null;
     try {
       validation = error && error.find(item => item.param === field);
     } catch (e) {
       validation = null;
     }
-
-    console.log(field, office);
     switch (tag) {
     case "textfield":
       return (
         <TextField
           variant="outlined"
           value={office[field]}
-          onChange={this.handleChangePropsByEventValue(field)}
+          onChange={this.handleChangeOfficeByEventValue(field)}
           error={!!validation}
           helperText={validation && validation.msg}
           {...props}
@@ -244,7 +260,7 @@ class GeneralInfoForm extends PureComponent {
       return (
         <NumberField
           value={office[field]}
-          onChange={this.handleChangePropsByEventValue(field)}
+          onChange={this.handleChangeOfficeByEventValue(field)}
           error={!!validation}
           helperText={validation && validation.msg}
           {...props}
@@ -263,7 +279,7 @@ class GeneralInfoForm extends PureComponent {
           }
           displayEmpty
           value={office[field] || ""}
-          onChange={this.handleChangePropsByEventValue(field)}
+          onChange={this.handleChangeOfficeByEventValue(field)}
           error={!!validation}
           helperText={validation && validation.msg}
           {...props}
@@ -274,7 +290,7 @@ class GeneralInfoForm extends PureComponent {
         <GooglePlaceField
           variant="outlined"
           value={office[field]}
-          onChange={this.handleChangePropsByEventValue(field)}
+          onChange={this.handleChangeOfficeByEventValue(field)}
           {...props}
           inputProps={{
             ...props.inputProps,
@@ -295,6 +311,7 @@ class GeneralInfoForm extends PureComponent {
     ) {
       state = {
         ...state,
+        office: this.props.office || {},
         editAddressMode: !this.props.office?.location?.fullAddress
       };
     }
@@ -307,9 +324,18 @@ class GeneralInfoForm extends PureComponent {
    * Renderer function
    */
   render() {
-    const { office, classes: s, t, width } = this.props;
+    const {
+      onCancel,
+      onSave,
+      onNext,
+      isLoading,
+      classes: s,
+      t,
+      width
+    } = this.props;
     const {
       // importOfficeUrl,
+      office,
       editAddressMode
     } = this.state;
     const GridRow = this.renderGridRow;
@@ -500,7 +526,7 @@ class GeneralInfoForm extends PureComponent {
             label="24x7"
             className={s.textField250Fixed}
             isChecked={!!office.fullTimeAccessibility}
-            onChange={this.handleChangePropsByEvent("fullTimeAccessibility")(
+            onChange={this.handleChangeOfficeByEvent("fullTimeAccessibility")(
               !office.fullTimeAccessibility
             )}
           />
@@ -519,7 +545,7 @@ class GeneralInfoForm extends PureComponent {
             label={t("undefineDuration")}
             className={s.textField250Fixed}
             isChecked={office.leaseDurationPerMonths === null}
-            onChange={this.handleChangePropsByEvent("leaseDurationPerMonths")(
+            onChange={this.handleChangeOfficeByEvent("leaseDurationPerMonths")(
               null
             )}
           />
@@ -710,6 +736,54 @@ class GeneralInfoForm extends PureComponent {
             />
           </GridRow>
         </TabWrapper>
+
+        <Row fullWidth classes={{ box: s.formButtons }}>
+          {/** Show cancel button */}
+          {onCancel && (
+            <Button
+              link="errorRed"
+              background="secondaryLight"
+              onClick={onCancel}
+            >
+              <CloseIcon style={{ width: 9, height: 9 }} />
+              <Typography paddingLeft fontSizeS>
+                {t("cancel")}
+              </Typography>
+            </Button>
+          )}
+
+          <Stretch />
+
+          {/** Show save button */}
+          {onSave && (
+            <Button
+              link="primary"
+              background="normalLight"
+              inverse
+              onClick={() => onSave(this.state.office)}
+              loading={isLoading}
+            >
+              <CheckIcon style={{ width: 16, height: 16 }} />
+              <Typography paddingLeft fontSizeS>
+                {t("save")}
+              </Typography>
+            </Button>
+          )}
+
+          <Box paddingLeft />
+
+          {/** Show next button */}
+          {onNext && (
+            <Button
+              variant="primary"
+              onClick={() => onNext(this.state.office)}
+              style={{ width: 215 }}
+              shadow
+            >
+              <Typography fontSizeS>{t("nextStep")}</Typography>
+            </Button>
+          )}
+        </Row>
       </Column>
     );
   }

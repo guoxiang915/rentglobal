@@ -6,7 +6,7 @@ import {
   DialogContent,
   DialogActions,
   Grid,
-  withStyles,
+  withStyles
 } from "@material-ui/core";
 import clsx from "clsx";
 import { withTranslation } from "react-i18next";
@@ -17,18 +17,18 @@ import {
   Row,
   Stretch,
   Column,
-  TextField,
+  TextField
 } from "../../../common/base-components";
 import { CloseIcon, CheckIcon } from "../../../common/base-components/Icons";
 import MomentUtils from "@date-io/moment";
 import {
   MuiPickersUtilsProvider,
-  KeyboardTimePicker,
+  KeyboardTimePicker
 } from "@material-ui/pickers";
 import { weekdays } from "../../../utils/constants";
 import { formatDate } from "../../../utils/formatters";
 
-const styleSheet = (theme) => ({
+const styleSheet = theme => ({
   root: {
     maxWidth: 1056,
     maxHeight: 512,
@@ -39,14 +39,14 @@ const styleSheet = (theme) => ({
 
     [theme.breakpoints.down("sm")]: {
       minWidth: 320,
-      minHeight: "auto",
-    },
+      minHeight: "auto"
+    }
   },
 
   header: {
     width: "100%",
     padding: "12px 40px",
-    borderBottom: `1px solid ${theme.colors.primary.borderGrey}`,
+    borderBottom: `1px solid ${theme.colors.primary.borderGrey}`
   },
 
   content: {
@@ -56,11 +56,11 @@ const styleSheet = (theme) => ({
     // },
     display: "flex",
     alignItems: "center",
-    justifyContent: "center",
+    justifyContent: "center"
   },
 
   container: {
-    width: 215,
+    width: 215
   },
 
   date: {
@@ -70,7 +70,7 @@ const styleSheet = (theme) => ({
     borderRadius: 99999,
     alignItems: "center",
     paddingLeft: 16,
-    paddingRight: 16,
+    paddingRight: 16
   },
 
   timePicker: {
@@ -79,25 +79,25 @@ const styleSheet = (theme) => ({
     borderRadius: 99999,
     border: theme.colors.primary.borderGrey,
     color: theme.colors.primary.darkGrey,
-    ...theme.fonts.size.fontSizeS,
+    ...theme.fonts.size.fontSizeS
   },
 
   icon: {
-    color: theme.colors.primary.borderGrey,
+    color: theme.colors.primary.borderGrey
   },
 
   footer: {
     width: "100%",
     padding: "12px 40px",
-    borderTop: `1px solid ${theme.colors.primary.borderGrey}`,
+    borderTop: `1px solid ${theme.colors.primary.borderGrey}`
   },
 
   applyButton: {
     width: 175,
     [theme.breakpoints.down("xs")]: {
-      width: "auto",
-    },
-  },
+      width: "auto"
+    }
+  }
 });
 
 class AddTimeDialog extends PureComponent {
@@ -117,12 +117,12 @@ class AddTimeDialog extends PureComponent {
     /** Event handler for saving time */
     onSave: PropTypes.func,
     /** Event handler for closing dialog */
-    onClose: PropTypes.func,
+    onClose: PropTypes.func
   };
 
   state = {
     start: this.props.start || new Date(0, 0, 0, 0, 0, 0),
-    end: this.props.end || new Date(0, 0, 0, 12, 0, 0),
+    end: this.props.end || new Date(0, 0, 0, 12, 0, 0)
   };
 
   /**
@@ -143,16 +143,16 @@ class AddTimeDialog extends PureComponent {
       this.props.onSave({
         date: new Date(this.props.date),
         start: new Date(this.state.start),
-        end: new Date(this.state.end),
+        end: new Date(this.state.end)
       });
     }
   };
 
-  handleStartChange = (start) => {
+  handleStartChange = start => {
     this.setState({ start });
   };
 
-  handleEndChange = (end) => {
+  handleEndChange = end => {
     this.setState({ end });
   };
 
@@ -177,8 +177,8 @@ class AddTimeDialog extends PureComponent {
               <Stretch />
               {/** close button */}
               <Button
-                link='errorRed'
-                background='secondaryLight'
+                link="errorRed"
+                background="secondaryLight"
                 onClick={this.handleClose}
               >
                 <Typography fontSizeS alignChildrenCenter>
@@ -204,15 +204,15 @@ class AddTimeDialog extends PureComponent {
               <KeyboardTimePicker
                 value={start}
                 maxDate={end}
-                id='start-time-picker'
+                id="start-time-picker"
                 onChange={this.handleStartChange}
                 KeyboardButtonProps={{
-                  "aria-label": "change time",
+                  "aria-label": "change time"
                 }}
                 TextFieldComponent={({ InputProps, ...props }) => (
                   <TextField
                     {...props}
-                    variant='outlined'
+                    variant="outlined"
                     fullWidth
                     className={s.timePicker}
                     endAdornment={InputProps.endAdornment}
@@ -223,15 +223,15 @@ class AddTimeDialog extends PureComponent {
               <KeyboardTimePicker
                 value={end}
                 minDate={start}
-                id='end-time-picker'
+                id="end-time-picker"
                 onChange={this.handleEndChange}
                 KeyboardButtonProps={{
-                  "aria-label": "change time",
+                  "aria-label": "change time"
                 }}
                 TextFieldComponent={({ InputProps, ...props }) => (
                   <TextField
                     {...props}
-                    variant='outlined'
+                    variant="outlined"
                     fullWidth
                     className={s.timePicker}
                     endAdornment={InputProps.endAdornment}
@@ -246,14 +246,14 @@ class AddTimeDialog extends PureComponent {
           <DialogActions className={s.footer}>
             <Grid
               container
-              direction='row'
-              justify='space-between'
-              alignItems='center'
+              direction="row"
+              justify="space-between"
+              alignItems="center"
               className={s.filterPanel}
             >
               <Button
-                link='errorRed'
-                background='secondaryLight'
+                link="errorRed"
+                background="secondaryLight"
                 onClick={this.handleClose}
               >
                 <Typography fontSizeS alignChildrenCenter>
@@ -262,12 +262,12 @@ class AddTimeDialog extends PureComponent {
                 </Typography>
               </Button>
               <Button
-                variant='primary'
+                variant="primary"
                 onClick={this.handleSave}
                 className={s.applyButton}
               >
                 <Typography fontSizeS alignChildrenCenter>
-                  <CheckIcon fontSize='small' />
+                  <CheckIcon fontSize="small" />
                   <Typography paddingLeft>{t("saveTime")}</Typography>
                 </Typography>
               </Button>
