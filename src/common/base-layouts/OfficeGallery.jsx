@@ -123,8 +123,8 @@ const styleSheet = (theme) => ({
 
   navigationContainer: {
     position: "absolute",
-    right: 0,
-    width: "calc(25% - 15px)",
+    right: 6,
+    width: "calc(25% - 21px)",
     display: "flex",
     flexDirection: "column",
     alignItems: "center",
