@@ -119,7 +119,7 @@ class CallConsultantDialog extends PureComponent {
    * Event handler for skype call
    */
   handleCall = (phoneNumber) => {
-    window.open("tel:" + (phoneNumber || '+14507529733'));
+    window.open("tel:" + phoneNumber);
   };
 
   /** Copy phone number */
@@ -195,7 +195,7 @@ class CallConsultantDialog extends PureComponent {
             <Row fullWidth>
               <TextField
                 variant="outlined"
-                value={(office.consultant && office.consultant.generalInfo && office.consultant.generalInfo.phoneNumber && office.consultant.generalInfo.phoneNumber.number) ? office.consultant.generalInfo.phoneNumber.number : ''}
+                value={(office.consultant && office.consultant.generalInfo && office.consultant.generalInfo.phoneNumber && office.consultant.generalInfo.phoneNumber.number) ? office.consultant.generalInfo.phoneNumber.number : '+14507529733'}
                 className={s.profileInput}
                 fullWidth
                 startAdornment={<PhoneIcon className={s.outlineIcon} />}
@@ -236,11 +236,11 @@ class CallConsultantDialog extends PureComponent {
           <Box fullWidth paddingTop>
             <Button
               variant="primary"
-              onClick={() => this.handleCall((office.consultant && office.consultant.generalInfo && office.consultant.generalInfo.phoneNumber && office.consultant.generalInfo.phoneNumber.number) ? office.consultant.generalInfo.phoneNumber.number : '')}
+              onClick={() => this.handleCall((office.consultant && office.consultant.generalInfo && office.consultant.generalInfo.phoneNumber && office.consultant.generalInfo.phoneNumber.number) ? office.consultant.generalInfo.phoneNumber.number : '+14507529733')}
               shadow
               fullWidth
               className={s.callButton}
-              disabled={!(office.consultant && office.consultant.generalInfo && office.consultant.generalInfo.phoneNumber && office.consultant.generalInfo.phoneNumber.number)}
+              // disabled={!(office.consultant && office.consultant.generalInfo && office.consultant.generalInfo.phoneNumber && office.consultant.generalInfo.phoneNumber.number)}
             >
               <CallIcon style={{ width: 24, height: 24 }} />
               <Typography paddingLeftHalf fontSizeM fontWeightBold>

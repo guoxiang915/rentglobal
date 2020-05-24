@@ -28,7 +28,9 @@ import {
   TwitterBorderIcon,
   FacebookBorderIcon,
   LinkedinBorderIcon,
-  NetworkIcon,
+  ShareIcon,
+  GoogleIcon,
+  YahooIcon
 } from "../../../common/base-components/Icons";
 
 const styleSheet = (theme) => ({
@@ -64,6 +66,23 @@ const styleSheet = (theme) => ({
   socialIcon: {
     width: 39,
     height: 39,
+  },
+
+  socialButton: {
+    display: 'flex',
+    width: 39,
+    height: 39,
+    borderRadius: '50%',
+    alignItems: 'center',
+    justifyContent: 'center',
+    border: '1px solid #e8e8e8',
+    padding: 7,
+    color: '#b9b9b9',
+
+    "&:hover": {
+      color: '#d7df23',
+      border: '1px solid #d7df23',
+    }
   },
 
   footer: {
@@ -147,36 +166,57 @@ class ShareOfficeDialog extends PureComponent {
           <Row fullWidth justifyChildrenCenter>
             <TwitterShareButton
               url={window.location.href}
-              className={s.socialIcon}
             >
-              <TwitterBorderIcon style={{ width: 17, height: 14 }} />
+              <span className={s.socialButton}>
+                <TwitterBorderIcon style={{ width: 17, height: 14 }} />
+              </span>
             </TwitterShareButton>
             <Box paddingLeftHalf />
             <FacebookShareButton
               url={window.location.href}
-              className={s.socialIcon}
             >
-              <FacebookBorderIcon style={{ width: 10, height: 17 }} />
+              <span className={s.socialButton}>
+                <FacebookBorderIcon style={{ width: 10, height: 17 }} />
+              </span>
             </FacebookShareButton>
-            {/* <Box paddingLeftHalf />
-            <InstapaperShareButton url={window.location.href} className={s.socialIcon}>
-              <InstagramBorderIcon style={{ width: 17, height: 17 }} />
-            </InstapaperShareButton> */}
             <Box paddingLeftHalf />
             <LinkedinShareButton
               url={window.location.href}
-              className={s.socialIcon}
             >
-              <LinkedinBorderIcon style={{ width: 15, height: 17 }} />
+              <span className={s.socialButton}>
+                <LinkedinBorderIcon style={{ width: 15, height: 17 }} />
+              </span>
             </LinkedinShareButton>
             <Box paddingLeftHalf />
-            <Button
+            <a
               variant='icon'
-              onClick={this.handleShareSocial("network")}
-              className={s.socialIcon}
+              className={s.socialButton}
+              href={`https://mail.google.com/mail/?view=cm&su=RentGlobal Office Share&body=${window.location.href}`}
+              target="_blank"
+              rel="noopener noreferrer"
             >
-              <NetworkIcon style={{ width: 19, height: 16 }} />
-            </Button>
+              <GoogleIcon style={{ width: 15, height: 15 }} />
+            </a>
+            <Box paddingLeftHalf />
+            <a
+              variant='icon'
+              className={s.socialButton}
+              href={`http://compose.mail.yahoo.com/?subj=RentGlobal Office Share&body=${window.location.href}`}
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              <YahooIcon style={{ width: 17, height: 17 }} />
+            </a>
+            <Box paddingLeftHalf />
+            <a
+              variant='icon'
+              href={`mailto:?subject=RentGlobal Office Share&body=${window.location.href}`}
+              className={s.socialButton}
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              <ShareIcon style={{ width: 19, height: 16 }} />
+            </a>
           </Row>
         </DialogActions>
       </Dialog>
