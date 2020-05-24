@@ -240,7 +240,7 @@ class CallConsultantDialog extends PureComponent {
               shadow
               fullWidth
               className={s.callButton}
-              disabled={!(office.consultant && office.consultant.generalInfo && office.consultant.generalInfo.phoneNumber && office.consultant.generalInfo.phoneNumber.number)}
+              // disabled={!(office.consultant && office.consultant.generalInfo && office.consultant.generalInfo.phoneNumber && office.consultant.generalInfo.phoneNumber.number)}
             >
               <CallIcon style={{ width: 24, height: 24 }} />
               <Typography paddingLeftHalf fontSizeM fontWeightBold>
