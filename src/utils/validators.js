@@ -102,8 +102,8 @@ export function getProfileStatus(user, userRole) {
     profileCompleted === 100
       ? "profileCompleted"
       : profileCompleted > 60
-      ? "profileNotComplete"
-      : "profileNeedAttention";
+        ? "profileNotComplete"
+        : "profileNeedAttention";
 
   return {
     completed: profileCompleted,
