@@ -76,9 +76,12 @@ class Offices extends PureComponent {
   }
 
   /** navigate to office detail page */
-  handleNavigateOfficeDetail = (office) => () => {
+  handleNavigateOfficeDetail = (office, t) => () => {
     if (office.published === true) {
-      this.props.navigate('offices', `${office._id}/${office.location.country}/${office.officeType}/${office.numberOfEmployees} postes/${office.refId}-${office.title}`);
+      this.props.navigate(
+        'offices',
+        (`${office._id}/${office.location.country}/${t(office.officeType)}/${office.numberOfEmployees} ${t("employees")}/${office.refId}-${office.title}`).replace(/\s+/g, '-')
+      );
     } else {
       this.props.navigate('offices', `${office._id}/edit`);
     }
@@ -209,7 +212,7 @@ class Offices extends PureComponent {
                       <OfficeItem
                         office={office}
                         setFavorite
-                        onClick={this.handleNavigateOfficeDetail(office)}
+                        onClick={this.handleNavigateOfficeDetail(office, t)}
                         fullWidth
                       />
                     </div>
@@ -277,7 +280,7 @@ class Offices extends PureComponent {
                         office={office}
                         // errorMsg="pending"
                         setFavorite
-                        onClick={this.handleNavigateOfficeDetail(office)}
+                        onClick={this.handleNavigateOfficeDetail(office, t)}
                         fullWidth
                       />
                     </div>

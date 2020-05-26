@@ -335,7 +335,7 @@ class AddNewOffice extends PureComponent {
   };
 
   /** Save and next current step */
-  saveAndNextCurrentStep = office => {
+  saveAndNextCurrentStep = (office, t) => {
     const { currentStep } = this.state;
     if (office) {
       /** Check photos count when current step is 1 */
@@ -358,7 +358,7 @@ class AddNewOffice extends PureComponent {
           // navigate to office detail page
           this.props.navigate(
             "offices",
-            `${office._id}/${office.location.country}/${office.officeType}/${office.numberOfEmployees} postes/${office.refId}-${office.title}`
+            (`${office._id}/${office.location.country}/${t(office.officeType)}/${office.numberOfEmployees} ${t("employees")}/${office.refId}-${office.title}`).replace(/\s+/g, '-')
           );
         } else {
           this.setState({ currentStep: currentStep + 1 });
@@ -460,7 +460,7 @@ class AddNewOffice extends PureComponent {
             {/** Show publish button */}
             <Button
               variant="primary"
-              onClick={() => this.saveAndNextCurrentStep(this.state.office)}
+              onClick={() => this.saveAndNextCurrentStep(this.state.office, t)}
               style={{ width: 190 }}
               shadow
             >
@@ -572,7 +572,7 @@ class AddNewOffice extends PureComponent {
               editMode={editMode}
               onCancel={this.cancelAddOffice}
               onSave={this.saveCurrentStep}
-              onNext={this.saveAndNextCurrentStep}
+              onNext={(office) => this.saveAndNextCurrentStep(office, t)}
               isLoading={isLoading}
             />
           </Row>
@@ -586,7 +586,7 @@ class AddNewOffice extends PureComponent {
               {/** Show publish button */}
               <Button
                 variant="primary"
-                onClick={() => this.saveAndNextCurrentStep(this.state.office)}
+                onClick={() => this.saveAndNextCurrentStep(this.state.office, t)}
                 style={{ width: 190 }}
                 shadow
               >

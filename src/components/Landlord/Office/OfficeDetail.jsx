@@ -157,12 +157,12 @@ class OfficeDetail extends PureComponent {
   };
 
   /** Unpublish office */
-  handleUnpublish = () => {
+  handleUnpublish = (t) => {
     this.props.unpublishOffice(this.state.office._id).then(response => {
       if (response.status === 200) {
         this.props.navigate(
           "offices/add",
-          `${this.state.office._id}/${this.state.office.location.country}/${this.state.office.officeType}/${this.state.office.numberOfEmployees} postes/${this.state.office.refId}-${this.state.office.title}`
+          (`${this.state.office._id}/${this.state.office.location.country}/${t(this.state.office.officeType)}/${this.state.office.numberOfEmployees} ${t("employees")}/${this.state.office.refId}-${this.state.office.title}`).replace(/\s+/g, '-')
         );
       }
     });
@@ -251,7 +251,7 @@ class OfficeDetail extends PureComponent {
             link="errorRedNormal"
             background="errorRedLight"
             inverse
-            onClick={this.handleUnpublish}
+            onClick={() => this.handleUnpublish(t)}
             variant={isWidthDown("xs", width) ? "icon" : ""}
           >
             <EyeDisIcon style={{ width: 16, height: 16 }} />
@@ -398,7 +398,7 @@ class OfficeDetail extends PureComponent {
             link="errorRedNormal"
             background="errorRedLight"
             inverse
-            onClick={this.handleUnpublish}
+            onClick={() => this.handleUnpublish(t)}
             variant={isWidthDown("xs", width) ? "icon" : ""}
           >
             <EyeDisIcon style={{ width: 16, height: 16 }} />

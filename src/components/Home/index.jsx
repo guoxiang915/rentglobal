@@ -802,10 +802,10 @@ class Home extends PureComponent {
   };
 
   /** Navigate to office detail page */
-  handleOfficeDetail = (office) => () => {
+  handleOfficeDetail = (office, t) => () => {
     this.props.navigate(
       "offices",
-      `${office._id}/${office.location.country}/${office.officeType}/${office.numberOfEmployees} postes/${office.refId}-${office.title}`
+      (`${office._id}/${office.location.country}/${t(office.officeType)}/${office.numberOfEmployees} ${t("employees")}/${office.refId}-${office.title}`).replace(/\s+/g, '-')
     );
   };
 
@@ -868,7 +868,7 @@ class Home extends PureComponent {
                       <OfficeItem
                         office={office}
                         setFavorite
-                        onClick={this.handleOfficeDetail(office)}
+                        onClick={this.handleOfficeDetail(office, t)}
                       />
                     </div>
                   ))}

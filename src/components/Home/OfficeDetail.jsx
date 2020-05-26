@@ -376,10 +376,10 @@ class OfficeDetail extends PureComponent {
   };
 
   /** Goto office detail of similar offices */
-  goDetail = office => () => {
+  goDetail = (office, t) => () => {
     this.props.navigate(
       "offices",
-      `${office._id}/${office.location.country}/${office.officeType}/${office.numberOfEmployees} postes/${office.refId}-${office.title}`
+      (`${office._id}/${office.location.country}/${t(office.officeType)}/${office.numberOfEmployees} ${t("employees")}/${office.refId}-${office.title}`).replace(/\s+/g, '-')
     );
   };
 
@@ -713,7 +713,7 @@ class OfficeDetail extends PureComponent {
                         <OfficeItem
                           office={office}
                           setFavorite
-                          onClick={this.goDetail(office)}
+                          onClick={this.goDetail(office, t)}
                         />
                       </div>
                     ))}
