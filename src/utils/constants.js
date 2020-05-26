@@ -197,6 +197,21 @@ const weekdays = [
   "saturday"
 ];
 
+const months = [
+  "january",
+  "february",
+  "march",
+  "april",
+  "may",
+  "june",
+  "july",
+  "august",
+  "september",
+  "october",
+  "november",
+  "december"
+];
+
 const officeSortOptions = [
   { title: "priceHighToLow", field: "priceMonthly", direction: "desc" },
   { title: "priceLowToHigh", field: "priceMonthly", direction: "asc" },
@@ -219,6 +234,7 @@ export {
   servicesCategories,
   maxFileSize,
   weekdays,
+  months,
   officeSortOptions,
   reviewSortOptions
 };

@@ -27,7 +27,8 @@ import {
   OfficeGeneralInfo,
   OfficeGallery,
   OfficeReviews,
-  OfficeCalendar
+  OfficeCalendar,
+  OfficeReport
 } from "../../../common/base-layouts";
 import { ShareOfficeDialog } from "../../Layout/Dialogs";
 
@@ -315,7 +316,7 @@ class OfficeDetail extends PureComponent {
           )}
         </Row>
 
-        <Row fullWidth paddingBottom>
+        <Row fullWidth style={{ marginBottom: 24 }}>
           {/** Tabs */}
           <Tabs
             value={currentTab}
@@ -385,6 +386,9 @@ class OfficeDetail extends PureComponent {
           )}
           {office && currentTab === "calendar" && (
             <OfficeCalendar officeId={this.props.officeId} />
+          )}
+          {office && currentTab === "report" && (
+            <OfficeReport officeId={this.props.officeId} />
           )}
         </Row>
 

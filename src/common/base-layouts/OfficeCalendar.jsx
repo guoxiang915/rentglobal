@@ -20,12 +20,26 @@ import {
 import { TabWrapper } from ".";
 import SearchbarWithSorter from "./SearchbarWithSorter";
 import { getEventsByOffice } from "../../api/endpoints";
+// import mobiscroll from "@mobiscroll/react";
+// import TableCell from "@material-ui/core/TableCell";
+// import { ViewState, EditingState } from "@devexpress/dx-react-scheduler";
+// import {
+//   Scheduler,
+//   MonthView,
+//   Appointments,
+//   Toolbar,
+//   DateNavigator,
+//   AppointmentTooltip,
+//   AppointmentForm,
+//   EditRecurrenceMenu,
+//   Resources,
+//   DragDropProvider
+// } from "@devexpress/dx-react-scheduler-material-ui";
 
-import mobiscroll from "@mobiscroll/react";
 import { formatDate, getWeekday, formatHrMin } from "../../utils/formatters";
 import { checkEqualDate } from "../../utils/validators";
 
-import './OfficeCalendar.scss';
+import "./OfficeCalendar.scss";
 
 const styleSheet = theme => ({
   root: {},
@@ -167,6 +181,143 @@ const EventItem = withStyles(theme => ({
   }
 );
 
+// const DayScaleCell = props => (
+//   <MonthView.DayScaleCell
+//     {...props}
+//     style={{ textAlign: "center", fontWeight: "bold" }}
+//   />
+// );
+
+// const CellBase = React.memo(
+//   ({
+//     classes,
+//     startDate,
+//     formatDate,
+//     otherMonth
+//     // #FOLD_BLOCK
+//   }) => {
+//     const isFirstMonthDay = startDate.getDate() === 1;
+//     const formatOptions = isFirstMonthDay
+//       ? { day: "numeric", month: "long" }
+//       : { day: "numeric" };
+//     return (
+//       <TableCell
+//         tabIndex={0}
+//         className={classNames({
+//           [classes.cell]: true
+//         })}
+//       >
+//         <div className={classes.text}>
+//           {formatDate(startDate, formatOptions)}
+//         </div>
+//       </TableCell>
+//     );
+//   }
+// );
+
+// const styles = theme => ({
+//   cell: {
+//     color: "#78909C!important",
+//     position: "relative",
+//     userSelect: "none",
+//     verticalAlign: "top",
+//     padding: 0,
+//     // height: 100,
+//     borderLeft: `1px solid grey`,
+//     "&:first-child": {
+//       borderLeft: "none"
+//     },
+//     "&:last-child": {
+//       paddingRight: 0
+//     },
+//     "tr:last-child &": {
+//       borderBottom: "none"
+//     },
+//     "&:hover": {
+//       backgroundColor: "white"
+//     },
+//     "&:focus": {
+//       outline: 0
+//     }
+//   },
+//   content: {
+//     display: "flex",
+//     justifyContent: "center",
+//     width: "100%",
+//     height: "100%",
+//     position: "absolute",
+//     alignItems: "center"
+//   },
+//   text: {
+//     padding: "0.5em",
+//     textAlign: "center"
+//   },
+//   opacity: {
+//     opacity: "0.5"
+//   },
+//   appointment: {
+//     borderRadius: "10px",
+//     "&:hover": {
+//       opacity: 0.6
+//     }
+//   },
+//   apptContent: {
+//     "&>div>div": {
+//       whiteSpace: "normal !important",
+//       lineHeight: 1.2
+//     }
+//   },
+//   flexibleSpace: {
+//     flex: "none"
+//   },
+//   flexContainer: {
+//     display: "flex",
+//     alignItems: "center"
+//   },
+//   tooltipContent: {
+//     padding: theme.spacing(3, 1),
+//     paddingTop: 0,
+//     backgroundColor: theme.palette.background.paper,
+//     boxSizing: "border-box",
+//     width: "400px"
+//   },
+//   tooltipText: {
+//     ...theme.typography.body2,
+//     display: "inline-block"
+//   },
+//   title: {
+//     ...theme.typography.h6,
+//     color: theme.palette.text.secondary,
+//     fontWeight: theme.typography.fontWeightBold,
+//     overflow: "hidden",
+//     textOverflow: "ellipsis",
+//     whiteSpace: "nowrap"
+//   },
+//   icon: {
+//     color: theme.palette.action.active,
+//     verticalAlign: "middle"
+//   },
+//   circle: {
+//     width: theme.spacing(4.5),
+//     height: theme.spacing(4.5),
+//     verticalAlign: "super"
+//   },
+//   textCenter: {
+//     textAlign: "center"
+//   },
+//   dateAndTitle: {
+//     lineHeight: 1.1
+//   },
+//   titleContainer: {
+//     paddingBottom: theme.spacing(2)
+//   },
+//   container: {
+//     paddingBottom: theme.spacing(1.5)
+//   }
+// });
+
+// const TimeTableCell = withStyles(styles, { name: "Cell" })(CellBase);
+
 class OfficeCalendar extends React.Component {
   static propTypes = {
     officeId: PropTypes.string.isRequired,
@@ -228,10 +379,13 @@ class OfficeCalendar extends React.Component {
 
     const formattedEvents = events.map(e => {
       return {
-        d: new Date(e.date),
-        color: e.type === "visit" ? "#41AFFF" : "#525252"
+        startDate: new Date(e.date),
+        endDate: new Date(e.date)
+        // color: e.type === "visit" ? "#41AFFF" : "#525252"
       };
     });
+
+    console.log(formattedEvents);
 
     return (
       <Column classes={{ box: s.root }} fullWidth alignChildrenStart>
@@ -277,7 +431,7 @@ class OfficeCalendar extends React.Component {
               classes={{ box: s.calendarWrapper }}
               justifyChildrenCenter
             >
-              <mobiscroll.Eventcalendar
+              {/* <mobiscroll.Eventcalendar
                 display="inline"
                 marked={formattedEvents}
                 onSetDate={this.handleSelectDay}
@@ -287,7 +441,16 @@ class OfficeCalendar extends React.Component {
                 }}
                 theme="windows"
                 themeVariant="light"
-              />
+              /> */}
+              {/* <Scheduler data={formattedEvents}>
+                <ViewState defaultCurrentDate={selectedDay} />
+                <MonthView
+                  timeTableCellComponent={TimeTableCell}
+                  dayScaleCellComponent={DayScaleCell}
+                />
+                <Appointments />
+                <AppointmentForm />
+              </Scheduler> */}
             </Row>
             <Row
               fullWidth

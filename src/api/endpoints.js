@@ -1,7 +1,8 @@
 import api from "./api";
 import {
   events as eventsMockData,
-  reviews as reviewsMockData
+  reviews as reviewsMockData,
+  report as reportMockData
 } from "../common/mock/officeMockData";
 
 /**
@@ -184,6 +185,13 @@ export const getReviewsByOffice = () =>
  */
 export const getEventsByOffice = () =>
   Promise.resolve({ status: 200, data: eventsMockData });
+
+/**
+ * Call api to get events of office
+ * @param {string} officeId Office id for getting events data
+ */
+export const getReportByOffice = () =>
+  Promise.resolve({ status: 200, data: reportMockData });
 
 /**
  * Call api to get similar offices
