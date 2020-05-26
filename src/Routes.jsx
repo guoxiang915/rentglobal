@@ -18,7 +18,7 @@ const Routes = () => (
         exact
         path='/offices/:id/:location/:officeType/:employeeNumber/:refId-:title'
         component={({ match, ...props }) => (
-          <OfficeDetail officeId={match.params.id} {...props} />
+          <OfficeDetail refId={match.params.id} {...props} />
         )}
         noSidebar
       />

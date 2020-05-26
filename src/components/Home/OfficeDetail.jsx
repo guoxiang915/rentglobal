@@ -35,7 +35,7 @@ import {
 import { formatDate1 } from "../../utils/formatters";
 import {
   favoriteOffice,
-  getApprovedOfficeById,
+  getApprovedOfficeByRefId,
   getConsultantByOffice,
   getReviewsByOffice,
   getSimilarOffices
@@ -195,9 +195,9 @@ class OfficeDetail extends PureComponent {
 
   componentDidMount() {
     /** Get office from id */
-    const { officeId } = this.props;
+    const { refId } = this.props;
     // this.props.
-    getApprovedOfficeById(officeId).then(response => {
+    getApprovedOfficeByRefId(refId).then(response => {
       if (response.status === 200) {
         const office = response.data;
         this.titlebarActions = [
@@ -300,10 +300,16 @@ class OfficeDetail extends PureComponent {
             hideIcon: true
           }
         ];
-        this.setState({ office });
+        this.setState({ office }, () => {
+          this.getConsultantByOffice(office.id);
+          this.getReviewsByOffice(office.id);
+          this.getSimilarOffices(office.id);
+        });
       }
     });
+  }
 
+  getConsultantByOffice = (officeId) => {
     /** Get consultant info from office */
     // this.props.
     getConsultantByOffice(officeId).then(response => {
@@ -311,7 +317,9 @@ class OfficeDetail extends PureComponent {
         this.setState({ consultant: response.data });
       }
     });
+  };
 
+  getReviewsByOffice = (officeId) => {
     /** Get reviews from office */
     // this.props.
     getReviewsByOffice(officeId).then(response => {
@@ -319,7 +327,9 @@ class OfficeDetail extends PureComponent {
         this.setState({ reviews: response.data });
       }
     });
+  };
 
+  getSimilarOffices = (officeId) => {
     /** Get similar offices */
     // this.props.
     getSimilarOffices(officeId).then(response => {
@@ -327,39 +337,20 @@ class OfficeDetail extends PureComponent {
         this.setState({ similarOffices: response.data });
       }
     });
-  }
+  };
 
   componentDidUpdate(prevProps) {
-    const { officeId } = this.props;
-    const { officeId: oldOfficeId } = prevProps;
-    if (officeId !== oldOfficeId) {
-      getApprovedOfficeById(officeId).then(response => {
+    const { refId } = this.props;
+    const { refId: oldRefId } = prevProps;
+    if (refId !== oldRefId) {
+      getApprovedOfficeByRefId(refId).then(response => {
         if (response.status === 200) {
-          this.setState({ office: response.data });
-        }
-      });
-
-      /** Get consultant info from office */
-      // this.props.
-      getConsultantByOffice(officeId).then(response => {
-        if (response.status === 200) {
-          this.setState({ consultant: response.data });
-        }
-      });
-
-      /** Get reviews from office */
-      // this.props.
-      getReviewsByOffice(officeId).then(response => {
-        if (response.status === 200) {
-          this.setState({ reviews: response.data });
-        }
-      });
-
-      /** Get similar offices */
-      // this.props.
-      getSimilarOffices(officeId).then(response => {
-        if (response.status === 200) {
-          this.setState({ similarOffices: response.data });
+          const office = response.data;
+          this.setState({ office }, () => {
+            this.getConsultantByOffice(office.id);
+            this.getReviewsByOffice(office.id);
+            this.getSimilarOffices(office.id);
+          });
         }
       });
     }
@@ -379,7 +370,7 @@ class OfficeDetail extends PureComponent {
   goDetail = (office, t) => () => {
     this.props.navigate(
       "offices",
-      (`${office._id}/${office.location.country}/${t(office.officeType)}/${office.numberOfEmployees} ${t("employees")}/${office.refId}-${office.title}`).replace(/\s+/g, '-')
+      (`${office.refId}/${office.location.country}/${t(office.officeType)}/${office.numberOfEmployees} ${t("employees")}/${office.refId}-${office.title}`).replace(/\s+/g, '-')
     );
   };
 
