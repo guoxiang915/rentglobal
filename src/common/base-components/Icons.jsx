@@ -88,6 +88,7 @@ export { default as ReviewIcon } from "../../assets/icon/review-icon";
 export { default as ReportIcon } from "../../assets/icon/financial-report-icon";
 export { default as GoogleIcon } from "../../assets/icon/icon_google";
 export { default as YahooIcon } from "../../assets/icon/icon_yahoo";
+export { default as DownloadIcon } from "../../assets/icon/download-icon";
 
 export const ProgressIcon = props => (
   <CircularProgress color="primary" size={36} {...props} />

@@ -368,7 +368,7 @@ class GeneralInfoForm extends PureComponent {
             className={s.importOfficeButton}
             onClick={this.handleImportOffice}
           >
-            <ArrowDownIcon style={{ width: 16, height: 18 }} />
+            <DownloadIcon style={{ width: 13, height: 14 }} />
             <Typography paddingLeft>{t('importOfficeData')}</Typography>
           </Button>
         </Row>
