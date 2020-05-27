@@ -156,11 +156,11 @@ const OfficeGallery = React.memo(({ classes: s, coverPhotos, width }) => {
   const [currentCoverPhoto, setCurrentCoverPhoto] = useState(0);
   const [showFullScreen, setShowFullScreen] = useState(false);
   const handlePrevCoverPhoto = () => {
-    setCurrentCoverPhoto(Math.max(currentCoverPhoto - 1, 0));
+    setCurrentCoverPhoto((currentCoverPhoto - 1 + coverPhotos.length) % coverPhotos.length);
   };
   const handleNextCoverPhoto = () => {
     setCurrentCoverPhoto(
-      Math.min(currentCoverPhoto + 1, coverPhotos.length - 1)
+      (currentCoverPhoto + 1) % coverPhotos.length
     );
   };
   const handleClickThumb = (index) => {

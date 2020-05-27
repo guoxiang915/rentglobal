@@ -1331,10 +1331,10 @@ class Search extends PureComponent {
   };
 
   /** Navigate to office detail */
-  handleNavigateOfficeDetail = office => () => {
+  handleNavigateOfficeDetail = (office, t) => () => {
     this.props.navigate(
       "offices",
-      `${office._id}/${office.location.country}/${office.officeType}/${office.numberOfEmployees} postes/${office.refId}-${office.title}`
+      (`${office.refId}/${office.location.country}/${t(office.officeType)}/${office.numberOfEmployees} ${t("employees")}/${office.refId}-${office.title}`).replace(/\s+/g, '-')
     );
   };
 
@@ -1575,7 +1575,7 @@ class Search extends PureComponent {
                             key={index}
                             lat={office.location.coordinates.lat}
                             lng={office.location.coordinates.lng}
-                            onClick={this.handleNavigateOfficeDetail(office)}
+                            onClick={this.handleNavigateOfficeDetail(office, t)}
                             badge={
                               office.count > 1 && {
                                 title: office.count,
@@ -1623,7 +1623,7 @@ class Search extends PureComponent {
                                 office={office}
                                 setFavorite
                                 onClick={this.handleNavigateOfficeDetail(
-                                  office
+                                  office, t
                                 )}
                                 fullWidth
                               />
@@ -1644,7 +1644,7 @@ class Search extends PureComponent {
                                     office={office}
                                     setFavorite
                                     onClick={this.handleNavigateOfficeDetail(
-                                      office
+                                      office, t
                                     )}
                                     fullWidth
                                     horizontal={

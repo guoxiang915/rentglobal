@@ -148,6 +148,9 @@ export const getApprovedOffices = () => getPublishedOffices();
  */
 export const getRecommendedOffices = () => getPublishedOffices();
 
+export const getApprovedOfficeByRefId = refId =>
+  api.get(`/offices/ref/${refId}/`);
+
 /**
  * Call api to get office by id
  */
