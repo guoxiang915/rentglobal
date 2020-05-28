@@ -92,5 +92,16 @@
       To begin the development, run `npm start` or `yarn start`.
       To create a production bundle, use `npm run build` or `yarn build`.
     -->
+    <script type="text/javascript">
+      var $zoho=$zoho || {};$zoho.salesiq = $zoho.salesiq || {widgetcode:"5188c08800199a1f7ba46e10145d31b856d5ad90f0ecba6f79fac2fd0c4279e21a2010ab7b6727677d37b27582c0e9c4", values:{},ready:function(){}};var d=document;s=d.createElement("script");s.type="text/javascript";s.id="zsiqscript";s.defer=true;s.src="https://salesiq.zoho.com/widget";t=d.getElementsByTagName("script")[0];t.parentNode.insertBefore(s,t);d.write("<div id='zsiqwidget'></div>");
+      </script>
+    <script>
+      $zoho.salesiq.ready = function() {
+        $zoho.salesiq.chatbutton.visible('hide');
+        $zoho.salesiq.chatwindow.visible('hide');
+        $zoho.salesiq.floatbutton.visible('hide');
+        $zoho.salesiq.floatwindow.visible('hide');
+      }
+    </script>
   </body>
 </html>
