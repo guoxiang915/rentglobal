@@ -1541,6 +1541,10 @@
     prop-types "^15.7.2"
     react-is "^16.8.0"
 
+"@mobiscroll/react@file:./src/lib/mobiscroll-package/mobiscroll-react-v4.10.3.tgz":
+  version "4.10.3"
+  resolved "file:./src/lib/mobiscroll-package/mobiscroll-react-v4.10.3.tgz#797e18ff17ff29c6e822129a2a5cd2a5b8397f88"
+
 "@mrmlnc/readdir-enhanced@^2.2.1":
   version "2.2.1"
   resolved "https://registry.yarnpkg.com/@mrmlnc/readdir-enhanced/-/readdir-enhanced-2.2.1.tgz#524af240d1a360527b730475ecfa1344aa540dde"

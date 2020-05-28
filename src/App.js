@@ -10,7 +10,7 @@ import "./common/styles/global.css";
 import "@brainhubeu/react-carousel/lib/style.css";
 
 const App = () => (
-  <I18nextProvider i18n={i18n} initialLanguage='en'>
+  <I18nextProvider i18n={i18n} initialLanguage="en">
     <MuiThemeProvider theme={theme}>
       <Routes />
     </MuiThemeProvider>

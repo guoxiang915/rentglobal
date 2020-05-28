@@ -20,26 +20,13 @@ import {
 import { TabWrapper } from ".";
 import SearchbarWithSorter from "./SearchbarWithSorter";
 import { getEventsByOffice } from "../../api/endpoints";
-// import mobiscroll from "@mobiscroll/react";
-// import TableCell from "@material-ui/core/TableCell";
-// import { ViewState, EditingState } from "@devexpress/dx-react-scheduler";
-// import {
-//   Scheduler,
-//   MonthView,
-//   Appointments,
-//   Toolbar,
-//   DateNavigator,
-//   AppointmentTooltip,
-//   AppointmentForm,
-//   EditRecurrenceMenu,
-//   Resources,
-//   DragDropProvider
-// } from "@devexpress/dx-react-scheduler-material-ui";
+import mobiscroll from "@mobiscroll/react";
 
 import { formatDate, getWeekday, formatHrMin } from "../../utils/formatters";
 import { checkEqualDate } from "../../utils/validators";
 
 import "./OfficeCalendar.scss";
+import "@mobiscroll/react/dist/css/mobiscroll.react.scss";
 
 const styleSheet = theme => ({
   root: {},
@@ -78,10 +65,26 @@ const EventItem = withStyles(theme => ({
     width: 250
   },
 
-  content: {
+  eventItemWrapper: {
+    // flexDirection: "row",
+    // [theme.breakpoints.down("sm")]: {
+    //   flexDirection: "column"
+    // }
+  },
+
+  contentWrapper: {
     paddingTop: 20,
     paddingBottom: 20,
-    borderBottom: `1px solid ${theme.colors.primary.borderGrey}`
+    borderBottom: `1px solid ${theme.colors.primary.borderGrey}`,
+    // flexDirection: "row",
+    // [theme.breakpoints.down("sm")]: {
+    //   flexDirection: "column"
+    // }
+    minWidth: 300
+  },
+
+  content: {
+    minWidth: 200
   },
 
   visit: {
@@ -94,8 +97,16 @@ const EventItem = withStyles(theme => ({
 }))(
   ({ classes: s, t, width, event, showDate, onEdit, onAccept, onDecline }) => {
     return (
-      <Row fullWidth alignChildrenCenter wrap="wrap">
-        <Row classes={{ box: clsx(s.datetime, showDate && s.longDatetime) }}>
+      <Row
+        fullWidth
+        alignChildrenStart
+        classes={{ box: s.eventItemWrapper }}
+        wrap="wrap"
+      >
+        <Row
+          justifyChildrenStart
+          classes={{ box: clsx(s.datetime, showDate && s.longDatetime) }}
+        >
           {showDate && (
             <Typography fontSizeS textSecondary>
               {new Date(event.date).toLocaleDateString("en-US", {
@@ -110,8 +121,18 @@ const EventItem = withStyles(theme => ({
             {[formatHrMin(event.start), formatHrMin(event.end)].join(" - ")}
           </Typography>
         </Row>
-        <Row classes={{ box: s.content }} stretch alignChildrenStart>
-          <Typography alignChildrenCenter stretch wrap="wrap">
+        <Row
+          classes={{ box: s.contentWrapper }}
+          stretch
+          alignChildrenStart
+          wrap="wrap"
+        >
+          <Typography
+            alignChildrenCenter
+            stretch
+            wrap="wrap"
+            classes={{ box: s.content }}
+          >
             <Typography
               classes={{ box: clsx(event.type === "visit" && s.visit) }}
               textMediumGrey
@@ -127,196 +148,58 @@ const EventItem = withStyles(theme => ({
               {event.content}
             </Typography>
           </Typography>
-          {onEdit && (
-            <Button
-              link="primary"
-              background="normalLight"
-              inverse
-              onClick={onEdit}
-              variant={isWidthDown("xs", width) ? "icon" : ""}
-              className={s.actionButton}
-            >
-              <EditIcon style={{ width: 20, height: 18 }} />
-              {!isWidthDown("xs", width) ? (
+          <Row
+            paddingTop
+            fullWidth={isWidthDown("xs", width)}
+            justifyChildrenEnd={isWidthDown("xs", width)}
+          >
+            {onEdit && (
+              <Button
+                link="primary"
+                background="normalLight"
+                inverse
+                onClick={onEdit}
+                className={s.actionButton}
+              >
+                <EditIcon style={{ width: 20, height: 18 }} />
                 <Typography paddingLeft fontSizeS>
                   {t("edit")}
                 </Typography>
-              ) : null}
-            </Button>
-          )}
-          {onDecline && (
-            <Button
-              link="errorRedNormal"
-              background="errorRedLight"
-              inverse
-              onClick={onDecline}
-              variant={isWidthDown("xs", width) ? "icon" : ""}
-              className={s.actionButton}
-            >
-              <CancelIcon style={{ width: 16, height: 16 }} />
-              {!isWidthDown("xs", width) ? (
+              </Button>
+            )}
+            {onDecline && (
+              <Button
+                link="errorRedNormal"
+                background="errorRedLight"
+                inverse
+                onClick={onDecline}
+                className={s.actionButton}
+              >
+                <CancelIcon style={{ width: 16, height: 16 }} />
+
                 <Typography fontSizeS paddingLeft>
                   {t("decline")}
                 </Typography>
-              ) : null}
-            </Button>
-          )}
-          {onAccept && (
-            <Button
-              onClick={onAccept}
-              variant={isWidthDown("xs", width) ? "icon" : "primary"}
-              className={s.actionButton}
-            >
-              <CheckIcon style={{ width: 16, height: 16 }} />
-              {!isWidthDown("xs", width) ? (
+              </Button>
+            )}
+            {onAccept && (
+              <Button
+                onClick={onAccept}
+                variant="primary"
+                className={s.actionButton}
+              >
+                <CheckIcon style={{ width: 16, height: 16 }} />
                 <Typography fontSizeS paddingLeft>
                   {t("accept")}
                 </Typography>
-              ) : null}
-            </Button>
-          )}
+              </Button>
+            )}
+          </Row>
         </Row>
       </Row>
     );
   }
 );
-
-// const DayScaleCell = props => (
-//   <MonthView.DayScaleCell
-//     {...props}
-//     style={{ textAlign: "center", fontWeight: "bold" }}
-//   />
-// );
-
-// const CellBase = React.memo(
-//   ({
-//     classes,
-//     startDate,
-//     formatDate,
-//     otherMonth
-//     // #FOLD_BLOCK
-//   }) => {
-//     const isFirstMonthDay = startDate.getDate() === 1;
-//     const formatOptions = isFirstMonthDay
-//       ? { day: "numeric", month: "long" }
-//       : { day: "numeric" };
-//     return (
-//       <TableCell
-//         tabIndex={0}
-//         className={classNames({
-//           [classes.cell]: true
-//         })}
-//       >
-//         <div className={classes.text}>
-//           {formatDate(startDate, formatOptions)}
-//         </div>
-//       </TableCell>
-//     );
-//   }
-// );
-
-// const styles = theme => ({
-//   cell: {
-//     color: "#78909C!important",
-//     position: "relative",
-//     userSelect: "none",
-//     verticalAlign: "top",
-//     padding: 0,
-//     // height: 100,
-//     borderLeft: `1px solid grey`,
-//     "&:first-child": {
-//       borderLeft: "none"
-//     },
-//     "&:last-child": {
-//       paddingRight: 0
-//     },
-//     "tr:last-child &": {
-//       borderBottom: "none"
-//     },
-//     "&:hover": {
-//       backgroundColor: "white"
-//     },
-//     "&:focus": {
-//       outline: 0
-//     }
-//   },
-//   content: {
-//     display: "flex",
-//     justifyContent: "center",
-//     width: "100%",
-//     height: "100%",
-//     position: "absolute",
-//     alignItems: "center"
-//   },
-//   text: {
-//     padding: "0.5em",
-//     textAlign: "center"
-//   },
-//   opacity: {
-//     opacity: "0.5"
-//   },
-//   appointment: {
-//     borderRadius: "10px",
-//     "&:hover": {
-//       opacity: 0.6
-//     }
-//   },
-//   apptContent: {
-//     "&>div>div": {
-//       whiteSpace: "normal !important",
-//       lineHeight: 1.2
-//     }
-//   },
-//   flexibleSpace: {
-//     flex: "none"
-//   },
-//   flexContainer: {
-//     display: "flex",
-//     alignItems: "center"
-//   },
-//   tooltipContent: {
-//     padding: theme.spacing(3, 1),
-//     paddingTop: 0,
-//     backgroundColor: theme.palette.background.paper,
-//     boxSizing: "border-box",
-//     width: "400px"
-//   },
-//   tooltipText: {
-//     ...theme.typography.body2,
-//     display: "inline-block"
-//   },
-//   title: {
-//     ...theme.typography.h6,
-//     color: theme.palette.text.secondary,
-//     fontWeight: theme.typography.fontWeightBold,
-//     overflow: "hidden",
-//     textOverflow: "ellipsis",
-//     whiteSpace: "nowrap"
-//   },
-//   icon: {
-//     color: theme.palette.action.active,
-//     verticalAlign: "middle"
-//   },
-//   circle: {
-//     width: theme.spacing(4.5),
-//     height: theme.spacing(4.5),
-//     verticalAlign: "super"
-//   },
-//   textCenter: {
-//     textAlign: "center"
-//   },
-//   dateAndTitle: {
-//     lineHeight: 1.1
-//   },
-//   titleContainer: {
-//     paddingBottom: theme.spacing(2)
-//   },
-//   container: {
-//     paddingBottom: theme.spacing(1.5)
-//   }
-// });
-
-// const TimeTableCell = withStyles(styles, { name: "Cell" })(CellBase);
 
 class OfficeCalendar extends React.Component {
   static propTypes = {
@@ -379,13 +262,10 @@ class OfficeCalendar extends React.Component {
 
     const formattedEvents = events.map(e => {
       return {
-        startDate: new Date(e.date),
-        endDate: new Date(e.date)
-        // color: e.type === "visit" ? "#41AFFF" : "#525252"
+        d: new Date(e.date),
+        color: e.type === "visit" ? "#41AFFF" : "#525252"
       };
     });
-
-    console.log(formattedEvents);
 
     return (
       <Column classes={{ box: s.root }} fullWidth alignChildrenStart>
@@ -431,26 +311,14 @@ class OfficeCalendar extends React.Component {
               classes={{ box: s.calendarWrapper }}
               justifyChildrenCenter
             >
-              {/* <mobiscroll.Eventcalendar
+              <mobiscroll.Eventcalendar
                 display="inline"
                 marked={formattedEvents}
                 onSetDate={this.handleSelectDay}
-                // colors={[{ d: new Date(selectedDay), border: "#D7DF23" }]}
-                view={{
-                  calendar: { type: viewMode }
-                }}
+                view={{ calendar: { type: viewMode } }}
                 theme="windows"
                 themeVariant="light"
-              /> */}
-              {/* <Scheduler data={formattedEvents}>
-                <ViewState defaultCurrentDate={selectedDay} />
-                <MonthView
-                  timeTableCellComponent={TimeTableCell}
-                  dayScaleCellComponent={DayScaleCell}
-                />
-                <Appointments />
-                <AppointmentForm />
-              </Scheduler> */}
+              />
             </Row>
             <Row
               fullWidth
