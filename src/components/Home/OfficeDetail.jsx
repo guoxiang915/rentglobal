@@ -166,6 +166,7 @@ const styleSheet = theme => ({
 
 class OfficeDetail extends PureComponent {
   static propTypes = {
+    auth: PropTypes.object.isRequired,
     /** office id to show */
     officeId: PropTypes.string.isRequired,
     /** navigate handler */
@@ -423,8 +424,24 @@ class OfficeDetail extends PureComponent {
    * @ignore
    */
   handleSendMessage = () => {
-    // if (this.props.passLoginDialog()) {
-    // }
+    if (this.props.passLoginDialog()) {
+      if (this.state.office.consultant && this.state.office.consultant.email) {
+        const { user } = this.props.auth;
+        window.$zoho.salesiq.chat.agent(this.state.office.consultant.email);
+        if (user.generalInfo.username) {
+          window.$zoho.salesiq.visitor.name(user.generalInfo.username);
+        }
+        window.$zoho.salesiq.visitor.email(user.email);
+        window.$zoho.salesiq.floatwindow.visible('show');
+        window.$zoho.salesiq.chatwindow.visible('show');
+
+        window.$zoho.salesiq.visitor.missed((visitid, data) => {
+
+        });
+      } else {
+        console.log('no consultant assigned');
+      }
+    }
   };
 
   /** Visit office
