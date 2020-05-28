@@ -184,7 +184,7 @@ class OfficeList extends PureComponent {
                   office={item}
                   goDetail={this.navigate(
                     "offices",
-                    `${item._id}/${item.location.country}/${item.officeType}/${item.numberOfEmployees} postes/${item.refId}-${item.title}`
+                    (`${item._id}/${item.location.country}/${t(item.officeType)}/${item.numberOfEmployees} ${t("employees")}/${item.refId}-${item.title}`).replace(/\s+/g, '-')
                   )}
                 />
               </Row>

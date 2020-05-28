@@ -301,11 +301,11 @@ class Dashboard extends PureComponent {
   }
 
   /** navigate to office detail page */
-  handleNavigateOfficeDetail = (office) => () => {
+  handleNavigateOfficeDetail = (office, t) => () => {
     if (office.published === true) {
       this.props.navigate(
         "offices",
-        `${office._id}/${office.location.country}/${office.officeType}/${office.numberOfEmployees} postes/${office.refId}-${office.title}`
+        (`${office._id}/${office.location.country}/${t(office.officeType)}/${office.numberOfEmployees} ${t("employees")}/${office.refId}-${office.title}`).replace(/\s+/g, '-')
       );
     } else {
       this.props.navigate(
@@ -676,7 +676,7 @@ class Dashboard extends PureComponent {
                   <Stretch />
                   <Box
                     classes={{ box: s.officeFullView }}
-                    onClick={this.handleNavigateOfficeDetail(currentOffice)}
+                    onClick={this.handleNavigateOfficeDetail(currentOffice, t)}
                     fullWidth
                     justifyChildrenCenter
                   >
