@@ -197,6 +197,8 @@ const weekdays = [
   "saturday"
 ];
 
+const shortWeekdays = ["sun", "mon", "tue", "wed", "thu", "fri", "sat"];
+
 const months = [
   "january",
   "february",
@@ -234,6 +236,7 @@ export {
   servicesCategories,
   maxFileSize,
   weekdays,
+  shortWeekdays,
   months,
   officeSortOptions,
   reviewSortOptions

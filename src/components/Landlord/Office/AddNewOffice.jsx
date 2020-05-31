@@ -288,19 +288,20 @@ class AddNewOffice extends PureComponent {
     case 2:
       if (office) {
         result = this.props.createOfficeServicesAmenities(
-          office._id,
+          this.state.office._id,
           office.servicesAndAmenities
         );
       }
       break;
     case 3:
       if (office) {
-        result = this.props.saveVisibility(office._id, office);
+        const visitHours = office;
+        result = this.props.saveVisibility(this.state.office._id, visitHours);
       }
       break;
     case 4:
       if (office) {
-        result = this.props.publishOffice(office._id);
+        result = this.props.publishOffice(this.state.office._id);
       }
       break;
     default:
@@ -358,7 +359,12 @@ class AddNewOffice extends PureComponent {
           // navigate to office detail page
           this.props.navigate(
             "offices",
-            (`${office._id}/${office.location.country}/${t(office.officeType)}/${office.numberOfEmployees} ${t("employees")}/${office.refId}-${office.title}`).replace(/\s+/g, '-')
+            `${office._id}/${office.location.country}/${t(office.officeType)}/${
+              office.numberOfEmployees
+            } ${t("employees")}/${office.refId}-${office.title}`.replace(
+              /\s+/g,
+              "-"
+            )
           );
         } else {
           this.setState({ currentStep: currentStep + 1 });
@@ -572,7 +578,7 @@ class AddNewOffice extends PureComponent {
               editMode={editMode}
               onCancel={this.cancelAddOffice}
               onSave={this.saveCurrentStep}
-              onNext={(office) => this.saveAndNextCurrentStep(office, t)}
+              onNext={office => this.saveAndNextCurrentStep(office, t)}
               isLoading={isLoading}
             />
           </Row>
@@ -586,7 +592,9 @@ class AddNewOffice extends PureComponent {
               {/** Show publish button */}
               <Button
                 variant="primary"
-                onClick={() => this.saveAndNextCurrentStep(this.state.office, t)}
+                onClick={() =>
+                  this.saveAndNextCurrentStep(this.state.office, t)
+                }
                 style={{ width: 190 }}
                 shadow
               >

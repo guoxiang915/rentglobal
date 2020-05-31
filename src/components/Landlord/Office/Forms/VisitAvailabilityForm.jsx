@@ -37,14 +37,28 @@ class VisitAvailabilityForm extends PureComponent {
     office: PropTypes.object.isRequired,
     error: PropTypes.object,
     isLoading: PropTypes.bool,
-    onSave: PropTypes.func,
     onNext: PropTypes.func,
     onCancel: PropTypes.func,
     classes: PropTypes.object,
     t: PropTypes.func
   };
 
-  state = { isLoading: false, visits: [] };
+  constructor(props) {
+    super(props);
+    this.state = { isLoading: false, visitHours: {} };
+    const visitHours = props.office?.visitHours;
+    if (visitHours) {
+      Object.values(visitHours).forEach(day => {
+        day.forEach(v => {
+          v.start = new Date(0, 0, 0, Number(v.start), 60 * (v.start % 1));
+          v.end = new Date(0, 0, 0, Number(v.end), 60 * (v.end % 1));
+        });
+      });
+      this.state.visitHours = visitHours;
+    }
+  }
+
+  state = { isLoading: false, visitHours: this.props.office?.visitHours || [] };
 
   /**
    * Update state
@@ -69,9 +83,24 @@ class VisitAvailabilityForm extends PureComponent {
     this.setState({ dialog: null });
   };
 
-  /** Change visits info */
-  handleChangeVisits = data => {
-    this.setState({ visits: data });
+  /** Change visit-hours info */
+  handleChangeVisitHours = data => {
+    this.setState({ visitHours: data });
+  };
+
+  /** Save visit-hours */
+  handleNext = () => {
+    if (this.props.onNext) {
+      const visitHours = { ...this.state.visitHours };
+      Object.values(visitHours).forEach(day => {
+        day.forEach(v => {
+          v.start = v.start.getHours() + (1 / 60.0) * v.start.getMinutes();
+          v.end = v.end.getHours() + (1 / 60.0) * v.end.getMinutes();
+        });
+      });
+      console.log(visitHours);
+      this.props.onNext(visitHours);
+    }
   };
 
   /**
@@ -79,7 +108,7 @@ class VisitAvailabilityForm extends PureComponent {
    */
   render() {
     const { classes: s, t, onCancel, onNext, isLoading } = this.props;
-    const { visits, dialog } = this.state;
+    const { visitHours, dialog } = this.state;
 
     return (
       <Column classes={{ box: s.root }} fullWidth alignChildrenStart>
@@ -89,9 +118,8 @@ class VisitAvailabilityForm extends PureComponent {
 
         <div className={s.calendarWrapper}>
           <CalendarForm
-            startDate={new Date()}
-            visits={visits}
-            onChange={this.handleChangeVisits}
+            visitHours={visitHours}
+            onChange={this.handleChangeVisitHours}
           />
         </div>
 
@@ -118,7 +146,7 @@ class VisitAvailabilityForm extends PureComponent {
             {onNext && (
               <Button
                 variant="primary"
-                onClick={() => onNext({ ...this.props.office, visits })}
+                onClick={this.handleNext}
                 style={{ width: 215 }}
                 shadow
                 loading={isLoading}

@@ -110,12 +110,12 @@ class OfficeReport extends React.Component {
       },
       {
         title: (
-          <>
+          <React.Fragment>
             {t("totalLease")}&nbsp;
             <Typography textMediumGrey fontSizeXS>
               {t("day")}
             </Typography>
-          </>
+          </React.Fragment>
         ),
         value: report?.lease?.reduce((a, b) => a + b.count, 0)
       },

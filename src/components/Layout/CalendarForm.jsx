@@ -9,7 +9,7 @@ import {
   TableBody,
   TableRow,
   TableCell,
-  Grid,
+  Grid
 } from "@material-ui/core";
 import { Add } from "@material-ui/icons";
 import { withLogin } from "../../common/base-services";
@@ -20,22 +20,18 @@ import {
   Button,
   EditIcon,
   DeleteIcon,
-  DeleteConfirmDialog,
+  DeleteConfirmDialog
 } from "../../common/base-components";
 import { weekdays } from "../../utils/constants";
-import {
-  formatDate,
-  formatHrMin,
-  getFirstDayOfWeek,
-} from "../../utils/formatters";
+import { formatHrMin } from "../../utils/formatters";
 import { AddTimeDialog } from "./Dialogs";
 
-const styleSheet = (theme) => ({
+const styleSheet = theme => ({
   root: {},
 
   datetimeWrapper: {
     padding: "24px 0px",
-    borderBottom: `1px solid ${theme.colors.primary.borderGrey}`,
+    borderBottom: `1px solid ${theme.colors.primary.borderGrey}`
   },
 
   actionButtons: {
@@ -50,8 +46,8 @@ const styleSheet = (theme) => ({
     background: `${theme.colors.primary.darkGrey}a0`,
     opacity: 0,
     "&:hover": {
-      opacity: 1,
-    },
+      opacity: 1
+    }
   },
 
   actionButton: {
@@ -59,7 +55,7 @@ const styleSheet = (theme) => ({
     minWidth: 36,
     width: 36,
     height: 36,
-    padding: 0,
+    padding: 0
   },
 
   table: {
@@ -67,7 +63,7 @@ const styleSheet = (theme) => ({
     borderRadius: 8,
     boxShadow: "none",
     width: "100%",
-    height: 500,
+    height: 500
   },
 
   headerCell: {
@@ -75,8 +71,8 @@ const styleSheet = (theme) => ({
     padding: "22px 0px 26px",
     borderRight: `1px solid ${theme.colors.primary.white}`,
     "&:last-of-type": {
-      borderRight: "none",
-    },
+      borderRight: "none"
+    }
   },
 
   dataCell: {
@@ -84,7 +80,7 @@ const styleSheet = (theme) => ({
     background: theme.colors.primary.white,
     verticalAlign: "top",
     padding: 0,
-    width: "calc(100% / 7)",
+    width: "calc(100% / 7)"
   },
 
   addButton: {
@@ -92,22 +88,16 @@ const styleSheet = (theme) => ({
     border: `1px solid ${theme.colors.primary.borderGrey}`,
     color: theme.colors.primary.grey,
     width: 45,
-    height: 45,
-  },
+    height: 45
+  }
 });
 
 /** Render header cell */
-const HeaderCell = React.memo(({ t, firstWeekday, weekday }) => {
-  const d = new Date(firstWeekday);
-  d.setDate(d.getDate() + weekday);
-
+const HeaderCell = React.memo(({ t, weekday }) => {
   return (
     <Column>
       <Typography fontSizeM fontWeightBold textSecondary>
         {t(weekdays[weekday])}
-      </Typography>
-      <Typography fontSizeXS textMediumGrey style={{ marginTop: 4 }}>
-        {formatDate(d)}
       </Typography>
     </Column>
   );
@@ -121,16 +111,16 @@ const VisitDateTime = React.memo(
         {onEdit || onDelete ? (
           <Grid
             container
-            direction='row'
+            direction="row"
             className={s.actionButtons}
-            alignItems='center'
-            justify='center'
+            alignItems="center"
+            justify="center"
             spacing={1}
           >
             {onDelete ? (
               <Grid item>
                 <Button
-                  variant='primary'
+                  variant="primary"
                   className={s.actionButton}
                   onClick={onDelete}
                 >
@@ -141,7 +131,7 @@ const VisitDateTime = React.memo(
             {onEdit ? (
               <Grid item>
                 <Button
-                  variant='primary'
+                  variant="primary"
                   className={s.actionButton}
                   onClick={onEdit}
                 >
@@ -164,28 +154,28 @@ const VisitDateTime = React.memo(
   }
 );
 
-const DataCell = ({ classes: s, visits, onAdd, onEdit, onDelete }) => {
+const DataCell = ({ classes: s, day, visitHours, onAdd, onEdit, onDelete }) => {
   return (
     <Column>
-      {visits.map((v, index) => (
+      {visitHours.map((v, index) => (
         <React.Fragment key={index}>
           <VisitDateTime
             classes={s}
             start={v.start}
             end={v.end}
-            onEdit={() => onEdit(v)}
-            onDelete={() => onDelete(v)}
+            onEdit={() => onEdit(v, day)}
+            onDelete={() => onDelete(v, day)}
           />
         </React.Fragment>
       ))}
       {onAdd && (
         <div className={s.datetimeWrapper} style={{ borderBottom: "none" }}>
           <Button
-            variant='icon'
+            variant="icon"
             className={s.addButton}
             onClick={onAdd}
-            background='normalLight'
-            link='normalLight'
+            background="normalLight"
+            link="normalLight"
             inverse
           >
             <Add />
@@ -198,84 +188,84 @@ const DataCell = ({ classes: s, visits, onAdd, onEdit, onDelete }) => {
 
 class CalendarForm extends PureComponent {
   static propTypes = {
-    /** Date info */
-    startDate: PropTypes.object.isRequired,
-    /** visits info */
-    visits: PropTypes.array,
+    /** visit-hours info */
+    visitHours: PropTypes.object,
     /** change function */
     onChange: PropTypes.func,
 
     classes: PropTypes.object,
-    t: PropTypes.func,
+    t: PropTypes.func
   };
 
   state = { dialog: null };
 
   componentDidUpdate() {}
 
-  handleAdd = (index) => {
-    const { startDate } = this.props;
-    const firstWeekday = getFirstDayOfWeek(startDate);
-    firstWeekday.setDate(firstWeekday.getDate() + index);
-
+  handleAdd = day => {
     this.setState({
       dialog: (
         <AddTimeDialog
-          date={firstWeekday}
+          day={day}
           onClose={this.handleCloseDialog}
           onSave={this.handleAddAvailability}
         />
-      ),
+      )
     });
   };
 
-  handleEdit = (v) => {
+  handleEdit = (v, day) => {
     this.setState({
       dialog: (
         <AddTimeDialog
-          date={v.date}
+          day={day}
           start={v.start}
           end={v.end}
           onClose={this.handleCloseDialog}
-          onSave={this.handleEditAvailability(v)}
+          onSave={this.handleEditAvailability(v, day)}
         />
-      ),
+      )
     });
   };
 
-  handleDelete = (v) => {
+  handleDelete = (v, day) => {
     this.setState({
       dialog: (
         <DeleteConfirmDialog
           text={this.props.t("confirmDelete")}
           onClose={this.handleCloseDialog}
-          onConfirm={() => this.handleDeleteAvailability(v)}
+          onConfirm={() => this.handleDeleteAvailability(v, day)}
         />
-      ),
+      )
     });
   };
 
-  handleAddAvailability = (e) => {
+  handleAddAvailability = e => {
     if (this.props.onChange) {
-      this.props.onChange([...this.props.visits, e]);
+      const visitHours = this.props.visitHours;
+      visitHours[e.day] = [...(visitHours[e.day] || [])];
+      visitHours[e.day].push({ start: e.start, end: e.end });
+      this.props.onChange(visitHours);
     }
     this.handleCloseDialog();
   };
 
-  handleEditAvailability = (v) => (e) => {
+  handleEditAvailability = v => e => {
     if (this.props.onChange) {
-      const visits = this.props.visits;
-      visits[visits.indexOf(v)] = e;
-      this.props.onChange([...visits]);
+      const visitHours = this.props.visitHours[e.day];
+      visitHours[visitHours.indexOf(v)] = {
+        start: e.start,
+        end: e.end
+      };
+      this.props.onChange({ ...this.props.visitHours, [e.day]: visitHours });
     }
     this.handleCloseDialog();
   };
 
-  handleDeleteAvailability = (v) => {
+  handleDeleteAvailability = (v, day) => {
     if (this.props.onChange) {
-      const visits = this.props.visits;
-      visits.splice(visits.indexOf(v), 1);
-      this.props.onChange([...visits]);
+      const visitHours = this.props.visitHours;
+      visitHours[day].splice(visitHours[day].indexOf(v), 1);
+      this.props.onChange(visitHours);
     }
     this.handleCloseDialog();
   };
@@ -288,9 +278,8 @@ class CalendarForm extends PureComponent {
    * Renderer function
    */
   render() {
-    const { visits, startDate, onChange, classes: s, t } = this.props;
+    const { visitHours, onChange, classes: s, t } = this.props;
     const { dialog } = this.state;
-    const firstWeekday = getFirstDayOfWeek(startDate);
 
     return (
       <Table className={s.table}>
@@ -298,12 +287,7 @@ class CalendarForm extends PureComponent {
           <TableRow>
             {weekdays.map((d, index) => (
               <TableCell key={index} className={s.headerCell}>
-                <HeaderCell
-                  classes={s}
-                  t={t}
-                  firstWeekday={firstWeekday}
-                  weekday={index}
-                />
+                <HeaderCell classes={s} t={t} weekday={index} />
               </TableCell>
             ))}
           </TableRow>
@@ -314,20 +298,9 @@ class CalendarForm extends PureComponent {
               <TableCell key={index} className={s.dataCell}>
                 <DataCell
                   classes={s}
-                  visits={visits.filter(
-                    (v) =>
-                      new Date(
-                        v.date.getFullYear(),
-                        v.date.getMonth(),
-                        v.date.getDate()
-                      ).getTime() ===
-                      new Date(
-                        firstWeekday.getFullYear(),
-                        firstWeekday.getMonth(),
-                        firstWeekday.getDate() + index
-                      ).getTime()
-                  )}
-                  onAdd={onChange ? () => this.handleAdd(index) : null}
+                  day={d}
+                  visitHours={visitHours[d]}
+                  onAdd={onChange ? () => this.handleAdd(d) : null}
                   onEdit={onChange ? this.handleEdit : null}
                   onDelete={onChange ? this.handleDelete : null}
                 />

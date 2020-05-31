@@ -530,5 +530,6 @@
   "totalIncome": "Total income",
   "day": "Day",
   "lifeTime": "Life time",
-  "excelExport": "Excel export"
+  "excelExport": "Excel export",
+  "startTimeLessThanEndTime": "Start time should be less than end time"
 }

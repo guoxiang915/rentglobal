@@ -25,8 +25,8 @@ import mobiscroll from "@mobiscroll/react";
 import { formatDate, getWeekday, formatHrMin } from "../../utils/formatters";
 import { checkEqualDate } from "../../utils/validators";
 
-import "./OfficeCalendar.scss";
 import "@mobiscroll/react/dist/css/mobiscroll.react.scss";
+import "./OfficeCalendar.scss";
 
 const styleSheet = theme => ({
   root: {},

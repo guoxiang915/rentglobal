@@ -6,6 +6,7 @@ import {
   DialogContent,
   DialogActions,
   Grid,
+  Snackbar,
   withStyles
 } from "@material-ui/core";
 import clsx from "clsx";
@@ -25,8 +26,7 @@ import {
   MuiPickersUtilsProvider,
   KeyboardTimePicker
 } from "@material-ui/pickers";
-import { weekdays } from "../../../utils/constants";
-import { formatDate } from "../../../utils/formatters";
+import { Alert } from "@material-ui/lab";
 
 const styleSheet = theme => ({
   root: {
@@ -105,7 +105,7 @@ class AddTimeDialog extends PureComponent {
     /** Title of dialog */
     title: PropTypes.string,
     /** Selected date */
-    date: PropTypes.object,
+    day: PropTypes.string,
     /** Selected start time */
     start: PropTypes.any,
     /** Selected end time */
@@ -122,7 +122,8 @@ class AddTimeDialog extends PureComponent {
 
   state = {
     start: this.props.start || new Date(0, 0, 0, 0, 0, 0),
-    end: this.props.end || new Date(0, 0, 0, 12, 0, 0)
+    end: this.props.end || new Date(0, 0, 0, 12, 0, 0),
+    snackMsg: null
   };
 
   /**
@@ -139,11 +140,22 @@ class AddTimeDialog extends PureComponent {
    * Event handler for add start, end time
    */
   handleSave = () => {
+    const start = new Date(this.state.start);
+    const end = new Date(this.state.end);
+    if (start.getTime() >= end.getTime()) {
+      this.setState({
+        snackMsg: {
+          severity: "error",
+          msg: this.props.t("startTimeLessThanEndTime")
+        }
+      });
+      return;
+    }
     if (this.props.onSave) {
       this.props.onSave({
-        date: new Date(this.props.date),
-        start: new Date(this.state.start),
-        end: new Date(this.state.end)
+        day: this.props.day,
+        start: start,
+        end: end
       });
     }
   };
@@ -156,125 +168,146 @@ class AddTimeDialog extends PureComponent {
     this.setState({ end });
   };
 
+  handleCloseSnackMsg = () => {
+    this.setState({ snackMsg: null });
+  };
+
   /** Render function */
   render() {
-    const { title, date, className, classes: s, t } = this.props;
-    const { start, end } = this.state;
+    const { title, day, className, classes: s, t } = this.props;
+    const { start, end, snackMsg } = this.state;
 
     return (
-      <MuiPickersUtilsProvider utils={MomentUtils}>
-        <Dialog
-          open
-          onClose={this.handleClose}
-          classes={{ paper: clsx(s.root, className) }}
-        >
-          {/** dialog title */}
-          <DialogTitle className={s.header}>
-            <Row fullWidth>
-              <Typography fontSizeM textSecondary fontWeightBold>
-                {title || t("availableHours")}
-              </Typography>
-              <Stretch />
-              {/** close button */}
-              <Button
-                link="errorRed"
-                background="secondaryLight"
-                onClick={this.handleClose}
-              >
-                <Typography fontSizeS alignChildrenCenter>
-                  <CloseIcon style={{ width: 10, height: 10 }} />
-                  <Typography paddingLeft>{t("cancel")}</Typography>
-                </Typography>
-              </Button>
-            </Row>
-          </DialogTitle>
-
-          {/** dialog content */}
-          <DialogContent className={s.content}>
-            <Column classes={{ box: s.container }}>
-              <Row classes={{ box: s.date }}>
+      <React.Fragment>
+        <MuiPickersUtilsProvider utils={MomentUtils}>
+          <Dialog
+            open
+            onClose={this.handleClose}
+            classes={{ paper: clsx(s.root, className) }}
+          >
+            {/** dialog title */}
+            <DialogTitle className={s.header}>
+              <Row fullWidth>
                 <Typography fontSizeM textSecondary fontWeightBold>
-                  {t(weekdays[date.getDay()])}
+                  {title || t("availableHours")}
                 </Typography>
                 <Stretch />
-                <Typography fontSizeXS textSecondary>
-                  {formatDate(date)}
-                </Typography>
+                {/** close button */}
+                <Button
+                  link="errorRed"
+                  background="secondaryLight"
+                  onClick={this.handleClose}
+                >
+                  <Typography fontSizeS alignChildrenCenter>
+                    <CloseIcon style={{ width: 10, height: 10 }} />
+                    <Typography paddingLeft>{t("cancel")}</Typography>
+                  </Typography>
+                </Button>
               </Row>
-              <KeyboardTimePicker
-                value={start}
-                maxDate={end}
-                id="start-time-picker"
-                onChange={this.handleStartChange}
-                KeyboardButtonProps={{
-                  "aria-label": "change time"
-                }}
-                TextFieldComponent={({ InputProps, ...props }) => (
-                  <TextField
-                    {...props}
-                    variant="outlined"
-                    fullWidth
-                    className={s.timePicker}
-                    endAdornment={InputProps.endAdornment}
-                  />
-                )}
-                minutesStep={10}
-              />
-              <KeyboardTimePicker
-                value={end}
-                minDate={start}
-                id="end-time-picker"
-                onChange={this.handleEndChange}
-                KeyboardButtonProps={{
-                  "aria-label": "change time"
-                }}
-                TextFieldComponent={({ InputProps, ...props }) => (
-                  <TextField
-                    {...props}
-                    variant="outlined"
-                    fullWidth
-                    className={s.timePicker}
-                    endAdornment={InputProps.endAdornment}
-                  />
-                )}
-                minutesStep={10}
-              />
-            </Column>
-          </DialogContent>
+            </DialogTitle>
 
-          {/** dialog footer */}
-          <DialogActions className={s.footer}>
-            <Grid
-              container
-              direction="row"
-              justify="space-between"
-              alignItems="center"
-              className={s.filterPanel}
+            {/** dialog content */}
+            <DialogContent className={s.content}>
+              <Column classes={{ box: s.container }}>
+                <Row classes={{ box: s.date }}>
+                  <Typography fontSizeM textSecondary fontWeightBold>
+                    {t(day)}
+                  </Typography>
+                  <Stretch />
+                  {/* <Typography fontSizeXS textSecondary>
+                  {formatDate(date)}
+                </Typography> */}
+                </Row>
+                <KeyboardTimePicker
+                  value={start}
+                  maxDate={end}
+                  id="start-time-picker"
+                  onChange={this.handleStartChange}
+                  KeyboardButtonProps={{
+                    "aria-label": "change time"
+                  }}
+                  TextFieldComponent={({ InputProps, ...props }) => (
+                    <TextField
+                      {...props}
+                      variant="outlined"
+                      fullWidth
+                      className={s.timePicker}
+                      endAdornment={InputProps.endAdornment}
+                    />
+                  )}
+                  minutesStep={10}
+                />
+                <KeyboardTimePicker
+                  value={end}
+                  minDate={start}
+                  id="end-time-picker"
+                  onChange={this.handleEndChange}
+                  KeyboardButtonProps={{
+                    "aria-label": "change time"
+                  }}
+                  TextFieldComponent={({ InputProps, ...props }) => (
+                    <TextField
+                      {...props}
+                      variant="outlined"
+                      fullWidth
+                      className={s.timePicker}
+                      endAdornment={InputProps.endAdornment}
+                    />
+                  )}
+                  minutesStep={10}
+                />
+              </Column>
+            </DialogContent>
+
+            {/** dialog footer */}
+            <DialogActions className={s.footer}>
+              <Grid
+                container
+                direction="row"
+                justify="space-between"
+                alignItems="center"
+                className={s.filterPanel}
+              >
+                <Button
+                  link="errorRed"
+                  background="secondaryLight"
+                  onClick={this.handleClose}
+                >
+                  <Typography fontSizeS alignChildrenCenter>
+                    <CloseIcon style={{ width: 10, height: 10 }} />
+                    <Typography paddingLeft>{t("cancel")}</Typography>
+                  </Typography>
+                </Button>
+                <Button
+                  variant="primary"
+                  onClick={this.handleSave}
+                  className={s.applyButton}
+                >
+                  <Typography fontSizeS alignChildrenCenter>
+                    <CheckIcon fontSize="small" />
+                    <Typography paddingLeft>{t("saveTime")}</Typography>
+                  </Typography>
+                </Button>
+              </Grid>
+            </DialogActions>
+          </Dialog>
+        </MuiPickersUtilsProvider>
+
+        {snackMsg && (
+          <Snackbar
+            open
+            autoHideDuration={4000}
+            onClose={this.handleCloseSnackMsg}
+          >
+            <Alert
+              onClose={this.handleCloseSnackMsg}
+              severity={snackMsg.severity || "info"}
             >
-              <Button
-                link="errorRed"
-                background="secondaryLight"
-                onClick={this.handleClose}
-              >
-                <Typography fontSizeS alignChildrenCenter>
-                  <CloseIcon style={{ width: 10, height: 10 }} />
-                  <Typography paddingLeft>{t("cancel")}</Typography>
-                </Typography>
-              </Button>
-              <Button
-                variant="primary"
-                onClick={this.handleSave}
-                className={s.applyButton}
-              >
-                <Typography fontSizeS alignChildrenCenter>
-                  <CheckIcon fontSize="small" />
-                  <Typography paddingLeft>{t("saveTime")}</Typography>
-                </Typography>
-              </Button>
-            </Grid>
-          </DialogActions>
-        </Dialog>
-      </MuiPickersUtilsProvider>
+              {snackMsg.msg || snackMsg}
+            </Alert>
+          </Snackbar>
+        )}
+      </React.Fragment>
     );
   }
 }
