@@ -3,6 +3,7 @@ import { withStyles } from "@material-ui/core/styles";
 import { withTranslation } from "react-i18next";
 import PropTypes from "prop-types";
 import withWidth from "@material-ui/core/withWidth";
+import clsx from "clsx";
 import {
   Table,
   TableHead,
@@ -11,7 +12,7 @@ import {
   TableCell,
   Grid
 } from "@material-ui/core";
-import { Add } from "@material-ui/icons";
+import { Add, KeyboardArrowLeft, KeyboardArrowRight } from "@material-ui/icons";
 import { withLogin } from "../../common/base-services";
 import {
   Row,
@@ -22,16 +23,43 @@ import {
   DeleteIcon,
   DeleteConfirmDialog
 } from "../../common/base-components";
-import { weekdays } from "../../utils/constants";
-import { formatHrMin } from "../../utils/formatters";
+import { weekdays, months } from "../../utils/constants";
+import { formatHrMin, formatDate } from "../../utils/formatters";
 import { AddTimeDialog } from "./Dialogs";
 
 const styleSheet = theme => ({
   root: {},
 
+  weekHeader: {
+    background: theme.colors.primary.white,
+    padding: 20
+  },
+
+  navWeekButton: {
+    background: "none",
+    color: theme.colors.primary.grey,
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
+    "&:hover": {
+      background: theme.colors.primary.lightGrey,
+      color: theme.colors.primary.grey
+    }
+  },
+
   datetimeWrapper: {
     padding: "24px 0px",
     borderBottom: `1px solid ${theme.colors.primary.borderGrey}`
+  },
+
+  visitDot: {
+    position: "absolute",
+    width: 8,
+    height: 8,
+    top: 6,
+    right: 6,
+    background: "#41AFFF",
+    borderRadius: "50%"
   },
 
   actionButtons: {
@@ -63,16 +91,22 @@ const styleSheet = theme => ({
     borderRadius: 8,
     boxShadow: "none",
     width: "100%",
-    height: 500
+    minHeight: 300
   },
 
   headerCell: {
     background: theme.colors.primary.borderGrey,
     padding: "22px 0px 26px",
     borderRight: `1px solid ${theme.colors.primary.white}`,
+    cursor: "pointer",
     "&:last-of-type": {
       borderRight: "none"
     }
+  },
+
+  selectedHeaderCell: {
+    background: theme.colors.primary.mainColor,
+    color: `${theme.colors.primary.white} !important`
   },
 
   dataCell: {
@@ -80,7 +114,8 @@ const styleSheet = theme => ({
     background: theme.colors.primary.white,
     verticalAlign: "top",
     padding: 0,
-    width: "calc(100% / 7)"
+    width: "calc(100% / 7)",
+    cursor: "pointer"
   },
 
   addButton: {
@@ -93,21 +128,35 @@ const styleSheet = theme => ({
 });
 
 /** Render header cell */
-const HeaderCell = React.memo(({ t, weekday }) => {
+const HeaderCell = React.memo(({ t, weekday, startWeekDate, onClick }) => {
+  let date = null;
+  if (startWeekDate) {
+    date = formatDate(
+      new Date(startWeekDate).setDate(
+        new Date(startWeekDate).getDate() + weekday
+      )
+    );
+  }
+
   return (
-    <Column>
+    <Column onClick={() => onClick(weekdays[weekday])}>
       <Typography fontSizeM fontWeightBold textSecondary>
         {t(weekdays[weekday])}
       </Typography>
+      {date && (
+        <Typography fontSizeXS textMediumGrey>
+          {date}
+        </Typography>
+      )}
     </Column>
   );
 });
 
 /** Render available time */
 const VisitDateTime = React.memo(
-  ({ classes: s, start, end, onEdit, onDelete }) => {
+  ({ classes: s, start, end, type, onEdit, onDelete, onClick }) => {
     return (
-      <Row fullWidth justifyChildrenCenter relative>
+      <Row fullWidth justifyChildrenCenter relative onClick={onClick}>
         {onEdit || onDelete ? (
           <Grid
             container
@@ -149,25 +198,38 @@ const VisitDateTime = React.memo(
             {formatHrMin(end)}
           </Typography>
         </Column>
+        {type === "visit" && <div className={s.visitDot}></div>}
       </Row>
     );
   }
 );
 
-const DataCell = ({ classes: s, day, visitHours, onAdd, onEdit, onDelete }) => {
+const DataCell = ({
+  classes: s,
+  weekday,
+  visitHours,
+  onAdd,
+  onEdit,
+  onDelete,
+  onClick
+}) => {
   return (
     <Column>
-      {visitHours.map((v, index) => (
-        <React.Fragment key={index}>
-          <VisitDateTime
-            classes={s}
-            start={v.start}
-            end={v.end}
-            onEdit={() => onEdit(v, day)}
-            onDelete={() => onDelete(v, day)}
-          />
-        </React.Fragment>
-      ))}
+      {visitHours && visitHours.length
+        ? visitHours.map((v, index) => (
+          <React.Fragment key={index}>
+            <VisitDateTime
+              classes={s}
+              start={v.start}
+              end={v.end}
+              type={v.type}
+              onEdit={onEdit ? () => onEdit(v, weekday) : null}
+              onDelete={onDelete ? () => onDelete(v, weekday) : null}
+              onClick={onClick ? () => onClick(v, weekday) : null}
+            />
+          </React.Fragment>
+        ))
+        : null}
       {onAdd && (
         <div className={s.datetimeWrapper} style={{ borderBottom: "none" }}>
           <Button
@@ -186,12 +248,16 @@ const DataCell = ({ classes: s, day, visitHours, onAdd, onEdit, onDelete }) => {
   );
 };
 
-class CalendarForm extends PureComponent {
+class CalendarWeekForm extends PureComponent {
   static propTypes = {
     /** visit-hours info */
     visitHours: PropTypes.object,
     /** change function */
     onChange: PropTypes.func,
+    /** start date info */
+    startWeekDate: PropTypes.object,
+    /** selected week day */
+    selectedWeekDay: PropTypes.string,
 
     classes: PropTypes.object,
     t: PropTypes.func
@@ -274,48 +340,108 @@ class CalendarForm extends PureComponent {
     this.setState({ dialog: null });
   };
 
+  handleSelectWeekday = weekday => {
+    if (this.props.onSelectWeekday) {
+      this.props.onSelectWeekday(weekday);
+    }
+  };
+
+  handleSelectEvent = (event, weekday) => {
+    if (this.props.onSelectWeekday) {
+      this.props.onSelectWeekday(weekday);
+    }
+    if (this.props.onSelectEvent) {
+      this.props.onSelectEvent(event, weekday);
+    }
+  };
+
   /**
    * Renderer function
    */
   render() {
-    const { visitHours, onChange, classes: s, t } = this.props;
+    const {
+      visitHours,
+      onChange,
+      startWeekDate,
+      selectedWeekDay,
+      selectedEvent,
+      onPrevWeek,
+      onNextWeek,
+      classes: s,
+      t
+    } = this.props;
     const { dialog } = this.state;
 
     return (
-      <Table className={s.table}>
-        <TableHead>
-          <TableRow>
-            {weekdays.map((d, index) => (
-              <TableCell key={index} className={s.headerCell}>
-                <HeaderCell classes={s} t={t} weekday={index} />
-              </TableCell>
-            ))}
-          </TableRow>
-        </TableHead>
-        <TableBody>
-          <TableRow>
-            {weekdays.map((d, index) => (
-              <TableCell key={index} className={s.dataCell}>
-                <DataCell
-                  classes={s}
-                  day={d}
-                  visitHours={visitHours[d]}
-                  onAdd={onChange ? () => this.handleAdd(d) : null}
-                  onEdit={onChange ? this.handleEdit : null}
-                  onDelete={onChange ? this.handleDelete : null}
-                />
-              </TableCell>
-            ))}
-          </TableRow>
-        </TableBody>
+      <Column fullWidth>
+        {startWeekDate && (
+          <Row fullWidth alignChildrenCenter classes={{ box: s.weekHeader }}>
+            {onPrevWeek && (
+              <Button onClick={onPrevWeek} className={s.navWeekButton}>
+                <KeyboardArrowLeft />
+              </Button>
+            )}
+            <Typography stretch fontSizeM textSecondary justifyChildrenCenter>
+              {startWeekDate.getFullYear() +
+                " " +
+                t(months[startWeekDate.getMonth()])}
+            </Typography>
+            {onNextWeek && (
+              <Button onClick={onNextWeek} className={s.navWeekButton}>
+                <KeyboardArrowRight />
+              </Button>
+            )}
+          </Row>
+        )}
+        <Table className={s.table}>
+          <TableHead>
+            <TableRow>
+              {weekdays.map((d, index) => (
+                <TableCell
+                  key={index}
+                  className={clsx(
+                    s.headerCell,
+                    selectedWeekDay === d && s.selectedHeaderCell
+                  )}
+                >
+                  <HeaderCell
+                    classes={s}
+                    t={t}
+                    weekday={index}
+                    startWeekDate={startWeekDate}
+                    onClick={this.handleSelectWeekday}
+                  />
+                </TableCell>
+              ))}
+            </TableRow>
+          </TableHead>
+          <TableBody>
+            <TableRow>
+              {weekdays.map((d, index) => (
+                <TableCell key={index} className={s.dataCell}>
+                  <DataCell
+                    classes={s}
+                    weekday={d}
+                    visitHours={visitHours[d]}
+                    onAdd={onChange ? () => this.handleAdd(d) : null}
+                    onEdit={onChange ? this.handleEdit : null}
+                    onDelete={onChange ? this.handleDelete : null}
+                    onClick={this.handleSelectEvent}
+                    selectedEvent={selectedEvent}
+                  />
+                </TableCell>
+              ))}
+            </TableRow>
+          </TableBody>
+        </Table>
 
         {/** Show dialog */}
         {dialog}
-      </Table>
+      </Column>
     );
   }
 }
 
 export default withWidth()(
-  withLogin(withStyles(styleSheet)(withTranslation("common")(CalendarForm)))
+  withLogin(withStyles(styleSheet)(withTranslation("common")(CalendarWeekForm)))
 );

@@ -198,6 +198,12 @@ export const getEventsByOffice = () =>
   Promise.resolve({ status: 200, data: eventsMockData });
 
 /**
+ * Call api to get events of landlord
+ */
+export const getEventsByLandlord = () =>
+  Promise.resolve({ status: 200, data: eventsMockData });
+
+/**
  * Call api to get events of office
  * @param {string} officeId Office id for getting events data
  */
