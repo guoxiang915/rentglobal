@@ -42,5 +42,13 @@
     "react": {
       "version": "detect"
     }
-  }
+  },
+  "overrides": [
+    {
+      "files": ["**/*.percy.{js,jsx}"],
+      "env": {
+        "react-percy/globals": true
+      }
+    }
+  ]
 }
