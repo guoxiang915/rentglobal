@@ -12,7 +12,7 @@ import {
   CloseIcon,
   CheckIcon
 } from "../../../../common/base-components";
-import CalendarForm from "../../../Layout/CalendarForm";
+import CalendarWeekForm from "../../../Layout/CalendarWeekForm";
 
 const styleSheet = theme => ({
   root: {},
@@ -117,7 +117,7 @@ class VisitAvailabilityForm extends PureComponent {
         </Typography>
 
         <div className={s.calendarWrapper}>
-          <CalendarForm
+          <CalendarWeekForm
             visitHours={visitHours}
             onChange={this.handleChangeVisitHours}
           />

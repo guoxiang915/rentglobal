@@ -20,6 +20,13 @@ pipelines:
           # artifacts:
             # - application.tgz
       - step:
+          name: Test using Percy
+          caches:
+            - node
+          script:
+            - npm run build
+            - npm run percy-build
+      - step:
           name: Git merge and deploy
           caches:
             - node

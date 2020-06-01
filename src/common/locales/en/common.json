@@ -531,5 +531,11 @@
   "day": "Day",
   "lifeTime": "Life time",
   "excelExport": "Excel export",
-  "startTimeLessThanEndTime": "Start time should be less than end time"
+  "startTimeLessThanEndTime": "Start time should be less than end time",
+
+  "visitRequests": "Visit requests",
+  "personalEvents": "Personal events",
+  "acceptedVisitRequests": "Accepted visit requests",
+  "selectedDayEvents": "Selected Day Events",
+  "selectedEventDetails": "Selected Event Details"
 }

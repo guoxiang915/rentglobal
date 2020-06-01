@@ -11,3 +11,4 @@ export { default as SearchbarWithSorter } from "./SearchbarWithSorter";
 export { default as OfficeReviews } from "./OfficeReviews";
 export { default as OfficeCalendar } from "./OfficeCalendar";
 export { default as OfficeReport } from "./OfficeReport";
+export { default as EventCalendar } from "./EventCalendar";

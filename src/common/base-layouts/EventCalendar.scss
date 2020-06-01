@@ -1,0 +1,64 @@
+$mbsc-windows-accent: #d7df23;
+$mbsc-windows-frame-accent: #d7df23;
+$mbsc-windows-frame-text: #525252;
+$mbsc-windows-frame-background: #ffffff;
+
+// @import "~@mobiscroll/react/dist/css/mobiscroll.react.scss";
+
+.mbsc-windows .mbsc-fr-w {
+    background: white;
+}
+
+.mbsc-cal-month {
+    color: #525252;
+}
+
+.mbsc-cal-days-c .mbsc-cal-days {
+    margin-bottom: 28px;
+}
+
+.mbsc-cal-days-c .mbsc-cal-days > div {
+    color: #e8e8e8;
+}
+
+.mbsc-windows .mbsc-cal-day-diff .mbsc-cal-day-i {
+    background: transparent;
+}
+
+.mbsc-windows .mbsc-cal-today .mbsc-cal-day-date {
+    color: white;
+}
+
+.mbsc-windows .mbsc-cal .mbsc-cal-day.mbsc-selected:not(.mbsc-disabled) .mbsc-cal-cell-i.mbsc-cal-day-i {
+    background: #d7df23;
+    border-radius: 4px;
+}
+
+.mbsc-cal-cell-i .mbsc-cal-day-i {
+    position: relative;
+}
+
+.mbsc-cal-cell-i .mbsc-cal-day-i .mbsc-cal-day-markup {
+}
+
+.mbsc-windows .mbsc-cal-marks {
+    position: absolute;
+    height: 30px;
+    top: calc(50% - 15px);
+    bottom: calc(50% + 15px);
+    margin-top: 0;
+    right: 4px;
+    left: auto;
+    display: flex;
+    flex-direction: column-reverse;
+    flex-wrap: wrap;
+    direction: rtl;
+    overflow: visible;
+}
+
+.mbsc-windows .mbsc-cal-marks .mbsc-cal-mark {
+    width: 6px;
+    height: 6px;
+    margin-top: 2px;
+    margin-bottom: 2px;
+}
