@@ -60,7 +60,8 @@
         "lint": "eslint ./src/**/*.{js,jsx} --fix",
         "test": "react-ssr-scripts test",
         "eject": "react-ssr-scripts eject",
-        "percy-build": "npx percy snapshot ./build"
+        "percy-build": "npx percy snapshot ./public",
+        "percy": "react-percy"
     },
     "eslintConfig": {
         "extends": "react-app"
@@ -96,6 +97,7 @@
         ]
     },
     "devDependencies": {
+        "@percy/script": "^1.1.0",
         "eslint-plugin-react-percy": "^0.2.4",
         "jest": "^26.0.1",
         "jest-watch-typeahead": "^0.6.0"
