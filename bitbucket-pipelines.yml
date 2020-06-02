@@ -25,12 +25,12 @@ pipelines:
               script:
                 - yarn install
                 - yarn test
-          - step:
-              name: Percy testing
-              script:
-                - yarn install
-                - yarn build
-                - yarn percy-build
+          # - step:
+              # name: Percy testing
+              # script:
+                # - yarn install
+                # - yarn build
+                # - yarn percy-build
       - step:
           name: Git merge and deploy
           caches:
