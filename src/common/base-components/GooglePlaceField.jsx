@@ -50,9 +50,8 @@ class GooglePlaceField extends PureComponent {
       .then(({ lat, lng }) => {
         GeoCode.fromLatLng(lat, lng)
           .then(results => {
-            console.log(lat, lng, results);
             const familiarResult = results.results[0];
-            const { address_components: addressComponents = [] } = familiarResult;
+            const { address_components: addressComponents = [], types = [] } = familiarResult;
             detailedAddress = {
               fullAddress: this.state.address,
               streetName:
@@ -85,6 +84,7 @@ class GooglePlaceField extends PureComponent {
               country: addressComponents.find(
                 (component) => component.types[0] === "country"
               )?.short_name,
+              types,
               coordinates: { lat, lng }
             };
 
