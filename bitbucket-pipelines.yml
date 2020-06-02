@@ -19,6 +19,17 @@ pipelines:
             # - tar czfv application.tgz build/
           # artifacts:
             # - application.tgz
+      - parallel:
+          - step:
+              name: Unit testing
+              script:
+                - npm install
+                - npm run test
+          - step:
+              name: Percy testing
+              script:
+                - npm install
+                - npm run percy
       - step:
           name: Git merge and deploy
           caches:
