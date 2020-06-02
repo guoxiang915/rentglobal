@@ -154,7 +154,6 @@ const Searchbox = ({
       setQuery("");
       setSelectedLocations([]);
       locationSummary({
-        zipCode: location.zipCode,
         streetName: location.streetName || undefined,
         city: location.city,
         state: location.state,
