@@ -8,29 +8,29 @@ image: node:12.17.0
 pipelines:
   branches:
     develop:
-      - step:
-          name: Build react project
-          caches:
-            - node
-          script: # Modify the commands below to build your repository.
-            - yarn install
-            # - npm test
-            # - npm run build
-            # - tar czfv application.tgz build/
-          # artifacts:
-            # - application.tgz
       - parallel:
+          # - step:
+              # name: Build react project
+              # caches:
+                # - node
+              # script: # Modify the commands below to build your repository.
+                # - yarn install
+                ## - npm test
+                ## - npm run build
+                ## - tar czfv application.tgz build/
+              ## artifacts:
+                ## - application.tgz
           - step:
               name: Unit testing
               script:
                 - yarn install
                 - yarn test
-          # - step:
-              # name: Percy testing
-              # script:
-                # - yarn install
-                # - yarn build
-                # - yarn percy-build
+          - step:
+              name: Percy testing
+              script:
+                - yarn install
+                - yarn build
+                - yarn percy-build
       - step:
           name: Git merge and deploy
           caches:
