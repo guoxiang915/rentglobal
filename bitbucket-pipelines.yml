@@ -25,12 +25,6 @@ pipelines:
               script:
                 - yarn install
                 - yarn test
-          - step:
-              name: Percy testing
-              script:
-                - yarn install
-                - yarn build
-                - yarn percy-build
       - step:
           name: Git merge and deploy
           caches:
@@ -48,3 +42,8 @@ pipelines:
                 # HEROKU_API_KEY: $HEROKU_API_KEY
                 # HEROKU_APP_NAME: $HEROKU_APP_NAME
                 # ZIP_FILE: "application.tgz"
+      - step:
+          name: Percy snapshots
+          script:
+            - yarn install
+            - yarn percy

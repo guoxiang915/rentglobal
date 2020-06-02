@@ -12,7 +12,7 @@
         "@material-ui/pickers": "^3.2.10",
         "@material-ui/styles": "^4.9.14",
         "@mobiscroll/react": "file:./src/lib/mobiscroll-package/mobiscroll-react-v4.10.3.tgz",
-        "@percy/react": "^0.4.6",
+        "@percy/script": "^1.1.0",
         "awesome-phonenumber": "^2.32.0",
         "axios": "^0.19.2",
         "babel-eslint": "^10.1.0",
@@ -63,7 +63,7 @@
         "test": "react-ssr-scripts test",
         "eject": "react-ssr-scripts eject",
         "percy-build": "npx percy snapshot build/",
-        "percy": "react-percy"
+        "percy": "npx percy exec -- node snapshots.js"
     },
     "eslintConfig": {
         "extends": "react-app"
@@ -99,8 +99,6 @@
         ]
     },
     "devDependencies": {
-        "@percy/script": "^1.1.0",
-        "eslint-plugin-react-percy": "^0.2.4",
         "jest": "^26.0.1",
         "jest-watch-typeahead": "^0.6.0"
     }
