@@ -19,14 +19,23 @@ pipelines:
             # - tar czfv application.tgz build/
           # artifacts:
             # - application.tgz
-      - step:
-          name: Git merge and deploy
-          caches:
-            - node
-          script:
-            - npm install
-            # - npm run build
-            - git push https://heroku:$HEROKU_API_KEY@git.heroku.com/$HEROKU_APP_NAME.git +HEAD:master
+      - parallel:
+          - step:
+              name: Unit testing
+              script:
+                - npm run test
+          - step:
+              name: Percy testing
+              script:
+                - npm run percy
+          - step:
+              name: Git merge and deploy
+              caches:
+                - node
+              script:
+                - npm install
+                # - npm run build
+                - git push https://heroku:$HEROKU_API_KEY@git.heroku.com/$HEROKU_APP_NAME.git +HEAD:master
       # - step:
           # name: Deploy to production
           # deployment: production
