@@ -1,5 +1,6 @@
 import React, { PureComponent } from "react";
 import PropTypes from "prop-types";
+import GeoCode from "react-geocode";
 import GooglePlacesAutocomplete, {
   geocodeByPlaceId,
   getLatLng,
@@ -38,55 +39,59 @@ class GooglePlaceField extends PureComponent {
   state = { address: this.props.value };
 
   handleClick = (e, suggestion, onSelectSuggestion) => {
+    GeoCode.setApiKey("AIzaSyCFjI4tzrBQzlNgWorViS48057MOvcn_VY");
     onSelectSuggestion(suggestion, e);
     let detailedAddress = {};
     geocodeByPlaceId(suggestion.place_id)
       .then((results) => {
         const familiarResult = results[0];
-        const { address_components: addressComponents = [] } = familiarResult;
-        detailedAddress = {
-          fullAddress: this.state.address,
-          streetName:
-            addressComponents.find(
-              (component) => component.types[0] === "street_address"
-            )?.long_name ||
-            (addressComponents.find(
-              (component) => component.types[0] === "route"
-            )?.long_name
-              ? `${
-                  addressComponents.find(
-                    (component) => component.types[0] === "route"
-                  )?.long_name
-              } `
-              : "" +
-                `${
-                  addressComponents.find(
-                    (component) => component.types[0] === "street_number"
-                  )?.long_name || ""
-                }`),
-          city: addressComponents.find(
-            (component) => component.types[0] === "locality"
-          )?.long_name,
-          state: addressComponents.find(
-            (component) => component.types[0] === "administrative_area_level_1"
-          )?.long_name,
-          zipCode: addressComponents.find(
-            (component) => component.types[0] === "postal_code"
-          )?.long_name,
-          country: addressComponents.find(
-            (component) => component.types[0] === "country"
-          )?.long_name,
-        };
         return getLatLng(familiarResult);
       })
       .then(({ lat, lng }) => {
-        detailedAddress = {
-          ...detailedAddress,
-          coordinates: { lat, lng },
-        };
-        if (this.props.onSelect) {
-          this.props.onSelect(detailedAddress);
-        }
+        GeoCode.fromLatLng(lat, lng)
+          .then(results => {
+            console.log(lat, lng, results);
+            const familiarResult = results.results[0];
+            const { address_components: addressComponents = [] } = familiarResult;
+            detailedAddress = {
+              fullAddress: this.state.address,
+              streetName:
+                addressComponents.find(
+                  (component) => component.types[0] === "street_address"
+                )?.short_name ||
+                (addressComponents.find(
+                  (component) => component.types[0] === "route"
+                )?.short_name
+                  ? `${
+                      addressComponents.find(
+                        (component) => component.types[0] === "route"
+                      )?.short_name
+                  } `
+                  : "" +
+                    `${
+                      addressComponents.find(
+                        (component) => component.types[0] === "street_number"
+                      )?.short_name || ""
+                    }`),
+              city: addressComponents.find(
+                (component) => component.types[0] === "locality"
+              )?.short_name,
+              state: addressComponents.find(
+                (component) => component.types[0] === "administrative_area_level_1"
+              )?.short_name,
+              zipCode: addressComponents.find(
+                (component) => component.types[0] === "postal_code"
+              )?.short_name,
+              country: addressComponents.find(
+                (component) => component.types[0] === "country"
+              )?.short_name,
+              coordinates: { lat, lng }
+            };
+
+            if (this.props.onSelect) {
+              this.props.onSelect(detailedAddress);
+            }
+          });
       });
   };
 
