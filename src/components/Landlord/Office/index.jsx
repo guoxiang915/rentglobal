@@ -1,8 +1,8 @@
-import React, { PureComponent } from 'react';
-import { withStyles } from '@material-ui/core/styles';
-import { withTranslation } from 'react-i18next';
-import withWidth, { isWidthDown } from '@material-ui/core/withWidth';
-import PropTypes from 'prop-types';
+import React, { PureComponent } from "react";
+import { withStyles } from "@material-ui/core/styles";
+import { withTranslation } from "react-i18next";
+import withWidth, { isWidthDown } from "@material-ui/core/withWidth";
+import PropTypes from "prop-types";
 import {
   Row,
   Column,
@@ -10,45 +10,45 @@ import {
   Box,
   Typography,
   Button,
-  CarouselWrapper,
-} from '../../../common/base-components';
+  CarouselWrapper
+} from "../../../common/base-components";
 import {
   TabWrapper,
   StatisticBox,
-  OfficeItem,
-} from '../../../common/base-layouts';
-import { ConditionalWrapper } from '../../../utils/helpers';
+  OfficeItem
+} from "../../../common/base-layouts";
+import { ConditionalWrapper } from "../../../utils/helpers";
 
-const styleSheet = (theme) => ({
+const styleSheet = theme => ({
   root: {
     paddingLeft: theme.spacing(5),
     paddingRight: theme.spacing(5),
-    [theme.breakpoints.down('sm')]: {
+    [theme.breakpoints.down("sm")]: {
       paddingLeft: 27,
-      paddingRight: 27,
-    },
+      paddingRight: 27
+    }
   },
 
   fullWidth: {
-    width: '100%',
+    width: "100%"
   },
 
   statisticWrapper: {
-    flexWrap: 'wrap',
-    [theme.breakpoints.down('sm')]: {
-      flexWrap: 'nowrap',
-      overflowX: 'auto',
-    },
+    flexWrap: "wrap",
+    [theme.breakpoints.down("sm")]: {
+      flexWrap: "nowrap",
+      overflowX: "auto"
+    }
   },
 
   officesTabWrapper: {
     paddingTop: 20,
-    paddingBottom: 56,
+    paddingBottom: 56
   },
 
   carouselWrapper: {
-    marginLeft: -10,
-  },
+    marginLeft: -10
+  }
 });
 
 class Offices extends PureComponent {
@@ -57,20 +57,20 @@ class Offices extends PureComponent {
     getOffices: PropTypes.func.isRequired,
 
     classes: PropTypes.object,
-    t: PropTypes.func,
+    t: PropTypes.func
   };
 
   state = { offices: [] };
 
   /** Navigation */
-  navigate = (path) => () => {
+  navigate = path => () => {
     this.props.navigate(path);
   };
 
   /** Get landlord offices */
   componentDidMount() {
     this.props.getOffices().then(
-      (response) => this.setState({ offices: response.data.docs }),
+      response => this.setState({ offices: response.data.docs }),
       () => {}
     );
   }
@@ -79,11 +79,16 @@ class Offices extends PureComponent {
   handleNavigateOfficeDetail = (office, t) => () => {
     if (office.published === true) {
       this.props.navigate(
-        'offices',
-        (`${office._id}/${office.location.country}/${t(office.officeType)}/${office.numberOfEmployees} ${t("employees")}/${office.refId}-${office.title}`).replace(/\s+/g, '-')
+        "offices",
+        `${office._id}/${office.location.country}/${t(office.officeType)}/${
+          office.numberOfEmployees
+        } ${t("employees")}/${office.refId}-${office.title}`.replace(
+          /\s+/g,
+          "-"
+        )
       );
     } else {
-      this.props.navigate('offices', `${office._id}/edit`);
+      this.props.navigate("offices", `${office._id}/edit`);
     }
   };
 
@@ -95,9 +100,9 @@ class Offices extends PureComponent {
     const { offices } = this.state;
 
     const statistics = {
-      followUpRequests: { value: 8, variant: 'primary' },
+      followUpRequests: { value: 8, variant: "primary" },
       moreInfoReq: { value: 1 },
-      contactReq: { value: 1 },
+      contactReq: { value: 1 }
     };
 
     return (
@@ -111,29 +116,29 @@ class Offices extends PureComponent {
         <Row fullWidth paddingBottom>
           {/* title */}
           <Typography fontSizeM textSecondary>
-            {t('offices')}
+            {t("offices")}
           </Typography>
           <Stretch />
           <Button
             variant="secondary"
             shadow
-            onClick={this.navigate('offices/add')}
+            onClick={this.navigate("offices/add")}
           >
-            {t('addNewOffice')}
+            {t("addNewOffice")}
           </Button>
         </Row>
 
         {/* requests tab */}
         <Row fullWidth classes={{ box: s.officesTabWrapper }}>
-          <TabWrapper title={`${t('requests')} (10)`} open insideOpen>
+          <TabWrapper title={`${t("requests")} (10)`} open insideOpen>
             <Row
               fullWidth
               paddingTopDouble
               classes={{ box: s.statisticWrapper }}
             >
               <ConditionalWrapper
-                condition={isWidthDown('xs', width)}
-                wrapper={(children) => (
+                condition={isWidthDown("xs", width)}
+                wrapper={children => (
                   <CarouselWrapper
                     itemWidth={212}
                     itemOffset={0}
@@ -145,7 +150,7 @@ class Offices extends PureComponent {
               >
                 {Object.entries(statistics).map(([key, stat]) => (
                   <React.Fragment key={key}>
-                    <Box paddingRightHalf={!isWidthDown('xs', width)}>
+                    <Box paddingRightHalf={!isWidthDown("xs", width)}>
                       <StatisticBox title={t(key)} statistics={[stat]} />
                     </Box>
                   </React.Fragment>
@@ -154,79 +159,12 @@ class Offices extends PureComponent {
             </Row>
           </TabWrapper>
         </Row>
-
-        {/* office lists tab */}
-        <Row fullWidth classes={{ box: s.officesTabWrapper }}>
-          <TabWrapper
-            title={`${t('officeLists')} (${
-              offices.filter((item) => item.published === true).length
-            })`}
-            open
-            insideOpen
-            actionButton={
-              <Button
-                link="primary"
-                background="normalLight"
-                inverse
-                onClick={this.navigate('offices/all')}
-              >
-                <Typography paddingLeft fontSizeS>
-                  {t('allOfficesList')}
-                </Typography>
-              </Button>
-            }
-          >
-            <Row
-              paddingTopDouble
-              fullWidth
-              noOverflow
-              wrap={isWidthDown('xs', width)}
-            >
-              <ConditionalWrapper
-                condition={!isWidthDown('xs', width)}
-                wrapper={(children) => (
-                  <CarouselWrapper
-                    itemWidth={
-                      isWidthDown('xs', width) ? 'calc(100% + 20px)' : 255
-                    }
-                    itemOffset={0}
-                    className={s.carouselWrapper}
-                  >
-                    {children}
-                  </CarouselWrapper>
-                )}
-              >
-                {offices
-                  .filter((item) => item.published === true)
-                  .map((office, index) => (
-                    <div
-                      style={{
-                        position: 'relative',
-                        cursor: 'pointer',
-                        width: isWidthDown('xs', width) ? '100%' : 235,
-                        height: '100%',
-                        marginBottom: isWidthDown('xs', width) ? 28 : 0,
-                      }}
-                      key={index}
-                    >
-                      <OfficeItem
-                        office={office}
-                        setFavorite
-                        onClick={this.handleNavigateOfficeDetail(office, t)}
-                        fullWidth
-                      />
-                    </div>
-                  ))}
-              </ConditionalWrapper>
-            </Row>
-          </TabWrapper>
-        </Row>
-
+        
         {/* offices need attention tab */}
         <Row fullWidth classes={{ box: s.officesTabWrapper }}>
           <TabWrapper
-            title={`${t('needAttention')} (${
-              offices.filter((item) => item.published === false).length
+            title={`${t("needAttention")} (${
+              offices.filter(item => item.published === false).length
             })`}
             open
             insideOpen
@@ -235,11 +173,9 @@ class Offices extends PureComponent {
                 link="primary"
                 background="normalLight"
                 inverse
-                onClick={this.navigate('offices/unpublish')}
+                onClick={this.navigate("offices/unpublish")}
               >
-                <Typography paddingLeft fontSizeS>
-                  {t('allUnpublish')}
-                </Typography>
+                <Typography fontSizeS>{t("seeAll")}</Typography>
               </Button>
             }
           >
@@ -247,14 +183,14 @@ class Offices extends PureComponent {
               paddingTopDouble
               fullWidth
               noOverflow
-              wrap={isWidthDown('xs', width)}
+              wrap={isWidthDown("xs", width)}
             >
               <ConditionalWrapper
-                condition={!isWidthDown('xs', width)}
-                wrapper={(children) => (
+                condition={!isWidthDown("xs", width)}
+                wrapper={children => (
                   <CarouselWrapper
                     itemWidth={
-                      isWidthDown('xs', width) ? 'calc(100% + 20px)' : 255
+                      isWidthDown("xs", width) ? "calc(100% + 20px)" : 255
                     }
                     itemOffset={0}
                     className={s.carouselWrapper}
@@ -264,15 +200,15 @@ class Offices extends PureComponent {
                 )}
               >
                 {offices
-                  .filter((item) => item.published === false)
+                  .filter(item => item.published === false)
                   .map((office, index) => (
                     <div
                       style={{
-                        position: 'relative',
-                        cursor: 'pointer',
-                        width: isWidthDown('xs', width) ? '100%' : 235,
-                        height: '100%',
-                        marginBottom: isWidthDown('xs', width) ? 28 : 0,
+                        position: "relative",
+                        cursor: "pointer",
+                        width: isWidthDown("xs", width) ? "100%" : 235,
+                        height: "100%",
+                        marginBottom: isWidthDown("xs", width) ? 28 : 0
                       }}
                       key={index}
                     >
@@ -289,11 +225,76 @@ class Offices extends PureComponent {
             </Row>
           </TabWrapper>
         </Row>
+
+        {/* office lists tab */}
+        <Row fullWidth classes={{ box: s.officesTabWrapper }}>
+          <TabWrapper
+            title={`${t("approvedOfficesList")} (${
+              offices.filter(item => item.published === true).length
+            })`}
+            open
+            insideOpen
+            actionButton={
+              <Button
+                link="primary"
+                background="normalLight"
+                inverse
+                onClick={this.navigate("offices/all")}
+              >
+                <Typography fontSizeS>{t("seeAll")}</Typography>
+              </Button>
+            }
+          >
+            <Row
+              paddingTopDouble
+              fullWidth
+              noOverflow
+              wrap={isWidthDown("xs", width)}
+            >
+              <ConditionalWrapper
+                condition={!isWidthDown("xs", width)}
+                wrapper={children => (
+                  <CarouselWrapper
+                    itemWidth={
+                      isWidthDown("xs", width) ? "calc(100% + 20px)" : 255
+                    }
+                    itemOffset={0}
+                    className={s.carouselWrapper}
+                  >
+                    {children}
+                  </CarouselWrapper>
+                )}
+              >
+                {offices
+                  .filter(item => item.published === true)
+                  .map((office, index) => (
+                    <div
+                      style={{
+                        position: "relative",
+                        cursor: "pointer",
+                        width: isWidthDown("xs", width) ? "100%" : 235,
+                        height: "100%",
+                        marginBottom: isWidthDown("xs", width) ? 28 : 0
+                      }}
+                      key={index}
+                    >
+                      <OfficeItem
+                        office={office}
+                        setFavorite
+                        onClick={this.handleNavigateOfficeDetail(office, t)}
+                        fullWidth
+                      />
+                    </div>
+                  ))}
+              </ConditionalWrapper>
+            </Row>
+          </TabWrapper>
+        </Row>
       </Column>
     );
   }
 }
 
 export default withWidth()(
-  withStyles(styleSheet)(withTranslation('common')(Offices))
+  withStyles(styleSheet)(withTranslation("common")(Offices))
 );
