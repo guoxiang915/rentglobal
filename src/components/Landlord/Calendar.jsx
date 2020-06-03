@@ -25,7 +25,8 @@ import {
   TabWrapper,
   StatisticIconBox,
   SearchbarWithSorter,
-  EventCalendar
+  EventCalendar,
+  EventDetailItem
 } from "../../common/base-layouts";
 import { ConditionalWrapper } from "../../utils/helpers";
 import { getEventsByLandlord } from "../../api/endpoints";
@@ -319,6 +320,10 @@ class Calendar extends PureComponent {
 
   handleEditEvent = () => {};
 
+  handleEditSelectedEvent = () => {};
+
+  handleCancelSelectedEvent = () => {};
+
   /**
    * Renderer function
    */
@@ -479,15 +484,13 @@ class Calendar extends PureComponent {
         <Row fullWidth style={{ marginBottom: 45 }}>
           <TabWrapper title={t("selectedEventDetails")} open insideOpen>
             {selectedEvent && (
-              <Typography
-                textSecondary
-                fontSizeS
-                fontWeightBold
-                paddingTop
-                paddingBottomHalf
-              >
-                {[formatDate(selectedDay), getWeekday(selectedDay)].join(" ")}
-              </Typography>
+              <EventDetailItem
+                event={selectedEvent}
+                onEdit={this.handleEditSelectedEvent}
+                onCancel={this.handleCancelSelectedEvent}
+                horizontal
+                fullWidth
+              />
             )}
           </TabWrapper>
         </Row>

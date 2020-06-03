@@ -539,5 +539,8 @@
   "personalEvents": "Personal events",
   "acceptedVisitRequests": "Accepted visit requests",
   "selectedDayEvents": "Selected Day Events",
-  "selectedEventDetails": "Selected Event Details"
+  "selectedEventDetails": "Selected Event Details",
+  "visiting": "Visiting",
+  "event": "Event",
+  "dateOfRequest": "Date of request"
 }

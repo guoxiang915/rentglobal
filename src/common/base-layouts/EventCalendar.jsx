@@ -80,9 +80,9 @@ class EventCalendar extends React.Component {
     }
   };
 
-  handleSelectEvent = (event, weekday) => {
+  handleSelectEvent = event => {
     if (this.props.onSelectEvent) {
-      console.log(event, weekday);
+      this.props.onSelectEvent(event);
     }
   };
 
@@ -101,7 +101,6 @@ class EventCalendar extends React.Component {
         color: e.type === "visit" ? "#41AFFF" : "#525252"
       };
     });
-
     const startWeekday = getFirstDayOfWeek(selectedDay);
     const endWeekday = new Date(startWeekday);
     endWeekday.setDate(endWeekday.getDate() + 7);

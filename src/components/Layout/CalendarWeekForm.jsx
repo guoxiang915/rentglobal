@@ -47,8 +47,21 @@ const styleSheet = theme => ({
     }
   },
 
+  event: {
+    border: `1px solid transparent`,
+    margin: "8px -16px",
+    width: "calc(100% + 32px)",
+    padding: "20px 0px"
+  },
+
+  selectedEvent: {
+    border: `1px solid ${theme.colors.primary.mainColor}`,
+    borderRadius: 8
+  },
+
   datetimeWrapper: {
-    padding: "24px 0px",
+    margin: "0px 24px",
+    width: "calc(100% - 48px)",
     borderBottom: `1px solid ${theme.colors.primary.borderGrey}`
   },
 
@@ -154,51 +167,59 @@ const HeaderCell = React.memo(({ t, weekday, startWeekDate, onClick }) => {
 
 /** Render available time */
 const VisitDateTime = React.memo(
-  ({ classes: s, start, end, type, onEdit, onDelete, onClick }) => {
+  ({ classes: s, start, end, type, onEdit, onDelete, onClick, selected }) => {
     return (
-      <Row fullWidth justifyChildrenCenter relative onClick={onClick}>
-        {onEdit || onDelete ? (
-          <Grid
-            container
-            direction="row"
-            className={s.actionButtons}
-            alignItems="center"
-            justify="center"
-            spacing={1}
-          >
-            {onDelete ? (
-              <Grid item>
-                <Button
-                  variant="primary"
-                  className={s.actionButton}
-                  onClick={onDelete}
-                >
-                  <DeleteIcon style={{ width: 15, height: 13 }} />
-                </Button>
-              </Grid>
-            ) : null}
-            {onEdit ? (
-              <Grid item>
-                <Button
-                  variant="primary"
-                  className={s.actionButton}
-                  onClick={onEdit}
-                >
-                  <EditIcon style={{ width: 15, height: 13 }} />
-                </Button>
-              </Grid>
-            ) : null}
-          </Grid>
-        ) : null}
-        <Column classes={{ box: s.datetimeWrapper }}>
-          <Typography fontSizeS textSecondary>
-            {formatHrMin(start)}
-          </Typography>
-          <Typography fontSizeS textSecondary>
-            {formatHrMin(end)}
-          </Typography>
-        </Column>
-        {type === "visit" && <div className={s.visitDot}></div>}
+      <Row classes={{ box: s.datetimeWrapper }}>
+        <Row
+          fullWidth
+          justifyChildrenCenter
+          relative
+          onClick={onClick}
+          classes={{ box: clsx(s.event, selected && s.selectedEvent) }}
+        >
+          {onEdit || onDelete ? (
+            <Grid
+              container
+              direction="row"
+              className={s.actionButtons}
+              alignItems="center"
+              justify="center"
+              spacing={1}
+            >
+              {onDelete ? (
+                <Grid item>
+                  <Button
+                    variant="primary"
+                    className={s.actionButton}
+                    onClick={onDelete}
+                  >
+                    <DeleteIcon style={{ width: 15, height: 13 }} />
+                  </Button>
+                </Grid>
+              ) : null}
+              {onEdit ? (
+                <Grid item>
+                  <Button
+                    variant="primary"
+                    className={s.actionButton}
+                    onClick={onEdit}
+                  >
+                    <EditIcon style={{ width: 15, height: 13 }} />
+                  </Button>
+                </Grid>
+              ) : null}
+            </Grid>
+          ) : null}
+          <Column>
+            <Typography fontSizeS textSecondary>
+              {formatHrMin(start)}
+            </Typography>
+            <Typography fontSizeS textSecondary>
+              {formatHrMin(end)}
+            </Typography>
+          </Column>
+          {type === "visit" && <div className={s.visitDot}></div>}
+        </Row>
       </Row>
     );
   }
@@ -211,24 +232,36 @@ const DataCell = ({
   onAdd,
   onEdit,
   onDelete,
-  onClick
+  onClick,
+  selectedEvent
 }) => {
   return (
     <Column>
       {visitHours && visitHours.length
         ? visitHours.map((v, index) => (
-          <React.Fragment key={index}>
-            <VisitDateTime
-              classes={s}
-              start={v.start}
-              end={v.end}
-              type={v.type}
-              onEdit={onEdit ? () => onEdit(v, weekday) : null}
-              onDelete={onDelete ? () => onDelete(v, weekday) : null}
-              onClick={onClick ? () => onClick(v, weekday) : null}
-            />
-          </React.Fragment>
-        ))
+            <React.Fragment key={index}>
+              <VisitDateTime
+                classes={s}
+                start={v.start}
+                end={v.end}
+                type={v.type}
+                onEdit={onEdit ? () => onEdit(v, weekday) : null}
+                onDelete={onDelete ? () => onDelete(v, weekday) : null}
+                onClick={onClick ? () => onClick(v, weekday) : null}
+                selected={
+                  selectedEvent &&
+                  //  selectedEvent === v
+                  new Date(selectedEvent.date).getTime() ===
+                    new Date(v.date).getTime() &&
+                  new Date(selectedEvent.start).getTime() ===
+                    new Date(v.start).getTime() &&
+                  new Date(selectedEvent.end).getTime() ===
+                    new Date(v.end).getTime() &&
+                  selectedEvent.type === v.type
+                }
+              />
+            </React.Fragment>
+          ))
         : null}
       {onAdd && (
         <div className={s.datetimeWrapper} style={{ borderBottom: "none" }}>

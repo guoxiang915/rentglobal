@@ -204,6 +204,20 @@ export const getEventsByLandlord = () =>
   Promise.resolve({ status: 200, data: eventsMockData });
 
 /**
+ * Mock api to get office from event
+ */
+export const getOfficeByEvent = () => {
+  return new Promise((resolve, reject) =>
+    getPublishedOffices().then(
+      res => {
+        resolve({ status: 200, data: res.data.docs[0] });
+      },
+      err => reject(err)
+    )
+  );
+};
+
+/**
  * Call api to get events of office
  * @param {string} officeId Office id for getting events data
  */

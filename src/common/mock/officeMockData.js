@@ -51,7 +51,7 @@ export const offices = [
 export const events = [
   {
     type: "visit",
-    date: new Date(2020, 4, 20),
+    date: new Date(2020, 5, 2),
     start: new Date(0, 0, 0, 1, 0, 10),
     end: new Date(0, 0, 0, 5, 0, 30),
     name: "Company 1",
@@ -60,7 +60,7 @@ export const events = [
   },
   {
     type: "event",
-    date: new Date(2020, 4, 20),
+    date: new Date(2020, 5, 2),
     start: new Date(0, 0, 0, 16, 0, 0),
     end: new Date(0, 0, 0, 18, 0, 30),
     name: "Event 1",
