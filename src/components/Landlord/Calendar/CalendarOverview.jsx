@@ -1,27 +1,33 @@
-import React from "react";
-import PropTypes from "prop-types";
-import { withStyles } from "@material-ui/core";
+import React, { PureComponent } from "react";
+import { withStyles } from "@material-ui/core/styles";
+import { withRouter } from "react-router-dom";
 import { withTranslation } from "react-i18next";
+import PropTypes from "prop-types";
 import {
   Row,
   Column,
-  Stretch,
-  Button,
-  Link,
+  Box,
   Typography,
+  Button,
+  Stretch,
+  Link,
   Divider,
   Dot,
   UsersIcon
-} from "../base-components";
+} from "../../../common/base-components";
 import {
   TabWrapper,
   SearchbarWithSorter,
   EventCalendar,
+  EventDetailItem,
   EventListItem
-} from ".";
-import { getEventsByOffice } from "../../api/endpoints";
-import { formatDate, getWeekday } from "../../utils/formatters";
-import { checkEqualDate } from "../../utils/validators";
+} from "../../../common/base-layouts";
+import { getEventsByLandlord } from "../../../api/endpoints";
+
+import { formatDate, getWeekday, formatHrMin } from "../../../utils/formatters";
+import { checkEqualDate } from "../../../utils/validators";
+
+import { weekdays } from "../../../utils/constants";
 
 const styleSheet = theme => ({
   root: {},
@@ -31,23 +37,17 @@ const styleSheet = theme => ({
     borderRadius: 8
   },
 
-  calendarWrapper: {
-    marginTop: 40,
-    marginBottom: 40,
-    maxWidth: 500
-  },
-
   visit: {
     color: "#41AFFF"
   }
 });
 
-class OfficeCalendar extends React.Component {
+class CalendarOverview extends PureComponent {
   static propTypes = {
-    officeId: PropTypes.string.isRequired,
+    navigate: PropTypes.func,
+
     classes: PropTypes.object,
-    t: PropTypes.func,
-    width: PropTypes.string
+    t: PropTypes.func
   };
 
   constructor(props) {
@@ -59,14 +59,17 @@ class OfficeCalendar extends React.Component {
       selectedDay: new Date(),
       selectedEvent: null
     };
-    if (getEventsByOffice) {
-      getEventsByOffice(props.officeId).then(response => {
+    if (getEventsByLandlord) {
+      getEventsByLandlord().then(response => {
         if (response.status === 200) {
           this.setState({ events: response.data });
         }
       });
     }
   }
+
+  /** Get landlord offices */
+  componentDidMount() {}
 
   handleFilterChange = ({ query }) => {
     this.setState({ query: query });
@@ -76,13 +79,22 @@ class OfficeCalendar extends React.Component {
     this.setState({ viewMode });
   };
 
-  handleAddEvent = () => {};
-
-  handleEditEvent = () => {};
-
-  handleAcceptVisit = () => {};
-
-  handleDeclineVisit = () => {};
+  /** navigate to office detail page */
+  handleNavigateOfficeDetail = (office, t) => () => {
+    if (office.published === true) {
+      this.props.navigate(
+        "offices",
+        `${office._id}/${office.location.country}/${t(office.officeType)}/${
+          office.numberOfEmployees
+        } ${t("employees")}/${office.refId}-${office.title}`.replace(
+          /\s+/g,
+          "-"
+        )
+      );
+    } else {
+      this.props.navigate("offices", `${office._id}/edit`);
+    }
+  };
 
   handleSelectDay = date => {
     if (date) {
@@ -98,6 +110,19 @@ class OfficeCalendar extends React.Component {
     this.setState({ selectedEvent });
   };
 
+  handleEditEvent = () => {};
+
+  handleAcceptVisit = () => {};
+
+  handleDeclineVisit = () => {};
+
+  handleEditSelectedEvent = () => {};
+
+  handleCancelSelectedEvent = () => {};
+
+  /**
+   * Renderer function
+   */
   render() {
     const { classes: s, t } = this.props;
     const { selectedDay, selectedEvent, query, viewMode, events } = this.state;
@@ -108,13 +133,18 @@ class OfficeCalendar extends React.Component {
 
     return (
       <Column classes={{ box: s.root }} fullWidth alignChildrenStart>
+        {/** Show search bar */}
         <Row fullWidth style={{ marginBottom: 42 }}>
           <SearchbarWithSorter
             query={query}
             title={t("searchOnCalendar")}
             onChange={this.handleFilterChange}
           />
+          <Box paddingLeftDouble />
+          <Button variant="primary">{t("addEvent")}</Button>
         </Row>
+
+        {/** Show week/month view mode selector */}
         <Row fullWidth paddingBottomDouble>
           <Typography
             textSecondary={viewMode === "week"}
@@ -137,22 +167,18 @@ class OfficeCalendar extends React.Component {
             {t("month")}
           </Typography>
           <Stretch />
-          <Button variant="primary" onClick={this.handleAddEvent}>
-            {t("addEvent")}
-          </Button>
+          <Typography textMediumGrey fontSizeS>
+            {formatDate(new Date()) + " " + t(weekdays[new Date().getDay()])}
+          </Typography>
+          &nbsp;
+          <Typography textSecondary fontSizeS>
+            {formatHrMin(new Date())}
+          </Typography>
         </Row>
 
         {/** Calendar panel */}
         <Row fullWidth style={{ marginBottom: 50 }}>
           <Column fullWidth classes={{ box: s.calendarPanel }}>
-            {/* <mobiscroll.Eventcalendar
-                display="inline"
-                marked={formattedEvents}
-                onSetDate={this.handleSelectDay}
-                view={{ calendar: { type: viewMode } }}
-                theme="windows"
-                themeVariant="light"
-              /> */}
             <EventCalendar
               events={events}
               viewMode={viewMode}
@@ -198,9 +224,24 @@ class OfficeCalendar extends React.Component {
           </Column>
         </Row>
 
+        {/** Selected event details */}
+        <Row fullWidth style={{ marginBottom: 45 }}>
+          <TabWrapper title={t("selectedEventDetails")} open insideOpen>
+            {selectedEvent && (
+              <EventDetailItem
+                event={selectedEvent}
+                onEdit={this.handleEditSelectedEvent}
+                onCancel={this.handleCancelSelectedEvent}
+                horizontal
+                fullWidth
+              />
+            )}
+          </TabWrapper>
+        </Row>
+
         {/** Selected day events */}
         <Row fullWidth style={{ marginBottom: 45 }}>
-          <TabWrapper title={t("selectedDay")} open insideOpen>
+          <TabWrapper title={t("selectedDayEvents")} open insideOpen>
             <Typography
               textSecondary
               fontSizeS
@@ -243,4 +284,6 @@ class OfficeCalendar extends React.Component {
   }
 }
 
-export default withStyles(styleSheet)(withTranslation()(OfficeCalendar));
+export default withRouter(
+  withStyles(styleSheet)(withTranslation("common")(CalendarOverview))
+);

@@ -120,7 +120,7 @@ class EventCalendar extends React.Component {
 
     if (viewMode === "month") {
       return (
-        <Row classes={{ box: s.calendarWrapper }}>
+        <Row fullWidth classes={{ box: s.calendarWrapper }}>
           <mobiscroll.Eventcalendar
             display="inline"
             marked={formattedEvents}

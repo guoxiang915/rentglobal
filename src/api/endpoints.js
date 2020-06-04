@@ -204,6 +204,12 @@ export const getEventsByLandlord = () =>
   Promise.resolve({ status: 200, data: eventsMockData });
 
 /**
+ * Call api to get conditions of landlord calendar
+ */
+export const getGeneralConditionsOfCalendar = () =>
+  Promise.resolve({ status: 200, data: [] });
+
+/**
  * Mock api to get office from event
  */
 export const getOfficeByEvent = () => {

@@ -13,12 +13,25 @@ $mbsc-windows-frame-background: #ffffff;
     color: #525252;
 }
 
+// .mbsc-ev-cal.mbsc-fr-md .mbsc-cal-hdr {
+//     background: white;
+//     padding: 20px;
+//     font-size: 19px;
+// }
+
 .mbsc-cal-days-c .mbsc-cal-days {
     margin-bottom: 28px;
 }
 
 .mbsc-cal-days-c .mbsc-cal-days > div {
     color: #e8e8e8;
+    // background: #e8e8e8;
+    // padding: 22px 0px 26px;
+    // border-right: 1px solid white;
+    // cursor: pointer;
+    // // &:last-of-type: {
+    // //   border-right: none
+    // // }
 }
 
 .mbsc-windows .mbsc-cal-day-diff .mbsc-cal-day-i {
