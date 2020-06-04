@@ -14,7 +14,17 @@ import {
   Link,
   GoogleMap,
 } from '../../../common/base-components';
-import { CloseIcon } from '../../../common/base-components/Icons';
+import {
+  CloseIcon,
+  BankIcon,
+  BarIcon,
+  BicycleIcon,
+  GymIcon,
+  ParkingIcon,
+  RestaurantIcon,
+  SubwayIcon,
+  TaxiIcon,
+} from '../../../common/base-components/Icons';
 
 const styleSheet = (theme) => ({
   root: {
@@ -67,6 +77,78 @@ const styleSheet = (theme) => ({
     '-webkit-overflow-scrolling': 'touch',
   },
 
+  typeWrapper: {
+    padding: '30px 30px 30px 40px',
+  },
+
+  type: {
+    display: 'flex',
+    alignItems: 'center',
+    marginBottom: 10,
+    position: 'relative'
+  },
+
+  typeIconContainer: {
+    minWidth: 34,
+    width: 34,
+    height: 34,
+    borderRadius: 17,
+    backgroundColor: '#E8E8E8',
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    flexDirection: 'row',
+    marginRight: 10,
+    padding: 13,
+    zIndex: 99,
+    cursor: 'pointer',
+
+    '&:hover': {
+      transition: '0.3s',
+      width: 'unset',
+      backgroundColor: '#d7df23',
+    },
+
+    '&:hover .icon': {
+      transition: '0.3s',
+      color: 'white',
+      fill: 'white',
+      marginRight: 8,
+    },
+
+    '&:hover .icon .icon-path': {
+      fill: 'white',
+      stroke: 'white',
+    },
+
+    '&:hover .iconName': {
+      transition: '0.3s',
+      display: 'block',
+      color: 'white',
+    },
+  },
+
+  icon: {
+    width: 'unset',
+    height: 'unset',
+  },
+
+  iconName: {
+    display: 'none',
+  },
+
+  typeIcon: {
+    marginRight: 10,
+  },
+
+  iconDescription: {},
+
+  typeDescription: {
+    position: 'absolute',
+    left: 45,
+    whiteSpace: 'nowrap',
+  },
+
   footer: {
     width: '100%',
     padding: '12px 12px 12px 40px',
@@ -102,14 +184,104 @@ class LocationDialog extends PureComponent {
     }
   };
 
+  renderType = (type) => {
+    const { classes: s } = this.props;
+
+    return (
+      <>
+        {type === 'bar' && (
+          <span className={s.type}>
+            <span className={s.typeIconContainer}>
+              <BarIcon className={clsx(s.icon, 'icon')} />
+              <span className={clsx(s.iconName, 'iconName')}>Bar</span>
+            </span>
+            <span className={s.typeDescription}>Carbon bar 1.1km</span>
+          </span>
+        )}
+        {type === 'bank' && (
+          <span className={s.type}>
+            <span className={s.typeIconContainer}>
+              <BankIcon className={clsx(s.icon, 'icon')} />
+              <span className={clsx(s.iconName, 'iconName')}>Bank</span>
+            </span>
+            <span className={s.typeDescription}>BMO Bank 400m</span>
+          </span>
+        )}
+        {type === 'bicycle_store' && (
+          <span className={s.type}>
+            <span className={s.typeIconContainer}>
+              <BicycleIcon className={clsx(s.icon, 'icon')} />
+              <span className={clsx(s.iconName, 'iconName')}>Bicycle</span>
+            </span>
+            <span className={s.typeDescription}>Bicycle</span>
+          </span>
+        )}
+        {type === 'bus_station' && (
+          <span className={s.type}>
+            <span className={s.typeIconContainer}>
+              <SubwayIcon className={clsx(s.icon, 'icon')} />
+              <span className={clsx(s.iconName, 'iconName')}>Bus</span>
+            </span>
+            <span className={s.typeDescription}>Bus station</span>
+          </span>
+        )}
+        {type === 'gym' && (
+          <span className={s.type}>
+            <span className={s.typeIconContainer}>
+              <GymIcon className={clsx(s.icon, 'icon')} />
+              <span className={clsx(s.iconName, 'iconName')}>Gym</span>
+            </span>
+            <span className={s.typeDescription}>Fit for less 125m</span>
+          </span>
+        )}
+        {type === 'train_station' && (
+          <span className={s.type}>
+            <span className={s.typeIconContainer}>
+              <SubwayIcon className={clsx(s.icon, 'icon')} />
+              <span className={clsx(s.iconName, 'iconName')}>Train</span>
+            </span>
+            <span className={s.typeDescription}>Dundas station 300m</span>
+          </span>
+        )}
+        {type === 'taxi_stand' && (
+          <span className={s.type}>
+            <span className={s.typeIconContainer}>
+              <TaxiIcon className={clsx(s.icon, 'icon')} />
+              <span className={clsx(s.iconName, 'iconName')}>Taxi</span>
+            </span>
+            <span className={s.typeDescription}>Available</span>
+          </span>
+        )}
+        {type === 'subway_station' && (
+          <span className={s.type}>
+            <span className={s.typeIconContainer}>
+              <SubwayIcon className={clsx(s.icon, 'icon')} />
+              <span className={clsx(s.iconName, 'iconName')}>Subway station</span>
+            </span>
+            <span className={s.typeDescription}>Dundas station 300m</span>
+          </span>
+        )}
+        {type === 'parking' && (
+          <span className={s.type}>
+            <span className={s.typeIconContainer}>
+              <ParkingIcon className={clsx(s.icon, 'icon')} />
+              <span className={clsx(s.iconName, 'iconName')}>Parking</span>
+            </span>
+            <span className={s.typeDescription}>Available inside</span>
+          </span>
+        )}
+      </>
+    );
+  };
+
   /** Load more descriptions */
   handleMoreDescriptions = () => {};
 
   /** Render */
   render() {
-    const {
-      location, className, classes: s, t,
-    } = this.props;
+    const { location, className, classes: s, t } = this.props;
+
+    const { fullAddress, types } = location;
 
     return (
       <Dialog
@@ -136,7 +308,7 @@ class LocationDialog extends PureComponent {
               {/** header */}
               <Row fullWidth classes={{ box: s.header }}>
                 <Typography fontSizeM fontWeightBold textSecondary>
-                  {t('location')}
+                  {fullAddress}
                 </Typography>
                 <Stretch />
                 <Button
@@ -149,6 +321,12 @@ class LocationDialog extends PureComponent {
                     <Typography paddingLeft>{t('close')}</Typography>
                   </Typography>
                 </Button>
+              </Row>
+
+              <Row fullWidth wrap>
+                <Column classes={{ box: s.typeWrapper }} alignChildrenStart>
+                  {types.map((type) => this.renderType(type))}
+                </Column>
               </Row>
 
               {/** descriptions panel */}
@@ -206,5 +384,5 @@ class LocationDialog extends PureComponent {
 }
 
 export default withStyles(styleSheet, { name: 'LocationDialog' })(
-  withTranslation('common')(withWidth()(LocationDialog)),
+  withTranslation('common')(withWidth()(LocationDialog))
 );
