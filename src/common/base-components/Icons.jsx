@@ -89,6 +89,14 @@ export { default as ReportIcon } from "../../assets/icon/financial-report-icon";
 export { default as GoogleIcon } from "../../assets/icon/icon_google";
 export { default as YahooIcon } from "../../assets/icon/icon_yahoo";
 export { default as DownloadIcon } from "../../assets/icon/download-icon";
+export { default as BankIcon } from "../../assets/icon/icon_bank";
+export { default as BarIcon } from "../../assets/icon/icon_bar";
+export { default as BicycleIcon } from "../../assets/icon/icon_bicycle";
+export { default as GymIcon } from "../../assets/icon/icon_gym";
+export { default as ParkingIcon } from "../../assets/icon/icon_parking";
+export { default as RestaurantIcon } from "../../assets/icon/icon_restaurant";
+export { default as SubwayIcon } from "../../assets/icon/icon_subway";
+export { default as TaxiIcon } from "../../assets/icon/icon_taxi";
 
 export const ProgressIcon = props => (
   <CircularProgress color="primary" size={36} {...props} />
