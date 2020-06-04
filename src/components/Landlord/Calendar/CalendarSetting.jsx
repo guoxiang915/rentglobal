@@ -2,7 +2,7 @@ import React, { PureComponent } from "react";
 import { withStyles } from "@material-ui/core/styles";
 import { withRouter } from "react-router-dom";
 import { withTranslation } from "react-i18next";
-import withWidth, { isWidthDown } from "@material-ui/core/withWidth";
+import withWidth from "@material-ui/core/withWidth";
 import PropTypes from "prop-types";
 import clsx from "clsx";
 import {
@@ -12,38 +12,17 @@ import {
   Typography,
   Button,
   CalendarIcon,
-  CarouselWrapper,
   Stretch,
-  Link,
-  Divider,
   Checkbox,
   TextField,
-  Select,
-  UsersIcon,
-  EditIcon,
-  CheckIcon,
-  CancelIcon
+  Select
 } from "../../../common/base-components";
-import {
-  TabWrapper,
-  StatisticIconBox,
-  SearchbarWithSorter,
-  EventCalendar,
-  EventDetailItem
-} from "../../../common/base-layouts";
-import { ConditionalWrapper } from "../../../utils/helpers";
 import { getGeneralConditionsOfCalendar } from "../../../api/endpoints";
 
-import { formatDate, getWeekday, formatHrMin } from "../../../utils/formatters";
-import { checkEqualDate } from "../../../utils/validators";
-
-import { weekdays } from "../../../utils/constants";
 import MomentUtils from "@date-io/moment";
 import {
   MuiPickersUtilsProvider,
-  KeyboardDatePicker,
   DatePicker,
-  KeyboardTimePicker,
   TimePicker
 } from "@material-ui/pickers";
 
@@ -166,7 +145,7 @@ class CalendarSetting extends PureComponent {
    * Renderer function
    */
   render() {
-    const { width, classes: s, t } = this.props;
+    const { classes: s, t } = this.props;
     const { conditions, newCondition } = this.state;
 
     console.log(conditions);
