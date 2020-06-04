@@ -542,5 +542,17 @@
   "selectedEventDetails": "Selected Event Details",
   "visiting": "Visiting",
   "event": "Event",
-  "dateOfRequest": "Date of request"
+  "dateOfRequest": "Date of request",
+  "calendarOverview": "Calendar overview",
+  "calendarSetting": "Calendar setting",
+  "calendarSettingHelp": "Set a default date and time availabilities for visiting your offices, This setting will be applied to all of your approved offices. You also have access to set different date and time availabilities for each of your offices.",
+  "generalConditions": "General conditions",
+  "addACondition": "Add a condition",
+  "addConditionsDefault": "Add conditions to create default visiting availability.",
+  "chooseTimeDuration": "Choose time duration",
+  "allDays": "All days",
+  "businessDays": "Business days",
+  "weekends": "Weekends",
+  "from": "From",
+  "to": "To"
 }

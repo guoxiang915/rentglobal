@@ -1,3 +1,5 @@
+import React from "react";
+
 export * from "./Box";
 export * from "./Selection";
 export * from "./Text";
@@ -24,3 +26,5 @@ export { default as LazyLoadImage } from "./LazyLoadImage";
 export { default as LinearProgress } from "./LinearProgress";
 export { default as SplashScreen } from "./SplashScreen";
 export { default as FullScreenImageCarousel } from "./FullScreenImageCarousel";
+
+export const Dot = () => <div>•</div>;
