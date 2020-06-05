@@ -184,90 +184,90 @@ class LocationDialog extends PureComponent {
     }
   };
 
-  renderType = (type) => {
+  renderType = (place) => {
     const { classes: s } = this.props;
 
     return (
       <>
-        {type === 'bar' && (
+        {place.types.includes('bar') && (
           <span className={s.type}>
             <span className={s.typeIconContainer}>
               <BarIcon className={clsx(s.icon, 'icon')} />
               <span className={clsx(s.iconName, 'iconName')}>Bar</span>
             </span>
-            <span className={s.typeDescription}>Carbon bar 1.1km</span>
+            <span className={s.typeDescription}>{place.name}</span>
           </span>
         )}
-        {type === 'bank' && (
+        {place.types.includes('bank') && (
           <span className={s.type}>
             <span className={s.typeIconContainer}>
               <BankIcon className={clsx(s.icon, 'icon')} />
               <span className={clsx(s.iconName, 'iconName')}>Bank</span>
             </span>
-            <span className={s.typeDescription}>BMO Bank 400m</span>
+            <span className={s.typeDescription}>{place.name}</span>
           </span>
         )}
-        {type === 'bicycle_store' && (
+        {place.types.includes('bicycle_store') && (
           <span className={s.type}>
             <span className={s.typeIconContainer}>
               <BicycleIcon className={clsx(s.icon, 'icon')} />
               <span className={clsx(s.iconName, 'iconName')}>Bicycle</span>
             </span>
-            <span className={s.typeDescription}>Bicycle</span>
+            <span className={s.typeDescription}>{place.name}</span>
           </span>
         )}
-        {type === 'bus_station' && (
+        {place.types.includes('bus_station') && (
           <span className={s.type}>
             <span className={s.typeIconContainer}>
               <SubwayIcon className={clsx(s.icon, 'icon')} />
               <span className={clsx(s.iconName, 'iconName')}>Bus</span>
             </span>
-            <span className={s.typeDescription}>Bus station</span>
+            <span className={s.typeDescription}>{place.name}</span>
           </span>
         )}
-        {type === 'gym' && (
+        {place.types.includes('gym') && (
           <span className={s.type}>
             <span className={s.typeIconContainer}>
               <GymIcon className={clsx(s.icon, 'icon')} />
               <span className={clsx(s.iconName, 'iconName')}>Gym</span>
             </span>
-            <span className={s.typeDescription}>Fit for less 125m</span>
+            <span className={s.typeDescription}>{place.name}</span>
           </span>
         )}
-        {type === 'train_station' && (
+        {place.types.includes('train_station') && (
           <span className={s.type}>
             <span className={s.typeIconContainer}>
               <SubwayIcon className={clsx(s.icon, 'icon')} />
               <span className={clsx(s.iconName, 'iconName')}>Train</span>
             </span>
-            <span className={s.typeDescription}>Dundas station 300m</span>
+            <span className={s.typeDescription}>{place.name}</span>
           </span>
         )}
-        {type === 'taxi_stand' && (
+        {place.types.includes('taxi_stand') && (
           <span className={s.type}>
             <span className={s.typeIconContainer}>
               <TaxiIcon className={clsx(s.icon, 'icon')} />
               <span className={clsx(s.iconName, 'iconName')}>Taxi</span>
             </span>
-            <span className={s.typeDescription}>Available</span>
+            <span className={s.typeDescription}>{place.name}</span>
           </span>
         )}
-        {type === 'subway_station' && (
+        {place.types.includes('subway_station') && (
           <span className={s.type}>
             <span className={s.typeIconContainer}>
               <SubwayIcon className={clsx(s.icon, 'icon')} />
               <span className={clsx(s.iconName, 'iconName')}>Subway station</span>
             </span>
-            <span className={s.typeDescription}>Dundas station 300m</span>
+            <span className={s.typeDescription}>{place.name}</span>
           </span>
         )}
-        {type === 'parking' && (
+        {place.types.includes('parking') && (
           <span className={s.type}>
             <span className={s.typeIconContainer}>
               <ParkingIcon className={clsx(s.icon, 'icon')} />
               <span className={clsx(s.iconName, 'iconName')}>Parking</span>
             </span>
-            <span className={s.typeDescription}>Available inside</span>
+            <span className={s.typeDescription}>{place.name}</span>
           </span>
         )}
       </>
@@ -281,7 +281,7 @@ class LocationDialog extends PureComponent {
   render() {
     const { location, className, classes: s, t } = this.props;
 
-    const { fullAddress, types } = location;
+    const { fullAddress, placesNearby } = location;
 
     return (
       <Dialog
@@ -325,7 +325,7 @@ class LocationDialog extends PureComponent {
 
               <Row fullWidth wrap>
                 <Column classes={{ box: s.typeWrapper }} alignChildrenStart>
-                  {types.map((type) => this.renderType(type))}
+                  {placesNearby.map((place) => this.renderType(place))}
                 </Column>
               </Row>
 

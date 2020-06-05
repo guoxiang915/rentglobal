@@ -166,6 +166,9 @@ export const getApprovedOfficeByRefId = refId =>
 export const getApprovedOfficeById = officeId =>
   api.get(`/offices/${officeId}/`);
 
+export const getPlaceDetails = (key, lat, lng, type) =>
+  api.get(`/api/place/nearbysearch/json?location=${lat},${lng}&radius=400&type=${type}&key=${key}`, { baseURL: 'https://maps.googleapis.com/maps' });
+
 /**
  * Call api to get consultant for office by office id
  */
