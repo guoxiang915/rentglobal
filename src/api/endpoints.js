@@ -62,19 +62,19 @@ export const deleteUserDocument = ({ userRole, docType, docFile }) =>
 export const deleteUserAccount = () => api.delete(`/users/me/delete`);
 
 /** Call api to get office list */
-export const getOffices = () => api.get("/users/me/offices/");
+export const getOffices = params => api.get("/users/me/offices/", { params });
 
 /**
  * Call api to get available office list
  * @deprecated
  */
-export const getAvailableOffices = () => getOffices();
+export const getAvailableOffices = params => getOffices(params);
 
 /**
  * Call api to get unpublished office list
  * @deprecated
  */
-export const getUnpublishedOffices = () => getOffices();
+export const getUnpublishedOffices = params => getOffices(params);
 
 /** Call api to get office from id */
 export const getOfficeById = officeId =>
