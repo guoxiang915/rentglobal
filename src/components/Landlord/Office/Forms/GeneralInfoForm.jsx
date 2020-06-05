@@ -32,6 +32,7 @@ import {
   guarantees,
   checkOutNotices
 } from "../../../../utils/constants";
+import { getPlaceDetails } from '../../../../api/endpoints';
 
 const styleSheet = theme => ({
   root: {},
@@ -106,6 +107,8 @@ const styleSheet = theme => ({
     }
   }
 });
+
+const types = ['bar', 'bicycle_store', 'bus_station', 'gym', 'train_station', 'taxi_stand', 'subway_station', 'parking'];
 
 class GeneralInfoForm extends PureComponent {
   static propTypes = {
@@ -317,6 +320,75 @@ class GeneralInfoForm extends PureComponent {
     }
     if (Object.keys(state).length > 0) {
       this.setState(state);
+    }
+  }
+
+  handleSave = () => {
+    const { onSave } = this.props;
+    const { office: { location: { fullAddress: updatedFullAddress = '' } = {} } = {} } = this.state;
+    if (updatedFullAddress !== '') {
+      const { office: { location: { coordinates: { lat = 0, lng = 0 } = {} } = {} } = {} } = this.props;
+      Promise.all(types.map(type => getPlaceDetails('AIzaSyCFjI4tzrBQzlNgWorViS48057MOvcn_VY', lat, lng, type)))
+        .then(results => {
+          const placesNearby = [];
+          console.log(results);
+          for (let result of results) {
+            if (result.data.results.length > 0) {
+              placesNearby.push(result.data.results[0]);
+            }
+          }
+
+          console.log(placesNearby);
+
+          onSave({
+            ...this.state.office,
+            location: {
+              ...this.state.office.location,
+              placesNearby
+            }
+          });
+        })
+        .catch(error => {
+          console.log(error);
+          onSave(this.state.office);
+        });
+    } else {
+      onSave(this.state.office);
+    }
+  }
+
+  handleNext = () => {
+    const { onNext } = this.props;
+    const { office: { location: { fullAddress: updatedFullAddress = '' } = {} } = {} } = this.state;
+    if (updatedFullAddress !== '') {
+      const { office: { location: { coordinates: { lat = 0, lng = 0 } = {} } = {} } = {} } = this.props;
+      Promise.all(types.map(type => getPlaceDetails('AIzaSyCFjI4tzrBQzlNgWorViS48057MOvcn_VY', lat, lng, type)))
+        .then(results => {
+          const placesNearby = [];
+
+          console.log(results);
+          for (let result of results) {
+            if (result.data.results.length > 0) {
+              placesNearby.push(result.data.results[0]);
+            }
+          }
+
+          console.log(placesNearby);
+
+          onNext({
+            ...this.state.office,
+            location: {
+              ...this.state.office.location,
+              placesNearby
+            }
+          });
+        })
+        .catch(error => {
+          console.log(error);
+          onNext(this.state.office);
+        });
+    } else {
+      onNext(this.state.office);
     }
   }
 
@@ -760,7 +832,7 @@ class GeneralInfoForm extends PureComponent {
               link="primary"
               background="normalLight"
               inverse
-              onClick={() => onSave(this.state.office)}
+              onClick={this.handleSave}
               loading={isLoading}
             >
               <CheckIcon style={{ width: 16, height: 16 }} />
@@ -776,7 +848,7 @@ class GeneralInfoForm extends PureComponent {
           {onNext && (
             <Button
               variant="primary"
-              onClick={() => onNext(this.state.office)}
+              onClick={this.handleNext}
               style={{ width: 215 }}
               shadow
             >
