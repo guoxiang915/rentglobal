@@ -11,13 +11,32 @@ import {
   Box,
   Typography,
   Button,
-  CalendarIcon,
   Stretch,
   Checkbox,
   TextField,
-  Select
+  Select,
+  ConfirmDialog,
+  CalendarIcon,
+  EditIcon,
+  DeleteIcon,
+  CloseIcon,
+  CheckIcon
 } from "../../../common/base-components";
-import { getGeneralConditionsOfCalendar } from "../../../api/endpoints";
+import {
+  getGeneralConditionsOfCalendar
+  // addConditionOfCalendar,
+  // updateConditionOfCalendar,
+  // deleteConditionOfCalendar
+} from "../../../api/endpoints";
+import {
+  Table,
+  TableContainer,
+  TableHead,
+  TableRow,
+  TableCell,
+  TableBody,
+  TablePagination
+} from "@material-ui/core";
 
 import MomentUtils from "@date-io/moment";
 import {
@@ -25,6 +44,7 @@ import {
   DatePicker,
   TimePicker
 } from "@material-ui/pickers";
+import { formatDate, formatHrMin } from "../../../utils/formatters";
 
 const styleSheet = theme => ({
   root: {},
@@ -76,6 +96,35 @@ const styleSheet = theme => ({
     [theme.breakpoints.down("xs")]: {
       width: "auto"
     }
+  },
+
+  conditionsPanel: {
+    background: theme.colors.primary.white,
+    borderRadius: 8,
+    marginTop: 35,
+    padding: "20px 30px"
+  },
+
+  conditionsTable: {
+    width: "100%"
+  },
+
+  tableHead: {
+    "&> th": {
+      color: theme.colors.primary.darkGrey,
+      fontWeight: "normal"
+    }
+  },
+
+  tableBody: {
+    "&> td": {
+      color: theme.colors.primary.grey
+    }
+  },
+
+  tablePagination: {
+    width: "100%",
+    color: theme.colors.primary.grey
   }
 });
 
@@ -87,21 +136,32 @@ class CalendarSetting extends PureComponent {
     t: PropTypes.func
   };
 
-  officeFilterOptions = [{ title: "allOffices" }];
+  state = {
+    conditions: [],
+    newCondition: null,
+    page: 0,
+    rowsPerPage: 5,
+    dialog: null
+  };
 
-  constructor(props) {
-    super(props);
-    this.state = {
-      conditions: [],
-      newCondition: null
+  officeFilterOptions = ["allOffices"];
+
+  getConditions = () => {
+    const params = {
+      page: this.state.page,
+      limit: this.state.rowsPerPage
     };
     if (getGeneralConditionsOfCalendar) {
-      getGeneralConditionsOfCalendar().then(response => {
+      getGeneralConditionsOfCalendar(params).then(response => {
         if (response.status === 200) {
           this.setState({ conditions: response.data });
         }
       });
     }
+  };
+
+  componentDidMount() {
+    this.getConditions();
   }
 
   handleAddCondition = () => this.setState({ newCondition: {} });
@@ -136,19 +196,124 @@ class CalendarSetting extends PureComponent {
   };
 
   handleSaveNewCondition = () => {
-    this.setState(state => ({
-      conditions: [...state.conditions, state.newCondition]
-    }));
+    // const saver = null;
+    // if (state.newCondition.id) {
+    //   saver = updateConditionOfCalendar(
+    //     state.newCondition.id,
+    //     state.newCondition
+    //   );
+    // } else {
+    //   saver = addConditionOfCalendar(state.newCondition);
+    // }
+    // if (saver) {
+    //   saver.then(res => {
+    //     if (res.status === 200) {
+    //       this.setState({ newCondition: null, page: 0 }, () => {
+    //         this.getConditions();
+    //       });
+    //     }
+    //   });
+    // }
+    let { conditions, newCondition } = this.state;
+    if (conditions.indexOf(newCondition) !== -1) {
+      conditions[conditions.indexOf(newCondition)] = { ...newCondition };
+      this.setState({
+        conditions: [...conditions],
+        newCondition: null
+      });
+    } else {
+      this.setState({
+        conditions: [...conditions, newCondition],
+        newCondition: null
+      });
+    }
   };
+
+  handleChangePage = (event, newPage) => {
+    this.setState({ page: newPage });
+  };
+
+  handleChangeRowsPerPage = event => {
+    this.setState({ rowsPerPage: parseInt(event.target.value, 10), page: 0 });
+  };
+
+  handleEditCondition = condition => () => {
+    this.setState({
+      dialog: (
+        <ConfirmDialog
+          variant="primary"
+          text={this.props.t("confirmEdit")}
+          closeLabel={
+            <React.Fragment>
+              <CloseIcon style={{ width: 10, height: 10 }} />
+              <Typography paddingLeft>{this.props.t("cancel")}</Typography>
+            </React.Fragment>
+          }
+          confirmLabel={
+            <React.Fragment>
+              <CheckIcon style={{ width: 15, height: 12 }} />
+              <Typography paddingLeft>{this.props.t("ok")}</Typography>
+            </React.Fragment>
+          }
+          onConfirm={this.editCondition(condition)}
+          onClose={this.handleCloseCondition}
+        />
+      )
+    });
+  };
+
+  handleDeleteCondition = condition => () => {
+    this.setState({
+      dialog: (
+        <ConfirmDialog
+          variant="error"
+          text={this.props.t("confirmDelete")}
+          closeLabel={
+            <React.Fragment>
+              <CloseIcon style={{ width: 10, height: 10 }} />
+              <Typography paddingLeft>{this.props.t("cancel")}</Typography>
+            </React.Fragment>
+          }
+          confirmLabel={
+            <React.Fragment>
+              <DeleteIcon style={{ width: 15, height: 12 }} />
+              <Typography paddingLeft>{this.props.t("delete")}</Typography>
+            </React.Fragment>
+          }
+          onConfirm={this.deleteCondition(condition)}
+          onClose={this.handleCloseCondition}
+        />
+      )
+    });
+  };
+
+  editCondition = condition => () => {
+    this.setState({ dialog: null });
+    this.setState({ newCondition: condition });
+  };
+
+  deleteCondition = condition => () => {
+    this.setState({ dialog: null });
+    // deleteConditionOfCalendar(condition).then(res => {
+    //   if (res.status === 200) {
+    //     this.setState({ page: 0 }, () => {
+    //       this.getConditions();
+    //     });
+    //   }
+    // });
+    const { conditions } = this.state;
+    conditions.splice(conditions.indexOf(condition), 1);
+    this.setState({ conditions: [...conditions] });
+  };
+
+  handleCloseCondition = () => this.setState({ dialog: null });
 
   /**
    * Renderer function
    */
   render() {
     const { classes: s, t } = this.props;
-    const { conditions, newCondition } = this.state;
-
-    console.log(conditions);
+    const { conditions, newCondition, page, rowsPerPage, dialog } = this.state;
 
     return (
       <React.Fragment>
@@ -171,7 +336,7 @@ class CalendarSetting extends PureComponent {
             </Row>
 
             {newCondition && (
-              <Column style={{ paddingTop: 45 }} fullWidth>
+              <Column style={{ paddingTop: 40, paddingBottom: 20 }} fullWidth>
                 <Row fullWidth alignChildrenCenter>
                   {["allDays", "businessDays", "weekends"].map((day, index) => (
                     <React.Fragment key={index}>
@@ -263,7 +428,7 @@ class CalendarSetting extends PureComponent {
                         options={this.officeFilterOptions}
                         renderOption={item => (
                           <Typography fontSizeXS textSecondary>
-                            {t(item?.title)}
+                            {t(item)}
                           </Typography>
                         )}
                         displayEmpty
@@ -283,7 +448,75 @@ class CalendarSetting extends PureComponent {
             )}
 
             {conditions?.length ? (
-              <></>
+              <Column fullWidth classes={{ box: s.conditionsPanel }}>
+                <TableContainer component="div">
+                  <Table
+                    className={s.conditionsTable}
+                    aria-label="simple table"
+                  >
+                    <TableHead>
+                      <TableRow className={s.tableHead}>
+                        <TableCell>Day</TableCell>
+                        <TableCell>Time</TableCell>
+                        <TableCell>Office</TableCell>
+                        <TableCell>Actions</TableCell>
+                      </TableRow>
+                    </TableHead>
+                    <TableBody>
+                      {conditions.map((c, index) => (
+                        <TableRow key={index} className={s.tableBody}>
+                          <TableCell>
+                            {c.startDate || c.endDate
+                              ? [
+                                  c.startDate ? formatDate(c.startDate) : "",
+                                  c.endDate ? formatDate(c.endDate) : ""
+                                ].join(" - ")
+                              : t(c.day)}
+                          </TableCell>
+                          <TableCell>
+                            {[
+                              c.startTime ? formatHrMin(c.startTime) : "",
+                              c.endTime ? formatHrMin(c.endTime) : ""
+                            ].join(" - ")}
+                          </TableCell>
+                          <TableCell>{t(c.officeFilter)}</TableCell>
+                          <TableCell>
+                            <Button
+                              link="primary"
+                              background="normalLight"
+                              inverse
+                              onClick={this.handleEditCondition(c)}
+                              variant="icon"
+                            >
+                              <EditIcon style={{ width: 20, height: 18 }} />
+                            </Button>
+                            <Button
+                              link="errorRedNormal"
+                              background="errorRedLight"
+                              inverse
+                              onClick={this.handleDeleteCondition(c)}
+                              variant="icon"
+                              style={{ marginLeft: 24 }}
+                            >
+                              <DeleteIcon style={{ width: 20, height: 18 }} />
+                            </Button>
+                          </TableCell>
+                        </TableRow>
+                      ))}
+                    </TableBody>
+                  </Table>
+                </TableContainer>
+                <TablePagination
+                  rowsPerPageOptions={[5, 10, 25]}
+                  component="div"
+                  count={conditions?.length}
+                  rowsPerPage={rowsPerPage}
+                  page={page}
+                  onChangePage={this.handleChangePage}
+                  onChangeRowsPerPage={this.handleChangeRowsPerPage}
+                  className={s.tablePagination}
+                />
+              </Column>
             ) : (
               <Column
                 style={{ paddingTop: 110, paddingBottom: 50 }}
@@ -298,6 +531,7 @@ class CalendarSetting extends PureComponent {
             )}
           </Column>
         </MuiPickersUtilsProvider>
+        {dialog}
       </React.Fragment>
     );
   }

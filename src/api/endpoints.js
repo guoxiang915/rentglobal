@@ -2,7 +2,8 @@ import api from "./api";
 import {
   events as eventsMockData,
   reviews as reviewsMockData,
-  report as reportMockData
+  report as reportMockData,
+  conditions as conditionsMockData
 } from "../common/mock/officeMockData";
 
 /**
@@ -207,7 +208,25 @@ export const getEventsByLandlord = () =>
  * Call api to get conditions of landlord calendar
  */
 export const getGeneralConditionsOfCalendar = () =>
-  Promise.resolve({ status: 200, data: [] });
+  Promise.resolve({ status: 200, data: conditionsMockData });
+
+/**
+ * Call api to add new condition
+ */
+export const addConditionOfCalendar = condition =>
+  Promise.resolve({ status: 200, data: [...conditionsMockData, condition] });
+
+/**
+ * Call api to update condition
+ */
+export const updateConditionOfCalendar = (id, condition) =>
+  Promise.resolve({ status: 200, data: conditionsMockData });
+
+/**
+ * Call api to delete condition
+ */
+export const deleteConditionOfCalendar = condition =>
+  Promise.resolve({ status: 200, data: conditionsMockData });
 
 /**
  * Mock api to get office from event
