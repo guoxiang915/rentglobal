@@ -67,7 +67,7 @@ export default withStyles(styleSheet, { name: "SearchbarWithSorter" })(
               displayEmpty
               value={sorter}
               onChange={handleChangeSort}
-              className={s.sorter}
+              classes={{ root: s.sorter }}
             />
           )}
         </Row>

@@ -192,3 +192,27 @@ export const report = {
     { year: 2020, month: 3, count: 335 }
   ]
 };
+
+export const conditions = [
+  {
+    day: "allDays",
+    startDate: new Date(2020, 3, 6),
+    endDate: new Date(2020, 9, 30),
+    startTime: new Date(0, 0, 0, 4, 30),
+    endTime: new Date(0, 0, 0, 11, 20),
+    officeFilter: "allOffices"
+  },
+  {
+    day: "weekends",
+    startTime: new Date(0, 0, 0, 12, 30),
+    endTime: new Date(0, 0, 0, 15, 0),
+    officeFilter: "allOffices"
+  },
+  {
+    day: "allDays",
+    startDate: new Date(2020, 5, 6),
+    startTime: new Date(0, 0, 0, 18, 0),
+    endTime: new Date(0, 0, 0, 10, 30),
+    officeFilter: "allOffices"
+  }
+];

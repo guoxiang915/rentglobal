@@ -2,7 +2,8 @@ import api from "./api";
 import {
   events as eventsMockData,
   reviews as reviewsMockData,
-  report as reportMockData
+  report as reportMockData,
+  conditions as conditionsMockData
 } from "../common/mock/officeMockData";
 
 /**
@@ -61,19 +62,19 @@ export const deleteUserDocument = ({ userRole, docType, docFile }) =>
 export const deleteUserAccount = () => api.delete(`/users/me/delete`);
 
 /** Call api to get office list */
-export const getOffices = () => api.get("/users/me/offices/");
+export const getOffices = params => api.get("/users/me/offices/", { params });
 
 /**
  * Call api to get available office list
  * @deprecated
  */
-export const getAvailableOffices = () => getOffices();
+export const getAvailableOffices = params => getOffices(params);
 
 /**
  * Call api to get unpublished office list
  * @deprecated
  */
-export const getUnpublishedOffices = () => getOffices();
+export const getUnpublishedOffices = params => getOffices(params);
 
 /** Call api to get office from id */
 export const getOfficeById = officeId =>
@@ -210,7 +211,25 @@ export const getEventsByLandlord = () =>
  * Call api to get conditions of landlord calendar
  */
 export const getGeneralConditionsOfCalendar = () =>
-  Promise.resolve({ status: 200, data: [] });
+  Promise.resolve({ status: 200, data: conditionsMockData });
+
+/**
+ * Call api to add new condition
+ */
+export const addConditionOfCalendar = condition =>
+  Promise.resolve({ status: 200, data: [...conditionsMockData, condition] });
+
+/**
+ * Call api to update condition
+ */
+export const updateConditionOfCalendar = (id, condition) =>
+  Promise.resolve({ status: 200, data: conditionsMockData });
+
+/**
+ * Call api to delete condition
+ */
+export const deleteConditionOfCalendar = condition =>
+  Promise.resolve({ status: 200, data: conditionsMockData });
 
 /**
  * Mock api to get office from event
