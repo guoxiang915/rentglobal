@@ -189,6 +189,7 @@ class LocationDialog extends PureComponent {
 
     return (
       <>
+        {place.types.includes('bar') && (
           <span className={s.type}>
             <span className={s.typeIconContainer}>
               <BarIcon className={clsx(s.icon, 'icon')} />
