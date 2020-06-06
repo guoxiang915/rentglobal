@@ -120,7 +120,7 @@ const styleSheet = theme => ({
     boxShadow: "0px 2px 4px #00000014",
     border: `1px solid ${theme.colors.primary.borderGrey}`,
     [theme.breakpoints.down("sm")]: {
-      right: -29
+      right: -40
     },
     "&::before": {
       position: "absolute",

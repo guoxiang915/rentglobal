@@ -61,20 +61,22 @@ export const deleteUserDocument = ({ userRole, docType, docFile }) =>
 
 export const deleteUserAccount = () => api.delete(`/users/me/delete`);
 
-/** Call api to get office list */
-export const getOffices = params => api.get("/users/me/offices/", { params });
+/** Call api to get landlord office list */
+export const getLandlordOffices = params =>
+  api.get("/users/me/offices/", { params });
 
 /**
- * Call api to get available office list
+ * Call api to get landlord's approved office list
  * @deprecated
  */
-export const getAvailableOffices = params => getOffices(params);
+export const getLandlordApprovedOffices = params => getLandlordOffices(params);
 
 /**
- * Call api to get unpublished office list
+ * Call api to get landlord's unapproved office list
  * @deprecated
  */
-export const getUnpublishedOffices = params => getOffices(params);
+export const getLandlordUnapprovedOffices = params =>
+  getLandlordOffices(params);
 
 /** Call api to get office from id */
 export const getOfficeById = officeId =>
@@ -149,7 +151,7 @@ export const getPublishedOffices = params => api.get("/offices/", { params });
  * Call api to get all approved offices
  * @deprecated for now, admin doesn't exist, and call api for getting published offices
  */
-export const getApprovedOffices = () => getPublishedOffices();
+export const getApprovedOffices = params => getPublishedOffices(params);
 
 /**
  * Call api to get recommended offices
@@ -167,7 +169,10 @@ export const getApprovedOfficeById = officeId =>
   api.get(`/offices/${officeId}/`);
 
 export const getPlaceDetails = (key, lat, lng, type) =>
-  api.get(`/api/place/nearbysearch/json?location=${lat},${lng}&radius=400&type=${type}&key=${key}`, { baseURL: 'https://maps.googleapis.com/maps' });
+  api.get(
+    `/api/place/nearbysearch/json?location=${lat},${lng}&radius=400&type=${type}&key=${key}`,
+    { baseURL: "https://maps.googleapis.com/maps" }
+  );
 
 /**
  * Call api to get consultant for office by office id
