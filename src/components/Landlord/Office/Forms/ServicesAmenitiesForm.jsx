@@ -111,9 +111,10 @@ class ServicesAmenitiesForm extends PureComponent {
     services[category] = services[category] || [];
     if (services[category].indexOf(option) === -1) {
       services[category] = [...services[category], option];
-    } else if (isRemove) {
+    } else if (services[category].indexOf(option) >= 0) {
       services[category].splice(services[category].indexOf(option), 1);
     }
+
     if (this.props.onChangeField) {
       this.props.onChangeField("servicesAndAmenities", services);
     } else {
@@ -133,6 +134,16 @@ class ServicesAmenitiesForm extends PureComponent {
   handleDeleteCustomFeature = feature => () => {
     this.handleToggleOption("custom", feature)();
   };
+
+  componentDidUpdate(prevProps) {
+    if (JSON.stringify(prevProps.office) !== JSON.stringify(this.props.office)) {
+      this.setState({
+        office: {
+          ...this.props.office
+        }
+      });
+    }
+  }
 
   /**
    * Renderer function
