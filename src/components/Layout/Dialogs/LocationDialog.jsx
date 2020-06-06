@@ -21,7 +21,7 @@ import {
   BicycleIcon,
   GymIcon,
   ParkingIcon,
-  RestaurantIcon,
+  // RestaurantIcon,
   SubwayIcon,
   TaxiIcon,
 } from '../../../common/base-components/Icons';
@@ -188,7 +188,7 @@ class LocationDialog extends PureComponent {
     const { classes: s } = this.props;
 
     return (
-      <>
+      <React.Fragment>
         {place.types.includes('bar') && (
           <span className={s.type}>
             <span className={s.typeIconContainer}>
@@ -270,7 +270,7 @@ class LocationDialog extends PureComponent {
             <span className={s.typeDescription}>{place.name}</span>
           </span>
         )}
-      </>
+      </React.Fragment>
     );
   };
 

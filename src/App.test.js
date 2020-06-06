@@ -16,6 +16,6 @@ it("renders without crashing", () => {
     <ReduxProvider store={store}>
       <Router history={history}>
         <App /> 
-    </Router>
-  </ReduxProvider>, div);
+      </Router>
+    </ReduxProvider>, div);
 });

@@ -1,66 +1,66 @@
-import React, { PureComponent } from 'react';
-import PropTypes from 'prop-types';
+import React, { PureComponent } from "react";
+import PropTypes from "prop-types";
 import {
   Dialog,
   DialogTitle,
   DialogContent,
   DialogActions,
-  withStyles,
-} from '@material-ui/core';
-import clsx from 'clsx';
-import { withTranslation } from 'react-i18next';
-import withWidth, { isWidthDown } from '@material-ui/core/withWidth';
+  withStyles
+} from "@material-ui/core";
+import clsx from "clsx";
+import { withTranslation } from "react-i18next";
+import withWidth, { isWidthDown } from "@material-ui/core/withWidth";
 import {
-  Button, 
+  Button,
   Typography,
   Column,
-  Row, 
+  Row,
   Stretch,
   Checkbox
-}  from '../../../common/base-components';
-import { DeleteIcon, CloseIcon } from '../../../common/base-components/Icons';
+} from "../../../common/base-components";
+import { DeleteIcon, CloseIcon } from "../../../common/base-components/Icons";
 
-const styleSheet = (theme) => ({
+const styleSheet = theme => ({
   root: {
     maxWidth: 535,
     padding: 0,
-    width: '90%',
-    borderRadius: 8,
+    width: "90%",
+    borderRadius: 8
   },
 
   primary: {
-    background: theme.colors.primary.mainColor,
+    background: theme.colors.primary.mainColor
   },
   error: {
-    background: theme.colors.primary.errorRed,
+    background: theme.colors.primary.errorRed
   },
 
   header: {
-    width: '100%',
+    width: "100%",
     height: 5,
-    padding: 0,
+    padding: 0
   },
 
   contentWrapper: {
-    padding: '24px 42px 45px',
-    [theme.breakpoints.down('sm')]: {
-      padding: '20px 24px 35px',
+    padding: "24px 42px 45px",
+    [theme.breakpoints.down("sm")]: {
+      padding: "20px 24px 35px"
     }
   },
 
   footer: {
-    padding: '0px 40px 27px 40px',
-    [theme.breakpoints.down('xs')]: {
-      padding: '0px 40px 45px 40px',
-    },
-  },
+    padding: "0px 40px 27px 40px",
+    [theme.breakpoints.down("xs")]: {
+      padding: "0px 40px 45px 40px"
+    }
+  }
 });
 
 class DeleteAccountDialog extends PureComponent {
   static propTypes = {
     open: PropTypes.bool,
     onConfirm: PropTypes.func,
-    onClose: PropTypes.func,
+    onClose: PropTypes.func
   };
 
   static defaultProps = {
@@ -68,17 +68,17 @@ class DeleteAccountDialog extends PureComponent {
   };
 
   state = {
-    adknowledgeDelete: false,
+    adknowledgeDelete: false
   };
 
   buttonStyles = {
     primary: {
-      variant: 'primary',
+      variant: "primary"
     },
     error: {
-      link: 'errorRedNormal',
-      background: 'secondaryLight',
-    },
+      link: "errorRedNormal",
+      background: "secondaryLight"
+    }
   };
 
   handleConfirm = () => {
@@ -96,16 +96,10 @@ class DeleteAccountDialog extends PureComponent {
 
   handleAdknowledge = () => {
     this.setState({ adknowledgeDelete: !this.state.adknowledgeDelete });
-  }
+  };
 
   render() {
-    const {
-      open,
-      className,
-      classes: s,
-      width,
-      t
-    } = this.props;
+    const { open, className, classes: s, width, t } = this.props;
     const variant = "error";
 
     return (
@@ -125,8 +119,8 @@ class DeleteAccountDialog extends PureComponent {
           <Column>
             <Row style={{ marginTop: 27 }}>
               <Typography
-                fontSizeL={!isWidthDown('xs', width)}
-                fontSizeM={isWidthDown('xs', width)}
+                fontSizeL={!isWidthDown("xs", width)}
+                fontSizeM={isWidthDown("xs", width)}
                 textSecondary
                 fontWeightBold
                 justifyChildrenCenter
@@ -137,8 +131,8 @@ class DeleteAccountDialog extends PureComponent {
             </Row>
             <Row style={{ marginTop: 27 }}>
               <Typography
-                fontSizeM={!isWidthDown('xs', width)}
-                fontSizeS={isWidthDown('xs', width)}
+                fontSizeM={!isWidthDown("xs", width)}
+                fontSizeS={isWidthDown("xs", width)}
                 textSecondary
                 fontWeightBold
                 textCenter
@@ -148,7 +142,11 @@ class DeleteAccountDialog extends PureComponent {
             </Row>
             <Row style={{ marginTop: 27 }}>
               <Checkbox
-                label={t("adknowledgeDelete")}
+                label={
+                  <Typography paddingLeft fontSizeM>
+                    {t("adknowledgeDelete")}
+                  </Typography>
+                }
                 isChecked={this.state.adknowledgeDelete}
                 onChange={this.handleAdknowledge}
               />
@@ -186,6 +184,6 @@ class DeleteAccountDialog extends PureComponent {
   }
 }
 
-export default withStyles(styleSheet, { name: 'DeleteAccountDialog' })(
-  withTranslation('common')(withWidth()(DeleteAccountDialog)),
+export default withStyles(styleSheet, { name: "DeleteAccountDialog" })(
+  withTranslation("common")(withWidth()(DeleteAccountDialog))
 );

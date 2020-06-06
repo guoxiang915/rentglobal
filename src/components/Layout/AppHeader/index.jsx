@@ -1,12 +1,13 @@
-import React, { PureComponent } from 'react';
-import { withStyles } from '@material-ui/core/styles';
-import { withTranslation } from 'react-i18next';
-import PropTypes from 'prop-types';
-import clsx from 'clsx';
-import withWidth, { isWidthDown } from '@material-ui/core/withWidth';
-import { MenuItem, Grid, Menu, Popover, Paper, Badge } from '@material-ui/core';
+import React, { PureComponent } from "react";
+import { withStyles } from "@material-ui/core/styles";
+import { withTranslation } from "react-i18next";
+import PropTypes from "prop-types";
+import clsx from "clsx";
+import withWidth, { isWidthDown } from "@material-ui/core/withWidth";
+import { MenuItem, Grid, Menu, Popover, Paper, Badge } from "@material-ui/core";
 import {
   Button,
+  IconButton,
   Link,
   Row,
   Column,
@@ -20,109 +21,109 @@ import {
   CloseIcon,
   MenuIcon,
   ArrowDownIcon,
-  ConsultantIcon,
-} from '../../../common/base-components';
-import AccountInfo from './AccountInfo';
-import { getProfileStatus } from '../../../utils/validators';
+  ConsultantIcon
+} from "../../../common/base-components";
+import AccountInfo from "./AccountInfo";
+import { getProfileStatus } from "../../../utils/validators";
 
-import Logo from '../../../assets/logo.svg';
-import MiniLogo from '../../../assets/mini-logo.svg';
+import Logo from "../../../assets/logo.svg";
+import MiniLogo from "../../../assets/mini-logo.svg";
 
-const styleSheet = (theme) => ({
+const styleSheet = theme => ({
   root: {
     flexGrow: 1,
     // marginTop: 70,
-    height: '100%',
-    background: 'rgba(255, 255, 255, .8)',
-    backdropFilter: 'blur(10px)',
-    boxShadow: '0px 10px 10px #0000000D',
-    [theme.breakpoints.down('sm')]: {
-      boxShadow: '0px 10px 10px #0000001A',
-    },
+    height: "100%",
+    background: "rgba(255, 255, 255, .8)",
+    backdropFilter: "blur(10px)",
+    boxShadow: "0px 10px 10px #0000000D",
+    [theme.breakpoints.down("sm")]: {
+      boxShadow: "0px 10px 10px #0000001A"
+    }
   },
 
   loggedIn: {
-    boxShadow: '0px 14px 14px #15151514',
-    [theme.breakpoints.down('sm')]: {
-      boxShadow: '0px 14px 14px #15151514',
-    },
+    boxShadow: "0px 14px 14px #15151514",
+    [theme.breakpoints.down("sm")]: {
+      boxShadow: "0px 14px 14px #15151514"
+    }
   },
 
   headerWrapper: {
-    height: '100%',
+    height: "100%",
     paddingLeft: theme.spacing(4) - 2,
     paddingRight: theme.spacing(4) - 2,
-    [theme.breakpoints.down('sm')]: {
+    [theme.breakpoints.down("sm")]: {
       paddingLeft: theme.spacing(3),
-      paddingRight: theme.spacing(3),
-    },
+      paddingRight: theme.spacing(3)
+    }
   },
 
   logoWrapper: {
-    display: 'flex',
+    display: "flex",
     marginRight: theme.spacing(2),
-    height: 38,
+    height: 38
   },
 
   logoNavigator: {
-    width: 'fit-content',
-    cursor: 'pointer',
+    width: "fit-content",
+    cursor: "pointer"
   },
 
   roleInfoWrapper: {
-    position: 'absolute',
-    left: 'calc((100% - 1044px) / 2 + 150px)',
+    position: "absolute",
+    left: "calc((100% - 1044px) / 2 + 150px)",
     bottom: 0,
     background: theme.colors.primary.mainColor,
     color: theme.colors.primary.white,
-    borderRadius: '8px 8px 0px 0px',
+    borderRadius: "8px 8px 0px 0px",
     padding: 12,
     paddingBottom: 32,
-    '@media (max-width: 1078px)': {
-      left: 175,
+    "@media (max-width: 1078px)": {
+      left: 175
     },
-    [theme.breakpoints.down('sm')]: {
-      left: 65,
-    },
+    [theme.breakpoints.down("sm")]: {
+      left: 65
+    }
   },
 
   logo: {
-    height: '100%',
+    height: "100%"
   },
 
   grayButton: {
-    padding: theme.spacing(),
+    padding: theme.spacing()
   },
 
   headerMenu: {
     zIndex: 1500,
     minWidth: 200,
-    position: 'relative',
-    top: 30,
+    position: "relative",
+    top: 30
   },
 
   stickyBar: {
-    width: '100%',
+    width: "100%",
     height: 4,
-    background: `linear-gradient(97deg, ${theme.colors.primary.mainColor} 0%, ${theme.colors.primary.darkColor} 100%)`,
+    background: `linear-gradient(97deg, ${theme.colors.primary.mainColor} 0%, ${theme.colors.primary.darkColor} 100%)`
   },
 
   accountInfoWrapper: {
-    background: 'transparent',
-    boxShadow: 'none',
-    overflow: 'visible',
+    background: "transparent",
+    boxShadow: "none",
+    overflow: "visible"
   },
 
   accountInfoContentWrapper: {
-    position: 'relative',
+    position: "relative",
     top: 15,
-    boxShadow: '0px 2px 4px #00000014',
+    boxShadow: "0px 2px 4px #00000014",
     border: `1px solid ${theme.colors.primary.borderGrey}`,
-    [theme.breakpoints.down('sm')]: {
-      right: -29,
+    [theme.breakpoints.down("sm")]: {
+      right: -29
     },
-    '&::before': {
-      position: 'absolute',
+    "&::before": {
+      position: "absolute",
       top: -8,
       right: 36,
       content: '" "',
@@ -130,33 +131,33 @@ const styleSheet = (theme) => ({
       height: 16,
       background: theme.colors.primary.white,
       border: `1px solid ${theme.colors.primary.borderGrey}`,
-      borderBottom: 'none',
-      borderRight: 'none',
-      transform: 'rotate(45deg)',
-    },
+      borderBottom: "none",
+      borderRight: "none",
+      transform: "rotate(45deg)"
+    }
   },
 
   smallIcon: {
     width: 16,
-    height: 16,
+    height: 16
   },
 
   arrowDownIcon: {
     width: 12,
-    height: 7,
+    height: 7
   },
 
   iconButton: {
     width: 39,
-    height: 39,
+    height: 39
   },
 
   accountButton: {
-    width: 'auto',
-    [theme.breakpoints.down('xs')]: {
-      width: 39,
-    },
-  },
+    width: "auto",
+    [theme.breakpoints.down("xs")]: {
+      width: 39
+    }
+  }
 });
 
 class AppHeader extends PureComponent {
@@ -174,59 +175,59 @@ class AppHeader extends PureComponent {
 
     width: PropTypes.string.isRequired,
     classes: PropTypes.object.isRequired,
-    t: PropTypes.func.isRequired,
+    t: PropTypes.func.isRequired
   };
 
   state = {
     locationEl: null,
     languageEl: null,
     accountInfoEl: null,
-    dialog: null,
+    dialog: null
   };
 
-  handleNavigate = (path) => () => {
+  handleNavigate = path => () => {
     this.props.navigate(path);
   };
 
-  handleMenu = (el) => (event) => {
-    this.setState({[el]: event.currentTarget});
+  handleMenu = el => event => {
+    this.setState({ [el]: event.currentTarget });
   };
 
-  handleCloseMenu = (el) => () => {
+  handleCloseMenu = el => () => {
     this.setState({ [el]: null });
   };
 
-  handleSelectLocation = (location) => () => {
+  handleSelectLocation = location => () => {
     this.props.onSelectLocation(location);
-    this.setState({locationEl: null});
+    this.setState({ locationEl: null });
   };
 
-  handleSelectLanguage = (language) => () => {
+  handleSelectLanguage = language => () => {
     this.props.onSelectLanguage(language);
-    this.setState({languageEl: null});
+    this.setState({ languageEl: null });
   };
 
   handleHelp = () => {
-    this.props.navigate('help');
+    this.props.navigate("help");
   };
 
   handleCloseDialog = () => {
     this.setState({ dialog: null });
   };
 
-  handleToggleSidebar = (value) => () => {
+  handleToggleSidebar = value => () => {
     this.props.onToggleSidebar(value);
   };
 
   /** Navigate from Account Info panel */
-  handleAccountInfoNavigate = (path) => () => {
-    this.setState({accountInfoEl: null});
+  handleAccountInfoNavigate = path => () => {
+    this.setState({ accountInfoEl: null });
     this.props.navigate(path);
   };
 
   /** Toggle role when user selects another role in Account Info panel */
-  handleAccountInfoToggleRole = (userRole) => () => {
-    this.setState({accountInfoEl: null});
+  handleAccountInfoToggleRole = userRole => () => {
+    this.setState({ accountInfoEl: null });
     // const userRole = this.props.auth.userRole;
     // if (role !== userRole) {
     //   this.props.onToggleRole();
@@ -242,8 +243,8 @@ class AppHeader extends PureComponent {
       notifications,
       mails,
       width,
-      classes,
-      t,
+      classes: s,
+      t
     } = this.props;
     const { isLoggedIn, user, userRole } = this.props.auth;
     const { languageEl, accountInfoEl, dialog } = this.state;
@@ -261,44 +262,44 @@ class AppHeader extends PureComponent {
     }
 
     return (
-      <div className={clsx(classes.root, isLoggedIn && classes.loggedIn)}>
+      <div className={clsx(s.root, isLoggedIn && s.loggedIn)}>
         <Grid
           container
           direction="row"
           justify="space-between"
           alignItems="center"
-          className={classes.headerWrapper}
+          className={s.headerWrapper}
         >
           {/* logo, language, location settings wrapper */}
           <Grid item>
-            <div className={classes.logoWrapper}>
+            <div className={s.logoWrapper}>
               {/* logo image */}
               <div
-                onClick={this.handleNavigate('home')}
-                className={classes.logoNavigator}
+                onClick={this.handleNavigate("home")}
+                className={s.logoNavigator}
               >
                 {isLoggedIn ? (
-                  !isWidthDown('sm', width) ? (
-                    <img src={Logo} className={classes.logo} alt="RENTGLOBAL" />
+                  !isWidthDown("sm", width) ? (
+                    <img src={Logo} className={s.logo} alt="RENTGLOBAL" />
                   ) : (
-                    <img src={MiniLogo} className={classes.logo} alt="RENTGLOBAL" />
+                    <img src={MiniLogo} className={s.logo} alt="RENTGLOBAL" />
                   )
                 ) : (
-                  <img src={Logo} className={classes.logo} alt="RENTGLOBAL" />
+                  <img src={Logo} className={s.logo} alt="RENTGLOBAL" />
                 )}
               </div>
 
               {/* role image */}
               {isLoggedIn && userRole ? (
-                <Row classes={{ box: classes.roleInfoWrapper }}>
-                  {userRole === 'landlord' ? (
+                <Row classes={{ box: s.roleInfoWrapper }}>
+                  {userRole === "landlord" ? (
                     <BuildingsIcon style={{ width: 24, height: 24 }} />
-                  ) : userRole === 'company' ? (
+                  ) : userRole === "company" ? (
                     <UsersIcon style={{ width: 24, height: 24 }} />
-                  ) : userRole === 'consultant' ? (
+                  ) : userRole === "consultant" ? (
                     <ConsultantIcon style={{ width: 24, height: 24 }} />
                   ) : null}
-                  {!isWidthDown('sm', width) && (
+                  {!isWidthDown("sm", width) && (
                     <Typography fontSizeS paddingLeftHalf>
                       {t(`${userRole}Panel`)}
                     </Typography>
@@ -307,16 +308,16 @@ class AppHeader extends PureComponent {
               ) : null}
 
               {/* language, location, help menu */}
-              {!isLoggedIn && !isWidthDown('sm', width) && (
+              {!isLoggedIn && !isWidthDown("sm", width) && (
                 <Box paddingLeftDouble>
                   <Column>
                     <Button
                       aria-controls="language-menu"
                       aria-haspopup="true"
-                      onClick={this.handleMenu('languageEl')}
+                      onClick={this.handleMenu("languageEl")}
                       color="secondary"
                       transparent
-                      className={classes.grayButton}
+                      className={s.grayButton}
                     >
                       <Typography
                         fontSizeS
@@ -325,7 +326,7 @@ class AppHeader extends PureComponent {
                       >
                         {t(language)}
                         &nbsp;&nbsp;
-                        <ArrowDownIcon className={classes.arrowDownIcon} />
+                        <ArrowDownIcon className={s.arrowDownIcon} />
                       </Typography>
                     </Button>
                     <Menu
@@ -333,14 +334,14 @@ class AppHeader extends PureComponent {
                       anchorEl={languageEl}
                       keepMounted
                       open={Boolean(languageEl)}
-                      onClose={this.handleCloseMenu('languageEl')}
-                      className={classes.headerMenu}
+                      onClose={this.handleCloseMenu("languageEl")}
+                      className={s.headerMenu}
                     >
-                      <MenuItem onClick={this.handleSelectLanguage('en')}>
-                        {t('english')}
+                      <MenuItem onClick={this.handleSelectLanguage("en")}>
+                        {t("english")}
                       </MenuItem>
-                      <MenuItem onClick={this.handleSelectLanguage('fr')}>
-                        {t('french')}
+                      <MenuItem onClick={this.handleSelectLanguage("fr")}>
+                        {t("french")}
                       </MenuItem>
                     </Menu>
                   </Column>
@@ -354,21 +355,27 @@ class AppHeader extends PureComponent {
             <Row>
               {isLoggedIn ? (
                 <React.Fragment>
-                  {!isWidthDown('sm', width) && (
+                  {!isWidthDown("sm", width) && (
                     <React.Fragment>
                       {/* role switcher */}
                       <Column paddingLeftDouble>
                         <Button
                           variant="secondary"
                           shadow
-                          onClick={() =>{
-                            const roleToSet = role === 'landlord' ? 'company' : 'landlord';
-                            this.props.onToggleRole(roleToSet, roleToSet === 'landlord' ? "/landlord/offices/add": null);
+                          onClick={() => {
+                            const roleToSet =
+                              role === "landlord" ? "company" : "landlord";
+                            this.props.onToggleRole(
+                              roleToSet,
+                              roleToSet === "landlord"
+                                ? "/landlord/offices/add"
+                                : null
+                            );
                           }}
                         >
                           <Typography fontSizeS fontWeightBold>
                             {t(
-                              role === 'landlord' ? 'needOffice' : 'placeToRent'
+                              role === "landlord" ? "needOffice" : "placeToRent"
                             )}
                           </Typography>
                         </Button>
@@ -378,7 +385,7 @@ class AppHeader extends PureComponent {
 
                   {/* mails */}
                   <Column paddingLeftDouble>
-                    <Button variant="icon" className={classes.iconButton}>
+                    <Button variant="icon" className={s.iconButton}>
                       <Badge
                         color="primary"
                         badgeContent={
@@ -386,14 +393,14 @@ class AppHeader extends PureComponent {
                           (mails.length > 3 ? `${mails.length}+` : mails.length)
                         }
                       >
-                        <EmailIcon className={classes.smallIcon} />
+                        <EmailIcon className={s.smallIcon} />
                       </Badge>
                     </Button>
                   </Column>
 
                   {/* notifications */}
                   <Column paddingLeft>
-                    <Button variant="icon" className={classes.iconButton}>
+                    <Button variant="icon" className={s.iconButton}>
                       <Badge
                         color="primary"
                         badgeContent={
@@ -403,56 +410,60 @@ class AppHeader extends PureComponent {
                             : notifications.length)
                         }
                       >
-                        <AlarmIcon className={classes.smallIcon} />
+                        <AlarmIcon className={s.smallIcon} />
                       </Badge>
                     </Button>
                   </Column>
 
+                  {!isWidthDown("sm", width) && (
+                    <Typography paddingLeft textMediumGrey>
+                      <ArrowDownIcon className={s.arrowDownIcon} />
+                    </Typography>
+                  )}
+
                   {/* account info */}
                   <Column paddingLeft>
                     {/* account avatar & icon */}
-                    <Button
+                    {/* <Button
                       variant="icon"
                       aria-describedby="accountinfo-popover"
-                      onClick={this.handleMenu('accountInfoEl')}
-                      className={clsx(
-                        classes.iconButton,
-                        classes.accountButton
-                      )}
+                      onClick={this.handleMenu("accountInfoEl")}
+                      className={clsx(s.iconButton, s.accountButton)}
+                    > */}
+                    <IconButton
+                      aria-describedby="accountinfo-popover"
+                      onClick={this.handleMenu("accountInfoEl")}
+                      className={s.iconButton}
                     >
-                      {!isWidthDown('sm', width) && (
-                        <Typography paddingRight>
-                          <ArrowDownIcon className={classes.arrowDownIcon} />
-                        </Typography>
-                      )}
                       <Badge
                         color="error"
                         badgeContent="!"
                         invisible={
-                          profileCompleteness !== 'profileNeedAttention'
+                          profileCompleteness !== "profileNeedAttention"
                         }
                       >
-                        <UserIcon className={classes.smallIcon} />
+                        <UserIcon className={s.smallIcon} />
                       </Badge>
-                    </Button>
+                    </IconButton>
+                    {/* </Button> */}
 
                     {/* account info panel */}
                     <Popover
                       id="accountinfo-popover"
                       open={Boolean(accountInfoEl)}
                       anchorEl={accountInfoEl}
-                      onClose={this.handleCloseMenu('accountInfoEl')}
+                      onClose={this.handleCloseMenu("accountInfoEl")}
                       anchorOrigin={{
-                        vertical: 'bottom',
-                        horizontal: 'right',
+                        vertical: "bottom",
+                        horizontal: "right"
                       }}
                       transformOrigin={{
-                        vertical: 'top',
-                        horizontal: 'right',
+                        vertical: "top",
+                        horizontal: "right"
                       }}
-                      classes={{ paper: classes.accountInfoWrapper }}
+                      classes={{ paper: s.accountInfoWrapper }}
                     >
-                      <Paper className={classes.accountInfoContentWrapper}>
+                      <Paper className={s.accountInfoContentWrapper}>
                         <AccountInfo
                           role={role}
                           userRole={userRole}
@@ -460,7 +471,7 @@ class AppHeader extends PureComponent {
                           profileProgress={{
                             profileCompleteness,
                             profileCompleted,
-                            profileCharged,
+                            profileCharged
                           }}
                           navigate={this.handleAccountInfoNavigate}
                           onToggleRole={this.handleAccountInfoToggleRole}
@@ -470,31 +481,35 @@ class AppHeader extends PureComponent {
                   </Column>
                 </React.Fragment>
               ) : (
-                !isWidthDown('sm', width) && (
+                !isWidthDown("sm", width) && (
                   <React.Fragment>
                     <Column paddingLeftDouble>
                       <Typography fontSizeS>
                         <Link variant="body2" to="/auth/login">
-                          {t('login')}
+                          {t("login")}
                         </Link>
                       </Typography>
                     </Column>
                     <Column paddingLeftDouble>
                       <Typography fontSizeS>
                         <Link variant="body2" to="/auth/register">
-                          {t('register')}
+                          {t("register")}
                         </Link>
                       </Typography>
                     </Column>
-                    {!isWidthDown('md', width) && (
+                    {!isWidthDown("md", width) && (
                       <Column paddingLeftDouble>
                         <Button
                           variant="secondary"
                           shadow
-                          onClick={() => this.props.navigate('/auth/register/landlord?redirect=/landlord/offices/add')}
+                          onClick={() =>
+                            this.props.navigate(
+                              "/auth/register/landlord?redirect=/landlord/offices/add"
+                            )
+                          }
                         >
                           <Typography fontSizeS fontWeightBold>
-                            {t('placeToRent')}
+                            {t("placeToRent")}
                           </Typography>
                         </Button>
                       </Column>
@@ -502,7 +517,7 @@ class AppHeader extends PureComponent {
                   </React.Fragment>
                 )
               )}
-              {isWidthDown('sm', width) && (
+              {isWidthDown("sm", width) && (
                 <Column paddingLeft>
                   {sidebarOpened ? (
                     <Button
@@ -512,9 +527,9 @@ class AppHeader extends PureComponent {
                       outline="primary"
                       onClick={this.handleToggleSidebar(!sidebarOpened)}
                       shadow
-                      className={classes.iconButton}
+                      className={s.iconButton}
                     >
-                      <CloseIcon className={classes.smallIcon} />
+                      <CloseIcon className={s.smallIcon} />
                     </Button>
                   ) : (
                     <Button
@@ -525,9 +540,9 @@ class AppHeader extends PureComponent {
                       inverse
                       onClick={this.handleToggleSidebar(!sidebarOpened)}
                       shadow
-                      className={classes.iconButton}
+                      className={s.iconButton}
                     >
-                      <MenuIcon className={classes.smallIcon} />
+                      <MenuIcon className={s.smallIcon} />
                     </Button>
                   )}
                 </Column>
@@ -537,7 +552,7 @@ class AppHeader extends PureComponent {
         </Grid>
 
         {/* thin bar at the bottom of header */}
-        {isLoggedIn && <div className={classes.stickyBar} />}
+        {isLoggedIn && <div className={s.stickyBar} />}
 
         {/** dialog */}
         {dialog}
@@ -547,5 +562,5 @@ class AppHeader extends PureComponent {
 }
 
 export default withWidth()(
-  withStyles(styleSheet)(withTranslation('common')(AppHeader))
+  withStyles(styleSheet)(withTranslation("common")(AppHeader))
 );
