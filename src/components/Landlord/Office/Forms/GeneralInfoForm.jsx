@@ -325,71 +325,12 @@ class GeneralInfoForm extends PureComponent {
 
   handleSave = () => {
     const { onSave } = this.props;
-    const { office: { location: { fullAddress: updatedFullAddress = '' } = {} } = {} } = this.state;
-    if (updatedFullAddress !== '') {
-      const { office: { location: { coordinates: { lat = 0, lng = 0 } = {} } = {} } = {} } = this.props;
-      Promise.all(types.map(type => getPlaceDetails('AIzaSyCFjI4tzrBQzlNgWorViS48057MOvcn_VY', lat, lng, type)))
-        .then(results => {
-          const placesNearby = [];
-          console.log(results);
-          for (let result of results) {
-            if (result.data.results.length > 0) {
-              placesNearby.push(result.data.results[0]);
-            }
-          }
-
-          console.log(placesNearby);
-
-          onSave({
-            ...this.state.office,
-            location: {
-              ...this.state.office.location,
-              placesNearby
-            }
-          });
-        })
-        .catch(error => {
-          console.log(error);
-          onSave(this.state.office);
-        });
-    } else {
-      onSave(this.state.office);
-    }
+    onSave(this.state.office);
   }
 
   handleNext = () => {
     const { onNext } = this.props;
-    const { office: { location: { fullAddress: updatedFullAddress = '' } = {} } = {} } = this.state;
-    if (updatedFullAddress !== '') {
-      const { office: { location: { coordinates: { lat = 0, lng = 0 } = {} } = {} } = {} } = this.props;
-      Promise.all(types.map(type => getPlaceDetails('AIzaSyCFjI4tzrBQzlNgWorViS48057MOvcn_VY', lat, lng, type)))
-        .then(results => {
-          const placesNearby = [];
-
-          console.log(results);
-          for (let result of results) {
-            if (result.data.results.length > 0) {
-              placesNearby.push(result.data.results[0]);
-            }
-          }
-
-          console.log(placesNearby);
-
-          onNext({
-            ...this.state.office,
-            location: {
-              ...this.state.office.location,
-              placesNearby
-            }
-          });
-        })
-        .catch(error => {
-          console.log(error);
-          onNext(this.state.office);
-        });
-    } else {
-      onNext(this.state.office);
-    }
+    onNext(this.state.office);
   }
 
   /**
