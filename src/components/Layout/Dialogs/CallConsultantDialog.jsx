@@ -55,6 +55,7 @@ const styleSheet = (theme) => ({
       display: 'flex',
       flexDirection: 'column',
       alignItems: 'center',
+      padding: 20,
     },
   },
 
