@@ -125,7 +125,7 @@ const styleSheet = theme => ({
     "&::before": {
       position: "absolute",
       top: -8,
-      right: 36,
+      right: 50,
       content: '" "',
       width: 16,
       height: 16,
@@ -416,7 +416,11 @@ class AppHeader extends PureComponent {
                   </Column>
 
                   {!isWidthDown("sm", width) && (
-                    <Typography paddingLeft textMediumGrey>
+                    <Typography
+                      paddingLeft
+                      textMediumGrey
+                      aria-describedby="accountinfo-popover"
+                    >
                       <ArrowDownIcon className={s.arrowDownIcon} />
                     </Typography>
                   )}
@@ -431,7 +435,6 @@ class AppHeader extends PureComponent {
                       className={clsx(s.iconButton, s.accountButton)}
                     > */}
                     <IconButton
-                      aria-describedby="accountinfo-popover"
                       onClick={this.handleMenu("accountInfoEl")}
                       className={s.iconButton}
                     >
