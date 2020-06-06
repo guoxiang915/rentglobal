@@ -166,6 +166,10 @@ const OfficeGallery = React.memo(({ classes: s, coverPhotos, width }) => {
   const handleClickThumb = (index) => {
     setCurrentCoverPhoto(index);
   };
+  const handleClickCarouselThumb = (index) => {
+    setCurrentCoverPhoto(index);
+    setShowFullScreen(true);
+  };
 
   return (
     <React.Fragment>
@@ -184,11 +188,22 @@ const OfficeGallery = React.memo(({ classes: s, coverPhotos, width }) => {
                       }
                       className={s.coverPhotoContent}
                       alt=''
+                      onClick={() => handleClickCarouselThumb(index)}
                     />
                   </div>
                 </div>
               ))}
           </Carousel>
+          {coverPhotos && showFullScreen && (
+            <FullScreenImageCarousel
+              images={coverPhotos.map(
+                (coverPhoto) => coverPhoto?.desktop?.bucketPath
+              )}
+              index={currentCoverPhoto}
+              open={showFullScreen}
+              onClose={() => setShowFullScreen(false)}
+            />
+          )}
         </div>
       ) : (
         <Row fullWidth relative>
