@@ -47,7 +47,7 @@
     {
       "files": ["**/*.percy.{js,jsx}"],
       "env": {
-        "react-percy/globals": true
+        // "react-percy/globals": true
       }
     }
   ]

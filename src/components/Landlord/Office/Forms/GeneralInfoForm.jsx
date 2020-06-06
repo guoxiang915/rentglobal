@@ -32,7 +32,7 @@ import {
   guarantees,
   checkOutNotices
 } from "../../../../utils/constants";
-import { getPlaceDetails } from '../../../../api/endpoints';
+// import { getPlaceDetails } from '../../../../api/endpoints';
 
 const styleSheet = theme => ({
   root: {},
@@ -108,7 +108,7 @@ const styleSheet = theme => ({
   }
 });
 
-const types = ['bar', 'bicycle_store', 'bus_station', 'gym', 'train_station', 'taxi_stand', 'subway_station', 'parking'];
+// const types = ['bar', 'bicycle_store', 'bus_station', 'gym', 'train_station', 'taxi_stand', 'subway_station', 'parking'];
 
 class GeneralInfoForm extends PureComponent {
   static propTypes = {
@@ -248,62 +248,62 @@ class GeneralInfoForm extends PureComponent {
       validation = null;
     }
     switch (tag) {
-    case "textfield":
-      return (
-        <TextField
-          variant="outlined"
-          value={office[field]}
-          onChange={this.handleChangeOfficeByEventValue(field)}
-          error={!!validation}
-          helperText={validation && validation.msg}
-          {...props}
-        />
-      );
-    case "numberfield":
-      return (
-        <NumberField
-          value={office[field]}
-          onChange={this.handleChangeOfficeByEventValue(field)}
-          error={!!validation}
-          helperText={validation && validation.msg}
-          {...props}
-        />
-      );
-    case "select":
-      return (
-        <Select
-          options={["", ...options]}
-          renderOption={item =>
-            !item
-              ? t("selectOne")
-              : typeof item === "object"
+      case "textfield":
+        return (
+          <TextField
+            variant="outlined"
+            value={office[field]}
+            onChange={this.handleChangeOfficeByEventValue(field)}
+            error={!!validation}
+            helperText={validation && validation.msg}
+            {...props}
+          />
+        );
+      case "numberfield":
+        return (
+          <NumberField
+            value={office[field]}
+            onChange={this.handleChangeOfficeByEventValue(field)}
+            error={!!validation}
+            helperText={validation && validation.msg}
+            {...props}
+          />
+        );
+      case "select":
+        return (
+          <Select
+            options={["", ...options]}
+            renderOption={item =>
+              !item
+                ? t("selectOne")
+                : typeof item === "object"
                 ? t(...item)
                 : t(item)
-          }
-          displayEmpty
-          value={office[field] || ""}
-          onChange={this.handleChangeOfficeByEventValue(field)}
-          error={!!validation}
-          helperText={validation && validation.msg}
-          {...props}
-        />
-      );
-    case "address":
-      return (
-        <GooglePlaceField
-          variant="outlined"
-          value={office[field]}
-          onChange={this.handleChangeOfficeByEventValue(field)}
-          {...props}
-          inputProps={{
-            ...props.inputProps,
-            error: !!validation,
-            helperText: validation && validation.msg
-          }}
-        />
-      );
-    default:
-      return null;
+            }
+            displayEmpty
+            value={office[field] || ""}
+            onChange={this.handleChangeOfficeByEventValue(field)}
+            error={!!validation}
+            helperText={validation && validation.msg}
+            {...props}
+          />
+        );
+      case "address":
+        return (
+          <GooglePlaceField
+            variant="outlined"
+            value={office[field]}
+            onChange={this.handleChangeOfficeByEventValue(field)}
+            {...props}
+            inputProps={{
+              ...props.inputProps,
+              error: !!validation,
+              helperText: validation && validation.msg
+            }}
+          />
+        );
+      default:
+        return null;
     }
   };
 
@@ -326,12 +326,12 @@ class GeneralInfoForm extends PureComponent {
   handleSave = () => {
     const { onSave } = this.props;
     onSave(this.state.office);
-  }
+  };
 
   handleNext = () => {
     const { onNext } = this.props;
     onNext(this.state.office);
-  }
+  };
 
   /**
    * Renderer function

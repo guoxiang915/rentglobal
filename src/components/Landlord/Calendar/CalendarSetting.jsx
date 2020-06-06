@@ -468,9 +468,9 @@ class CalendarSetting extends PureComponent {
                           <TableCell>
                             {c.startDate || c.endDate
                               ? [
-                                  c.startDate ? formatDate(c.startDate) : "",
-                                  c.endDate ? formatDate(c.endDate) : ""
-                                ].join(" - ")
+                                c.startDate ? formatDate(c.startDate) : "",
+                                c.endDate ? formatDate(c.endDate) : ""
+                              ].join(" - ")
                               : t(c.day)}
                           </TableCell>
                           <TableCell>
