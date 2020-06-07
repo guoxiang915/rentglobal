@@ -1,6 +1,7 @@
 import api from "./api";
 import {
   events as eventsMockData,
+  visitRequests as visitRequestsMockData,
   reviews as reviewsMockData,
   report as reportMockData,
   conditions as conditionsMockData
@@ -203,8 +204,24 @@ export const getReviewsByOffice = () =>
  * Call api to get events of office
  * @param {string} officeId Office id for getting events data
  */
-export const getEventsByOffice = () =>
-  Promise.resolve({ status: 200, data: eventsMockData });
+export const getEventsByOffice = officeId => {
+  return api.get(`/offices/${officeId}/events/`);
+};
+
+/**
+ * Call api to add event of office
+ * @param {string} officeId Office id for getting events data
+ */
+export const addEventByOffice = (officeId, payload) => {
+  return api.post(`/offices/${officeId}/events/`, payload);
+};
+
+/**
+ * Call api to get visit request of office landlord
+ * @param {string} officeId Office id for getting visit requests
+ */
+export const getVisitRequestsByOffice = officeId =>
+  Promise.resolve({ status: 200, data: visitRequestsMockData });
 
 /**
  * Call api to get events of landlord

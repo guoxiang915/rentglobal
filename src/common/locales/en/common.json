@@ -519,6 +519,8 @@
   "latest": "Latest",
   "searchOnCalendar": "Search on calendar",
   "addEvent": "Add event",
+  "editEvent": "Edit event",
+  "eventTitle": "Event's title",
   "week": "Week",
   "generalEvent": "General event",
   "gotoToday": "Go to today",
