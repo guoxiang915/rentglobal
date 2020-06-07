@@ -3,6 +3,7 @@ import { withStyles } from "@material-ui/core/styles";
 import { withTranslation } from "react-i18next";
 import withWidth, { isWidthDown } from "@material-ui/core/withWidth";
 import PropTypes from "prop-types";
+import { Grid } from "@material-ui/core";
 import {
   Row,
   Column,
@@ -52,6 +53,13 @@ const styleSheet = theme => ({
 
   carouselWrapper: {
     marginLeft: -10
+  },
+
+  addOfficeButton: {
+    width: "unset",
+    [theme.breakpoints.down("xs")]: {
+      width: "100%"
+    }
   }
 });
 
@@ -124,18 +132,31 @@ class Offices extends PureComponent {
         paddingBottomDouble
       >
         <Row fullWidth paddingBottom>
-          {/* title */}
-          <Typography fontSizeM textSecondary>
-            {t("offices")}
-          </Typography>
-          <Stretch />
-          <Button
-            variant="secondary"
-            shadow
-            onClick={this.navigate("offices/add")}
+          <Grid
+            container
+            direction="row"
+            wrap="wrap"
+            justify="space-between"
+            alignItems="center"
+            spacing={2}
           >
-            {t("addNewOffice")}
-          </Button>
+            <Grid item>
+              {/* title */}
+              <Typography fontSizeM textSecondary>
+                {t("offices")}
+              </Typography>
+            </Grid>
+            <Grid item className={s.addOfficeButton}>
+              <Button
+                variant="secondary"
+                shadow
+                onClick={this.navigate("offices/add")}
+                className={s.addOfficeButton}
+              >
+                {t("addNewOffice")}
+              </Button>
+            </Grid>
+          </Grid>
         </Row>
 
         {/* requests tab */}

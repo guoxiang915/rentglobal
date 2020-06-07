@@ -3,13 +3,13 @@ import { withStyles } from "@material-ui/core/styles";
 import { withRouter } from "react-router-dom";
 import { withTranslation } from "react-i18next";
 import PropTypes from "prop-types";
+import { Grid } from "@material-ui/core";
 import {
   Row,
   Column,
   Box,
   Typography,
   Button,
-  Stretch,
   Link,
   Divider,
   Dot,
@@ -146,34 +146,45 @@ class CalendarOverview extends PureComponent {
 
         {/** Show week/month view mode selector */}
         <Row fullWidth paddingBottomDouble>
-          <Typography
-            textSecondary={viewMode === "week"}
-            textMediumGrey={viewMode !== "week"}
-            fontWeightBold={viewMode === "week"}
-            fontSizeS
-            style={{ cursor: "pointer" }}
-            onClick={this.handleChangeViewMode("week")}
-          >
-            {t("week")}
-          </Typography>
-          <Typography
-            textSecondary={viewMode === "month"}
-            textMediumGrey={viewMode !== "month"}
-            fontWeightBold={viewMode === "month"}
-            fontSizeS
-            style={{ marginLeft: 60, cursor: "pointer" }}
-            onClick={this.handleChangeViewMode("month")}
-          >
-            {t("month")}
-          </Typography>
-          <Stretch />
-          <Typography textMediumGrey fontSizeS>
-            {formatDate(new Date()) + " " + t(weekdays[new Date().getDay()])}
-          </Typography>
-          &nbsp;
-          <Typography textSecondary fontSizeS>
-            {formatHrMin(new Date())}
-          </Typography>
+          <Grid container direction="row" spacing={2} justify="space-between">
+            <Grid item>
+              <Row>
+                <Typography
+                  textSecondary={viewMode === "week"}
+                  textMediumGrey={viewMode !== "week"}
+                  fontWeightBold={viewMode === "week"}
+                  fontSizeS
+                  style={{ cursor: "pointer" }}
+                  onClick={this.handleChangeViewMode("week")}
+                >
+                  {t("week")}
+                </Typography>
+                <Typography
+                  textSecondary={viewMode === "month"}
+                  textMediumGrey={viewMode !== "month"}
+                  fontWeightBold={viewMode === "month"}
+                  fontSizeS
+                  style={{ marginLeft: 60, cursor: "pointer" }}
+                  onClick={this.handleChangeViewMode("month")}
+                >
+                  {t("month")}
+                </Typography>
+              </Row>
+            </Grid>
+            <Grid item>
+              <Row>
+                <Typography textMediumGrey fontSizeS>
+                  {formatDate(new Date()) +
+                    " " +
+                    t(weekdays[new Date().getDay()])}
+                </Typography>
+                &nbsp;
+                <Typography textSecondary fontSizeS>
+                  {formatHrMin(new Date())}
+                </Typography>
+              </Row>
+            </Grid>
+          </Grid>
         </Row>
 
         {/** Calendar panel */}
