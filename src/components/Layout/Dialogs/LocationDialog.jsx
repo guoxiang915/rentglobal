@@ -25,6 +25,7 @@ import {
   SubwayIcon,
   TaxiIcon,
 } from '../../../common/base-components/Icons';
+import { geoDistance } from '../../../utils/googlemap';
 
 const styleSheet = (theme) => ({
   root: {
@@ -85,7 +86,7 @@ const styleSheet = (theme) => ({
     display: 'flex',
     alignItems: 'center',
     marginBottom: 10,
-    position: 'relative'
+    position: 'relative',
   },
 
   typeIconContainer: {
@@ -143,6 +144,16 @@ const styleSheet = (theme) => ({
 
   iconDescription: {},
 
+  markerIcon: {
+    backgroundColor: '#d7df23',
+    padding: 10,
+    width: 40,
+    height: 40,
+    borderRadius: 20,
+    color: 'white',
+    zIndex: -1,
+  },
+
   typeDescription: {
     position: 'absolute',
     left: 45,
@@ -165,16 +176,16 @@ class LocationDialog extends PureComponent {
 
   /** TODO: show description for this location */
   descriptions = [
-    {
-      title: 'Verdun,H4G2V9, Québec, Canada',
-      content:
-        'If you walk, It is so close to green line metro station -Jolicoeur , just 5-6 minutes walking distance to there . If you drive , it is so close to highway 15 (15-20 minutes to Bridge Champlain to the necessary...',
-    },
-    {
-      title: 'Getting around',
-      content:
-        'You can park your car in the private driveway side of house face to boulevard Champlain , but extra parking fee collected by host in cash. Of course , you also can park your car in the street side front of…',
-    },
+    // {
+    //   title: 'Verdun,H4G2V9, Québec, Canada',
+    //   content:
+    //     'If you walk, It is so close to green line metro station -Jolicoeur , just 5-6 minutes walking distance to there . If you drive , it is so close to highway 15 (15-20 minutes to Bridge Champlain to the necessary...',
+    // },
+    // {
+    //   title: 'Getting around',
+    //   content:
+    //     'You can park your car in the private driveway side of house face to boulevard Champlain , but extra parking fee collected by host in cash. Of course , you also can park your car in the street side front of…',
+    // },
   ];
 
   /** Close dialog */
@@ -184,92 +195,51 @@ class LocationDialog extends PureComponent {
     }
   };
 
+  renderNearbyPlaceChip = (Icon, type, place) => {
+    const { classes: s, location } = this.props;
+
+    return (
+      <span className={s.type}>
+        <span className={s.typeIconContainer}>
+          <Icon className={clsx(s.icon, 'icon')} />
+          <span className={clsx(s.iconName, 'iconName')}>{type}</span>
+        </span>
+        <span className={s.typeDescription}>
+          {place.name}{' '}
+          {Math.floor(
+            Math.abs(
+              geoDistance(place.geometry?.location, location.coordinates)
+            )
+          )}
+          m
+        </span>
+      </span>
+    );
+  };
+
   renderType = (place) => {
-    const { classes: s } = this.props;
+    const { t } = this.props;
 
     return (
       <React.Fragment>
-        {place.types.includes('bar') && (
-          <span className={s.type}>
-            <span className={s.typeIconContainer}>
-              <BarIcon className={clsx(s.icon, 'icon')} />
-              <span className={clsx(s.iconName, 'iconName')}>Bar</span>
-            </span>
-            <span className={s.typeDescription}>{place.name}</span>
-          </span>
-        )}
-        {place.types.includes('bank') && (
-          <span className={s.type}>
-            <span className={s.typeIconContainer}>
-              <BankIcon className={clsx(s.icon, 'icon')} />
-              <span className={clsx(s.iconName, 'iconName')}>Bank</span>
-            </span>
-            <span className={s.typeDescription}>{place.name}</span>
-          </span>
-        )}
-        {place.types.includes('bicycle_store') && (
-          <span className={s.type}>
-            <span className={s.typeIconContainer}>
-              <BicycleIcon className={clsx(s.icon, 'icon')} />
-              <span className={clsx(s.iconName, 'iconName')}>Bicycle</span>
-            </span>
-            <span className={s.typeDescription}>{place.name}</span>
-          </span>
-        )}
-        {place.types.includes('bus_station') && (
-          <span className={s.type}>
-            <span className={s.typeIconContainer}>
-              <SubwayIcon className={clsx(s.icon, 'icon')} />
-              <span className={clsx(s.iconName, 'iconName')}>Bus</span>
-            </span>
-            <span className={s.typeDescription}>{place.name}</span>
-          </span>
-        )}
-        {place.types.includes('gym') && (
-          <span className={s.type}>
-            <span className={s.typeIconContainer}>
-              <GymIcon className={clsx(s.icon, 'icon')} />
-              <span className={clsx(s.iconName, 'iconName')}>Gym</span>
-            </span>
-            <span className={s.typeDescription}>{place.name}</span>
-          </span>
-        )}
-        {place.types.includes('train_station') && (
-          <span className={s.type}>
-            <span className={s.typeIconContainer}>
-              <SubwayIcon className={clsx(s.icon, 'icon')} />
-              <span className={clsx(s.iconName, 'iconName')}>Train</span>
-            </span>
-            <span className={s.typeDescription}>{place.name}</span>
-          </span>
-        )}
-        {place.types.includes('taxi_stand') && (
-          <span className={s.type}>
-            <span className={s.typeIconContainer}>
-              <TaxiIcon className={clsx(s.icon, 'icon')} />
-              <span className={clsx(s.iconName, 'iconName')}>Taxi</span>
-            </span>
-            <span className={s.typeDescription}>{place.name}</span>
-          </span>
-        )}
-        {place.types.includes('subway_station') && (
-          <span className={s.type}>
-            <span className={s.typeIconContainer}>
-              <SubwayIcon className={clsx(s.icon, 'icon')} />
-              <span className={clsx(s.iconName, 'iconName')}>Subway station</span>
-            </span>
-            <span className={s.typeDescription}>{place.name}</span>
-          </span>
-        )}
-        {place.types.includes('parking') && (
-          <span className={s.type}>
-            <span className={s.typeIconContainer}>
-              <ParkingIcon className={clsx(s.icon, 'icon')} />
-              <span className={clsx(s.iconName, 'iconName')}>Parking</span>
-            </span>
-            <span className={s.typeDescription}>{place.name}</span>
-          </span>
-        )}
+        {place.types.includes('bar') &&
+          this.renderNearbyPlaceChip(BarIcon, t('bar'), place)}
+        {place.types.includes('bank') &&
+          this.renderNearbyPlaceChip(BankIcon, t('bank'), place)}
+        {place.types.includes('bicycle_store') &&
+          this.renderNearbyPlaceChip(BicycleIcon, t('bicycle'), place)}
+        {place.types.includes('bus_station') &&
+          this.renderNearbyPlaceChip(SubwayIcon, t('bus'), place)}
+        {place.types.includes('gym') &&
+          this.renderNearbyPlaceChip(GymIcon, t('gym'), place)}
+        {place.types.includes('train_station') &&
+          this.renderNearbyPlaceChip(SubwayIcon, t('train'), place)}
+        {place.types.includes('taxi_stand') &&
+          this.renderNearbyPlaceChip(TaxiIcon, t('taxi'), place)}
+        {place.types.includes('subway_station') &&
+          this.renderNearbyPlaceChip(SubwayIcon, t('subwayStation'), place)}
+        {place.types.includes('parking') &&
+          this.renderNearbyPlaceChip(ParkingIcon, t('parking'), place)}
       </React.Fragment>
     );
   };
@@ -282,6 +252,38 @@ class LocationDialog extends PureComponent {
     const { location, className, classes: s, t } = this.props;
 
     const { fullAddress, placesNearby } = location;
+
+    const coordinates = [];
+    if (location && location.coordinates) {
+      coordinates.push(location.coordinates);
+    }
+
+    for (let place of placesNearby) {
+      if (place.geometry && place.geometry.location) {
+        coordinates.push({
+          ...place.geometry.location,
+          iconComponent: place.types.includes('bar') ? (
+            <BarIcon className={s.markerIcon} />
+          ) : place.types.includes('bank') ? (
+            <BankIcon className={s.markerIcon} />
+          ) : place.types.includes('bicycle_store') ? (
+            <BicycleIcon className={s.markerIcon} />
+          ) : place.types.includes('bus_station') ? (
+            <SubwayIcon className={s.markerIcon} />
+          ) : place.types.includes('gym') ? (
+            <GymIcon className={s.markerIcon} />
+          ) : place.types.includes('train_station') ? (
+            <SubwayIcon className={s.markerIcon} />
+          ) : place.types.includes('taxi_stand') ? (
+            <TaxiIcon className={s.markerIcon} />
+          ) : place.types.includes('subway_station') ? (
+            <SubwayIcon className={s.markerIcon} />
+          ) : (
+            <ParkingIcon className={s.markerIcon} />
+          ),
+        });
+      }
+    }
 
     return (
       <Dialog
@@ -296,10 +298,9 @@ class LocationDialog extends PureComponent {
             {/** location panel */}
             <Box fill justifyChildrenCenter alignChildrenCenter>
               <GoogleMap
-                coordinates={
-                  location && location.coordinates && [location.coordinates]
-                }
+                coordinates={coordinates}
                 shadowWidth={50}
+                center={coordinates[0]}
               />
             </Box>
           </Grid>
