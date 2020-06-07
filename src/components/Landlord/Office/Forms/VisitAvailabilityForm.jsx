@@ -2,7 +2,7 @@ import React, { PureComponent } from "react";
 import { withStyles } from "@material-ui/core/styles";
 import { withTranslation } from "react-i18next";
 import PropTypes from "prop-types";
-import withWidth from "@material-ui/core/withWidth";
+import withWidth, { isWidthDown } from "@material-ui/core/withWidth";
 import {
   Row,
   Stretch,
@@ -10,12 +10,18 @@ import {
   Button,
   Typography,
   CloseIcon,
-  CheckIcon
+  CheckIcon,
+  ArrowRightIcon,
 } from "../../../../common/base-components";
 import CalendarWeekForm from "../../../Layout/CalendarWeekForm";
 
 const styleSheet = theme => ({
   root: {},
+
+  importButtonIcon: {
+    width: 10,
+    height: 13
+  },
 
   calendarWrapper: {
     marginTop: 58,
@@ -88,6 +94,11 @@ class VisitAvailabilityForm extends PureComponent {
     this.setState({ visitHours: data });
   };
 
+  /** Import from calendar seting */
+  handleImportCalendarSetting = () => {
+    
+  };
+
   /** Save visit-hours */
   handleNext = () => {
     if (this.props.onNext) {
@@ -107,14 +118,26 @@ class VisitAvailabilityForm extends PureComponent {
    * Renderer function
    */
   render() {
-    const { classes: s, t, onCancel, onNext, isLoading } = this.props;
+    const { classes: s, t, width, onCancel, onNext, isLoading } = this.props;
     const { visitHours, dialog } = this.state;
 
     return (
       <Column classes={{ box: s.root }} fullWidth alignChildrenStart>
-        <Typography fontSizeS textMediumGrey>
-          {t("setTimeForDay")}
-        </Typography>
+        <Row fullWidth>
+          <Typography fontSizeS textMediumGrey>
+            {t("setTimeForDay")}
+          </Typography>
+
+          <Stretch />
+
+          <Button
+            onClick={this.handleImportCalendarSetting}
+            fullWidth={isWidthDown("xs", width)}
+          >
+            <ArrowRightIcon className={s.importButtonIcon} />
+            <Typography paddingLeft>{t('importCalendarSetting')}</Typography>
+          </Button>
+        </Row>
 
         <div className={s.calendarWrapper}>
           <CalendarWeekForm
