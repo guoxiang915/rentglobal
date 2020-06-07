@@ -9,6 +9,7 @@ import {
   OfficeGeneralInfo
 } from "../../common/base-layouts";
 import { withLogin } from "../../common/base-services";
+import withWidth, { isWidthDown } from "@material-ui/core/withWidth";
 
 const styleSheet = () => ({
   root: {}
@@ -29,7 +30,7 @@ class OfficeDetailForm extends PureComponent {
    * Renderer function
    */
   render() {
-    const { classes: s, office } = this.props;
+    const { classes: s, office, width } = this.props;
 
     return (
       <Column classes={{ box: s.root }} fullWidth alignChildrenStart>
@@ -38,7 +39,13 @@ class OfficeDetailForm extends PureComponent {
           <OfficeTitlebar
             office={office}
             actions={this.titlebarActions}
-            maxWidth={Math.min(1024, window.innerWidth - 44)}
+            // maxWidth={Math.min(1024, window.innerWidth - 44)}
+            maxWidth={
+              Math.min(
+                1024,
+                window.innerWidth - (isWidthDown("xs", width) ? 0 : 44)
+              ) - (isWidthDown("sm", width) ? 54 : 247)
+            }
             topOffset={150}
           />
         </Row>
@@ -58,5 +65,7 @@ class OfficeDetailForm extends PureComponent {
 }
 
 export default withLogin(
-  withStyles(styleSheet)(withTranslation("common")(OfficeDetailForm))
+  withStyles(styleSheet)(
+    withWidth()(withTranslation("common")(OfficeDetailForm))
+  )
 );

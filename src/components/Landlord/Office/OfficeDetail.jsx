@@ -55,6 +55,20 @@ const styleSheet = theme => ({
     }
   },
 
+  titlebarWrapper: {
+    marginBottom: 72,
+    [theme.breakpoints.down("xs")]: {
+      marginBottom: 12
+    }
+  },
+
+  tabsWrapper: {
+    marginBottom: 24,
+    [theme.breakpoints.down("xs")]: {
+      marginBottom: 12
+    }
+  },
+
   tabs: {
     marginTop: 12,
     width: "100%",
@@ -158,12 +172,16 @@ class OfficeDetail extends PureComponent {
   };
 
   /** Unpublish office */
-  handleUnpublish = (t) => {
+  handleUnpublish = t => {
     this.props.unpublishOffice(this.state.office._id).then(response => {
       if (response.status === 200) {
         this.props.navigate(
           "offices/add",
-          (`${this.state.office._id}/${this.state.office.location.country}/${t(this.state.office.officeType)}/${this.state.office.numberOfEmployees} ${t("employees")}/${this.state.office.refId}-${this.state.office.title}`).replace(/\s+/g, '-')
+          `${this.state.office._id}/${this.state.office.location.country}/${t(
+            this.state.office.officeType
+          )}/${this.state.office.numberOfEmployees} ${t("employees")}/${
+            this.state.office.refId
+          }-${this.state.office.title}`.replace(/\s+/g, "-")
         );
       }
     });
@@ -301,7 +319,7 @@ class OfficeDetail extends PureComponent {
           </Button>
         </Row>
 
-        <Row fullWidth style={{ marginBottom: 72 }}>
+        <Row fullWidth classes={{ box: s.titlebarWrapper }}>
           {office && (
             <OfficeTitlebar
               office={office}
@@ -310,13 +328,14 @@ class OfficeDetail extends PureComponent {
                 Math.min(
                   1024,
                   window.innerWidth - (isWidthDown("xs", width) ? 0 : 44)
-                ) - (isWidthDown("sm", width) ? 0 : 167)
+                ) - (isWidthDown("sm", width) ? 54 : 247)
               }
+              topOffset={50}
             />
           )}
         </Row>
 
-        <Row fullWidth style={{ marginBottom: 24 }}>
+        <Row fullWidth classes={{ box: s.tabsWrapper }}>
           {/** Tabs */}
           <Tabs
             value={currentTab}
