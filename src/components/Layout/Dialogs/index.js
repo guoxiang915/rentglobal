@@ -9,3 +9,4 @@ export { default as WelcomeRoleDialog } from "./WelcomeRoleDialog";
 export { default as DeleteAccountDialog } from "./DeleteAccountDialog";
 export { default as LandlordDialog } from "./LandlordDialog";
 export { default as AddTimeDialog } from "./AddTimeDialog";
+export { default as AddEventDialog } from "./AddEventDialog";

@@ -19,9 +19,14 @@ import {
   EventCalendar,
   EventListItem
 } from ".";
-import { getEventsByOffice } from "../../api/endpoints";
+import {
+  getEventsByOffice,
+  addEventByOffice,
+  getVisitRequestsByOffice
+} from "../../api/endpoints";
 import { formatDate, getWeekday } from "../../utils/formatters";
 import { checkEqualDate } from "../../utils/validators";
+import { AddEventDialog } from "../../components/Layout";
 
 const styleSheet = theme => ({
   root: {},
@@ -50,22 +55,39 @@ class OfficeCalendar extends React.Component {
     width: PropTypes.string
   };
 
-  constructor(props) {
-    super(props);
-    this.state = {
-      events: [],
-      viewMode: "month",
-      query: "",
-      selectedDay: new Date(),
-      selectedEvent: null
-    };
+  getEvents = () => {
     if (getEventsByOffice) {
-      getEventsByOffice(props.officeId).then(response => {
+      getEventsByOffice(this.props.officeId).then(response => {
         if (response.status === 200) {
           this.setState({ events: response.data });
         }
       });
     }
+  };
+
+  getVisitRequests = () => {
+    if (getVisitRequestsByOffice) {
+      getVisitRequestsByOffice(this.props.officeId).then(response => {
+        if (response.status === 200) {
+          this.setState({ visitRequests: response.data });
+        }
+      });
+    }
+  };
+
+  constructor(props) {
+    super(props);
+    this.state = {
+      events: [],
+      visitRequests: [],
+      viewMode: "month",
+      query: "",
+      selectedDay: new Date(),
+      selectedEvent: null,
+      dialog: null
+    };
+    this.getEvents();
+    this.getVisitRequests();
   }
 
   handleFilterChange = ({ query }) => {
@@ -76,9 +98,45 @@ class OfficeCalendar extends React.Component {
     this.setState({ viewMode });
   };
 
-  handleAddEvent = () => {};
+  handleAddEvent = () => {
+    this.setState({
+      dialog: (
+        <AddEventDialog
+          onSave={this.addEvent}
+          onClose={this.handleCloseDialog}
+        />
+      )
+    });
+  };
 
-  handleEditEvent = () => {};
+  handleEditEvent = event => {
+    this.setState({
+      dialog: (
+        <AddEventDialog
+          title={this.props.t("editEvent")}
+          event={event}
+          onSave={this.editEvent(event)}
+          onClose={this.handleCloseDialog}
+        />
+      )
+    });
+  };
+
+  addEvent = event => {
+    addEventByOffice(this.props.officeId, event).then(() => {
+      this.handleCloseDialog();
+      this.getEvents();
+    });
+  };
+
+  editEvent = event => newData => {
+    // TODO: add api of editing event
+    console.log(event, newData);
+  };
+
+  handleCloseDialog = () => {
+    this.setState({ dialog: null });
+  };
 
   handleAcceptVisit = () => {};
 
@@ -100,10 +158,33 @@ class OfficeCalendar extends React.Component {
 
   render() {
     const { classes: s, t } = this.props;
-    const { selectedDay, selectedEvent, query, viewMode, events } = this.state;
+    const {
+      selectedDay,
+      selectedEvent,
+      query,
+      viewMode,
+      events,
+      visitRequests,
+      dialog
+    } = this.state;
 
-    const selectedDayEvents = events.filter(e =>
-      checkEqualDate(e.date, selectedDay)
+    const formattedVisitRequests = visitRequests.map(v => ({
+      ...v,
+      type: "visit"
+    }));
+    const formattedEvents = events.map(e => ({
+      type: "event",
+      date: new Date(
+        Math.floor(new Date(e.range.start).getTime() / (24 * 3600 * 1000))
+      ),
+      start: new Date(new Date(e.range.start).getTime() % (24 * 3600 * 1000)),
+      end: new Date(new Date(e.range.end).getTime() % (24 * 3600 * 1000)),
+      name: e.title,
+      content: e.description
+    }));
+    const totalEvents = formattedVisitRequests.concat(formattedEvents);
+    let selectedDayEvents = totalEvents.filter(v =>
+      checkEqualDate(v.date, selectedDay)
     );
 
     return (
@@ -154,7 +235,7 @@ class OfficeCalendar extends React.Component {
                 themeVariant="light"
               /> */}
             <EventCalendar
-              events={events}
+              events={totalEvents}
               viewMode={viewMode}
               selectedDay={selectedDay}
               selectedEvent={selectedEvent}
@@ -225,7 +306,7 @@ class OfficeCalendar extends React.Component {
         {/** Request for visiting */}
         <Row fullWidth>
           <TabWrapper title={t("requestForVisiting")} open insideOpen>
-            {events.map((event, index) => (
+            {formattedVisitRequests.map((event, index) => (
               <React.Fragment key={index}>
                 <EventListItem
                   event={event}
@@ -238,6 +319,9 @@ class OfficeCalendar extends React.Component {
             ))}
           </TabWrapper>
         </Row>
+
+        {/** Show dialog */}
+        {dialog}
       </Column>
     );
   }
