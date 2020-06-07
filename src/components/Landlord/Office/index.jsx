@@ -7,7 +7,6 @@ import { Grid } from "@material-ui/core";
 import {
   Row,
   Column,
-  Stretch,
   Box,
   Typography,
   Button,

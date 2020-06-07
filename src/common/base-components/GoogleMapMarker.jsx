@@ -2,29 +2,29 @@ import React from "react";
 import { withTheme } from "@material-ui/core/styles";
 import { makeStyles } from "@material-ui/styles";
 import { Badge } from "@material-ui/core";
-import clsx from 'clsx';
+import clsx from "clsx";
 import { PinGeneralIcon } from ".";
 
 const useStyles = makeStyles({
   root: {
-    position: "relative",
+    position: "relative"
   },
 
   tooltipWrapper: {
     position: "absolute",
-    bottom: (props) => props.size + 10,
+    bottom: props => props.size + 10,
     left: 0,
     display: "flex",
     alignItems: "flex-end",
-    justifyContent: "center",
+    justifyContent: "center"
   },
 
   tooltip: {
     position: "absolute",
     zIndex: 1,
-    border: (props) => `1px solid ${props.theme.colors.primary.mainColor}`,
+    border: props => `1px solid ${props.theme.colors.primary.mainColor}`,
     borderRadius: 8,
-    background: (props) => props.theme.colors.primary.white,
+    background: props => props.theme.colors.primary.white,
     padding: 12,
     boxShadow: "0px 2px 6px #00000014",
     "&:after": {
@@ -35,38 +35,38 @@ const useStyles = makeStyles({
       left: "calc(50% - 7px)",
       width: 16,
       height: 16,
-      background: (props) => props.theme.colors.primary.white,
-      border: (props) => `1px solid ${props.theme.colors.primary.mainColor}`,
+      background: props => props.theme.colors.primary.white,
+      border: props => `1px solid ${props.theme.colors.primary.mainColor}`,
       borderTop: "none !important",
       borderLeft: "none !important",
-      transform: "rotate(45deg)",
-    },
+      transform: "rotate(45deg)"
+    }
   },
 
   badge: {
-    marginTop: (props) => -props.size / 4,
-    marginRight: (props) => props.size / 4,
+    marginTop: props => -props.size / 4,
+    marginRight: props => props.size / 4
   },
 
   marker: {
-    width: (props) => props.size,
-    height: (props) => props.size,
-    marginLeft: (props) => -props.size / 2,
-    marginTop: (props) => -props.size / 2,
-    backgroundColor: (props) => props.theme.colors.primary[props.color],
-    padding: (props) => props.size / 4,
-    borderRadius: (props) => props.size / 2,
-    boxShadow: (props) =>
+    width: props => props.size,
+    height: props => props.size,
+    marginLeft: props => -props.size / 2,
+    marginTop: props => -props.size / 2,
+    backgroundColor: props => props.theme.colors.primary[props.color],
+    padding: props => props.size / 4,
+    borderRadius: props => props.size / 2,
+    boxShadow: props =>
       `0 0 0 ${props.shadowWidth}px ${
         props.theme.colors.primary[props.color]
       }50`,
     cursor: "pointer",
 
-    '&.nearByPlaceMarker': {
-      backgroundColor: 'transparent',
-      boxShadow: 'none',
+    "&.nearByPlaceMarker": {
+      backgroundColor: "transparent",
+      boxShadow: "none"
     }
-  },
+  }
 });
 
 const Marker = ({
@@ -78,13 +78,13 @@ const Marker = ({
   badge = "",
   icon = null,
   iconComponent = null,
-  onClick = () => {},
+  onClick = () => {}
 }) => {
   const classes = useStyles({
     theme,
     color,
     size,
-    shadowWidth,
+    shadowWidth
   });
 
   return (
@@ -101,9 +101,17 @@ const Marker = ({
         anchorOrigin={{ vertical: "top", horizontal: "right" }}
         classes={{ badge: classes.badge }}
       >
-        {icon && <img src={icon} className={clsx(classes.marker, 'nearByPlaceMarker')} />}
+        {icon && (
+          <img
+            src={icon}
+            className={clsx(classes.marker, "nearByPlaceMarker")}
+            alt=""
+          />
+        )}
         {iconComponent}
-        {!icon && !iconComponent && <PinGeneralIcon className={classes.marker} onClick={onClick} />}
+        {!icon && !iconComponent && (
+          <PinGeneralIcon className={classes.marker} onClick={onClick} />
+        )}
       </Badge>
     </div>
   );
