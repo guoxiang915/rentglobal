@@ -38,7 +38,13 @@ class OfficeDetailForm extends PureComponent {
           <OfficeTitlebar
             office={office}
             actions={this.titlebarActions}
-            maxWidth={Math.min(1024, window.innerWidth - 44)}
+            // maxWidth={Math.min(1024, window.innerWidth - 44)}
+            maxWidth={
+              Math.min(
+                1024,
+                window.innerWidth - (isWidthDown("xs", width) ? 0 : 44)
+              ) - (isWidthDown("sm", width) ? 54 : 247)
+            }
             topOffset={150}
           />
         </Row>
