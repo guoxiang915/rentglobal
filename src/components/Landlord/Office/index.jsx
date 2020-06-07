@@ -18,6 +18,10 @@ import {
   OfficeItem
 } from "../../../common/base-layouts";
 import { ConditionalWrapper } from "../../../utils/helpers";
+import {
+  getLandlordUnapprovedOffices,
+  getLandlordApprovedOffices
+} from "../../../api/endpoints";
 
 const styleSheet = theme => ({
   root: {
@@ -54,13 +58,12 @@ const styleSheet = theme => ({
 class Offices extends PureComponent {
   static propTypes = {
     navigate: PropTypes.func,
-    getOffices: PropTypes.func.isRequired,
 
     classes: PropTypes.object,
     t: PropTypes.func
   };
 
-  state = { offices: [] };
+  state = { unapprovedOffices: [], approvedOffices: [] };
 
   /** Navigation */
   navigate = path => () => {
@@ -69,8 +72,15 @@ class Offices extends PureComponent {
 
   /** Get landlord offices */
   componentDidMount() {
-    this.props.getOffices().then(
-      response => this.setState({ offices: response.data.docs }),
+    getLandlordUnapprovedOffices().then(
+      response => this.setState({ unapprovedOffices: response.data.docs }),
+      () => {}
+    );
+    getLandlordApprovedOffices().then(
+      response => {
+        if (response.status === 200)
+          this.setState({ approvedOffices: response.data.docs });
+      },
       () => {}
     );
   }
@@ -97,7 +107,7 @@ class Offices extends PureComponent {
    */
   render() {
     const { width, classes: s, t } = this.props;
-    const { offices } = this.state;
+    const { unapprovedOffices, approvedOffices } = this.state;
 
     const statistics = {
       followUpRequests: { value: 8, variant: "primary" },
@@ -159,13 +169,11 @@ class Offices extends PureComponent {
             </Row>
           </TabWrapper>
         </Row>
-        
+
         {/* offices need attention tab */}
         <Row fullWidth classes={{ box: s.officesTabWrapper }}>
           <TabWrapper
-            title={`${t("needAttention")} (${
-              offices.filter(item => item.published === false).length
-            })`}
+            title={`${t("needAttention")} (${unapprovedOffices?.length})`}
             open
             insideOpen
             actionButton={
@@ -199,28 +207,26 @@ class Offices extends PureComponent {
                   </CarouselWrapper>
                 )}
               >
-                {offices
-                  .filter(item => item.published === false)
-                  .map((office, index) => (
-                    <div
-                      style={{
-                        position: "relative",
-                        cursor: "pointer",
-                        width: isWidthDown("xs", width) ? "100%" : 235,
-                        height: "100%",
-                        marginBottom: isWidthDown("xs", width) ? 28 : 0
-                      }}
-                      key={index}
-                    >
-                      <OfficeItem
-                        office={office}
-                        // errorMsg="pending"
-                        setFavorite
-                        onClick={this.handleNavigateOfficeDetail(office, t)}
-                        fullWidth
-                      />
-                    </div>
-                  ))}
+                {unapprovedOffices.map((office, index) => (
+                  <div
+                    style={{
+                      position: "relative",
+                      cursor: "pointer",
+                      width: isWidthDown("xs", width) ? "100%" : 235,
+                      height: "100%",
+                      marginBottom: isWidthDown("xs", width) ? 28 : 0
+                    }}
+                    key={index}
+                  >
+                    <OfficeItem
+                      office={office}
+                      // errorMsg="pending"
+                      setFavorite
+                      onClick={this.handleNavigateOfficeDetail(office, t)}
+                      fullWidth
+                    />
+                  </div>
+                ))}
               </ConditionalWrapper>
             </Row>
           </TabWrapper>
@@ -229,9 +235,7 @@ class Offices extends PureComponent {
         {/* office lists tab */}
         <Row fullWidth classes={{ box: s.officesTabWrapper }}>
           <TabWrapper
-            title={`${t("approvedOfficesList")} (${
-              offices.filter(item => item.published === true).length
-            })`}
+            title={`${t("approvedOfficesList")} (${approvedOffices.length})`}
             open
             insideOpen
             actionButton={
@@ -265,27 +269,25 @@ class Offices extends PureComponent {
                   </CarouselWrapper>
                 )}
               >
-                {offices
-                  .filter(item => item.published === true)
-                  .map((office, index) => (
-                    <div
-                      style={{
-                        position: "relative",
-                        cursor: "pointer",
-                        width: isWidthDown("xs", width) ? "100%" : 235,
-                        height: "100%",
-                        marginBottom: isWidthDown("xs", width) ? 28 : 0
-                      }}
-                      key={index}
-                    >
-                      <OfficeItem
-                        office={office}
-                        setFavorite
-                        onClick={this.handleNavigateOfficeDetail(office, t)}
-                        fullWidth
-                      />
-                    </div>
-                  ))}
+                {approvedOffices.map((office, index) => (
+                  <div
+                    style={{
+                      position: "relative",
+                      cursor: "pointer",
+                      width: isWidthDown("xs", width) ? "100%" : 235,
+                      height: "100%",
+                      marginBottom: isWidthDown("xs", width) ? 28 : 0
+                    }}
+                    key={index}
+                  >
+                    <OfficeItem
+                      office={office}
+                      setFavorite
+                      onClick={this.handleNavigateOfficeDetail(office, t)}
+                      fullWidth
+                    />
+                  </div>
+                ))}
               </ConditionalWrapper>
             </Row>
           </TabWrapper>

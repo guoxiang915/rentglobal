@@ -17,9 +17,9 @@ import {
 import {
   uploadFile,
   downloadFile,
-  getOffices,
-  getAvailableOffices,
-  getUnpublishedOffices,
+  getLandlordOffices,
+  getLandlordApprovedOffices,
+  getLandlordUnapprovedOffices,
   getOfficeById,
   getSimilarOffices,
   createOffice,
@@ -39,7 +39,7 @@ import Office from "./Office";
 import OfficeDetail from "./Office/OfficeDetail";
 import AddNewOffice from "../../containers/Landlord/Office/AddNewOffice";
 import OfficeList from "./Office/OfficeList";
-import UnpublishedOfficeList from "./Office/UnpublishedOfficeList";
+import UnapprovedOfficeList from "./Office/UnapprovedOfficeList";
 
 const styleSheet = theme => ({
   root: {
@@ -178,7 +178,7 @@ class Landlord extends PureComponent {
                   path="/landlord/dashboard"
                   render={() => (
                     <Dashboard
-                      getOffices={getOffices}
+                      getOffices={getLandlordOffices}
                       navigate={this.props.navigate}
                     />
                   )}
@@ -186,12 +186,7 @@ class Landlord extends PureComponent {
                 <Route
                   exact
                   path="/landlord/offices"
-                  render={() => (
-                    <Office
-                      getOffices={getOffices}
-                      navigate={this.props.navigate}
-                    />
-                  )}
+                  render={() => <Office navigate={this.props.navigate} />}
                 />
                 <Route
                   exact
@@ -223,7 +218,7 @@ class Landlord extends PureComponent {
                   path="/landlord/offices/all"
                   render={() => (
                     <OfficeList
-                      getOffices={getAvailableOffices}
+                      getOffices={getLandlordApprovedOffices}
                       navigate={this.props.navigate}
                     />
                   )}
@@ -232,8 +227,8 @@ class Landlord extends PureComponent {
                   exact
                   path="/landlord/offices/unpublish"
                   render={() => (
-                    <UnpublishedOfficeList
-                      getOffices={getUnpublishedOffices}
+                    <UnapprovedOfficeList
+                      getOffices={getLandlordUnapprovedOffices}
                       navigate={this.props.navigate}
                     />
                   )}
