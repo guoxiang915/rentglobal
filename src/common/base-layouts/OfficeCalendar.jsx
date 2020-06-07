@@ -131,6 +131,7 @@ class OfficeCalendar extends React.Component {
 
   editEvent = event => newData => {
     // TODO: add api of editing event
+    this.handleCloseDialog();
     console.log(event, newData);
   };
 
@@ -172,18 +173,24 @@ class OfficeCalendar extends React.Component {
       ...v,
       type: "visit"
     }));
-    const formattedEvents = events.map(e => ({
-      type: "event",
-      date: new Date(
-        Math.floor(new Date(e.range.start).getTime() / (24 * 3600 * 1000))
-      ),
-      start: new Date(new Date(e.range.start).getTime() % (24 * 3600 * 1000)),
-      end: new Date(new Date(e.range.end).getTime() % (24 * 3600 * 1000)),
-      name: e.title,
-      content: e.description
-    }));
+    const formattedEvents = events.map(e => {
+      const start = new Date(e.range.start);
+      const end = new Date(e.range.end);
+      return {
+        type: "event",
+        date: new Date(start.getFullYear(), start.getMonth(), start.getDate()),
+        start: new Date(
+          start.getHours(),
+          start.getMinutes(),
+          start.getSeconds()
+        ),
+        end: new Date(end.getHours(), end.getMinutes(), end.getSeconds()),
+        name: e.title,
+        content: e.description
+      };
+    });
     const totalEvents = formattedVisitRequests.concat(formattedEvents);
-    let selectedDayEvents = totalEvents.filter(v =>
+    const selectedDayEvents = totalEvents.filter(v =>
       checkEqualDate(v.date, selectedDay)
     );
 

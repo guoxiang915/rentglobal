@@ -230,6 +230,13 @@ export const getEventsByLandlord = () =>
   Promise.resolve({ status: 200, data: eventsMockData });
 
 /**
+ * Call api to get visit request of office landlord
+ * @param {string} officeId Office id for getting visit requests
+ */
+export const getVisitRequestsByLandlord = ()=>
+  Promise.resolve({ status: 200, data: visitRequestsMockData });
+
+/**
  * Call api to get conditions of landlord calendar
  */
 export const getGeneralConditionsOfCalendar = () =>
