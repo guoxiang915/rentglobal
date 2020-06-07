@@ -189,10 +189,10 @@ class OfficeDetail extends PureComponent {
     consultant: {},
     reviews: [],
     similarOffices: [],
-    dialog: null
+    dialog: null,
+    titlebarActions: []
   };
 
-  titlebarActions = [];
 
   componentDidMount() {
     /** Get office from id */
@@ -201,106 +201,108 @@ class OfficeDetail extends PureComponent {
     getApprovedOfficeByRefId(refId).then(response => {
       if (response.status === 200) {
         const office = response.data;
-        this.titlebarActions = [
-          {
-            title: this.props.t("favorite"),
-            icon: () =>
-              office?.favorite ? (
-                <FavoriteFilledIcon
-                  className={this.props.classes.favoriteIcon}
-                  style={{ opacity: 1 }}
-                />
-              ) : (
-                <FavoriteIcon className={this.props.classes.favoriteIcon} />
-              ),
-            styles: {
-              variant: null,
-              link: "secondary",
-              background: "secondaryLight"
-            },
-            revertStyles: {
-              variant: "primary",
-              link: null,
-              background: null
-            },
-            onClick: this.handleSetFavorite
-          },
-          {
-            title: this.props.t("share"),
-            icon: () => <ShareIcon style={{ width: 13, height: 15 }} />,
-            styles: {
-              variant: null,
-              link: "secondary",
-              background: "secondaryLight"
-            },
-            revertStyles: {
-              variant: "primary",
-              link: null,
-              background: null
-            },
-            onClick: this.handleShare
-          },
-          {
-            title: this.props.t("call"),
-            icon: () => <CallIcon style={{ width: 15, height: 17 }} />,
-            styles: {
-              variant: null,
-              link: "secondary",
-              background: "secondaryLight"
-            },
-            revertStyles: {
-              variant: "primary",
-              link: null,
-              background: null
-            },
-            onClick: this.handleCall
-          },
-          {
-            title: this.props.t("sendMessage"),
-            icon: () => <MessageIcon style={{ width: 18, height: 16 }} />,
-            styles: isWidthDown("xs", this.props.width)
-              ? {
+        this.setState({
+          titlebarActions: [
+            {
+              title: this.props.t("favorite"),
+              icon: () =>
+                office?.favorite ? (
+                  <FavoriteFilledIcon
+                    className={this.props.classes.favoriteIcon}
+                    style={{ opacity: 1 }}
+                  />
+                ) : (
+                  <FavoriteIcon className={this.props.classes.favoriteIcon} />
+                ),
+              styles: {
                 variant: null,
                 link: "secondary",
                 background: "secondaryLight"
-              }
-              : {
-                variant: "secondary",
-                background: null,
-                style: { borderColor: null }
               },
-            revertStyles: isWidthDown("xs", this.props.width)
-              ? {
+              revertStyles: {
                 variant: "primary",
                 link: null,
                 background: null
-              }
-              : {
+              },
+              onClick: this.handleSetFavorite
+            },
+            {
+              title: this.props.t("share"),
+              icon: () => <ShareIcon style={{ width: 13, height: 15 }} />,
+              styles: {
+                variant: null,
+                link: "secondary",
+                background: "secondaryLight"
+              },
+              revertStyles: {
                 variant: "primary",
                 link: null,
-                background: "primary",
-                style: { borderColor: "white" }
+                background: null
               },
-            onClick: this.handleSendMessage,
-            hideIcon: !isWidthDown("xs", this.props.width)
-          },
-          {
-            title: this.props.t("visitAnOffice"),
-            // icon: () => <CalendarIcon style={{ width: 13, height: 15 }} />,
-            icon: () => (
-              <Typography fontSizeS textSecondary>
-                {this.props.t("visit")}
-              </Typography>
-            ),
-            styles: {
-              variant: "primary",
-              shadow: true
+              onClick: this.handleShare
             },
-            revertStyles: { variant: "secondary" },
-            onClick: this.handleVisitOffice,
-            hideIcon: true
-          }
-        ];
+            {
+              title: this.props.t("call"),
+              icon: () => <CallIcon style={{ width: 15, height: 17 }} />,
+              styles: {
+                variant: null,
+                link: "secondary",
+                background: "secondaryLight"
+              },
+              revertStyles: {
+                variant: "primary",
+                link: null,
+                background: null
+              },
+              onClick: this.handleCall
+            },
+            {
+              title: this.props.t("sendMessage"),
+              icon: () => <MessageIcon style={{ width: 18, height: 16 }} />,
+              styles: isWidthDown("xs", this.props.width)
+                ? {
+                  variant: null,
+                  link: "secondary",
+                  background: "secondaryLight"
+                }
+                : {
+                  variant: "secondary",
+                  background: null,
+                  style: { borderColor: null }
+                },
+              revertStyles: isWidthDown("xs", this.props.width)
+                ? {
+                  variant: "primary",
+                  link: null,
+                  background: null
+                }
+                : {
+                  variant: "primary",
+                  link: null,
+                  background: "primary",
+                  style: { borderColor: "white" }
+                },
+              onClick: this.handleSendMessage,
+              hideIcon: !isWidthDown("xs", this.props.width)
+            },
+            {
+              title: this.props.t("visitAnOffice"),
+              // icon: () => <CalendarIcon style={{ width: 13, height: 15 }} />,
+              icon: () => (
+                <Typography fontSizeS textSecondary>
+                  {this.props.t("visit")}
+                </Typography>
+              ),
+              styles: {
+                variant: "primary",
+                shadow: true
+              },
+              revertStyles: { variant: "secondary" },
+              onClick: this.handleVisitOffice,
+              hideIcon: true
+            }
+          ]
+        })
         this.setState({ office }, () => {
           this.getConsultantByOffice(office.id);
           this.getReviewsByOffice(office.id);
@@ -380,12 +382,38 @@ class OfficeDetail extends PureComponent {
     if (this.props.passLoginDialog()) {
       favoriteOffice(this.state.office._id).then(response => {
         if (response.status === 200) {
-          const { office } = this.state;
+          const { office, titlebarActions } = this.state;
           this.setState({
             office: {
               ...office,
               favorite: response.data.favorite
-            }
+            },
+            titlebarActions: [
+              {
+                title: this.props.t("favorite"),
+                icon: () =>
+                  response.data.favorite ? (
+                    <FavoriteFilledIcon
+                      className={this.props.classes.favoriteIcon}
+                      style={{ opacity: 1 }}
+                    />
+                  ) : (
+                    <FavoriteIcon className={this.props.classes.favoriteIcon} />
+                  ),
+                styles: {
+                  variant: null,
+                  link: "secondary",
+                  background: "secondaryLight"
+                },
+                revertStyles: {
+                  variant: "primary",
+                  link: null,
+                  background: null
+                },
+                onClick: this.handleSetFavorite
+              },
+              ...titlebarActions.slice(1)
+            ]
           });
         }
       });
@@ -634,7 +662,7 @@ class OfficeDetail extends PureComponent {
    */
   render() {
     const { classes: s, t } = this.props;
-    const { office, consultant, reviews, similarOffices, dialog } = this.state;
+    const { office, consultant, reviews, similarOffices, dialog, titlebarActions } = this.state;
     const ConsultantInfo = this.renderConsultant;
     const ReviewList = this.renderReviewList;
 
@@ -673,7 +701,7 @@ class OfficeDetail extends PureComponent {
                 <Row fullWidth paddingBottom>
                   <OfficeTitlebar
                     office={office}
-                    actions={this.titlebarActions}
+                    actions={titlebarActions}
                     maxWidth={Math.min(1024, window.innerWidth - 44)}
                     topOffset={150}
                   />
