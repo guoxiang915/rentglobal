@@ -122,6 +122,7 @@ const styleSheet = theme => ({
     position: "relative",
     width: "100%",
     height: 450,
+    maxHeight: "calc(100vh - 130px)",
     [theme.breakpoints.down("sm")]: {
       height: 450
     },

@@ -55,6 +55,20 @@ const styleSheet = theme => ({
     }
   },
 
+  titlebarWrapper: {
+    marginBottom: 72,
+    [theme.breakpoints.down("xs")]: {
+      marginBottom: 12
+    }
+  },
+
+  tabsWrapper: {
+    marginBottom: 24,
+    [theme.breakpoints.down("xs")]: {
+      marginBottom: 12
+    }
+  },
+
   tabs: {
     marginTop: 12,
     width: "100%",
@@ -305,7 +319,7 @@ class OfficeDetail extends PureComponent {
           </Button>
         </Row>
 
-        <Row fullWidth style={{ marginBottom: 72 }}>
+        <Row fullWidth classes={{ box: s.titlebarWrapper }}>
           {office && (
             <OfficeTitlebar
               office={office}
@@ -321,7 +335,7 @@ class OfficeDetail extends PureComponent {
           )}
         </Row>
 
-        <Row fullWidth style={{ marginBottom: 24 }}>
+        <Row fullWidth classes={{ box: s.tabsWrapper }}>
           {/** Tabs */}
           <Tabs
             value={currentTab}
