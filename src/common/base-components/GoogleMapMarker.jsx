@@ -2,6 +2,7 @@ import React from "react";
 import { withTheme } from "@material-ui/core/styles";
 import { makeStyles } from "@material-ui/styles";
 import { Badge } from "@material-ui/core";
+import clsx from 'clsx';
 import { PinGeneralIcon } from ".";
 
 const useStyles = makeStyles({
@@ -60,6 +61,11 @@ const useStyles = makeStyles({
         props.theme.colors.primary[props.color]
       }50`,
     cursor: "pointer",
+
+    '&.nearByPlaceMarker': {
+      backgroundColor: 'transparent',
+      boxShadow: 'none',
+    }
   },
 });
 
@@ -70,6 +76,8 @@ const Marker = ({
   size = 40,
   tooltip = null,
   badge = "",
+  icon = null,
+  iconComponent = null,
   onClick = () => {},
 }) => {
   const classes = useStyles({
@@ -93,7 +101,9 @@ const Marker = ({
         anchorOrigin={{ vertical: "top", horizontal: "right" }}
         classes={{ badge: classes.badge }}
       >
-        <PinGeneralIcon className={classes.marker} onClick={onClick} />
+        {icon && <img src={icon} className={clsx(classes.marker, 'nearByPlaceMarker')} />}
+        {iconComponent}
+        {!icon && !iconComponent && <PinGeneralIcon className={classes.marker} onClick={onClick} />}
       </Badge>
     </div>
   );

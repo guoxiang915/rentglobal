@@ -554,5 +554,12 @@
   "businessDays": "Business days",
   "weekends": "Weekends",
   "from": "From",
-  "to": "To"
+  "to": "To",
+  "bar": "Bar",
+  "bank": "Bank",
+  "bicycle": "Bicycle",
+  "bus": "Bus",
+  "train": "Train",
+  "taxi": "Taxi",
+  "subwayStation": "Subway Station"
 }

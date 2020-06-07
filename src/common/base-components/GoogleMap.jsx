@@ -72,6 +72,8 @@ const SimpleMap = ({
               lat={coord.lat}
               lng={coord.lng}
               onClick={handleClickMarker(coord)}
+              icon={coord.icon}
+              iconComponent={coord.iconComponent}
             />
           ))}
       </GoogleMapReact>

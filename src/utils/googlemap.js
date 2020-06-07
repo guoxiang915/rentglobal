@@ -46,3 +46,24 @@ export function centeroid(coordinates) {
 
   return { lat: lat / f, lng: lng / f };
 }
+
+/**
+ * Convert lng and long distance to meters
+ * @param {lat, lng} coordinate1 First coordinate
+ * @param {lat, lng} coordinate2 Second coordinate
+ * @returns Distance in meters
+ */
+export function geoDistance(coordinate1, coordinate2) {
+  if (!coordinate1) return 0;
+  if (!coordinate2) return 0;
+
+  const R = 6378.137; // Radius of earth in KM
+  const dLat = coordinate2.lat * Math.PI / 180 - coordinate1.lat * Math.PI / 180;
+  const dLon = coordinate2.lng * Math.PI / 180 - coordinate1.lng * Math.PI / 180;
+  const a = Math.sin(dLat/2) * Math.sin(dLat/2) 
+            + Math.cos(coordinate1.lat * Math.PI / 180) * Math.cos(coordinate2.lat * Math.PI / 180)
+            * Math.sin(dLon/2) * Math.sin(dLon/2);
+  const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
+  const d = R * c;
+  return d * 1000;
+}
