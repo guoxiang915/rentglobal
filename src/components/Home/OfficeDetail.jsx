@@ -709,7 +709,7 @@ class OfficeDetail extends PureComponent {
                     office={office}
                     actions={titlebarActions}
                     maxWidth={Math.min(1024, window.innerWidth - 44)}
-                    topOffset={window.innerWidth / 2}
+                    topOffset={Math.min(600, window.innerWidth / 2)}
                   />
                 </Row>
 
