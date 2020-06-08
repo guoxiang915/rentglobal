@@ -14,6 +14,7 @@ import {
   CheckIcon,
   ArrowRightIcon,
 } from "../../../../common/base-components";
+import { ImportCalendarSettingDialog } from "../../../../components/Layout/Dialogs";
 import CalendarWeekForm from "../../../Layout/CalendarWeekForm";
 
 const styleSheet = theme => ({
@@ -102,7 +103,13 @@ class VisitAvailabilityForm extends PureComponent {
 
   /** Import from calendar seting */
   handleImportCalendarSetting = () => {
-    console.log('Import Calendar Setting');
+    this.setState({
+      dialog: (
+        <ImportCalendarSettingDialog
+          onClose={this.handleCloseDialog}
+        />
+      )
+    });
   };
 
   /** Save visit-hours */
