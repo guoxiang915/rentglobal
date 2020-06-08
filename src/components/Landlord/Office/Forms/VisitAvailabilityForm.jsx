@@ -1,8 +1,9 @@
 import React, { PureComponent } from "react";
 import { withStyles } from "@material-ui/core/styles";
+import clsx from 'clsx';
 import { withTranslation } from "react-i18next";
 import PropTypes from "prop-types";
-import withWidth from "@material-ui/core/withWidth";
+import withWidth, { isWidthDown } from "@material-ui/core/withWidth";
 import {
   Row,
   Stretch,
@@ -10,12 +11,24 @@ import {
   Button,
   Typography,
   CloseIcon,
-  CheckIcon
+  CheckIcon,
+  ArrowRightIcon,
 } from "../../../../common/base-components";
+import { ImportCalendarSettingDialog } from "../../../../components/Layout/Dialogs";
 import CalendarWeekForm from "../../../Layout/CalendarWeekForm";
 
 const styleSheet = theme => ({
   root: {},
+
+  fullWidthButton: {
+    width: '100%',
+    marginTop: 25,
+  },
+
+  importButtonIcon: {
+    width: 10,
+    height: 13
+  },
 
   calendarWrapper: {
     marginTop: 58,
@@ -88,6 +101,17 @@ class VisitAvailabilityForm extends PureComponent {
     this.setState({ visitHours: data });
   };
 
+  /** Import from calendar seting */
+  handleImportCalendarSetting = () => {
+    this.setState({
+      dialog: (
+        <ImportCalendarSettingDialog
+          onClose={this.handleCloseDialog}
+        />
+      )
+    });
+  };
+
   /** Save visit-hours */
   handleNext = () => {
     if (this.props.onNext) {
@@ -107,14 +131,26 @@ class VisitAvailabilityForm extends PureComponent {
    * Renderer function
    */
   render() {
-    const { classes: s, t, onCancel, onNext, isLoading } = this.props;
+    const { classes: s, t, width, onCancel, onNext, isLoading } = this.props;
     const { visitHours, dialog } = this.state;
 
     return (
       <Column classes={{ box: s.root }} fullWidth alignChildrenStart>
-        <Typography fontSizeS textMediumGrey>
-          {t("setTimeForDay")}
-        </Typography>
+        <Row fullWidth paddingBottom wrap>
+          <Typography fontSizeS textMediumGrey>
+            {t("setTimeForDay")}
+          </Typography>
+
+          <Stretch />
+
+          <Button
+            onClick={this.handleImportCalendarSetting}
+            className={clsx(isWidthDown("xs", width) && s.fullWidthButton)}
+          >
+            <ArrowRightIcon className={s.importButtonIcon} />
+            <Typography paddingLeft>{t('importCalendarSetting')}</Typography>
+          </Button>
+        </Row>
 
         <div className={s.calendarWrapper}>
           <CalendarWeekForm

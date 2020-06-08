@@ -563,5 +563,6 @@
   "bus": "Bus",
   "train": "Train",
   "taxi": "Taxi",
-  "subwayStation": "Subway Station"
+  "subwayStation": "Subway Station",
+  "importCalendarSetting": "Import from Calendar setting"
 }
