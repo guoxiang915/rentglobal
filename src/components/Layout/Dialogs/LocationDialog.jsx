@@ -23,6 +23,7 @@ import {
   ParkingIcon,
   // RestaurantIcon,
   SubwayIcon,
+  TrainIcon,
   TaxiIcon,
 } from '../../../common/base-components/Icons';
 import { geoDistance } from '../../../utils/googlemap';
@@ -233,7 +234,7 @@ class LocationDialog extends PureComponent {
         {place.types.includes('gym') &&
           this.renderNearbyPlaceChip(GymIcon, t('gym'), place)}
         {place.types.includes('train_station') &&
-          this.renderNearbyPlaceChip(SubwayIcon, t('train'), place)}
+          this.renderNearbyPlaceChip(TrainIcon, t('train'), place)}
         {place.types.includes('taxi_stand') &&
           this.renderNearbyPlaceChip(TaxiIcon, t('taxi'), place)}
         {place.types.includes('subway_station') &&
@@ -273,7 +274,7 @@ class LocationDialog extends PureComponent {
           ) : place.types.includes('gym') ? (
             <GymIcon className={s.markerIcon} />
           ) : place.types.includes('train_station') ? (
-            <SubwayIcon className={s.markerIcon} />
+            <TrainIcon className={s.markerIcon} />
           ) : place.types.includes('taxi_stand') ? (
             <TaxiIcon className={s.markerIcon} />
           ) : place.types.includes('subway_station') ? (
