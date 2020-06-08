@@ -1,5 +1,6 @@
 import React, { PureComponent } from "react";
 import { withStyles } from "@material-ui/core/styles";
+import clsx from 'clsx';
 import { withTranslation } from "react-i18next";
 import PropTypes from "prop-types";
 import withWidth, { isWidthDown } from "@material-ui/core/withWidth";
@@ -17,6 +18,11 @@ import CalendarWeekForm from "../../../Layout/CalendarWeekForm";
 
 const styleSheet = theme => ({
   root: {},
+
+  fullWidthButton: {
+    width: '100%',
+    marginTop: 25,
+  },
 
   importButtonIcon: {
     width: 10,
@@ -96,7 +102,7 @@ class VisitAvailabilityForm extends PureComponent {
 
   /** Import from calendar seting */
   handleImportCalendarSetting = () => {
-    
+    console.log('Import Calendar Setting');
   };
 
   /** Save visit-hours */
@@ -123,7 +129,7 @@ class VisitAvailabilityForm extends PureComponent {
 
     return (
       <Column classes={{ box: s.root }} fullWidth alignChildrenStart>
-        <Row fullWidth>
+        <Row fullWidth paddingBottom wrap>
           <Typography fontSizeS textMediumGrey>
             {t("setTimeForDay")}
           </Typography>
@@ -132,7 +138,7 @@ class VisitAvailabilityForm extends PureComponent {
 
           <Button
             onClick={this.handleImportCalendarSetting}
-            fullWidth={isWidthDown("xs", width)}
+            className={clsx(isWidthDown("xs", width) && s.fullWidthButton)}
           >
             <ArrowRightIcon className={s.importButtonIcon} />
             <Typography paddingLeft>{t('importCalendarSetting')}</Typography>
