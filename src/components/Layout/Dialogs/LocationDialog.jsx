@@ -21,8 +21,8 @@ import {
   BicycleIcon,
   GymIcon,
   ParkingIcon,
-  // RestaurantIcon,
   SubwayIcon,
+  BusIcon,
   TrainIcon,
   TaxiIcon,
 } from '../../../common/base-components/Icons';
@@ -230,7 +230,7 @@ class LocationDialog extends PureComponent {
         {place.types.includes('bicycle_store') &&
           this.renderNearbyPlaceChip(BicycleIcon, t('bicycle'), place)}
         {place.types.includes('bus_station') &&
-          this.renderNearbyPlaceChip(SubwayIcon, t('bus'), place)}
+          this.renderNearbyPlaceChip(BusIcon, t('bus'), place)}
         {place.types.includes('gym') &&
           this.renderNearbyPlaceChip(GymIcon, t('gym'), place)}
         {place.types.includes('train_station') &&
@@ -270,7 +270,7 @@ class LocationDialog extends PureComponent {
           ) : place.types.includes('bicycle_store') ? (
             <BicycleIcon className={s.markerIcon} />
           ) : place.types.includes('bus_station') ? (
-            <SubwayIcon className={s.markerIcon} />
+            <BusIcon className={s.markerIcon} />
           ) : place.types.includes('gym') ? (
             <GymIcon className={s.markerIcon} />
           ) : place.types.includes('train_station') ? (
