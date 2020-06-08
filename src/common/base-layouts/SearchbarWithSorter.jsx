@@ -51,7 +51,7 @@ export default withStyles(styleSheet, { name: "SearchbarWithSorter" })(
               value={query}
               onChange={e => setQuery(e.target.value)}
               startAdornment={<SearchIcon style={{ width: 16, height: 16 }} />}
-              className={s.searchbar}
+              classes={{ input: s.searchbar }}
               onKeyUp={handleSearchKeyUp}
               fullWidth
             />
