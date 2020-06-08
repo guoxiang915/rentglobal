@@ -193,7 +193,6 @@ class OfficeDetail extends PureComponent {
     titlebarActions: []
   };
 
-
   componentDidMount() {
     /** Get office from id */
     const { refId } = this.props;
@@ -261,27 +260,27 @@ class OfficeDetail extends PureComponent {
               icon: () => <MessageIcon style={{ width: 18, height: 16 }} />,
               styles: isWidthDown("xs", this.props.width)
                 ? {
-                  variant: null,
-                  link: "secondary",
-                  background: "secondaryLight"
-                }
+                    variant: null,
+                    link: "secondary",
+                    background: "secondaryLight"
+                  }
                 : {
-                  variant: "secondary",
-                  background: null,
-                  style: { borderColor: null }
-                },
+                    variant: "secondary",
+                    background: null,
+                    style: { borderColor: null }
+                  },
               revertStyles: isWidthDown("xs", this.props.width)
                 ? {
-                  variant: "primary",
-                  link: null,
-                  background: null
-                }
+                    variant: "primary",
+                    link: null,
+                    background: null
+                  }
                 : {
-                  variant: "primary",
-                  link: null,
-                  background: "primary",
-                  style: { borderColor: "white" }
-                },
+                    variant: "primary",
+                    link: null,
+                    background: "primary",
+                    style: { borderColor: "white" }
+                  },
               onClick: this.handleSendMessage,
               hideIcon: !isWidthDown("xs", this.props.width)
             },
@@ -302,7 +301,7 @@ class OfficeDetail extends PureComponent {
               hideIcon: true
             }
           ]
-        })
+        });
         this.setState({ office }, () => {
           this.getConsultantByOffice(office.id);
           this.getReviewsByOffice(office.id);
@@ -312,7 +311,7 @@ class OfficeDetail extends PureComponent {
     });
   }
 
-  getConsultantByOffice = (officeId) => {
+  getConsultantByOffice = officeId => {
     /** Get consultant info from office */
     // this.props.
     getConsultantByOffice(officeId).then(response => {
@@ -322,7 +321,7 @@ class OfficeDetail extends PureComponent {
     });
   };
 
-  getReviewsByOffice = (officeId) => {
+  getReviewsByOffice = officeId => {
     /** Get reviews from office */
     // this.props.
     getReviewsByOffice(officeId).then(response => {
@@ -332,7 +331,7 @@ class OfficeDetail extends PureComponent {
     });
   };
 
-  getSimilarOffices = (officeId) => {
+  getSimilarOffices = officeId => {
     /** Get similar offices */
     // this.props.
     getSimilarOffices(officeId).then(response => {
@@ -373,7 +372,9 @@ class OfficeDetail extends PureComponent {
   goDetail = (office, t) => () => {
     this.props.navigate(
       "offices",
-      (`${office.refId}/${office.location.country}/${t(office.officeType)}/${office.numberOfEmployees} ${t("employees")}/${office.refId}-${office.title}`).replace(/\s+/g, '-')
+      `${office.refId}/${office.location.country}/${t(office.officeType)}/${
+        office.numberOfEmployees
+      } ${t("employees")}/${office.refId}-${office.title}`.replace(/\s+/g, "-")
     );
   };
 
@@ -460,14 +461,12 @@ class OfficeDetail extends PureComponent {
           window.$zoho.salesiq.visitor.name(user.generalInfo.username);
         }
         window.$zoho.salesiq.visitor.email(user.email);
-        window.$zoho.salesiq.floatwindow.visible('show');
-        window.$zoho.salesiq.chatwindow.visible('show');
+        window.$zoho.salesiq.floatwindow.visible("show");
+        window.$zoho.salesiq.chatwindow.visible("show");
 
-        window.$zoho.salesiq.visitor.missed((visitid, data) => {
-
-        });
+        window.$zoho.salesiq.visitor.missed((visitid, data) => {});
       } else {
-        console.log('no consultant assigned');
+        console.log("no consultant assigned");
       }
     }
   };
@@ -662,7 +661,14 @@ class OfficeDetail extends PureComponent {
    */
   render() {
     const { classes: s, t } = this.props;
-    const { office, consultant, reviews, similarOffices, dialog, titlebarActions } = this.state;
+    const {
+      office,
+      consultant,
+      reviews,
+      similarOffices,
+      dialog,
+      titlebarActions
+    } = this.state;
     const ConsultantInfo = this.renderConsultant;
     const ReviewList = this.renderReviewList;
 
@@ -703,7 +709,7 @@ class OfficeDetail extends PureComponent {
                     office={office}
                     actions={titlebarActions}
                     maxWidth={Math.min(1024, window.innerWidth - 44)}
-                    topOffset={150}
+                    topOffset={window.innerWidth / 2}
                   />
                 </Row>
 
