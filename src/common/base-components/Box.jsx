@@ -180,6 +180,9 @@ const styleSheet = (theme) => {
     textWhiteGrey: {
       color: theme.colors.primary.whiteGrey,
     },
+    textGrey: {
+      color: theme.colors.primary.grey,
+    },
     textPrimary: {
       color: theme.colors.primary.mainColor,
     },

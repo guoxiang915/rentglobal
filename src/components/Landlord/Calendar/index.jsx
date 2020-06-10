@@ -84,7 +84,8 @@ class Calendar extends PureComponent {
     {
       title: "visitRequests",
       value: 4,
-      icon: CalendarIcon
+      icon: CalendarIcon,
+      onClick: () => this.props.navigate("visit-requests")
     },
     {
       title: "personalEvents",
@@ -163,6 +164,7 @@ class Calendar extends PureComponent {
                     }
                     title={t(stat.title)}
                     statistics={[{ value: stat.value, variant: "primary" }]}
+                    onClick={stat.onClick}
                   />
                 </Box>
               </React.Fragment>
