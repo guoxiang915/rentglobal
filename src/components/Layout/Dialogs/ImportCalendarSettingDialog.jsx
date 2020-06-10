@@ -9,7 +9,7 @@ import {
 } from '@material-ui/core';
 import clsx from 'clsx';
 import { withTranslation } from 'react-i18next';
-import withWidth, { isWidthDown } from "@material-ui/core/withWidth";
+import withWidth from "@material-ui/core/withWidth";
 import {
   Button,
   Typography,
@@ -101,8 +101,8 @@ class ImportCalendarSettingDialog extends PureComponent {
   }
 
   render() {
-    const { className, classes: s, width, t } = this.props;
-    const { isCheckedWeekends, isCheckedAllDays, isCheckedBusinessDays, condition } = this.state;
+    const { className, classes: s, t } = this.props;
+    const { isCheckedWeekends, isCheckedAllDays, isCheckedBusinessDays } = this.state;
 
     const options = [];
 

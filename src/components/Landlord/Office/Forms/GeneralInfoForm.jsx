@@ -248,62 +248,62 @@ class GeneralInfoForm extends PureComponent {
       validation = null;
     }
     switch (tag) {
-      case "textfield":
-        return (
-          <TextField
-            variant="outlined"
-            value={office[field]}
-            onChange={this.handleChangeOfficeByEventValue(field)}
-            error={!!validation}
-            helperText={validation && validation.msg}
-            {...props}
-          />
-        );
-      case "numberfield":
-        return (
-          <NumberField
-            value={office[field]}
-            onChange={this.handleChangeOfficeByEventValue(field)}
-            error={!!validation}
-            helperText={validation && validation.msg}
-            {...props}
-          />
-        );
-      case "select":
-        return (
-          <Select
-            options={["", ...options]}
-            renderOption={item =>
-              !item
-                ? t("selectOne")
-                : typeof item === "object"
+    case "textfield":
+      return (
+        <TextField
+          variant="outlined"
+          value={office[field]}
+          onChange={this.handleChangeOfficeByEventValue(field)}
+          error={!!validation}
+          helperText={validation && validation.msg}
+          {...props}
+        />
+      );
+    case "numberfield":
+      return (
+        <NumberField
+          value={office[field]}
+          onChange={this.handleChangeOfficeByEventValue(field)}
+          error={!!validation}
+          helperText={validation && validation.msg}
+          {...props}
+        />
+      );
+    case "select":
+      return (
+        <Select
+          options={["", ...options]}
+          renderOption={item =>
+            !item
+              ? t("selectOne")
+              : typeof item === "object"
                 ? t(...item)
                 : t(item)
-            }
-            displayEmpty
-            value={office[field] || ""}
-            onChange={this.handleChangeOfficeByEventValue(field)}
-            error={!!validation}
-            helperText={validation && validation.msg}
-            {...props}
-          />
-        );
-      case "address":
-        return (
-          <GooglePlaceField
-            variant="outlined"
-            value={office[field]}
-            onChange={this.handleChangeOfficeByEventValue(field)}
-            {...props}
-            inputProps={{
-              ...props.inputProps,
-              error: !!validation,
-              helperText: validation && validation.msg
-            }}
-          />
-        );
-      default:
-        return null;
+          }
+          displayEmpty
+          value={office[field] || ""}
+          onChange={this.handleChangeOfficeByEventValue(field)}
+          error={!!validation}
+          helperText={validation && validation.msg}
+          {...props}
+        />
+      );
+    case "address":
+      return (
+        <GooglePlaceField
+          variant="outlined"
+          value={office[field]}
+          onChange={this.handleChangeOfficeByEventValue(field)}
+          {...props}
+          inputProps={{
+            ...props.inputProps,
+            error: !!validation,
+            helperText: validation && validation.msg
+          }}
+        />
+      );
+    default:
+      return null;
     }
   };
 

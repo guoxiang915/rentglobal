@@ -350,13 +350,13 @@ class AppSidebar extends PureComponent {
                           item={
                             language === "en"
                               ? {
-                                  text: "english",
-                                  icon: () => <Typography>EN</Typography>
-                                }
+                                text: "english",
+                                icon: () => <Typography>EN</Typography>
+                              }
                               : {
-                                  text: "french",
-                                  icon: () => <Typography>FR</Typography>
-                                }
+                                text: "french",
+                                icon: () => <Typography>FR</Typography>
+                              }
                           }
                           navigate={this.handleToggleLanguage}
                           classes={s}
