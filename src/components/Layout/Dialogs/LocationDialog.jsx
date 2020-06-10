@@ -21,8 +21,9 @@ import {
   BicycleIcon,
   GymIcon,
   ParkingIcon,
-  // RestaurantIcon,
   SubwayIcon,
+  BusIcon,
+  TrainIcon,
   TaxiIcon,
 } from '../../../common/base-components/Icons';
 import { geoDistance } from '../../../utils/googlemap';
@@ -236,7 +237,11 @@ class LocationDialog extends PureComponent {
     const { classes: s, location } = this.props;
 
     return (
-      <span className={s.type} onMouseOver={() => this.handleHoverPlaceChip(place)} onMouseLeave={this.handleLeavePlaceChip}>
+      <span
+        className={s.type}
+        onMouseOver={() => this.handleHoverPlaceChip(place)}
+        onMouseLeave={this.handleLeavePlaceChip}
+      >
         <span className={s.typeIconContainer}>
           <Icon className={clsx(s.icon, 'icon')} />
           <span className={clsx(s.iconName, 'iconName')}>{type}</span>
@@ -266,11 +271,11 @@ class LocationDialog extends PureComponent {
         {place.types.includes('bicycle_store') &&
           this.renderNearbyPlaceChip(BicycleIcon, t('bicycle'), place)}
         {place.types.includes('bus_station') &&
-          this.renderNearbyPlaceChip(SubwayIcon, t('bus'), place)}
+          this.renderNearbyPlaceChip(BusIcon, t('bus'), place)}
         {place.types.includes('gym') &&
           this.renderNearbyPlaceChip(GymIcon, t('gym'), place)}
         {place.types.includes('train_station') &&
-          this.renderNearbyPlaceChip(SubwayIcon, t('train'), place)}
+          this.renderNearbyPlaceChip(TrainIcon, t('train'), place)}
         {place.types.includes('taxi_stand') &&
           this.renderNearbyPlaceChip(TaxiIcon, t('taxi'), place)}
         {place.types.includes('subway_station') &&
@@ -301,39 +306,84 @@ class LocationDialog extends PureComponent {
         coordinates.push({
           ...place.geometry.location,
           iconComponent: place.types.includes('bar') ? (
-            <span className={clsx(s.markerIconWrapper, place.id == selectedNearbyPlace && s.selectedMarkerIconWrapper)}>
+            <span
+              className={clsx(
+                s.markerIconWrapper,
+                place.id === selectedNearbyPlace && s.selectedMarkerIconWrapper
+              )}
+            >
               <BarIcon className={s.markerIcon} />
             </span>
           ) : place.types.includes('bank') ? (
-            <span className={clsx(s.markerIconWrapper, place.id == selectedNearbyPlace && s.selectedMarkerIconWrapper)}>
+            <span
+              className={clsx(
+                s.markerIconWrapper,
+                place.id === selectedNearbyPlace && s.selectedMarkerIconWrapper
+              )}
+            >
               <BankIcon className={s.markerIcon} />
             </span>
           ) : place.types.includes('bicycle_store') ? (
-            <span className={clsx(s.markerIconWrapper, place.id == selectedNearbyPlace && s.selectedMarkerIconWrapper)}>
+            <span
+              className={clsx(
+                s.markerIconWrapper,
+                place.id === selectedNearbyPlace && s.selectedMarkerIconWrapper
+              )}
+            >
               <BicycleIcon className={s.markerIcon} />
             </span>
           ) : place.types.includes('bus_station') ? (
-            <span className={clsx(s.markerIconWrapper, place.id == selectedNearbyPlace && s.selectedMarkerIconWrapper)}>
-              <SubwayIcon className={s.markerIcon} />
+            <span
+              className={clsx(
+                s.markerIconWrapper,
+                place.id === selectedNearbyPlace && s.selectedMarkerIconWrapper
+              )}
+            >
+              <BusIcon className={s.markerIcon} />
             </span>
           ) : place.types.includes('gym') ? (
-            <span className={clsx(s.markerIconWrapper, place.id == selectedNearbyPlace && s.selectedMarkerIconWrapper)}>
+            <span
+              className={clsx(
+                s.markerIconWrapper,
+                place.id === selectedNearbyPlace && s.selectedMarkerIconWrapper
+              )}
+            >
               <GymIcon className={s.markerIcon} />
             </span>
           ) : place.types.includes('train_station') ? (
-            <span className={clsx(s.markerIconWrapper, place.id == selectedNearbyPlace && s.selectedMarkerIconWrapper)}>
-              <SubwayIcon className={s.markerIcon} />
+            <span
+              className={clsx(
+                s.markerIconWrapper,
+                place.id === selectedNearbyPlace && s.selectedMarkerIconWrapper
+              )}
+            >
+              <TrainIcon className={s.markerIcon} />
             </span>
           ) : place.types.includes('taxi_stand') ? (
-            <span className={clsx(s.markerIconWrapper, place.id == selectedNearbyPlace && s.selectedMarkerIconWrapper)}>
+            <span
+              className={clsx(
+                s.markerIconWrapper,
+                place.id === selectedNearbyPlace && s.selectedMarkerIconWrapper
+              )}
+            >
               <TaxiIcon className={s.markerIcon} />
             </span>
           ) : place.types.includes('subway_station') ? (
-            <span className={clsx(s.markerIconWrapper, place.id == selectedNearbyPlace && s.selectedMarkerIconWrapper)}>
+            <span
+              className={clsx(
+                s.markerIconWrapper,
+                place.id === selectedNearbyPlace && s.selectedMarkerIconWrapper
+              )}
+            >
               <SubwayIcon className={s.markerIcon} />
             </span>
           ) : (
-            <span className={clsx(s.markerIconWrapper, place.id == selectedNearbyPlace && s.selectedMarkerIconWrapper)}>
+            <span
+              className={clsx(
+                s.markerIconWrapper,
+                place.id === selectedNearbyPlace && s.selectedMarkerIconWrapper
+              )}
+            >
               <ParkingIcon className={s.markerIcon} />
             </span>
           ),

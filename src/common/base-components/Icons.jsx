@@ -97,6 +97,8 @@ export { default as ParkingIcon } from "../../assets/icon/icon_parking";
 export { default as RestaurantIcon } from "../../assets/icon/icon_restaurant";
 export { default as SubwayIcon } from "../../assets/icon/icon_subway";
 export { default as TaxiIcon } from "../../assets/icon/icon_taxi";
+export { default as TrainIcon } from "../../assets/icon/icon_train";
+export { default as BusIcon } from "../../assets/icon/icon_bus";
 export { default as ArrowRightIcon } from "../../assets/icon/icon_arrow_right";
 
 export const ProgressIcon = props => (
