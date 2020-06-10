@@ -45,6 +45,10 @@ const styleSheet = (theme) => ({
   header: {
     width: '100%',
     padding: '12px 12px 12px 40px',
+
+    [theme.breakpoints.down('xs')]: {
+      padding: 12,
+    },
   },
 
   content: {
@@ -81,6 +85,12 @@ const styleSheet = (theme) => ({
 
   typeWrapper: {
     padding: '30px 30px 30px 40px',
+
+    [theme.breakpoints.down('xs')]: {
+      padding: 12,
+      width: '100%',
+      overflow: 'hidden',
+    },
   },
 
   type: {
@@ -88,6 +98,7 @@ const styleSheet = (theme) => ({
     alignItems: 'center',
     marginBottom: 10,
     position: 'relative',
+    cursor: 'pointer',
   },
 
   typeIconContainer: {
@@ -108,7 +119,7 @@ const styleSheet = (theme) => ({
     '&:hover': {
       transition: '0.3s',
       width: 'unset',
-      backgroundColor: '#d7df23',
+      backgroundColor: `${theme.colors.primary.mainColor}`,
     },
 
     '&:hover .icon': {
@@ -145,14 +156,28 @@ const styleSheet = (theme) => ({
 
   iconDescription: {},
 
-  markerIcon: {
-    backgroundColor: '#d7df23',
-    padding: 10,
-    width: 40,
-    height: 40,
-    borderRadius: 20,
-    color: 'white',
+  markerIconWrapper: {
+    width: 20,
+    height: 20,
+    marginLeft: -10,
+    marginTop: -28.28,
+    borderRadius: '10px 10px 10px 0',
+    transform: 'rotate(-45deg)',
+    backgroundColor: `${theme.colors.primary.errorRed}`,
+    overflow: 'hidden',
     zIndex: -1,
+  },
+
+  selectedMarkerIconWrapper: {
+    backgroundColor: `${theme.colors.primary.mainColor}`,
+  },
+
+  markerIcon: {
+    padding: 4,
+    width: 20,
+    height: 20,
+    transform: 'rotate(45deg)',
+    color: 'white',
   },
 
   typeDescription: {
@@ -173,6 +198,10 @@ class LocationDialog extends PureComponent {
     className: PropTypes.string,
     open: PropTypes.bool,
     onClose: PropTypes.func,
+  };
+
+  state = {
+    selectedNearbyPlace: null,
   };
 
   /** TODO: show description for this location */
@@ -196,11 +225,19 @@ class LocationDialog extends PureComponent {
     }
   };
 
+  handleHoverPlaceChip = (place) => {
+    this.setState({ selectedNearbyPlace: place.id });
+  };
+
+  handleLeavePlaceChip = () => {
+    this.setState({ selectedNearbyPlace: null });
+  };
+
   renderNearbyPlaceChip = (Icon, type, place) => {
     const { classes: s, location } = this.props;
 
     return (
-      <span className={s.type}>
+      <span className={s.type} onMouseOver={() => this.handleHoverPlaceChip(place)} onMouseLeave={this.handleLeavePlaceChip}>
         <span className={s.typeIconContainer}>
           <Icon className={clsx(s.icon, 'icon')} />
           <span className={clsx(s.iconName, 'iconName')}>{type}</span>
@@ -222,7 +259,7 @@ class LocationDialog extends PureComponent {
     const { t } = this.props;
 
     return (
-      <React.Fragment>
+      <React.Fragment key={place.id}>
         {place.types.includes('bar') &&
           this.renderNearbyPlaceChip(BarIcon, t('bar'), place)}
         {place.types.includes('bank') &&
@@ -251,6 +288,7 @@ class LocationDialog extends PureComponent {
   /** Render */
   render() {
     const { location, className, classes: s, t } = this.props;
+    const { selectedNearbyPlace } = this.state;
 
     const { fullAddress, placesNearby } = location;
 
@@ -264,23 +302,41 @@ class LocationDialog extends PureComponent {
         coordinates.push({
           ...place.geometry.location,
           iconComponent: place.types.includes('bar') ? (
-            <BarIcon className={s.markerIcon} />
+            <span className={clsx(s.markerIconWrapper, place.id == selectedNearbyPlace && s.selectedMarkerIconWrapper)}>
+              <BarIcon className={s.markerIcon} />
+            </span>
           ) : place.types.includes('bank') ? (
-            <BankIcon className={s.markerIcon} />
+            <span className={clsx(s.markerIconWrapper, place.id == selectedNearbyPlace && s.selectedMarkerIconWrapper)}>
+              <BankIcon className={s.markerIcon} />
+            </span>
           ) : place.types.includes('bicycle_store') ? (
-            <BicycleIcon className={s.markerIcon} />
+            <span className={clsx(s.markerIconWrapper, place.id == selectedNearbyPlace && s.selectedMarkerIconWrapper)}>
+              <BicycleIcon className={s.markerIcon} />
+            </span>
           ) : place.types.includes('bus_station') ? (
-            <BusIcon className={s.markerIcon} />
+            <span className={clsx(s.markerIconWrapper, place.id == selectedNearbyPlace && s.selectedMarkerIconWrapper)}>
+              <BusIcon className={s.markerIcon} />
+            </span>
           ) : place.types.includes('gym') ? (
-            <GymIcon className={s.markerIcon} />
+            <span className={clsx(s.markerIconWrapper, place.id == selectedNearbyPlace && s.selectedMarkerIconWrapper)}>
+              <GymIcon className={s.markerIcon} />
+            </span>
           ) : place.types.includes('train_station') ? (
-            <TrainIcon className={s.markerIcon} />
+            <span className={clsx(s.markerIconWrapper, place.id == selectedNearbyPlace && s.selectedMarkerIconWrapper)}>
+              <TrainIcon className={s.markerIcon} />
+            </span>
           ) : place.types.includes('taxi_stand') ? (
-            <TaxiIcon className={s.markerIcon} />
+            <span className={clsx(s.markerIconWrapper, place.id == selectedNearbyPlace && s.selectedMarkerIconWrapper)}>
+              <TaxiIcon className={s.markerIcon} />
+            </span>
           ) : place.types.includes('subway_station') ? (
-            <SubwayIcon className={s.markerIcon} />
+            <span className={clsx(s.markerIconWrapper, place.id == selectedNearbyPlace && s.selectedMarkerIconWrapper)}>
+              <SubwayIcon className={s.markerIcon} />
+            </span>
           ) : (
-            <ParkingIcon className={s.markerIcon} />
+            <span className={clsx(s.markerIconWrapper, place.id == selectedNearbyPlace && s.selectedMarkerIconWrapper)}>
+              <ParkingIcon className={s.markerIcon} />
+            </span>
           ),
         });
       }
@@ -361,21 +417,6 @@ class LocationDialog extends PureComponent {
                     <Typography fontSizeS>{t('loadMore')}</Typography>
                   </Link>
                 </Column>
-              </Row>
-
-              {/** footer */}
-              <Row fullWidth classes={{ box: s.footer }}>
-                <Stretch />
-                <Button
-                  link="errorRed"
-                  background="secondaryLight"
-                  onClick={this.handleClose}
-                >
-                  <Typography fontSizeS alignChildrenCenter>
-                    <CloseIcon style={{ width: 10, height: 10 }} />
-                    <Typography paddingLeft>{t('close')}</Typography>
-                  </Typography>
-                </Button>
               </Row>
             </Column>
           </Grid>
