@@ -187,7 +187,7 @@ class CallConsultantDialog extends PureComponent {
           <Box textLeft paddingTopHalf paddingLeftHalf>
             <Row>
               <Typography fontSizeS textPrimary>
-                {office.location.fullAddress}
+                {office.location.city && `${office.location.city}, `}{office.location.state && `${office.location.state}, `}{office.location.country}
               </Typography>
             </Row>
           </Box>
@@ -221,7 +221,7 @@ class CallConsultantDialog extends PureComponent {
                   >
                     <Button
                       variant="primary"
-                      onClick={() => this.handleCopy((office.consultant && office.consultant.generalInfo && office.consultant.generalInfo.phoneNumber && office.consultant.generalInfo.phoneNumber.number) ? office.consultant.generalInfo.phoneNumber.number : '')}
+                      onClick={() => this.handleCopy((office.consultant && office.consultant.generalInfo && office.consultant.generalInfo.phoneNumber && office.consultant.generalInfo.phoneNumber.number) ? office.consultant.generalInfo.phoneNumber.number : '+14507529733')}
                       className={s.copyButton}
                       disabled={!(office.consultant && office.consultant.generalInfo && office.consultant.generalInfo.phoneNumber && office.consultant.generalInfo.phoneNumber.number)}
                     >
