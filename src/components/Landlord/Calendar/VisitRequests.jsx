@@ -21,11 +21,13 @@ import {
   EditIcon,
   ConfirmDialog,
   Divider,
+  DeleteConfirmDialog,
 } from "../../../common/base-components";
 import {
   SearchbarWithSorter,
   VisitRequestItem,
 } from "../../../common/base-layouts";
+import VisitRequestAcceptedDialog from "../../Layout/Dialogs/VisitRequestAcceptedDialog";
 
 const OFFICES_PER_PAGE = 6;
 
@@ -63,6 +65,7 @@ class VisitRequests extends PureComponent {
     page: 1,
     totalLength: 0,
     loading: false,
+    dialog: null,
   };
 
   visitRequests = [{
@@ -94,16 +97,49 @@ class VisitRequests extends PureComponent {
 
   /** Goto previous step */
   handleBack = () => {
-    this.props.history.goBack();
+    this.props.navigate("/landlord/calendar");
   };
 
   handleFilterChange = ({ query }) => {
     this.setState({ query: query });
   };
 
-  handleApproveVisitRequest = (visitRequest) => {};
+  handleClickApproveVisitRequest = (visitRequest) => {
+    this.setState({
+      dialog: (
+        <VisitRequestAcceptedDialog
+          onClose={this.handleCloseDialog}
+          onBack={this.handleBack}
+        />
+      )
+    });
+  };
 
-  handleRejectVisitRequest = (visitRequest) => {};
+  handleClickRejectVisitRequest = (visitRequest) => {
+    this.setState({
+      dialog: (
+        <DeleteConfirmDialog
+          text={this.props.t("confirmDelete")}
+          onClose={this.handleCloseDialog}
+          onConfirm={() => this.handleRejectVisitRequest(visitRequest)}
+        />
+      )
+    });
+  };
+
+  handleCloseDialog = () => {
+    this.setState({ dialog: null });
+  };
+
+  handleApproveVisitRequest = (visitRequest) => {
+    /** Handle approve visit request by calling api */
+    console.log(visitRequest);
+  };
+
+  handleRejectVisitRequest = (visitRequest) => {
+    /** Handle reject visit request by calling api */
+    console.log(visitRequest);
+  };
 
   /**
    * Renderer function
@@ -114,7 +150,8 @@ class VisitRequests extends PureComponent {
       // visitRequests,
       query,
       page,
-      totalLength
+      totalLength,
+      dialog,
     } = this.state;
 
     const pageCount = Math.ceil(totalLength / OFFICES_PER_PAGE);
@@ -184,8 +221,8 @@ class VisitRequests extends PureComponent {
                         >
                           <VisitRequestItem
                             visitRequest={visitRequest}
-                            onApprove={this.handleApproveVisitRequest(visitRequest)}
-                            onReject={this.handleRejectVisitRequest(visitRequest)}
+                            onApprove={() => this.handleClickApproveVisitRequest(visitRequest)}
+                            onReject={() => this.handleClickRejectVisitRequest(visitRequest)}
                             fullWidth
                             horizontal={!isWidthDown("xs", width)}
                           />
@@ -215,6 +252,9 @@ class VisitRequests extends PureComponent {
             </Grid>
           </Grid>
         </div>
+
+        {/** Show dialog */}
+        {dialog}
       </Column>
     );
   }

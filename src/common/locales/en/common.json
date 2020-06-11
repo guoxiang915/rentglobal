@@ -575,5 +575,9 @@
   "allVisitRequests": "All visit requests",
   "searchOnRequests": "Search on requests",
   "officeAvailabilities": "Office availabilities",
-  "cancelEdit": "Cancel edit"
+  "cancelEdit": "Cancel edit",
+  "request": "Request",
+  "visitRequestAcceptedTitle": "The request has been successfully accepted.",
+  "visitRequestAcceptedSubtitle": "The new visit request has been placed on your calendar and the company has been notified.",
+  "backToRequests": "Back to requests"
 }

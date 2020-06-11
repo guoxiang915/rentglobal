@@ -377,10 +377,10 @@ const VisitRequestItem = React.memo(
                 box: s.actionButtonsWrapper
               }}
             >
-              <IconButton classes={{ root: clsx(s.actionButton) }} variant="red">
+              <IconButton classes={{ root: clsx(s.actionButton) }} variant="red" onClick={onReject}>
                 <CloseIcon className={s.actionButtonIcon} />
               </IconButton>
-              <IconButton classes={{ root: clsx(s.actionButton) }} variant="green">
+              <IconButton classes={{ root: clsx(s.actionButton) }} variant="green" onClick={onApprove}>
                 <CheckIcon className={s.actionButtonIcon} />
               </IconButton>
             </Row>
