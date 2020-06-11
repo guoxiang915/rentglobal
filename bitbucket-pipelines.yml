@@ -9,10 +9,10 @@ pipelines:
   branches:
     develop:
       - parallel:
-          - step:
-              name: Build react project
-              caches:
-                - node
+          # - step:
+              # name: Build react project
+              # caches:
+                # - node
               # script: # Modify the commands below to build your repository.
                 # - yarn install
                 # - npm test
