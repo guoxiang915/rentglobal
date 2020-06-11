@@ -29,6 +29,36 @@ const styleSheet = theme => {
       ...theme.fonts.weight.fontWeightMedium
     },
 
+    red: {
+      border: `1px solid ${theme.colors.primary.errorRed}`,
+      background: theme.colors.primary.errorRed,
+      color: theme.colors.primary.white,
+      boxShadow: `0px 6px 12px ${theme.colors.primary.errorRed}`,
+      "&:hover": {
+        border: `1px solid ${theme.colors.primary.errorRed}`,
+        color: theme.colors.primary.errorRed,
+        background: theme.colors.primary.errorRed,
+        color: theme.colors.primary.white,
+      },
+      ...theme.fonts.size.fontSizeS,
+      ...theme.fonts.weight.fontWeightMedium,
+    },
+
+    green: {
+      border: `1px solid ${theme.colors.primary.mainColor}`,
+      background: theme.colors.primary.mainColor,
+      color: theme.colors.primary.white,
+      boxShadow: `0px 6px 12px ${theme.colors.primary.mainColor}`,
+      "&:hover": {
+        border: `1px solid ${theme.colors.primary.mainColor}`,
+        color: theme.colors.primary.mainColor,
+        background: theme.colors.primary.mainColor,
+        color: theme.colors.primary.white,
+      },
+      ...theme.fonts.size.fontSizeS,
+      ...theme.fonts.weight.fontWeightMedium,
+    },
+
     secondary: {
       border: `1px solid ${theme.colors.primary.mainColor}`,
       background: "white",

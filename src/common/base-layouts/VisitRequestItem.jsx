@@ -121,12 +121,34 @@ const styleSheet = theme => ({
 
   actionsWrapper: {
     height: 175,
+    width: "100%",
+    position: "relative",
   },
 
   dateWrapper: {
     backgroundColor: theme.colors.primary.borderGrey,
     width: "100%",
     height: 158,
+  },
+
+  actionButtonsWrapper: {
+    position: "absolute",
+    bottom: 0,
+  },
+
+  actionButton: {
+    width: 34,
+    height: 34,
+    marginRight: 14,
+
+    '&:last-of-type': {
+      marginRight: 0,
+    },
+  },
+
+  actionButtonIcon: {
+    width: 12,
+    height: 12,
   },
 });
 
@@ -327,7 +349,7 @@ const VisitRequestItem = React.memo(
           }}
           style={{ width: horizontal ? 235 : "100%" }}
         >
-          <Column>
+          <Column fullWidth>
             <Row
               classes={{
                 box: s.dateWrapper
@@ -355,11 +377,11 @@ const VisitRequestItem = React.memo(
                 box: s.actionButtonsWrapper
               }}
             >
-              <IconButton>
-                <CloseIcon />
+              <IconButton classes={{ root: clsx(s.actionButton) }} variant="red">
+                <CloseIcon className={s.actionButtonIcon} />
               </IconButton>
-              <IconButton>
-                <CheckIcon />
+              <IconButton classes={{ root: clsx(s.actionButton) }} variant="green">
+                <CheckIcon className={s.actionButtonIcon} />
               </IconButton>
             </Row>
           </Column>
