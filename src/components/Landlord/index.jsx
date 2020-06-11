@@ -35,6 +35,7 @@ import {
 import Profile from "../../containers/Layout/Profile";
 import Dashboard from "../../containers/Landlord/Dashboard";
 import Calendar from "./Calendar";
+import CalendarVisitRequests from "./Calendar/VisitRequests";
 import Office from "./Office";
 import OfficeDetail from "./Office/OfficeDetail";
 import AddNewOffice from "../../containers/Landlord/Office/AddNewOffice";
@@ -275,6 +276,15 @@ class Landlord extends PureComponent {
                   exact
                   path="/landlord/calendar"
                   render={() => <Calendar navigate={this.props.navigate} />}
+                />
+                <Route
+                  exact
+                  path="/landlord/calendar/visit-requests"
+                  render={() => (
+                    <CalendarVisitRequests
+                      navigate={this.props.navigate}
+                    />
+                  )}
                 />
                 <Route
                   path="/landlord/profile"
