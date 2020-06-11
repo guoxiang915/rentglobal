@@ -11,3 +11,4 @@ export { default as LandlordDialog } from "./LandlordDialog";
 export { default as AddTimeDialog } from "./AddTimeDialog";
 export { default as AddEventDialog } from "./AddEventDialog";
 export { default as ImportCalendarSettingDialog } from "./ImportCalendarSettingDialog";
+export { default as OfficeAvailabilityDialog } from "./OfficeAvailabilityDialog";

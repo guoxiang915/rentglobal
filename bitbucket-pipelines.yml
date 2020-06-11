@@ -15,7 +15,7 @@ pipelines:
                 # - node
               # script: # Modify the commands below to build your repository.
                 # - yarn install
-                ## - npm test
+                # - npm test
                 ## - npm run build
                 ## - tar czfv application.tgz build/
               ## artifacts:

@@ -31,6 +31,7 @@ import {
   OfficeReport
 } from "../../../common/base-layouts";
 import { ShareOfficeDialog } from "../../Layout/Dialogs";
+import { OfficeAvailabilityDialog } from "../../Layout/Dialogs";
 
 const styleSheet = theme => ({
   root: {
@@ -211,7 +212,22 @@ class OfficeDetail extends PureComponent {
   };
 
   /** Check visit availabilites */
-  handleCheckVisit = () => {};
+  handleCheckVisit = () => {
+    console.log(this.state.office);
+    this.setState({
+      dialog: (
+        <OfficeAvailabilityDialog
+          visitHours={this.state.office.visitHours}
+          onClose={this.handleCloseDialog}
+          onSave={this.handleUpdateVisitHours}
+        />
+      )
+    });
+  };
+
+  handleUpdateVisitHours = visitHours => {
+    console.log(visitHours);
+  };
 
   /** Close dialog */
   handleCloseDialog = () => {
