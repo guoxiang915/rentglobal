@@ -5,21 +5,14 @@ import PropTypes from "prop-types";
 import withWidth, { isWidthDown } from "@material-ui/core/withWidth";
 import { withRouter } from "react-router-dom";
 import { KeyboardBackspace } from "@material-ui/icons";
-import { Tabs, Tab, Grid } from "@material-ui/core";
+import { Grid } from "@material-ui/core";
 import { Pagination } from "@material-ui/lab";
 import {
   Row,
   Column,
   Stretch,
-  Box,
   Typography,
   Button,
-  CheckIcon,
-  CloseIcon,
-  EyeIcon,
-  DeleteIcon,
-  EditIcon,
-  ConfirmDialog,
   Divider,
   DeleteConfirmDialog,
 } from "../../../common/base-components";
@@ -31,32 +24,32 @@ import VisitRequestAcceptedDialog from "../../Layout/Dialogs/VisitRequestAccepte
 
 const OFFICES_PER_PAGE = 6;
 
-const styleSheet = theme => ({
+const styleSheet = (theme) => ({
   root: {
     paddingLeft: theme.spacing(5),
     paddingRight: theme.spacing(5),
     [theme.breakpoints.down("sm")]: {
       paddingLeft: 27,
-      paddingRight: 27
+      paddingRight: 27,
     },
   },
 
   visitRequests: {
-    width: "100%"
+    width: "100%",
   },
 
   pagination: {
     marginTop: 20,
     marginBottom: 60,
-    color: theme.colors.primary.grey
-  }
+    color: theme.colors.primary.grey,
+  },
 });
 
 class VisitRequests extends PureComponent {
   static propTypes = {
     navigate: PropTypes.func,
     classes: PropTypes.object,
-    t: PropTypes.func
+    t: PropTypes.func,
   };
 
   state = {
@@ -68,30 +61,35 @@ class VisitRequests extends PureComponent {
     dialog: null,
   };
 
-  visitRequests = [{
-    title: "Title",
-    shortDescription: "Short Description",
-    officeType: "privateOffice",
-    priceMonthly: 2000,
-    rating: 3.5,
-    refId: 0,
-    coverPhotos: [{
-      desktop: {
-        bucketPath: "https://rentglobal.s3.us-east-2.amazonaws.com/2020/3/22878a03e36d233e2a/blob",
+  visitRequests = [
+    {
+      title: "Title",
+      shortDescription: "Short Description",
+      officeType: "privateOffice",
+      priceMonthly: 2000,
+      rating: 3.5,
+      refId: 0,
+      coverPhotos: [
+        {
+          desktop: {
+            bucketPath:
+              "https://rentglobal.s3.us-east-2.amazonaws.com/2020/3/22878a03e36d233e2a/blob",
+          },
+        },
+      ],
+      visitRequest: {
+        start: new Date().setMonth(1),
+        end: new Date().setMonth(2),
       },
-    }],
-    visitRequest: {
-      start: (new Date()).setMonth(1),
-      end: (new Date()).setMonth(2)
-    }
-  }];
+    },
+  ];
 
   /**
    * Navigate page
    * @member
    * @param {string} path Path to navigate
    */
-  navigate = path => () => {
+  navigate = (path) => () => {
     this.props.navigate(path);
   };
 
@@ -111,7 +109,7 @@ class VisitRequests extends PureComponent {
           onClose={this.handleCloseDialog}
           onBack={this.handleBack}
         />
-      )
+      ),
     });
   };
 
@@ -123,7 +121,7 @@ class VisitRequests extends PureComponent {
           onClose={this.handleCloseDialog}
           onConfirm={() => this.handleRejectVisitRequest(visitRequest)}
         />
-      )
+      ),
     });
   };
 
@@ -171,8 +169,8 @@ class VisitRequests extends PureComponent {
           </Typography>
           <Stretch />
           <Button
-            link="secondary"
-            background="secondaryLight"
+            link='secondary'
+            background='secondaryLight'
             onClick={this.handleBack}
           >
             <KeyboardBackspace />
@@ -200,14 +198,14 @@ class VisitRequests extends PureComponent {
               className={s.visitRequests}
               style={{
                 marginBottom: 40,
-                height: "auto"
+                height: "auto",
               }}
             >
               <Grid
                 container
-                direction="row"
+                direction='row'
                 spacing={2}
-                wrap="wrap"
+                wrap='wrap'
                 className={s.visitRequests}
               >
                 <Grid item xs={12}>
@@ -221,8 +219,12 @@ class VisitRequests extends PureComponent {
                         >
                           <VisitRequestItem
                             visitRequest={visitRequest}
-                            onApprove={() => this.handleClickApproveVisitRequest(visitRequest)}
-                            onReject={() => this.handleClickRejectVisitRequest(visitRequest)}
+                            onApprove={() =>
+                              this.handleClickApproveVisitRequest(visitRequest)
+                            }
+                            onReject={() =>
+                              this.handleClickRejectVisitRequest(visitRequest)
+                            }
                             fullWidth
                             horizontal={!isWidthDown("xs", width)}
                           />
@@ -243,7 +245,7 @@ class VisitRequests extends PureComponent {
               <Column>
                 <Pagination
                   count={pageCount}
-                  shape="rounded"
+                  shape='rounded'
                   classes={{ root: s.pagination }}
                   onChange={this.handleChangePage}
                   page={page}
@@ -260,6 +262,6 @@ class VisitRequests extends PureComponent {
   }
 }
 
-export default withRouter(withWidth()(
-  withStyles(styleSheet)(withTranslation("common")(VisitRequests))
-));
+export default withRouter(
+  withWidth()(withStyles(styleSheet)(withTranslation("common")(VisitRequests)))
+);

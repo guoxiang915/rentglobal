@@ -523,6 +523,7 @@
   "approve": "Approve",
   "approved": "Approved",
   "unapproved": "Unapproved",
+  "rejected": "Rejected",
   "latest": "Latest",
   "searchOnCalendar": "Search on calendar",
   "addEvent": "Add event",
@@ -579,5 +580,9 @@
   "request": "Request",
   "visitRequestAcceptedTitle": "The request has been successfully accepted.",
   "visitRequestAcceptedSubtitle": "The new visit request has been placed on your calendar and the company has been notified.",
-  "backToRequests": "Back to requests"
+  "backToRequests": "Back to requests",
+  "underReview": "Under review",
+  "writeFeedbackForCompany": "Write a feedback for the company",
+  "giveCompanyRate": "Give the company rate",
+  "send": "Send"
 }

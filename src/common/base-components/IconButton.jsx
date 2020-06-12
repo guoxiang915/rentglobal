@@ -36,7 +36,7 @@ const styleSheet = theme => {
       boxShadow: `0px 6px 12px ${theme.colors.primary.errorRed}`,
       "&:hover": {
         border: `1px solid ${theme.colors.primary.errorRed}`,
-        color: theme.colors.primary.errorRed,
+        // color: theme.colors.primary.errorRed,
         background: theme.colors.primary.errorRed,
         color: theme.colors.primary.white,
       },
@@ -51,7 +51,7 @@ const styleSheet = theme => {
       boxShadow: `0px 6px 12px ${theme.colors.primary.mainColor}`,
       "&:hover": {
         border: `1px solid ${theme.colors.primary.mainColor}`,
-        color: theme.colors.primary.mainColor,
+        // color: theme.colors.primary.mainColor,
         background: theme.colors.primary.mainColor,
         color: theme.colors.primary.white,
       },
