@@ -585,5 +585,6 @@
   "writeFeedbackForCompany": "Write a feedback for the company",
   "giveCompanyRate": "Give the company rate",
   "send": "Send",
-  "companySize": "Company size"
+  "companySize": "Company size",
+  "shortDescription": "Short description"
 }
