@@ -6,11 +6,15 @@ $mbsc-windows-frame-background: #ffffff;
 // @import "~@mobiscroll/react/dist/css/mobiscroll.react.scss";
 
 .mbsc-windows .mbsc-fr-w {
-    background: white;
+  background: white;
+}
+
+.mbsc-windows .mbsc-cal-c {
+  padding: 0;
 }
 
 .mbsc-cal-month {
-    color: #525252;
+  color: #525252;
 }
 
 // .mbsc-ev-cal.mbsc-fr-md .mbsc-cal-hdr {
@@ -20,58 +24,65 @@ $mbsc-windows-frame-background: #ffffff;
 // }
 
 .mbsc-cal-days-c .mbsc-cal-days {
-    margin-bottom: 28px;
+  margin-bottom: 28px;
 }
 
 .mbsc-cal-days-c .mbsc-cal-days > div {
-    color: #e8e8e8;
-    // background: #e8e8e8;
-    // padding: 22px 0px 26px;
-    // border-right: 1px solid white;
-    // cursor: pointer;
-    // // &:last-of-type: {
-    // //   border-right: none
-    // // }
+  //   color: #e8e8e8;
+  background: #e8e8e8;
+  color: #525252;
+  font-weight: bold;
+  font-size: 9px;
+  line-height: 13px;
+  padding: 11px 0px 13px;
+  border-right: 1px solid white;
+  cursor: pointer;
+  // &:last-of-type: {
+  //   border-right: none
+  // }
 }
 
 .mbsc-windows .mbsc-cal-day-diff .mbsc-cal-day-i {
-    background: transparent;
+  background: transparent;
 }
 
 .mbsc-windows .mbsc-cal-today .mbsc-cal-day-date {
-    color: white;
+  color: white;
 }
 
-.mbsc-windows .mbsc-cal .mbsc-cal-day.mbsc-selected:not(.mbsc-disabled) .mbsc-cal-cell-i.mbsc-cal-day-i {
-    background: #d7df23;
-    border-radius: 4px;
+.mbsc-windows
+  .mbsc-cal
+  .mbsc-cal-day.mbsc-selected:not(.mbsc-disabled)
+  .mbsc-cal-cell-i.mbsc-cal-day-i {
+  background: #d7df23;
+  border-radius: 4px;
 }
 
 .mbsc-cal-cell-i .mbsc-cal-day-i {
-    position: relative;
+  position: relative;
 }
 
 .mbsc-cal-cell-i .mbsc-cal-day-i .mbsc-cal-day-markup {
 }
 
 .mbsc-windows .mbsc-cal-marks {
-    position: absolute;
-    height: 30px;
-    top: calc(50% - 15px);
-    bottom: calc(50% + 15px);
-    margin-top: 0;
-    right: 4px;
-    left: auto;
-    display: flex;
-    flex-direction: column-reverse;
-    flex-wrap: wrap;
-    direction: rtl;
-    overflow: visible;
+  position: absolute;
+  height: 30px;
+  top: calc(50% - 15px);
+  bottom: calc(50% + 15px);
+  margin-top: 0;
+  right: 4px;
+  left: auto;
+  display: flex;
+  flex-direction: column-reverse;
+  flex-wrap: wrap;
+  direction: rtl;
+  overflow: visible;
 }
 
 .mbsc-windows .mbsc-cal-marks .mbsc-cal-mark {
-    width: 6px;
-    height: 6px;
-    margin-top: 2px;
-    margin-bottom: 2px;
+  width: 6px;
+  height: 6px;
+  margin-top: 2px;
+  margin-bottom: 2px;
 }
