@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { LinearProgress, withStyles } from "@material-ui/core";
+import { withStyles } from "@material-ui/core";
 import { withTranslation } from "react-i18next";
 import clsx from "clsx";
 import { KeyboardArrowLeft, KeyboardArrowRight } from "@material-ui/icons";
@@ -11,8 +11,6 @@ import {
   Box,
   StarIcon,
   ImageIcon,
-  FavoriteFilledIcon,
-  FavoriteIcon,
   Stretch,
   IconButton,
   CheckIcon,
@@ -20,14 +18,14 @@ import {
 } from "../base-components";
 import { numberWithSpaces } from "../../utils/formatters";
 
-const styleSheet = theme => ({
+const styleSheet = (theme) => ({
   visitRequestWrapper: {
-    width: 235
+    width: 235,
     // marginRight: 20,
   },
 
   fullWidth: {
-    width: "100%"
+    width: "100%",
   },
 
   visitRequestCarousel: {
@@ -36,7 +34,7 @@ const styleSheet = theme => ({
     borderRadius: 8,
     border: `1px solid ${theme.colors.primary.borderGrey}`,
     position: "relative",
-    overflow: "hidden"
+    overflow: "hidden",
   },
 
   hoverWrapper: {
@@ -57,7 +55,7 @@ const styleSheet = theme => ({
       top: 0,
       left: 0,
       opacity: 0.3,
-      zIndex: 1
+      zIndex: 1,
     },
     "&::after": {
       content: '" "',
@@ -68,23 +66,23 @@ const styleSheet = theme => ({
       bottom: 0,
       right: 0,
       opacity: 0.3,
-      zIndex: 1
+      zIndex: 1,
     },
     "&:hover": {
-      opacity: 1
-    }
+      opacity: 1,
+    },
   },
 
   officeImage: {
     width: "100%",
-    height: 175
+    height: 175,
   },
 
   officeEmptyImage: {
     background: theme.colors.primary.whiteGrey,
     color: theme.colors.primary.borderGrey,
     width: "100%",
-    height: 175
+    height: 175,
   },
 
   carouselArrow: {
@@ -99,8 +97,8 @@ const styleSheet = theme => ({
     opacity: 0.15,
     cursor: "pointer",
     "&:hover": {
-      opacity: 1
-    }
+      opacity: 1,
+    },
   },
 
   dots: {
@@ -108,7 +106,7 @@ const styleSheet = theme => ({
     left: 0,
     bottom: 25,
     width: "100%",
-    zIndex: 1
+    zIndex: 1,
   },
 
   dot: {
@@ -116,7 +114,7 @@ const styleSheet = theme => ({
     background: theme.colors.primary.white,
     width: 7,
     height: 7,
-    margin: -4
+    margin: -4,
   },
 
   actionsWrapper: {
@@ -141,7 +139,7 @@ const styleSheet = theme => ({
     height: 34,
     marginRight: 14,
 
-    '&:last-of-type': {
+    "&:last-of-type": {
       marginRight: 0,
     },
   },
@@ -178,12 +176,12 @@ const VisitRequestItem = React.memo(
   }) => {
     const [pos, setPos] = useState(0);
 
-    const prevImage = e => {
+    const prevImage = (e) => {
       e.stopPropagation();
       setPos(pos === 0 ? visitRequest.coverPhotos.length - 1 : pos - 1);
     };
 
-    const nextImage = e => {
+    const nextImage = (e) => {
       e.stopPropagation();
       setPos(pos === visitRequest.coverPhotos.length - 1 ? 0 : pos + 1);
     };
@@ -192,17 +190,17 @@ const VisitRequestItem = React.memo(
     const dots = React.useMemo(() => {
       return visitRequest.coverPhotos
         ? visitRequest.coverPhotos.map((content, key) => (
-          <React.Fragment key={key}>
-            <Dot classes={s} />
-          </React.Fragment>
-        ))
+            <React.Fragment key={key}>
+              <Dot classes={s} />
+            </React.Fragment>
+          ))
         : [];
     }, [visitRequest, s]);
 
     return (
       <Box
         classes={{
-          box: clsx(s.visitRequestWrapper, className, fullWidth && s.fullWidth)
+          box: clsx(s.visitRequestWrapper, className, fullWidth && s.fullWidth),
         }}
         alignChildrenStart
         row={!!horizontal}
@@ -210,7 +208,7 @@ const VisitRequestItem = React.memo(
       >
         <Box
           classes={{
-            box: clsx(s.visitRequestCarousel)
+            box: clsx(s.visitRequestCarousel),
           }}
           style={{ width: horizontal ? 235 : "100%" }}
         >
@@ -270,7 +268,7 @@ const VisitRequestItem = React.memo(
                             ? photo.mobile.bucketPath
                             : photo.bucketPath
                         }
-                        alt=""
+                        alt=''
                         className={s.officeImage}
                       />
                     ) : (
@@ -317,8 +315,7 @@ const VisitRequestItem = React.memo(
           </Row>
 
           {/** show visit request ratings */}
-          {
-            visitRequest.rating &&
+          {visitRequest.rating && (
             <Row paddingTopHalf>
               <Typography textPrimary>
                 <StarIcon style={{ width: 12, height: 12 }} />
@@ -327,7 +324,7 @@ const VisitRequestItem = React.memo(
                 {visitRequest.rating}
               </Typography>
             </Row>
-          }
+          )}
 
           {/** show visit request ref id */}
           <Row paddingTopHalf>
@@ -345,14 +342,14 @@ const VisitRequestItem = React.memo(
 
         <Box
           classes={{
-            box: s.actionsWrapper
+            box: s.actionsWrapper,
           }}
           style={{ width: horizontal ? 235 : "100%" }}
         >
           <Column fullWidth>
             <Row
               classes={{
-                box: s.dateWrapper
+                box: s.dateWrapper,
               }}
             >
               <Column
@@ -362,25 +359,39 @@ const VisitRequestItem = React.memo(
                 fullWidth
               >
                 <Row>
-                  <Typography fontSizeM textBlackGrey fontWeightBold>Wednesday</Typography>
+                  <Typography fontSizeM textBlackGrey fontWeightBold>
+                    Wednesday
+                  </Typography>
                 </Row>
                 <Row>
-                  <Typography fontSizeXS textGrey>2020-01-24</Typography>
+                  <Typography fontSizeXS textGrey>
+                    2020-01-24
+                  </Typography>
                 </Row>
                 <Row>
-                  <Typography fontSizeS textBlackGrey>09:30 AM - 10:00 AM</Typography>
+                  <Typography fontSizeS textBlackGrey>
+                    09:30 AM - 10:00 AM
+                  </Typography>
                 </Row>
               </Column>
             </Row>
             <Row
               classes={{
-                box: s.actionButtonsWrapper
+                box: s.actionButtonsWrapper,
               }}
             >
-              <IconButton classes={{ root: clsx(s.actionButton) }} variant="red" onClick={onReject}>
+              <IconButton
+                classes={{ root: clsx(s.actionButton) }}
+                variant='red'
+                onClick={onReject}
+              >
                 <CloseIcon className={s.actionButtonIcon} />
               </IconButton>
-              <IconButton classes={{ root: clsx(s.actionButton) }} variant="green" onClick={onApprove}>
+              <IconButton
+                classes={{ root: clsx(s.actionButton) }}
+                variant='green'
+                onClick={onApprove}
+              >
                 <CheckIcon className={s.actionButtonIcon} />
               </IconButton>
             </Row>

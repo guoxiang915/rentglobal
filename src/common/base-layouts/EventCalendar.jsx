@@ -14,27 +14,26 @@ import "./EventCalendar.scss";
 import CalendarWeekForm from "../../components/Layout/CalendarWeekForm";
 import { weekdays } from "../../utils/constants";
 
-const styleSheet = theme => ({
+const styleSheet = (theme) => ({
   root: {},
 
   calendarPanel: {
     background: theme.colors.primary.white,
-    borderRadius: 8
+    borderRadius: 8,
   },
 
   calendarWrapper: {
-    marginTop: 40,
-    marginBottom: 40,
-    maxWidth: 500
+    zoom: 2,
+    marginBottom: 20,
   },
 
   weekCalendarWrapper: {
-    marginBottom: 40
+    marginBottom: 40,
   },
 
   visit: {
-    color: "#41AFFF"
-  }
+    color: "#41AFFF",
+  },
 });
 
 class EventCalendar extends React.Component {
@@ -47,10 +46,10 @@ class EventCalendar extends React.Component {
     onSelectEvent: PropTypes.func,
     classes: PropTypes.object,
     t: PropTypes.func,
-    width: PropTypes.string
+    width: PropTypes.string,
   };
 
-  handleSelectDay = e => {
+  handleSelectDay = (e) => {
     if (this.props.onSelectDay) {
       this.props.onSelectDay(e.date);
     }
@@ -72,7 +71,7 @@ class EventCalendar extends React.Component {
     }
   };
 
-  handleSelectWeekday = weekday => {
+  handleSelectWeekday = (weekday) => {
     if (this.props.onSelectDay) {
       const date = getFirstDayOfWeek(this.props.selectedDay);
       date.setDate(date.getDate() + weekdays.indexOf(weekday));
@@ -80,7 +79,7 @@ class EventCalendar extends React.Component {
     }
   };
 
-  handleSelectEvent = event => {
+  handleSelectEvent = (event) => {
     if (this.props.onSelectEvent) {
       this.props.onSelectEvent(event);
     }
@@ -92,13 +91,13 @@ class EventCalendar extends React.Component {
       selectedDay,
       selectedEvent,
       viewMode,
-      events
+      events,
     } = this.props;
 
-    const formattedEvents = events.map(e => {
+    const formattedEvents = events.map((e) => {
       return {
         d: new Date(e.date),
-        color: e.type === "visit" ? "#41AFFF" : "#525252"
+        color: e.type === "visit" ? "#41AFFF" : "#525252",
       };
     });
     const startWeekday = getFirstDayOfWeek(selectedDay);
@@ -107,11 +106,11 @@ class EventCalendar extends React.Component {
     const formattedVisithours = {};
     events
       .filter(
-        e =>
+        (e) =>
           new Date(e.date).getTime() >= startWeekday.getTime() &&
           new Date(e.date).getTime() < endWeekday.getTime()
       )
-      .forEach(e => {
+      .forEach((e) => {
         const v =
           formattedVisithours[weekdays[new Date(e.date).getDay()]] || [];
         v.push({ date: e.date, start: e.start, end: e.end, type: e.type });
@@ -122,12 +121,12 @@ class EventCalendar extends React.Component {
       return (
         <Row fullWidth classes={{ box: s.calendarWrapper }}>
           <mobiscroll.Eventcalendar
-            display="inline"
+            display='inline'
             marked={formattedEvents}
             onSetDate={this.handleSelectDay}
             view={{ calendar: { type: viewMode } }}
-            theme="windows"
-            themeVariant="light"
+            theme='windows'
+            themeVariant='light'
           />
         </Row>
       );
