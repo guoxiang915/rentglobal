@@ -253,7 +253,7 @@ const styleSheet = (theme) => {
       width: 30,
       height: 24,
     },
-  }
+  };
 };
 
 class Profile extends PureComponent {
@@ -1204,7 +1204,7 @@ class Profile extends PureComponent {
                       />
                     </Row>
                     {userRole === 'company' && (
-                      <>
+                      <React.Fragment>
                         <Row paddingTopHalf>
                           <Grid container className={s.profileInput}>
                             <Grid item xs={6}>
@@ -1251,7 +1251,7 @@ class Profile extends PureComponent {
                             </Grid>
                           </Grid>
                         </Row>
-                      </>
+                      </React.Fragment>
                     )}
                     {(editTab === 'generalInfo' ||
                       updatingTab === 'profile') && (

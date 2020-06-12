@@ -23,7 +23,7 @@ const styleSheet = () => ({
 });
 
 const NumberField = React.forwardRef(
-  ({ value, onChange, classes, className, readOnly, ...props }, ref) => {
+  ({ value, onChange, classes, className, ...props }, ref) => {
     const inputRef = React.useRef();
     const innerRef = useCombinedRefs(ref, inputRef);
 
