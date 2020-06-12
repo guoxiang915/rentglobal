@@ -171,16 +171,6 @@ class OfficeGeneralInfo extends PureComponent {
             )}
           >
             <Row classes={{ box: s.infoRow }}>
-              <Column classes={{ box: s.infoLabel }}>
-                {t("businessOtherFees")}
-              </Column>
-              <Column classes={{ box: s.infoValue }}>
-                {t("dollarPerMonth", {
-                  dollar: office.businessOtherFees || 0
-                })}
-              </Column>
-            </Row>
-            <Row classes={{ box: s.infoRow }}>
               <Column classes={{ box: s.infoLabel }}>{t("area")}</Column>
               <Column classes={{ box: s.infoValue }}>
                 {`${office.area || 0} mxm`}
