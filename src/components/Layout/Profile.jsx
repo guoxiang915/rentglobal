@@ -22,6 +22,7 @@ import {
   Tooltip,
   TooltipContent,
   GooglePlaceField,
+  NumberField,
   ConfirmDialog,
   CarouselWrapper,
   EmailIcon,
@@ -107,6 +108,10 @@ const styleSheet = (theme) => ({
 
   profileTabWrapper: {
     paddingTop: theme.spacing(4),
+  },
+
+  gridRowValues: {
+    flex: 1,
   },
 
   buttonIcon: {
@@ -252,6 +257,8 @@ class Profile extends PureComponent {
     phoneNumberVerified: false,
     address: {},
     postalCode: '',
+    companySize: 0,
+    shortDescription: '',
     legalStatusDocuments: [],
     checkSpecimen: [],
     leases: [],
@@ -745,6 +752,7 @@ class Profile extends PureComponent {
       phoneNumberError,
       phoneCode,
       phoneTooltip,
+      companySize,
     } = this.state;
     const { email } = user;
 
@@ -772,6 +780,8 @@ class Profile extends PureComponent {
         </Typography>
       </Button>
     ) : null;
+
+    const NormalFormField = this.renderFormField;
 
     return (
       <Column
@@ -1145,6 +1155,31 @@ class Profile extends PureComponent {
                         readOnly={editTab !== 'generalInfo'}
                       />
                     </Row>
+                    {userRole === 'company' && (
+                      <Row paddingTopHalf>
+                        <Grid container className={s.profileInput}>
+                          <Grid item xs={6}>
+                            <Typography
+                              fullHeight
+                              paddingTopHalf
+                              paddingBottomHalf
+                              alignChildrenCenter
+                              classes={{ box: s.gridRowHeader }}
+                            >
+                              {t("companySize")}
+                            </Typography>
+                          </Grid>
+                          <Grid item className={s.gridRowValues}>
+                            <NumberField
+                              field="companySize"
+                              value={companySize}
+                              onChange={this.handleStateChangeByInput('companySize')}
+                              fullWidth
+                            />
+                          </Grid>
+                        </Grid>
+                      </Row>
+                    )}
                     {(editTab === 'generalInfo' ||
                       updatingTab === 'profile') && (
                       // buttons for save
