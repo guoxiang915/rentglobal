@@ -15,12 +15,17 @@ import {
   FacebookShareButton,
   LinkedinShareButton,
 } from "react-share";
+import copyToClipboard from "clipboard-copy";
 import {
   Button,
   Typography,
   Row,
   Box,
   Stretch,
+  Column,
+  TextField,
+  Tooltip,
+  TooltipContent,
 } from "../../../common/base-components";
 import { OfficeItem } from "../../../common/base-layouts";
 import {
@@ -30,7 +35,9 @@ import {
   LinkedinBorderIcon,
   ShareIcon,
   GoogleIcon,
-  YahooIcon
+  YahooIcon,
+  LinkIcon,
+  CopyIcon,
 } from "../../../common/base-components/Icons";
 
 const styleSheet = (theme) => ({
@@ -85,6 +92,25 @@ const styleSheet = (theme) => ({
     }
   },
 
+  linkInput: {
+    fontSize: 15,
+    color: theme.colors.primary.grey,
+  },
+
+  copyButton: {
+    borderRadius: 20,
+    border: `1px solid ${theme.colors.primary.mainColor}`,
+    color: theme.colors.primary.white,
+    background: theme.colors.primary.mainColor,
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
+    width: 60,
+    height: 40,
+    marginRight: -8,
+    cursor: 'pointer',
+  },
+
   footer: {
     width: "100%",
     padding: "32px 40px 37px",
@@ -106,6 +132,10 @@ class ShareOfficeDialog extends PureComponent {
     onClose: PropTypes.func,
   };
 
+  state = {
+    isCopied: false,
+  };
+
   /**
    * Event handler for closing dialog
    * @description Call props.onClose() to close dialog
@@ -119,9 +149,21 @@ class ShareOfficeDialog extends PureComponent {
   /** Share office via social */
   handleShareSocial = () => () => {};
 
+  /** Copy link */
+  handleCopy = (text) => {
+    copyToClipboard(text);
+
+    this.setState({ isCopied: true });
+
+    setTimeout(() => {
+      this.setState({ isCopied: false });
+    }, 2000);
+  }
+
   /** Render function */
   render() {
     const { title, office, className, width, classes: s, t } = this.props;
+    const { isCopied } = this.state;
 
     return (
       <Dialog
@@ -163,61 +205,101 @@ class ShareOfficeDialog extends PureComponent {
 
         {/** dialog footer */}
         <DialogActions className={s.footer}>
-          <Row fullWidth justifyChildrenCenter>
-            <TwitterShareButton
-              url={window.location.href}
-            >
-              <span className={s.socialButton}>
-                <TwitterBorderIcon style={{ width: 17, height: 14 }} />
-              </span>
-            </TwitterShareButton>
-            <Box paddingLeftHalf />
-            <FacebookShareButton
-              url={window.location.href}
-            >
-              <span className={s.socialButton}>
-                <FacebookBorderIcon style={{ width: 10, height: 17 }} />
-              </span>
-            </FacebookShareButton>
-            <Box paddingLeftHalf />
-            <LinkedinShareButton
-              url={window.location.href}
-            >
-              <span className={s.socialButton}>
-                <LinkedinBorderIcon style={{ width: 15, height: 17 }} />
-              </span>
-            </LinkedinShareButton>
-            <Box paddingLeftHalf />
-            <a
-              variant='icon'
-              className={s.socialButton}
-              href={`https://mail.google.com/mail/?view=cm&su=RentGlobal Office Share&body=${window.location.href}`}
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              <GoogleIcon style={{ width: 15, height: 15 }} />
-            </a>
-            <Box paddingLeftHalf />
-            <a
-              variant='icon'
-              className={s.socialButton}
-              href={`http://compose.mail.yahoo.com/?subj=RentGlobal Office Share&body=${window.location.href}`}
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              <YahooIcon style={{ width: 17, height: 17 }} />
-            </a>
-            <Box paddingLeftHalf />
-            <a
-              variant='icon'
-              href={`mailto:?subject=RentGlobal Office Share&body=${window.location.href}`}
-              className={s.socialButton}
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              <ShareIcon style={{ width: 19, height: 16 }} />
-            </a>
-          </Row>
+          <Column fullWidth>
+            <Row fullWidth>
+              <TextField
+                variant="outlined"
+                value={window.location.href}
+                classes={{ input: s.linkInput }}
+                fullWidth
+                startAdornment={<LinkIcon className={s.outlineIcon} />}
+                endAdornment={
+                  <Tooltip
+                    placement={
+                      isWidthDown('xs', width) ? 'left' : 'bottom'
+                    }
+                    borderType="primary"
+                    title={
+                      <TooltipContent
+                        title={
+                          <Column>
+                            <Typography textSecondary>
+                              {isCopied ? t('copied') : t('copy')}
+                            </Typography>
+                          </Column>
+                        }
+                      />
+                    }
+                    interactive
+                  >
+                    <Button
+                      variant="primary"
+                      onClick={() => this.handleCopy(window.location.href)}
+                      className={s.copyButton}
+                    >
+                      <CopyIcon style={{ width: 24, height: 24 }} />
+                    </Button>
+                  </Tooltip>
+                }
+                readOnly
+              />
+            </Row>
+            <Row fullWidth justifyChildrenCenter paddingTop>
+              <TwitterShareButton
+                url={window.location.href}
+              >
+                <span className={s.socialButton}>
+                  <TwitterBorderIcon style={{ width: 17, height: 14 }} />
+                </span>
+              </TwitterShareButton>
+              <Box paddingLeftHalf />
+              <FacebookShareButton
+                url={window.location.href}
+              >
+                <span className={s.socialButton}>
+                  <FacebookBorderIcon style={{ width: 10, height: 17 }} />
+                </span>
+              </FacebookShareButton>
+              <Box paddingLeftHalf />
+              <LinkedinShareButton
+                url={window.location.href}
+              >
+                <span className={s.socialButton}>
+                  <LinkedinBorderIcon style={{ width: 15, height: 17 }} />
+                </span>
+              </LinkedinShareButton>
+              <Box paddingLeftHalf />
+              <a
+                variant='icon'
+                className={s.socialButton}
+                href={`https://mail.google.com/mail/?view=cm&su=RentGlobal Office Share&body=${window.location.href}`}
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                <GoogleIcon style={{ width: 15, height: 15 }} />
+              </a>
+              <Box paddingLeftHalf />
+              <a
+                variant='icon'
+                className={s.socialButton}
+                href={`http://compose.mail.yahoo.com/?subj=RentGlobal Office Share&body=${window.location.href}`}
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                <YahooIcon style={{ width: 17, height: 17 }} />
+              </a>
+              <Box paddingLeftHalf />
+              <a
+                variant='icon'
+                href={`mailto:?subject=RentGlobal Office Share&body=${window.location.href}`}
+                className={s.socialButton}
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                <ShareIcon style={{ width: 19, height: 16 }} />
+              </a>
+            </Row>
+          </Column>
         </DialogActions>
       </Dialog>
     );
