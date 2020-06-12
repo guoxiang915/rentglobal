@@ -22,6 +22,7 @@ import {
   Tooltip,
   TooltipContent,
   GooglePlaceField,
+  NumberField,
   ConfirmDialog,
   CarouselWrapper,
   EmailIcon,
@@ -35,6 +36,7 @@ import {
   UploadIcon,
   DeleteIcon,
   ProgressIcon,
+  Select,
 } from '../../common/base-components';
 import {
   UploadDocument,
@@ -91,143 +93,168 @@ const SaveButtons = ({ isUpdating, onSave, onCancel, disabled, t }) => (
   </React.Fragment>
 );
 
-const styleSheet = (theme) => ({
-  root: {
-    paddingLeft: theme.spacing(5),
-    paddingRight: theme.spacing(5),
-    [theme.breakpoints.down('sm')]: {
-      paddingLeft: 27,
-      paddingRight: 27,
+const styleSheet = (theme) => {
+  const padding = theme.spacing(2);
+  return {
+    root: {
+      paddingLeft: theme.spacing(5),
+      paddingRight: theme.spacing(5),
+      [theme.breakpoints.down('sm')]: {
+        paddingLeft: 27,
+        paddingRight: 27,
+      },
     },
-  },
 
-  fullWidth: {
-    width: '100%',
-  },
-
-  profileTabWrapper: {
-    paddingTop: theme.spacing(4),
-  },
-
-  buttonIcon: {
-    width: 20,
-    height: 20,
-  },
-
-  profileInput: {
-    width: 370,
-    [theme.breakpoints.down('sm')]: {
+    fullWidth: {
       width: '100%',
     },
-  },
 
-  panelWrapper: {
-    marginTop: theme.spacing(8),
-  },
-
-  panelDivider: {
-    '&::after': {
-      content: "''",
-      height: 1,
-      top: '50%',
-      left: 35,
-      right: 0,
-      background: theme.colors.primary.borderGrey,
+    profileTabWrapper: {
+      paddingTop: theme.spacing(4),
     },
-  },
 
-  documentsWrapper: {
-    flexWrap: 'wrap',
-    [theme.breakpoints.down('sm')]: {
-      flexWrap: 'nowrap',
+    gridRowValues: {
+      flex: 1,
+    },
+
+    buttonIcon: {
+      width: 20,
+      height: 20,
+    },
+
+    profileInput: {
+      width: 370,
+      [theme.breakpoints.down('sm')]: {
+        width: '100%',
+      },
+    },
+
+    descriptionContainer: {
+      paddingTop: padding / 2,
+      position: 'relative',
+    },
+
+    descriptionLimit: {
+      position: 'absolute',
+      bottom: 10,
+      right: 10,
+
+      [theme.breakpoints.down('xs')]: {
+        bottom: 10,
+        right: 'unset',
+        left: '50%',
+        transform: 'translateX(-50%)',    
+      },
+    },
+
+    panelWrapper: {
+      marginTop: theme.spacing(8),
+    },
+
+    panelDivider: {
+      '&::after': {
+        content: "''",
+        height: 1,
+        top: '50%',
+        left: 35,
+        right: 0,
+        background: theme.colors.primary.borderGrey,
+      },
+    },
+
+    documentsWrapper: {
+      flexWrap: 'wrap',
+      [theme.breakpoints.down('sm')]: {
+        flexWrap: 'nowrap',
+        overflow: 'hidden',
+      },
+    },
+
+    generalInfoForm: {
+      width: '100%',
+    },
+
+    imageWrapper: {
+      float: 'right',
+    },
+
+    avatarCard: {
+      width: 216,
+      height: 216,
+      display: 'flex',
+      justifyContent: 'center',
+      alignItems: 'center',
       overflow: 'hidden',
+      position: 'relative',
+      backgroundRepeat: 'no-repeat',
+      backgroundSize: 'cover',
+      backgroundPosition: 'center',
+      '&:hover': {
+        backgroundColor: theme.colors.primary.grey,
+        backgroundBlendMode: 'screen',
+      },
     },
-  },
 
-  generalInfoForm: {
-    width: '100%',
-  },
-
-  imageWrapper: {
-    float: 'right',
-  },
-
-  avatarCard: {
-    width: 216,
-    height: 216,
-    display: 'flex',
-    justifyContent: 'center',
-    alignItems: 'center',
-    overflow: 'hidden',
-    position: 'relative',
-    backgroundRepeat: 'no-repeat',
-    backgroundSize: 'cover',
-    backgroundPosition: 'center',
-    '&:hover': {
-      backgroundColor: theme.colors.primary.grey,
-      backgroundBlendMode: 'screen',
+    companyAvatarCard: {
+      borderRadius: '50%',
     },
-  },
 
-  companyAvatarCard: {
-    borderRadius: '50%',
-  },
+    dropzone: {
+      width: '90%',
+      height: '90%',
+      border: `3px dashed ${theme.colors.primary.borderGrey}`,
+      position: 'absolute',
+      top: '5%',
+      left: '5%',
+      filter: 'grayscale(1)',
+    },
 
-  dropzone: {
-    width: '90%',
-    height: '90%',
-    border: `3px dashed ${theme.colors.primary.borderGrey}`,
-    position: 'absolute',
-    top: '5%',
-    left: '5%',
-    filter: 'grayscale(1)',
-  },
+    companyDropzone: {
+      borderRadius: '50%',
+    },
 
-  companyDropzone: {
-    borderRadius: '50%',
-  },
+    uploadIcon: {
+      color: theme.colors.primary.mainColor,
+      mixBlendMode: 'difference',
+    },
 
-  uploadIcon: {
-    color: theme.colors.primary.mainColor,
-    mixBlendMode: 'difference',
-  },
+    avatarImage: {
+      width: '100%',
+      height: '100%',
+      objectFit: 'cover',
+    },
 
-  avatarImage: {
-    width: '100%',
-    height: '100%',
-    objectFit: 'cover',
-  },
+    outlineIcon: {
+      color: theme.colors.primary.borderGrey,
+    },
 
-  outlineIcon: {
-    color: theme.colors.primary.borderGrey,
-  },
+    errorIcon: {
+      borderRadius: '50%',
+      border: `1px solid ${theme.colors.primary.errorRed}`,
+      boxShadow: `0px 6px 12px ${theme.colors.primary.errorRed}4D`,
+      color: theme.colors.primary.white,
+      background: theme.colors.primary.errorRed,
+      display: 'flex',
+      justifyContent: 'center',
+      alignItems: 'center',
+      width: 30,
+      height: 24,
+    },
 
-  errorIcon: {
-    borderRadius: '50%',
-    border: `1px solid ${theme.colors.primary.errorRed}`,
-    boxShadow: `0px 6px 12px ${theme.colors.primary.errorRed}4D`,
-    color: theme.colors.primary.white,
-    background: theme.colors.primary.errorRed,
-    display: 'flex',
-    justifyContent: 'center',
-    alignItems: 'center',
-    width: 30,
-    height: 24,
-  },
-
-  approveIcon: {
-    borderRadius: '50%',
-    border: `1px solid ${theme.colors.primary.mainColor}`,
-    boxShadow: `0px 6px 12px ${theme.colors.primary.mainColor}4D`,
-    color: theme.colors.primary.white,
-    background: theme.colors.primary.mainColor,
-    display: 'flex',
-    justifyContent: 'center',
-    alignItems: 'center',
-    width: 30,
-    height: 24,
-  },
-});
+    approveIcon: {
+      borderRadius: '50%',
+      border: `1px solid ${theme.colors.primary.mainColor}`,
+      boxShadow: `0px 6px 12px ${theme.colors.primary.mainColor}4D`,
+      color: theme.colors.primary.white,
+      background: theme.colors.primary.mainColor,
+      display: 'flex',
+      justifyContent: 'center',
+      alignItems: 'center',
+      width: 30,
+      height: 24,
+    },
+  };
+};
 
 class Profile extends PureComponent {
   static propTypes = {
@@ -252,6 +279,10 @@ class Profile extends PureComponent {
     phoneNumberVerified: false,
     address: {},
     postalCode: '',
+    companySize: 0,
+    companyType: '',
+    companyTypeError: '',
+    shortDescription: '',
     legalStatusDocuments: [],
     checkSpecimen: [],
     leases: [],
@@ -400,7 +431,9 @@ class Profile extends PureComponent {
   };
 
   handleStateChangeByInput = (field) => (event) => {
-    this.setState({ [field]: event.target.value });
+    if (this.state.editTab == 'generalInfo') {
+      this.setState({ [field]: event.target.value });
+    }
   };
 
   handleStateChangeByEvent = (field, value) => () => {
@@ -447,6 +480,9 @@ class Profile extends PureComponent {
       phoneNumberVerified,
       address,
       postalCode,
+      companySize,
+      companyType,
+      description,
     } = this.state;
     const { user } = this.props.auth;
 
@@ -469,6 +505,9 @@ class Profile extends PureComponent {
           phoneNumber,
           phoneNumberVerified,
           address: { ...address, postalCode },
+          companySize,
+          companyType,
+          description,
         },
       });
     }
@@ -693,6 +732,19 @@ class Profile extends PureComponent {
     });
   };
 
+  handleChangeCompanyTypeByEventValue = (e) => {
+    this.setState({
+      companyType: e.target.value,
+      companyTypeError: '',
+    });
+  };
+
+  handleChangeDescription = (e) => {
+    this.setState({
+      shortDescription: e.target.value,
+    });
+  };
+
   validateForm = () => {
     const { phoneNumber } = this.state;
     const { t } = this.props;
@@ -731,6 +783,8 @@ class Profile extends PureComponent {
     const profile =
       userRole === 'landlord' ? user.landlordProfile : user.companyProfile;
 
+    const companyTypes = ['independent'];
+
     const {
       avatar,
       username,
@@ -745,6 +799,10 @@ class Profile extends PureComponent {
       phoneNumberError,
       phoneCode,
       phoneTooltip,
+      companySize,
+      companyType,
+      companyTypeError,
+      shortDescription,
     } = this.state;
     const { email } = user;
 
@@ -1145,6 +1203,56 @@ class Profile extends PureComponent {
                         readOnly={editTab !== 'generalInfo'}
                       />
                     </Row>
+                    {userRole === 'company' && (
+                      <React.Fragment>
+                        <Row paddingTopHalf>
+                          <Grid container className={s.profileInput}>
+                            <Grid item xs={6}>
+                              <Typography
+                                fullHeight
+                                paddingTopHalf
+                                paddingBottomHalf
+                                alignChildrenCenter
+                              >
+                                {t("companySize")}
+                              </Typography>
+                            </Grid>
+                            <Grid item className={s.gridRowValues}>
+                              <NumberField
+                                field="companySize"
+                                value={companySize}
+                                onChange={this.handleStateChangeByInput('companySize')}
+                                fullWidth
+                              />
+                            </Grid>
+                          </Grid>
+                        </Row>
+                        <Row paddingTopHalf>
+                          <Grid container className={s.profileInput}>
+                            <Grid item xs={12}>
+                              <Select
+                                options={["", ...companyTypes]}
+                                renderOption={item =>
+                                  !item
+                                    ? t("selectOne")
+                                    : typeof item === "object"
+                                      ? t(...item)
+                                      : t(item)
+                                }
+                                displayEmpty
+                                value={companyType || ""}
+                                onChange={this.handleChangeCompanyTypeByEventValue}
+                                error={!!companyTypeError}
+                                helperText={companyTypeError}
+                                className={s.fullWidth}
+                                fullWidth
+                                readOnly={editTab !== 'generalInfo'}
+                              />
+                            </Grid>
+                          </Grid>
+                        </Row>
+                      </React.Fragment>
+                    )}
                     {(editTab === 'generalInfo' ||
                       updatingTab === 'profile') && (
                       // buttons for save
@@ -1159,6 +1267,27 @@ class Profile extends PureComponent {
                     )}
                   </Grid>
                 </Grid>
+                {userRole === 'company' && (
+                  <Grid container className={s.descriptionContainer}>
+                    <Grid item xs={12}>
+                      <TextField
+                        variant="outlined"
+                        value={shortDescription}
+                        onChange={this.handleChangeDescription}
+                        fullWidth
+                        multiline
+                        rows={isWidthDown("xs", width) ? 8 : 6}
+                        showLimit
+                        inputProps={{
+                          placeholder: t("shortDescription"),
+                          maxLength: 500
+                        }}
+                        readOnly={editTab !== 'generalInfo'}
+                      />
+                      <Typography classes={{ box: s.descriptionLimit }}>500 character</Typography>
+                    </Grid>
+                  </Grid>
+                )}
               </form>
             </Row>
             <Row classes={{ box: s.panelWrapper }} fullWidth>

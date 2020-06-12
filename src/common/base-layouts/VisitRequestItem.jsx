@@ -190,10 +190,10 @@ const VisitRequestItem = React.memo(
     const dots = React.useMemo(() => {
       return visitRequest.coverPhotos
         ? visitRequest.coverPhotos.map((content, key) => (
-            <React.Fragment key={key}>
-              <Dot classes={s} />
-            </React.Fragment>
-          ))
+          <React.Fragment key={key}>
+            <Dot classes={s} />
+          </React.Fragment>
+        ))
         : [];
     }, [visitRequest, s]);
 

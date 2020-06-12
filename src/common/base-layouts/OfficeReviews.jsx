@@ -117,8 +117,8 @@ const ReviewPanel = withStyles(styleSheet)(
                   review.status === "approved"
                     ? "primary"
                     : review.status === "rejected"
-                    ? "error"
-                    : "secondary"
+                      ? "error"
+                      : "secondary"
                 }
                 badgeContent={
                   review.status === "approved" ? (
