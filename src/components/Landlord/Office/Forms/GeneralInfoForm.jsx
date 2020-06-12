@@ -430,25 +430,6 @@ class GeneralInfoForm extends PureComponent {
             required
           />
         </GridRow>
-        {/** business / other fees */}
-        <GridRow classes={s} title={t("businessOtherFees")}>
-          <NormalFormField
-            tag="textfield"
-            className={s.textField350}
-            type="number"
-            inputProps={{ min: 0 }}
-            endAdornment={
-              <Typography
-                fontSizeS
-                textMediumGrey
-                style={{ whiteSpace: "nowrap" }}
-              >
-                {t("$/month")}
-              </Typography>
-            }
-            field="businessOtherFees"
-          />
-        </GridRow>
 
         <Row paddingTop />
         <Divider />
