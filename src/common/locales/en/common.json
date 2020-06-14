@@ -586,5 +586,6 @@
   "giveCompanyRate": "Give the company rate",
   "send": "Send",
   "companySize": "Company size",
-  "shortDescription": "Short description"
+  "shortDescription": "Short description",
+  "requestForEdit": "Request for edit"
 }

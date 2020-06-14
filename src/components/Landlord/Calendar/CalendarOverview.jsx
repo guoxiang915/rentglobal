@@ -13,18 +13,18 @@ import {
   Link,
   Divider,
   Dot,
-  UsersIcon
+  UsersIcon,
 } from "../../../common/base-components";
 import {
   TabWrapper,
   SearchbarWithSorter,
   EventCalendar,
   EventDetailItem,
-  EventListItem
+  EventListItem,
 } from "../../../common/base-layouts";
 import {
   getEventsByLandlord,
-  getVisitRequestsByLandlord
+  getVisitRequestsByLandlord,
 } from "../../../api/endpoints";
 import { AddEventDialog } from "../../../components/Layout";
 
@@ -33,17 +33,17 @@ import { checkEqualDate } from "../../../utils/validators";
 
 import { weekdays } from "../../../utils/constants";
 
-const styleSheet = theme => ({
+const styleSheet = (theme) => ({
   root: {},
 
   calendarPanel: {
     background: theme.colors.primary.white,
-    borderRadius: 8
+    borderRadius: 8,
   },
 
   visit: {
-    color: "#41AFFF"
-  }
+    color: "#41AFFF",
+  },
 });
 
 class CalendarOverview extends PureComponent {
@@ -51,12 +51,12 @@ class CalendarOverview extends PureComponent {
     navigate: PropTypes.func,
 
     classes: PropTypes.object,
-    t: PropTypes.func
+    t: PropTypes.func,
   };
 
   getEvents = () => {
     if (getEventsByLandlord) {
-      getEventsByLandlord().then(response => {
+      getEventsByLandlord().then((response) => {
         if (response.status === 200) {
           this.setState({ events: response.data });
         }
@@ -66,7 +66,7 @@ class CalendarOverview extends PureComponent {
 
   getVisitRequests = () => {
     if (getVisitRequestsByLandlord) {
-      getVisitRequestsByLandlord().then(response => {
+      getVisitRequestsByLandlord().then((response) => {
         if (response.status === 200) {
           this.setState({ visitRequests: response.data });
         }
@@ -83,7 +83,7 @@ class CalendarOverview extends PureComponent {
       query: "",
       selectedDay: new Date(),
       selectedEvent: null,
-      dialog: null
+      dialog: null,
     };
     this.getEvents();
     this.getVisitRequests();
@@ -96,7 +96,7 @@ class CalendarOverview extends PureComponent {
     this.setState({ query: query });
   };
 
-  handleChangeViewMode = viewMode => () => {
+  handleChangeViewMode = (viewMode) => () => {
     this.setState({ viewMode });
   };
 
@@ -117,7 +117,7 @@ class CalendarOverview extends PureComponent {
     }
   };
 
-  handleSelectDay = date => {
+  handleSelectDay = (date) => {
     if (date) {
       if (!checkEqualDate(this.state.selectedDay, date)) {
         this.setState({ selectedDay: date, selectedEvent: null });
@@ -127,7 +127,7 @@ class CalendarOverview extends PureComponent {
     }
   };
 
-  handleSelectEvent = selectedEvent => {
+  handleSelectEvent = (selectedEvent) => {
     this.setState({ selectedEvent });
   };
 
@@ -138,11 +138,11 @@ class CalendarOverview extends PureComponent {
           onSave={this.addEvent}
           onClose={this.handleCloseDialog}
         />
-      )
+      ),
     });
   };
 
-  handleEditEvent = event => {
+  handleEditEvent = (event) => {
     this.setState({
       dialog: (
         <AddEventDialog
@@ -151,17 +151,17 @@ class CalendarOverview extends PureComponent {
           onSave={this.editEvent(event)}
           onClose={this.handleCloseDialog}
         />
-      )
+      ),
     });
   };
 
-  addEvent = event => {
+  addEvent = (event) => {
     // TODO: add api of adding event
     this.handleCloseDialog();
     console.log(event);
   };
 
-  editEvent = event => newData => {
+  editEvent = (event) => (newData) => {
     // TODO: add api of editing event
     this.handleCloseDialog();
     console.log(event, newData);
@@ -191,14 +191,14 @@ class CalendarOverview extends PureComponent {
       viewMode,
       events,
       visitRequests,
-      dialog
+      dialog,
     } = this.state;
 
-    const formattedVisitRequests = visitRequests.map(v => ({
+    const formattedVisitRequests = visitRequests.map((v) => ({
       ...v,
-      type: "visit"
+      type: "visit",
     }));
-    const formattedEvents = events.map(e => {
+    const formattedEvents = events.map((e) => {
       const start = new Date(e.range.start);
       const end = new Date(e.range.end);
       return {
@@ -211,11 +211,11 @@ class CalendarOverview extends PureComponent {
         ),
         end: new Date(end.getHours(), end.getMinutes(), end.getSeconds()),
         name: e.title,
-        content: e.description
+        content: e.description,
       };
     });
     const totalEvents = formattedVisitRequests.concat(formattedEvents);
-    const selectedDayEvents = totalEvents.filter(v =>
+    const selectedDayEvents = totalEvents.filter((v) =>
       checkEqualDate(v.date, selectedDay)
     );
 
@@ -229,14 +229,14 @@ class CalendarOverview extends PureComponent {
             onChange={this.handleFilterChange}
           />
           <Box paddingLeftDouble />
-          <Button variant="primary" onClick={this.handleAddEvent}>
+          <Button variant='primary' onClick={this.handleAddEvent}>
             {t("addEvent")}
           </Button>
         </Row>
 
         {/** Show week/month view mode selector */}
         <Row fullWidth paddingBottomDouble>
-          <Grid container direction="row" spacing={2} justify="space-between">
+          <Grid container direction='row' spacing={2} justify='space-between'>
             <Grid item>
               <Row>
                 <Typography
@@ -316,8 +316,8 @@ class CalendarOverview extends PureComponent {
             >
               <Link
                 onClick={() => this.handleSelectDay()}
-                variant="primary"
-                to="#"
+                variant='primary'
+                to='#'
               >
                 {t("gotoToday")}
               </Link>
@@ -329,13 +329,17 @@ class CalendarOverview extends PureComponent {
         <Row fullWidth style={{ marginBottom: 45 }}>
           <TabWrapper title={t("selectedEventDetails")} open insideOpen>
             {selectedEvent && (
-              <EventDetailItem
-                event={selectedEvent}
-                onEdit={this.handleEditSelectedEvent}
-                onCancel={this.handleCancelSelectedEvent}
-                horizontal
-                fullWidth
-              />
+              <>
+                <Box paddingTop />
+                <EventDetailItem
+                  event={selectedEvent}
+                  // onEdit={this.handleEditSelectedEvent}
+                  onEdit={() => this.handleEditEvent(selectedEvent)}
+                  onCancel={this.handleCancelSelectedEvent}
+                  horizontal
+                  fullWidth
+                />
+              </>
             )}
           </TabWrapper>
         </Row>

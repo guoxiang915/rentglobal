@@ -9,13 +9,13 @@ import {
   Button,
   Dot,
   UsersIcon,
-  EditIcon,
   CheckIcon,
-  CancelIcon
+  CancelIcon,
+  HeadsetIcon,
 } from "../base-components";
 import { formatHrMin } from "../../utils/formatters";
 
-const EventListItem = withStyles(theme => ({
+const EventListItem = withStyles((theme) => ({
   root: {},
 
   datetime: {
@@ -23,12 +23,12 @@ const EventListItem = withStyles(theme => ({
     paddingTop: 20,
     paddingBottom: 20,
     [theme.breakpoints.down("xs")]: {
-      width: "100%"
-    }
+      width: "100%",
+    },
   },
 
   longDatetime: {
-    width: 250
+    width: 250,
   },
 
   eventItemWrapper: {},
@@ -37,20 +37,20 @@ const EventListItem = withStyles(theme => ({
     paddingTop: 20,
     paddingBottom: 20,
     borderBottom: `1px solid ${theme.colors.primary.borderGrey}`,
-    minWidth: 300
+    minWidth: 300,
   },
 
   content: {
-    minWidth: 200
+    minWidth: 200,
   },
 
   visit: {
-    color: "#41AFFF"
+    color: "#41AFFF",
   },
 
   actionButton: {
-    marginLeft: 24
-  }
+    marginLeft: 24,
+  },
 }))(
   ({ classes: s, t, width, event, showDate, onEdit, onAccept, onDecline }) => {
     return (
@@ -58,7 +58,7 @@ const EventListItem = withStyles(theme => ({
         fullWidth
         alignChildrenStart
         classes={{ box: s.eventItemWrapper }}
-        wrap="wrap"
+        wrap='wrap'
       >
         <Row
           justifyChildrenStart
@@ -69,7 +69,7 @@ const EventListItem = withStyles(theme => ({
               {new Date(event.date).toLocaleDateString("en-US", {
                 weekday: "short",
                 day: "numeric",
-                month: "short"
+                month: "short",
               })}
               &nbsp;
             </Typography>
@@ -82,12 +82,12 @@ const EventListItem = withStyles(theme => ({
           classes={{ box: s.contentWrapper }}
           stretch
           alignChildrenStart
-          wrap="wrap"
+          wrap='wrap'
         >
           <Typography
             alignChildrenCenter
             stretch
-            wrap="wrap"
+            wrap='wrap'
             classes={{ box: s.content }}
           >
             <Typography
@@ -112,22 +112,22 @@ const EventListItem = withStyles(theme => ({
           >
             {onEdit && (
               <Button
-                link="primary"
-                background="normalLight"
-                inverse
+                link='secondary'
+                background='secondaryLight'
                 onClick={onEdit}
                 className={s.actionButton}
+                style={{ maxWidth: 170 }}
               >
-                <EditIcon style={{ width: 20, height: 18 }} />
+                <HeadsetIcon style={{ width: 18, height: 18 }} />
                 <Typography paddingLeft fontSizeS>
-                  {t("edit")}
+                  {t("requestForEdit")}
                 </Typography>
               </Button>
             )}
             {onDecline && (
               <Button
-                link="errorRedNormal"
-                background="errorRedLight"
+                link='errorRedNormal'
+                background='errorRedLight'
                 inverse
                 onClick={onDecline}
                 className={s.actionButton}
@@ -142,7 +142,7 @@ const EventListItem = withStyles(theme => ({
             {onAccept && (
               <Button
                 onClick={onAccept}
-                variant="primary"
+                variant='primary'
                 className={s.actionButton}
               >
                 <CheckIcon style={{ width: 16, height: 16 }} />

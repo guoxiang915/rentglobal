@@ -10,7 +10,7 @@ import {
   TableBody,
   TableRow,
   TableCell,
-  Grid
+  Grid,
 } from "@material-ui/core";
 import { Add, KeyboardArrowLeft, KeyboardArrowRight } from "@material-ui/icons";
 import {
@@ -20,22 +20,22 @@ import {
   Button,
   EditIcon,
   DeleteIcon,
-  DeleteConfirmDialog
+  DeleteConfirmDialog,
 } from "../../common/base-components";
 import { shortWeekdays, weekdays, months } from "../../utils/constants";
 import { formatHrMin, formatDate } from "../../utils/formatters";
 import { AddTimeDialog } from "./Dialogs";
 import { ConditionalWrapper } from "../../utils/helpers";
 
-const styleSheet = theme => ({
+const styleSheet = (theme) => ({
   root: {
     borderRadius: 8,
-    overflow: "hidden"
+    overflow: "hidden",
   },
 
   weekHeader: {
     background: theme.colors.primary.white,
-    padding: 20
+    padding: 20,
   },
 
   navWeekButton: {
@@ -46,8 +46,8 @@ const styleSheet = theme => ({
     justifyContent: "center",
     "&:hover": {
       background: theme.colors.primary.lightGrey,
-      color: theme.colors.primary.grey
-    }
+      color: theme.colors.primary.grey,
+    },
   },
 
   event: {
@@ -59,13 +59,13 @@ const styleSheet = theme => ({
       margin: "-16px 8px",
       height: "calc(100% + 32px)",
       width: "unset",
-      padding: "0px 20px"
-    }
+      padding: "0px 20px",
+    },
   },
 
   selectedEvent: {
     border: `1px solid ${theme.colors.primary.mainColor}`,
-    borderRadius: 8
+    borderRadius: 8,
   },
 
   datetimeWrapper: {
@@ -77,8 +77,8 @@ const styleSheet = theme => ({
       margin: 0,
       height: "calc(100% - 48px)",
       width: "unset",
-      borderRight: `1px solid ${theme.colors.primary.borderGrey}`
-    }
+      borderRight: `1px solid ${theme.colors.primary.borderGrey}`,
+    },
   },
 
   visitDot: {
@@ -87,8 +87,12 @@ const styleSheet = theme => ({
     height: 8,
     top: 6,
     right: 6,
+    background: theme.colors.primary.errorRed,
+    borderRadius: "50%",
+  },
+
+  approvedVisitDot: {
     background: "#41AFFF",
-    borderRadius: "50%"
   },
 
   actionButtons: {
@@ -103,12 +107,12 @@ const styleSheet = theme => ({
     background: `${theme.colors.primary.darkGrey}a0`,
     opacity: 0,
     "&:hover": {
-      opacity: 1
+      opacity: 1,
     },
     [theme.breakpoints.down("sm")]: {
       width: "unset",
-      height: "calc(100% - 8px)"
-    }
+      height: "calc(100% - 8px)",
+    },
   },
 
   actionButton: {
@@ -116,7 +120,7 @@ const styleSheet = theme => ({
     minWidth: 36,
     width: 36,
     height: 36,
-    padding: 0
+    padding: 0,
   },
 
   table: {
@@ -124,7 +128,7 @@ const styleSheet = theme => ({
     borderRadius: 8,
     boxShadow: "none",
     width: "100%",
-    minHeight: 300
+    minHeight: 300,
   },
 
   headerCell: {
@@ -133,18 +137,18 @@ const styleSheet = theme => ({
     borderRight: `1px solid ${theme.colors.primary.white}`,
     cursor: "pointer",
     "&:last-of-type": {
-      borderRight: "none"
+      borderRight: "none",
     },
     [theme.breakpoints.down("sm")]: {
       border: "none",
       borderBottom: `1px solid ${theme.colors.primary.white}`,
-      width: 100
-    }
+      width: 100,
+    },
   },
 
   selectedHeaderCell: {
     background: theme.colors.primary.mainColor,
-    color: `${theme.colors.primary.white} !important`
+    color: `${theme.colors.primary.white} !important`,
   },
 
   dataCell: {
@@ -157,8 +161,8 @@ const styleSheet = theme => ({
     [theme.breakpoints.down("sm")]: {
       width: "unset",
       height: 70,
-      verticalAlign: "middle"
-    }
+      verticalAlign: "middle",
+    },
   },
 
   addButton: {
@@ -169,14 +173,14 @@ const styleSheet = theme => ({
     height: 45,
     margin: "24px 0px",
     [theme.breakpoints.down("sm")]: {
-      margin: "0px 24px"
-    }
-  }
+      margin: "0px 24px",
+    },
+  },
 });
 
 /** Render header cell */
 const HeaderCell = React.memo(
-  ({ t, width, weekday, startWeekDate, onClick }) => {
+  ({ t, width, weekday, startWeekDate, selected }) => {
     let date = null;
     if (startWeekDate) {
       date = formatDate(
@@ -187,12 +191,13 @@ const HeaderCell = React.memo(
     }
 
     return (
-      <Column onClick={() => onClick(weekdays[weekday])}>
+      <Column>
         <Typography
           fontSizeM={!isWidthDown("sm", width)}
           fontSizeS={isWidthDown("sm", width)}
           fontWeightBold
-          textSecondary
+          textSecondary={!selected}
+          textWhite={selected}
         >
           {t(
             isWidthDown("sm", width)
@@ -201,7 +206,11 @@ const HeaderCell = React.memo(
           )}
         </Typography>
         {date && (
-          <Typography fontSizeXS textMediumGrey>
+          <Typography
+            fontSizeXS
+            textMediumGrey={!selected}
+            textWhite={selected}
+          >
             {date}
           </Typography>
         )}
@@ -212,7 +221,15 @@ const HeaderCell = React.memo(
 
 /** Render available time */
 const VisitDateTime = React.memo(
-  ({ classes: s, start, end, type, onEdit, onDelete, onClick, selected }) => {
+  ({
+    classes: s,
+    // start, end, type,
+    event,
+    onEdit,
+    onDelete,
+    onClick,
+    selected,
+  }) => {
     return (
       <Row classes={{ box: s.datetimeWrapper }}>
         <Row
@@ -225,16 +242,16 @@ const VisitDateTime = React.memo(
           {onEdit || onDelete ? (
             <Grid
               container
-              direction="row"
+              direction='row'
               className={s.actionButtons}
-              alignItems="center"
-              justify="center"
+              alignItems='center'
+              justify='center'
               spacing={1}
             >
               {onDelete ? (
                 <Grid item>
                   <Button
-                    variant="primary"
+                    variant='primary'
                     className={s.actionButton}
                     onClick={onDelete}
                   >
@@ -245,7 +262,7 @@ const VisitDateTime = React.memo(
               {onEdit ? (
                 <Grid item>
                   <Button
-                    variant="primary"
+                    variant='primary'
                     className={s.actionButton}
                     onClick={onEdit}
                   >
@@ -261,17 +278,21 @@ const VisitDateTime = React.memo(
               textSecondary
               style={{ whiteSpace: "nowrap" }}
             >
-              {formatHrMin(start)}
+              {formatHrMin(event.start)}
             </Typography>
             <Typography
               fontSizeS
               textSecondary
               style={{ whiteSpace: "nowrap" }}
             >
-              {formatHrMin(end)}
+              {formatHrMin(event.end)}
             </Typography>
           </Column>
-          {type === "visit" && <div className={s.visitDot}></div>}
+          {event.type === "visit" && (
+            <div
+              className={clsx(s.visitDot, event.approved && s.approvedVisitDot)}
+            ></div>
+          )}
         </Row>
       </Row>
     );
@@ -287,31 +308,32 @@ const DataCell = ({
   onEdit,
   onDelete,
   onClick,
-  selectedEvent
+  selectedEvent,
 }) => {
   return (
     <Column fullHeight>
       <ConditionalWrapper
         condition={isWidthDown("sm", width)}
-        wrapper={children => (
+        wrapper={(children) => (
           <Row fullWidth fullHeight alignChildrenCenter>
             {children}
           </Row>
         )}
       >
-        {visitHours && visitHours.length
+        {visitHours?.length
           ? visitHours.map((v, index) => (
-            <React.Fragment key={index}>
-              <VisitDateTime
-                classes={s}
-                start={v.start}
-                end={v.end}
-                type={v.type}
-                onEdit={onEdit ? () => onEdit(v, weekday) : null}
-                onDelete={onDelete ? () => onDelete(v, weekday) : null}
-                onClick={onClick ? () => onClick(v, weekday) : null}
-                selected={
-                  selectedEvent &&
+              <React.Fragment key={index}>
+                <VisitDateTime
+                  classes={s}
+                  // start={v.start}
+                  // end={v.end}
+                  // type={v.type}
+                  event={v}
+                  onEdit={onEdit ? () => onEdit(v, weekday) : null}
+                  onDelete={onDelete ? () => onDelete(v, weekday) : null}
+                  onClick={onClick ? () => onClick(v, weekday) : null}
+                  selected={
+                    selectedEvent &&
                     //  selectedEvent === v
                     new Date(selectedEvent.date).getTime() ===
                       new Date(v.date).getTime() &&
@@ -320,10 +342,10 @@ const DataCell = ({
                     new Date(selectedEvent.end).getTime() ===
                       new Date(v.end).getTime() &&
                     selectedEvent.type === v.type
-                }
-              />
-            </React.Fragment>
-          ))
+                  }
+                />
+              </React.Fragment>
+            ))
           : null}
         {onAdd && (
           <Column
@@ -333,11 +355,11 @@ const DataCell = ({
             justifyChildrenCenter
           >
             <Button
-              variant="icon"
+              variant='icon'
               className={s.addButton}
               onClick={onAdd}
-              background="normalLight"
-              link="normalLight"
+              background='normalLight'
+              link='normalLight'
               inverse
             >
               <Add />
@@ -361,14 +383,14 @@ class CalendarWeekForm extends PureComponent {
     selectedWeekDay: PropTypes.string,
 
     classes: PropTypes.object,
-    t: PropTypes.func
+    t: PropTypes.func,
   };
 
   state = { dialog: null };
 
   componentDidUpdate() {}
 
-  handleAdd = day => {
+  handleAdd = (day) => {
     this.setState({
       dialog: (
         <AddTimeDialog
@@ -376,7 +398,7 @@ class CalendarWeekForm extends PureComponent {
           onClose={this.handleCloseDialog}
           onSave={this.handleAddAvailability}
         />
-      )
+      ),
     });
   };
 
@@ -390,7 +412,7 @@ class CalendarWeekForm extends PureComponent {
           onClose={this.handleCloseDialog}
           onSave={this.handleEditAvailability(v, day)}
         />
-      )
+      ),
     });
   };
 
@@ -402,11 +424,11 @@ class CalendarWeekForm extends PureComponent {
           onClose={this.handleCloseDialog}
           onConfirm={() => this.handleDeleteAvailability(v, day)}
         />
-      )
+      ),
     });
   };
 
-  handleAddAvailability = e => {
+  handleAddAvailability = (e) => {
     if (this.props.onChange) {
       const visitHours = this.props.visitHours;
       visitHours[e.day] = [...(visitHours[e.day] || [])];
@@ -416,12 +438,12 @@ class CalendarWeekForm extends PureComponent {
     this.handleCloseDialog();
   };
 
-  handleEditAvailability = v => e => {
+  handleEditAvailability = (v) => (e) => {
     if (this.props.onChange) {
       const visitHours = this.props.visitHours[e.day];
       visitHours[visitHours.indexOf(v)] = {
         start: e.start,
-        end: e.end
+        end: e.end,
       };
       this.props.onChange({ ...this.props.visitHours, [e.day]: visitHours });
     }
@@ -441,7 +463,7 @@ class CalendarWeekForm extends PureComponent {
     this.setState({ dialog: null });
   };
 
-  handleSelectWeekday = weekday => {
+  handleSelectWeekday = (weekday) => {
     if (this.props.onSelectWeekday) {
       this.props.onSelectWeekday(weekday);
     }
@@ -470,7 +492,7 @@ class CalendarWeekForm extends PureComponent {
       onNextWeek,
       width,
       classes: s,
-      t
+      t,
     } = this.props;
     const { dialog } = this.state;
 
@@ -510,14 +532,17 @@ class CalendarWeekForm extends PureComponent {
                     s.headerCell,
                     selectedWeekDay === d && s.selectedHeaderCell
                   )}
+                  style={{ cursor: "pointer" }}
+                  onClick={() => this.handleSelectWeekday(d)}
                 >
                   <HeaderCell
                     classes={s}
                     t={t}
                     width={width}
                     weekday={index}
+                    // onClick={this.handleSelectWeekday}
                     startWeekDate={startWeekDate}
-                    onClick={this.handleSelectWeekday}
+                    selected={selectedWeekDay === d && s.selectedHeaderCell}
                   />
                 </TableCell>
                 <TableCell key={index} className={s.dataCell}>
@@ -546,13 +571,17 @@ class CalendarWeekForm extends PureComponent {
                         s.headerCell,
                         selectedWeekDay === d && s.selectedHeaderCell
                       )}
+                      style={{ cursor: "pointer" }}
+                      onClick={() => this.handleSelectWeekday(d)}
                     >
                       <HeaderCell
                         classes={s}
                         t={t}
+                        width={width}
                         weekday={index}
                         startWeekDate={startWeekDate}
-                        onClick={this.handleSelectWeekday}
+                        // onClick={this.handleSelectWeekday}
+                        selected={selectedWeekDay === d && s.selectedHeaderCell}
                       />
                     </TableCell>
                   ))}
@@ -565,6 +594,7 @@ class CalendarWeekForm extends PureComponent {
                       <DataCell
                         classes={s}
                         weekday={d}
+                        width={width}
                         visitHours={visitHours[d]}
                         onAdd={onChange ? () => this.handleAdd(d) : null}
                         onEdit={onChange ? this.handleEdit : null}

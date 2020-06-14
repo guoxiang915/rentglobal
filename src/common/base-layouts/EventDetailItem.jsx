@@ -13,21 +13,21 @@ import {
   Button,
   ImageIcon,
   CloseIcon,
-  EditIcon
+  HeadsetIcon,
 } from "../base-components";
 
 import "./OfficeItem.scss";
 import { formatHrMin, formatDate } from "../../utils/formatters";
 import { getOfficeByEvent } from "../../api/endpoints";
 
-const styleSheet = theme => ({
+const styleSheet = (theme) => ({
   officeWrapper: {
-    width: 235
+    width: 235,
     // marginRight: 20,
   },
 
   fullWidth: {
-    width: "100%"
+    width: "100%",
   },
 
   officeCarousel: {
@@ -36,7 +36,7 @@ const styleSheet = theme => ({
     borderRadius: 8,
     border: `1px solid ${theme.colors.primary.borderGrey}`,
     position: "relative",
-    overflow: "hidden"
+    overflow: "hidden",
   },
 
   hoverWrapper: {
@@ -57,7 +57,7 @@ const styleSheet = theme => ({
       top: 0,
       left: 0,
       opacity: 0.3,
-      zIndex: 1
+      zIndex: 1,
     },
     "&::after": {
       content: '" "',
@@ -68,11 +68,11 @@ const styleSheet = theme => ({
       bottom: 0,
       right: 0,
       opacity: 0.3,
-      zIndex: 1
+      zIndex: 1,
     },
     "&:hover": {
-      opacity: 1
-    }
+      opacity: 1,
+    },
   },
 
   favorite: {
@@ -82,18 +82,18 @@ const styleSheet = theme => ({
     zIndex: 1,
     width: 16,
     height: 16,
-    cursor: "pointer"
+    cursor: "pointer",
   },
 
   favoriteIcon: {
     width: 17,
     height: 16,
     color: theme.colors.primary.white,
-    opacity: 1
+    opacity: 1,
   },
 
   favoriteSelectedIcon: {
-    fill: theme.colors.primary.errorRed
+    fill: theme.colors.primary.errorRed,
   },
 
   officeLocation: {
@@ -103,19 +103,19 @@ const styleSheet = theme => ({
     bottom: 8,
     whiteSpace: "nowrap",
     overflow: "hidden",
-    zIndex: 1
+    zIndex: 1,
   },
 
   officeImage: {
     width: "100%",
-    height: 175
+    height: 175,
   },
 
   officeEmptyImage: {
     background: theme.colors.primary.whiteGrey,
     color: theme.colors.primary.borderGrey,
     width: "100%",
-    height: 175
+    height: 175,
   },
 
   carouselArrow: {
@@ -130,8 +130,8 @@ const styleSheet = theme => ({
     opacity: 0.15,
     cursor: "pointer",
     "&:hover": {
-      opacity: 1
-    }
+      opacity: 1,
+    },
   },
 
   dots: {
@@ -139,7 +139,7 @@ const styleSheet = theme => ({
     left: 0,
     bottom: 25,
     width: "100%",
-    zIndex: 1
+    zIndex: 1,
   },
 
   dot: {
@@ -147,23 +147,23 @@ const styleSheet = theme => ({
     background: theme.colors.primary.white,
     width: 7,
     height: 7,
-    margin: -4
+    margin: -4,
   },
 
   progressbar: {
     width: "100%",
     background: theme.colors.primary.borderGrey,
-    marginBottom: 10
+    marginBottom: 10,
   },
 
   bar1Determinate: {
     color: theme.colors.primary.errorRed,
-    background: theme.colors.primary.errorRed
+    background: theme.colors.primary.errorRed,
   },
 
   dashedBuffer: {
-    background: "none"
-  }
+    background: "none",
+  },
 });
 
 /** Dot component */
@@ -187,14 +187,14 @@ const EventDetailItem = React.memo(
     autoPlay,
     horizontal,
     fullWidth,
-    className
+    className,
   }) => {
     /** Changing position of carousel */
     const [pos, setPos] = useState(0);
     const [office, setOffice] = useState(null);
 
     React.useEffect(() => {
-      getOfficeByEvent(event).then(res => {
+      getOfficeByEvent(event).then((res) => {
         console.log(res);
         if (res.status === 200) {
           setOffice(res.data);
@@ -202,12 +202,12 @@ const EventDetailItem = React.memo(
       });
     }, [event]);
 
-    const prevImage = e => {
+    const prevImage = (e) => {
       e.stopPropagation();
       setPos(pos === 0 ? office?.coverPhotos?.length - 1 : pos - 1);
     };
 
-    const nextImage = e => {
+    const nextImage = (e) => {
       e.stopPropagation();
       setPos(pos === office?.coverPhotos?.length - 1 ? 0 : pos + 1);
     };
@@ -226,7 +226,7 @@ const EventDetailItem = React.memo(
     return (
       <Row
         classes={{
-          box: clsx(s.officeWrapper, className, fullWidth && s.fullWidth)
+          box: clsx(s.officeWrapper, className, fullWidth && s.fullWidth),
         }}
         alignChildrenStretch
         row={!!horizontal}
@@ -235,7 +235,7 @@ const EventDetailItem = React.memo(
       >
         <Box
           classes={{
-            box: clsx(s.officeCarousel)
+            box: clsx(s.officeCarousel),
           }}
           style={{ width: horizontal ? 235 : "100%" }}
         >
@@ -304,7 +304,7 @@ const EventDetailItem = React.memo(
                             ? photo.mobile.bucketPath
                             : photo.bucketPath
                         }
-                        alt=""
+                        alt=''
                         className={s.officeImage}
                       />
                     ) : (
@@ -327,7 +327,7 @@ const EventDetailItem = React.memo(
         <Row
           paddingTopHalf={!horizontal}
           paddingLeft={!!horizontal}
-          wrap="wrap"
+          wrap='wrap'
           stretch
         >
           <Column stretch alignChildrenStart fullHeight justifyChildrenStart>
@@ -340,7 +340,7 @@ const EventDetailItem = React.memo(
 
             {/** show office title */}
             {office && (
-              <Row paddingTopHalf>
+              <Row paddingTop>
                 <Typography fontSizeM textSecondary>
                   {t(office?.title)}
                 </Typography>
@@ -348,7 +348,7 @@ const EventDetailItem = React.memo(
             )}
 
             {/** show visit time */}
-            <Row paddingTopHalf>
+            <Row paddingTop>
               <Typography fontSizeXS textSecondary>
                 {[formatHrMin(event.start), formatHrMin(event.end)].join(" - ")}
               </Typography>
@@ -365,8 +365,8 @@ const EventDetailItem = React.memo(
               <Row>
                 {onCancel && (
                   <Button
-                    link="errorRed"
-                    background="errorRedLight"
+                    link='errorRed'
+                    background='errorRedLight'
                     inverse
                     onClick={onCancel}
                   >
@@ -377,10 +377,15 @@ const EventDetailItem = React.memo(
                   </Button>
                 )}
                 {onEdit && (
-                  <Button onClick={onEdit} style={{ marginLeft: 16 }}>
-                    <EditIcon style={{ width: 20, height: 18 }} />
+                  <Button
+                    link='secondary'
+                    background='secondaryLight'
+                    onClick={onEdit}
+                    style={{ maxWidth: 170, marginLeft: 16 }}
+                  >
+                    <HeadsetIcon style={{ width: 18, height: 18 }} />
                     <Typography paddingLeft fontSizeS>
-                      {t("edit")}
+                      {t("requestForEdit")}
                     </Typography>
                   </Button>
                 )}

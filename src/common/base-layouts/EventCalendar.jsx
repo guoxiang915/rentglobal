@@ -100,7 +100,8 @@ class EventCalendar extends React.Component {
     const formattedEvents = events.map((e) => {
       return {
         d: new Date(e.date),
-        color: e.type === "visit" ? "#41AFFF" : "#525252",
+        color:
+          e.type === "visit" ? (e.approved ? "#41AFFF" : "#FD6D9F") : "#525252",
       };
     });
     const startWeekday = getFirstDayOfWeek(selectedDay);
@@ -116,7 +117,13 @@ class EventCalendar extends React.Component {
       .forEach((e) => {
         const v =
           formattedVisithours[weekdays[new Date(e.date).getDay()]] || [];
-        v.push({ date: e.date, start: e.start, end: e.end, type: e.type });
+        v.push({
+          date: e.date,
+          start: e.start,
+          end: e.end,
+          type: e.type,
+          approved: e.approved,
+        });
         formattedVisithours[weekdays[new Date(e.date).getDay()]] = v;
       });
 

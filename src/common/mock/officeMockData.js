@@ -77,6 +77,7 @@ export const visitRequests = [
     name: "Company 1",
     content:
       "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
+    approved: true,
   },
   {
     date: new Date(2020, 4, 20),

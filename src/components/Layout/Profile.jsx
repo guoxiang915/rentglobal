@@ -1,9 +1,9 @@
-import React, { PureComponent } from 'react';
-import { withStyles } from '@material-ui/core/styles';
-import { withTranslation } from 'react-i18next';
-import clsx from 'clsx';
-import PropTypes from 'prop-types';
-import withWidth, { isWidthDown } from '@material-ui/core/withWidth';
+import React, { PureComponent } from "react";
+import { withStyles } from "@material-ui/core/styles";
+import { withTranslation } from "react-i18next";
+import clsx from "clsx";
+import PropTypes from "prop-types";
+import withWidth, { isWidthDown } from "@material-ui/core/withWidth";
 import {
   Grid,
   Card,
@@ -11,7 +11,7 @@ import {
   DialogTitle,
   DialogContent,
   DialogActions,
-} from '@material-ui/core';
+} from "@material-ui/core";
 import {
   Box,
   Row,
@@ -37,23 +37,23 @@ import {
   DeleteIcon,
   ProgressIcon,
   Select,
-} from '../../common/base-components';
+} from "../../common/base-components";
 import {
   UploadDocument,
   TabWrapper,
   StatisticBox,
-} from '../../common/base-layouts';
-import { ConditionalWrapper } from '../../utils/helpers';
-import { CropperDialog } from '.';
-import Dropzone from 'react-dropzone';
-import PhoneNumber from 'awesome-phonenumber';
-import { Alert } from '@material-ui/lab';
-import { maxFileSize } from '../../utils/constants';
-import MobileDetect from 'mobile-detect';
-import { DeleteAccountDialog } from './Dialogs';
+} from "../../common/base-layouts";
+import { ConditionalWrapper } from "../../utils/helpers";
+import { CropperDialog } from ".";
+import Dropzone from "react-dropzone";
+import PhoneNumber from "awesome-phonenumber";
+import { Alert } from "@material-ui/lab";
+import { maxFileSize } from "../../utils/constants";
+import MobileDetect from "mobile-detect";
+import { DeleteAccountDialog } from "./Dialogs";
 
 let md;
-if (typeof window !== 'undefined') {
+if (typeof window !== "undefined") {
   md = new MobileDetect(window.navigator.userAgent);
 }
 
@@ -62,31 +62,31 @@ const SaveButtons = ({ isUpdating, onSave, onCancel, disabled, t }) => (
   <React.Fragment>
     <Box paddingRightDouble>
       <Button
-        link="errorRed"
-        background="errorRedLight"
+        link='errorRed'
+        background='errorRedLight'
         inverse
         onClick={onCancel}
       >
         <CloseIcon style={{ width: 9, height: 9 }} />
         <Typography paddingLeft fontSizeS>
-          {t('cancel')}
+          {t("cancel")}
         </Typography>
       </Button>
     </Box>
     <Box fullWidth>
       <Button
-        variant="primary"
+        variant='primary'
         fullWidth
         onClick={onSave}
         disabled={!!disabled}
       >
         {isUpdating ? (
-          <ProgressIcon size={16} color="secondary" />
+          <ProgressIcon size={16} color='secondary' />
         ) : (
           <CheckIcon style={{ width: 16, height: 12 }} />
         )}
         <Typography paddingLeft fontSizeS>
-          {t('save')}
+          {t("save")}
         </Typography>
       </Button>
     </Box>
@@ -99,14 +99,14 @@ const styleSheet = (theme) => {
     root: {
       paddingLeft: theme.spacing(5),
       paddingRight: theme.spacing(5),
-      [theme.breakpoints.down('sm')]: {
+      [theme.breakpoints.down("sm")]: {
         paddingLeft: 27,
         paddingRight: 27,
       },
     },
 
     fullWidth: {
-      width: '100%',
+      width: "100%",
     },
 
     profileTabWrapper: {
@@ -124,26 +124,26 @@ const styleSheet = (theme) => {
 
     profileInput: {
       width: 370,
-      [theme.breakpoints.down('sm')]: {
-        width: '100%',
+      [theme.breakpoints.down("sm")]: {
+        width: "100%",
       },
     },
 
     descriptionContainer: {
       paddingTop: padding / 2,
-      position: 'relative',
+      position: "relative",
     },
 
     descriptionLimit: {
-      position: 'absolute',
+      position: "absolute",
       bottom: 10,
       right: 10,
 
-      [theme.breakpoints.down('xs')]: {
+      [theme.breakpoints.down("xs")]: {
         bottom: 10,
-        right: 'unset',
-        left: '50%',
-        transform: 'translateX(-50%)',    
+        right: "unset",
+        left: "50%",
+        transform: "translateX(-50%)",
       },
     },
 
@@ -152,10 +152,10 @@ const styleSheet = (theme) => {
     },
 
     panelDivider: {
-      '&::after': {
+      "&::after": {
         content: "''",
         height: 1,
-        top: '50%',
+        top: "50%",
         left: 35,
         right: 0,
         background: theme.colors.primary.borderGrey,
@@ -163,65 +163,65 @@ const styleSheet = (theme) => {
     },
 
     documentsWrapper: {
-      flexWrap: 'wrap',
-      [theme.breakpoints.down('sm')]: {
-        flexWrap: 'nowrap',
-        overflow: 'hidden',
+      flexWrap: "wrap",
+      [theme.breakpoints.down("sm")]: {
+        flexWrap: "nowrap",
+        overflow: "hidden",
       },
     },
 
     generalInfoForm: {
-      width: '100%',
+      width: "100%",
     },
 
     imageWrapper: {
-      float: 'right',
+      float: "right",
     },
 
     avatarCard: {
       width: 216,
       height: 216,
-      display: 'flex',
-      justifyContent: 'center',
-      alignItems: 'center',
-      overflow: 'hidden',
-      position: 'relative',
-      backgroundRepeat: 'no-repeat',
-      backgroundSize: 'cover',
-      backgroundPosition: 'center',
-      '&:hover': {
+      display: "flex",
+      justifyContent: "center",
+      alignItems: "center",
+      overflow: "hidden",
+      position: "relative",
+      backgroundRepeat: "no-repeat",
+      backgroundSize: "cover",
+      backgroundPosition: "center",
+      "&:hover": {
         backgroundColor: theme.colors.primary.grey,
-        backgroundBlendMode: 'screen',
+        backgroundBlendMode: "screen",
       },
     },
 
     companyAvatarCard: {
-      borderRadius: '50%',
+      borderRadius: "50%",
     },
 
     dropzone: {
-      width: '90%',
-      height: '90%',
+      width: "90%",
+      height: "90%",
       border: `3px dashed ${theme.colors.primary.borderGrey}`,
-      position: 'absolute',
-      top: '5%',
-      left: '5%',
-      filter: 'grayscale(1)',
+      position: "absolute",
+      top: "5%",
+      left: "5%",
+      filter: "grayscale(1)",
     },
 
     companyDropzone: {
-      borderRadius: '50%',
+      borderRadius: "50%",
     },
 
     uploadIcon: {
       color: theme.colors.primary.mainColor,
-      mixBlendMode: 'difference',
+      mixBlendMode: "difference",
     },
 
     avatarImage: {
-      width: '100%',
-      height: '100%',
-      objectFit: 'cover',
+      width: "100%",
+      height: "100%",
+      objectFit: "cover",
     },
 
     outlineIcon: {
@@ -229,27 +229,27 @@ const styleSheet = (theme) => {
     },
 
     errorIcon: {
-      borderRadius: '50%',
+      borderRadius: "50%",
       border: `1px solid ${theme.colors.primary.errorRed}`,
       boxShadow: `0px 6px 12px ${theme.colors.primary.errorRed}4D`,
       color: theme.colors.primary.white,
       background: theme.colors.primary.errorRed,
-      display: 'flex',
-      justifyContent: 'center',
-      alignItems: 'center',
+      display: "flex",
+      justifyContent: "center",
+      alignItems: "center",
       width: 30,
       height: 24,
     },
 
     approveIcon: {
-      borderRadius: '50%',
+      borderRadius: "50%",
       border: `1px solid ${theme.colors.primary.mainColor}`,
       boxShadow: `0px 6px 12px ${theme.colors.primary.mainColor}4D`,
       color: theme.colors.primary.white,
       background: theme.colors.primary.mainColor,
-      display: 'flex',
-      justifyContent: 'center',
-      alignItems: 'center',
+      display: "flex",
+      justifyContent: "center",
+      alignItems: "center",
       width: 30,
       height: 24,
     },
@@ -272,30 +272,30 @@ class Profile extends PureComponent {
 
   state = {
     avatar: null,
-    username: '',
-    phoneNumberError: '',
-    phoneCode: '',
-    phoneNumber: '',
+    username: "",
+    phoneNumberError: "",
+    phoneCode: "",
+    phoneNumber: "",
     phoneNumberVerified: false,
     address: {},
-    postalCode: '',
+    postalCode: "",
     companySize: 0,
-    companyType: '',
-    companyTypeError: '',
-    shortDescription: '',
+    companyType: "",
+    companyTypeError: "",
+    shortDescription: "",
     legalStatusDocuments: [],
     checkSpecimen: [],
     leases: [],
     copyOfPhotoIds: [],
     lastThreeBalances: [],
     commercialBrochures: [],
-    oldPassword: '',
-    password: '',
-    passwordError: '',
-    confirmPassword: '',
+    oldPassword: "",
+    password: "",
+    passwordError: "",
+    confirmPassword: "",
 
     editTab: null,
-    openedTab: 'generalInfo',
+    openedTab: "generalInfo",
     uploadingDocument: null,
 
     dialog: null,
@@ -306,23 +306,23 @@ class Profile extends PureComponent {
   documents = {
     landlord: [
       {
-        value: 'legalStatusDocuments',
-        title: this.props.t('legalStatusDocument'),
+        value: "legalStatusDocuments",
+        title: this.props.t("legalStatusDocument"),
       },
-      { value: 'checkSpecimen', title: this.props.t('checkSpecimen') },
-      { value: 'leases', title: this.props.t('lease') },
+      { value: "checkSpecimen", title: this.props.t("checkSpecimen") },
+      { value: "leases", title: this.props.t("lease") },
     ],
     company: [
       {
-        value: 'legalStatusDocuments',
-        title: this.props.t('legalStatusDocument'),
+        value: "legalStatusDocuments",
+        title: this.props.t("legalStatusDocument"),
       },
-      { value: 'checkSpecimen', title: this.props.t('checkSpecimen') },
-      { value: 'copyOfPhotoIds', title: this.props.t('copyOfID') },
-      { value: 'lastThreeBalances', title: this.props.t('lastThreeBalance') },
+      { value: "checkSpecimen", title: this.props.t("checkSpecimen") },
+      { value: "copyOfPhotoIds", title: this.props.t("copyOfID") },
+      { value: "lastThreeBalances", title: this.props.t("lastThreeBalance") },
       {
-        value: 'commercialBrochures',
-        title: this.props.t('commercialBrochure'),
+        value: "commercialBrochures",
+        title: this.props.t("commercialBrochure"),
       },
     ],
   };
@@ -347,33 +347,33 @@ class Profile extends PureComponent {
       this.setState({
         dialog: (
           <Dialog
-            onClose={() => (window.location.href = '/')}
-            aria-labelledby="account-deleted"
+            onClose={() => (window.location.href = "/")}
+            aria-labelledby='account-deleted'
             open={true}
           >
             <DialogTitle
-              id="account-deleted"
-              onClose={() => (window.location.href = '/')}
+              id='account-deleted'
+              onClose={() => (window.location.href = "/")}
             >
-              {t('accountDeleted')}
+              {t("accountDeleted")}
             </DialogTitle>
             <DialogContent dividers>
               <Typography
-                fontSizeM={!isWidthDown('xs', width)}
-                fontSizeS={isWidthDown('xs', width)}
+                fontSizeM={!isWidthDown("xs", width)}
+                fontSizeS={isWidthDown("xs", width)}
                 textSecondary
                 fontWeightBold
                 textCenter
               >
-                {t('accountDeletedSuccess')}
+                {t("accountDeletedSuccess")}
               </Typography>
             </DialogContent>
             <DialogActions>
               <Button
-                onClick={() => (window.location.href = '/')}
-                color="primary"
+                onClick={() => (window.location.href = "/")}
+                color='primary'
               >
-                {t('backToHome')}
+                {t("backToHome")}
               </Button>
             </DialogActions>
           </Dialog>
@@ -383,41 +383,41 @@ class Profile extends PureComponent {
 
     if (
       auth.error &&
-      auth.error.type === 'deleteAccount' &&
-      (!prevProps.auth.error || prevProps.auth.error.type !== 'deleteAccount')
+      auth.error.type === "deleteAccount" &&
+      (!prevProps.auth.error || prevProps.auth.error.type !== "deleteAccount")
     ) {
       this.setState({
         dialog: (
           <Dialog
             onClose={() => this.setState({ dialog: null })}
-            aria-labelledby="account-deleted-error"
+            aria-labelledby='account-deleted-error'
             open={true}
           >
             <DialogTitle
-              id="account-deleted-error"
+              id='account-deleted-error'
               onClose={() => this.setState({ dialog: null })}
             >
-              {t('error')}
+              {t("error")}
             </DialogTitle>
             <DialogContent dividers>
               <Typography
-                fontSizeM={!isWidthDown('xs', width)}
-                fontSizeS={isWidthDown('xs', width)}
+                fontSizeM={!isWidthDown("xs", width)}
+                fontSizeS={isWidthDown("xs", width)}
                 textSecondary
                 fontWeightBold
                 textCenter
               >
-                {typeof auth.error.msg === 'string'
+                {typeof auth.error.msg === "string"
                   ? auth.error.msg
-                  : auth.error.msg.message || t('errorDeleteAccount')}
+                  : auth.error.msg.message || t("errorDeleteAccount")}
               </Typography>
             </DialogContent>
             <DialogActions>
               <Button
-                color="primary"
+                color='primary'
                 onClick={() => this.setState({ dialog: null })}
               >
-                {t('close')}
+                {t("close")}
               </Button>
             </DialogActions>
           </Dialog>
@@ -431,7 +431,7 @@ class Profile extends PureComponent {
   };
 
   handleStateChangeByInput = (field) => (event) => {
-    if (this.state.editTab == 'generalInfo') {
+    if (this.state.editTab === "generalInfo") {
       this.setState({ [field]: event.target.value });
     }
   };
@@ -445,18 +445,18 @@ class Profile extends PureComponent {
     this.setState({
       dialog: (
         <ConfirmDialog
-          variant="error"
-          text={t('confirmDelete')}
+          variant='error'
+          text={t("confirmDelete")}
           closeLabel={
             <React.Fragment>
               <CloseIcon style={{ width: 10, height: 10 }} />
-              <Typography paddingLeft>{t('cancel')}</Typography>
+              <Typography paddingLeft>{t("cancel")}</Typography>
             </React.Fragment>
           }
           confirmLabel={
             <React.Fragment>
               <DeleteIcon style={{ width: 15, height: 12 }} />
-              <Typography paddingLeft>{t('delete')}</Typography>
+              <Typography paddingLeft>{t("delete")}</Typography>
             </React.Fragment>
           }
           onConfirm={this.deleteAvatar}
@@ -487,7 +487,7 @@ class Profile extends PureComponent {
     const { user } = this.props.auth;
 
     if (avatar && avatar._id && avatar._id !== user.avatar?._id) {
-      this.props.updateUser('avatar', {
+      this.props.updateUser("avatar", {
         avatarFileId: avatar._id,
       });
     }
@@ -498,7 +498,7 @@ class Profile extends PureComponent {
       address !== user.generalInfo?.address ||
       postalCode !== user.generalInfo?.address?.postalCode
     ) {
-      this.props.updateUser('profile', {
+      this.props.updateUser("profile", {
         userRole: this.props.auth.userRole,
         profile: {
           username,
@@ -519,18 +519,18 @@ class Profile extends PureComponent {
     this.setState({
       dialog: (
         <ConfirmDialog
-          variant="error"
-          text={this.props.t('confirmResetPassword')}
+          variant='error'
+          text={this.props.t("confirmResetPassword")}
           closeLabel={
             <React.Fragment>
               <CloseIcon style={{ width: 10, height: 10 }} />
-              <Typography paddingLeft>{this.props.t('cancel')}</Typography>
+              <Typography paddingLeft>{this.props.t("cancel")}</Typography>
             </React.Fragment>
           }
           confirmLabel={
             <React.Fragment>
               <CheckIcon style={{ width: 15, height: 12 }} />
-              <Typography paddingLeft>{this.props.t('reset')}</Typography>
+              <Typography paddingLeft>{this.props.t("reset")}</Typography>
             </React.Fragment>
           }
           onClose={this.handleCloseDialog}
@@ -544,7 +544,7 @@ class Profile extends PureComponent {
     const { oldPassword, password, confirmPassword } = this.state;
     const { user } = this.props.auth;
     if (password === confirmPassword) {
-      this.props.updateUser('password', {
+      this.props.updateUser("password", {
         email: user?.email,
         oldPassword,
         newPassword: password,
@@ -571,11 +571,11 @@ class Profile extends PureComponent {
     const { user } = auth;
 
     this.setState({
-      username: user.generalInfo?.username || '',
-      phoneNumber: user.generalInfo?.phoneNumber?.number || '',
+      username: user.generalInfo?.username || "",
+      phoneNumber: user.generalInfo?.phoneNumber?.number || "",
       phoneNumberVerified: !!user.generalInfo?.phoneNumber?.verified,
       address: user.generalInfo?.address || {},
-      postalCode: user.generalInfo?.address?.postalCode || '',
+      postalCode: user.generalInfo?.address?.postalCode || "",
       avatar: user.avatar || null,
     });
   };
@@ -638,7 +638,7 @@ class Profile extends PureComponent {
   /** Set and resize avatar image */
   handleClickAvatar = (avatar) => {
     const reader = new FileReader();
-    reader.addEventListener('load', () =>
+    reader.addEventListener("load", () =>
       this.setState({
         dialog: (
           <CropperDialog
@@ -656,8 +656,8 @@ class Profile extends PureComponent {
 
   /** Upload avatar from cropper dialog */
   handleUploadAvatar = (avatar) => {
-    this.setState({ uploadingDocument: 'avatar' });
-    this.props.uploadFile(avatar, 'public-read').then(
+    this.setState({ uploadingDocument: "avatar" });
+    this.props.uploadFile(avatar, "public-read").then(
       (response) => {
         this.setState({
           avatar: response.data,
@@ -679,7 +679,7 @@ class Profile extends PureComponent {
   handleUploadDocument = (docType) => (docFile) => {
     this.setState({ uploadingDocument: docType });
     this.props.uploadFile(docFile).then((response) => {
-      this.props.updateUser('documents', {
+      this.props.updateUser("documents", {
         userRole: this.props.auth.userRole,
         documentInfo: {
           document: docType,
@@ -705,7 +705,7 @@ class Profile extends PureComponent {
 
   handleSelectAddress = (value) => {
     const address = { ...this.state.address, ...value };
-    const postalCode = value.zipCode || '';
+    const postalCode = value.zipCode || "";
     this.setState({ address, postalCode });
   };
 
@@ -735,7 +735,7 @@ class Profile extends PureComponent {
   handleChangeCompanyTypeByEventValue = (e) => {
     this.setState({
       companyType: e.target.value,
-      companyTypeError: '',
+      companyTypeError: "",
     });
   };
 
@@ -748,9 +748,9 @@ class Profile extends PureComponent {
   validateForm = () => {
     const { phoneNumber } = this.state;
     const { t } = this.props;
-    let num = phoneNumber || '';
-    if (!num.startsWith('+') && num.length > 0) {
-      num = '+' + num;
+    let num = phoneNumber || "";
+    if (!num.startsWith("+") && num.length > 0) {
+      num = "+" + num;
       this.setState({
         phoneNumber: num,
       });
@@ -758,10 +758,10 @@ class Profile extends PureComponent {
 
     let pn = new PhoneNumber(num);
     if (!pn.isValid()) {
-      this.setState({ phoneNumberError: t('invalidNumberError') });
+      this.setState({ phoneNumberError: t("invalidNumberError") });
       return false;
     } else {
-      this.setState({ phoneNumberError: '' });
+      this.setState({ phoneNumberError: "" });
     }
 
     return true;
@@ -781,9 +781,9 @@ class Profile extends PureComponent {
     const { user, userRole, isUpdating: updatingTab, error } = this.props.auth;
     const { openedTab, editTab, uploadingDocument, dialog } = this.state;
     const profile =
-      userRole === 'landlord' ? user.landlordProfile : user.companyProfile;
+      userRole === "landlord" ? user.landlordProfile : user.companyProfile;
 
-    const companyTypes = ['independent'];
+    const companyTypes = ["independent"];
 
     const {
       avatar,
@@ -806,7 +806,7 @@ class Profile extends PureComponent {
     } = this.state;
     const { email } = user;
 
-    let passwordLastUpdated = '-';
+    let passwordLastUpdated = "-";
     if (user.updatedAt) {
       passwordLastUpdated = new Date(user.updatedAt);
       passwordLastUpdated = `${passwordLastUpdated.getFullYear()}/${
@@ -816,9 +816,9 @@ class Profile extends PureComponent {
 
     let closeTooltipButton = md.mobile() ? (
       <Button
-        variant="icon"
-        link="errorRed"
-        background="errorRedLight"
+        variant='icon'
+        link='errorRed'
+        background='errorRedLight'
         onClick={() => {
           this.setState({
             phoneTooltip: false,
@@ -841,51 +841,51 @@ class Profile extends PureComponent {
       >
         {/* title */}
         <Typography fontSizeM textSecondary paddingBottom>
-          {t('profileAndAccount')}
+          {t("profileAndAccount")}
         </Typography>
 
         {/* general info tab */}
         <Row fullWidth classes={{ box: s.profileTabWrapper }}>
           <TabWrapper
-            title={t(userRole === 'landlord' ? 'landlordInfo' : 'companyInfo')}
-            open={openedTab === 'generalInfo'}
-            onToggleOpen={this.handleToggleOpen('generalInfo')}
-            isEdit={editTab === 'generalInfo' || updatingTab === 'profile'}
+            title={t(userRole === "landlord" ? "landlordInfo" : "companyInfo")}
+            open={openedTab === "generalInfo"}
+            onToggleOpen={this.handleToggleOpen("generalInfo")}
+            isEdit={editTab === "generalInfo" || updatingTab === "profile"}
             isEditable={editTab === null}
-            onToggleEdit={this.handleToggleEdit('generalInfo')}
+            onToggleEdit={this.handleToggleEdit("generalInfo")}
           >
             <Row fullWidth>
-              <form noValidate autoComplete="off" className={s.generalInfoForm}>
-                <Grid container direction="row-reverse">
+              <form noValidate autoComplete='off' className={s.generalInfoForm}>
+                <Grid container direction='row-reverse'>
                   <Grid item xs={12} sm={6}>
                     <Column fullWidth paddingTop>
                       <Row classes={{ box: s.imageWrapper }}>
                         <Card
-                          variant="outlined"
+                          variant='outlined'
                           style={{
                             backgroundImage: avatar
                               ? `url("${avatar.bucketPath}")`
-                              : 'none',
+                              : "none",
                           }}
                           className={clsx(
                             s.avatarCard,
-                            userRole === 'company' && s.companyAvatarCard
+                            userRole === "company" && s.companyAvatarCard
                           )}
                         >
-                          {!avatar && editTab !== 'generalInfo' && (
+                          {!avatar && editTab !== "generalInfo" && (
                             <UserIcon
-                              fontSize="large"
+                              fontSize='large'
                               className={s.outlineIcon}
                             />
                           )}
-                          {editTab === 'generalInfo' && (
+                          {editTab === "generalInfo" && (
                             <Dropzone
                               multiple={false}
                               onDrop={(files) =>
                                 files.length > 0 &&
                                 this.handleClickAvatar(files[0])
                               }
-                              accept={'image/*'}
+                              accept={"image/*"}
                               maxSize={maxFileSize}
                             >
                               {({
@@ -901,8 +901,8 @@ class Profile extends PureComponent {
                                 let uploadMsg = null;
                                 if (isFileTooLarge) {
                                   uploadMsg = (
-                                    <Alert severity="error">
-                                      {t('uploadTooLarge')}
+                                    <Alert severity='error'>
+                                      {t("uploadTooLarge")}
                                     </Alert>
                                   );
                                 } else if (
@@ -910,8 +910,8 @@ class Profile extends PureComponent {
                                   (rejectedFiles && rejectedFiles.length > 0)
                                 ) {
                                   uploadMsg = (
-                                    <Alert severity="error">
-                                      {t('uploadImageOnly')}
+                                    <Alert severity='error'>
+                                      {t("uploadImageOnly")}
                                     </Alert>
                                   );
                                 }
@@ -920,7 +920,7 @@ class Profile extends PureComponent {
                                     classes={{
                                       box: clsx(
                                         s.dropzone,
-                                        userRole === 'company' &&
+                                        userRole === "company" &&
                                           s.companyDropzone
                                       ),
                                     }}
@@ -930,11 +930,11 @@ class Profile extends PureComponent {
                                   >
                                     <input {...getInputProps()} />
                                     {uploadMsg}
-                                    {uploadingDocument === 'avatar' ? (
+                                    {uploadingDocument === "avatar" ? (
                                       <ProgressIcon />
                                     ) : (
                                       <UploadIcon
-                                        fontSize="large"
+                                        fontSize='large'
                                         className={clsx({
                                           [s.uploadIcon]: avatar,
                                           [s.outlineIcon]: !avatar,
@@ -951,9 +951,9 @@ class Profile extends PureComponent {
                       {avatar ? (
                         <Row>
                           <Button
-                            variant="icon"
-                            link="errorRed"
-                            background="errorRedLight"
+                            variant='icon'
+                            link='errorRed'
+                            background='errorRedLight'
                             inverse
                             onClick={this.handleDeleteAvatar}
                           >
@@ -968,39 +968,39 @@ class Profile extends PureComponent {
                   <Grid item xs={12} sm={6}>
                     <Row paddingTop>
                       <TextField
-                        variant="outlined"
+                        variant='outlined'
                         placeholder={t(
-                          userRole === 'landlord'
-                            ? 'landlordName'
-                            : 'companyName'
+                          userRole === "landlord"
+                            ? "landlordName"
+                            : "companyName"
                         )}
-                        onChange={this.handleStateChangeByInput('username')}
+                        onChange={this.handleStateChangeByInput("username")}
                         value={username}
                         className={s.profileInput}
                         startAdornment={<UserIcon className={s.outlineIcon} />}
-                        readOnly={editTab !== 'generalInfo'}
+                        readOnly={editTab !== "generalInfo"}
                       />
                     </Row>
                     <Row paddingTopHalf>
                       <TextField
-                        type="email"
-                        variant="outlined"
-                        placeholder={t('emailAddress')}
+                        type='email'
+                        variant='outlined'
+                        placeholder={t("emailAddress")}
                         value={email}
                         className={s.profileInput}
                         startAdornment={<EmailIcon className={s.outlineIcon} />}
                         endAdornment={
                           <Tooltip
                             placement={
-                              isWidthDown('xs', width) ? 'left' : 'bottom'
+                              isWidthDown("xs", width) ? "left" : "bottom"
                             }
-                            borderType="primary"
+                            borderType='primary'
                             title={
                               <TooltipContent
                                 title={
                                   <Column>
                                     <Typography textSecondary>
-                                      {t('yourEmailConfirmed')}
+                                      {t("yourEmailConfirmed")}
                                     </Typography>
                                   </Column>
                                 }
@@ -1018,155 +1018,155 @@ class Profile extends PureComponent {
                     </Row>
                     <Row paddingTopHalf>
                       <TextField
-                        variant="outlined"
-                        placeholder={t('phoneNumber')}
+                        variant='outlined'
+                        placeholder={t("phoneNumber")}
                         onChange={this.handleChangePhone()}
-                        value={phoneNumber || ''}
+                        value={phoneNumber || ""}
                         className={s.profileInput}
                         startAdornment={<PhoneIcon className={s.outlineIcon} />}
                         endAdornment={
                           phoneNumber &&
                           !phoneNumberVerified &&
                           !phoneNumberError ? (
-                              <Tooltip
-                                placement={
-                                  isWidthDown('xs', width)
-                                    ? md.mobile()
-                                      ? 'bottom-end'
-                                      : 'left'
-                                    : 'bottom'
-                                }
-                                borderType="errorRed"
-                                open={phoneTooltip}
-                                onClose={this.onPhoneTooltipClose}
-                                onOpen={this.onPhoneTooltipOpen}
-                                title={
-                                  <TooltipContent
-                                    title={
-                                      phoneCodeSent && phoneCodeSent.success ? (
-                                        <Column>
-                                          <Typography textErrorRed>
-                                            {t('enterCode')}
-                                          </Typography>
-                                          <Box paddingTop>
-                                            <TextField
-                                              variant="outlined"
-                                              placeholder={'code'}
-                                              onChange={this.handleStateChangeByInput(
-                                                'phoneCode'
-                                              )}
-                                              value={phoneCode}
-                                            />
-                                            <Button
-                                              link="normal"
-                                              background="secondaryLight"
-                                              onClick={this.verifyCode}
-                                            >
-                                              <Typography fontSizeXS>
-                                                {t('verify')}
-                                              </Typography>
-                                            </Button>
-                                            <Button
-                                              link="normal"
-                                              background="secondaryLight"
-                                              onClick={
-                                                this.handleSendPhoneVerification
-                                              }
-                                            >
-                                              <Typography fontSizeXS>
-                                                {t('resend')}
-                                              </Typography>
-                                            </Button>
-                                            {closeTooltipButton}
-                                          </Box>
-                                          {verifiedPhoneNumber &&
-                                        verifiedPhoneNumber.error ? (
-                                              <Typography textErrorRed>
-                                                {verifiedPhoneNumber.error}
-                                              </Typography>
-                                            ) : null}
-                                        </Column>
-                                      ) : (
-                                        <Column>
-                                          <Typography textErrorRed>
-                                            {t('phoneMustApproved')}
-                                          </Typography>
-                                          <Box paddingTop>
-                                            {editTab === 'generalInfo' ? (
-                                              t('saveToVerify')
-                                            ) : (
-                                              <React.Fragment>
-                                                <Button
-                                                  link="normal"
-                                                  background="secondaryLight"
-                                                  onClick={
-                                                    this
-                                                      .handleSendPhoneVerification
-                                                  }
-                                                  disabled={
-                                                    editTab === 'generalInfo'
-                                                  }
-                                                >
-                                                  <Typography fontSizeXS>
-                                                    {t('sendVerificationCode')}
-                                                  </Typography>
-                                                </Button>
-                                                {closeTooltipButton}
-                                              </React.Fragment>
-                                            )}
-                                          </Box>
-                                          {phoneCodeSent &&
-                                        phoneCodeSent.error ? (
-                                              <Typography textErrorRed>
-                                                {phoneCodeSent.error}
-                                              </Typography>
-                                            ) : null}
-                                        </Column>
-                                      )
-                                    }
-                                  />
-                                }
-                                interactive
-                              >
-                                <div
-                                  onClick={() => {
-                                    this.setState({
-                                      phoneTooltip: true,
-                                    });
-                                  }}
-                                  className={s.errorIcon}
-                                >
-                                !
-                                </div>
-                              </Tooltip>
-                            ) : phoneNumberVerified ? (
-                              <Tooltip
-                                placement={
-                                  isWidthDown('xs', width) ? 'left' : 'bottom'
-                                }
-                                borderType="primary"
-                                title={
-                                  <TooltipContent
-                                    title={
+                            <Tooltip
+                              placement={
+                                isWidthDown("xs", width)
+                                  ? md.mobile()
+                                    ? "bottom-end"
+                                    : "left"
+                                  : "bottom"
+                              }
+                              borderType='errorRed'
+                              open={phoneTooltip}
+                              onClose={this.onPhoneTooltipClose}
+                              onOpen={this.onPhoneTooltipOpen}
+                              title={
+                                <TooltipContent
+                                  title={
+                                    phoneCodeSent && phoneCodeSent.success ? (
                                       <Column>
-                                        <Typography textSecondary>
-                                          {t('phoneNumberConfirmed')}
+                                        <Typography textErrorRed>
+                                          {t("enterCode")}
                                         </Typography>
+                                        <Box paddingTop>
+                                          <TextField
+                                            variant='outlined'
+                                            placeholder={"code"}
+                                            onChange={this.handleStateChangeByInput(
+                                              "phoneCode"
+                                            )}
+                                            value={phoneCode}
+                                          />
+                                          <Button
+                                            link='normal'
+                                            background='secondaryLight'
+                                            onClick={this.verifyCode}
+                                          >
+                                            <Typography fontSizeXS>
+                                              {t("verify")}
+                                            </Typography>
+                                          </Button>
+                                          <Button
+                                            link='normal'
+                                            background='secondaryLight'
+                                            onClick={
+                                              this.handleSendPhoneVerification
+                                            }
+                                          >
+                                            <Typography fontSizeXS>
+                                              {t("resend")}
+                                            </Typography>
+                                          </Button>
+                                          {closeTooltipButton}
+                                        </Box>
+                                        {verifiedPhoneNumber &&
+                                        verifiedPhoneNumber.error ? (
+                                          <Typography textErrorRed>
+                                            {verifiedPhoneNumber.error}
+                                          </Typography>
+                                        ) : null}
                                       </Column>
-                                    }
-                                  />
-                                }
-                                interactive
+                                    ) : (
+                                      <Column>
+                                        <Typography textErrorRed>
+                                          {t("phoneMustApproved")}
+                                        </Typography>
+                                        <Box paddingTop>
+                                          {editTab === "generalInfo" ? (
+                                            t("saveToVerify")
+                                          ) : (
+                                            <React.Fragment>
+                                              <Button
+                                                link='normal'
+                                                background='secondaryLight'
+                                                onClick={
+                                                  this
+                                                    .handleSendPhoneVerification
+                                                }
+                                                disabled={
+                                                  editTab === "generalInfo"
+                                                }
+                                              >
+                                                <Typography fontSizeXS>
+                                                  {t("sendVerificationCode")}
+                                                </Typography>
+                                              </Button>
+                                              {closeTooltipButton}
+                                            </React.Fragment>
+                                          )}
+                                        </Box>
+                                        {phoneCodeSent &&
+                                        phoneCodeSent.error ? (
+                                          <Typography textErrorRed>
+                                            {phoneCodeSent.error}
+                                          </Typography>
+                                        ) : null}
+                                      </Column>
+                                    )
+                                  }
+                                />
+                              }
+                              interactive
+                            >
+                              <div
+                                onClick={() => {
+                                  this.setState({
+                                    phoneTooltip: true,
+                                  });
+                                }}
+                                className={s.errorIcon}
                               >
-                                <div className={s.approveIcon}>
-                                  <CheckIcon style={{ width: 11, height: 8 }} />
-                                </div>
-                              </Tooltip>
-                            ) : null
+                                !
+                              </div>
+                            </Tooltip>
+                          ) : phoneNumberVerified ? (
+                            <Tooltip
+                              placement={
+                                isWidthDown("xs", width) ? "left" : "bottom"
+                              }
+                              borderType='primary'
+                              title={
+                                <TooltipContent
+                                  title={
+                                    <Column>
+                                      <Typography textSecondary>
+                                        {t("phoneNumberConfirmed")}
+                                      </Typography>
+                                    </Column>
+                                  }
+                                />
+                              }
+                              interactive
+                            >
+                              <div className={s.approveIcon}>
+                                <CheckIcon style={{ width: 11, height: 8 }} />
+                              </div>
+                            </Tooltip>
+                          ) : null
                         }
-                        readOnly={editTab !== 'generalInfo'}
+                        readOnly={editTab !== "generalInfo"}
                         onBlur={() =>
-                          editTab === 'generalInfo' && this.validateForm()
+                          editTab === "generalInfo" && this.validateForm()
                         }
                         helperText={phoneNumberError}
                         error={phoneNumberError ? true : false}
@@ -1175,35 +1175,35 @@ class Profile extends PureComponent {
                     <Row paddingTopHalf>
                       <div className={s.profileInput}>
                         <GooglePlaceField
-                          variant="outlined"
+                          variant='outlined'
                           value={address.fullAddress}
-                          onChange={this.handleChangeAddress('fullAddress')}
+                          onChange={this.handleChangeAddress("fullAddress")}
                           onSelect={this.handleSelectAddress}
                           inputProps={{
                             startAdornment: (
                               <AddressIcon className={s.outlineIcon} />
                             ),
-                            readOnly: editTab !== 'generalInfo',
+                            readOnly: editTab !== "generalInfo",
                             fullWidth: true,
-                            placeholder: t('currentAddress'),
+                            placeholder: t("currentAddress"),
                           }}
                         />
                       </div>
                     </Row>
                     <Row paddingTopHalf>
                       <TextField
-                        variant="outlined"
-                        placeholder={t('postalCode')}
-                        onChange={this.handleStateChangeByInput('postalCode')}
+                        variant='outlined'
+                        placeholder={t("postalCode")}
+                        onChange={this.handleStateChangeByInput("postalCode")}
                         value={postalCode}
                         className={s.profileInput}
                         startAdornment={
                           <MapPointerIcon className={s.outlineIcon} />
                         }
-                        readOnly={editTab !== 'generalInfo'}
+                        readOnly={editTab !== "generalInfo"}
                       />
                     </Row>
-                    {userRole === 'company' && (
+                    {userRole === "company" && (
                       <React.Fragment>
                         <Row paddingTopHalf>
                           <Grid container className={s.profileInput}>
@@ -1219,9 +1219,11 @@ class Profile extends PureComponent {
                             </Grid>
                             <Grid item className={s.gridRowValues}>
                               <NumberField
-                                field="companySize"
+                                field='companySize'
                                 value={companySize}
-                                onChange={this.handleStateChangeByInput('companySize')}
+                                onChange={this.handleStateChangeByInput(
+                                  "companySize"
+                                )}
                                 fullWidth
                               />
                             </Grid>
@@ -1232,33 +1234,35 @@ class Profile extends PureComponent {
                             <Grid item xs={12}>
                               <Select
                                 options={["", ...companyTypes]}
-                                renderOption={item =>
+                                renderOption={(item) =>
                                   !item
                                     ? t("selectOne")
                                     : typeof item === "object"
-                                      ? t(...item)
-                                      : t(item)
+                                    ? t(...item)
+                                    : t(item)
                                 }
                                 displayEmpty
                                 value={companyType || ""}
-                                onChange={this.handleChangeCompanyTypeByEventValue}
+                                onChange={
+                                  this.handleChangeCompanyTypeByEventValue
+                                }
                                 error={!!companyTypeError}
                                 helperText={companyTypeError}
                                 className={s.fullWidth}
                                 fullWidth
-                                readOnly={editTab !== 'generalInfo'}
+                                readOnly={editTab !== "generalInfo"}
                               />
                             </Grid>
                           </Grid>
                         </Row>
                       </React.Fragment>
                     )}
-                    {(editTab === 'generalInfo' ||
-                      updatingTab === 'profile') && (
+                    {(editTab === "generalInfo" ||
+                      updatingTab === "profile") && (
                       // buttons for save
                       <Row paddingTopHalf style={{ maxWidth: 370 }}>
                         <SaveButtons
-                          isUpdating={updatingTab === 'profile'}
+                          isUpdating={updatingTab === "profile"}
                           onSave={this.handleSaveGeneralInfo}
                           onCancel={this.handleCancelEditProfile}
                           t={t}
@@ -1267,11 +1271,11 @@ class Profile extends PureComponent {
                     )}
                   </Grid>
                 </Grid>
-                {userRole === 'company' && (
+                {userRole === "company" && (
                   <Grid container className={s.descriptionContainer}>
                     <Grid item xs={12}>
                       <TextField
-                        variant="outlined"
+                        variant='outlined'
                         value={shortDescription}
                         onChange={this.handleChangeDescription}
                         fullWidth
@@ -1280,11 +1284,13 @@ class Profile extends PureComponent {
                         showLimit
                         inputProps={{
                           placeholder: t("shortDescription"),
-                          maxLength: 500
+                          maxLength: 500,
                         }}
-                        readOnly={editTab !== 'generalInfo'}
+                        readOnly={editTab !== "generalInfo"}
                       />
-                      <Typography classes={{ box: s.descriptionLimit }}>500 character</Typography>
+                      <Typography classes={{ box: s.descriptionLimit }}>
+                        500 character
+                      </Typography>
                     </Grid>
                   </Grid>
                 )}
@@ -1297,14 +1303,14 @@ class Profile extends PureComponent {
                 classes={{ box: s.panelDivider }}
               >
                 {t(
-                  userRole === 'landlord'
-                    ? 'landlordDocuments'
-                    : 'companyDocuments'
+                  userRole === "landlord"
+                    ? "landlordDocuments"
+                    : "companyDocuments"
                 )}
               </Typography>
             </Row>
             <Typography fontSizeS textSecondary paddingTop>
-              {t('provideDocumentsNeeded')}
+              {t("provideDocumentsNeeded")}
             </Typography>
             <Row
               fullWidth
@@ -1313,7 +1319,7 @@ class Profile extends PureComponent {
               classes={{ box: s.documentsWrapper }}
             >
               <ConditionalWrapper
-                condition={isWidthDown('sm', width)}
+                condition={isWidthDown("sm", width)}
                 wrapper={(children) => (
                   <CarouselWrapper itemWidth={200} itemOffset={0}>
                     {children}
@@ -1342,93 +1348,93 @@ class Profile extends PureComponent {
         {/* login and security tab */}
         <Row fullWidth classes={{ box: s.profileTabWrapper }}>
           <TabWrapper
-            title={t('loginAndSecurity')}
-            open={openedTab === 'loginAndSecurity'}
-            onToggleOpen={this.handleToggleOpen('loginAndSecurity')}
+            title={t("loginAndSecurity")}
+            open={openedTab === "loginAndSecurity"}
+            onToggleOpen={this.handleToggleOpen("loginAndSecurity")}
             isEdit={
-              editTab === 'loginAndSecurity' || updatingTab === 'password'
+              editTab === "loginAndSecurity" || updatingTab === "password"
             }
             isEditable={editTab === null}
-            onToggleEdit={this.handleToggleEdit('loginAndSecurity')}
+            onToggleEdit={this.handleToggleEdit("loginAndSecurity")}
           >
             <Row fullWidth>
               <form
                 // onSubmit={this.handleSaveGeneralInfo}
                 noValidate
-                autoComplete="off"
+                autoComplete='off'
                 className={s.generalInfoForm}
               >
-                <Grid container direction="row">
+                <Grid container direction='row'>
                   <Grid item xs={12} sm={6}>
                     <Row paddingTop>
                       <TextField
-                        type="password"
-                        variant="outlined"
-                        placeholder={t('oldPassword')}
-                        onChange={this.handleStateChangeByInput('oldPassword')}
+                        type='password'
+                        variant='outlined'
+                        placeholder={t("oldPassword")}
+                        onChange={this.handleStateChangeByInput("oldPassword")}
                         value={oldPassword}
                         className={s.profileInput}
                         startAdornment={<LockIcon className={s.outlineIcon} />}
-                        readOnly={editTab !== 'loginAndSecurity'}
+                        readOnly={editTab !== "loginAndSecurity"}
                       />
                     </Row>
                     <Row paddingTopHalf>
                       <TextField
-                        type="password"
-                        variant="outlined"
-                        placeholder={t('newPassword')}
-                        onChange={this.handleStateChangeByInput('password')}
+                        type='password'
+                        variant='outlined'
+                        placeholder={t("newPassword")}
+                        onChange={this.handleStateChangeByInput("password")}
                         value={password}
                         className={s.profileInput}
                         startAdornment={<LockIcon className={s.outlineIcon} />}
-                        readOnly={editTab !== 'loginAndSecurity'}
+                        readOnly={editTab !== "loginAndSecurity"}
                         error={!!passwordError}
                         helperText={passwordError}
                       />
                     </Row>
                     <Row paddingTopHalf>
                       <TextField
-                        type="password"
-                        variant="outlined"
-                        placeholder={t('confirmPassword')}
+                        type='password'
+                        variant='outlined'
+                        placeholder={t("confirmPassword")}
                         onChange={this.handleStateChangeByInput(
-                          'confirmPassword'
+                          "confirmPassword"
                         )}
                         value={confirmPassword}
                         className={s.profileInput}
                         startAdornment={<LockIcon className={s.outlineIcon} />}
-                        readOnly={editTab !== 'loginAndSecurity'}
+                        readOnly={editTab !== "loginAndSecurity"}
                       />
                     </Row>
-                    {error?.type === 'updateUser' &&
-                    error?.field === 'password' ? (
-                        <Typography textErrorRed paddingTopHalf paddingBottom>
-                          {error.msg}
-                        </Typography>
-                      ) : null}
+                    {error?.type === "updateUser" &&
+                    error?.field === "password" ? (
+                      <Typography textErrorRed paddingTopHalf paddingBottom>
+                        {error.msg}
+                      </Typography>
+                    ) : null}
                     <Row paddingTopHalf style={{ maxWidth: 370 }}>
-                      {editTab === 'loginAndSecurity' ||
-                      updatingTab === 'password' ? (
+                      {editTab === "loginAndSecurity" ||
+                      updatingTab === "password" ? (
                         // buttons for save
-                          <SaveButtons
-                            isUpdating={updatingTab === 'password'}
-                            onSave={this.handleSaveSecurityInfo}
-                            onCancel={this.handleCancelEditProfile}
-                            t={t}
-                            disabled={
-                              !!passwordError || password !== confirmPassword
-                            }
-                          />
-                        ) : (
-                          <React.Fragment>
-                            <Typography fontSizeS textMediumGrey paddingRightHalf>
-                              {t('lastUpdate')}:
-                            </Typography>
-                            <Typography fontSizeS textSecondary>
-                              {passwordLastUpdated}
-                            </Typography>
-                          </React.Fragment>
-                        )}
+                        <SaveButtons
+                          isUpdating={updatingTab === "password"}
+                          onSave={this.handleSaveSecurityInfo}
+                          onCancel={this.handleCancelEditProfile}
+                          t={t}
+                          disabled={
+                            !!passwordError || password !== confirmPassword
+                          }
+                        />
+                      ) : (
+                        <React.Fragment>
+                          <Typography fontSizeS textMediumGrey paddingRightHalf>
+                            {t("lastUpdate")}:
+                          </Typography>
+                          <Typography fontSizeS textSecondary>
+                            {passwordLastUpdated}
+                          </Typography>
+                        </React.Fragment>
+                      )}
                     </Row>
                   </Grid>
                 </Grid>
@@ -1440,13 +1446,13 @@ class Profile extends PureComponent {
                 textMediumGrey
                 classes={{ box: s.panelDivider }}
               >
-                {t('securityOptions')}
+                {t("securityOptions")}
               </Typography>
             </Row>
             <Row fullWidth paddingTopDouble paddingBottom>
               <Box>
                 <StatisticBox
-                  title={t('securityQuestion')}
+                  title={t("securityQuestion")}
                   statistics={[
                     {
                       value: (
@@ -1457,20 +1463,20 @@ class Profile extends PureComponent {
                           <CheckIcon style={{ width: 11, height: 8 }} />
                         </div>
                       ),
-                      variant: 'primary',
+                      variant: "primary",
                     },
                   ]}
                 />
               </Box>
               <Box paddingLeftHalf>
                 <StatisticBox
-                  title={t('twoFactorLogin')}
-                  statistics={[{ value: '-' }]}
+                  title={t("twoFactorLogin")}
+                  statistics={[{ value: "-" }]}
                 />
               </Box>
               <Box paddingLeftHalf>
                 <StatisticBox
-                  title={t('activeSessions')}
+                  title={t("activeSessions")}
                   statistics={[{ value: 2 }]}
                 />
               </Box>
@@ -1479,14 +1485,14 @@ class Profile extends PureComponent {
         </Row>
         <Row classes={{ box: s.profileTabWrapper }}>
           <Button
-            link="errorRedNormal"
-            background="errorRed"
+            link='errorRedNormal'
+            background='errorRed'
             inverse
             onClick={this.handleDeleteAccount}
           >
             <DeleteIcon style={{ width: 15, height: 12 }} />
             <Typography paddingLeft fontSizeS>
-              {t('deleteAccount')}
+              {t("deleteAccount")}
             </Typography>
           </Button>
         </Row>
@@ -1498,5 +1504,5 @@ class Profile extends PureComponent {
 }
 
 export default withStyles(styleSheet)(
-  withTranslation('common')(withWidth()(Profile))
+  withTranslation("common")(withWidth()(Profile))
 );
