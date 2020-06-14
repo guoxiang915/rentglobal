@@ -25,6 +25,9 @@ const styleSheet = (theme) => ({
   calendarWrapper: {
     zoom: 2,
     marginBottom: 20,
+    [theme.breakpoints.down("sm")]: {
+      zoom: "unset",
+    },
   },
 
   weekCalendarWrapper: {

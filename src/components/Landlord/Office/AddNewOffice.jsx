@@ -4,13 +4,13 @@ import { withTranslation } from "react-i18next";
 import clsx from "clsx";
 import PropTypes from "prop-types";
 import withWidth, { isWidthDown } from "@material-ui/core/withWidth";
-import { KeyboardBackspace } from "@material-ui/icons";
+import { KeyboardBackspace, Launch } from "@material-ui/icons";
 import {
   Step,
   Stepper,
   StepConnector,
   StepLabel,
-  Snackbar
+  Snackbar,
 } from "@material-ui/core";
 import { Alert } from "@material-ui/lab";
 import {
@@ -25,28 +25,28 @@ import {
   EyeIcon,
   DeleteIcon,
   EditIcon,
-  ConfirmDialog
+  ConfirmDialog,
 } from "../../../common/base-components";
 import {
   GeneralInfoForm,
   PictureGalleryForm,
   ServicesAmenitiesForm,
-  VisitAvailabilityForm
+  VisitAvailabilityForm,
 } from "./Forms";
 import OfficeDetailForm from "../../Layout/OfficeDetailForm";
 
-const styleSheet = theme => ({
+const styleSheet = (theme) => ({
   root: {
     paddingLeft: theme.spacing(5),
     paddingRight: theme.spacing(5),
     [theme.breakpoints.down("sm")]: {
       paddingLeft: 27,
-      paddingRight: 27
-    }
+      paddingRight: 27,
+    },
   },
 
   fullWidth: {
-    width: "100%"
+    width: "100%",
   },
 
   addOfficeTabWrapper: {
@@ -54,8 +54,8 @@ const styleSheet = theme => ({
     paddingBottom: 56,
     [theme.breakpoints.down("xs")]: {
       paddingTop: 8,
-      paddingBottom: 24
-    }
+      paddingBottom: 24,
+    },
   },
 
   stepper: {
@@ -63,7 +63,7 @@ const styleSheet = theme => ({
     background: "transparent",
     padding: 0,
     marginLeft: "calc(-16.67% + 35px)",
-    marginRight: "calc(-16.67% + 35px)"
+    marginRight: "calc(-16.67% + 35px)",
   },
 
   stepIcon: {
@@ -73,52 +73,52 @@ const styleSheet = theme => ({
     background: theme.colors.primary.whiteGrey,
     border: `1px solid ${theme.colors.primary.borderGrey}`,
     fontSize: "20px",
-    borderRadius: "50%"
+    borderRadius: "50%",
   },
 
   stepActiveIcon: {
     color: theme.colors.primary.white,
     background: theme.colors.primary.mainColor,
     border: `1px solid ${theme.colors.primary.mainColor}`,
-    boxShadow: `0px 6px 12px ${theme.colors.primary.mainShadow}`
+    boxShadow: `0px 6px 12px ${theme.colors.primary.mainShadow}`,
   },
 
   formButtons: {
     paddingTop: 160,
     [theme.breakpoints.down("xs")]: {
-      paddingTop: 64
-    }
-  }
+      paddingTop: 64,
+    },
+  },
 });
 
 /** Stepper connector component */
-const StepperConnector = withStyles(theme => ({
+const StepperConnector = withStyles((theme) => ({
   alternativeLabel: {
     top: 22,
     marginLeft: 2,
-    marginRight: 2
+    marginRight: 2,
   },
 
   active: {
     "& $line": {
       height: 1.5,
-      background: theme.colors.primary.mainColor
-    }
+      background: theme.colors.primary.mainColor,
+    },
   },
 
   completed: {
     "& $line": {
       height: 1.5,
-      background: theme.colors.primary.mainColor
-    }
+      background: theme.colors.primary.mainColor,
+    },
   },
 
   line: {
     height: 1,
     border: 0,
     borderRadius: 0.5,
-    backgroundColor: theme.colors.primary.borderGrey
-  }
+    backgroundColor: theme.colors.primary.borderGrey,
+  },
 }))(StepConnector);
 
 /** Stepper icon component */
@@ -128,7 +128,7 @@ const StepperIcon = ({ classes, icon, active, completed }) => (
       box: clsx(
         classes.stepIcon,
         (active || completed) && classes.stepActiveIcon
-      )
+      ),
     }}
     alignChildrenCenter
     justifyChildrenCenter
@@ -152,7 +152,7 @@ class AddNewOffice extends PureComponent {
     onEditOffice: PropTypes.func,
     onDeleteOffice: PropTypes.func,
     classes: PropTypes.object,
-    t: PropTypes.func
+    t: PropTypes.func,
   };
 
   state = {
@@ -161,7 +161,7 @@ class AddNewOffice extends PureComponent {
     error: null,
     isLoading: false,
     currentStep: 0,
-    dialog: null
+    dialog: null,
   };
 
   steps = [
@@ -169,9 +169,9 @@ class AddNewOffice extends PureComponent {
     { title: this.props.t("pictureGallery"), form: PictureGalleryForm },
     {
       title: this.props.t("servicesAndAmenities"),
-      form: ServicesAmenitiesForm
+      form: ServicesAmenitiesForm,
     },
-    { title: this.props.t("visitAvailability"), form: VisitAvailabilityForm }
+    { title: this.props.t("visitAvailability"), form: VisitAvailabilityForm },
   ];
 
   /**
@@ -181,7 +181,7 @@ class AddNewOffice extends PureComponent {
   componentDidMount() {
     const { officeId, editMode = false, getOfficeById } = this.props;
     if (officeId) {
-      getOfficeById(officeId).then(response => {
+      getOfficeById(officeId).then((response) => {
         if (response.status === 200) {
           const office = response.data;
           let currentStep = 0;
@@ -197,7 +197,7 @@ class AddNewOffice extends PureComponent {
    * @member
    * @param {string} path Path to navigate
    */
-  navigate = path => () => {
+  navigate = (path) => () => {
     this.props.navigate(path);
   };
 
@@ -206,7 +206,7 @@ class AddNewOffice extends PureComponent {
    * @member
    * @param {string} field Name of field to be updated
    */
-  updateState = field => value => {
+  updateState = (field) => (value) => {
     this.setState({ [field]: value });
   };
 
@@ -215,7 +215,7 @@ class AddNewOffice extends PureComponent {
    * @member
    * @param {string} field Name of field to be updated
    */
-  handleChangeByEvent = field => value => () => {
+  handleChangeByEvent = (field) => (value) => () => {
     this.setState({ [field]: value });
   };
 
@@ -233,7 +233,7 @@ class AddNewOffice extends PureComponent {
     this.setState({
       dialog: (
         <ConfirmDialog
-          variant="error"
+          variant='error'
           text={this.props.t("confirmLeavePage")}
           closeLabel={
             <React.Fragment>
@@ -250,7 +250,7 @@ class AddNewOffice extends PureComponent {
           onConfirm={this.navigate("offices")}
           onClose={this.closeDialog}
         />
-      )
+      ),
     });
   };
 
@@ -268,67 +268,67 @@ class AddNewOffice extends PureComponent {
   };
 
   /** Save office info */
-  saveCurrentStep = office => {
+  saveCurrentStep = (office) => {
     this.setState({ isLoading: false });
     let result = Promise.reject("");
 
     switch (this.state.currentStep) {
-    case 0:
-      if (office._id) {
-        result = this.props.updateOffice(office);
-      } else {
-        result = this.props.createOffice(office);
-      }
-      break;
-    case 1:
-      if (office) {
-        result = Promise.resolve({ data: office });
-      }
-      break;
-    case 2:
-      if (office) {
-        result = this.props.createOfficeServicesAmenities(
-          this.state.office._id,
-          office.servicesAndAmenities
-        );
-      }
-      break;
-    case 3:
-      if (office) {
-        const visitHours = office;
-        result = this.props.saveVisibility(this.state.office._id, visitHours);
-      }
-      break;
-    case 4:
-      if (office) {
-        result = this.props.publishOffice(this.state.office._id);
-      }
-      break;
-    default:
-      break;
+      case 0:
+        if (office._id) {
+          result = this.props.updateOffice(office);
+        } else {
+          result = this.props.createOffice(office);
+        }
+        break;
+      case 1:
+        if (office) {
+          result = Promise.resolve({ data: office });
+        }
+        break;
+      case 2:
+        if (office) {
+          result = this.props.createOfficeServicesAmenities(
+            this.state.office._id,
+            office.servicesAndAmenities
+          );
+        }
+        break;
+      case 3:
+        if (office) {
+          const visitHours = office;
+          result = this.props.saveVisibility(this.state.office._id, visitHours);
+        }
+        break;
+      case 4:
+        if (office) {
+          result = this.props.publishOffice(this.state.office._id);
+        }
+        break;
+      default:
+        break;
     }
 
     return result.then(
-      response => {
+      (response) => {
         this.setState({
           isLoading: false,
           office: response.data,
           error: null,
           snackMsg: {
             severity: "success",
-            msg: this.props.t("savedSuccessfully")
-          }
+            msg: this.props.t("savedSuccessfully"),
+          },
         });
         return Promise.resolve(response);
       },
-      error => {
+      (error) => {
         this.setState({
           isLoading: false,
           error: error.response.data.msg,
           snackMsg: {
             severity: "error",
-            msg: this.props.t("errorInValidation")
-          }
+            msg: this.props.t("errorInValidation"),
+          },
         });
         return Promise.reject(error);
       }
@@ -349,8 +349,8 @@ class AddNewOffice extends PureComponent {
         this.setState({
           snackMsg: {
             severity: "error",
-            msg: this.props.t("photoCountLimitError")
-          }
+            msg: this.props.t("photoCountLimitError"),
+          },
         });
         return;
       }
@@ -383,8 +383,26 @@ class AddNewOffice extends PureComponent {
     this.props.onDeleteOffice(this.state.office._id);
   };
 
+  /** Event for preview office */
+  handlePreviewOffice = () => {
+    const { office } = this.state;
+    window.open(
+      [
+        "/offices",
+        office.refId,
+        office.location.country,
+        this.props.t(office.officeType),
+        office.numberOfEmployees + "-" + this.props.t("employees"),
+        office.refId + "-" + office.title,
+      ]
+        .join("/")
+        .replace(/\s+/g, "-"),
+      "_blank"
+    );
+  };
+
   /** Show snack msg */
-  handleShowSnackMsg = snackMsg => {
+  handleShowSnackMsg = (snackMsg) => {
     this.setState({ snackMsg });
   };
 
@@ -395,7 +413,7 @@ class AddNewOffice extends PureComponent {
 
   /** Upload office cover photoes */
   uploadOfficePhoto = (officeId, file) => {
-    return this.props.uploadOfficePhoto(officeId, file).then(response => {
+    return this.props.uploadOfficePhoto(officeId, file).then((response) => {
       if (response.status === 200) {
         this.setState({ office: response.data });
       }
@@ -405,7 +423,7 @@ class AddNewOffice extends PureComponent {
 
   /** Delete office cover photoes */
   deleteOfficePhoto = (officeId, fileId) => {
-    return this.props.deleteOfficePhoto(officeId, fileId).then(response => {
+    return this.props.deleteOfficePhoto(officeId, fileId).then((response) => {
       if (response.status === 200) {
         this.setState({ office: response.data });
       }
@@ -424,7 +442,7 @@ class AddNewOffice extends PureComponent {
       isLoading,
       currentStep,
       dialog,
-      snackMsg
+      snackMsg,
     } = this.state;
     const CurrentForm =
       currentStep < this.steps.length
@@ -445,13 +463,13 @@ class AddNewOffice extends PureComponent {
             {currentStep === this.steps.length
               ? t("preview")
               : editMode
-                ? t("editOffice")
-                : t("addNewOffice")}
+              ? t("editOffice")
+              : t("addNewOffice")}
           </Typography>
           <Stretch />
           <Button
-            link="secondary"
-            background="secondaryLight"
+            link='secondary'
+            background='secondaryLight'
             onClick={this.backCurrentStep}
           >
             <KeyboardBackspace />
@@ -465,7 +483,7 @@ class AddNewOffice extends PureComponent {
           <Row fullWidth paddingTop paddingBottom>
             {/** Show publish button */}
             <Button
-              variant="primary"
+              variant='primary'
               onClick={() => this.saveAndNextCurrentStep(this.state.office, t)}
               style={{ width: 190 }}
               shadow
@@ -479,13 +497,14 @@ class AddNewOffice extends PureComponent {
 
             {/** Show delete button */}
             <Button
-              link="errorRedNormal"
-              background="errorRedLight"
+              link='errorRedNormal'
+              background='errorRedLight'
               inverse
               onClick={this.handleDeleteOffice}
               variant={isWidthDown("xs", width) ? "icon" : ""}
+              style={{ maxWidth: 120 }}
             >
-              <DeleteIcon style={{ width: 20, height: 18 }} />
+              <DeleteIcon style={{ width: 18, height: 18 }} />
               {!isWidthDown("xs", width) ? (
                 <Typography paddingLeft fontSizeS>
                   {t("delete")}
@@ -497,13 +516,14 @@ class AddNewOffice extends PureComponent {
             {/** Show edit button */}
             {!editMode && (
               <Button
-                link="primary"
-                background="normalLight"
+                link='primary'
+                background='normalLight'
                 inverse
                 onClick={this.handleEditOffice}
                 variant={isWidthDown("xs", width) ? "icon" : ""}
+                style={{ maxWidth: 100 }}
               >
-                <EditIcon style={{ width: 20, height: 18 }} />
+                <EditIcon style={{ width: 18, height: 18 }} />
                 {!isWidthDown("xs", width) ? (
                   <Typography paddingLeft fontSizeS>
                     {t("edit")}
@@ -511,6 +531,25 @@ class AddNewOffice extends PureComponent {
                 ) : null}
               </Button>
             )}
+            <Box paddingLeft />
+
+            {/** Show preview button */}
+            <Button
+              link='primary'
+              background='normalLight'
+              inverse
+              onClick={this.handlePreviewOffice}
+              variant={isWidthDown("xs", width) ? "icon" : ""}
+              style={{ maxWidth: 120 }}
+            >
+              {/* <PreviewIcon style={{ width: 20, height: 18 }} /> */}
+              <Launch style={{ width: 18, height: 18 }} />
+              {!isWidthDown("xs", width) ? (
+                <Typography paddingLeft fontSizeS>
+                  {t("preview")}
+                </Typography>
+              ) : null}
+            </Button>
           </Row>
         ) : (
           /** stepper */
@@ -526,7 +565,7 @@ class AddNewOffice extends PureComponent {
                   {this.steps.map((label, index) => (
                     <Step key={index}>
                       <StepLabel
-                        StepIconComponent={props => (
+                        StepIconComponent={(props) => (
                           <StepperIcon {...props} classes={s} />
                         )}
                       />
@@ -578,7 +617,7 @@ class AddNewOffice extends PureComponent {
               editMode={editMode}
               onCancel={this.cancelAddOffice}
               onSave={this.saveCurrentStep}
-              onNext={office => this.saveAndNextCurrentStep(office, t)}
+              onNext={(office) => this.saveAndNextCurrentStep(office, t)}
               isLoading={isLoading}
             />
           </Row>
@@ -591,7 +630,7 @@ class AddNewOffice extends PureComponent {
             >
               {/** Show publish button */}
               <Button
-                variant="primary"
+                variant='primary'
                 onClick={() =>
                   this.saveAndNextCurrentStep(this.state.office, t)
                 }

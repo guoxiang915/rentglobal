@@ -101,7 +101,8 @@ export { default as TrainIcon } from "../../assets/icon/icon_train";
 export { default as BusIcon } from "../../assets/icon/icon_bus";
 export { default as ArrowRightIcon } from "../../assets/icon/icon_arrow_right";
 export { default as LinkIcon } from "../../assets/icon/icon_link";
+export { default as PreviewIcon } from "../../assets/icon/icon_preview";
 
-export const ProgressIcon = props => (
-  <CircularProgress color="primary" size={36} {...props} />
+export const ProgressIcon = (props) => (
+  <CircularProgress color='primary' size={36} {...props} />
 );

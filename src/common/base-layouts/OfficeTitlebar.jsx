@@ -10,26 +10,26 @@ import {
   Column,
   Typography,
   StarIcon,
-  Button
+  Button,
 } from "../../common/base-components";
 import { numberWithSpaces } from "../../utils/formatters";
 import Sticky from "react-sticky";
 
-const styleSheet = theme => ({
+const styleSheet = (theme) => ({
   favoriteIcon: {
     width: 17,
-    height: 16
+    height: 16,
   },
 
   stickyBox: {
     background: theme.colors.primary.mainColor,
     paddingTop: 8,
     paddingBottom: 24,
-    zIndex: 3
+    zIndex: 3,
   },
 
   titleBar: {
-    position: "relative"
+    position: "relative",
   },
 
   stickyTitleBar: {
@@ -42,20 +42,20 @@ const styleSheet = theme => ({
       marginLeft: -27,
       marginRight: -27,
       paddingLeft: 27,
-      paddingRight: 27
-    }
+      paddingRight: 27,
+    },
   },
 
   titleBarHolder: {
     height: 52,
     [theme.breakpoints.down("xs")]: {
-      height: 84
-    }
+      height: 84,
+    },
   },
 
   iconButton: {
-    padding: "7px 14px"
-  }
+    padding: "7px 14px",
+  },
 });
 
 class OfficeTitlebar extends PureComponent {
@@ -70,7 +70,7 @@ class OfficeTitlebar extends PureComponent {
         styles: PropTypes.any,
         revertStyles: PropTypes.any,
         onClick: PropTypes.func,
-        hideIcon: PropTypes.bool
+        hideIcon: PropTypes.bool,
       })
     ),
     /** form max-width */
@@ -79,7 +79,7 @@ class OfficeTitlebar extends PureComponent {
     topOffset: PropTypes.number,
 
     classes: PropTypes.object,
-    t: PropTypes.func
+    t: PropTypes.func,
   };
 
   render() {
@@ -90,7 +90,7 @@ class OfficeTitlebar extends PureComponent {
       office,
       actions,
       maxWidth,
-      topOffset
+      topOffset,
     } = this.props;
 
     return (
@@ -104,7 +104,7 @@ class OfficeTitlebar extends PureComponent {
                   position: isSticky ? style.position : "absolute",
                   top: isSticky ? 95 : 0,
                   left: 0,
-                  width: "100%"
+                  width: "100%",
                 }}
                 className={clsx(isSticky && s.stickyBox)}
               >
@@ -116,10 +116,10 @@ class OfficeTitlebar extends PureComponent {
                   style={{
                     left: style.left,
                     maxWidth: maxWidth,
-                    flexDirection: isSticky ? "row" : "row-reverse"
+                    flexDirection: isSticky ? "row" : "row-reverse",
                   }}
                   classes={{
-                    box: clsx(s.titleBar, isSticky && s.stickyTitleBar)
+                    box: clsx(s.titleBar, isSticky && s.stickyTitleBar),
                   }}
                 >
                   {/** Show office title */}
@@ -146,7 +146,7 @@ class OfficeTitlebar extends PureComponent {
                             <Button
                               {...action.styles}
                               {...[(isSticky && action.revertStyles) || {}][0]}
-                              onClick={e => action.onClick?.(e)}
+                              onClick={(e) => action.onClick?.(e)}
                               className={clsx(
                                 isWidthDown("xs", width) && s.iconButton
                               )}
@@ -189,7 +189,6 @@ class OfficeTitlebar extends PureComponent {
             </div>
           )}
         </Sticky>
-
         <Row paddingTopHalf fontSizeM textSecondary fontWeightBold>
           {t(office.officeType)}
         </Row>
@@ -197,31 +196,27 @@ class OfficeTitlebar extends PureComponent {
           {t("dollarPerMonth", { dollar: office.priceMonthly || 0 })}
         </Row>
         {office.published && (
-          <React.Fragment>
-            {
-              // office.rating &&
-              <Row paddingTopHalf>
-                <Typography textPrimary>
-                  <StarIcon style={{ width: 12, height: 12 }} />
-                </Typography>
-                <Typography fontSizeS textSecondary paddingLeftHalf>
-                  3.5 {/* office.rating */}
-                </Typography>
-              </Row>
-            }
-            {office.refId ? (
-              <Row paddingTopHalf>
-                <Typography fontSizeS textSecondary>
-                  {t("refID")}
-                  :&nbsp;
-                </Typography>
-                <Typography fontSizeM fontWeightBold textSecondary>
-                  #{numberWithSpaces(office.refId + 1, 3)}
-                </Typography>
-              </Row>
-            ) : null}
-          </React.Fragment>
+          // office.rating &&
+          <Row paddingTopHalf>
+            <Typography textPrimary>
+              <StarIcon style={{ width: 12, height: 12 }} />
+            </Typography>
+            <Typography fontSizeS textSecondary paddingLeftHalf>
+              3.5 {/* office.rating */}
+            </Typography>
+          </Row>
         )}
+        {(office.refId ?? false) !== false ? (
+          <Row paddingTopHalf>
+            <Typography fontSizeS textSecondary>
+              {t("refID")}
+              :&nbsp;
+            </Typography>
+            <Typography fontSizeM fontWeightBold textSecondary>
+              #{numberWithSpaces(office.refId + 1, 3)}
+            </Typography>
+          </Row>
+        ) : null}
       </Column>
     );
   }
