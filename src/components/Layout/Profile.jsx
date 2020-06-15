@@ -36,8 +36,11 @@ import {
   UploadIcon,
   DeleteIcon,
   ProgressIcon,
+  PreviewIcon,
   Select,
+  Stretch,
 } from "../../common/base-components";
+import { Launch as LaunchIcon } from "@material-ui/icons";
 import {
   UploadDocument,
   TabWrapper,
@@ -482,9 +485,9 @@ class Profile extends PureComponent {
       postalCode,
       companySize,
       companyType,
-      description,
+      shortDescription,
     } = this.state;
-    const { user } = this.props.auth;
+    const { user, userRole } = this.props.auth;
 
     if (avatar && avatar._id && avatar._id !== user.avatar?._id) {
       this.props.updateUser("avatar", {
@@ -496,7 +499,12 @@ class Profile extends PureComponent {
       username !== user.generalInfo?.username ||
       phoneNumber !== user.generalInfo?.phoneNumber?.number ||
       address !== user.generalInfo?.address ||
-      postalCode !== user.generalInfo?.address?.postalCode
+      postalCode !== user.generalInfo?.address?.postalCode ||
+      (userRole === 'company' && (
+        companySize !== user.companyProfile?.companySize ||
+        companyType !== user.companyProfile?.companyType ||
+        shortDescription !== user.companyProfile?.shortDescription
+      ))
     ) {
       this.props.updateUser("profile", {
         userRole: this.props.auth.userRole,
@@ -507,11 +515,15 @@ class Profile extends PureComponent {
           address: { ...address, postalCode },
           companySize,
           companyType,
-          description,
+          shortDescription,
         },
       });
     }
     this.setState({ editTab: null });
+  };
+
+  handlePreviewAccount = () => {
+    console.log('Preview company profile');
   };
 
   /** Save security information */
@@ -577,6 +589,9 @@ class Profile extends PureComponent {
       address: user.generalInfo?.address || {},
       postalCode: user.generalInfo?.address?.postalCode || "",
       avatar: user.avatar || null,
+      companySize: user.companyProfile?.companySize || 0,
+      companyType: user.companyProfile?.companyType || '',
+      shortDescription: user.companyProfile?.shortDescription || '',
     });
   };
 
@@ -783,7 +798,7 @@ class Profile extends PureComponent {
     const profile =
       userRole === "landlord" ? user.landlordProfile : user.companyProfile;
 
-    const companyTypes = ["independent"];
+    const companyTypes = ["SARL", "EURL", "SELARL", "SA", "SAS", "SASU", "SNC", "SCP"];
 
     const {
       avatar,
@@ -853,6 +868,9 @@ class Profile extends PureComponent {
             isEdit={editTab === "generalInfo" || updatingTab === "profile"}
             isEditable={editTab === null}
             onToggleEdit={this.handleToggleEdit("generalInfo")}
+            showSaveButton={userRole === "company"}
+            showPreviewButton={userRole === "company" && !isWidthDown("xs", width)}
+            onSave={this.handleSaveGeneralInfo}
           >
             <Row fullWidth>
               <form noValidate autoComplete='off' className={s.generalInfoForm}>
@@ -1236,7 +1254,7 @@ class Profile extends PureComponent {
                                 options={["", ...companyTypes]}
                                 renderOption={(item) =>
                                   !item
-                                    ? t("selectOne")
+                                    ? t("companyType")
                                     : typeof item === "object"
                                       ? t(...item)
                                       : t(item)
@@ -1258,7 +1276,7 @@ class Profile extends PureComponent {
                       </React.Fragment>
                     )}
                     {(editTab === "generalInfo" ||
-                      updatingTab === "profile") && (
+                      updatingTab === "profile") && userRole === "landlord" && (
                       // buttons for save
                       <Row paddingTopHalf style={{ maxWidth: 370 }}>
                         <SaveButtons
@@ -1483,18 +1501,53 @@ class Profile extends PureComponent {
             </Row>
           </TabWrapper>
         </Row>
-        <Row classes={{ box: s.profileTabWrapper }}>
-          <Button
-            link='errorRedNormal'
-            background='errorRed'
-            inverse
-            onClick={this.handleDeleteAccount}
-          >
-            <DeleteIcon style={{ width: 15, height: 12 }} />
-            <Typography paddingLeft fontSizeS>
-              {t("deleteAccount")}
-            </Typography>
-          </Button>
+        <Row classes={{ box: s.profileTabWrapper }} fullWidth>
+          {userRole === "landlord" &&
+            <Button
+              link="errorRedNormal"
+              background="errorRed"
+              inverse
+              onClick={this.handleDeleteAccount}
+            >
+              <DeleteIcon style={{ width: 15, height: 12 }} />
+              <Typography paddingLeft fontSizeS>
+                {t("deleteAccount")}
+              </Typography>
+            </Button>
+          }
+          {!isWidthDown("xs", width) &&
+            <Stretch />
+          }
+          {userRole === "company" && isWidthDown("xs", width) && editTab &&
+            <Box>
+              <Button
+                link="primary"
+                background="normalLight"
+                inverse
+                onClick={this.handlePreviewAccount}
+              >
+                <LaunchIcon style={{ width: 16, height: 16 }} />
+                <Typography paddingLeft fontSizeS>
+                  {t("preview")}
+                </Typography>
+              </Button>
+            </Box>
+          }
+          {isWidthDown("xs", width) &&
+            <Stretch />
+          }
+          {editTab &&
+            <Button
+              link="white"
+              background="primary"
+              inverse
+              onClick={this.handleSaveGeneralInfo}
+            >
+              <Typography fontSizeS>
+                {t("save")}
+              </Typography>
+            </Button>
+          }
         </Row>
         {/* Show dialog */}
         {dialog}

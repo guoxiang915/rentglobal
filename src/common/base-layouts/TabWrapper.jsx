@@ -15,6 +15,7 @@ import {
   CloseIcon,
   EditIcon,
 } from '../base-components';
+import { Launch as LaunchIcon } from "@material-ui/icons";
 
 
 /**
@@ -52,6 +53,9 @@ const TabWrapper = (props) => {
     color,
     t,
     title,
+    showSaveButton = false,
+    showPreviewButton = false,
+    onSave,
   } = props;
 
   const [openS, setOpenS] = useState(!!open);
@@ -86,7 +90,7 @@ const TabWrapper = (props) => {
           )}
         </Box>
         <Stretch />
-        {isEdit ? (
+        {isEdit && !showSaveButton && (
           <Button
             link="errorRed"
             background="errorRedLight"
@@ -98,20 +102,51 @@ const TabWrapper = (props) => {
               {t('cancel')}
             </Typography>
           </Button>
-        ) : (
-          isEditable && (
-            <Button
-              link="primary"
-              background="normalLight"
-              inverse
-              onClick={onToggleEdit}
-            >
-              <EditIcon style={{ width: 16, height: 16 }} />
-              <Typography paddingLeft fontSizeS>
-                {t('edit')}
-              </Typography>
-            </Button>
-          )
+        )}
+        {isEdit && showSaveButton && (
+          <>
+            {showPreviewButton &&
+              <Box>
+                <Button
+                  link="primary"
+                  background="normalLight"
+                  inverse
+                  onClick={onToggleEdit}
+                >
+                  <LaunchIcon style={{ width: 16, height: 16 }} />
+                  <Typography paddingLeft fontSizeS>
+                    {t('preview')}
+                  </Typography>
+                </Button>
+              </Box>
+            }
+            <Box paddingLeft>
+              <Button
+                link="white"
+                background="primary"
+                inverse
+                onClick={onSave}
+                paddingLeft
+              >
+                <Typography fontSizeS>
+                  {t('save')}
+                </Typography>
+              </Button>
+            </Box>
+          </>
+        )}
+        {!isEdit && isEditable && (
+          <Button
+            link="primary"
+            background="normalLight"
+            inverse
+            onClick={onToggleEdit}
+          >
+            <EditIcon style={{ width: 16, height: 16 }} />
+            <Typography paddingLeft fontSizeS>
+              {t('edit')}
+            </Typography>
+          </Button>
         )}
         {actionButton}
       </Row>

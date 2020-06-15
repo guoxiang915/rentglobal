@@ -589,5 +589,14 @@
   "shortDescription": "Short description",
   "requestForEdit": "Request for edit",
   "reasonOfDecline": "Reason of decline",
-  "writeReasonToDecline": "Write your reason to decline company name visit request."
+  "writeReasonToDecline": "Write your reason to decline company name visit request.",
+  "companyType": "Company type",
+  "SARL": "SARL",
+  "EURL": "EURL",
+  "SELARL": "SELARL",
+  "SA": "SA",
+  "SAS": "SAS",
+  "SASU": "SASU",
+  "SNC": "SNC",
+  "SCP": "SCP"
 }
