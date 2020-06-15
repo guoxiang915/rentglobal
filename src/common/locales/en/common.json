@@ -598,5 +598,8 @@
   "SAS": "SAS",
   "SASU": "SASU",
   "SNC": "SNC",
-  "SCP": "SCP"
+  "SCP": "SCP",
+
+  "welcomeToCompany": "Welcome to company control panel",
+  "myOffices": "My Offices"
 }
