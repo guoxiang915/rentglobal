@@ -11,14 +11,14 @@ import {
   Box,
   Typography,
   CalendarIcon,
-  CarouselWrapper
+  CarouselWrapper,
 } from "../../../common/base-components";
 import { TabWrapper, StatisticIconBox } from "../../../common/base-layouts";
 import { ConditionalWrapper } from "../../../utils/helpers";
 import CalendarOverview from "./CalendarOverview";
 import CalendarSetting from "./CalendarSetting";
 
-const styleSheet = theme => ({
+const styleSheet = (theme) => ({
   root: {
     paddingLeft: theme.spacing(5),
     paddingRight: theme.spacing(5),
@@ -26,19 +26,19 @@ const styleSheet = theme => ({
     [theme.breakpoints.down("sm")]: {
       paddingLeft: 27,
       paddingRight: 27,
-      marginBottom: 80
-    }
+      marginBottom: 80,
+    },
   },
 
   tabs: {
     marginTop: 12,
     width: "100%",
-    borderBottom: `1px solid ${theme.colors.primary.borderGrey}`
+    borderBottom: `1px solid ${theme.colors.primary.borderGrey}`,
   },
 
   indicator: {
     borderRadius: 2,
-    height: 4
+    height: 4,
   },
 
   tab: {
@@ -47,17 +47,17 @@ const styleSheet = theme => ({
     padding: "16px 0px",
     marginRight: 28,
     [theme.breakpoints.down("xs")]: {
-      marginRight: 16
-    }
+      marginRight: 16,
+    },
   },
 
   lightIcon: {
     color: theme.colors.primary.darkGrey,
-    opacity: 0.15
+    opacity: 0.15,
   },
 
   tabWrapper: {
-    paddingTop: 28
+    paddingTop: 28,
   },
 
   statisticBoxWrapper: {},
@@ -67,9 +67,9 @@ const styleSheet = theme => ({
     padding: 0,
     paddingRight: 8,
     "&:last-of-type": {
-      paddingRight: 0
-    }
-  }
+      paddingRight: 0,
+    },
+  },
 });
 
 class Calendar extends PureComponent {
@@ -77,7 +77,7 @@ class Calendar extends PureComponent {
     navigate: PropTypes.func,
 
     classes: PropTypes.object,
-    t: PropTypes.func
+    t: PropTypes.func,
   };
 
   statistics = [
@@ -85,24 +85,24 @@ class Calendar extends PureComponent {
       title: "visitRequests",
       value: 4,
       icon: CalendarIcon,
-      onClick: () => this.props.navigate("calendar/visit-requests")
+      onClick: () => this.props.navigate("calendar/visit-requests"),
     },
     {
       title: "personalEvents",
       value: 7,
-      icon: CalendarIcon
+      icon: CalendarIcon,
     },
     {
       title: "acceptedVisitRequests",
       value: 18,
-      icon: CalendarIcon
-    }
+      icon: CalendarIcon,
+    },
   ];
 
   constructor(props) {
     super(props);
     this.state = {
-      currentTab: "overview"
+      currentTab: "overview",
     };
   }
 
@@ -139,7 +139,7 @@ class Calendar extends PureComponent {
         >
           <ConditionalWrapper
             condition={isWidthDown("sm", width)}
-            wrapper={children => (
+            wrapper={(children) => (
               <TabWrapper
                 open
                 insideOpen
@@ -177,9 +177,9 @@ class Calendar extends PureComponent {
           <Tabs
             value={currentTab}
             onChange={this.handleChangeTab}
-            aria-label="wrapped label tabs"
-            indicatorColor="primary"
-            textColor="primary"
+            aria-label='wrapped label tabs'
+            indicatorColor='primary'
+            textColor='primary'
             classes={{ root: s.tabs, indicator: s.indicator }}
           >
             <Tab
@@ -211,7 +211,11 @@ class Calendar extends PureComponent {
 
         <Row fullWidth paddingBottom>
           {currentTab === "overview" && (
-            <CalendarOverview navigate={this.props.navigate} />
+            <CalendarOverview
+              navigate={this.props.navigate}
+              onAcceptVisitRequest={this.props.onAcceptVisitRequest}
+              onDeclineVisitRequest={this.props.onDeclineVisitRequest}
+            />
           )}
           {currentTab === "setting" && (
             <CalendarSetting navigate={this.props.navigate} />

@@ -14,13 +14,11 @@ import {
   Typography,
   Button,
   Divider,
-  DeleteConfirmDialog,
 } from "../../../common/base-components";
 import {
   SearchbarWithSorter,
   VisitRequestItem,
 } from "../../../common/base-layouts";
-import VisitRequestAcceptedDialog from "../../Layout/Dialogs/VisitRequestAcceptedDialog";
 
 const OFFICES_PER_PAGE = 6;
 
@@ -48,6 +46,8 @@ const styleSheet = (theme) => ({
 class VisitRequests extends PureComponent {
   static propTypes = {
     navigate: PropTypes.func,
+    onAcceptVisitRequest: PropTypes.func,
+    onDeclineVisitRequest: PropTypes.func,
     classes: PropTypes.object,
     t: PropTypes.func,
   };
@@ -103,40 +103,15 @@ class VisitRequests extends PureComponent {
   };
 
   handleClickApproveVisitRequest = (visitRequest) => {
-    this.setState({
-      dialog: (
-        <VisitRequestAcceptedDialog
-          onClose={this.handleCloseDialog}
-          onBack={this.handleBack}
-        />
-      ),
-    });
+    if (this.props.onAcceptVisitRequest) {
+      this.props.onAcceptVisitRequest(visitRequest);
+    }
   };
 
   handleClickRejectVisitRequest = (visitRequest) => {
-    this.setState({
-      dialog: (
-        <DeleteConfirmDialog
-          text={this.props.t("confirmDelete")}
-          onClose={this.handleCloseDialog}
-          onConfirm={() => this.handleRejectVisitRequest(visitRequest)}
-        />
-      ),
-    });
-  };
-
-  handleCloseDialog = () => {
-    this.setState({ dialog: null });
-  };
-
-  handleApproveVisitRequest = (visitRequest) => {
-    /** Handle approve visit request by calling api */
-    console.log(visitRequest);
-  };
-
-  handleRejectVisitRequest = (visitRequest) => {
-    /** Handle reject visit request by calling api */
-    console.log(visitRequest);
+    if (this.props.onDeclineVisitRequest) {
+      this.props.onDeclineVisitRequest(visitRequest);
+    }
   };
 
   /**

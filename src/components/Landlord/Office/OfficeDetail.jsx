@@ -466,7 +466,11 @@ class OfficeDetail extends PureComponent {
             <OfficeReviews officeId={this.props.officeId} />
           )}
           {office && currentTab === "calendar" && (
-            <OfficeCalendar officeId={this.props.officeId} />
+            <OfficeCalendar
+              officeId={this.props.officeId}
+              onAcceptVisitRequest={this.props.onAcceptVisitRequest}
+              onDeclineVisitRequest={this.props.onDeclineVisitRequest}
+            />
           )}
           {office && currentTab === "report" && (
             <OfficeReport officeId={this.props.officeId} />
