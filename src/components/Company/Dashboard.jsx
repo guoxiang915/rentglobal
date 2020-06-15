@@ -1,5 +1,6 @@
 import React, { PureComponent, useEffect } from "react";
 import { withStyles } from "@material-ui/core/styles";
+import clsx from "clsx";
 import { withRouter } from "react-router-dom";
 import { withTranslation } from "react-i18next";
 import withWidth, { isWidthDown } from "@material-ui/core/withWidth";
@@ -28,7 +29,10 @@ import {
   CalendarIcon,
   AdjustIcon,
   CloseIcon,
-  CarouselWrapper
+  CarouselWrapper,
+  TextField,
+  TessiIcon,
+  SearchIcon,
 } from "../../common/base-components";
 import { formatDate, getWeekday } from "../../utils/formatters";
 import { getProfileStatus } from "../../utils/validators";
@@ -68,10 +72,33 @@ const styleSheet = theme => ({
     color: theme.colors.primary.darkGrey
   },
 
+  searchBoxPanel: {
+    padding: "23px 33px 27px",
+    background: theme.colors.primary.mainColor,
+    borderRadius: 8,
+  },
+
+  searchInputBox: {
+    maxWidth: 500,
+  },
+
+  searchInput: {
+    backgroundColor: theme.colors.primary.white,
+  },
+
+  searchInputProps: {
+    color: theme.colors.primary.darkGrey,
+
+    '&::placeholder': {
+      opacity: 1,
+    },
+  },
+
   profilePanel: {
     background: theme.colors.primary.white,
     padding: "23px 33px 27px",
-    position: "relative"
+    position: "relative",
+    borderRadius: 8,
   },
 
   accountAvatar: {
@@ -114,8 +141,8 @@ const styleSheet = theme => ({
   },
 
   officesMapWrapper: {
-    marginTop: 40,
-    marginBottom: 40,
+    marginTop: 20,
+    marginBottom: 20,
     width: "100%"
   },
 
@@ -314,6 +341,18 @@ class Dashboard extends PureComponent {
     console.log('preview');
   };
 
+  handleChangeTessiQuery = (e) => {
+    this.setState({ tessiQuery: e.target.value });
+  };
+
+  handleChatOrSearch = (tessiQuery) => {
+    if (/hi/i.test(tessiQuery)) {
+      // TODO: goto chat page
+    } else if (tessiQuery) {
+      this.props.navigate("/search");
+    }
+  };
+
   renderDateTime = () => {
     const [time, setTime] = React.useState(new Date());
 
@@ -348,6 +387,7 @@ class Dashboard extends PureComponent {
       currentOffice,
       showOfficeFilters,
       currentOfficeFilter,
+      tessiQuery,
     } = this.state;
     const { user, userRole } = this.props.auth;
     const profileStatus = getProfileStatus(user, userRole);
@@ -401,6 +441,70 @@ class Dashboard extends PureComponent {
               <DateTime />
             </React.Fragment>
           ) : null}
+        </Row>
+
+        {/** show search box */}
+        <Box paddingTopDouble />
+        <Row classes={{ box: s.searchBoxPanel }} fullWidth wrap justifyChildrenCenter>
+          <TextField
+            fullWidth
+            variant='outlined'
+            value={tessiQuery}
+            onChange={this.handleChangeTessiQuery}
+            placeholder={t("sayHiOrSearch")}
+            className={s.searchInputBox}
+            classes={{ root: clsx(s.searchInput) }}
+            styles={{
+              input: clsx(
+                s.searchInputProps,
+                tessiQuery && s.limitedSearchInputProps
+              ),
+            }}
+            endAdornment={
+              <Button
+                variant='icon'
+                background='primary'
+                style={{ margin: 0 }}
+                className={clsx(
+                  s.inputButtonIcon,
+                  s.searchInputIcon,
+                  tessiQuery && s.landingButton
+                )}
+                shadow
+                onClick={() => this.handleChatOrSearch(tessiQuery)}
+              >
+                {!tessiQuery ? (
+                  <ArrowRightAltIcon
+                    style={{
+                      color: "white",
+                      width: 18,
+                      height: 18,
+                    }}
+                  />
+                ) : /hi/i.test(tessiQuery) ? (
+                  <Typography
+                    fontSizeS
+                    fontWeightBold
+                    textWhite
+                    alignChildrenCenter
+                  >
+                    <TessiIcon style={{ stroke: "white" }} />
+                    <Typography paddingLeft>{t("chatWithTessi")}</Typography>
+                  </Typography>
+                ) : (
+                  <Typography
+                    fontSizeS
+                    fontWeightBold
+                    textWhite
+                    alignChildrenCenter
+                  >
+                    <SearchIcon />
+                    <Typography paddingLeft>{t("advancedSearch")}</Typography>
+                  </Typography>
+                )}
+              </Button>
+            }
+          />
         </Row>
 
         {/** show profile */}
