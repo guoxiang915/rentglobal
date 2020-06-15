@@ -587,5 +587,14 @@
   "send": "Send",
   "companySize": "Company size",
   "shortDescription": "Short description",
-  "requestForEdit": "Request for edit"
+  "requestForEdit": "Request for edit",
+  "companyType": "Company type",
+  "SARL": "SARL",
+  "EURL": "EURL",
+  "SELARL": "SELARL",
+  "SA": "SA",
+  "SAS": "SAS",
+  "SASU": "SASU",
+  "SNC": "SNC",
+  "SCP": "SCP"
 }
