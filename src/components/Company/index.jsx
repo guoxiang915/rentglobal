@@ -9,7 +9,12 @@ import {
 import { AppSidebar } from '../Layout';
 import { Row, Column } from '../../common/base-components';
 import Profile from '../../containers/Layout/Profile';
-import { uploadFile, downloadFile } from '../../api/endpoints';
+import Dashboard from "../../containers/Company/Dashboard";
+import {
+  uploadFile,
+  downloadFile,
+  getOffices,
+} from '../../api/endpoints';
 
 const styleSheet = (theme) => ({
   root: {
@@ -67,7 +72,12 @@ class Company extends PureComponent {
               <Switch>
                 <Route
                   path="/company/dashboard"
-                  render={() => <React.Fragment />}
+                  render={() => (
+                    <Dashboard
+                      getOffices={getOffices}
+                      navigate={this.props.navigate}
+                    />
+                  )}
                 />
                 <Route
                   path="/company/profile"
