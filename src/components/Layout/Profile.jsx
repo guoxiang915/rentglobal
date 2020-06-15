@@ -1028,141 +1028,141 @@ class Profile extends PureComponent {
                           phoneNumber &&
                           !phoneNumberVerified &&
                           !phoneNumberError ? (
-                            <Tooltip
-                              placement={
-                                isWidthDown("xs", width)
-                                  ? md.mobile()
-                                    ? "bottom-end"
-                                    : "left"
-                                  : "bottom"
-                              }
-                              borderType='errorRed'
-                              open={phoneTooltip}
-                              onClose={this.onPhoneTooltipClose}
-                              onOpen={this.onPhoneTooltipOpen}
-                              title={
-                                <TooltipContent
-                                  title={
-                                    phoneCodeSent && phoneCodeSent.success ? (
-                                      <Column>
-                                        <Typography textErrorRed>
-                                          {t("enterCode")}
-                                        </Typography>
-                                        <Box paddingTop>
-                                          <TextField
-                                            variant='outlined'
-                                            placeholder={"code"}
-                                            onChange={this.handleStateChangeByInput(
-                                              "phoneCode"
-                                            )}
-                                            value={phoneCode}
-                                          />
-                                          <Button
-                                            link='normal'
-                                            background='secondaryLight'
-                                            onClick={this.verifyCode}
-                                          >
-                                            <Typography fontSizeXS>
-                                              {t("verify")}
-                                            </Typography>
-                                          </Button>
-                                          <Button
-                                            link='normal'
-                                            background='secondaryLight'
-                                            onClick={
-                                              this.handleSendPhoneVerification
-                                            }
-                                          >
-                                            <Typography fontSizeXS>
-                                              {t("resend")}
-                                            </Typography>
-                                          </Button>
-                                          {closeTooltipButton}
-                                        </Box>
-                                        {verifiedPhoneNumber &&
+                              <Tooltip
+                                placement={
+                                  isWidthDown("xs", width)
+                                    ? md.mobile()
+                                      ? "bottom-end"
+                                      : "left"
+                                    : "bottom"
+                                }
+                                borderType='errorRed'
+                                open={phoneTooltip}
+                                onClose={this.onPhoneTooltipClose}
+                                onOpen={this.onPhoneTooltipOpen}
+                                title={
+                                  <TooltipContent
+                                    title={
+                                      phoneCodeSent && phoneCodeSent.success ? (
+                                        <Column>
+                                          <Typography textErrorRed>
+                                            {t("enterCode")}
+                                          </Typography>
+                                          <Box paddingTop>
+                                            <TextField
+                                              variant='outlined'
+                                              placeholder={"code"}
+                                              onChange={this.handleStateChangeByInput(
+                                                "phoneCode"
+                                              )}
+                                              value={phoneCode}
+                                            />
+                                            <Button
+                                              link='normal'
+                                              background='secondaryLight'
+                                              onClick={this.verifyCode}
+                                            >
+                                              <Typography fontSizeXS>
+                                                {t("verify")}
+                                              </Typography>
+                                            </Button>
+                                            <Button
+                                              link='normal'
+                                              background='secondaryLight'
+                                              onClick={
+                                                this.handleSendPhoneVerification
+                                              }
+                                            >
+                                              <Typography fontSizeXS>
+                                                {t("resend")}
+                                              </Typography>
+                                            </Button>
+                                            {closeTooltipButton}
+                                          </Box>
+                                          {verifiedPhoneNumber &&
                                         verifiedPhoneNumber.error ? (
+                                              <Typography textErrorRed>
+                                                {verifiedPhoneNumber.error}
+                                              </Typography>
+                                            ) : null}
+                                        </Column>
+                                      ) : (
+                                        <Column>
                                           <Typography textErrorRed>
-                                            {verifiedPhoneNumber.error}
+                                            {t("phoneMustApproved")}
                                           </Typography>
-                                        ) : null}
-                                      </Column>
-                                    ) : (
-                                      <Column>
-                                        <Typography textErrorRed>
-                                          {t("phoneMustApproved")}
-                                        </Typography>
-                                        <Box paddingTop>
-                                          {editTab === "generalInfo" ? (
-                                            t("saveToVerify")
-                                          ) : (
-                                            <React.Fragment>
-                                              <Button
-                                                link='normal'
-                                                background='secondaryLight'
-                                                onClick={
-                                                  this
-                                                    .handleSendPhoneVerification
-                                                }
-                                                disabled={
-                                                  editTab === "generalInfo"
-                                                }
-                                              >
-                                                <Typography fontSizeXS>
-                                                  {t("sendVerificationCode")}
-                                                </Typography>
-                                              </Button>
-                                              {closeTooltipButton}
-                                            </React.Fragment>
-                                          )}
-                                        </Box>
-                                        {phoneCodeSent &&
+                                          <Box paddingTop>
+                                            {editTab === "generalInfo" ? (
+                                              t("saveToVerify")
+                                            ) : (
+                                              <React.Fragment>
+                                                <Button
+                                                  link='normal'
+                                                  background='secondaryLight'
+                                                  onClick={
+                                                    this
+                                                      .handleSendPhoneVerification
+                                                  }
+                                                  disabled={
+                                                    editTab === "generalInfo"
+                                                  }
+                                                >
+                                                  <Typography fontSizeXS>
+                                                    {t("sendVerificationCode")}
+                                                  </Typography>
+                                                </Button>
+                                                {closeTooltipButton}
+                                              </React.Fragment>
+                                            )}
+                                          </Box>
+                                          {phoneCodeSent &&
                                         phoneCodeSent.error ? (
-                                          <Typography textErrorRed>
-                                            {phoneCodeSent.error}
-                                          </Typography>
-                                        ) : null}
-                                      </Column>
-                                    )
-                                  }
-                                />
-                              }
-                              interactive
-                            >
-                              <div
-                                onClick={() => {
-                                  this.setState({
-                                    phoneTooltip: true,
-                                  });
-                                }}
-                                className={s.errorIcon}
+                                              <Typography textErrorRed>
+                                                {phoneCodeSent.error}
+                                              </Typography>
+                                            ) : null}
+                                        </Column>
+                                      )
+                                    }
+                                  />
+                                }
+                                interactive
                               >
+                                <div
+                                  onClick={() => {
+                                    this.setState({
+                                      phoneTooltip: true,
+                                    });
+                                  }}
+                                  className={s.errorIcon}
+                                >
                                 !
-                              </div>
-                            </Tooltip>
-                          ) : phoneNumberVerified ? (
-                            <Tooltip
-                              placement={
-                                isWidthDown("xs", width) ? "left" : "bottom"
-                              }
-                              borderType='primary'
-                              title={
-                                <TooltipContent
-                                  title={
-                                    <Column>
-                                      <Typography textSecondary>
-                                        {t("phoneNumberConfirmed")}
-                                      </Typography>
-                                    </Column>
-                                  }
-                                />
-                              }
-                              interactive
-                            >
-                              <div className={s.approveIcon}>
-                                <CheckIcon style={{ width: 11, height: 8 }} />
-                              </div>
-                            </Tooltip>
-                          ) : null
+                                </div>
+                              </Tooltip>
+                            ) : phoneNumberVerified ? (
+                              <Tooltip
+                                placement={
+                                  isWidthDown("xs", width) ? "left" : "bottom"
+                                }
+                                borderType='primary'
+                                title={
+                                  <TooltipContent
+                                    title={
+                                      <Column>
+                                        <Typography textSecondary>
+                                          {t("phoneNumberConfirmed")}
+                                        </Typography>
+                                      </Column>
+                                    }
+                                  />
+                                }
+                                interactive
+                              >
+                                <div className={s.approveIcon}>
+                                  <CheckIcon style={{ width: 11, height: 8 }} />
+                                </div>
+                              </Tooltip>
+                            ) : null
                         }
                         readOnly={editTab !== "generalInfo"}
                         onBlur={() =>
@@ -1238,8 +1238,8 @@ class Profile extends PureComponent {
                                   !item
                                     ? t("selectOne")
                                     : typeof item === "object"
-                                    ? t(...item)
-                                    : t(item)
+                                      ? t(...item)
+                                      : t(item)
                                 }
                                 displayEmpty
                                 value={companyType || ""}
@@ -1408,33 +1408,33 @@ class Profile extends PureComponent {
                     </Row>
                     {error?.type === "updateUser" &&
                     error?.field === "password" ? (
-                      <Typography textErrorRed paddingTopHalf paddingBottom>
-                        {error.msg}
-                      </Typography>
-                    ) : null}
+                        <Typography textErrorRed paddingTopHalf paddingBottom>
+                          {error.msg}
+                        </Typography>
+                      ) : null}
                     <Row paddingTopHalf style={{ maxWidth: 370 }}>
                       {editTab === "loginAndSecurity" ||
                       updatingTab === "password" ? (
                         // buttons for save
-                        <SaveButtons
-                          isUpdating={updatingTab === "password"}
-                          onSave={this.handleSaveSecurityInfo}
-                          onCancel={this.handleCancelEditProfile}
-                          t={t}
-                          disabled={
-                            !!passwordError || password !== confirmPassword
-                          }
-                        />
-                      ) : (
-                        <React.Fragment>
-                          <Typography fontSizeS textMediumGrey paddingRightHalf>
-                            {t("lastUpdate")}:
-                          </Typography>
-                          <Typography fontSizeS textSecondary>
-                            {passwordLastUpdated}
-                          </Typography>
-                        </React.Fragment>
-                      )}
+                          <SaveButtons
+                            isUpdating={updatingTab === "password"}
+                            onSave={this.handleSaveSecurityInfo}
+                            onCancel={this.handleCancelEditProfile}
+                            t={t}
+                            disabled={
+                              !!passwordError || password !== confirmPassword
+                            }
+                          />
+                        ) : (
+                          <React.Fragment>
+                            <Typography fontSizeS textMediumGrey paddingRightHalf>
+                              {t("lastUpdate")}:
+                            </Typography>
+                            <Typography fontSizeS textSecondary>
+                              {passwordLastUpdated}
+                            </Typography>
+                          </React.Fragment>
+                        )}
                     </Row>
                   </Grid>
                 </Grid>

@@ -587,5 +587,7 @@
   "send": "Send",
   "companySize": "Company size",
   "shortDescription": "Short description",
-  "requestForEdit": "Request for edit"
+  "requestForEdit": "Request for edit",
+  "reasonOfDecline": "Reason of decline",
+  "writeReasonToDecline": "Write your reason to decline company name visit request."
 }

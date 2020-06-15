@@ -26,7 +26,9 @@ import {
   getEventsByLandlord,
   getVisitRequestsByLandlord,
 } from "../../../api/endpoints";
-import { AddEventDialog } from "../../../components/Layout";
+import {
+  AddEventDialog,
+} from "../../../components/Layout";
 
 import { formatDate, getWeekday, formatHrMin } from "../../../utils/formatters";
 import { checkEqualDate } from "../../../utils/validators";
@@ -49,6 +51,8 @@ const styleSheet = (theme) => ({
 class CalendarOverview extends PureComponent {
   static propTypes = {
     navigate: PropTypes.func,
+    onAcceptVisitRequest: PropTypes.func,
+    onDeclineVisitRequest: PropTypes.func,
 
     classes: PropTypes.object,
     t: PropTypes.func,
@@ -171,9 +175,17 @@ class CalendarOverview extends PureComponent {
     this.setState({ dialog: null });
   };
 
-  handleAcceptVisit = () => {};
+  handleAcceptVisitRequest = (visitRequest) => {
+    if (this.props.onAcceptVisitRequest) {
+      this.props.onAcceptVisitRequest(visitRequest);
+    }
+  };
 
-  handleDeclineVisit = () => {};
+  handleDeclineVisitRequest = (visitRequest) => {
+    if (this.props.onDeclineVisitRequest) {
+      this.props.onDeclineVisitRequest(visitRequest);
+    }
+  };
 
   handleEditSelectedEvent = () => {};
 
@@ -329,7 +341,7 @@ class CalendarOverview extends PureComponent {
         <Row fullWidth style={{ marginBottom: 45 }}>
           <TabWrapper title={t("selectedEventDetails")} open insideOpen>
             {selectedEvent && (
-              <>
+              <React.Fragment>
                 <Box paddingTop />
                 <EventDetailItem
                   event={selectedEvent}
@@ -339,7 +351,7 @@ class CalendarOverview extends PureComponent {
                   horizontal
                   fullWidth
                 />
-              </>
+              </React.Fragment>
             )}
           </TabWrapper>
         </Row>
@@ -376,8 +388,8 @@ class CalendarOverview extends PureComponent {
                 <EventListItem
                   event={event}
                   showDate
-                  onAccept={() => this.handleAcceptVisit(event)}
-                  onDecline={() => this.handleDeclineVisit(event)}
+                  onAccept={() => this.handleAcceptVisitRequest(event)}
+                  onDecline={() => this.handleDeclineVisitRequest(event)}
                   t={t}
                 />
               </React.Fragment>

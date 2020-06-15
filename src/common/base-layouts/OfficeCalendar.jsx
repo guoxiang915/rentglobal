@@ -11,40 +11,40 @@ import {
   Typography,
   Divider,
   Dot,
-  UsersIcon
+  UsersIcon,
 } from "../base-components";
 import {
   TabWrapper,
   SearchbarWithSorter,
   EventCalendar,
-  EventListItem
+  EventListItem,
 } from ".";
 import {
   getEventsByOffice,
   addEventByOffice,
-  getVisitRequestsByOffice
+  getVisitRequestsByOffice,
 } from "../../api/endpoints";
 import { formatDate, getWeekday } from "../../utils/formatters";
 import { checkEqualDate } from "../../utils/validators";
 import { AddEventDialog } from "../../components/Layout";
 
-const styleSheet = theme => ({
+const styleSheet = (theme) => ({
   root: {},
 
   calendarPanel: {
     background: theme.colors.primary.white,
-    borderRadius: 8
+    borderRadius: 8,
   },
 
   calendarWrapper: {
     marginTop: 40,
     marginBottom: 40,
-    maxWidth: 500
+    maxWidth: 500,
   },
 
   visit: {
-    color: "#41AFFF"
-  }
+    color: "#41AFFF",
+  },
 });
 
 class OfficeCalendar extends React.Component {
@@ -52,12 +52,12 @@ class OfficeCalendar extends React.Component {
     officeId: PropTypes.string.isRequired,
     classes: PropTypes.object,
     t: PropTypes.func,
-    width: PropTypes.string
+    width: PropTypes.string,
   };
 
   getEvents = () => {
     if (getEventsByOffice) {
-      getEventsByOffice(this.props.officeId).then(response => {
+      getEventsByOffice(this.props.officeId).then((response) => {
         if (response.status === 200) {
           this.setState({ events: response.data });
         }
@@ -67,7 +67,7 @@ class OfficeCalendar extends React.Component {
 
   getVisitRequests = () => {
     if (getVisitRequestsByOffice) {
-      getVisitRequestsByOffice(this.props.officeId).then(response => {
+      getVisitRequestsByOffice(this.props.officeId).then((response) => {
         if (response.status === 200) {
           this.setState({ visitRequests: response.data });
         }
@@ -84,7 +84,7 @@ class OfficeCalendar extends React.Component {
       query: "",
       selectedDay: new Date(),
       selectedEvent: null,
-      dialog: null
+      dialog: null,
     };
     this.getEvents();
     this.getVisitRequests();
@@ -94,7 +94,7 @@ class OfficeCalendar extends React.Component {
     this.setState({ query: query });
   };
 
-  handleChangeViewMode = viewMode => () => {
+  handleChangeViewMode = (viewMode) => () => {
     this.setState({ viewMode });
   };
 
@@ -105,11 +105,11 @@ class OfficeCalendar extends React.Component {
           onSave={this.addEvent}
           onClose={this.handleCloseDialog}
         />
-      )
+      ),
     });
   };
 
-  handleEditEvent = event => {
+  handleEditEvent = (event) => {
     this.setState({
       dialog: (
         <AddEventDialog
@@ -118,18 +118,18 @@ class OfficeCalendar extends React.Component {
           onSave={this.editEvent(event)}
           onClose={this.handleCloseDialog}
         />
-      )
+      ),
     });
   };
 
-  addEvent = event => {
+  addEvent = (event) => {
     addEventByOffice(this.props.officeId, event).then(() => {
       this.handleCloseDialog();
       this.getEvents();
     });
   };
 
-  editEvent = event => newData => {
+  editEvent = (event) => (newData) => {
     // TODO: add api of editing event
     this.handleCloseDialog();
     console.log(event, newData);
@@ -139,11 +139,19 @@ class OfficeCalendar extends React.Component {
     this.setState({ dialog: null });
   };
 
-  handleAcceptVisit = () => {};
+  handleAcceptVisitRequest = (visitRequest) => {
+    if (this.props.onAcceptVisitRequest) {
+      this.props.onAcceptVisitRequest(visitRequest);
+    }
+  };
 
-  handleDeclineVisit = () => {};
+  handleDeclineVisitRequest = (visitRequest) => {
+    if (this.props.onDeclineVisitRequest) {
+      this.props.onDeclineVisitRequest(visitRequest);
+    }
+  };
 
-  handleSelectDay = date => {
+  handleSelectDay = (date) => {
     if (date) {
       if (!checkEqualDate(this.state.selectedDay, date)) {
         this.setState({ selectedDay: date, selectedEvent: null });
@@ -153,7 +161,7 @@ class OfficeCalendar extends React.Component {
     }
   };
 
-  handleSelectEvent = selectedEvent => {
+  handleSelectEvent = (selectedEvent) => {
     this.setState({ selectedEvent });
   };
 
@@ -166,14 +174,14 @@ class OfficeCalendar extends React.Component {
       viewMode,
       events,
       visitRequests,
-      dialog
+      dialog,
     } = this.state;
 
-    const formattedVisitRequests = visitRequests.map(v => ({
+    const formattedVisitRequests = visitRequests.map((v) => ({
       ...v,
-      type: "visit"
+      type: "visit",
     }));
-    const formattedEvents = events.map(e => {
+    const formattedEvents = events.map((e) => {
       const start = new Date(e.range.start);
       const end = new Date(e.range.end);
       return {
@@ -186,11 +194,11 @@ class OfficeCalendar extends React.Component {
         ),
         end: new Date(end.getHours(), end.getMinutes(), end.getSeconds()),
         name: e.title,
-        content: e.description
+        content: e.description,
       };
     });
     const totalEvents = formattedVisitRequests.concat(formattedEvents);
-    const selectedDayEvents = totalEvents.filter(v =>
+    const selectedDayEvents = totalEvents.filter((v) =>
       checkEqualDate(v.date, selectedDay)
     );
 
@@ -225,7 +233,7 @@ class OfficeCalendar extends React.Component {
             {t("month")}
           </Typography>
           <Stretch />
-          <Button variant="primary" onClick={this.handleAddEvent}>
+          <Button variant='primary' onClick={this.handleAddEvent}>
             {t("addEvent")}
           </Button>
         </Row>
@@ -277,8 +285,8 @@ class OfficeCalendar extends React.Component {
             >
               <Link
                 onClick={() => this.handleSelectDay()}
-                variant="primary"
-                to="#"
+                variant='primary'
+                to='#'
               >
                 {t("gotoToday")}
               </Link>
@@ -318,8 +326,8 @@ class OfficeCalendar extends React.Component {
                 <EventListItem
                   event={event}
                   showDate
-                  onAccept={() => this.handleAcceptVisit(event)}
-                  onDecline={() => this.handleDeclineVisit(event)}
+                  onAccept={() => this.handleAcceptVisitRequest(event)}
+                  onDecline={() => this.handleDeclineVisitRequest(event)}
                   t={t}
                 />
               </React.Fragment>

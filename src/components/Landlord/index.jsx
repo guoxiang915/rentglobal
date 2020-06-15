@@ -4,7 +4,11 @@ import { withTranslation } from "react-i18next";
 import PropTypes from "prop-types";
 import { Hidden } from "@material-ui/core";
 import { Switch, Route, Redirect, withRouter } from "react-router-dom";
-import { AppSidebar } from "../Layout";
+import {
+  AppSidebar,
+  VisitRequestAcceptedDialog,
+  VisitRequestDeclineDialog,
+} from "../Layout";
 import {
   Row,
   Column,
@@ -12,7 +16,7 @@ import {
   Typography,
   CloseIcon,
   CheckIcon,
-  DeleteIcon
+  DeleteIcon,
 } from "../../common/base-components";
 import {
   uploadFile,
@@ -30,7 +34,7 @@ import {
   unpublishOffice,
   uploadOfficePhoto,
   deleteOfficePhoto,
-  deleteOffice
+  deleteOffice,
 } from "../../api/endpoints";
 import Profile from "../../containers/Layout/Profile";
 import Dashboard from "../../containers/Landlord/Dashboard";
@@ -42,41 +46,41 @@ import AddNewOffice from "../../containers/Landlord/Office/AddNewOffice";
 import OfficeList from "./Office/OfficeList";
 import UnapprovedOfficeList from "./Office/UnapprovedOfficeList";
 
-const styleSheet = theme => ({
+const styleSheet = (theme) => ({
   root: {
     maxWidth: 1024 + 44,
     paddingLeft: 22,
     paddingRight: 22,
     [theme.breakpoints.down("xs")]: {
       paddingLeft: 0,
-      paddingRight: 0
-    }
+      paddingRight: 0,
+    },
   },
 
   sidebarWrapper: {
     position: "sticky",
-    top: 0
+    top: 0,
   },
 
   contentWrapper: {
     width: "calc(100% - 151px)",
     overflowX: "hidden",
     [theme.breakpoints.down("sm")]: {
-      width: "100%"
-    }
-  }
+      width: "100%",
+    },
+  },
 });
 
 class Landlord extends PureComponent {
   static propTypes = {
-    navigate: PropTypes.func
+    navigate: PropTypes.func,
   };
 
   state = { dialog: null };
 
   /** Call api to delete office */
-  deleteOffice = officeId => () => {
-    deleteOffice(officeId).then(response => {
+  deleteOffice = (officeId) => () => {
+    deleteOffice(officeId).then((response) => {
       if (response.status === 200) {
         this.props.navigate("offices");
       }
@@ -87,18 +91,23 @@ class Landlord extends PureComponent {
    * Edit office
    * @deprecated
    */
-  editOffice = office => () => {
+  editOffice = (office) => () => {
     this.setState({ dialog: null }, () => {
       this.props.navigate("offices", `${office._id}/edit`);
     });
   };
 
+  /** Close dialog */
+  closeDialog = () => {
+    this.setState({ dialog: null });
+  };
+
   /** Event handler for edit office */
-  handleEditOffice = office => {
+  handleEditOffice = (office) => {
     this.setState({
       dialog: (
         <ConfirmDialog
-          variant="primary"
+          variant='primary'
           text={this.props.t("confirmEdit")}
           closeLabel={
             <React.Fragment>
@@ -115,16 +124,16 @@ class Landlord extends PureComponent {
           onConfirm={this.editOffice(office)}
           onClose={this.closeDialog}
         />
-      )
+      ),
     });
   };
 
   /** Event handler for delete office */
-  handleDeleteOffice = officeId => {
+  handleDeleteOffice = (officeId) => {
     this.setState({
       dialog: (
         <ConfirmDialog
-          variant="error"
+          variant='error'
           text={this.props.t("confirmDelete")}
           closeLabel={
             <React.Fragment>
@@ -141,13 +150,47 @@ class Landlord extends PureComponent {
           onConfirm={this.deleteOffice(officeId)}
           onClose={this.closeDialog}
         />
-      )
+      ),
     });
   };
 
-  /** Close dialog */
-  closeDialog = () => {
-    this.setState({ dialog: null });
+  /** Event handler for accept visit request */
+  handleAcceptVisitRequest = (visitRequest) => {
+    this.setState({
+      dialog: (
+        <VisitRequestAcceptedDialog
+          onClose={this.closeDialog}
+          onBack={() => {
+            this.props.navigate("/landlord/calendar");
+          }}
+        />
+      ),
+    });
+  };
+
+  /** Event handler for decline visit request */
+  handleDeclineVisitRequest = (visitRequest) => {
+    this.setState({
+      dialog: (
+        <VisitRequestDeclineDialog
+          text={this.props.t("confirmDelete")}
+          onClose={this.closeDialog}
+          onSave={this.declineVisitRequest(visitRequest)}
+        />
+      ),
+    });
+  };
+
+  approveVisitRequest = (visitRequest) => {
+    /** Handle approve visit request by calling api */
+    console.log(visitRequest);
+    this.closeDialog();
+  };
+
+  declineVisitRequest = (visitRequest) => (msg) => {
+    /** Handle reject visit request by calling api */
+    console.log(visitRequest);
+    this.closeDialog();
   };
 
   /** Render function */
@@ -176,7 +219,7 @@ class Landlord extends PureComponent {
             <Column classes={{ box: classes.contentWrapper }} fullWidth>
               <Switch>
                 <Route
-                  path="/landlord/dashboard"
+                  path='/landlord/dashboard'
                   render={() => (
                     <Dashboard
                       getOffices={getLandlordOffices}
@@ -186,14 +229,14 @@ class Landlord extends PureComponent {
                 />
                 <Route
                   exact
-                  path="/landlord/offices"
+                  path='/landlord/offices'
                   render={() => <Office navigate={this.props.navigate} />}
                 />
                 <Route
                   exact
                   path={[
                     "/landlord/offices/add/:id/:location/:officeType/:employeeNumber/:refId-:title",
-                    "/landlord/offices/add"
+                    "/landlord/offices/add",
                   ]}
                   render={({ match }) => (
                     <AddNewOffice
@@ -216,7 +259,7 @@ class Landlord extends PureComponent {
                 />
                 <Route
                   exact
-                  path="/landlord/offices/all"
+                  path='/landlord/offices/all'
                   render={() => (
                     <OfficeList
                       getOffices={getLandlordApprovedOffices}
@@ -226,7 +269,7 @@ class Landlord extends PureComponent {
                 />
                 <Route
                   exact
-                  path="/landlord/offices/unpublish"
+                  path='/landlord/offices/unpublish'
                   render={() => (
                     <UnapprovedOfficeList
                       getOffices={getLandlordUnapprovedOffices}
@@ -236,7 +279,7 @@ class Landlord extends PureComponent {
                 />
                 <Route
                   exact
-                  path="/landlord/offices/:id/:location/:officeType/:employeeNumber/:refId-:title"
+                  path='/landlord/offices/:id/:location/:officeType/:employeeNumber/:refId-:title'
                   render={({ match }) => (
                     <OfficeDetail
                       navigate={this.props.navigate}
@@ -246,12 +289,14 @@ class Landlord extends PureComponent {
                       unpublishOffice={unpublishOffice}
                       onDeleteOffice={this.handleDeleteOffice}
                       onEditOffice={this.handleEditOffice}
+                      onAcceptVisitRequest={this.handleAcceptVisitRequest}
+                      onDeclineVisitRequest={this.handleDeclineVisitRequest}
                     />
                   )}
                 />
                 <Route
                   exact
-                  path="/landlord/offices/:id/edit"
+                  path='/landlord/offices/:id/edit'
                   render={({ match }) => (
                     <AddNewOffice
                       officeId={match.params.id}
@@ -274,20 +319,28 @@ class Landlord extends PureComponent {
                 />
                 <Route
                   exact
-                  path="/landlord/calendar"
-                  render={() => <Calendar navigate={this.props.navigate} />}
-                />
-                <Route
-                  exact
-                  path="/landlord/calendar/visit-requests"
+                  path='/landlord/calendar'
                   render={() => (
-                    <CalendarVisitRequests
+                    <Calendar
                       navigate={this.props.navigate}
+                      onAcceptVisitRequest={this.handleAcceptVisitRequest}
+                      onDeclineVisitRequest={this.handleDeclineVisitRequest}
                     />
                   )}
                 />
                 <Route
-                  path="/landlord/profile"
+                  exact
+                  path='/landlord/calendar/visit-requests'
+                  render={() => (
+                    <CalendarVisitRequests
+                      navigate={this.props.navigate}
+                      onAcceptVisitRequest={this.handleAcceptVisitRequest}
+                      onDeclineVisitRequest={this.handleDeclineVisitRequest}
+                    />
+                  )}
+                />
+                <Route
+                  path='/landlord/profile'
                   render={() => (
                     <Profile
                       updateUser={(field, user) =>
@@ -297,10 +350,10 @@ class Landlord extends PureComponent {
                           this.props.history
                         )
                       }
-                      verifyPhoneNumber={phoneNumber =>
+                      verifyPhoneNumber={(phoneNumber) =>
                         this.props.mappedverifyPhoneNumber(phoneNumber)
                       }
-                      verifyPhoneCode={phoneCode =>
+                      verifyPhoneCode={(phoneCode) =>
                         this.props.mappedverifyPhoneCode(phoneCode)
                       }
                       verifiedPhoneNumber={verifiedPhoneNumber}
@@ -310,7 +363,7 @@ class Landlord extends PureComponent {
                     />
                   )}
                 />
-                <Route render={() => <Redirect to="/landlord/dashboard" />} />
+                <Route render={() => <Redirect to='/landlord/dashboard' />} />
               </Switch>
             </Column>
           </Row>

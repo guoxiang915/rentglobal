@@ -12,3 +12,5 @@ export { default as AddTimeDialog } from "./AddTimeDialog";
 export { default as AddEventDialog } from "./AddEventDialog";
 export { default as ImportCalendarSettingDialog } from "./ImportCalendarSettingDialog";
 export { default as OfficeAvailabilityDialog } from "./OfficeAvailabilityDialog";
+export { default as VisitRequestAcceptedDialog } from "./VisitRequestAcceptedDialog";
+export { default as VisitRequestDeclineDialog } from "./VisitRequestDeclineDialog";

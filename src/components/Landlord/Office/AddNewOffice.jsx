@@ -273,39 +273,39 @@ class AddNewOffice extends PureComponent {
     let result = Promise.reject("");
 
     switch (this.state.currentStep) {
-      case 0:
-        if (office._id) {
-          result = this.props.updateOffice(office);
-        } else {
-          result = this.props.createOffice(office);
-        }
-        break;
-      case 1:
-        if (office) {
-          result = Promise.resolve({ data: office });
-        }
-        break;
-      case 2:
-        if (office) {
-          result = this.props.createOfficeServicesAmenities(
-            this.state.office._id,
-            office.servicesAndAmenities
-          );
-        }
-        break;
-      case 3:
-        if (office) {
-          const visitHours = office;
-          result = this.props.saveVisibility(this.state.office._id, visitHours);
-        }
-        break;
-      case 4:
-        if (office) {
-          result = this.props.publishOffice(this.state.office._id);
-        }
-        break;
-      default:
-        break;
+    case 0:
+      if (office._id) {
+        result = this.props.updateOffice(office);
+      } else {
+        result = this.props.createOffice(office);
+      }
+      break;
+    case 1:
+      if (office) {
+        result = Promise.resolve({ data: office });
+      }
+      break;
+    case 2:
+      if (office) {
+        result = this.props.createOfficeServicesAmenities(
+          this.state.office._id,
+          office.servicesAndAmenities
+        );
+      }
+      break;
+    case 3:
+      if (office) {
+        const visitHours = office;
+        result = this.props.saveVisibility(this.state.office._id, visitHours);
+      }
+      break;
+    case 4:
+      if (office) {
+        result = this.props.publishOffice(this.state.office._id);
+      }
+      break;
+    default:
+      break;
     }
 
     return result.then(
@@ -463,8 +463,8 @@ class AddNewOffice extends PureComponent {
             {currentStep === this.steps.length
               ? t("preview")
               : editMode
-              ? t("editOffice")
-              : t("addNewOffice")}
+                ? t("editOffice")
+                : t("addNewOffice")}
           </Typography>
           <Stretch />
           <Button
