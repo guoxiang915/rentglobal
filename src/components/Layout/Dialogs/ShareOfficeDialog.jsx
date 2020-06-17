@@ -209,7 +209,7 @@ class ShareOfficeDialog extends PureComponent {
             <Row fullWidth>
               <TextField
                 variant="outlined"
-                value={window.location.href}
+                value={`${window.location.protocol}//${window.location.host}/offices/${office.refId}/${office.location.country}/${t(office.officeType)}/${office.numberOfEmployees} ${t("employees")}/${office.refId}-${office.title}`.replace(/\s+/g, "-")}
                 classes={{ input: s.linkInput }}
                 fullWidth
                 startAdornment={<LinkIcon className={s.outlineIcon} />}
@@ -234,7 +234,7 @@ class ShareOfficeDialog extends PureComponent {
                   >
                     <Button
                       variant="primary"
-                      onClick={() => this.handleCopy(window.location.href)}
+                      onClick={() => this.handleCopy(`${window.location.protocol}//${window.location.host}/offices/${office.refId}/${office.location.country}/${t(office.officeType)}/${office.numberOfEmployees} ${t("employees")}/${office.refId}-${office.title}`.replace(/\s+/g, "-"))}
                       className={s.copyButton}
                     >
                       <CopyIcon style={{ width: 24, height: 24 }} />
@@ -246,7 +246,7 @@ class ShareOfficeDialog extends PureComponent {
             </Row>
             <Row fullWidth justifyChildrenCenter paddingTop>
               <TwitterShareButton
-                url={window.location.href}
+                url={`${window.location.protocol}//${window.location.host}/offices/${office.refId}/${office.location.country}/${t(office.officeType)}/${office.numberOfEmployees} ${t("employees")}/${office.refId}-${office.title}`.replace(/\s+/g, "-")}
               >
                 <span className={s.socialButton}>
                   <TwitterBorderIcon style={{ width: 17, height: 14 }} />
@@ -254,7 +254,7 @@ class ShareOfficeDialog extends PureComponent {
               </TwitterShareButton>
               <Box paddingLeftHalf />
               <FacebookShareButton
-                url={window.location.href}
+                url={`${window.location.protocol}//${window.location.host}/offices/${office.refId}/${office.location.country}/${t(office.officeType)}/${office.numberOfEmployees} ${t("employees")}/${office.refId}-${office.title}`.replace(/\s+/g, "-")}
               >
                 <span className={s.socialButton}>
                   <FacebookBorderIcon style={{ width: 10, height: 17 }} />
@@ -262,7 +262,7 @@ class ShareOfficeDialog extends PureComponent {
               </FacebookShareButton>
               <Box paddingLeftHalf />
               <LinkedinShareButton
-                url={window.location.href}
+                url={`${window.location.protocol}//${window.location.host}/offices/${office.refId}/${office.location.country}/${t(office.officeType)}/${office.numberOfEmployees} ${t("employees")}/${office.refId}-${office.title}`.replace(/\s+/g, "-")}
               >
                 <span className={s.socialButton}>
                   <LinkedinBorderIcon style={{ width: 15, height: 17 }} />
@@ -272,7 +272,7 @@ class ShareOfficeDialog extends PureComponent {
               <a
                 variant='icon'
                 className={s.socialButton}
-                href={`https://mail.google.com/mail/?view=cm&su=RentGlobal Office Share&body=${window.location.href}`}
+                href={`https://mail.google.com/mail/?view=cm&su=RentGlobal Office Share&body=${`${window.location.protocol}//${window.location.host}/offices/${office.refId}/${office.location.country}/${t(office.officeType)}/${office.numberOfEmployees} ${t("employees")}/${office.refId}-${office.title}`.replace(/\s+/g, "-")}`}
                 target="_blank"
                 rel="noopener noreferrer"
               >
@@ -282,7 +282,7 @@ class ShareOfficeDialog extends PureComponent {
               <a
                 variant='icon'
                 className={s.socialButton}
-                href={`http://compose.mail.yahoo.com/?subj=RentGlobal Office Share&body=${window.location.href}`}
+                href={`http://compose.mail.yahoo.com/?subj=RentGlobal Office Share&body=${`${window.location.protocol}//${window.location.host}/offices/${office.refId}/${office.location.country}/${t(office.officeType)}/${office.numberOfEmployees} ${t("employees")}/${office.refId}-${office.title}`.replace(/\s+/g, "-")}`}
                 target="_blank"
                 rel="noopener noreferrer"
               >
@@ -291,7 +291,7 @@ class ShareOfficeDialog extends PureComponent {
               <Box paddingLeftHalf />
               <a
                 variant='icon'
-                href={`mailto:?subject=RentGlobal Office Share&body=${window.location.href}`}
+                href={`mailto:?subject=RentGlobal Office Share&body=${`${window.location.protocol}//${window.location.host}/offices/${office.refId}/${office.location.country}/${t(office.officeType)}/${office.numberOfEmployees} ${t("employees")}/${office.refId}-${office.title}`.replace(/\s+/g, "-")}`}
                 className={s.socialButton}
                 target="_blank"
                 rel="noopener noreferrer"

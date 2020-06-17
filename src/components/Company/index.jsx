@@ -145,7 +145,7 @@ class Company extends PureComponent {
                     />
                   )}
                 />
-                {/* <Route render={() => <Redirect to="/company/dashboard" />} /> */}
+                <Route render={() => <Redirect to="/company/dashboard" />} />
               </Switch>
             </Column>
           </Row>
