@@ -601,5 +601,14 @@
   "SCP": "SCP",
 
   "welcomeToCompany": "Welcome to company control panel",
-  "myOffices": "My Offices"
+  "myOffices": "My Offices",
+  "recentViewOffices": "Recent view offices",
+  "officesHistory": "Offices history",
+  "recentFavoriteOffices": "Recent favorite offices",
+  "viewAll": "View all",
+  "allFavorites": "All favorites",
+  "alphabetical": "Alphabetical",
+  "mostRecent": "Most recent",
+  "mostView": "Most view",
+  "topRate": "Top rate"
 }

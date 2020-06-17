@@ -66,6 +66,15 @@ export const deleteUserAccount = () => api.delete(`/users/me/delete`);
 export const getOffices = params =>
   api.get("/offices", { params });
 
+/** Call api to get company recent view offices */
+export const getRecentViewOffices = params => getOffices(params);
+
+/** Call api to get company offices history */
+export const getOfficesHistory = params => getOffices(params);
+
+/** Call api to get favorite offices */
+export const getFavoriteOffices = params => getOffices({ ...params, searchParams: 'favorite' });
+
 /** Call api to get landlord office list */
 export const getLandlordOffices = params =>
   api.get("/users/me/offices/", { params });

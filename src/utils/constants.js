@@ -215,11 +215,11 @@ const months = [
 ];
 
 const officeSortOptions = [
-  { title: "priceHighToLow", field: "priceMonthly", direction: "desc" },
-  { title: "priceLowToHigh", field: "priceMonthly", direction: "asc" },
-  { title: "dateNewToOld", field: "createdAt", direction: "desc" },
-  { title: "dateOldToNew", field: "createdAt", direction: "asc" },
-  { title: "topRatedFirst", field: "rating", direction: "desc" }
+  { title: "alphabetical", field: "title", direction: "desc" },
+  { title: "mostRecent", field: "createdAt", direction: "desc" },
+  // { title: "available", field: "createdAt", direction: "desc" },
+  // { title: "dateOldToNew", field: "createdAt", direction: "asc" },
+  // { title: "topRatedFirst", field: "rating", direction: "desc" }
 ];
 
 const reviewSortOptions = [
