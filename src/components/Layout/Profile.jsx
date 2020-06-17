@@ -36,7 +36,7 @@ import {
   UploadIcon,
   DeleteIcon,
   ProgressIcon,
-  PreviewIcon,
+  // PreviewIcon,
   Select,
   Stretch,
 } from "../../common/base-components";

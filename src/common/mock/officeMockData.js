@@ -236,3 +236,66 @@ export const conditions = [
     officeFilter: "allOffices",
   },
 ];
+
+export const notifications = [
+  {
+    type: "officeReviewed",
+    payload: {
+      generalInfo: { username: "Company 1" },
+      rating: 5,
+      content:
+        "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
+    },
+    createdAt: new Date(),
+  },
+  {
+    type: "newFeature",
+    payload: {
+      content:
+        "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
+    },
+    createdAt: new Date(),
+  },
+  {
+    type: "profileNeedAttention",
+    payload: {
+      content:
+        "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
+    },
+    createdAt: new Date(),
+  },
+  {
+    type: "officeReviewRejected",
+    payload: {
+      content:
+        "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
+    },
+    createdAt: new Date(),
+  },
+  {
+    type: "emailVerified",
+    payload: {
+      content:
+        "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
+    },
+    createdAt: new Date(),
+  },
+  {
+    type: "officeAvailable",
+    payload: {
+      office: { name: "Office 1" },
+      rating: 4.5,
+      content:
+        "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
+    },
+    createdAt: new Date(),
+  },
+  {
+    type: "visitRequestChange",
+    payload: {
+      content:
+        "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
+    },
+    createdAt: new Date(),
+  },
+];
