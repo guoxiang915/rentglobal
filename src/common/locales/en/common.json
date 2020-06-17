@@ -610,5 +610,18 @@
   "alphabetical": "Alphabetical",
   "mostRecent": "Most recent",
   "mostView": "Most view",
-  "topRate": "Top rate"
+  "topRate": "Top rate",
+  "gotReviewFrom": "You got a review from {{name}}",
+  "newFeature": "New Feature",
+  "yesterday": "Yesterday",
+  "today": "Today",
+  "howDescribe": "How do you describe {{name}}",
+  "gotIt": "Got it",
+  "feedbackRejected": "Your feedback got rejected",
+  "emailVerified": "Your email address verified successfully",
+  "officeAvailableForLease": "{{name}} is available now for leasing",
+  "removeAlert": "Remove alert",
+  "visitRequestChanges": "Visit request changes",
+  "notifications": "Notifications",
+  "editProfile": "Edit profile"
 }

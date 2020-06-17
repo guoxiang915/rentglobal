@@ -45,6 +45,8 @@ import OfficeDetail from "./Office/OfficeDetail";
 import AddNewOffice from "../../containers/Landlord/Office/AddNewOffice";
 import OfficeList from "./Office/OfficeList";
 import UnapprovedOfficeList from "./Office/UnapprovedOfficeList";
+import Notifications from "../Layout/Notifications";
+import { notifications } from "../../common/mock/officeMockData";
 
 const styleSheet = (theme) => ({
   root: {
@@ -191,6 +193,13 @@ class Landlord extends PureComponent {
     /** Handle reject visit request by calling api */
     console.log(visitRequest);
     this.closeDialog();
+  };
+
+  getNotifications = () => {
+    return Promise.resolve({
+      status: 200,
+      data: { docs: notifications, totalLength: notifications.length },
+    });
   };
 
   /** Render function */
@@ -360,6 +369,15 @@ class Landlord extends PureComponent {
                       phoneCodeSent={phoneCodeSent}
                       uploadFile={uploadFile}
                       downloadFile={downloadFile}
+                    />
+                  )}
+                />
+                <Route
+                  path='/landlord/notifications'
+                  render={() => (
+                    <Notifications
+                      navigate={this.props.navigate}
+                      getNotifications={this.getNotifications}
                     />
                   )}
                 />

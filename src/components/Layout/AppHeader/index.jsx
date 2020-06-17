@@ -21,7 +21,7 @@ import {
   CloseIcon,
   MenuIcon,
   ArrowDownIcon,
-  ConsultantIcon
+  ConsultantIcon,
 } from "../../../common/base-components";
 import AccountInfo from "./AccountInfo";
 import { getProfileStatus } from "../../../utils/validators";
@@ -29,7 +29,7 @@ import { getProfileStatus } from "../../../utils/validators";
 import Logo from "../../../assets/logo.svg";
 import MiniLogo from "../../../assets/mini-logo.svg";
 
-const styleSheet = theme => ({
+const styleSheet = (theme) => ({
   root: {
     flexGrow: 1,
     // marginTop: 70,
@@ -38,15 +38,15 @@ const styleSheet = theme => ({
     backdropFilter: "blur(10px)",
     boxShadow: "0px 10px 10px #0000000D",
     [theme.breakpoints.down("sm")]: {
-      boxShadow: "0px 10px 10px #0000001A"
-    }
+      boxShadow: "0px 10px 10px #0000001A",
+    },
   },
 
   loggedIn: {
     boxShadow: "0px 14px 14px #15151514",
     [theme.breakpoints.down("sm")]: {
-      boxShadow: "0px 14px 14px #15151514"
-    }
+      boxShadow: "0px 14px 14px #15151514",
+    },
   },
 
   headerWrapper: {
@@ -55,19 +55,19 @@ const styleSheet = theme => ({
     paddingRight: theme.spacing(4) - 2,
     [theme.breakpoints.down("sm")]: {
       paddingLeft: theme.spacing(3),
-      paddingRight: theme.spacing(3)
-    }
+      paddingRight: theme.spacing(3),
+    },
   },
 
   logoWrapper: {
     display: "flex",
     marginRight: theme.spacing(2),
-    height: 38
+    height: 38,
   },
 
   logoNavigator: {
     width: "fit-content",
-    cursor: "pointer"
+    cursor: "pointer",
   },
 
   roleInfoWrapper: {
@@ -80,38 +80,38 @@ const styleSheet = theme => ({
     padding: 12,
     paddingBottom: 32,
     "@media (max-width: 1078px)": {
-      left: 175
+      left: 175,
     },
     [theme.breakpoints.down("sm")]: {
-      left: 65
-    }
+      left: 65,
+    },
   },
 
   logo: {
-    height: "100%"
+    height: "100%",
   },
 
   grayButton: {
-    padding: theme.spacing()
+    padding: theme.spacing(),
   },
 
   headerMenu: {
     zIndex: 1500,
     minWidth: 200,
     position: "relative",
-    top: 30
+    top: 30,
   },
 
   stickyBar: {
     width: "100%",
     height: 4,
-    background: `linear-gradient(97deg, ${theme.colors.primary.mainColor} 0%, ${theme.colors.primary.darkColor} 100%)`
+    background: `linear-gradient(97deg, ${theme.colors.primary.mainColor} 0%, ${theme.colors.primary.darkColor} 100%)`,
   },
 
   accountInfoWrapper: {
     background: "transparent",
     boxShadow: "none",
-    overflow: "visible"
+    overflow: "visible",
   },
 
   accountInfoContentWrapper: {
@@ -120,7 +120,7 @@ const styleSheet = theme => ({
     boxShadow: "0px 2px 4px #00000014",
     border: `1px solid ${theme.colors.primary.borderGrey}`,
     [theme.breakpoints.down("sm")]: {
-      right: -40
+      right: -40,
     },
     "&::before": {
       position: "absolute",
@@ -133,31 +133,31 @@ const styleSheet = theme => ({
       border: `1px solid ${theme.colors.primary.borderGrey}`,
       borderBottom: "none",
       borderRight: "none",
-      transform: "rotate(45deg)"
-    }
+      transform: "rotate(45deg)",
+    },
   },
 
   smallIcon: {
     width: 16,
-    height: 16
+    height: 16,
   },
 
   arrowDownIcon: {
     width: 12,
-    height: 7
+    height: 7,
   },
 
   iconButton: {
     width: 39,
-    height: 39
+    height: 39,
   },
 
   accountButton: {
     width: "auto",
     [theme.breakpoints.down("xs")]: {
-      width: 39
-    }
-  }
+      width: 39,
+    },
+  },
 });
 
 class AppHeader extends PureComponent {
@@ -175,34 +175,34 @@ class AppHeader extends PureComponent {
 
     width: PropTypes.string.isRequired,
     classes: PropTypes.object.isRequired,
-    t: PropTypes.func.isRequired
+    t: PropTypes.func.isRequired,
   };
 
   state = {
     locationEl: null,
     languageEl: null,
     accountInfoEl: null,
-    dialog: null
+    dialog: null,
   };
 
-  handleNavigate = path => () => {
+  handleNavigate = (path) => () => {
     this.props.navigate(path);
   };
 
-  handleMenu = el => event => {
+  handleMenu = (el) => (event) => {
     this.setState({ [el]: event.currentTarget });
   };
 
-  handleCloseMenu = el => () => {
+  handleCloseMenu = (el) => () => {
     this.setState({ [el]: null });
   };
 
-  handleSelectLocation = location => () => {
+  handleSelectLocation = (location) => () => {
     this.props.onSelectLocation(location);
     this.setState({ locationEl: null });
   };
 
-  handleSelectLanguage = language => () => {
+  handleSelectLanguage = (language) => () => {
     this.props.onSelectLanguage(language);
     this.setState({ languageEl: null });
   };
@@ -215,18 +215,18 @@ class AppHeader extends PureComponent {
     this.setState({ dialog: null });
   };
 
-  handleToggleSidebar = value => () => {
+  handleToggleSidebar = (value) => () => {
     this.props.onToggleSidebar(value);
   };
 
   /** Navigate from Account Info panel */
-  handleAccountInfoNavigate = path => () => {
+  handleAccountInfoNavigate = (path) => () => {
     this.setState({ accountInfoEl: null });
     this.props.navigate(path);
   };
 
   /** Toggle role when user selects another role in Account Info panel */
-  handleAccountInfoToggleRole = userRole => () => {
+  handleAccountInfoToggleRole = (userRole) => () => {
     this.setState({ accountInfoEl: null });
     // const userRole = this.props.auth.userRole;
     // if (role !== userRole) {
@@ -244,7 +244,7 @@ class AppHeader extends PureComponent {
       mails,
       width,
       classes: s,
-      t
+      t,
     } = this.props;
     const { isLoggedIn, user, userRole } = this.props.auth;
     const { languageEl, accountInfoEl, dialog } = this.state;
@@ -265,9 +265,9 @@ class AppHeader extends PureComponent {
       <div className={clsx(s.root, isLoggedIn && s.loggedIn)}>
         <Grid
           container
-          direction="row"
-          justify="space-between"
-          alignItems="center"
+          direction='row'
+          justify='space-between'
+          alignItems='center'
           className={s.headerWrapper}
         >
           {/* logo, language, location settings wrapper */}
@@ -280,12 +280,12 @@ class AppHeader extends PureComponent {
               >
                 {isLoggedIn ? (
                   !isWidthDown("sm", width) ? (
-                    <img src={Logo} className={s.logo} alt="RENTGLOBAL" />
+                    <img src={Logo} className={s.logo} alt='RENTGLOBAL' />
                   ) : (
-                    <img src={MiniLogo} className={s.logo} alt="RENTGLOBAL" />
+                    <img src={MiniLogo} className={s.logo} alt='RENTGLOBAL' />
                   )
                 ) : (
-                  <img src={Logo} className={s.logo} alt="RENTGLOBAL" />
+                  <img src={Logo} className={s.logo} alt='RENTGLOBAL' />
                 )}
               </div>
 
@@ -312,10 +312,10 @@ class AppHeader extends PureComponent {
                 <Box paddingLeftDouble>
                   <Column>
                     <Button
-                      aria-controls="language-menu"
-                      aria-haspopup="true"
+                      aria-controls='language-menu'
+                      aria-haspopup='true'
                       onClick={this.handleMenu("languageEl")}
-                      color="secondary"
+                      color='secondary'
                       transparent
                       className={s.grayButton}
                     >
@@ -330,7 +330,7 @@ class AppHeader extends PureComponent {
                       </Typography>
                     </Button>
                     <Menu
-                      id="language-menu"
+                      id='language-menu'
                       anchorEl={languageEl}
                       keepMounted
                       open={Boolean(languageEl)}
@@ -360,7 +360,7 @@ class AppHeader extends PureComponent {
                       {/* role switcher */}
                       <Column paddingLeftDouble>
                         <Button
-                          variant="secondary"
+                          variant='secondary'
                           shadow
                           onClick={() => {
                             const roleToSet =
@@ -385,9 +385,9 @@ class AppHeader extends PureComponent {
 
                   {/* mails */}
                   <Column paddingLeftDouble>
-                    <Button variant="icon" className={s.iconButton}>
+                    <Button variant='icon' className={s.iconButton}>
                       <Badge
-                        color="primary"
+                        color='primary'
                         badgeContent={
                           mails &&
                           (mails.length > 3 ? `${mails.length}+` : mails.length)
@@ -400,9 +400,13 @@ class AppHeader extends PureComponent {
 
                   {/* notifications */}
                   <Column paddingLeft>
-                    <Button variant="icon" className={s.iconButton}>
+                    <Button
+                      variant='icon'
+                      className={s.iconButton}
+                      onClick={this.handleNavigate("notifications")}
+                    >
                       <Badge
-                        color="primary"
+                        color='primary'
                         badgeContent={
                           notifications &&
                           (notifications.length > 9
@@ -419,7 +423,7 @@ class AppHeader extends PureComponent {
                     <Typography
                       paddingLeft
                       textMediumGrey
-                      aria-describedby="accountinfo-popover"
+                      aria-describedby='accountinfo-popover'
                     >
                       <ArrowDownIcon className={s.arrowDownIcon} />
                     </Typography>
@@ -439,8 +443,8 @@ class AppHeader extends PureComponent {
                       className={s.iconButton}
                     >
                       <Badge
-                        color="error"
-                        badgeContent="!"
+                        color='error'
+                        badgeContent='!'
                         invisible={
                           profileCompleteness !== "profileNeedAttention"
                         }
@@ -452,17 +456,17 @@ class AppHeader extends PureComponent {
 
                     {/* account info panel */}
                     <Popover
-                      id="accountinfo-popover"
+                      id='accountinfo-popover'
                       open={Boolean(accountInfoEl)}
                       anchorEl={accountInfoEl}
                       onClose={this.handleCloseMenu("accountInfoEl")}
                       anchorOrigin={{
                         vertical: "bottom",
-                        horizontal: "right"
+                        horizontal: "right",
                       }}
                       transformOrigin={{
                         vertical: "top",
-                        horizontal: "right"
+                        horizontal: "right",
                       }}
                       classes={{ paper: s.accountInfoWrapper }}
                     >
@@ -474,7 +478,7 @@ class AppHeader extends PureComponent {
                           profileProgress={{
                             profileCompleteness,
                             profileCompleted,
-                            profileCharged
+                            profileCharged,
                           }}
                           navigate={this.handleAccountInfoNavigate}
                           onToggleRole={this.handleAccountInfoToggleRole}
@@ -488,14 +492,14 @@ class AppHeader extends PureComponent {
                   <React.Fragment>
                     <Column paddingLeftDouble>
                       <Typography fontSizeS>
-                        <Link variant="body2" to="/auth/login">
+                        <Link variant='body2' to='/auth/login'>
                           {t("login")}
                         </Link>
                       </Typography>
                     </Column>
                     <Column paddingLeftDouble>
                       <Typography fontSizeS>
-                        <Link variant="body2" to="/auth/register">
+                        <Link variant='body2' to='/auth/register'>
                           {t("register")}
                         </Link>
                       </Typography>
@@ -503,7 +507,7 @@ class AppHeader extends PureComponent {
                     {!isWidthDown("md", width) && (
                       <Column paddingLeftDouble>
                         <Button
-                          variant="secondary"
+                          variant='secondary'
                           shadow
                           onClick={() =>
                             this.props.navigate(
@@ -524,10 +528,10 @@ class AppHeader extends PureComponent {
                 <Column paddingLeft>
                   {sidebarOpened ? (
                     <Button
-                      variant="icon"
-                      link="white"
-                      background="primary"
-                      outline="primary"
+                      variant='icon'
+                      link='white'
+                      background='primary'
+                      outline='primary'
                       onClick={this.handleToggleSidebar(!sidebarOpened)}
                       shadow
                       className={s.iconButton}
@@ -536,10 +540,10 @@ class AppHeader extends PureComponent {
                     </Button>
                   ) : (
                     <Button
-                      variant="icon"
-                      link="primary"
-                      background="normalLight"
-                      outline="primary"
+                      variant='icon'
+                      link='primary'
+                      background='normalLight'
+                      outline='primary'
                       inverse
                       onClick={this.handleToggleSidebar(!sidebarOpened)}
                       shadow
