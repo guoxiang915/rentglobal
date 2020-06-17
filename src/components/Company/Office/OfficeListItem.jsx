@@ -11,13 +11,9 @@ import {
   Stretch,
   Box,
   StarIcon,
-  HeadsetIcon,
-  CalendarIcon,
-  UsersIcon,
   Button,
   LinearProgress,
   ShareIcon,
-  DeleteIcon,
   CloseIcon,
 } from '../../../common/base-components';
 import { ShareOfficeDialog } from '../../Layout/Dialogs';
@@ -132,7 +128,6 @@ const OfficeListItem = ({
   t,
   autoPlay,
   office,
-  noActions,
   noMoreInfo,
   goDetail,
 }) => {
