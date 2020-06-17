@@ -623,5 +623,9 @@
   "removeAlert": "Remove alert",
   "visitRequestChanges": "Visit request changes",
   "notifications": "Notifications",
-  "editProfile": "Edit profile"
+  "editProfile": "Edit profile",
+  "availableForLeasing": "Available for leasing",
+  "occupied": "Occupied",
+  "addToShortList": "Add to short list",
+  "remove": "Remove"
 }

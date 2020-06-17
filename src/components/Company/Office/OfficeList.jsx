@@ -17,10 +17,10 @@ import {
   Divider
 } from "../../../common/base-components";
 import {
-  OfficeItem,
-  OfficeListItem,
   SearchbarWithSorter
 } from "../../../common/base-layouts";
+import OfficeItem from './OfficeItem';
+import OfficeListItem from './OfficeListItem';
 import { officeSortOptions } from "../../../utils/constants";
 
 const OFFICES_PER_PAGE = 6;
