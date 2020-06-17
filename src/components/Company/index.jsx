@@ -10,10 +10,15 @@ import { AppSidebar } from '../Layout';
 import { Row, Column } from '../../common/base-components';
 import Profile from '../../containers/Layout/Profile';
 import Dashboard from "../../containers/Company/Dashboard";
+import Office from "./Office";
+import OfficeList from "./Office/OfficeList";
 import {
   uploadFile,
   downloadFile,
   getOffices,
+  getRecentViewOffices,
+  getOfficesHistory,
+  getFavoriteOffices,
 } from '../../api/endpoints';
 
 const styleSheet = (theme) => ({
@@ -80,6 +85,41 @@ class Company extends PureComponent {
                   )}
                 />
                 <Route
+                  exact
+                  path='/company/offices'
+                  render={() => <Office navigate={this.props.navigate} />}
+                />
+                <Route
+                  exact
+                  path='/company/offices/recent-views'
+                  render={() => (
+                    <OfficeList
+                      getOffices={getRecentViewOffices}
+                      navigate={this.props.navigate}
+                    />
+                  )}
+                />
+                <Route
+                  exact
+                  path='/company/offices/history'
+                  render={() => (
+                    <OfficeList
+                      getOffices={getOfficesHistory}
+                      navigate={this.props.navigate}
+                    />
+                  )}
+                />
+                <Route
+                  exact
+                  path='/company/offices/favorite'
+                  render={() => (
+                    <OfficeList
+                      getOffices={getFavoriteOffices}
+                      navigate={this.props.navigate}
+                    />
+                  )}
+                />
+                <Route
                   path="/company/profile"
                   render={() => (
                     <Profile
@@ -105,7 +145,7 @@ class Company extends PureComponent {
                     />
                   )}
                 />
-                <Route render={() => <Redirect to="/company/dashboard" />} />
+                {/* <Route render={() => <Redirect to="/company/dashboard" />} /> */}
               </Switch>
             </Column>
           </Row>

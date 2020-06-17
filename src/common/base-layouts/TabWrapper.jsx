@@ -104,7 +104,7 @@ const TabWrapper = (props) => {
           </Button>
         )}
         {isEdit && showSaveButton && (
-          <>
+          <React.Fragment>
             {showPreviewButton &&
               <Box>
                 <Button
@@ -133,7 +133,7 @@ const TabWrapper = (props) => {
                 </Typography>
               </Button>
             </Box>
-          </>
+          </React.Fragment>
         )}
         {!isEdit && isEditable && (
           <Button
