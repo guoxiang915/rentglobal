@@ -91,11 +91,13 @@ class Calendar extends PureComponent {
       title: "personalEvents",
       value: 7,
       icon: CalendarIcon,
+      onClick: () => this.props.navigate("calendar/personal-events"),
     },
     {
       title: "acceptedVisitRequests",
       value: 18,
       icon: CalendarIcon,
+      onClick: () => this.props.navigate("calendar/accepted-visit-requests"),
     },
   ];
 

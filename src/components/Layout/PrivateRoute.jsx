@@ -191,6 +191,16 @@ class PrivateRoute extends React.Component {
         }
         this.props.history.push("/");
         break;
+      case "calendar/visit-requests":
+      case "calendar/personal-events":
+      case "calendar/accepted-visit-requests":
+        if (isLoggedIn) {
+          this.props.history.push(`/${userRole}/${path}/${payload || ""}`);
+          break;
+        }
+        this.props.history.push("/");
+        break;
+
       case "offices":
         this.props.history.push(
           `${userRole ? `/${userRole}` : ""}/${path}/${payload || ""}`
