@@ -125,9 +125,22 @@ const styleSheet = (theme) => ({
   },
 
   dateWrapper: {
-    backgroundColor: theme.colors.primary.borderGrey,
     width: "100%",
     height: 144,
+  },
+
+  dateWrapperTextPanel: {
+    zIndex: 1,
+  },
+
+  dateWrapperBackground: {
+    position: "absolute",
+    backgroundColor: theme.colors.primary.borderGrey,
+    top: 0,
+    left: 0,
+    width: "100%",
+    height: 145,
+    opacity: 0.45,
   },
 
   checkIcon: {
@@ -362,9 +375,11 @@ const VisitRequestItem = React.memo(
             >
               <Column
                 padding
+                paddingTopDouble
                 justifyChildrenCenter
                 alignChildrenCenter
                 fullWidth
+                classes={{ box: s.dateWrapperTextPanel }}
               >
                 <Row>
                   <Typography fontSizeM textBlackGrey fontWeightBold>
@@ -385,6 +400,7 @@ const VisitRequestItem = React.memo(
                   <CheckIcon className={s.checkIcon} />
                 </Row>
               </Column>
+              <div className={s.dateWrapperBackground} />
             </Row>
             <Row
               classes={{
