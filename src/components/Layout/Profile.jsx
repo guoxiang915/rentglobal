@@ -523,7 +523,7 @@ class Profile extends PureComponent {
   };
 
   handlePreviewAccount = () => {
-    console.log('Preview company profile');
+    this.props.navigate("/company/preview-profile");
   };
 
   /** Save security information */
@@ -871,6 +871,7 @@ class Profile extends PureComponent {
             showSaveButton={userRole === "company"}
             showPreviewButton={userRole === "company" && !isWidthDown("xs", width)}
             onSave={this.handleSaveGeneralInfo}
+            onPreview={this.handlePreviewAccount}
           >
             <Row fullWidth>
               <form noValidate autoComplete='off' className={s.generalInfoForm}>

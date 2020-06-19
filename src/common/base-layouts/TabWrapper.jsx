@@ -56,6 +56,7 @@ const TabWrapper = (props) => {
     showSaveButton = false,
     showPreviewButton = false,
     onSave,
+    onPreview,
   } = props;
 
   const [openS, setOpenS] = useState(!!open);
@@ -111,7 +112,7 @@ const TabWrapper = (props) => {
                   link="primary"
                   background="normalLight"
                   inverse
-                  onClick={onToggleEdit}
+                  onClick={onPreview}
                 >
                   <LaunchIcon style={{ width: 16, height: 16 }} />
                   <Typography paddingLeft fontSizeS>

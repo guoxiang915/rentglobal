@@ -11,6 +11,7 @@ import { Row, Column } from '../../common/base-components';
 import Profile from '../../containers/Layout/Profile';
 import Dashboard from "../../containers/Company/Dashboard";
 import Office from "./Office";
+import Preview from "./Preview";
 import OfficeList from "./Office/OfficeList";
 import {
   uploadFile,
@@ -64,15 +65,23 @@ class Company extends PureComponent {
       this.props.onToggleRole('company');
     }
 
+    let showAppSidebar = true;
+    
+    if (location.pathname == "/company/preview-profile") {
+      showAppSidebar = false;
+    }
+
     return (
       <div>
         <Column fullWidth>
           <Row classes={{ box: classes.root }} fullWidth alignChildrenStart>
-            <Hidden smDown>
-              <Column classes={{ box: classes.sidebarWrapper }} fullWdith>
-                <AppSidebar userRole={userRole} navigate={this.props.navigate} />
-              </Column>
-            </Hidden>
+            {showAppSidebar &&
+              <Hidden smDown>
+                <Column classes={{ box: classes.sidebarWrapper }} fullWdith>
+                  <AppSidebar userRole={userRole} navigate={this.props.navigate} />
+                </Column>
+              </Hidden>
+            }
             <Column classes={{ box: classes.contentWrapper }} fullWidth>
               <Switch>
                 <Route
@@ -142,7 +151,14 @@ class Company extends PureComponent {
                       phoneCodeSent={phoneCodeSent}
                       uploadFile={uploadFile}
                       downloadFile={downloadFile}
+                      navigate={this.props.navigate}
                     />
+                  )}
+                />
+                <Route
+                  path="/company/preview-profile"
+                  render={() => (
+                    <Preview />
                   )}
                 />
                 <Route render={() => <Redirect to="/company/dashboard" />} />
