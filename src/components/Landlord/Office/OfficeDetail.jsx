@@ -392,7 +392,7 @@ class OfficeDetail extends PureComponent {
                   window.innerWidth - (isWidthDown("xs", width) ? 0 : 44)
                 ) - (isWidthDown("sm", width) ? 54 : 247)
               }
-              topOffset={50}
+              topOffset={120}
             />
           )}
         </Row>
