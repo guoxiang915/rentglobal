@@ -136,8 +136,13 @@ class PrivateRoute extends React.Component {
     await this.props.mappedAuthenticate(token, this.props.history);
   };
 
-  navigate = (path, payload) => {
+  navigate = (path, payload, newRole) => {
     const { isLoggedIn, userRole, user } = this.props.auth;
+
+    if (typeof newRole === "string") {
+      this.handleToggleRole(newRole, `${newRole}/${path}/${payload || ""}`);
+      return;
+    }
 
     switch (path) {
       case "back":
@@ -207,7 +212,7 @@ class PrivateRoute extends React.Component {
         );
         break;
       case "homeoffices":
-        this.props.history.push(`/offices/${payload || ""}`);
+        this.props.history.push(`offices/${payload || ""}`);
         break;
 
       default:
