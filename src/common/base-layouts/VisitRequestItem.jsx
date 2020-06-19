@@ -15,6 +15,7 @@ import {
   IconButton,
   CheckIcon,
   CloseIcon,
+  MusicIcon,
 } from "../base-components";
 import { numberWithSpaces } from "../../utils/formatters";
 
@@ -386,6 +387,13 @@ const VisitRequestItem = React.memo(
                 onClick={onReject}
               >
                 <CloseIcon className={s.actionButtonIcon} />
+              </IconButton>
+              <IconButton
+                classes={{ root: clsx(s.actionButton) }}
+                variant='grey'
+                onClick={onReject}
+              >
+                <MusicIcon className={s.actionButtonIcon} />
               </IconButton>
               <IconButton
                 classes={{ root: clsx(s.actionButton) }}
