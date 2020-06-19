@@ -196,6 +196,9 @@ class PrivateRoute extends React.Component {
           `${userRole ? `/${userRole}` : ""}/${path}/${payload || ""}`
         );
         break;
+      case "homeoffices":
+        this.props.history.push(`/offices/${payload || ""}`);
+        break;
 
       default:
         this.props.history.push(path);

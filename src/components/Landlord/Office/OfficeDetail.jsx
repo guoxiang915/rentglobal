@@ -202,19 +202,13 @@ class OfficeDetail extends PureComponent {
   /** Event for preview office */
   handlePreviewOffice = () => {
     const { office } = this.state;
-    window.open(
-      [
-        "/offices",
-        office.refId,
-        office.location.country,
-        this.props.t(office.officeType),
-        office.numberOfEmployees + "-" + this.props.t("employees"),
-        office.refId + "-" + office.title,
-      ]
-        .join("/")
-        .replace(/\s+/g, "-"),
-      "_blank"
-    );
+    this.props.navigate("homeoffices", [
+      office.refId,
+      office.location.country,
+      this.props.t(office.officeType),
+      office.numberOfEmployees + "-" + this.props.t("employees"),
+      office.refId + "-" + office.title,
+    ].join("/").replace(/\s+/g, "-"));
   };
 
   /** Share office */
