@@ -97,6 +97,8 @@ $mbsc-windows-frame-background: #ffffff;
 
 .mbsc-windows .mbsc-cal .mbsc-cal-btn {
   font-size: 10px;
+  width: 2em;
+  height: 2em;
   margin: 0;
   display: flex;
   align-items: center;
@@ -104,7 +106,8 @@ $mbsc-windows-frame-background: #ffffff;
   color: #b9b9b9;
 }
 
-.mbsc-windows .mbsc-cal-month, .mbsc-windows .mbsc-cal-year {
+.mbsc-windows .mbsc-cal-month,
+.mbsc-windows .mbsc-cal-year {
   font-size: 12px;
   line-height: unset;
   display: flex;
