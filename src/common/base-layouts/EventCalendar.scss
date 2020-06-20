@@ -46,8 +46,13 @@ $mbsc-windows-frame-background: #ffffff;
   background: transparent;
 }
 
-.mbsc-windows .mbsc-cal-today .mbsc-cal-day-date {
-  color: white;
+.mbsc-windows .mbsc-cal-today .mbsc-cal-day-i {
+  // color: white;
+  border: 1px solid #d7df23;
+  border-radius: 4px;
+  .mbsc-cal-day-date {
+    color: black;
+  }
 }
 
 .mbsc-windows
@@ -56,6 +61,9 @@ $mbsc-windows-frame-background: #ffffff;
   .mbsc-cal-cell-i.mbsc-cal-day-i {
   background: #d7df23;
   border-radius: 4px;
+  .mbsc-cal-day-date {
+    color: white;
+  }
 }
 
 .mbsc-cal-cell-i .mbsc-cal-day-i {
@@ -85,4 +93,28 @@ $mbsc-windows-frame-background: #ffffff;
   height: 6px;
   margin-top: 2px;
   margin-bottom: 2px;
+}
+
+.mbsc-windows .mbsc-cal .mbsc-cal-btn {
+  font-size: 10px;
+  width: 2em;
+  height: 2em;
+  margin: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #b9b9b9;
+}
+
+.mbsc-windows .mbsc-cal-month,
+.mbsc-windows .mbsc-cal-year {
+  font-size: 12px;
+  line-height: unset;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.mbsc-cal-btn-w {
+  padding: 10px;
 }

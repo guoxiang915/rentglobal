@@ -202,9 +202,9 @@ class OfficeDetail extends PureComponent {
   /** Event for preview office */
   handlePreviewOffice = () => {
     const { office } = this.state;
-    window.open(
+    this.props.navigate(
+      "offices",
       [
-        "/offices",
         office.refId,
         office.location.country,
         this.props.t(office.officeType),
@@ -213,7 +213,7 @@ class OfficeDetail extends PureComponent {
       ]
         .join("/")
         .replace(/\s+/g, "-"),
-      "_blank"
+      ""
     );
   };
 
@@ -392,7 +392,7 @@ class OfficeDetail extends PureComponent {
                   window.innerWidth - (isWidthDown("xs", width) ? 0 : 44)
                 ) - (isWidthDown("sm", width) ? 54 : 247)
               }
-              topOffset={50}
+              topOffset={120}
             />
           )}
         </Row>

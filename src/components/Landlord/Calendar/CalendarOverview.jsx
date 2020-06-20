@@ -4,6 +4,7 @@ import { withRouter } from "react-router-dom";
 import { withTranslation } from "react-i18next";
 import PropTypes from "prop-types";
 import { Grid } from "@material-ui/core";
+import withWidth, { isWidthDown } from "@material-ui/core/withWidth";
 import {
   Row,
   Column,
@@ -94,7 +95,7 @@ class CalendarOverview extends PureComponent {
   }
 
   /** Get landlord offices */
-  componentDidMount() {}
+  componentDidMount() { }
 
   handleFilterChange = ({ query }) => {
     this.setState({ query: query });
@@ -111,10 +112,10 @@ class CalendarOverview extends PureComponent {
         "offices",
         `${office._id}/${office.location.country}/${t(office.officeType)}/${
           office.numberOfEmployees
-        } ${t("employees")}/${office.refId}-${office.title}`.replace(
-          /\s+/g,
-          "-"
-        )
+          } ${t("employees")}/${office.refId}-${office.title}`.replace(
+            /\s+/g,
+            "-"
+          )
       );
     } else {
       this.props.navigate("offices", `${office._id}/edit`);
@@ -187,15 +188,15 @@ class CalendarOverview extends PureComponent {
     }
   };
 
-  handleEditSelectedEvent = () => {};
+  handleEditSelectedEvent = () => { };
 
-  handleCancelSelectedEvent = () => {};
+  handleCancelSelectedEvent = () => { };
 
   /**
    * Renderer function
    */
   render() {
-    const { classes: s, t } = this.props;
+    const { classes: s, t, width } = this.props;
     const {
       selectedDay,
       selectedEvent,
@@ -235,15 +236,35 @@ class CalendarOverview extends PureComponent {
       <Column classes={{ box: s.root }} fullWidth alignChildrenStart>
         {/** Show search bar */}
         <Row fullWidth style={{ marginBottom: 42 }}>
-          <SearchbarWithSorter
-            query={query}
-            title={t("searchOnCalendar")}
-            onChange={this.handleFilterChange}
-          />
-          <Box paddingLeftDouble />
-          <Button variant='primary' onClick={this.handleAddEvent}>
-            {t("addEvent")}
-          </Button>
+          {isWidthDown("sm", width) &&
+            <Column fullWidth>
+              <Row fullWidth>
+                <SearchbarWithSorter
+                  query={query}
+                  title={t("searchOnCalendar")}
+                  onChange={this.handleFilterChange}
+                />
+              </Row>
+              <Row fullWidth paddingTop>
+                <Button variant='primary' onClick={this.handleAddEvent} fullWidth>
+                  {t("addEvent")}
+                </Button>
+              </Row>
+            </Column>
+          }
+          {!isWidthDown("sm", width) &&
+            <>
+              <SearchbarWithSorter
+                query={query}
+                title={t("searchOnCalendar")}
+                onChange={this.handleFilterChange}
+              />
+              <Box paddingLeftDouble />
+              <Button variant='primary' onClick={this.handleAddEvent}>
+                {t("addEvent")}
+              </Button>
+            </>
+          }
         </Row>
 
         {/** Show week/month view mode selector */}
@@ -404,6 +425,6 @@ class CalendarOverview extends PureComponent {
   }
 }
 
-export default withRouter(
+export default withWidth()(withRouter(
   withStyles(styleSheet)(withTranslation("common")(CalendarOverview))
-);
+));

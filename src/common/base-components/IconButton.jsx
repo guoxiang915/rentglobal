@@ -59,6 +59,21 @@ const styleSheet = theme => {
       ...theme.fonts.weight.fontWeightMedium,
     },
 
+    grey: {
+      border: `1px solid ${theme.colors.primary.grey}`,
+      background: theme.colors.primary.grey,
+      color: theme.colors.primary.white,
+      boxShadow: `0px 6px 12px ${theme.colors.primary.grey}`,
+      "&:hover": {
+        border: `1px solid ${theme.colors.primary.grey}`,
+        // color: theme.colors.primary.grey,
+        background: theme.colors.primary.grey,
+        color: theme.colors.primary.white,
+      },
+      ...theme.fonts.size.fontSizeS,
+      ...theme.fonts.weight.fontWeightMedium,
+    },
+
     secondary: {
       border: `1px solid ${theme.colors.primary.mainColor}`,
       background: "white",

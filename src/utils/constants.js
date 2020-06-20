@@ -214,12 +214,15 @@ const months = [
   "december",
 ];
 
-const officeSortOptions = [
+const companyOfficeSortOptions = [
   { title: "alphabetical", field: "title", direction: "desc" },
   { title: "mostRecent", field: "createdAt", direction: "desc" },
-  // { title: "available", field: "createdAt", direction: "desc" },
-  // { title: "dateOldToNew", field: "createdAt", direction: "asc" },
-  // { title: "topRatedFirst", field: "rating", direction: "desc" }
+];
+
+const officeSortOptions = [
+  { title: "available", field: "createdAt", direction: "desc" },
+  { title: "dateOldToNew", field: "createdAt", direction: "asc" },
+  { title: "topRatedFirst", field: "rating", direction: "desc" },
 ];
 
 const reviewSortOptions = [
@@ -258,6 +261,7 @@ export {
   weekdays,
   shortWeekdays,
   months,
+  companyOfficeSortOptions,
   officeSortOptions,
   reviewSortOptions,
   notificationTypes,

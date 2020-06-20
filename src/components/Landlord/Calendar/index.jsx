@@ -91,11 +91,13 @@ class Calendar extends PureComponent {
       title: "personalEvents",
       value: 7,
       icon: CalendarIcon,
+      onClick: () => this.props.navigate("calendar/personal-events"),
     },
     {
       title: "acceptedVisitRequests",
       value: 18,
       icon: CalendarIcon,
+      onClick: () => this.props.navigate("calendar/accepted-visit-requests"),
     },
   ];
 
@@ -137,39 +139,48 @@ class Calendar extends PureComponent {
           fullWidth
           style={{ marginBottom: 42 }}
         >
-          <ConditionalWrapper
-            condition={isWidthDown("sm", width)}
-            wrapper={(children) => (
-              <TabWrapper
-                open
-                insideOpen
-                title={t("stat")}
-                bodyClass={s.tabWrapper}
-              >
-                <CarouselWrapper itemWidth={200} itemOffset={0}>
-                  {children}
-                </CarouselWrapper>
-              </TabWrapper>
-            )}
-          >
+          {isWidthDown("sm", width) && 
+            <CarouselWrapper itemWidth={200} itemOffset={0}>
+              {this.statistics.map((stat, index) => (
+                <React.Fragment key={index}>
+                  <Box classes={{ box: s.statisticBox }}>
+                    <StatisticIconBox
+                      icon={
+                        <stat.icon
+                          className={s.lightIcon}
+                          style={{ width: 14, height: 13 }}
+                        />
+                      }
+                      title={t(stat.title)}
+                      statistics={[{ value: stat.value, variant: "primary" }]}
+                      onClick={stat.onClick}
+                    />
+                  </Box>
+                </React.Fragment>
+              ))}
+            </CarouselWrapper>
+          }
+          {!isWidthDown("sm", width) &&
+            <>
             {this.statistics.map((stat, index) => (
-              <React.Fragment key={index}>
-                <Box classes={{ box: s.statisticBox }}>
-                  <StatisticIconBox
-                    icon={
-                      <stat.icon
-                        className={s.lightIcon}
-                        style={{ width: 14, height: 13 }}
-                      />
-                    }
-                    title={t(stat.title)}
-                    statistics={[{ value: stat.value, variant: "primary" }]}
-                    onClick={stat.onClick}
-                  />
-                </Box>
-              </React.Fragment>
-            ))}
-          </ConditionalWrapper>
+                <React.Fragment key={index}>
+                  <Box classes={{ box: s.statisticBox }}>
+                    <StatisticIconBox
+                      icon={
+                        <stat.icon
+                          className={s.lightIcon}
+                          style={{ width: 14, height: 13 }}
+                        />
+                      }
+                      title={t(stat.title)}
+                      statistics={[{ value: stat.value, variant: "primary" }]}
+                      onClick={stat.onClick}
+                    />
+                  </Box>
+                </React.Fragment>
+              ))}
+            </>
+          }
         </Row>
 
         <Row fullWidth style={{ marginBottom: 24 }}>

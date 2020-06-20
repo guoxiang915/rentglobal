@@ -14,41 +14,39 @@ import {
   Box,
   Typography,
   Button,
-  Divider
+  Divider,
 } from "../../../common/base-components";
-import {
-  SearchbarWithSorter
-} from "../../../common/base-layouts";
-import OfficeItem from './OfficeItem';
-import OfficeListItem from './OfficeListItem';
-import { officeSortOptions } from "../../../utils/constants";
+import { SearchbarWithSorter } from "../../../common/base-layouts";
+import OfficeItem from "./OfficeItem";
+import OfficeListItem from "./OfficeListItem";
+import { companyOfficeSortOptions } from "../../../utils/constants";
 
 const OFFICES_PER_PAGE = 6;
 
-const styleSheet = theme => ({
+const styleSheet = (theme) => ({
   root: {
     paddingLeft: theme.spacing(5),
     paddingRight: theme.spacing(5),
     [theme.breakpoints.down("sm")]: {
       paddingLeft: 27,
-      paddingRight: 27
-    }
+      paddingRight: 27,
+    },
   },
 
   addButton: {
     width: "100%",
-    marginTop: 25
+    marginTop: 25,
   },
 
   tabs: {
     marginTop: 12,
     width: "100%",
-    borderBottom: `1px solid ${theme.colors.primary.borderGrey}`
+    borderBottom: `1px solid ${theme.colors.primary.borderGrey}`,
   },
 
   indicator: {
     borderRadius: 2,
-    height: 4
+    height: 4,
   },
 
   tab: {
@@ -57,27 +55,27 @@ const styleSheet = theme => ({
     padding: "25px 0px",
     marginRight: 70,
     [theme.breakpoints.down("xs")]: {
-      marginRight: 30
-    }
+      marginRight: 30,
+    },
   },
 
   searchbarWrapper: {
-    paddingTop: 28
+    paddingTop: 28,
   },
 
   viewModeItem: {
     width: 36,
     height: 36,
-    cursor: "pointer"
+    cursor: "pointer",
   },
 
   officeList: {
-    paddingBottom: 60
+    paddingBottom: 60,
   },
 
   officeItemWrapper: {
     marginTop: 32,
-    marginBottom: 27
+    marginBottom: 27,
   },
 
   officeWrapper: {
@@ -87,8 +85,8 @@ const styleSheet = theme => ({
     height: 300,
     marginTop: 32,
     [theme.breakpoints.down("xs")]: {
-      width: "calc(100vw - 44px)"
-    }
+      width: "calc(100vw - 44px)",
+    },
   },
 
   offices: {
@@ -102,21 +100,21 @@ const styleSheet = theme => ({
     // [theme.breakpoints.down("xs")]: {
     //   width: "100%"
     // }
-    width: "100%"
+    width: "100%",
   },
 
   pagination: {
     marginTop: 20,
     marginBottom: 60,
-    color: theme.colors.primary.grey
-  }
+    color: theme.colors.primary.grey,
+  },
 });
 
 class OfficeList extends PureComponent {
   static propTypes = {
     navigate: PropTypes.func,
     classes: PropTypes.object,
-    t: PropTypes.func
+    t: PropTypes.func,
   };
 
   state = {
@@ -125,10 +123,10 @@ class OfficeList extends PureComponent {
     currentTab: 0,
     viewMode: "list",
     query: "",
-    sorter: officeSortOptions[0],
+    sorter: companyOfficeSortOptions[0],
     page: 1,
     totalLength: 0,
-    loading: false
+    loading: false,
   };
 
   /** Get office using props */
@@ -142,18 +140,18 @@ class OfficeList extends PureComponent {
     };
     this.setState({ loading: true });
     this.props.getOffices(params).then(
-      response => {
+      (response) => {
         if (response.status === 200) {
           this.setState({
             offices: response.data.docs,
             totalLength: response.data.total,
-            loading: false
+            loading: false,
           });
         } else if (response.status === 404) {
           this.setState({ offices: [], loading: false });
         }
       },
-      error => {
+      (error) => {
         if (error.response.status === 404) {
           this.setState({ offices: [], totalLength: 0, loading: false });
         }
@@ -181,10 +179,10 @@ class OfficeList extends PureComponent {
   };
 
   /** Change view mode */
-  handleChangeViewMode = viewMode => () => this.setState({ viewMode });
+  handleChangeViewMode = (viewMode) => () => this.setState({ viewMode });
 
   /** Change office sort options */
-  handleFilterChange = filter => {
+  handleFilterChange = (filter) => {
     this.setState(filter, this.searchOffices);
   };
 
@@ -209,12 +207,12 @@ class OfficeList extends PureComponent {
     const { classes: s, t, width } = this.props;
     const {
       offices,
-      currentTab,
+      // currentTab,
       viewMode,
       query,
       sorter,
       page,
-      totalLength
+      totalLength,
     } = this.state;
 
     const pageCount = Math.ceil(totalLength / OFFICES_PER_PAGE);
@@ -230,8 +228,8 @@ class OfficeList extends PureComponent {
         <Row fullWidth paddingBottom wrap>
           <Stretch />
           <Button
-            link="secondary"
-            background="secondaryLight"
+            link='secondary'
+            background='secondaryLight'
             onClick={this.handleBack}
           >
             <KeyboardBackspace />
@@ -270,7 +268,7 @@ class OfficeList extends PureComponent {
             <SearchbarWithSorter
               query={query}
               sorter={sorter}
-              sortOptions={officeSortOptions}
+              sortOptions={companyOfficeSortOptions}
               title={t("search")}
               onChange={this.handleFilterChange}
             />
@@ -281,14 +279,14 @@ class OfficeList extends PureComponent {
           className={clsx(s.offices)}
           style={{
             minHeight: 500,
-            marginBottom: 40
+            marginBottom: 40,
           }}
         >
           <Grid
             container
-            direction="row"
+            direction='row'
             spacing={2}
-            wrap="wrap"
+            wrap='wrap'
             className={s.offices}
           >
             {viewMode === "grid" ? (
@@ -338,7 +336,7 @@ class OfficeList extends PureComponent {
               <Column>
                 <Pagination
                   count={pageCount}
-                  shape="rounded"
+                  shape='rounded'
                   classes={{ root: s.pagination }}
                   onChange={this.handleChangePage}
                   page={page}

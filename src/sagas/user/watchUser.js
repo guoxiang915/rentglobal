@@ -1,26 +1,27 @@
-import { takeLatest, put, call } from 'redux-saga/effects';
-import api from '../../api/api';
-import flushMessage from '../flushMessages';
-import { 
+import { takeLatest, put, call } from "redux-saga/effects";
+import api from "../../api/api";
+import flushMessage from "../flushMessages";
+import {
   deleteUserAvatar,
-  deleteUserDocument, 
-  deleteUserAccount, 
-  verifyPhoneNumber, 
-  verifyPhoneCode } from '../../api/endpoints';
-import { callApi } from '../../utils/api';
+  deleteUserDocument,
+  deleteUserAccount,
+  verifyPhoneNumber,
+  verifyPhoneCode,
+} from "../../api/endpoints";
+import { callApi } from "../../utils/api";
 
 const updateUserRequest = async ({ field, data }) => {
   let resp = null;
   try {
-    if (field === 'profile') {
+    if (field === "profile") {
       resp = await api.put(`/users/me/edit/${field}?role=${data.userRole}`, {
         ...data.profile,
       });
-    } else if (field === 'password') {
+    } else if (field === "password") {
       resp = await api.put(`/users/me/edit/${field}`, data);
-    } else if (field === 'avatar') {
+    } else if (field === "avatar") {
       resp = await api.put(`/users/me/edit/${field}`, data);
-    } else if (field === 'documents') {
+    } else if (field === "documents") {
       resp = await api.put(`/users/me/edit/${field}?role=${data.userRole}`, {
         ...data.documentInfo,
       });
@@ -41,20 +42,20 @@ function* updateUser(action) {
     });
     if (response.status === 200) {
       yield put({
-        type: 'UPDATE_USER_SUCCESS',
+        type: "UPDATE_USER_SUCCESS",
         field: action.field,
         resp: response.data,
       });
     } else {
       yield put({
-        type: 'UPDATE_USER_FAILED',
+        type: "UPDATE_USER_FAILED",
         field: action.field,
         resp: response.data,
       });
     }
   } catch (error) {
     yield put({
-      type: 'UPDATE_USER_FAILED',
+      type: "UPDATE_USER_FAILED",
       field: action.field,
       resp: { msg: error },
     });
@@ -66,11 +67,12 @@ function* setUserRole(action) {
   let pathname = action.history && action.history.location.pathname;
   if (action.redirectPath) {
     pathname = action.redirectPath;
-  } if (pathname.startsWith('/company')) {
-    pathname = `/${action.userRole}${pathname.substring('/company'.length)}`;
-  } else if (pathname.startsWith('/landlord')) {
-    pathname = `/${action.userRole}${pathname.substring('/landlord'.length)}`;
-  } else {
+  }
+  if (pathname.startsWith("/company")) {
+    pathname = `/${action.userRole}${pathname.substring("/company".length)}`;
+  } else if (pathname.startsWith("/landlord")) {
+    pathname = `/${action.userRole}${pathname.substring("/landlord".length)}`;
+  } else if (action.userRole) {
     pathname = `/${action.userRole}`;
   }
 
@@ -78,18 +80,18 @@ function* setUserRole(action) {
 
   // adding userRole to user.roles if it is not already added
   const response = yield call(updateUserRequest, {
-    field: 'profile',
-    data: { profile: {}, userRole: action.userRole }
+    field: "profile",
+    data: { profile: {}, userRole: action.userRole },
   });
 
   if (response.status === 200) {
     yield put({
-      type: 'UPDATE_USER_SUCCESS',
-      field: 'profile',
+      type: "UPDATE_USER_SUCCESS",
+      field: "profile",
       resp: response.data,
     });
   }
-  
+
   yield call(flushMessage);
 }
 
@@ -98,18 +100,18 @@ function* deleteAvatar() {
     const response = yield call(callApi, deleteUserAvatar, {});
     if (response.status === 200) {
       yield put({
-        type: 'DELETE_AVATAR_SUCCESS',
+        type: "DELETE_AVATAR_SUCCESS",
         resp: response.data,
       });
     } else {
       yield put({
-        type: 'DELETE_AVATAR_FAILED',
+        type: "DELETE_AVATAR_FAILED",
         resp: response.data,
       });
     }
   } catch (error) {
     yield put({
-      type: 'DELETE_AVATAR_FAILED',
+      type: "DELETE_AVATAR_FAILED",
       resp: { msg: error },
     });
   }
@@ -121,18 +123,18 @@ function* deleteDocument(action) {
     const response = yield call(callApi, deleteUserDocument, action.payload);
     if (response.status === 200) {
       yield put({
-        type: 'DELETE_DOCUMENT_SUCCESS',
+        type: "DELETE_DOCUMENT_SUCCESS",
         resp: response.data,
       });
     } else {
       yield put({
-        type: 'DELETE_DOCUMENT_FAILED',
+        type: "DELETE_DOCUMENT_FAILED",
         resp: response.data,
       });
     }
   } catch (error) {
     yield put({
-      type: 'DELETE_DOCUMENT_FAILED',
+      type: "DELETE_DOCUMENT_FAILED",
       resp: { msg: error },
     });
   }
@@ -144,18 +146,18 @@ function* verifyPhone(action) {
     const response = yield call(callApi, verifyPhoneNumber, action.payload);
     if (response.status === 200) {
       yield put({
-        type: 'VERIFY_PHONE_SUCCESS',
+        type: "VERIFY_PHONE_SUCCESS",
         resp: response.data,
       });
     } else {
       yield put({
-        type: 'VERIFY_PHONE_FAILED',
+        type: "VERIFY_PHONE_FAILED",
         resp: response.data,
       });
     }
   } catch (error) {
     yield put({
-      type: 'VERIFY_PHONE_FAILED',
+      type: "VERIFY_PHONE_FAILED",
       resp: { msg: error },
     });
   }
@@ -167,22 +169,22 @@ function* verifyCode(action) {
     const response = yield call(callApi, verifyPhoneCode, action.payload);
     if (response.status === 200) {
       yield put({
-        type: 'VERIFY_CODE_SUCCESS',
+        type: "VERIFY_CODE_SUCCESS",
         resp: response.data,
         phoneNumber: {
           number: action.payload.phoneNumber,
-          verified: true
-        }
+          verified: true,
+        },
       });
     } else {
       yield put({
-        type: 'VERIFY_CODE_FAILED',
+        type: "VERIFY_CODE_FAILED",
         resp: response.data,
       });
     }
   } catch (error) {
     yield put({
-      type: 'VERIFY_CODE_FAILED',
+      type: "VERIFY_CODE_FAILED",
       resp: { msg: error },
     });
   }
@@ -194,18 +196,18 @@ function* deleteAccount() {
     const response = yield call(callApi, deleteUserAccount, {});
     if (response.status === 200) {
       yield put({
-        type: 'DELETE_ACCOUNT_SUCCESS',
+        type: "DELETE_ACCOUNT_SUCCESS",
         resp: response.data,
       });
     } else {
       yield put({
-        type: 'DELETE_ACCOUNT_FAILED',
+        type: "DELETE_ACCOUNT_FAILED",
         resp: response.data,
       });
     }
   } catch (error) {
     yield put({
-      type: 'DELETE_ACCOUNT_FAILED',
+      type: "DELETE_ACCOUNT_FAILED",
       resp: { msg: error },
     });
   }
@@ -213,11 +215,11 @@ function* deleteAccount() {
 }
 
 export default function* watchUpdateUser() {
-  yield takeLatest('REQUEST_UPDATE_USER', updateUser);
-  yield takeLatest('SET_USER_ROLE', setUserRole);
-  yield takeLatest('REQUEST_DELETE_AVATAR', deleteAvatar);
-  yield takeLatest('REQUEST_DELETE_DOCUMENT', deleteDocument);
-  yield takeLatest('REQUEST_DELETE_ACCOUNT', deleteAccount);
-  yield takeLatest('REQUEST_VERIFY_PHONE', verifyPhone);
-  yield takeLatest('REQUEST_VERIFY_CODE', verifyCode);
+  yield takeLatest("REQUEST_UPDATE_USER", updateUser);
+  yield takeLatest("SET_USER_ROLE", setUserRole);
+  yield takeLatest("REQUEST_DELETE_AVATAR", deleteAvatar);
+  yield takeLatest("REQUEST_DELETE_DOCUMENT", deleteDocument);
+  yield takeLatest("REQUEST_DELETE_ACCOUNT", deleteAccount);
+  yield takeLatest("REQUEST_VERIFY_PHONE", verifyPhone);
+  yield takeLatest("REQUEST_VERIFY_CODE", verifyCode);
 }

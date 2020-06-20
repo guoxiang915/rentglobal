@@ -168,7 +168,7 @@ class OfficeDetail extends PureComponent {
   static propTypes = {
     auth: PropTypes.object.isRequired,
     /** office id to show */
-    officeId: PropTypes.string.isRequired,
+    refId: PropTypes.string.isRequired,
     /** navigate handler */
     navigate: PropTypes.func.isRequired,
     /** function for getting office from office id */

@@ -125,14 +125,34 @@ const styleSheet = (theme) => ({
   },
 
   dateWrapper: {
-    backgroundColor: theme.colors.primary.borderGrey,
     width: "100%",
-    height: 158,
+    height: 144,
+  },
+
+  dateWrapperTextPanel: {
+    zIndex: 1,
+  },
+
+  dateWrapperBackground: {
+    position: "absolute",
+    backgroundColor: theme.colors.primary.borderGrey,
+    top: 0,
+    left: 0,
+    width: "100%",
+    height: 145,
+    opacity: 0.45,
+  },
+
+  checkIcon: {
+    color: theme.colors.primary.mainColor,
+    width: 15,
+    height: 11,
   },
 
   actionButtonsWrapper: {
     position: "absolute",
-    bottom: 0,
+    top: 127,
+    right: 20,
   },
 
   actionButton: {
@@ -355,9 +375,11 @@ const VisitRequestItem = React.memo(
             >
               <Column
                 padding
+                paddingTopDouble
                 justifyChildrenCenter
                 alignChildrenCenter
                 fullWidth
+                classes={{ box: s.dateWrapperTextPanel }}
               >
                 <Row>
                   <Typography fontSizeM textBlackGrey fontWeightBold>
@@ -374,7 +396,11 @@ const VisitRequestItem = React.memo(
                     09:30 AM - 10:00 AM
                   </Typography>
                 </Row>
+                <Row paddingTopHalf>
+                  <CheckIcon className={s.checkIcon} />
+                </Row>
               </Column>
+              <div className={s.dateWrapperBackground} />
             </Row>
             <Row
               classes={{
@@ -383,24 +409,10 @@ const VisitRequestItem = React.memo(
             >
               <IconButton
                 classes={{ root: clsx(s.actionButton) }}
-                variant='red'
-                onClick={onReject}
-              >
-                <CloseIcon className={s.actionButtonIcon} />
-              </IconButton>
-              <IconButton
-                classes={{ root: clsx(s.actionButton) }}
                 variant='grey'
                 onClick={onReject}
               >
                 <MusicIcon className={s.actionButtonIcon} />
-              </IconButton>
-              <IconButton
-                classes={{ root: clsx(s.actionButton) }}
-                variant='green'
-                onClick={onApprove}
-              >
-                <CheckIcon className={s.actionButtonIcon} />
               </IconButton>
             </Row>
           </Column>

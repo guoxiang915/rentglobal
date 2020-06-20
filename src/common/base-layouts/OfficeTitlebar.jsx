@@ -184,11 +184,10 @@ class OfficeTitlebar extends PureComponent {
                   )}
                 </Row>
               </div>
-
-              {!isSticky && <div className={s.titleBarHolder}></div>}
             </div>
           )}
         </Sticky>
+        <div className={s.titleBarHolder}></div>
         <Row paddingTopHalf fontSizeM textSecondary fontWeightBold>
           {t(office.officeType)}
         </Row>
