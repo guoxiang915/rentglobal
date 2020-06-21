@@ -10,8 +10,8 @@ import { AppSidebar } from '../Layout';
 import { Row, Column } from '../../common/base-components';
 import Profile from '../../containers/Layout/Profile';
 import Dashboard from "../../containers/Company/Dashboard";
+import Preview from "../../containers/Company/Preview";
 import Office from "./Office";
-import Preview from "./Preview";
 import OfficeList from "./Office/OfficeList";
 import {
   uploadFile,
@@ -67,7 +67,7 @@ class Company extends PureComponent {
 
     let showAppSidebar = true;
     
-    if (location.pathname == "/company/preview-profile") {
+    if (location.pathname === "/company/preview-profile") {
       showAppSidebar = false;
     }
 
@@ -158,7 +158,9 @@ class Company extends PureComponent {
                 <Route
                   path="/company/preview-profile"
                   render={() => (
-                    <Preview />
+                    <Preview
+                      navigate={this.props.navigate}
+                    />
                   )}
                 />
                 <Route render={() => <Redirect to="/company/dashboard" />} />

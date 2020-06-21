@@ -11,15 +11,22 @@ import {
   DialogTitle,
   DialogContent,
   DialogActions,
-  Typography,
 } from "@material-ui/core";
-import { KeyboardBackspace } from "@material-ui/icons";
+import {
+  KeyboardBackspace,
+  Person,
+} from "@material-ui/icons";
 import {
   Column,
   Row,
+  Box,
   Stretch,
   Button,
+  ImageIcon,
+  UserIcon,
+  Typography,
 } from "../../common/base-components";
+import { formatDate } from "../../utils/formatters";
 
 const styleSheet = (theme) => ({
   root: {
@@ -34,14 +41,35 @@ const styleSheet = (theme) => ({
   fullWidth: {
     width: "100%",
   },
+
+  accountAvatar: {
+    width: 139,
+    height: 139,
+    marginRight: 32,
+    borderRadius: "50%",
+    backgroundSize: "cover",
+    backgroundPosition: "center",
+  },
+
+  accountName: {
+    minHeight: 75,
+  },
 });
 
 class PreviewProfile extends PureComponent {
   static propTypes = {
   };
 
+  handleBack = () => {
+    this.props.navigate("profile");
+  }
+
   render() {
     const { classes: s, t, width } = this.props;
+    const { user, userRole } = this.props.auth;
+
+    console.log(user);
+
     return (
       <Column
         classes={{ box: s.root }}
@@ -55,13 +83,55 @@ class PreviewProfile extends PureComponent {
           <Button
             link='secondary'
             background='secondaryLight'
-            onClick={this.backCurrentStep}
+            onClick={this.handleBack}
           >
             <KeyboardBackspace />
             <Typography paddingLeft fontSizeS>
               {t("back")}
             </Typography>
           </Button>
+        </Row>
+
+        {/** show profile */}
+        <Box paddingTopDouble />
+        <Row classes={{ box: s.profilePanel }} fullWidth wrap>
+          {/* user avatar */}
+          <Box
+            alignChildrenCenter
+            justifyChildrenCenter
+            style={{
+              backgroundImage: user.avatar
+                ? `url("${user.avatar.bucketPath}")`
+                : "none",
+            }}
+            border
+            classes={{
+              box: s.accountAvatar,
+            }}
+          >
+            {!user.avatar &&
+              (userRole === "company" ? (
+                <ImageIcon className={s.smallIcon} variant='normal' />
+              ) : (
+                <UserIcon className={s.smallIcon} variant='normal' />
+              ))}
+          </Box>
+
+          {/* user name */}
+          <Column
+            classes={{ box: s.accountName }}
+            justifyChildrenCenter
+            alignChildrenStart
+          >
+            <Typography fontSizeXL textSecondary>
+              {user.generalInfo?.username || "User"}
+            </Typography>
+            <Box>
+              <Typography>${t("startup")} (<Person /> {user.companyProfile?.companySize || 0})</Typography>
+              <Typography>{user.generalInfo?.address?.city}, {user.generalInfo?.address?.country}</Typography>
+              <Typography>{t("joined")}: {formatDate(user.createdAt)}</Typography>
+            </Box>
+          </Column>
         </Row>
       </Column>
     )

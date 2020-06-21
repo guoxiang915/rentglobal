@@ -1300,7 +1300,6 @@ class Profile extends PureComponent {
                         fullWidth
                         multiline
                         rows={isWidthDown("xs", width) ? 8 : 6}
-                        showLimit
                         inputProps={{
                           placeholder: t("shortDescription"),
                           maxLength: 500,

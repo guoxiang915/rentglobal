@@ -104,37 +104,35 @@ const TabWrapper = (props) => {
             </Typography>
           </Button>
         )}
+        {showPreviewButton &&
+          <Box>
+            <Button
+              link="primary"
+              background="normalLight"
+              inverse
+              onClick={onPreview}
+            >
+              <LaunchIcon style={{ width: 16, height: 16 }} />
+              <Typography paddingLeft fontSizeS>
+                {t('preview')}
+              </Typography>
+            </Button>
+          </Box>
+        }
         {isEdit && showSaveButton && (
-          <React.Fragment>
-            {showPreviewButton &&
-              <Box>
-                <Button
-                  link="primary"
-                  background="normalLight"
-                  inverse
-                  onClick={onPreview}
-                >
-                  <LaunchIcon style={{ width: 16, height: 16 }} />
-                  <Typography paddingLeft fontSizeS>
-                    {t('preview')}
-                  </Typography>
-                </Button>
-              </Box>
-            }
-            <Box paddingLeft>
-              <Button
-                link="white"
-                background="primary"
-                inverse
-                onClick={onSave}
-                paddingLeft
-              >
-                <Typography fontSizeS>
-                  {t('save')}
-                </Typography>
-              </Button>
-            </Box>
-          </React.Fragment>
+          <Box paddingLeft>
+            <Button
+              link="white"
+              background="primary"
+              inverse
+              onClick={onSave}
+              paddingLeft
+            >
+              <Typography fontSizeS>
+                {t('save')}
+              </Typography>
+            </Button>
+          </Box>
         )}
         {!isEdit && isEditable && (
           <Button

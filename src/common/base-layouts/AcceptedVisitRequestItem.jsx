@@ -14,7 +14,6 @@ import {
   Stretch,
   IconButton,
   CheckIcon,
-  CloseIcon,
   MusicIcon,
 } from "../base-components";
 import { numberWithSpaces } from "../../utils/formatters";
