@@ -156,7 +156,7 @@ class CallConsultantDialog extends PureComponent {
           <Row fullWidth>
             {/** header title */}
             <Typography fontSizeM textSecondary fontWeightBold>
-              {title || t('call')} #{numberWithSpaces(office.refId + 1, 9)}
+              {title || t('call')} #{numberWithSpaces(office.refId + 1, 3)}
             </Typography>
             <Stretch />
             {/** close button */}
