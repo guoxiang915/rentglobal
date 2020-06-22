@@ -27,9 +27,7 @@ import {
   getEventsByLandlord,
   getVisitRequestsByLandlord,
 } from "../../../api/endpoints";
-import {
-  AddEventDialog,
-} from "../../../components/Layout";
+import { AddEventDialog } from "../../../components/Layout";
 
 import { formatDate, getWeekday, formatHrMin } from "../../../utils/formatters";
 import { checkEqualDate } from "../../../utils/validators";
@@ -95,7 +93,7 @@ class CalendarOverview extends PureComponent {
   }
 
   /** Get landlord offices */
-  componentDidMount() { }
+  componentDidMount() {}
 
   handleFilterChange = ({ query }) => {
     this.setState({ query: query });
@@ -188,9 +186,9 @@ class CalendarOverview extends PureComponent {
     }
   };
 
-  handleEditSelectedEvent = () => { };
+  handleEditSelectedEvent = () => {};
 
-  handleCancelSelectedEvent = () => { };
+  handleCancelSelectedEvent = () => {};
 
   /**
    * Renderer function
@@ -236,7 +234,7 @@ class CalendarOverview extends PureComponent {
       <Column classes={{ box: s.root }} fullWidth alignChildrenStart>
         {/** Show search bar */}
         <Row fullWidth style={{ marginBottom: 42 }}>
-          {isWidthDown("sm", width) &&
+          {isWidthDown("sm", width) && (
             <Column fullWidth>
               <Row fullWidth>
                 <SearchbarWithSorter
@@ -246,14 +244,18 @@ class CalendarOverview extends PureComponent {
                 />
               </Row>
               <Row fullWidth paddingTop>
-                <Button variant='primary' onClick={this.handleAddEvent} fullWidth>
+                <Button
+                  variant='primary'
+                  onClick={this.handleAddEvent}
+                  fullWidth
+                >
                   {t("addEvent")}
                 </Button>
               </Row>
             </Column>
-          }
-          {!isWidthDown("sm", width) &&
-            <React.Fragment>
+          )}
+          {!isWidthDown("sm", width) && (
+            <>
               <SearchbarWithSorter
                 query={query}
                 title={t("searchOnCalendar")}
@@ -263,8 +265,8 @@ class CalendarOverview extends PureComponent {
               <Button variant='primary' onClick={this.handleAddEvent}>
                 {t("addEvent")}
               </Button>
-            </React.Fragment>
-          }
+            </>
+          )}
         </Row>
 
         {/** Show week/month view mode selector */}
@@ -327,17 +329,25 @@ class CalendarOverview extends PureComponent {
               alignChildrenCenter
               paddingBottomDouble
             >
-              <Typography classes={{ box: s.visit }}>
+              <Typography classes={{ box: s.visit }} alignChildrenCenter>
                 <Dot />
                 <UsersIcon style={{ marginLeft: 16, width: 18, height: 16 }} />
                 <Typography fontSizeXS paddingLeftHalf>
                   {t("visit")}
                 </Typography>
               </Typography>
-              <Typography textSecondary paddingLeftDouble>
+              <Typography textSecondary paddingLeftDouble alignChildrenCenter>
                 <Dot />
                 <Typography fontSizeXS paddingLeft>
                   {t("generalEvent")}
+                </Typography>
+              </Typography>
+              <Typography textSecondary paddingLeftDouble alignChildrenCenter>
+                <Typography textErrorRed>
+                  <Dot />
+                </Typography>
+                <Typography fontSizeXS paddingLeft>
+                  {t("request")}
                 </Typography>
               </Typography>
             </Row>
@@ -425,6 +435,8 @@ class CalendarOverview extends PureComponent {
   }
 }
 
-export default withWidth()(withRouter(
-  withStyles(styleSheet)(withTranslation("common")(CalendarOverview))
-));
+export default withWidth()(
+  withRouter(
+    withStyles(styleSheet)(withTranslation("common")(CalendarOverview))
+  )
+);

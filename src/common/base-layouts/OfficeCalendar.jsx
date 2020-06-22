@@ -263,17 +263,25 @@ class OfficeCalendar extends React.Component {
               alignChildrenCenter
               paddingBottomDouble
             >
-              <Typography classes={{ box: s.visit }}>
+              <Typography classes={{ box: s.visit }} alignChildrenCenter>
                 <Dot />
                 <UsersIcon style={{ marginLeft: 16, width: 18, height: 16 }} />
                 <Typography fontSizeXS paddingLeftHalf>
                   {t("visit")}
                 </Typography>
               </Typography>
-              <Typography textSecondary paddingLeftDouble>
+              <Typography textSecondary paddingLeftDouble alignChildrenCenter>
                 <Dot />
                 <Typography fontSizeXS paddingLeft>
                   {t("generalEvent")}
+                </Typography>
+              </Typography>
+              <Typography textSecondary paddingLeftDouble alignChildrenCenter>
+                <Typography textErrorRed>
+                  <Dot />
+                </Typography>
+                <Typography fontSizeXS paddingLeft>
+                  {t("request")}
                 </Typography>
               </Typography>
             </Row>

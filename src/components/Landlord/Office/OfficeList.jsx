@@ -14,41 +14,41 @@ import {
   Box,
   Typography,
   Button,
-  Divider
+  Divider,
 } from "../../../common/base-components";
 import {
   OfficeItem,
   OfficeListItem,
-  SearchbarWithSorter
+  SearchbarWithSorter,
 } from "../../../common/base-layouts";
 import { officeSortOptions } from "../../../utils/constants";
 
 const OFFICES_PER_PAGE = 6;
 
-const styleSheet = theme => ({
+const styleSheet = (theme) => ({
   root: {
     paddingLeft: theme.spacing(5),
     paddingRight: theme.spacing(5),
     [theme.breakpoints.down("sm")]: {
       paddingLeft: 27,
-      paddingRight: 27
-    }
+      paddingRight: 27,
+    },
   },
 
   addButton: {
     width: "100%",
-    marginTop: 25
+    marginTop: 25,
   },
 
   tabs: {
     marginTop: 12,
     width: "100%",
-    borderBottom: `1px solid ${theme.colors.primary.borderGrey}`
+    borderBottom: `1px solid ${theme.colors.primary.borderGrey}`,
   },
 
   indicator: {
     borderRadius: 2,
-    height: 4
+    height: 4,
   },
 
   tab: {
@@ -57,27 +57,27 @@ const styleSheet = theme => ({
     padding: "25px 0px",
     marginRight: 70,
     [theme.breakpoints.down("xs")]: {
-      marginRight: 30
-    }
+      marginRight: 30,
+    },
   },
 
   searchbarWrapper: {
-    paddingTop: 28
+    paddingTop: 28,
   },
 
   viewModeItem: {
     width: 36,
     height: 36,
-    cursor: "pointer"
+    cursor: "pointer",
   },
 
   officeList: {
-    paddingBottom: 60
+    paddingBottom: 60,
   },
 
   officeItemWrapper: {
     marginTop: 32,
-    marginBottom: 27
+    marginBottom: 27,
   },
 
   officeWrapper: {
@@ -85,10 +85,10 @@ const styleSheet = theme => ({
     cursor: "pointer",
     width: 235,
     height: 300,
-    marginTop: 32,
+    // marginTop: 32,
     [theme.breakpoints.down("xs")]: {
-      width: "calc(100vw - 44px)"
-    }
+      width: "calc(100vw - 44px)",
+    },
   },
 
   offices: {
@@ -102,21 +102,21 @@ const styleSheet = theme => ({
     // [theme.breakpoints.down("xs")]: {
     //   width: "100%"
     // }
-    width: "100%"
+    width: "100%",
   },
 
   pagination: {
     marginTop: 20,
     marginBottom: 60,
-    color: theme.colors.primary.grey
-  }
+    color: theme.colors.primary.grey,
+  },
 });
 
 class OfficeList extends PureComponent {
   static propTypes = {
     navigate: PropTypes.func,
     classes: PropTypes.object,
-    t: PropTypes.func
+    t: PropTypes.func,
   };
 
   state = {
@@ -128,7 +128,7 @@ class OfficeList extends PureComponent {
     sorter: officeSortOptions[0],
     page: 1,
     totalLength: 0,
-    loading: false
+    loading: false,
   };
 
   /** Get office using props */
@@ -142,18 +142,18 @@ class OfficeList extends PureComponent {
     };
     this.setState({ loading: true });
     this.props.getOffices(params).then(
-      response => {
+      (response) => {
         if (response.status === 200) {
           this.setState({
             offices: response.data.docs,
             totalLength: response.data.total,
-            loading: false
+            loading: false,
           });
         } else if (response.status === 404) {
           this.setState({ offices: [], loading: false });
         }
       },
-      error => {
+      (error) => {
         if (error.response.status === 404) {
           this.setState({ offices: [], totalLength: 0, loading: false });
         }
@@ -181,10 +181,10 @@ class OfficeList extends PureComponent {
   };
 
   /** Change view mode */
-  handleChangeViewMode = viewMode => () => this.setState({ viewMode });
+  handleChangeViewMode = (viewMode) => () => this.setState({ viewMode });
 
   /** Change office sort options */
-  handleFilterChange = filter => {
+  handleFilterChange = (filter) => {
     this.setState(filter, this.searchOffices);
   };
 
@@ -214,13 +214,13 @@ class OfficeList extends PureComponent {
       query,
       sorter,
       page,
-      totalLength
+      totalLength,
     } = this.state;
-    const leasedOffices = offices.filter(item => !!item.leasedBy);
-    const availableOffices = offices.filter(item => !item.leasedBy);
+    const leasedOffices = offices.filter((item) => !!item.leasedBy);
+    const availableOffices = offices.filter((item) => !item.leasedBy);
 
     const filteredOffices = offices.filter(
-      item =>
+      (item) =>
         currentTab === 0 ||
         (currentTab === 1 && !!item.leasedBy) ||
         (currentTab === 2 && !item.leasedBy)
@@ -243,8 +243,8 @@ class OfficeList extends PureComponent {
           </Typography>
           <Stretch />
           <Button
-            link="secondary"
-            background="secondaryLight"
+            link='secondary'
+            background='secondaryLight'
             onClick={this.handleBack}
           >
             <KeyboardBackspace />
@@ -254,7 +254,7 @@ class OfficeList extends PureComponent {
           </Button>
           <Box paddingLeftHalf />
           <Button
-            variant="secondary"
+            variant='secondary'
             shadow
             onClick={this.navigate("offices/add")}
             className={clsx(isWidthDown("xs", width) && s.addButton)}
@@ -267,9 +267,9 @@ class OfficeList extends PureComponent {
         <Tabs
           value={currentTab}
           onChange={this.handleChangeTab}
-          aria-label="wrapped label tabs"
-          indicatorColor="primary"
-          textColor="primary"
+          aria-label='wrapped label tabs'
+          indicatorColor='primary'
+          textColor='primary'
           classes={{ root: s.tabs, indicator: s.indicator }}
         >
           <Tab
@@ -351,19 +351,31 @@ class OfficeList extends PureComponent {
           className={clsx(s.offices)}
           style={{
             minHeight: 500,
-            marginBottom: 40
+            marginBottom: 40,
           }}
         >
           <Grid
             container
-            direction="row"
-            spacing={2}
-            wrap="wrap"
+            direction='row'
+            // spacing={2}
+            wrap='wrap'
             className={s.offices}
+            justify='space-between'
           >
             {viewMode === "grid" ? (
               filteredOffices.map((item, index) => (
-                <Grid item xs={12} sm={6} md={4} lg={3} key={index}>
+                <Grid
+                  item
+                  xs={12}
+                  sm={6}
+                  md={4}
+                  key={index}
+                  style={{
+                    marginTop: 32,
+                    display: "flex",
+                    justifyContent: "center",
+                  }}
+                >
                   <div className={s.officeWrapper}>
                     <OfficeItem
                       office={item}
@@ -408,7 +420,8 @@ class OfficeList extends PureComponent {
               <Column>
                 <Pagination
                   count={pageCount}
-                  shape="rounded"
+                  size={isWidthDown("xs", width) && "small"}
+                  shape='rounded'
                   classes={{ root: s.pagination }}
                   onChange={this.handleChangePage}
                   page={page}

@@ -103,8 +103,7 @@ const styleSheet = (theme) => ({
 });
 
 class PreviewProfile extends PureComponent {
-  static propTypes = {
-  };
+  static propTypes = {};
 
   state = {
     currentTab: "reviews"
