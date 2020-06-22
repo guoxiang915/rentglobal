@@ -155,6 +155,55 @@ export const reviews = [
   },
 ];
 
+export const companyReviws = [
+  {
+    company: {
+      avatar: {},
+      generalInfo: {
+        username: "Company 1",
+      },
+      rating: 5,
+    },
+    office: {
+      title: "Office 1",
+      rating: 5,
+    },
+    createdAt: new Date(2019, 1, 21),
+    content:
+      "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
+    review: {
+      msg:
+        "Company reviewed here. Company reviewed here. Company reviewed here. Company reviewed here. Company reviewed here. Company reviewed here.",
+    },
+  },
+  {
+    company: {
+      avatar: {},
+      generalInfo: {
+        username: "Company 2",
+      },
+      rating: 3,
+    },
+    office: {
+      title: "Office 1",
+      rating: 3,
+    },
+    createdAt: new Date(2018, 6, 13),
+    content:
+      "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
+    review: {
+      msg:
+        "Company review here here. Company review here here.Company review here here.Company review here here.Company review here here.Company review here here.",
+    },
+    status: "approved",
+    approved: {
+      approved: true,
+      consultant: "Consultant3",
+      datetime: new Date(2020, 4, 7, 13, 31),
+    },
+  },
+];
+
 export const report = {
   visit: [
     { year: 2018, month: 3, count: 38 },

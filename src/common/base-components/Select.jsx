@@ -160,12 +160,13 @@ export const Select = withStyles(styleSheet, { name: 'Select' })(
         classes: s,
         className,
         helperText,
+        fullWidth,
         ...props
       } = this.props;
       const { error, helperText: errorText } = this.state;
 
       return (
-        <MUIFormControl className={className}>
+        <MUIFormControl className={clsx(className, fullWidth && s.fullWidth)}>
           <MUISelect
             variant={variant}
             value={native ? getKey(value) : value}

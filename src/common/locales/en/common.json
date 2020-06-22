@@ -628,5 +628,9 @@
   "availableForLeasing": "Available for leasing",
   "occupied": "Occupied",
   "addToShortList": "Add to short list",
-  "remove": "Remove"
+  "remove": "Remove",
+  "startup": "Startup",
+  "joined": "Joined",
+  "verified": "Verified",
+  "see": "See"
 }

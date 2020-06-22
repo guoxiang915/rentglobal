@@ -3,6 +3,7 @@ import {
   events as eventsMockData,
   visitRequests as visitRequestsMockData,
   reviews as reviewsMockData,
+  companyReviws as companyReviewsMockData,
   report as reportMockData,
   conditions as conditionsMockData
 } from "../common/mock/officeMockData";
@@ -212,6 +213,9 @@ export const getConsultantByOffice = () =>
  */
 export const getReviewsByOffice = () =>
   Promise.resolve({ status: 200, data: reviewsMockData });
+
+export const getReviewsByCompany = () =>
+  Promise.resolve({ status: 200, data: companyReviewsMockData });
 
 /**
  * Call api to get events of office
