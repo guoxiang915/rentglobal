@@ -220,6 +220,7 @@ class VisitRequests extends PureComponent {
               <Column>
                 <Pagination
                   count={pageCount}
+                  size={isWidthDown("xs", width) && "small"}
                   shape='rounded'
                   classes={{ root: s.pagination }}
                   onChange={this.handleChangePage}

@@ -1,6 +1,7 @@
 import React, { PureComponent } from "react";
 import { withStyles } from "@material-ui/core/styles";
 import { withTranslation } from "react-i18next";
+import withWidth, { isWidthDown } from "@material-ui/core/withWidth";
 import PropTypes from "prop-types";
 import clsx from "clsx";
 import {
@@ -117,8 +118,8 @@ const ReviewPanel = withStyles(styleSheet)(
                   review.status === "approved"
                     ? "primary"
                     : review.status === "rejected"
-                      ? "error"
-                      : "secondary"
+                    ? "error"
+                    : "secondary"
                 }
                 badgeContent={
                   review.status === "approved" ? (
@@ -363,7 +364,7 @@ class OfficeReviews extends PureComponent {
    * Renderer function
    */
   render() {
-    const { classes: s, t } = this.props;
+    const { classes: s, t, width } = this.props;
     const { reviews, query, sorter, expanded } = this.state;
 
     return (
@@ -430,6 +431,7 @@ class OfficeReviews extends PureComponent {
         <Column paddingTop fullWidth textMediumGrey>
           <Pagination
             count={10}
+            size={isWidthDown("xs", width) && "small"}
             shape='rounded'
             classes={{ root: s.pagination }}
             // onChange={this.handleChangePage}
@@ -441,4 +443,6 @@ class OfficeReviews extends PureComponent {
   }
 }
 
-export default withStyles(styleSheet)(withTranslation("common")(OfficeReviews));
+export default withWidth()(
+  withStyles(styleSheet)(withTranslation("common")(OfficeReviews))
+);

@@ -3,7 +3,7 @@ import { withStyles } from "@material-ui/core/styles";
 import clsx from "clsx";
 import PropTypes from "prop-types";
 import { withTranslation } from "react-i18next";
-import withWidth from "@material-ui/core/withWidth";
+import withWidth, { isWidthDown } from "@material-ui/core/withWidth";
 import {
   Card,
   CardHeader,
@@ -645,6 +645,7 @@ class Notifications extends PureComponent {
         <Column paddingTop fullWidth textMediumGrey>
           <Pagination
             count={pageCount}
+            size={isWidthDown("xs", width) && "small"}
             shape='rounded'
             classes={{ root: s.pagination }}
             onChange={this.handleChangePage}
