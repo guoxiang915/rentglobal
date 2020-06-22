@@ -1,21 +1,8 @@
 import React, { PureComponent } from "react";
 import { withStyles } from "@material-ui/core/styles";
 import { withTranslation } from "react-i18next";
-import clsx from "clsx";
-import PropTypes from "prop-types";
-import withWidth, { isWidthDown } from "@material-ui/core/withWidth";
-import {
-  Grid,
-  Card,
-  Dialog,
-  DialogTitle,
-  DialogContent,
-  DialogActions,
-} from "@material-ui/core";
-import {
-  KeyboardBackspace,
-  Person,
-} from "@material-ui/icons";
+import withWidth from "@material-ui/core/withWidth";
+import { KeyboardBackspace, Person } from "@material-ui/icons";
 import {
   Column,
   Row,
@@ -57,15 +44,14 @@ const styleSheet = (theme) => ({
 });
 
 class PreviewProfile extends PureComponent {
-  static propTypes = {
-  };
+  static propTypes = {};
 
   handleBack = () => {
     this.props.navigate("profile");
-  }
+  };
 
   render() {
-    const { classes: s, t, width } = this.props;
+    const { classes: s, t } = this.props;
     const { user, userRole } = this.props.auth;
 
     console.log(user);
@@ -127,14 +113,22 @@ class PreviewProfile extends PureComponent {
               {user.generalInfo?.username || "User"}
             </Typography>
             <Box>
-              <Typography>${t("startup")} (<Person /> {user.companyProfile?.companySize || 0})</Typography>
-              <Typography>{user.generalInfo?.address?.city}, {user.generalInfo?.address?.country}</Typography>
-              <Typography>{t("joined")}: {formatDate(user.createdAt)}</Typography>
+              <Typography>
+                ${t("startup")} (<Person />{" "}
+                {user.companyProfile?.companySize || 0})
+              </Typography>
+              <Typography>
+                {user.generalInfo?.address?.city},{" "}
+                {user.generalInfo?.address?.country}
+              </Typography>
+              <Typography>
+                {t("joined")}: {formatDate(user.createdAt)}
+              </Typography>
             </Box>
           </Column>
         </Row>
       </Column>
-    )
+    );
   }
 }
 
