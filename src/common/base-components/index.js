@@ -26,5 +26,6 @@ export { default as LazyLoadImage } from "./LazyLoadImage";
 export { default as LinearProgress } from "./LinearProgress";
 export { default as SplashScreen } from "./SplashScreen";
 export { default as FullScreenImageCarousel } from "./FullScreenImageCarousel";
+export { default as Rating } from "./Rating";
 
 export const Dot = () => <div>•</div>;

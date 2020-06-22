@@ -49,6 +49,10 @@ const palette = {
 
 // font sizes
 const fontSize = {
+  fontSizeXXS: {
+    fontSize: '11px',
+    lineHeight: '15px',
+  },
   fontSizeXS: {
     fontSize: '13px',
     lineHeight: '18px',

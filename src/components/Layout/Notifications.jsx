@@ -200,158 +200,158 @@ const NotificationItem = ({ notification: item, open, classes: s, t }) => {
     content = item.payload?.content,
     actions = [];
   switch (item.type) {
-    case "officeReviewed":
-      avatar = (
-        <Avatar
-          className={s.notificationAvatar}
-          src={item.payload?.avatar?.bucketPath}
-        >
-          {item.payload?.generalInfo?.username || ""}
-        </Avatar>
-      );
-      title = (
-        <Column alignChildrenStart>
-          <Row>
-            {t("gotReviewFrom", {
-              name: item.payload?.generalInfo?.username || "",
-            })}
-          </Row>
-          <Row>
-            <ReactStars count={5} size={16} value={item.payload?.rating} />
-          </Row>
-        </Column>
-      );
-      actions = [
-        {
-          title: t("howDescribe", {
-            name: item.payload?.generalInfo?.username,
-          }),
-          onClick: () => {},
-        },
-      ];
-      break;
-    case "newFeature":
-      avatar = (
-        <Avatar
-          className={clsx(s.notificationAvatar, s.primaryNotificationAvatar)}
-        >
-          <img src={MiniLogo} width={12} alt='' />
-        </Avatar>
-      );
-      title = t("newFeature");
-      actions = [{ title: t("gotIt"), onClick: () => {} }];
-      break;
-    case "profileNeedAttention":
-      avatar = (
-        <Avatar
-          className={clsx(s.notificationAvatar, s.errorNotifcationAvatar)}
-        >
+  case "officeReviewed":
+    avatar = (
+      <Avatar
+        className={s.notificationAvatar}
+        src={item.payload?.avatar?.bucketPath}
+      >
+        {item.payload?.generalInfo?.username || ""}
+      </Avatar>
+    );
+    title = (
+      <Column alignChildrenStart>
+        <Row>
+          {t("gotReviewFrom", {
+            name: item.payload?.generalInfo?.username || "",
+          })}
+        </Row>
+        <Row>
+          <ReactStars count={5} size={16} value={item.payload?.rating} />
+        </Row>
+      </Column>
+    );
+    actions = [
+      {
+        title: t("howDescribe", {
+          name: item.payload?.generalInfo?.username,
+        }),
+        onClick: () => {},
+      },
+    ];
+    break;
+  case "newFeature":
+    avatar = (
+      <Avatar
+        className={clsx(s.notificationAvatar, s.primaryNotificationAvatar)}
+      >
+        <img src={MiniLogo} width={12} alt='' />
+      </Avatar>
+    );
+    title = t("newFeature");
+    actions = [{ title: t("gotIt"), onClick: () => {} }];
+    break;
+  case "profileNeedAttention":
+    avatar = (
+      <Avatar
+        className={clsx(s.notificationAvatar, s.errorNotifcationAvatar)}
+      >
           !
-        </Avatar>
-      );
-      title = t("profileNeedAttention");
-      actions = [
-        {
-          title: t("editProfile"),
-          onClick: () => {},
-        },
-      ];
-      break;
-    case "officeReviewRejected":
-      avatar = (
-        <Avatar
-          className={clsx(s.notificationAvatar, s.errorNotifcationAvatar)}
-        >
+      </Avatar>
+    );
+    title = t("profileNeedAttention");
+    actions = [
+      {
+        title: t("editProfile"),
+        onClick: () => {},
+      },
+    ];
+    break;
+  case "officeReviewRejected":
+    avatar = (
+      <Avatar
+        className={clsx(s.notificationAvatar, s.errorNotifcationAvatar)}
+      >
           !
-        </Avatar>
-      );
-      title = t("feedbackRejected");
-      actions = [];
-      break;
-    case "emailVerified":
-      avatar = (
-        <Avatar
-          className={clsx(s.notificationAvatar, s.primaryNotificationAvatar)}
-        >
-          <CheckIcon style={{ width: 16, height: 16 }} />
-        </Avatar>
-      );
-      title = t("emailVerified");
-      actions = [];
-      break;
-    case "officeAvailable":
-      avatar = (
-        <Avatar
-          className={clsx(s.notificationAvatar)}
-          src={item.payload?.avatar?.bucketPath}
-        />
-      );
-      title = (
-        <Column alignChildrenStart>
-          <Row>
-            {t("officeAvailableForLease", {
-              name: item.payload?.office?.name,
-            })}
-          </Row>
-          <Row>
-            <ReactStars count={5} size={16} value={item.payload?.rating} />
-          </Row>
-        </Column>
-      );
-      actions = [
-        {
-          title: t("removeAlert"),
-          styles: {
-            link: "errorRedNormal",
-            background: "errorRedLight",
-            inverse: true,
-          },
-          onClick: () => {},
+      </Avatar>
+    );
+    title = t("feedbackRejected");
+    actions = [];
+    break;
+  case "emailVerified":
+    avatar = (
+      <Avatar
+        className={clsx(s.notificationAvatar, s.primaryNotificationAvatar)}
+      >
+        <CheckIcon style={{ width: 16, height: 16 }} />
+      </Avatar>
+    );
+    title = t("emailVerified");
+    actions = [];
+    break;
+  case "officeAvailable":
+    avatar = (
+      <Avatar
+        className={clsx(s.notificationAvatar)}
+        src={item.payload?.avatar?.bucketPath}
+      />
+    );
+    title = (
+      <Column alignChildrenStart>
+        <Row>
+          {t("officeAvailableForLease", {
+            name: item.payload?.office?.name,
+          })}
+        </Row>
+        <Row>
+          <ReactStars count={5} size={16} value={item.payload?.rating} />
+        </Row>
+      </Column>
+    );
+    actions = [
+      {
+        title: t("removeAlert"),
+        styles: {
+          link: "errorRedNormal",
+          background: "errorRedLight",
+          inverse: true,
         },
-        {
-          title: t("visitAvailability"),
-          onClick: () => {},
-        },
-      ];
-      break;
-    case "visitRequestChange":
-      avatar = (
-        <Avatar
-          className={clsx(s.notificationAvatar, s.errorNotifcationAvatar)}
-        >
+        onClick: () => {},
+      },
+      {
+        title: t("visitAvailability"),
+        onClick: () => {},
+      },
+    ];
+    break;
+  case "visitRequestChange":
+    avatar = (
+      <Avatar
+        className={clsx(s.notificationAvatar, s.errorNotifcationAvatar)}
+      >
           !
-        </Avatar>
-      );
-      title = t("visitRequestChanges");
-      actions = [
-        {
-          title: t("decline"),
-          icon: <CloseIcon style={{ width: 9, height: 9 }} />,
-          styles: {
-            link: "errorRedNormal",
-            background: "errorRedLight",
-            inverse: true,
-          },
-          onClick: () => {},
+      </Avatar>
+    );
+    title = t("visitRequestChanges");
+    actions = [
+      {
+        title: t("decline"),
+        icon: <CloseIcon style={{ width: 9, height: 9 }} />,
+        styles: {
+          link: "errorRedNormal",
+          background: "errorRedLight",
+          inverse: true,
         },
-        {
-          title: t("requestForEdit"),
-          icon: <HeadsetIcon style={{ width: 16, height: 16 }} />,
-          styles: {
-            link: "secondary",
-            background: "secondaryLight",
-          },
-          onClick: () => {},
+        onClick: () => {},
+      },
+      {
+        title: t("requestForEdit"),
+        icon: <HeadsetIcon style={{ width: 16, height: 16 }} />,
+        styles: {
+          link: "secondary",
+          background: "secondaryLight",
         },
-        {
-          title: t("accept"),
-          icon: <CheckIcon style={{ width: 16, height: 16 }} />,
-          onClick: () => {},
-        },
-      ];
-      break;
-    default:
-      break;
+        onClick: () => {},
+      },
+      {
+        title: t("accept"),
+        icon: <CheckIcon style={{ width: 16, height: 16 }} />,
+        onClick: () => {},
+      },
+    ];
+    break;
+  default:
+    break;
   }
 
   return (

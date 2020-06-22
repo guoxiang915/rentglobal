@@ -112,10 +112,10 @@ class CalendarOverview extends PureComponent {
         "offices",
         `${office._id}/${office.location.country}/${t(office.officeType)}/${
           office.numberOfEmployees
-          } ${t("employees")}/${office.refId}-${office.title}`.replace(
-            /\s+/g,
-            "-"
-          )
+        } ${t("employees")}/${office.refId}-${office.title}`.replace(
+          /\s+/g,
+          "-"
+        )
       );
     } else {
       this.props.navigate("offices", `${office._id}/edit`);
@@ -253,7 +253,7 @@ class CalendarOverview extends PureComponent {
             </Column>
           }
           {!isWidthDown("sm", width) &&
-            <>
+            <React.Fragment>
               <SearchbarWithSorter
                 query={query}
                 title={t("searchOnCalendar")}
@@ -263,7 +263,7 @@ class CalendarOverview extends PureComponent {
               <Button variant='primary' onClick={this.handleAddEvent}>
                 {t("addEvent")}
               </Button>
-            </>
+            </React.Fragment>
           }
         </Row>
 

@@ -145,79 +145,79 @@ class PrivateRoute extends React.Component {
     }
 
     switch (path) {
-      case "back":
-        this.props.history.goBack();
-        break;
+    case "back":
+      this.props.history.goBack();
+      break;
 
-      case "home":
-        this.props.history.push("/");
-        break;
+    case "home":
+      this.props.history.push("/");
+      break;
 
-      case "help":
-        this.showHelpDialog();
-        break;
+    case "help":
+      this.showHelpDialog();
+      break;
 
-      case "login":
-      case "register":
-      case "register/landlord":
-      case "register/company":
-      case "forgot-password":
-        this.props.history.push(`/auth/${path}`);
-        break;
-      case "logout":
-        authObj.removeToken();
-        authObj.removeRefreshToken();
-        this.props.mappedlogout();
-        this.props.history.push("/");
-        break;
-      case "profile":
-      case "notifications":
-        if (isLoggedIn) {
-          if (userRole === "") {
-            const { history } = this.props;
-            history.location.pathname = `/${user.roles[0]}/${path}`;
-            this.props.mappedToggleRole(user.roles[0], history);
-          } else {
-            this.props.history.push(`/${userRole}/${path}/${payload || ""}`);
-          }
-        }
-        break;
-
-      case "dashboard":
-      case "offices/add":
-      case "offices/all":
-      case "offices/unpublish":
-      case "contracts":
-      case "optimization":
-      case "calendar":
-        if (isLoggedIn) {
+    case "login":
+    case "register":
+    case "register/landlord":
+    case "register/company":
+    case "forgot-password":
+      this.props.history.push(`/auth/${path}`);
+      break;
+    case "logout":
+      authObj.removeToken();
+      authObj.removeRefreshToken();
+      this.props.mappedlogout();
+      this.props.history.push("/");
+      break;
+    case "profile":
+    case "notifications":
+      if (isLoggedIn) {
+        if (userRole === "") {
+          const { history } = this.props;
+          history.location.pathname = `/${user.roles[0]}/${path}`;
+          this.props.mappedToggleRole(user.roles[0], history);
+        } else {
           this.props.history.push(`/${userRole}/${path}/${payload || ""}`);
-          break;
         }
-        this.props.history.push("/");
-        break;
-      case "calendar/visit-requests":
-      case "calendar/personal-events":
-      case "calendar/accepted-visit-requests":
-        if (isLoggedIn) {
-          this.props.history.push(`/${userRole}/${path}/${payload || ""}`);
-          break;
-        }
-        this.props.history.push("/");
-        break;
+      }
+      break;
 
-      case "offices":
-        this.props.history.push(
-          `${userRole ? `/${userRole}` : ""}/${path}/${payload || ""}`
-        );
+    case "dashboard":
+    case "offices/add":
+    case "offices/all":
+    case "offices/unpublish":
+    case "contracts":
+    case "optimization":
+    case "calendar":
+      if (isLoggedIn) {
+        this.props.history.push(`/${userRole}/${path}/${payload || ""}`);
         break;
-      case "homeoffices":
-        this.props.history.push(`offices/${payload || ""}`);
+      }
+      this.props.history.push("/");
+      break;
+    case "calendar/visit-requests":
+    case "calendar/personal-events":
+    case "calendar/accepted-visit-requests":
+      if (isLoggedIn) {
+        this.props.history.push(`/${userRole}/${path}/${payload || ""}`);
         break;
+      }
+      this.props.history.push("/");
+      break;
 
-      default:
-        this.props.history.push(path);
-        break;
+    case "offices":
+      this.props.history.push(
+        `${userRole ? `/${userRole}` : ""}/${path}/${payload || ""}`
+      );
+      break;
+    case "homeoffices":
+      this.props.history.push(`offices/${payload || ""}`);
+      break;
+
+    default:
+      this.props.history.push(path);
+      break;
     }
     this.handleToggleSidebar(false);
   };
@@ -229,8 +229,8 @@ class PrivateRoute extends React.Component {
       typeof setRole === "string"
         ? setRole
         : userRole === "landlord"
-        ? "company"
-        : "landlord";
+          ? "company"
+          : "landlord";
 
     if (nextRole && user?.roles.indexOf(nextRole) === -1) {
       const hideGuidance = storage.getBoolean(`${nextRole}HideGuide`);

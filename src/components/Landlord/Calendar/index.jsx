@@ -160,8 +160,8 @@ class Calendar extends PureComponent {
             </CarouselWrapper>
           }
           {!isWidthDown("sm", width) &&
-            <>
-            {this.statistics.map((stat, index) => (
+            <React.Fragment>
+              {this.statistics.map((stat, index) => (
                 <React.Fragment key={index}>
                   <Box classes={{ box: s.statisticBox }}>
                     <StatisticIconBox
@@ -178,7 +178,7 @@ class Calendar extends PureComponent {
                   </Box>
                 </React.Fragment>
               ))}
-            </>
+            </React.Fragment>
           }
         </Row>
 

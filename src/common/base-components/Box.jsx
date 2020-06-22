@@ -27,6 +27,12 @@ const styleSheet = (theme) => {
     column: {
       flexDirection: 'column',
     },
+    rowReverse: {
+      flexDirection: 'row-reverse',
+    },
+    columnReverse: {
+      flexDirection: 'column-reverse',
+    },
 
     /* aligning */
     justifyChildrenStart: {
@@ -157,6 +163,7 @@ const styleSheet = (theme) => {
     },
 
     /* font styles */
+    fontSizeXXS: { ...theme.fonts.size.fontSizeXXS },
     fontSizeXS: { ...theme.fonts.size.fontSizeXS },
     fontSizeS: { ...theme.fonts.size.fontSizeS },
     fontSizeM: { ...theme.fonts.size.fontSizeM },
@@ -203,6 +210,9 @@ const styleSheet = (theme) => {
     },
     textErrorRed: {
       color: theme.colors.primary.errorRed,
+    },
+    textBorderGrey: {
+      color: theme.colors.primary.borderGrey,
     },
     textCenter: {
       textAlign: 'center',
