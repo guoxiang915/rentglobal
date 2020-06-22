@@ -1,8 +1,8 @@
-import React from 'react';
-import { withStyles } from '@material-ui/core';
-import { withTranslation } from 'react-i18next';
-import PropTypes from 'prop-types';
-import Carousel from '@brainhubeu/react-carousel';
+import React from "react";
+import { withStyles } from "@material-ui/core";
+import { withTranslation } from "react-i18next";
+import PropTypes from "prop-types";
+import Carousel from "@brainhubeu/react-carousel";
 import {
   Typography,
   Row,
@@ -15,14 +15,14 @@ import {
   UsersIcon,
   Button,
   LinearProgress,
-} from '../base-components';
-import { ContactInfoDialog } from '../../components/Layout/Dialogs';
-import { formatDate } from '../../utils/formatters';
-import { getOfficeStatus } from '../../utils/validators';
+} from "../base-components";
+import { ContactInfoDialog } from "../../components/Layout/Dialogs";
+import { formatDate, numberWithSpaces } from "../../utils/formatters";
+import { getOfficeStatus } from "../../utils/validators";
 
 const styleSheet = (theme) => ({
   officeWrapper: {
-    width: '100%',
+    width: "100%",
   },
 
   officeCarousel: {
@@ -30,45 +30,45 @@ const styleSheet = (theme) => ({
     height: 175,
     borderRadius: 8,
     border: `1px solid ${theme.colors.primary.borderGrey}`,
-    position: 'relative',
-    overflow: 'hidden',
-    [theme.breakpoints.down('sm')]: {
-      width: '100%',
+    position: "relative",
+    overflow: "hidden",
+    [theme.breakpoints.down("sm")]: {
+      width: "100%",
     },
   },
 
   officeImage: {
     width: 235,
     height: 175,
-    objectFit: 'cover',
-    [theme.breakpoints.down('sm')]: {
-      width: '100%',
+    objectFit: "cover",
+    [theme.breakpoints.down("sm")]: {
+      width: "100%",
     },
   },
 
   officeGeneralInfo: {
     paddingLeft: 27,
     paddingTop: 0,
-    [theme.breakpoints.down('sm')]: {
+    [theme.breakpoints.down("sm")]: {
       paddingLeft: 0,
       paddingTop: 16,
     },
-    [theme.breakpoints.down('xs')]: {
-      width: '100%',
+    [theme.breakpoints.down("xs")]: {
+      width: "100%",
     },
   },
 
   officeLeaseInfo: {
-    [theme.breakpoints.down('sm')]: {
+    [theme.breakpoints.down("sm")]: {
       paddingTop: 16,
     },
   },
 
   tipOverWrapper: {
-    position: 'absolute',
+    position: "absolute",
     top: 0,
     left: 0,
-    width: '100%',
+    width: "100%",
     height: 44,
     zIndex: 1,
   },
@@ -79,16 +79,16 @@ const styleSheet = (theme) => ({
     color: theme.colors.primary.white,
     background: theme.colors.primary.mainColor,
     marginLeft: 10,
-    position: 'relative',
-    '&::after': {
+    position: "relative",
+    "&::after": {
       content: "' '",
-      position: 'absolute',
+      position: "absolute",
       bottom: -8,
-      width: '100%',
+      width: "100%",
       borderTop: `8px solid ${theme.colors.primary.mainColor}`,
-      borderLeft: '18px solid transparent',
-      borderRight: '18px solid transparent',
-      borderBottom: 'none',
+      borderLeft: "18px solid transparent",
+      borderRight: "18px solid transparent",
+      borderBottom: "none",
     },
   },
 
@@ -98,16 +98,16 @@ const styleSheet = (theme) => ({
     color: theme.colors.primary.white,
     background: theme.colors.primary.errorRed,
     marginLeft: 6,
-    position: 'relative',
-    '&::after': {
+    position: "relative",
+    "&::after": {
       content: "' '",
-      position: 'absolute',
+      position: "absolute",
       bottom: -8,
-      width: '100%',
+      width: "100%",
       borderTop: `8px solid ${theme.colors.primary.errorRed}`,
-      borderLeft: '18px solid transparent',
-      borderRight: '18px solid transparent',
-      borderBottom: 'none',
+      borderLeft: "18px solid transparent",
+      borderRight: "18px solid transparent",
+      borderBottom: "none",
     },
   },
 
@@ -141,15 +141,15 @@ const OfficeListItem = ({
     e.stopPropagation();
     setDialog(
       <ContactInfoDialog
-        title={t('contactInfo')}
+        title={t("contactInfo")}
         contact={{
-          username: 'Name Family',
-          type: 'Consultant',
-          phoneNumber: '(123) 123-4567',
-          email: 'consultantname@domainanme.com',
+          username: "Name Family",
+          type: "Consultant",
+          phoneNumber: "(123) 123-4567",
+          email: "consultantname@domainanme.com",
         }}
         onClose={handleCloseDialog}
-      />,
+      />
     );
   };
 
@@ -161,22 +161,24 @@ const OfficeListItem = ({
 
   const officeStatus = getOfficeStatus(office);
   let status = officeStatus ? officeStatus.status : null;
-  status = status === 'rejected'
-    ? 'rejectedByConsultant'
-    : status === 'pendingForApprove'
-      ? 'pendingForApprove'
-      : status === 'unpublished'
-        ? 'unpublish'
-        : status === 'incomplete'
-          ? 'mustCompleteData'
-          : null;
-  const progress = officeStatus && officeStatus.progress < 100 ? officeStatus.progress : null;
+  status =
+    status === "rejected"
+      ? "rejectedByConsultant"
+      : status === "pendingForApprove"
+      ? "pendingForApprove"
+      : status === "unpublished"
+      ? "unpublish"
+      : status === "incomplete"
+      ? "mustCompleteData"
+      : null;
+  const progress =
+    officeStatus && officeStatus.progress < 100 ? officeStatus.progress : null;
 
   return (
     <Row classes={{ box: s.officeWrapper }} wrap alignChildrenStretch>
       <Box classes={{ box: s.officeCarousel }}>
         {/** office images */}
-        <div style={{ width: '100%', height: '100%' }}>
+        <div style={{ width: "100%", height: "100%" }}>
           {office.coverPhotos && (
             <Carousel
               slidesPerPage={1}
@@ -189,8 +191,10 @@ const OfficeListItem = ({
                 <React.Fragment key={index}>
                   {/* <Box fullWidth> */}
                   <img
-                    src={photo.mobile ? photo.mobile.bucketPath : photo.bucketPath}
-                    alt=""
+                    src={
+                      photo.mobile ? photo.mobile.bucketPath : photo.bucketPath
+                    }
+                    alt=''
                     className={s.officeImage}
                   />
                   {/* </Box> */}
@@ -232,7 +236,7 @@ const OfficeListItem = ({
             textBlackGrey
             fontWeightBold
             onClick={goDetail}
-            style={{ cursor: 'pointer' }}
+            style={{ cursor: "pointer" }}
           >
             {office.title}
           </Typography>
@@ -247,56 +251,34 @@ const OfficeListItem = ({
 
         {/** show office price */}
         <Row paddingTopHalf>
-          <Typography fontSizeS textPrimary>
-            {t('dollarPerMonth', { dollar: office.priceMonthly || 0 })}
+          <Typography fontSizeM textPrimary>
+            {t("dollarPerMonth", { dollar: office.priceMonthly || 0 })}
           </Typography>
         </Row>
 
         {/** show office ratings */}
-        {office.approved && (
+        {
           // office.rating &&
           <Row paddingTopHalf>
             <Typography textPrimary>
               <StarIcon style={{ width: 12, height: 12 }} />
             </Typography>
             <Typography fontSizeS textMediumGrey paddingLeftHalf>
-              3.5
-              {' '}
-              {/* office.rating */}
+              3.5 {/* office.rating */}
             </Typography>
           </Row>
-        )}
+        }
 
-        {/** show office action buttons */}
-        <Stretch />
-        {!noActions && (
-          <Row paddingTopHalf alignChildrenStart>
-            {/** Show microphone button */}
-            <Button
-              link="normalLight"
-              background="normalLight"
-              inverse
-              onClick={handleListen}
-              variant="icon"
-            >
-              <HeadsetIcon style={{ width: 19, height: 19 }} />
-            </Button>
-            <Box paddingLeftHalf />
-
-            {/** Show calendar button */}
-            {office.approved && (
-              <Button
-                link="normalLight"
-                background="normalLight"
-                inverse
-                onClick={handleCalendar}
-                variant="icon"
-              >
-                <CalendarIcon style={{ width: 19, height: 19 }} />
-              </Button>
-            )}
-          </Row>
-        )}
+        {/** show office ref ID */}
+        <Row paddingTopHalf>
+          <Typography fontSizeS textSecondary>
+            {t("refID")}
+            :&nbsp;
+          </Typography>
+          <Typography fontSizeM fontWeightBold textSecondary>
+            #{numberWithSpaces(office.refId + 1, 3)}
+          </Typography>
+        </Row>
       </Column>
 
       {/** office more information */}
@@ -304,10 +286,8 @@ const OfficeListItem = ({
       {!noMoreInfo && (
         <Column classes={{ box: s.officeLeaseInfo }} alignChildrenEnd>
           {/** last updated date */}
-          <Typography textMediumGrey fontSizeXS style={{ lineHeight: '26px' }}>
-            {t('lastUpdate')}
-            :
-            {formatDate(office.updatedAt)}
+          <Typography textMediumGrey fontSizeXS style={{ lineHeight: "26px" }}>
+            {t("lastUpdate")}:{formatDate(office.updatedAt)}
           </Typography>
 
           {/** leased by */}
@@ -317,15 +297,15 @@ const OfficeListItem = ({
                 textPrimary
                 fontSizeS
                 paddingTopHalf
-                style={{ lineHeight: '26px' }}
+                style={{ lineHeight: "26px" }}
               >
-                {t('available')}
+                {t("available")}
               </Typography>
             ) : (
               <React.Fragment>
-                <Row paddingTopHalf style={{ lineHeight: '26px' }}>
+                <Row paddingTopHalf style={{ lineHeight: "26px" }}>
                   <Typography textMediumGrey fontSizeS>
-                    {t('leasedBy')}
+                    {t("leasedBy")}
                     :&nbsp;
                   </Typography>
                   <Typography textSecondary fontSizeS>
@@ -333,8 +313,7 @@ const OfficeListItem = ({
                   </Typography>
                   <Typography textMediumGrey fontSizeS>
                     &nbsp;(
-                    {formatDate(office.leasedBy.date)}
-                    )
+                    {formatDate(office.leasedBy.date)})
                   </Typography>
                 </Row>
 
@@ -344,9 +323,9 @@ const OfficeListItem = ({
                     paddingTopHalf
                     fontSizeS
                     textErrorRed
-                    style={{ lineHeight: '26px' }}
+                    style={{ lineHeight: "26px" }}
                   >
-                    {t('overduePayment')}
+                    {t("overduePayment")}
                   </Typography>
                 )}
               </React.Fragment>
@@ -358,7 +337,7 @@ const OfficeListItem = ({
                   textErrorRed
                   fontSizeS
                   paddingTopHalf
-                  style={{ lineHeight: '26px' }}
+                  style={{ lineHeight: "26px" }}
                 >
                   {t(status)}
                 </Typography>
@@ -374,10 +353,40 @@ const OfficeListItem = ({
 
           {/** contact info */}
           <Stretch />
-          <Box paddingTopHalf />
-          <Button variant="secondary" onClick={handleContactInfo} shadow>
-            {t('contactInfo')}
-          </Button>
+          <Row paddingTopHalf>
+            <Button variant='secondary' onClick={handleContactInfo} shadow>
+              {t("contactInfo")}
+            </Button>
+            {!noActions && (
+              <>
+                <Box paddingLeftHalf />
+                {/** Show microphone button */}
+                <Button
+                  link='normalLight'
+                  background='normalLight'
+                  inverse
+                  onClick={handleListen}
+                  variant='icon'
+                >
+                  <HeadsetIcon style={{ width: 19, height: 19 }} />
+                </Button>
+                <Box paddingLeftHalf />
+
+                {/** Show calendar button */}
+                {office.approved && (
+                  <Button
+                    link='normalLight'
+                    background='normalLight'
+                    inverse
+                    onClick={handleCalendar}
+                    variant='icon'
+                  >
+                    <CalendarIcon style={{ width: 19, height: 19 }} />
+                  </Button>
+                )}
+              </>
+            )}
+          </Row>
         </Column>
       )}
 
@@ -397,6 +406,6 @@ OfficeListItem.propTypes = {
   goDetail: PropTypes.func,
 };
 
-export default withStyles(styleSheet, { name: 'OfficeListItem' })(
-  withTranslation('common')(OfficeListItem),
+export default withStyles(styleSheet, { name: "OfficeListItem" })(
+  withTranslation("common")(OfficeListItem)
 );
