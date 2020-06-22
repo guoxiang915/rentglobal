@@ -19,7 +19,7 @@ import {
   GoogleMapMarker,
   Button,
   Checkbox,
-  BuildingsIcon,
+  UsersIcon,
   ArrowRightAltIcon,
   ImageIcon,
   UserIcon,
@@ -45,9 +45,10 @@ const styleSheet = (theme) => ({
     paddingRight: theme.spacing(5),
     marginBottom: 120,
     [theme.breakpoints.down("sm")]: {
-      paddingLeft: 27,
-      paddingRight: 27,
-      marginBottom: 80,
+      paddingLeft: 0,
+      paddingRight: 0,
+      paddingBottom: 0,
+      marginBottom: 13,
     },
   },
 
@@ -72,6 +73,10 @@ const styleSheet = (theme) => ({
     padding: "23px 33px 27px",
     background: theme.colors.primary.mainColor,
     borderRadius: 8,
+    [theme.breakpoints.down("sm")]: {
+      paddingLeft: 16,
+      paddingRight: 16,
+    },
   },
 
   searchInputBox: {
@@ -95,12 +100,21 @@ const styleSheet = (theme) => ({
     padding: "23px 33px 27px",
     position: "relative",
     borderRadius: 8,
+    [theme.breakpoints.down("sm")]: {
+      paddingLeft: 0,
+      paddingRight: 0,
+      paddingBottom: 0,
+    },
   },
 
   accountAvatar: {
     width: 80,
     height: 80,
     marginRight: 24,
+    borderRadius: 8,
+    [theme.breakpoints.down("sm")]: {
+      borderRadius: 40,
+    },
   },
 
   accountName: {
@@ -114,6 +128,9 @@ const styleSheet = (theme) => ({
     padding: 10,
     paddingLeft: 18,
     width: 228,
+    [theme.breakpoints.down("sm")]: {
+      position: "relative",
+    },
   },
 
   profileCompletenessWrapper: {
@@ -124,6 +141,10 @@ const styleSheet = (theme) => ({
     paddingLeft: 18,
     width: 228,
     background: theme.colors.primary.whiteGrey,
+    [theme.breakpoints.down("sm")]: {
+      position: "relative",
+      width: "100%",
+    },
   },
 
   profileProgress: {
@@ -156,9 +177,9 @@ const styleSheet = (theme) => ({
     },
     [theme.breakpoints.down("xs")]: {
       height: 570,
-      marginLeft: -27,
-      marginRight: -27,
-      width: "calc(100% + 54px)",
+      marginRight: -22,
+      marginLeft: -22,
+      width: "calc(100% + 44px)",
     },
   },
 
@@ -185,7 +206,8 @@ const styleSheet = (theme) => ({
     paddingTop: 7,
     [theme.breakpoints.down("xs")]: {
       paddingTop: 30,
-      paddingLeft: 20,
+      paddingLeft: 0,
+      marginLeft: 20,
     },
   },
 
@@ -350,6 +372,7 @@ class Dashboard extends PureComponent {
   };
 
   renderDateTime = () => {
+    const { width } = this.props;
     const [time, setTime] = React.useState(new Date());
 
     useEffect(() => {
@@ -358,7 +381,7 @@ class Dashboard extends PureComponent {
     }, []);
 
     return (
-      <Column alignChildrenEnd>
+      <Column alignChildrenEnd={!isWidthDown("xs", width)} alignChildrenStart={isWidthDown("xs", width)}>
         <Typography fontSizeXS textMediumGrey>
           {[formatDate(time), getWeekday(time)].join(" ")}
         </Typography>
@@ -411,32 +434,28 @@ class Dashboard extends PureComponent {
           <Typography fontSizeM textSecondary>
             {t("dashboard")}
           </Typography>
-          {isWidthDown("xs", width) ? (
-            <React.Fragment>
-              <Stretch />
-              <div style={{ marginTop: 4 }}>
-                <DateTime />
-              </div>
-            </React.Fragment>
-          ) : null}
         </Row>
 
         {/** show sub title and datetime */}
-        <Row fullWidth alignChildrenCenter>
-          <BuildingsIcon
-            style={{ width: 27, height: 22 }}
-            className={s.lightIcon}
-          />
-          <Typography paddingLeft fontSizeS textMediumGrey>
-            {t("welcomeToCompany")}
-          </Typography>
-
-          {!isWidthDown("xs", width) ? (
-            <React.Fragment>
-              <Stretch />
-              <DateTime />
-            </React.Fragment>
-          ) : null}
+        <Row
+          fullWidth
+          alignChildrenCenter={!isWidthDown("sm", width)}
+          alignChildrenStart={isWidthDown("sm", width)}
+          column={isWidthDown("sm", width)}
+        >
+          <Box>
+            <UsersIcon
+              style={{ width: 27, height: 22 }}
+              className={s.lightIcon}
+            />
+            <Typography paddingLeft fontSizeS textMediumGrey>
+              {t("welcomeToCompany")}
+            </Typography>
+          </Box>
+          <Stretch />
+          <Box paddingTopDouble={isWidthDown("sm", width)} >
+            <DateTime />
+          </Box>
         </Row>
 
         {/** show search box */}
@@ -510,13 +529,12 @@ class Dashboard extends PureComponent {
 
         {/** show profile */}
         <Box paddingTopDouble />
-        <Row classes={{ box: s.profilePanel }} fullWidth wrap>
+        <Row classes={{ box: s.profilePanel }} fullWidth wrap column={isWidthDown("xs", width)}>
           {/* user avatar */}
           <Box
             alignChildrenCenter
             justifyChildrenCenter
             style={{
-              borderRadius: userRole === "company" ? 8 : "50%",
               backgroundImage: user.avatar
                 ? `url("${user.avatar.bucketPath}")`
                 : "none",
@@ -540,7 +558,8 @@ class Dashboard extends PureComponent {
           <Column
             classes={{ box: s.accountName }}
             justifyChildrenCenter
-            alignChildrenStart
+            alignChildrenStart={!isWidthDown("xs", width)}
+            alignChildrenCenter={isWidthDown("xs", width)}
           >
             <Typography fontSizeS textSecondary>
               {user.generalInfo?.username || "Unknown"}
@@ -557,7 +576,11 @@ class Dashboard extends PureComponent {
 
           {/* profile completeness */}
           <Stretch />
-          <Column style={{ minHeight: 60, width: 228 }}>
+          <Column
+            style={{ minHeight: 60, width: !isWidthDown("xs", width) && 228 }}
+            columnReverse={isWidthDown("xs", width)}
+            fullWidth={isWidthDown("xs", width)}
+          >
             <Column classes={{ box: s.previewWrapper }}>
               <Button
                 link='primary'
@@ -579,7 +602,7 @@ class Dashboard extends PureComponent {
                   root: s.profileProgress,
                 }}
               />
-              <Link to='#' onClick={this.navigate("profile")}>
+              <Link to='#' onClick={this.navigate("profile")} fullWidth={isWidthDown("xs", width)}>
                 <Box
                   fullWidth
                   textPrimary={profileCompleteness === "profileCompleted"}
@@ -602,19 +625,146 @@ class Dashboard extends PureComponent {
 
         {/** show google map with offices in it */}
         <Row classes={{ box: s.officesMapWrapper }}>
-          <ConditionalWrapper
-            condition={isWidthDown("sm", width)}
-            wrapper={(children) => (
-              <TabWrapper
-                open
-                insideOpen
-                title={t("map")}
-                bodyClass={s.tabWrapper}
-              >
-                {children}
-              </TabWrapper>
-            )}
-          >
+          {!isWidthDown("xs", width) && (
+            <ConditionalWrapper
+              condition={isWidthDown("sm", width)}
+              wrapper={(children) => (
+                <TabWrapper
+                  open
+                  insideOpen
+                  title={t("map")}
+                  bodyClass={s.tabWrapper}
+                >
+                  {children}
+                </TabWrapper>
+              )}
+            >
+              <Row classes={{ box: s.officesMap }}>
+                <Column stretch fullHeight noOverflow relative>
+                  <GoogleMap
+                    coordinates={
+                      filteredOffices && filteredOffices.length
+                        ? filteredOffices.map(
+                          (office) => office.location?.coordinates
+                        )
+                        : []
+                    }
+                    center={
+                      filteredOffices &&
+                      filteredOffices.length &&
+                      filteredOffices[filteredOffices.length - 1]?.location
+                        ?.coordinates
+                    }
+                    markers={
+                      filteredOffices &&
+                      filteredOffices.length &&
+                      filteredOffices.map((office, index) => (
+                        <GoogleMapMarker
+                          key={index}
+                          size={30}
+                          lat={office.location.coordinates.lat}
+                          lng={office.location.coordinates.lng}
+                          color={
+                            currentOffice === office ? "mainColor" : undefined
+                          }
+                          badge={
+                            office.leasedBy && {
+                              title: office.leasedBy.overduePayment,
+                              color: "error",
+                            }
+                          }
+                        />
+                      ))
+                    }
+                  />
+
+                  {currentOffice && (
+                    <Button
+                      variant='icon'
+                      className={s.clearCurrentOfficeButton}
+                      onClick={this.handleClearCurrentOffice}
+                    >
+                      <CloseIcon
+                        style={{ width: 11, height: 11 }}
+                        className={s.normalIcon}
+                      />
+                    </Button>
+                  )}
+                </Column>
+
+                {/* show office filters */}
+                {(!isWidthDown("xs", width) || !currentOffice) && (
+                  <Row
+                    classes={{ box: s.officeFilterWrapper }}
+                    alignChildrenStart
+                  >
+                    {showOfficeFilters && (
+                      <Column classes={{ box: s.officeFilters }}>
+                        {Object.entries(this.officeFilters).map(
+                          ([key, filter]) => (
+                            <React.Fragment key={key}>
+                              <Box paddingBottomHalf>
+                                <Checkbox
+                                  variant='outlined'
+                                  isChecked={key === currentOfficeFilter}
+                                  label={`${t(filter.name)} (${
+                                    filter.value ? filter.value.length : 0
+                                  })`}
+                                  onChange={this.handleSelectOfficeFilter(key)}
+                                  className={s.officeFilter}
+                                />
+                              </Box>
+                            </React.Fragment>
+                          )
+                        )}
+                      </Column>
+                    )}
+
+                    <Button
+                      variant='icon'
+                      className={s.toggleFilterButton}
+                      onClick={this.handleToggleOfficeFilter}
+                    >
+                      {showOfficeFilters ? (
+                        <ArrowBackIos
+                          style={{ width: 18, height: 18, marginLeft: 6 }}
+                          className={s.normalIcon}
+                        />
+                      ) : (
+                        <AdjustIcon
+                          style={{ width: 19, height: 18 }}
+                          className={s.normalIcon}
+                        />
+                      )}
+                    </Button>
+                  </Row>
+                )}
+
+                {/* TODO: Show office detail info once clicked in company dashboard */}
+                {/* show office detail info */}
+                {/* {currentOffice && (
+                  <Column classes={{ box: s.officeDetailWrapper }}>
+                    <Box classes={{ box: s.officeDetail }}>
+                      <OfficeDetailItem office={currentOffice} />
+                    </Box>
+                    <Stretch />
+                    <Box
+                      classes={{ box: s.officeFullView }}
+                      onClick={this.handleNavigateOfficeDetail(currentOffice, t)}
+                      fullWidth
+                      justifyChildrenCenter
+                    >
+                      <Typography fontSizeXS textWhite>
+                        {t("fullView")}
+                      </Typography>
+                    </Box>
+                  </Column>
+                )} */}
+              </Row>
+            </ConditionalWrapper>
+          )}
+
+          {isWidthDown("xs", width) && (
             <Row classes={{ box: s.officesMap }}>
               <Column stretch fullHeight noOverflow relative>
                 <GoogleMap
@@ -653,7 +803,7 @@ class Dashboard extends PureComponent {
                     ))
                   }
                 />
-
+  
                 {currentOffice && (
                   <Button
                     variant='icon'
@@ -667,7 +817,7 @@ class Dashboard extends PureComponent {
                   </Button>
                 )}
               </Column>
-
+  
               {/* show office filters */}
               {(!isWidthDown("xs", width) || !currentOffice) && (
                 <Row
@@ -695,7 +845,7 @@ class Dashboard extends PureComponent {
                       )}
                     </Column>
                   )}
-
+  
                   <Button
                     variant='icon'
                     className={s.toggleFilterButton}
@@ -715,7 +865,7 @@ class Dashboard extends PureComponent {
                   </Button>
                 </Row>
               )}
-
+  
               {/* TODO: Show office detail info once clicked in company dashboard */}
               {/* show office detail info */}
               {/* {currentOffice && (
@@ -737,75 +887,129 @@ class Dashboard extends PureComponent {
                 </Column>
               )} */}
             </Row>
-          </ConditionalWrapper>
+          )}
         </Row>
 
         {/** show statistics */}
         <Row classes={{ box: s.statisticBoxWrapper }} wrap fullWidth>
-          <ConditionalWrapper
-            condition={isWidthDown("sm", width)}
-            wrapper={(children) => (
-              <TabWrapper
-                open
-                insideOpen
-                title={t("stat")}
-                bodyClass={s.tabWrapper}
-              >
-                <CarouselWrapper itemWidth={200} itemOffset={0}>
-                  {children}
-                </CarouselWrapper>
-              </TabWrapper>
-            )}
-          >
-            <Box classes={{ box: s.statisticBox }}>
-              <StatisticIconBox
-                icon={
-                  <FavoriteIcon
-                    className={s.lightIcon}
-                    style={{ width: 14, height: 13 }}
-                  />
-                }
-                title={t("favoriteOffice")}
-                statistics={[{ value: 0, variant: "primary" }]}
-              />
-            </Box>
-            <Box classes={{ box: s.statisticBox }}>
-              <StatisticIconBox
-                icon={
-                  <NoteIcon
-                    className={s.lightIcon}
-                    style={{ width: 14, height: 16 }}
-                  />
-                }
-                title={t("totalContracts")}
-                statistics={[{ value: 2, variant: "primary" }]}
-              />
-            </Box>
-            <Box classes={{ box: s.statisticBox }}>
-              <StatisticIconBox
-                icon={
-                  <CalendarIcon
-                    className={s.lightIcon}
-                    style={{ width: 16, height: 15 }}
-                  />
-                }
-                title={t("calendarEvents")}
-                statistics={[{ value: 4, variant: "primary" }]}
-              />
-            </Box>
-            <Box classes={{ box: s.statisticBox }}>
-              <StatisticIconBox
-                icon={
-                  <StarOutlineIcon
-                    className={s.lightIcon}
-                    style={{ width: 17, height: 19 }}
-                  />
-                }
-                title={t("reviews")}
-                statistics={[{ value: 1, variant: "primary" }]}
-              />
-            </Box>
-          </ConditionalWrapper>
+          {!isWidthDown("xs", width) &&
+            <ConditionalWrapper
+              condition={isWidthDown("sm", width)}
+              wrapper={(children) => (
+                <TabWrapper
+                  open
+                  insideOpen
+                  title={t("stat")}
+                  bodyClass={s.tabWrapper}
+                >
+                  <CarouselWrapper itemWidth={200} itemOffset={0}>
+                    {children}
+                  </CarouselWrapper>
+                </TabWrapper>
+              )}
+            >
+              <Box classes={{ box: s.statisticBox }}>
+                <StatisticIconBox
+                  icon={
+                    <FavoriteIcon
+                      className={s.lightIcon}
+                      style={{ width: 14, height: 13 }}
+                    />
+                  }
+                  title={t("favoriteOffice")}
+                  statistics={[{ value: 0, variant: "primary" }]}
+                />
+              </Box>
+              <Box classes={{ box: s.statisticBox }}>
+                <StatisticIconBox
+                  icon={
+                    <NoteIcon
+                      className={s.lightIcon}
+                      style={{ width: 14, height: 16 }}
+                    />
+                  }
+                  title={t("totalContracts")}
+                  statistics={[{ value: 2, variant: "primary" }]}
+                />
+              </Box>
+              <Box classes={{ box: s.statisticBox }}>
+                <StatisticIconBox
+                  icon={
+                    <CalendarIcon
+                      className={s.lightIcon}
+                      style={{ width: 16, height: 15 }}
+                    />
+                  }
+                  title={t("calendarEvents")}
+                  statistics={[{ value: 4, variant: "primary" }]}
+                />
+              </Box>
+              <Box classes={{ box: s.statisticBox }}>
+                <StatisticIconBox
+                  icon={
+                    <StarOutlineIcon
+                      className={s.lightIcon}
+                      style={{ width: 17, height: 19 }}
+                    />
+                  }
+                  title={t("reviews")}
+                  statistics={[{ value: 1, variant: "primary" }]}
+                />
+              </Box>
+            </ConditionalWrapper>
+          }
+          {isWidthDown("xs", width) && (
+            <CarouselWrapper itemWidth={200} itemOffset={0}>
+              <Box classes={{ box: s.statisticBox }}>
+                <StatisticIconBox
+                  icon={
+                    <FavoriteIcon
+                      className={s.lightIcon}
+                      style={{ width: 14, height: 13 }}
+                    />
+                  }
+                  title={t("favoriteOffice")}
+                  statistics={[{ value: 0, variant: "primary" }]}
+                />
+              </Box>
+              <Box classes={{ box: s.statisticBox }}>
+                <StatisticIconBox
+                  icon={
+                    <NoteIcon
+                      className={s.lightIcon}
+                      style={{ width: 14, height: 16 }}
+                    />
+                  }
+                  title={t("totalContracts")}
+                  statistics={[{ value: 2, variant: "primary" }]}
+                />
+              </Box>
+              <Box classes={{ box: s.statisticBox }}>
+                <StatisticIconBox
+                  icon={
+                    <CalendarIcon
+                      className={s.lightIcon}
+                      style={{ width: 16, height: 15 }}
+                    />
+                  }
+                  title={t("calendarEvents")}
+                  statistics={[{ value: 4, variant: "primary" }]}
+                />
+              </Box>
+              <Box classes={{ box: s.statisticBox }}>
+                <StatisticIconBox
+                  icon={
+                    <StarOutlineIcon
+                      className={s.lightIcon}
+                      style={{ width: 17, height: 19 }}
+                    />
+                  }
+                  title={t("reviews")}
+                  statistics={[{ value: 1, variant: "primary" }]}
+                />
+              </Box>
+            </CarouselWrapper>
+          )}
         </Row>
       </Column>
     );
