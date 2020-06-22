@@ -29,8 +29,9 @@ const styleSheet = theme => ({
     paddingLeft: theme.spacing(5),
     paddingRight: theme.spacing(5),
     [theme.breakpoints.down("sm")]: {
-      paddingLeft: 27,
-      paddingRight: 27
+      paddingLeft: 7,
+      paddingRight: 7,
+      paddingBottom: 0,
     }
   },
 
@@ -152,16 +153,6 @@ class Offices extends PureComponent {
                 {t("offices")}
               </Typography>
             </Grid>
-            <Grid item className={s.addOfficeButton}>
-              <Button
-                variant="secondary"
-                shadow
-                onClick={this.navigate("offices/add")}
-                className={s.addOfficeButton}
-              >
-                {t("addNewOffice")}
-              </Button>
-            </Grid>
           </Grid>
         </Row>
 
@@ -170,7 +161,8 @@ class Offices extends PureComponent {
           <TabWrapper title={`${t("requests")} (10)`} open insideOpen>
             <Row
               fullWidth
-              paddingTopDouble
+              paddingTopDouble={!isWidthDown("xs", width)}
+              paddingTop={isWidthDown("xs", width)}
               classes={{ box: s.statisticWrapper }}
             >
               <ConditionalWrapper

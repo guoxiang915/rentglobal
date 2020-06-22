@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { LinearProgress, withStyles } from "@material-ui/core";
+import { LinearProgress, withStyles, withWidth, isWidthDown } from "@material-ui/core";
 import { withTranslation } from "react-i18next";
 import clsx from "clsx";
 import { KeyboardArrowLeft, KeyboardArrowRight } from "@material-ui/icons";
@@ -190,6 +190,7 @@ const OfficeItem = React.memo(
     passLoginDialog,
     onClick,
     fullWidth,
+    width,
     className
   }) => {
     /** Changing position of carousel */
@@ -366,21 +367,21 @@ const OfficeItem = React.memo(
         >
           {/** show office title */}
           <Row>
-            <Typography fontSizeM textBlackGrey fontWeightBold>
+            <Typography fontSizeM={!isWidthDown("xs", width)} fontSizeXXS={isWidthDown("xs", width)} textBlackGrey fontWeightBold>
               {office.title}
             </Typography>
           </Row>
 
           {/** show office property */}
           <Row paddingTopHalf>
-            <Typography fontSizeM textSecondary>
+            <Typography fontSizeM={!isWidthDown("xs", width)} fontSizeXXS={isWidthDown("xs", width)} textSecondary>
               {t(office.officeType)}
             </Typography>
           </Row>
 
           {/** show office price */}
           <Row paddingTopHalf>
-            <Typography fontSizeS textPrimary>
+            <Typography fontSizeS={!isWidthDown("xs", width)} fontSizeXXS={isWidthDown("xs", width)} textPrimary>
               {t("dollarPerMonth", { dollar: office.priceMonthly || 0 })}
             </Typography>
           </Row>
@@ -392,7 +393,7 @@ const OfficeItem = React.memo(
               <Typography textPrimary>
                 <StarIcon style={{ width: 12, height: 12 }} />
               </Typography>
-              <Typography fontSizeS textMediumGrey paddingLeftHalf>
+              <Typography fontSizeS={!isWidthDown("xs", width)} fontSizeXXS={isWidthDown("xs", width)}  textMediumGrey paddingLeftHalf>
                 3.5 {/* office.rating */}
               </Typography>
             </Row>
@@ -437,5 +438,5 @@ const OfficeItem = React.memo(
 );
 
 export default withStyles(styleSheet, { name: "OfficeItem" })(
-  withTranslation("common")(withLogin(OfficeItem))
+  withTranslation("common")(withLogin(withWidth()(OfficeItem)))
 );
