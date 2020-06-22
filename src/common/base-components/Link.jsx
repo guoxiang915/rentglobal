@@ -14,6 +14,9 @@ const styleSheet = (theme) => ({
     },
     transition: 'all .2s',
   },
+  fullWidth: {
+    width: "100%",
+  },
   ...theme.links,
 });
 
@@ -24,6 +27,7 @@ const Link = ({
   variant,
   inverse,
   styles,
+  fullWidth,
   ...props
 }) => (
   <RouterLink
@@ -31,6 +35,7 @@ const Link = ({
       classes.root,
       variant && classes[variant],
       inverse && classes.inverse,
+      fullWidth && classes.fullWidth,
       styles,
     )}
     underline={underline || 'none'}

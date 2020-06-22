@@ -39,6 +39,7 @@ const styleSheet = (theme) => ({
     overflowX: 'hidden',
     [theme.breakpoints.down('sm')]: {
       width: '100%',
+      overflowX: 'visible',
     },
   },
 });
