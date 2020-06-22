@@ -7,14 +7,14 @@ import {
   Row,
   Column,
   Select,
-  SearchIcon
+  SearchIcon,
 } from "../base-components";
 
-const styleSheet = theme => ({
+const styleSheet = (theme) => ({
   root: {},
 
   searchbar: {
-    background: theme.colors.primary.white
+    background: theme.colors.primary.white,
   },
 
   sorter: {
@@ -25,9 +25,9 @@ const styleSheet = theme => ({
     [theme.breakpoints.down("xs")]: {
       marginLeft: 0,
       height: 36,
-      width: "100%"
-    }
-  }
+      width: "100%",
+    },
+  },
 });
 
 export default withStyles(styleSheet, { name: "SearchbarWithSorter" })(
@@ -35,13 +35,13 @@ export default withStyles(styleSheet, { name: "SearchbarWithSorter" })(
     ({ classes: s, t, title, query: q, sorter, sortOptions, onChange }) => {
       const [query, setQuery] = useState(q);
 
-      const handleSearch = sort => {
+      const handleSearch = (sort) => {
         onChange({ query, sorter: sort || sorter });
       };
 
-      const handleSearchKeyUp = e => e.key === "Enter" && handleSearch();
+      const handleSearchKeyUp = (e) => e.key === "Enter" && handleSearch();
 
-      const handleChangeSort = e => handleSearch(e.target.value);
+      const handleChangeSort = (e) => handleSearch(e.target.value);
 
       return (
         <Row fullWidth wrap>
@@ -49,9 +49,13 @@ export default withStyles(styleSheet, { name: "SearchbarWithSorter" })(
             <TextField
               placeholder={title}
               value={query}
-              onChange={e => setQuery(e.target.value)}
-              startAdornment={<SearchIcon style={{ width: 16, height: 16 }} />}
-              classes={{ input: s.searchbar }}
+              onChange={(e) => setQuery(e.target.value)}
+              startAdornment={
+                <Typography textMediumGrey>
+                  <SearchIcon style={{ width: 16, height: 16 }} />
+                </Typography>
+              }
+              classes={{ root: s.searchbar }}
               onKeyUp={handleSearchKeyUp}
               fullWidth
             />
@@ -59,7 +63,7 @@ export default withStyles(styleSheet, { name: "SearchbarWithSorter" })(
           {sortOptions && (
             <Select
               options={sortOptions}
-              renderOption={item => (
+              renderOption={(item) => (
                 <Typography fontSizeS textMediumGrey>
                   {t(item.title)}
                 </Typography>
