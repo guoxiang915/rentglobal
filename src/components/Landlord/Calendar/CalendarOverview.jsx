@@ -412,7 +412,7 @@ class CalendarOverview extends PureComponent {
         </Row>
 
         {/** Request for visiting */}
-        <Row fullWidth>
+        {/* <Row fullWidth>
           <TabWrapper title={t("requestForVisiting")} open insideOpen>
             {visitRequests.map((event, index) => (
               <React.Fragment key={index}>
@@ -426,7 +426,7 @@ class CalendarOverview extends PureComponent {
               </React.Fragment>
             ))}
           </TabWrapper>
-        </Row>
+        </Row> */}
 
         {/** Show dialog */}
         {dialog}
