@@ -3,6 +3,7 @@ import { withStyles } from '@material-ui/core/styles';
 import { withTranslation } from 'react-i18next';
 import PropTypes from 'prop-types';
 import { Hidden } from '@material-ui/core';
+import clsx from 'clsx';
 import {
   Switch, Route, Redirect, withRouter,
 } from 'react-router-dom';
@@ -40,6 +41,10 @@ const styleSheet = (theme) => ({
     [theme.breakpoints.down('sm')]: {
       width: '100%',
       overflowX: 'visible',
+    },
+
+    '&.nosidebar': {
+      width: '100%',
     },
   },
 });
@@ -83,7 +88,7 @@ class Company extends PureComponent {
                 </Column>
               </Hidden>
             }
-            <Column classes={{ box: classes.contentWrapper }} fullWidth>
+            <Column classes={{ box: clsx(classes.contentWrapper, !showAppSidebar && 'nosidebar') }} fullWidth>
               <Switch>
                 <Route
                   path="/company/dashboard"

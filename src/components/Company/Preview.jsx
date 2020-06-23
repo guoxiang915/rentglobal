@@ -23,6 +23,7 @@ import {
 } from "../../common/base-components";
 import { formatDate1 } from "../../utils/formatters";
 import { CompanyReviews } from "../../common/base-layouts";
+import { getProfileStatus } from "../../utils/validators";
 
 const styleSheet = (theme) => ({
   root: {
@@ -126,6 +127,16 @@ class PreviewProfile extends PureComponent {
     const { user, userRole } = this.props.auth;
     const { currentTab } = this.state;
 
+    const role = userRole || user?.role;
+  
+    let profileCompleted = 0;
+    let profileCharged = 10;
+    let profileCompleteness = null;
+    const profileStatus = getProfileStatus(user, role);
+    profileCompleted = profileStatus.completed;
+    profileCharged = profileStatus.charged;
+    profileCompleteness = profileStatus.completeness;
+
     const companyRating = 3.5;
 
     return (
@@ -175,10 +186,12 @@ class PreviewProfile extends PureComponent {
               ))}
             {isWidthDown("xs", width) && (
               <React.Fragment>
-                <Box classes={{ box: s.verifyBadge }}>
-                  <CheckIcon style={{ width: 11, height: 11 }} />
-                  <Typography paddingLeftHalf>{t("verified")}</Typography>
-                </Box>
+                {profileCompleteness !== "profileNeedAttention" && (
+                  <Box classes={{ box: s.verifyBadge }}>
+                    <CheckIcon style={{ width: 11, height: 11 }} />
+                    <Typography paddingLeftHalf>{t("verified")}</Typography>
+                  </Box>
+                )}
                 <Button
                   link="primary"
                   background="normalLight"
@@ -203,14 +216,27 @@ class PreviewProfile extends PureComponent {
             alignChildrenCenter={isWidthDown("xs", width)}
             stretch
           >
-            <Typography fontSizeXL textSecondary alignChildrenCenter fullWidth paddingTopDouble={isWidthDown("xs", width)}>
-              {user.generalInfo?.username || "User"}
+            <Typography
+              alignChildrenCenter
+              fullWidth
+              justifyChildrenCenter
+              paddingTopDouble={isWidthDown("xs", width)}
+            >
+              <Typography
+                textDarkGrey
+                fontSizeXL={!isWidthDown("xs", width)}
+                fontSizeXS={isWidthDown("xs", width)}
+              >
+                {user.generalInfo?.username || "User"}
+              </Typography>
               {!isWidthDown("xs", width) && (
                 <React.Fragment>
-                  <Box classes={{ box: s.verifyBadge }}>
-                    <CheckIcon style={{ width: 11, height: 11 }} />
-                    <Typography paddingLeftHalf>{t("verified")}</Typography>
-                  </Box>
+                  {profileCompleteness !== "profileNeedAttention" && (
+                    <Box classes={{ box: s.verifyBadge }}>
+                      <CheckIcon style={{ width: 11, height: 11 }} />
+                      <Typography paddingLeftHalf>{t("verified")}</Typography>
+                    </Box>
+                  )}
                   <Stretch />
                   <Button
                     link="primary"
@@ -258,7 +284,7 @@ class PreviewProfile extends PureComponent {
               label={
                 <Row>
                   <ReviewIcon style={{ width: 18, height: 16 }} />
-                  <Typography paddingLeftHalf fontSizeS>{t("reviews")}</Typography>
+                  <Typography paddingLeftHalf fontSizeS>{t("reviews")} (2)</Typography>
                 </Row>
               }
               classes={{ root: s.tab }}
