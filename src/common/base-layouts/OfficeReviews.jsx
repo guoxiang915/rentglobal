@@ -43,8 +43,10 @@ const styleSheet = (theme) => ({
   root: {},
 
   statisticWrapper: {
-    width: 192,
-    height: 116,
+    maxWidth: 192,
+    minWidth: 156,
+    maxHeight: 116,
+    minHeight: 96,
     marginRight: 10,
   },
 
@@ -75,6 +77,9 @@ const styleSheet = (theme) => ({
 
   reviewContent: {
     padding: "8px 20px 4px 56px",
+    [theme.breakpoints.down("xs")]: {
+      padding: "4px 10px",
+    },
   },
 
   reviewMiniContent: {
@@ -116,6 +121,7 @@ const ReviewPanel = withStyles(styleSheet)(
       onApprove,
       onDelete,
       onChangeFeedback,
+      width,
     }) => {
       return (
         <Card className={s.reviewCard}>
@@ -155,24 +161,33 @@ const ReviewPanel = withStyles(styleSheet)(
             }
             action={
               <Typography textSecondary alignChildrenCenter>
-                <Typography fontSizeXS paddingRightDouble alignChildrenCenter>
-                  {formatDate1(review.createdAt)}
-                </Typography>
-                {
-                  <IconButton onClick={onToggleExpand}>
-                    {expanded ? (
-                      <ArrowUpIcon style={{ width: 17, height: 7 }} />
-                    ) : (
-                      <ArrowDownIcon style={{ width: 17, height: 7 }} />
-                    )}
-                  </IconButton>
-                }
+                {!isWidthDown("xs", width) && (
+                  <Typography fontSizeXS paddingRightDouble alignChildrenCenter>
+                    {formatDate1(review.createdAt)}
+                  </Typography>
+                )}
+                <IconButton onClick={onToggleExpand}>
+                  {expanded ? (
+                    <ArrowUpIcon style={{ width: 17, height: 7 }} />
+                  ) : (
+                    <ArrowDownIcon style={{ width: 17, height: 7 }} />
+                  )}
+                </IconButton>
               </Typography>
             }
             title={
-              <Typography fontSizeM textSecondary>
-                {review.company?.generalInfo?.username}
-              </Typography>
+              <Column alignChildrenStart>
+                <Typography fontSizeM textSecondary>
+                  {review.company?.generalInfo?.username}
+                </Typography>
+                {!isWidthDown("xs", width) && (
+                  <ReactStars
+                    count={5}
+                    size={16}
+                    value={review.company?.rating}
+                  />
+                )}
+              </Column>
             }
             classes={{ root: s.reviewHeader, action: s.reviewToggler }}
           />
@@ -180,14 +195,25 @@ const ReviewPanel = withStyles(styleSheet)(
             className={clsx(s.reviewContent, !expanded && s.reviewMiniContent)}
           >
             <Column fullWidth alignChildrenStart>
-              <Row>
-                <ReactStars
-                  count={5}
-                  size={16}
-                  value={review.company?.rating}
-                />
-              </Row>
-              <Typography fontSizeM textSecondary fullWidth paddingTop>
+              {isWidthDown("xs", width) && (
+                <Row fullWidth paddingBottom>
+                  <ReactStars
+                    count={5}
+                    size={16}
+                    value={review.company?.rating}
+                  />
+                  <Stretch />
+                  <Typography fontSizeXS paddingRightDouble alignChildrenCenter>
+                    {formatDate1(review.createdAt)}
+                  </Typography>
+                </Row>
+              )}
+              <Typography
+                fontSizeM={!isWidthDown("xs", width)}
+                fontSizeS={isWidthDown("xs", width)}
+                textSecondary
+                fullWidth
+              >
                 {review.content}
               </Typography>
               <Row fullWidth paddingTop>
@@ -226,18 +252,33 @@ const ReviewPanel = withStyles(styleSheet)(
                       }
                     />
                     <Row fullWidth paddingTopDouble alignChildrenCenter>
-                      <Typography fontSizeS textSecondary paddingRight>
+                      <Typography
+                        fontSizeS={!isWidthDown("xs", width)}
+                        fontSizeXS={isWidthDown("xs", width)}
+                        textSecondary
+                        paddingRight
+                      >
                         {t("giveCompanyRate")}
                       </Typography>
+                      {isWidthDown("xs", width) && <Stretch />}
                       <ReactStars
                         count={5}
-                        size={32}
+                        size={isWidthDown("xs", width) ? 28 : 32}
                         value={review.feedback?.rating}
                         onChange={onChangeFeedback(review, "rating")}
                       />
-                      <Stretch />
-                      <Button variant='primary'>{t("send")}</Button>
+                      {!isWidthDown("xs", width) && (
+                        <>
+                          <Stretch />
+                          <Button variant='primary'>{t("send")}</Button>
+                        </>
+                      )}
                     </Row>
+                    {isWidthDown("xs", width) && (
+                      <Row fullWidth justifyChildrenCenter paddingTopDouble>
+                        <Button variant='primary'>{t("send")}</Button>
+                      </Row>
+                    )}
                   </TabWrapper>
                 )}
                 {review.status === "rejected" && (
@@ -430,7 +471,7 @@ class OfficeReviews extends PureComponent {
               statistics={[
                 {
                   value: reviews?.filter((r) => !r.approved)?.length,
-                  variant: "error",
+                  variant: "errorRedNormal",
                 },
               ]}
             />
@@ -449,6 +490,7 @@ class OfficeReviews extends PureComponent {
                     onApprove={this.handleApproveReview(index)}
                     onDelete={this.handleDeleteReview(index)}
                     onChangeFeedback={this.handleChangeFeedback}
+                    width={width}
                   />
                 </Row>
               </React.Fragment>

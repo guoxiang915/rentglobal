@@ -1,20 +1,23 @@
 import React from "react";
 import PropTypes from "prop-types";
 import { withStyles } from "@material-ui/core";
+import withWidth, { isWidthDown } from "@material-ui/core/withWidth";
 import { withTranslation } from "react-i18next";
 import { Card } from "@material-ui/core";
 import {
   Row,
   Column,
-  Stretch,
   Box,
-  Button,
   Typography,
-  DownloadIcon,
+  CarouselWrapper,
+  // Stretch,
+  // Button,
+  // DownloadIcon,
 } from "../base-components";
 import { getReportByOffice } from "../../api/endpoints";
 import { months } from "../../utils/constants";
 import ReactHighcharts from "react-highcharts";
+import { ConditionalWrapper } from "../../utils/helpers";
 
 const StatInfoCard = withStyles(() => ({
   card: {
@@ -66,6 +69,10 @@ const styleSheet = (theme) => ({
       width: "400px !important",
     },
   },
+
+  carouselWrapper: {
+    marginLeft: -10,
+  },
 });
 
 class OfficeReport extends React.Component {
@@ -96,7 +103,7 @@ class OfficeReport extends React.Component {
   handleExcelExport = () => {};
 
   render() {
-    const { classes: s, t } = this.props;
+    const { classes: s, t, width } = this.props;
     const { report, currentYear } = this.state;
 
     if (!report) {
@@ -234,12 +241,25 @@ class OfficeReport extends React.Component {
       <Column classes={{ box: s.root }} fullWidth alignChildrenStart>
         {/** Stat info cards */}
         <Row fullWidth style={{ marginBottom: 35 }} wrap>
-          {stats.map((stat, index) => (
-            <React.Fragment key={index}>
-              {index > 0 && <Box paddingLeftHalf />}
-              <StatInfoCard title={stat.title} value={stat.value} />
-            </React.Fragment>
-          ))}
+          <ConditionalWrapper
+            condition={isWidthDown("md", width)}
+            wrapper={(children) => (
+              <CarouselWrapper
+                itemWidth={212}
+                itemOffset={0}
+                className={s.carouselWrapper}
+              >
+                {children}
+              </CarouselWrapper>
+            )}
+          >
+            {stats.map((stat, index) => (
+              <React.Fragment key={index}>
+                {index > 0 && <Box paddingLeftHalf />}
+                <StatInfoCard title={stat.title} value={stat.value} />
+              </React.Fragment>
+            ))}
+          </ConditionalWrapper>
         </Row>
 
         {/** years */}
@@ -268,11 +288,12 @@ class OfficeReport extends React.Component {
               </Typography>
             </React.Fragment>
           ))}
-          <Stretch />
+          {/** unavailbale for 1st phase */}
+          {/* <Stretch />
           <Button variant='primary' onClick={this.handleExcelExport} shadow>
             <DownloadIcon style={{ width: 13, height: 14 }} />
             <Typography paddingLeft>{t("excelExport")}</Typography>
-          </Button>
+          </Button> */}
         </Row>
 
         {/** Graph panel */}
@@ -286,4 +307,6 @@ class OfficeReport extends React.Component {
   }
 }
 
-export default withStyles(styleSheet)(withTranslation()(OfficeReport));
+export default withWidth()(
+  withStyles(styleSheet)(withTranslation()(OfficeReport))
+);

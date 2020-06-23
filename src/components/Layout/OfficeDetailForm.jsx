@@ -6,13 +6,13 @@ import { Row, Column } from "../../common/base-components";
 import {
   OfficeGallery,
   OfficeTitlebar,
-  OfficeGeneralInfo
+  OfficeGeneralInfo,
 } from "../../common/base-layouts";
 import { withLogin } from "../../common/base-services";
 import withWidth, { isWidthDown } from "@material-ui/core/withWidth";
 
 const styleSheet = () => ({
-  root: {}
+  root: {},
 });
 
 class OfficeDetailForm extends PureComponent {
@@ -21,10 +21,8 @@ class OfficeDetailForm extends PureComponent {
     office: PropTypes.object.isRequired,
 
     classes: PropTypes.object,
-    t: PropTypes.func
+    t: PropTypes.func,
   };
-
-  titlebarActions = [];
 
   /**
    * Renderer function
@@ -38,7 +36,7 @@ class OfficeDetailForm extends PureComponent {
         <Row fullWidth paddingBottom>
           <OfficeTitlebar
             office={office}
-            actions={this.titlebarActions}
+            actions={[]}
             // maxWidth={Math.min(1024, window.innerWidth - 44)}
             maxWidth={
               Math.min(

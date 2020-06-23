@@ -77,6 +77,8 @@ class OfficeTitlebar extends PureComponent {
     maxWidth: PropTypes.number,
     /** top offset for sticky */
     topOffset: PropTypes.number,
+    /** holder height */
+    holderHeight: PropTypes.number,
 
     classes: PropTypes.object,
     t: PropTypes.func,
@@ -91,6 +93,7 @@ class OfficeTitlebar extends PureComponent {
       actions,
       maxWidth,
       topOffset,
+      holderHeight,
     } = this.props;
 
     return (
@@ -187,7 +190,10 @@ class OfficeTitlebar extends PureComponent {
             </div>
           )}
         </Sticky>
-        <div className={s.titleBarHolder}></div>
+        <div
+          className={s.titleBarHolder}
+          style={{ height: holderHeight || undefined }}
+        ></div>
         <Row paddingTopHalf fontSizeM textSecondary fontWeightBold>
           {t(office.officeType)}
         </Row>

@@ -73,7 +73,7 @@ const styleSheet = (theme) => ({
 
   tabs: {
     marginTop: 12,
-    width: "100%",
+    // width: "100%",
     borderBottom: `1px solid ${theme.colors.primary.borderGrey}`,
   },
 
@@ -114,38 +114,47 @@ class OfficeDetail extends PureComponent {
   /** Get office from id */
   componentDidMount() {
     const { officeId } = this.props;
+    const isMobile = isWidthDown("xs", this.props.width);
     this.props.getOfficeById(officeId).then((response) => {
       if (response.status === 200) {
         const office = response.data;
-        this.titlebarActions = [
-          {
-            title: this.props.t("share"),
-            icon: () => <ShareIcon style={{ width: 13, height: 15 }} />,
-            styles: {
-              variant: null,
-              link: "secondary",
-              background: "secondaryLight",
+        if (isMobile) {
+          this.titlebarActions = [];
+        } else {
+          this.titlebarActions = [
+            {
+              title: this.props.t("share"),
+              icon: () => <ShareIcon style={{ width: 13, height: 15 }} />,
+              styles: {
+                variant: null,
+                link: "secondary",
+                background: "secondaryLight",
+              },
+              revertStyles: {
+                variant: "primary",
+                link: null,
+                background: null,
+              },
+              onClick: this.handleShare,
             },
-            revertStyles: { variant: "primary", link: null, background: null },
-            onClick: this.handleShare,
-          },
-          {
-            title: this.props.t("checkVisitAvailabilites"),
-            // icon: () => <CalendarIcon style={{ width: 13, height: 15 }} />,
-            icon: () => (
-              <Typography fontSizeS textSecondary>
-                {this.props.t("visit")}
-              </Typography>
-            ),
-            styles: {
-              variant: "primary",
-              shadow: true,
+            {
+              title: this.props.t("checkVisitAvailabilities"),
+              // icon: () => <CalendarIcon style={{ width: 13, height: 15 }} />,
+              icon: () => (
+                <Typography fontSizeS textSecondary>
+                  {this.props.t("visit")}
+                </Typography>
+              ),
+              styles: {
+                variant: "primary",
+                shadow: true,
+              },
+              revertStyles: { variant: "secondary" },
+              onClick: this.handleCheckVisit,
+              hideIcon: true,
             },
-            revertStyles: { variant: "secondary" },
-            onClick: this.handleCheckVisit,
-            hideIcon: true,
-          },
-        ];
+          ];
+        }
         this.setState({ office });
       }
     });
@@ -219,7 +228,6 @@ class OfficeDetail extends PureComponent {
 
   /** Share office */
   handleShare = () => {
-    console.log("Share dialog");
     this.setState({
       dialog: (
         <ShareOfficeDialog
@@ -232,7 +240,6 @@ class OfficeDetail extends PureComponent {
 
   /** Check visit availabilites */
   handleCheckVisit = () => {
-    console.log(this.state.office);
     this.setState({
       dialog: (
         <OfficeAvailabilityDialog
@@ -299,86 +306,117 @@ class OfficeDetail extends PureComponent {
           </Button>
         </Row>
 
-        <Row fullWidth paddingBottomDouble>
-          {/** Show unpublish button */}
-          <Button
-            link='errorRedNormal'
-            background='errorRedLight'
-            inverse
-            onClick={() => this.handleUnpublish(t)}
-            variant={isWidthDown("xs", width) ? "icon" : ""}
-            style={{ maxWidth: 130 }}
-          >
-            <EyeDisIcon style={{ width: 16, height: 16 }} />
-            <Typography fontSizeS paddingLeft>
-              {t("unpublish")}
-            </Typography>
-          </Button>
-          {office.published && !isWidthDown("xs", width) && (
-            <Typography
-              paddingLeft
-              fontSizeS
-              textMediumGrey
-              style={{ fontSize: "12px" }}
+        {isWidthDown("xs", width) && (
+          <Row fullWidth paddingBottomDouble>
+            <Button onClick={this.handleCheckVisit} shadow fullWidth>
+              <Typography fontSizeS paddingLeft>
+                {t("checkVisitAvailabilities")}
+              </Typography>
+            </Button>
+          </Row>
+        )}
+
+        <Row fullWidth paddingBottom alignChildrenStart>
+          <Row alignChildrenCenter>
+            {/** Show unpublish button */}
+            <Button
+              link='errorRedNormal'
+              background='errorRedLight'
+              inverse
+              onClick={() => this.handleUnpublish(t)}
+              variant={isWidthDown("xs", width) ? "icon" : ""}
+              style={{ maxWidth: 130 }}
             >
-              {t("availableForLease")}
-            </Typography>
-          )}
+              <EyeDisIcon style={{ width: 16, height: 16 }} />
+              <Typography fontSizeS paddingLeft>
+                {t("unpublish")}
+              </Typography>
+            </Button>
+            {office.published && !isWidthDown("xs", width) && (
+              <Typography
+                paddingLeft
+                fontSizeS
+                textMediumGrey
+                style={{ fontSize: "12px" }}
+              >
+                {t("availableForLease")}
+              </Typography>
+            )}
+          </Row>
           <Stretch />
 
           {/** Show delete button */}
-          <Button
-            link='errorRedNormal'
-            background='errorRedLight'
-            inverse
-            onClick={this.handleDeleteOffice}
-            variant={isWidthDown("xs", width) ? "icon" : ""}
-            style={{ maxWidth: 120 }}
-          >
-            <DeleteIcon style={{ width: 18, height: 18 }} />
-            {!isWidthDown("xs", width) ? (
-              <Typography paddingLeft fontSizeS>
-                {t("delete")}
-              </Typography>
-            ) : null}
-          </Button>
-          <Box paddingLeft />
+          <Row justifyChildrenEnd wrap alignChildrenStart>
+            <Button
+              link='errorRedNormal'
+              background='errorRedLight'
+              inverse
+              onClick={this.handleDeleteOffice}
+              variant={isWidthDown("xs", width) ? "icon" : ""}
+              style={{ maxWidth: 120, marginBottom: 8 }}
+            >
+              <DeleteIcon style={{ width: 18, height: 18 }} />
+              {!isWidthDown("xs", width) ? (
+                <Typography paddingLeft fontSizeS>
+                  {t("delete")}
+                </Typography>
+              ) : null}
+            </Button>
+            <Box paddingLeft />
 
-          {/** Show edit button */}
-          <Button
-            link='primary'
-            background='normalLight'
-            inverse
-            onClick={this.handleEditOffice}
-            variant={isWidthDown("xs", width) ? "icon" : ""}
-            style={{ maxWidth: 100 }}
-          >
-            <EditIcon style={{ width: 18, height: 18 }} />
-            {!isWidthDown("xs", width) ? (
-              <Typography paddingLeft fontSizeS>
-                {t("edit")}
-              </Typography>
-            ) : null}
-          </Button>
-          <Box paddingLeft />
+            {/** Show edit button */}
+            <Button
+              link='primary'
+              background='normalLight'
+              inverse
+              onClick={this.handleEditOffice}
+              variant={isWidthDown("xs", width) ? "icon" : ""}
+              style={{ maxWidth: 100, marginBottom: 8 }}
+            >
+              <EditIcon style={{ width: 18, height: 18 }} />
+              {!isWidthDown("xs", width) ? (
+                <Typography paddingLeft fontSizeS>
+                  {t("edit")}
+                </Typography>
+              ) : null}
+            </Button>
+            <Box paddingLeft />
 
-          {/** Show preview button */}
-          <Button
-            link='primary'
-            background='normalLight'
-            inverse
-            onClick={this.handlePreviewOffice}
-            variant={isWidthDown("xs", width) ? "icon" : ""}
-            style={{ maxWidth: 120 }}
-          >
-            {/* <PreviewIcon style={{ width: 20, height: 18 }} /> */}
-            <Launch style={{ width: 18, height: 18 }} />
-            {!isWidthDown("xs", width) ? (
-              <Typography paddingLeft fontSizeS>
-                {office.approved ? t("view") : t("preview")}
-              </Typography>
-            ) : null}
-          </Button>
+            {/** Show share button */}
+            {isWidthDown("xs", width) && (
+              <>
+                <Button
+                  link='primary'
+                  background='normalLight'
+                  inverse
+                  onClick={this.handleShare}
+                  variant='icon'
+                  style={{ marginBottom: 8 }}
+                >
+                  <Launch style={{ width: 18, height: 18 }} />
+                </Button>
+                <Box paddingLeft />
+              </>
+            )}
+
+            {/** Show preview button */}
+            <Button
+              link='primary'
+              background='normalLight'
+              inverse
+              onClick={this.handlePreviewOffice}
+              variant={isWidthDown("xs", width) ? "icon" : ""}
+              style={{ maxWidth: 120, marginBottom: 8 }}
+            >
+              {/* <PreviewIcon style={{ width: 20, height: 18 }} /> */}
+              <Launch style={{ width: 18, height: 18 }} />
+              {!isWidthDown("xs", width) ? (
+                <Typography paddingLeft fontSizeS>
+                  {office.approved ? t("view") : t("preview")}
+                </Typography>
+              ) : null}
+            </Button>
+          </Row>
         </Row>
 
         <Row fullWidth classes={{ box: s.titlebarWrapper }}>
@@ -393,6 +431,7 @@ class OfficeDetail extends PureComponent {
                 ) - (isWidthDown("sm", width) ? 54 : 247)
               }
               topOffset={120}
+              holderHeight={52}
             />
           )}
         </Row>
@@ -406,6 +445,19 @@ class OfficeDetail extends PureComponent {
             indicatorColor='primary'
             textColor='primary'
             classes={{ root: s.tabs, indicator: s.indicator }}
+            style={{
+              marginLeft:
+                (isWidthDown("xs", width) &&
+                  (currentTab === "reviews"
+                    ? -80
+                    : currentTab === "calendar"
+                    ? -200
+                    : currentTab === "report"
+                    ? -200
+                    : 0)) ||
+                0,
+              marginRight: isWidthDown("xs", width) && -27,
+            }}
           >
             <Tab
               value={"generalInfo"}

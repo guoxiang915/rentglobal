@@ -1,6 +1,7 @@
 import React from "react";
 import PropTypes from "prop-types";
 import { withStyles } from "@material-ui/core";
+import withWidth, { isWidthDown } from "@material-ui/core/withWidth";
 import { withTranslation } from "react-i18next";
 import {
   Row,
@@ -166,7 +167,7 @@ class OfficeCalendar extends React.Component {
   };
 
   render() {
-    const { classes: s, t } = this.props;
+    const { classes: s, t, width } = this.props;
     const {
       selectedDay,
       selectedEvent,
@@ -211,7 +212,15 @@ class OfficeCalendar extends React.Component {
             onChange={this.handleFilterChange}
           />
         </Row>
-        <Row fullWidth paddingBottomDouble>
+
+        {isWidthDown("xs", width) && (
+          <Row fullWidth paddingBottomDouble>
+            <Button variant='primary' onClick={this.handleAddEvent} fullWidth>
+              {t("addEvent")}
+            </Button>
+          </Row>
+        )}
+        <Row fullWidth paddingBottomDouble justifyChildrenCenter>
           <Typography
             textSecondary={viewMode === "week"}
             textMediumGrey={viewMode !== "week"}
@@ -232,10 +241,14 @@ class OfficeCalendar extends React.Component {
           >
             {t("month")}
           </Typography>
-          <Stretch />
-          <Button variant='primary' onClick={this.handleAddEvent}>
-            {t("addEvent")}
-          </Button>
+          {!isWidthDown("xs", width) && (
+            <>
+              <Stretch />
+              <Button variant='primary' onClick={this.handleAddEvent}>
+                {t("addEvent")}
+              </Button>
+            </>
+          )}
         </Row>
 
         {/** Calendar panel */}
@@ -350,4 +363,6 @@ class OfficeCalendar extends React.Component {
   }
 }
 
-export default withStyles(styleSheet)(withTranslation()(OfficeCalendar));
+export default withWidth()(
+  withStyles(styleSheet)(withTranslation()(OfficeCalendar))
+);

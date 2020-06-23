@@ -13,20 +13,32 @@ import {
 const styleSheet = (theme) => ({
   root: {},
 
+  searchWrapper: {
+    flex: 1,
+    [theme.breakpoints.down("xs")]: {
+      flex: "none",
+      width: "100%",
+    },
+  },
+
   searchbar: {
     background: theme.colors.primary.white,
   },
 
   sorter: {
-    background: theme.colors.primary.white,
     height: 47,
     width: 140,
     marginLeft: 20,
     [theme.breakpoints.down("xs")]: {
       marginLeft: 0,
-      height: 36,
       width: "100%",
+      marginBottom: 8,
     },
+  },
+
+  sorterBox: {
+    marginLeft: 0,
+    background: theme.colors.primary.white,
   },
 });
 
@@ -44,8 +56,23 @@ export default withStyles(styleSheet, { name: "SearchbarWithSorter" })(
       const handleChangeSort = (e) => handleSearch(e.target.value);
 
       return (
-        <Row fullWidth wrap>
-          <Column stretch>
+        <Row fullWidth wrap rowReverse>
+          {sortOptions && (
+            <Select
+              options={sortOptions}
+              renderOption={(item) => (
+                <Typography fontSizeS textMediumGrey>
+                  {t(item.title)}
+                </Typography>
+              )}
+              displayEmpty
+              value={sorter}
+              onChange={handleChangeSort}
+              className={s.sorter}
+              classes={{ root: s.sorterBox }}
+            />
+          )}
+          <Column classes={{ box: s.searchWrapper }}>
             <TextField
               placeholder={title}
               value={query}
@@ -60,20 +87,6 @@ export default withStyles(styleSheet, { name: "SearchbarWithSorter" })(
               fullWidth
             />
           </Column>
-          {sortOptions && (
-            <Select
-              options={sortOptions}
-              renderOption={(item) => (
-                <Typography fontSizeS textMediumGrey>
-                  {t(item.title)}
-                </Typography>
-              )}
-              displayEmpty
-              value={sorter}
-              onChange={handleChangeSort}
-              classes={{ root: s.sorter }}
-            />
-          )}
         </Row>
       );
     }

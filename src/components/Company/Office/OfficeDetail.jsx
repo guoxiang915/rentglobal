@@ -130,7 +130,7 @@ class OfficeDetail extends PureComponent {
             onClick: this.handleShare,
           },
           {
-            title: this.props.t("checkVisitAvailabilites"),
+            title: this.props.t("checkVisitAvailabilities"),
             // icon: () => <CalendarIcon style={{ width: 13, height: 15 }} />,
             icon: () => (
               <Typography fontSizeS textSecondary>
