@@ -5,7 +5,7 @@ import {
   DialogTitle,
   DialogContent,
   DialogActions,
-  withStyles
+  withStyles,
 } from "@material-ui/core";
 import clsx from "clsx";
 import { withTranslation } from "react-i18next";
@@ -15,16 +15,16 @@ import {
   Typography,
   Row,
   Stretch,
-  Column
+  Column,
 } from "../../../common/base-components";
 import {
   CloseIcon,
   EditIcon,
-  CheckIcon
+  CheckIcon,
 } from "../../../common/base-components/Icons";
 import CalendarWeekForm from "../../Layout/CalendarWeekForm";
 
-const styleSheet = theme => ({
+const styleSheet = (theme) => ({
   root: {
     maxWidth: 1056,
     maxHeight: 512,
@@ -36,32 +36,32 @@ const styleSheet = theme => ({
 
     [theme.breakpoints.down("sm")]: {
       minWidth: 320,
-      minHeight: "auto"
-    }
+      minHeight: "auto",
+    },
   },
 
   header: {
     width: "100%",
     padding: "12px 40px",
-    borderBottom: `1px solid ${theme.colors.primary.borderGrey}`
+    borderBottom: `1px solid ${theme.colors.primary.borderGrey}`,
   },
 
   content: {
     padding: "42px 40px 16px",
     [theme.breakpoints.down("xs")]: {
-      padding: 12
-    }
+      padding: 12,
+    },
   },
 
   icon: {
-    color: theme.colors.primary.borderGrey
+    color: theme.colors.primary.borderGrey,
   },
 
   footer: {
     width: "100%",
     padding: "12px 40px",
-    borderTop: `1px solid ${theme.colors.primary.borderGrey}`
-  }
+    borderTop: `1px solid ${theme.colors.primary.borderGrey}`,
+  },
 });
 
 class OfficeAvailabilityDialog extends PureComponent {
@@ -69,7 +69,7 @@ class OfficeAvailabilityDialog extends PureComponent {
     /** Title of dialog */
     title: PropTypes.string,
     /** Office availability info */
-    visitHours: PropTypes.array,
+    visitHours: PropTypes.any,
     /** Style of dialog */
     className: PropTypes.string,
     /** Boolean for dialog is opened/closed */
@@ -77,7 +77,7 @@ class OfficeAvailabilityDialog extends PureComponent {
     /** Event handler for closing dialog */
     onClose: PropTypes.func,
     /** Event handler for saving data */
-    onSave: PropTypes.func
+    onSave: PropTypes.func,
   };
 
   state = { visitHours: this.props.visitHours, isEdit: false };
@@ -102,7 +102,7 @@ class OfficeAvailabilityDialog extends PureComponent {
     this.setState({ isEdit: !this.state.isEdit });
   };
 
-  handleChangeVisitHours = data => {
+  handleChangeVisitHours = (data) => {
     this.setState({ visitHours: data });
   };
 
@@ -115,11 +115,11 @@ class OfficeAvailabilityDialog extends PureComponent {
       <Dialog
         open
         onClose={this.handleClose}
-        aria-labelledby="help-dialog-title"
+        aria-labelledby='help-dialog-title'
         classes={{ paper: clsx(s.root, className) }}
       >
         {/** dialog title */}
-        <DialogTitle id="help-dialog-title" className={s.header}>
+        <DialogTitle id='help-dialog-title' className={s.header}>
           <Row fullWidth>
             {/** header title */}
             <Typography fontSizeM textSecondary fontWeightBold>
@@ -128,8 +128,8 @@ class OfficeAvailabilityDialog extends PureComponent {
             <Stretch />
             {/** close button */}
             <Button
-              link="errorRed"
-              background="secondaryLight"
+              link='errorRed'
+              background='secondaryLight'
               onClick={this.handleClose}
             >
               <Typography fontSizeS alignChildrenCenter>
@@ -155,8 +155,8 @@ class OfficeAvailabilityDialog extends PureComponent {
           <Row fullWidth>
             {/** close button */}
             <Button
-              link="errorRed"
-              background="secondaryLight"
+              link='errorRed'
+              background='secondaryLight'
               onClick={isEdit ? this.handleToggleEdit : this.handleClose}
             >
               <Typography fontSizeS alignChildrenCenter>
@@ -169,7 +169,7 @@ class OfficeAvailabilityDialog extends PureComponent {
             <Stretch />
             {/** save/edit button */}
             <Button
-              variant="primary"
+              variant='primary'
               onClick={isEdit ? this.handleSave : this.handleToggleEdit}
             >
               <Typography fontSizeS alignChildrenCenter>

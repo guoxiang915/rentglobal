@@ -3,10 +3,7 @@ import { withStyles } from "@material-ui/core/styles";
 import { withTranslation } from "react-i18next";
 import withWidth, { isWidthDown } from "@material-ui/core/withWidth";
 import { Tabs, Tab } from "@material-ui/core";
-import {
-  KeyboardBackspace,
-  Person,
-} from "@material-ui/icons";
+import { KeyboardBackspace, Person } from "@material-ui/icons";
 import {
   Column,
   Row,
@@ -107,7 +104,7 @@ class PreviewProfile extends PureComponent {
   static propTypes = {};
 
   state = {
-    currentTab: "reviews"
+    currentTab: "reviews",
   };
 
   handleBack = () => {
@@ -128,13 +125,13 @@ class PreviewProfile extends PureComponent {
     const { currentTab } = this.state;
 
     const role = userRole || user?.role;
-  
-    let profileCompleted = 0;
-    let profileCharged = 10;
+
+    // let profileCompleted = 0;
+    // let profileCharged = 10;
     let profileCompleteness = null;
     const profileStatus = getProfileStatus(user, role);
-    profileCompleted = profileStatus.completed;
-    profileCharged = profileStatus.charged;
+    // profileCompleted = profileStatus.completed;
+    // profileCharged = profileStatus.charged;
     profileCompleteness = profileStatus.completeness;
 
     const companyRating = 3.5;
@@ -163,7 +160,12 @@ class PreviewProfile extends PureComponent {
 
         {/** show profile */}
         <Box paddingTopDouble />
-        <Row classes={{ box: s.profilePanel }} fullWidth wrap column={isWidthDown("xs", width)}>
+        <Row
+          classes={{ box: s.profilePanel }}
+          fullWidth
+          wrap
+          column={isWidthDown("xs", width)}
+        >
           {/* user avatar */}
           <Box
             alignChildrenCenter
@@ -193,8 +195,8 @@ class PreviewProfile extends PureComponent {
                   </Box>
                 )}
                 <Button
-                  link="primary"
-                  background="normalLight"
+                  link='primary'
+                  background='normalLight'
                   inverse
                   onClick={this.handleEdit}
                   classes={{ root: s.editButton }}
@@ -239,8 +241,8 @@ class PreviewProfile extends PureComponent {
                   )}
                   <Stretch />
                   <Button
-                    link="primary"
-                    background="normalLight"
+                    link='primary'
+                    background='normalLight'
                     inverse
                     onClick={this.handleEdit}
                   >
@@ -254,10 +256,18 @@ class PreviewProfile extends PureComponent {
             </Typography>
             <Box paddingTopHalf column={isWidthDown("xs", width)}>
               <Box>
-                <Typography paddingRight textGrey>{t("startup")} (<Person style={{ width: 20, height: 20 }} /> {user.companyProfile?.companySize || 0})</Typography>
-                <Typography paddingRight>{user.generalInfo?.address?.city}, {user.generalInfo?.address?.country}</Typography>
+                <Typography paddingRight textGrey>
+                  {t("startup")} (<Person style={{ width: 20, height: 20 }} />{" "}
+                  {user.companyProfile?.companySize || 0})
+                </Typography>
+                <Typography paddingRight>
+                  {user.generalInfo?.address?.city},{" "}
+                  {user.generalInfo?.address?.country}
+                </Typography>
               </Box>
-              <Typography textGrey>{t("joined")}: {formatDate1(user.createdAt)}</Typography>
+              <Typography textGrey>
+                {t("joined")}: {formatDate1(user.createdAt)}
+              </Typography>
             </Box>
             <Box paddingTop>
               <Rating rating={companyRating} />
@@ -267,7 +277,7 @@ class PreviewProfile extends PureComponent {
         <Row paddingTop>
           <Typography textGrey>{t("howHelpFind1_content")}</Typography>
         </Row>
-        
+
         <Row fullWidth style={{ marginBottom: 24 }}>
           {/** Tabs */}
           <Tabs
@@ -284,7 +294,9 @@ class PreviewProfile extends PureComponent {
               label={
                 <Row>
                   <ReviewIcon style={{ width: 18, height: 16 }} />
-                  <Typography paddingLeftHalf fontSizeS>{t("reviews")} (2)</Typography>
+                  <Typography paddingLeftHalf fontSizeS>
+                    {t("reviews")} (2)
+                  </Typography>
                 </Row>
               }
               classes={{ root: s.tab }}
@@ -293,9 +305,7 @@ class PreviewProfile extends PureComponent {
         </Row>
 
         <Row fullWidth paddingBottom>
-          {currentTab === "reviews" && (
-            <CompanyReviews />
-          )}
+          {currentTab === "reviews" && <CompanyReviews />}
         </Row>
       </Column>
     );

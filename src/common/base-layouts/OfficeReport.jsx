@@ -10,7 +10,7 @@ import {
   Box,
   Button,
   Typography,
-  DownloadIcon
+  DownloadIcon,
 } from "../base-components";
 import { getReportByOffice } from "../../api/endpoints";
 import { months } from "../../utils/constants";
@@ -20,15 +20,15 @@ const StatInfoCard = withStyles(() => ({
   card: {
     width: 192,
     height: 116,
-    padding: 20
+    padding: 20,
   },
   title: {},
   value: {
-    marginTop: 24
-  }
+    marginTop: 24,
+  },
 }))(({ classes: s, title, value, onClick }) => (
   <Card
-    variant="outlined"
+    variant='outlined'
     className={s.card}
     onClick={() => {
       if (onClick) {
@@ -47,25 +47,25 @@ const StatInfoCard = withStyles(() => ({
   </Card>
 ));
 
-const styleSheet = theme => ({
+const styleSheet = (theme) => ({
   root: {},
 
   graphPanel: {
     background: theme.colors.primary.white,
     borderRadius: 8,
-    padding: 32
+    padding: 32,
   },
 
   reportChart: {
     width: "700px !important",
     height: "500px !important",
     [theme.breakpoints.down("sm")]: {
-      width: "600px !important"
+      width: "600px !important",
     },
     [theme.breakpoints.down("xs")]: {
-      width: "400px !important"
-    }
-  }
+      width: "400px !important",
+    },
+  },
 });
 
 class OfficeReport extends React.Component {
@@ -73,17 +73,17 @@ class OfficeReport extends React.Component {
     officeId: PropTypes.string.isRequired,
     classes: PropTypes.object,
     t: PropTypes.func,
-    width: PropTypes.string
+    width: PropTypes.string,
   };
 
   constructor(props) {
     super(props);
     this.state = {
       report: null,
-      currentYear: new Date().getFullYear()
+      currentYear: new Date().getFullYear(),
     };
     if (getReportByOffice) {
-      getReportByOffice(props.officeId).then(response => {
+      getReportByOffice(props.officeId).then((response) => {
         if (response.status === 200) {
           this.setState({ report: response.data });
         }
@@ -91,7 +91,7 @@ class OfficeReport extends React.Component {
     }
   }
 
-  handleChangeYear = currentYear => this.setState({ currentYear });
+  handleChangeYear = (currentYear) => this.setState({ currentYear });
 
   handleExcelExport = () => {};
 
@@ -106,18 +106,18 @@ class OfficeReport extends React.Component {
     const stats = [
       {
         title: t("totalVisit"),
-        value: report?.visit?.reduce((a, b) => a + b.count, 0)
+        value: report?.visit?.reduce((a, b) => a + b.count, 0),
       },
       {
         title: (
           <React.Fragment>
             {t("totalLease")}&nbsp;
             <Typography textMediumGrey fontSizeXS>
-              {t("day")}
+              ({t("day")})
             </Typography>
           </React.Fragment>
         ),
-        value: report?.lease?.reduce((a, b) => a + b.count, 0)
+        value: report?.lease?.reduce((a, b) => a + b.count, 0),
       },
       {
         title: t("totalView"),
@@ -125,52 +125,52 @@ class OfficeReport extends React.Component {
           <Typography textMediumGrey>
             {report?.view?.reduce((a, b) => a + b.count, 0)}
           </Typography>
-        )
+        ),
       },
       {
         title: t("totalIncome"),
         value: `$${Math.floor(
           report?.income?.reduce((a, b) => a + b.count, 0) / 1000
-        )}K`
-      }
+        )}K`,
+      },
     ];
 
     let years = [];
-    Object.values(report).forEach(stat =>
-      stat.forEach(item => years.push(item.year))
+    Object.values(report).forEach((stat) =>
+      stat.forEach((item) => years.push(item.year))
     );
     years = [...new Set(years)];
 
     const chartConfig = {
       chart: {
         type: "bar",
-        className: s.reportChart
+        className: s.reportChart,
       },
       title: null,
       xAxis: {
-        categories: months.map(m => t(m)),
+        categories: months.map((m) => t(m)),
         title: {
-          text: null
+          text: null,
         },
         labels: {
           style: {
             color: "#b9b9b9",
-            fontSize: "15px"
-          }
-        }
+            fontSize: "15px",
+          },
+        },
       },
       yAxis: {
         min: 0,
         title: {
-          text: null
+          text: null,
         },
         labels: {
           overflow: "justify",
           style: {
             color: "#b9b9b9",
-            fontSize: "15px"
-          }
-        }
+            fontSize: "15px",
+          },
+        },
       },
       tooltip: {
         // valueSuffix: " millions"
@@ -178,15 +178,15 @@ class OfficeReport extends React.Component {
       plotOptions: {
         bar: {
           dataLabels: {
-            enabled: true
-          }
-        }
+            enabled: true,
+          },
+        },
       },
       legend: {
-        enabled: false
+        enabled: false,
       },
       credits: {
-        enabled: false
+        enabled: false,
       },
       series: [
         {
@@ -194,21 +194,21 @@ class OfficeReport extends React.Component {
           data: months.map(
             (m, index) =>
               report?.visit?.find(
-                v => v.year === currentYear && v.month === index
+                (v) => v.year === currentYear && v.month === index
               )?.count || 0
           ),
-          color: "rgb(253, 109, 159)"
+          color: "rgb(253, 109, 159)",
         },
         {
           name: "Lease",
           data: months.map(
             (m, index) =>
               report?.lease?.find(
-                v => v.year === currentYear && v.month === index
+                (v) => v.year === currentYear && v.month === index
               )?.count || 0
           ),
-          color: "rgb(99, 82, 155)"
-        }
+          color: "rgb(99, 82, 155)",
+        },
         // {
         //   name: "View",
         //   data: months.map(
@@ -227,7 +227,7 @@ class OfficeReport extends React.Component {
         //       )?.count || 0
         //   )
         // }
-      ]
+      ],
     };
 
     return (
@@ -252,7 +252,7 @@ class OfficeReport extends React.Component {
           >
             {t("lifeTime")}
           </Typography>
-          {years.map(year => (
+          {years.map((year) => (
             <React.Fragment key={year}>
               <Typography
                 textSecondary={year === currentYear}
@@ -269,7 +269,7 @@ class OfficeReport extends React.Component {
             </React.Fragment>
           ))}
           <Stretch />
-          <Button variant="primary" onClick={this.handleExcelExport} shadow>
+          <Button variant='primary' onClick={this.handleExcelExport} shadow>
             <DownloadIcon style={{ width: 13, height: 14 }} />
             <Typography paddingLeft>{t("excelExport")}</Typography>
           </Button>

@@ -21,7 +21,6 @@ import {
 } from "../base-components";
 import { TabWrapper } from "../base-layouts";
 import { StatisticBox } from ".";
-import { getReviewsByOffice } from "../../api/endpoints";
 import SearchbarWithSorter from "./SearchbarWithSorter";
 import {
   Card,
@@ -31,11 +30,14 @@ import {
   Badge,
   IconButton,
 } from "@material-ui/core";
+import { Pagination } from "@material-ui/lab";
 import { formatDate1, formatHrMin } from "../../utils/formatters";
 import { reviewSortOptions } from "../../utils/constants";
 import { Check } from "@material-ui/icons";
-import { Pagination } from "@material-ui/lab";
 import ReactStars from "react-rating-stars-component";
+import { getReviewsByOffice } from "../../api/endpoints";
+
+const REVIEWS_PER_PAGE = 8;
 
 const styleSheet = (theme) => ({
   root: {},
@@ -94,6 +96,12 @@ const styleSheet = (theme) => ({
   rejectedMsg: {
     background: theme.colors.primary.whiteGrey,
     borderRadius: 16,
+  },
+
+  pagination: {
+    marginTop: 20,
+    marginBottom: 60,
+    color: theme.colors.primary.grey,
   },
 });
 
@@ -235,7 +243,7 @@ const ReviewPanel = withStyles(styleSheet)(
                 {review.status === "rejected" && (
                   <TabWrapper
                     title={
-                      <Typography fontSizeXS textErrorRed>
+                      <Typography fontSizeXS textErrorRed alignChildrenCenter>
                         <CloseIcon style={{ width: 9, height: 9 }} />
                         <Typography paddingLeftHalf>{t("rejected")}</Typography>
                       </Typography>
@@ -319,14 +327,29 @@ class OfficeReviews extends PureComponent {
     expanded: 0,
     query: "",
     sorter: reviewSortOptions[0],
+    page: 1,
+    totalLength: 0,
+  };
+
+  getReivews = () => {
+    const params = {
+      // page: this.state.page,
+      // limit: REVIEWS_PER_PAGE
+    };
+    if (getReviewsByOffice) {
+      getReviewsByOffice(this.props.officeId, params).then((response) => {
+        if (response.status === 200) {
+          this.setState({
+            reviews: response.data,
+            totalLength: response.data.length,
+          });
+        }
+      });
+    }
   };
 
   componentDidMount() {
-    getReviewsByOffice(this.props.officeId).then((response) => {
-      if (response.status === 200) {
-        this.setState({ reviews: response.data });
-      }
-    });
+    this.getReivews();
   }
 
   handleExpandReview = (expanded) => {
@@ -360,12 +383,18 @@ class OfficeReviews extends PureComponent {
     });
   };
 
+  handleChangePage = (event, page) => {
+    this.setState({ page }, this.getReivews);
+  };
+
   /**
    * Renderer function
    */
   render() {
     const { classes: s, t, width } = this.props;
-    const { reviews, query, sorter, expanded } = this.state;
+    const { reviews, query, sorter, expanded, totalLength, page } = this.state;
+
+    const pageCount = Math.ceil(totalLength / REVIEWS_PER_PAGE);
 
     return (
       <Column classes={{ box: s.root }} fullWidth alignChildrenStart>
@@ -430,12 +459,12 @@ class OfficeReviews extends PureComponent {
         <Divider />
         <Column paddingTop fullWidth textMediumGrey>
           <Pagination
-            count={10}
-            size={isWidthDown("xs", width) && "small"}
+            count={pageCount}
+            size={isWidthDown("xs", width) ? "small" : "medium"}
             shape='rounded'
             classes={{ root: s.pagination }}
-            // onChange={this.handleChangePage}
-            page={1}
+            onChange={this.handleChangePage}
+            page={page}
           />
         </Column>
       </Column>
