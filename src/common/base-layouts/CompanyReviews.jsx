@@ -70,17 +70,17 @@ const styleSheet = (theme) => ({
 
   reviewToggler: {
     marginTop: 4,
-    marginRight: 4,
-    
   },
 
   reviewTitle: {
     fontSize: 19,
+    color: theme.colors.primary.darkGrey,
   },
 
   toggleButton: {
     width: 20,
     height: 20,
+    color: theme.colors.primary.grey,
   },
 
   reviewAvatar: {
@@ -272,7 +272,7 @@ class CompanyReviews extends PureComponent {
           <Select
             options={reviewSortOptions}
             renderOption={item => (
-              <Typography fontSizeS textMediumGrey>
+              <Typography fontSizeS textGrey>
                 {t(item.title)}
               </Typography>
             )}
