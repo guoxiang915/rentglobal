@@ -133,6 +133,7 @@ class OfficeGeneralInfo extends PureComponent {
       this.setState({
         dialog: (
           <LocationDialog
+            office={this.props.office}
             location={this.props.office.location}
             description={this.props.office.description}
             onClose={this.handleCloseDialog}

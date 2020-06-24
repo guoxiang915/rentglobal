@@ -291,10 +291,10 @@ class LocationDialog extends PureComponent {
 
   /** Render */
   render() {
-    const { location, className, classes: s, t } = this.props;
+    const { location, office, className, classes: s, t } = this.props;
     const { selectedNearbyPlace } = this.state;
 
-    const { fullAddress, placesNearby } = location;
+    const { placesNearby } = location;
 
     const coordinates = [];
     if (location && location.coordinates) {
@@ -415,7 +415,7 @@ class LocationDialog extends PureComponent {
               {/** header */}
               <Row fullWidth classes={{ box: s.header }}>
                 <Typography fontSizeM fontWeightBold textSecondary>
-                  {fullAddress}
+                  {office.location.city && `${office.location.city}, `}{office.location.state && `${office.location.state}, `}{office.location.country}
                 </Typography>
                 <Stretch />
                 <Button
