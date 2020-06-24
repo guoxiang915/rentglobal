@@ -6,8 +6,8 @@ import {
   TextField,
   Row,
   Column,
-  Select,
   SearchIcon,
+  DropDown,
 } from "../base-components";
 
 const styleSheet = (theme) => ({
@@ -58,7 +58,7 @@ export default withStyles(styleSheet, { name: "SearchbarWithSorter" })(
       return (
         <Row fullWidth wrap rowReverse>
           {sortOptions && (
-            <Select
+            <DropDown
               options={sortOptions}
               renderOption={(item) => (
                 <Typography fontSizeS textMediumGrey>

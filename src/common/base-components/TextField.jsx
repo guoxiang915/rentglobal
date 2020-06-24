@@ -10,6 +10,12 @@ import {
 const styleSheet = (theme) => ({
   root: {
     borderRadius: 27,
+    "& >.MuiOutlinedInput-notchedOutline": {
+      border: `1px solid ${theme.colors.primary.borderGrey}`,
+    },
+    "&:hover:not(:focus) >.MuiOutlinedInput-notchedOutline": {
+      border: `1px solid ${theme.colors.primary.borderGrey}`,
+    },
   },
 
   label: {
@@ -127,7 +133,9 @@ class TextField extends PureComponent {
         InputProps={{
           startAdornment,
           endAdornment: (
-            <InputAdornment>{endAdornment || <React.Fragment></React.Fragment>}</InputAdornment>
+            <InputAdornment>
+              {endAdornment || <React.Fragment></React.Fragment>}
+            </InputAdornment>
           ),
           classes: {
             root: clsx(s.root, styles && styles.root),
