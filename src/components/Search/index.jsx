@@ -43,7 +43,7 @@ import {
   SearchIcon,
   UncheckIcon,
   CheckIcon,
-  Select,
+  DropDown,
 } from "../../common/base-components";
 import {
   officeTypes,
@@ -1530,13 +1530,9 @@ class Search extends PureComponent {
                   {t("resultsWithNumber", { count: totalLength })}
                 </Typography>
                 <Stretch />
-                <Select
+                <DropDown
                   options={searchSortOptions}
-                  renderOption={(item) => (
-                    <Typography fontSizeS textMediumGrey>
-                      {t(item.title)}
-                    </Typography>
-                  )}
+                  renderOption={(item) => t(item.title)}
                   displayEmpty
                   value={sorter}
                   onChange={this.handleChangeSort}

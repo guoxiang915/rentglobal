@@ -7,6 +7,7 @@ export * from "./Typography";
 export * from "./Icons";
 export * from "./Tooltip";
 export * from "./Select";
+export * from "./DropDown";
 export * from "./ConfirmDialog";
 export * from "./VideoPlayer";
 export * from "./CarouselWrapper";
