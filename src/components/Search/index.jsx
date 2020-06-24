@@ -48,7 +48,7 @@ import {
 import {
   officeTypes,
   contractTypes,
-  officeSortOptions,
+  searchSortOptions,
 } from "../../utils/constants";
 
 import { styleSheet } from "./Search";
@@ -1133,7 +1133,7 @@ class Search extends PureComponent {
     offices: [],
     loading: false,
     viewMode: "grid",
-    sorter: officeSortOptions[0],
+    sorter: searchSortOptions[0],
     page: 1,
   };
 
@@ -1531,7 +1531,7 @@ class Search extends PureComponent {
                 </Typography>
                 <Stretch />
                 <Select
-                  options={officeSortOptions}
+                  options={searchSortOptions}
                   renderOption={(item) => (
                     <Typography fontSizeS textMediumGrey>
                       {t(item.title)}
@@ -1674,7 +1674,7 @@ class Search extends PureComponent {
                         <Column>
                           <Pagination
                             count={pageCount}
-                            size={isWidthDown("xs", width) && "small"}
+                            size={isWidthDown("xs", width) ? "small" : "medium"}
                             shape='rounded'
                             classes={{ root: s.pagination }}
                             onChange={this.handleChangePage}

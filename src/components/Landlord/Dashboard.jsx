@@ -32,18 +32,18 @@ import {
   PrivateOfficeIcon,
   AssignedOfficeIcon,
   UnassignedOfficeIcon,
-  CarouselWrapper
+  CarouselWrapper,
 } from "../../common/base-components";
 import { formatDate, getWeekday } from "../../utils/formatters";
 import { getProfileStatus } from "../../utils/validators";
 import {
   TabWrapper,
   StatisticIconBox,
-  OfficeDetailItem
+  OfficeDetailItem,
 } from "../../common/base-layouts";
 import { ConditionalWrapper } from "../../utils/helpers";
 
-const styleSheet = theme => ({
+const styleSheet = (theme) => ({
   root: {
     paddingLeft: theme.spacing(5),
     paddingRight: theme.spacing(5),
@@ -51,41 +51,41 @@ const styleSheet = theme => ({
     [theme.breakpoints.down("sm")]: {
       paddingLeft: 27,
       paddingRight: 27,
-      marginBottom: 80
-    }
+      marginBottom: 80,
+    },
   },
 
   fullWidth: {
-    width: "100%"
+    width: "100%",
   },
 
   lightIcon: {
     color: theme.colors.primary.darkGrey,
-    opacity: 0.15
+    opacity: 0.15,
   },
 
   normalIcon: {
-    color: theme.colors.primary.grey
+    color: theme.colors.primary.grey,
   },
 
   darkIcon: {
-    color: theme.colors.primary.darkGrey
+    color: theme.colors.primary.darkGrey,
   },
 
   profilePanel: {
     background: theme.colors.primary.white,
     padding: "23px 33px 27px",
-    position: "relative"
+    position: "relative",
   },
 
   accountAvatar: {
     width: 80,
     height: 80,
-    marginRight: 24
+    marginRight: 24,
   },
 
   accountName: {
-    minHeight: 75
+    minHeight: 75,
   },
 
   profileCompletenessWrapper: {
@@ -95,27 +95,27 @@ const styleSheet = theme => ({
     padding: 14,
     paddingLeft: 18,
     width: 228,
-    background: theme.colors.primary.whiteGrey
+    background: theme.colors.primary.whiteGrey,
   },
 
   profileProgress: {
-    marginBottom: 10
+    marginBottom: 10,
   },
 
   attentionIcon: {
     marginLeft: 25,
     width: 11,
-    height: 8
+    height: 8,
   },
 
   officesMapWrapper: {
     marginTop: 40,
     marginBottom: 40,
-    width: "100%"
+    width: "100%",
   },
 
   tabWrapper: {
-    paddingTop: 28
+    paddingTop: 28,
   },
 
   officesMap: {
@@ -124,14 +124,14 @@ const styleSheet = theme => ({
     height: 450,
     maxHeight: "calc(100vh - 130px)",
     [theme.breakpoints.down("sm")]: {
-      height: 450
+      height: 450,
     },
     [theme.breakpoints.down("xs")]: {
       height: 570,
       marginLeft: -27,
       marginRight: -27,
-      width: "calc(100% + 54px)"
-    }
+      width: "calc(100% + 54px)",
+    },
   },
 
   statisticBoxWrapper: {},
@@ -141,13 +141,13 @@ const styleSheet = theme => ({
     padding: 0,
     paddingRight: 8,
     "&:last-of-type": {
-      paddingRight: 0
-    }
+      paddingRight: 0,
+    },
   },
 
   currentOfficeWrapper: {
     width: 232,
-    height: "100%"
+    height: "100%",
   },
 
   officeFilterWrapper: {
@@ -157,17 +157,17 @@ const styleSheet = theme => ({
     paddingTop: 7,
     [theme.breakpoints.down("xs")]: {
       paddingTop: 30,
-      paddingLeft: 20
-    }
+      paddingLeft: 20,
+    },
   },
 
   officeFilters: {
-    paddingLeft: 6
+    paddingLeft: 6,
   },
 
   officeFilter: {
     background: theme.colors.primary.white,
-    width: 162
+    width: 162,
   },
 
   toggleFilterButton: {
@@ -176,8 +176,8 @@ const styleSheet = theme => ({
     marginLeft: 12,
     background: theme.colors.primary.white,
     "&:hover": {
-      background: theme.colors.primary.white
-    }
+      background: theme.colors.primary.white,
+    },
   },
 
   clearCurrentOfficeButton: {
@@ -188,31 +188,31 @@ const styleSheet = theme => ({
     right: 16,
     background: theme.colors.primary.white,
     "&:hover": {
-      background: theme.colors.primary.white
-    }
+      background: theme.colors.primary.white,
+    },
   },
 
   officeDetailWrapper: {
     height: "100%",
-    background: theme.colors.primary.white
+    background: theme.colors.primary.white,
   },
 
   officeDetail: {
     width: 235,
-    padding: 12
+    padding: 12,
   },
 
   officeFullView: {
     padding: 25,
     background: theme.colors.primary.mainColor,
-    cursor: "pointer"
+    cursor: "pointer",
   },
 
   officeMarkerTooltip: {
     color: theme.colors.primary.mainColor,
     width: 32,
-    height: 32
-  }
+    height: 32,
+  },
 });
 
 class Dashboard extends PureComponent {
@@ -221,7 +221,7 @@ class Dashboard extends PureComponent {
     getOffices: PropTypes.func.isRequired,
 
     classes: PropTypes.object,
-    t: PropTypes.func
+    t: PropTypes.func,
   };
 
   state = {
@@ -229,70 +229,70 @@ class Dashboard extends PureComponent {
     showOfficeFilters: true,
     selectedOfficeTypes: [],
     currentOfficeFilter: "allOffices",
-    currentOffice: null
+    currentOffice: null,
   };
 
   markerTooltipIcons = {
     independentOffice: null,
     privateOffice: null,
     assignedWorkstation: null,
-    unassignedWorkstation: null
+    unassignedWorkstation: null,
   };
 
   officeFilters = {
     allOffices: {
-      name: "allOffices"
+      name: "allOffices",
     },
     leasedOffices: {
-      name: "leased"
+      name: "leased",
     },
     availableOffices: {
-      name: "available"
-    }
+      name: "available",
+    },
   };
 
   officeTypes = {
     independentOffice: {
       name: "independent",
-      icon: IndependentOfficeIcon
+      icon: IndependentOfficeIcon,
     },
     privateOffice: {
       name: "privateOffice",
-      icon: PrivateOfficeIcon
+      icon: PrivateOfficeIcon,
     },
     assignedWorkstation: {
       name: "assigned",
-      icon: AssignedOfficeIcon
+      icon: AssignedOfficeIcon,
     },
     unassignedWorkstation: {
       name: "unassigned",
-      icon: UnassignedOfficeIcon
-    }
+      icon: UnassignedOfficeIcon,
+    },
   };
 
   /** Navigation */
-  navigate = path => () => {
+  navigate = (path) => () => {
     this.props.navigate(path);
   };
 
   /** Get landlord offices */
   componentDidMount() {
     this.props.getOffices().then(
-      response => {
+      (response) => {
         const offices = response.data.docs;
 
         this.officeFilters.allOffices.value = offices;
         this.officeFilters.leasedOffices.value = offices.filter(
-          o => !!o.leasedBy
+          (o) => !!o.leasedBy
         );
         this.officeFilters.availableOffices.value = offices.filter(
-          o => !o.leasedBy
+          (o) => !o.leasedBy
         );
 
         Object.keys(this.officeTypes).forEach(
-          key =>
+          (key) =>
             (this.officeTypes[key].value = offices.filter(
-              o => o.officeType === key
+              (o) => o.officeType === key
             ))
         );
         this.setState({ offices });
@@ -324,15 +324,15 @@ class Dashboard extends PureComponent {
   };
 
   /** Set office filter */
-  handleSelectOfficeFilter = filter => () => {
+  handleSelectOfficeFilter = (filter) => () => {
     this.setState({
       currentOfficeFilter: filter,
-      offices: this.officeFilters[filter].value
+      offices: this.officeFilters[filter].value,
     });
   };
 
   /** Toggle selected office types */
-  handleToggleOfficeTypes = officeType => () => {
+  handleToggleOfficeTypes = (officeType) => () => {
     const selectedOfficeTypes = [...this.state.selectedOfficeTypes];
     if (selectedOfficeTypes.indexOf(officeType) !== -1) {
       selectedOfficeTypes.splice(selectedOfficeTypes.indexOf(officeType), 1);
@@ -343,7 +343,7 @@ class Dashboard extends PureComponent {
   };
 
   /** Select office from map */
-  handleSelectOffice = office => () => {
+  handleSelectOffice = (office) => () => {
     this.setState({ currentOffice: office || null });
   };
 
@@ -369,7 +369,7 @@ class Dashboard extends PureComponent {
           {time.toLocaleTimeString("en-US", {
             hour: "numeric",
             minute: "2-digit",
-            hour12: true
+            hour12: true,
           })}
         </Typography>
       </Column>
@@ -386,19 +386,19 @@ class Dashboard extends PureComponent {
       currentOffice,
       showOfficeFilters,
       currentOfficeFilter,
-      selectedOfficeTypes
+      selectedOfficeTypes,
     } = this.state;
     const { user, userRole } = this.props.auth;
     const profileStatus = getProfileStatus(user, userRole);
     const {
       completed: profileCompleted,
       charged: profileCharged,
-      completeness: profileCompleteness
+      completeness: profileCompleteness,
     } = profileStatus;
 
     const DateTime = this.renderDateTime;
     const filteredOffices = offices.filter(
-      office => office.location?.coordinates
+      (office) => office.location?.coordinates
     );
 
     return (
@@ -455,18 +455,18 @@ class Dashboard extends PureComponent {
                 ? `url("${user.avatar.bucketPath}")`
                 : "none",
               backgroundSize: "cover",
-              backgroundPosition: "center"
+              backgroundPosition: "center",
             }}
             border
             classes={{
-              box: s.accountAvatar
+              box: s.accountAvatar,
             }}
           >
             {!user.avatar &&
               (userRole === "landlord" ? (
-                <ImageIcon className={s.smallIcon} variant="normal" />
+                <ImageIcon className={s.smallIcon} variant='normal' />
               ) : (
-                <UserIcon className={s.smallIcon} variant="normal" />
+                <UserIcon className={s.smallIcon} variant='normal' />
               ))}
           </Box>
 
@@ -483,8 +483,8 @@ class Dashboard extends PureComponent {
               {t("lastLogin", {
                 datetime: [
                   formatDate(user.updatedAt),
-                  new Date(user.updatedAt).toLocaleTimeString()
-                ].join(" ")
+                  new Date(user.updatedAt).toLocaleTimeString(),
+                ].join(" "),
               })}
             </Typography>
           </Column>
@@ -497,10 +497,10 @@ class Dashboard extends PureComponent {
                 value={profileCompleted}
                 valueBuffer={profileCharged}
                 styles={{
-                  root: s.profileProgress
+                  root: s.profileProgress,
                 }}
               />
-              <Link to="#" onClick={this.navigate("profile")}>
+              <Link to='#' onClick={this.navigate("profile")}>
                 <Box
                   fullWidth
                   textPrimary={profileCompleteness === "profileCompleted"}
@@ -525,7 +525,7 @@ class Dashboard extends PureComponent {
         <Row classes={{ box: s.officesMapWrapper }}>
           <ConditionalWrapper
             condition={isWidthDown("sm", width)}
-            wrapper={children => (
+            wrapper={(children) => (
               <TabWrapper
                 open
                 insideOpen
@@ -542,15 +542,17 @@ class Dashboard extends PureComponent {
                   coordinates={
                     filteredOffices && filteredOffices.length
                       ? filteredOffices.map(
-                        office => office.location?.coordinates
-                      )
+                          (office) => office.location?.coordinates
+                        )
                       : []
                   }
                   center={
-                    filteredOffices &&
-                    filteredOffices.length &&
-                    filteredOffices[filteredOffices.length - 1]?.location
-                      ?.coordinates
+                    currentOffice
+                      ? currentOffice.location?.coordinates
+                      : filteredOffices &&
+                        filteredOffices.length &&
+                        filteredOffices[filteredOffices.length - 1]?.location
+                          ?.coordinates
                   }
                   markers={
                     filteredOffices &&
@@ -567,7 +569,7 @@ class Dashboard extends PureComponent {
                         badge={
                           office.leasedBy && {
                             title: office.leasedBy.overduePayment,
-                            color: "error"
+                            color: "error",
                           }
                         }
                         tooltip={
@@ -593,7 +595,7 @@ class Dashboard extends PureComponent {
 
                 {currentOffice && (
                   <Button
-                    variant="icon"
+                    variant='icon'
                     className={s.clearCurrentOfficeButton}
                     onClick={this.handleClearCurrentOffice}
                   >
@@ -618,7 +620,7 @@ class Dashboard extends PureComponent {
                           <React.Fragment key={key}>
                             <Box paddingBottomHalf>
                               <Checkbox
-                                variant="outlined"
+                                variant='outlined'
                                 isChecked={key === currentOfficeFilter}
                                 label={`${t(filter.name)} (${
                                   filter.value ? filter.value.length : 0
@@ -634,7 +636,7 @@ class Dashboard extends PureComponent {
                         <React.Fragment key={key}>
                           <Box paddingBottomHalf>
                             <Checkbox
-                              variant="outlined"
+                              variant='outlined'
                               isChecked={
                                 selectedOfficeTypes.indexOf(key) !== -1
                               }
@@ -651,7 +653,7 @@ class Dashboard extends PureComponent {
                   )}
 
                   <Button
-                    variant="icon"
+                    variant='icon'
                     className={s.toggleFilterButton}
                     onClick={this.handleToggleOfficeFilter}
                   >
@@ -697,7 +699,7 @@ class Dashboard extends PureComponent {
         <Row classes={{ box: s.statisticBoxWrapper }} wrap fullWidth>
           <ConditionalWrapper
             condition={isWidthDown("sm", width)}
-            wrapper={children => (
+            wrapper={(children) => (
               <TabWrapper
                 open
                 insideOpen

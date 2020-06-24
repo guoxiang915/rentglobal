@@ -225,6 +225,14 @@ const officeSortOptions = [
   { title: "topRatedFirst", field: "rating", direction: "desc" },
 ];
 
+const searchSortOptions = [
+  { title: "priceHighToLow", field: "price", direction: "desc" },
+  { title: "priceLowToHigh", field: "price", direction: "asc" },
+  { title: "dateNewToOld", field: "createdAt", direction: "desc" },
+  { title: "dateOldToNew", field: "createdAt", direction: "asc" },
+  { title: "topRatedFirst", field: "rating", direction: "desc" },
+];
+
 const reviewSortOptions = [
   { title: "approved", field: "approved", direction: "desc" },
   { title: "latest", field: "createdAt", direction: "desc" },
@@ -265,4 +273,5 @@ export {
   officeSortOptions,
   reviewSortOptions,
   notificationTypes,
+  searchSortOptions,
 };

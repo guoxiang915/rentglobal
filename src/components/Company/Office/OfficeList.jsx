@@ -336,7 +336,7 @@ class OfficeList extends PureComponent {
               <Column>
                 <Pagination
                   count={pageCount}
-                  size={isWidthDown("xs", width) && "small"}
+                  size={isWidthDown("xs", width) ? "small" : "medium"}
                   shape='rounded'
                   classes={{ root: s.pagination }}
                   onChange={this.handleChangePage}
