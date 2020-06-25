@@ -163,6 +163,7 @@ const styleSheet = (theme) => {
     },
 
     /* font styles */
+    fontSizeXXXS: { ...theme.fonts.size.fontSizeXXXS },
     fontSizeXXS: { ...theme.fonts.size.fontSizeXXS },
     fontSizeXS: { ...theme.fonts.size.fontSizeXS },
     fontSizeS: { ...theme.fonts.size.fontSizeS },

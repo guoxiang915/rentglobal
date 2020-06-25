@@ -635,5 +635,11 @@
   "see": "See",
   "wantToVisit": "I want to visit",
   "shortList": "Short list",
-  "justOneMoreLeft": "Just one more left"
+  "justMoreLeft": "Just {{digit}} more left",
+  "addOfficesToYourShortListToSendVisitRequests": "Add offices to your shortlist to send multiple visit visiting requests",
+  "one": "one",
+  "two": "two",
+  "three": "three",
+  "four": "four",
+  "searchByNameLocation": "Search by name, location, etc."
 }

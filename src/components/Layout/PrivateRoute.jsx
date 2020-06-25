@@ -214,6 +214,9 @@ class PrivateRoute extends React.Component {
     case "homeoffices":
       this.props.history.push(`offices/${payload || ""}`);
       break;
+    case "shortlist":
+      this.props.history.push(`/company/${path}`);
+      break;
 
     default:
       this.props.history.push(path);
@@ -325,6 +328,8 @@ class PrivateRoute extends React.Component {
     }
 
     const { sidebarOpened } = this.state;
+    
+    const isShortListPath = this.props.history.location.pathname.includes("/shortlist");
 
     return (
       <Route
@@ -420,14 +425,15 @@ class PrivateRoute extends React.Component {
                           <AppFooter className={classes.footerWrapper} />
                         </div>
                       )}
-                      {shortList.length > 0 && (
+                      {shortList.length > 0 && !isShortListPath && (
                         <BottomShortListPanel
                           shortList={shortList}
                           showBottomShortList={showBottomShortList}
                           setOfficeShortList={this.props.mappedSetOfficeShortList}
                           onShowBottomShortList={
                             () => this.props.mappedShowBottomShortList(!showBottomShortList)
-                          } 
+                          }
+                          navigate={this.navigate}
                         />
                       )}
                     </StickyContainer>

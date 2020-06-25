@@ -61,7 +61,7 @@ const styleSheet = (theme) => ({
 
   titleContainer: {
     marginRight: 110,
-    
+
     [theme.breakpoints.down("sm")]: {
       marginRight: 0,
     },
@@ -86,7 +86,7 @@ const styleSheet = (theme) => ({
   },
 
   officesWrapper: {
-    
+
     [theme.breakpoints.down("sm")]: {
       marginLeft: 7,
       width: "calc(100% - 7px)",
@@ -97,7 +97,7 @@ const styleSheet = (theme) => ({
     width: 88,
     position: "relative",
     marginRight: 45,
-    
+
     [theme.breakpoints.down("sm")]: {
       marginTop: 16,
       marginRight: 21,
@@ -109,7 +109,7 @@ const styleSheet = (theme) => ({
     width: 17,
     height: 17,
     background: theme.colors.primary.errorRed,
-    
+
     [theme.breakpoints.down("sm")]: {
       left: -7,
       top: -8,
@@ -121,7 +121,7 @@ const styleSheet = (theme) => ({
     width: 64,
     height: 48,
     marginLeft: 12,
-    
+
     [theme.breakpoints.down("sm")]: {
       width: 88,
       height: 50,
@@ -136,7 +136,7 @@ const styleSheet = (theme) => ({
     marginTop: 3,
     maxWidth: 64,
     marginLeft: 12,
-    
+
     [theme.breakpoints.down("sm")]: {
       maxWidth: 88,
       marginLeft: 0,
@@ -156,7 +156,7 @@ const styleSheet = (theme) => ({
 
   buttonWrapper: {
     marginLeft: 63,
-    
+
     [theme.breakpoints.down("sm")]: {
       marginLeft: 0,
       marginTop: 14,
@@ -187,6 +187,12 @@ class BottomShortListPanel extends PureComponent {
     this.props.setOfficeShortList(this.props.shortList.filter(item => item.id !== office.id));
   };
 
+  handleVisitRequest = () => {
+    if (this.props.passLoginDialog()) {
+      this.props.navigate("shortlist");
+    }
+  };
+
   /** Renderer function */
   render() {
     const {
@@ -199,6 +205,8 @@ class BottomShortListPanel extends PureComponent {
     // const { isLoggedIn, user, userRole } = this.props.auth;
     // const { languageEl, accountInfoEl, dialog } = this.state;
     // const role = userRole || user?.role;
+
+    const digits = ["one", "two", "three", "four"];
 
     return (
       <div className={clsx(s.root, showBottomShortList && 'opened')}>
@@ -253,10 +261,17 @@ class BottomShortListPanel extends PureComponent {
                   </Box>
                 ))}
                 <Stretch />
-                {!isWidthDown("sm", width) && <Typography fontSizeXXS textGrey>{t("justOneMoreLeft")}</Typography>}
+                {shortList.length === 0 && !isWidthDown("sm", width) && <Typography fontSizeXXS textGrey>{t("addOfficesToYourShortListToSendVisitRequests")}</Typography>}
+                {!isWidthDown("sm", width) && shortList.length < 5 && (
+                  <Typography fontSizeXXS textGrey>
+                    {t("justMoreLeft", {
+                      digit: t(digits[4 - shortList.length]),
+                    })}
+                  </Typography>
+                )}
               </Row>
               <Row classes={{ box: s.buttonWrapper }} fullWidth={isWidthDown("sm", width)}>
-                <Button>
+                <Button onClick={this.handleVisitRequest}>
                   {t("nextStep")}
                 </Button>
               </Row>

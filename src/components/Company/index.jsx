@@ -14,6 +14,7 @@ import Dashboard from "../../containers/Company/Dashboard";
 import Preview from "../../containers/Company/Preview";
 import Office from "./Office";
 import OfficeList from "./Office/OfficeList";
+import ShortList from "./ShortList";
 import {
   uploadFile,
   downloadFile,
@@ -137,6 +138,16 @@ class Company extends PureComponent {
                       getOffices={getFavoriteOffices}
                       navigate={this.props.navigate}
                       setOfficeShortList={this.props.mappedSetOfficeShortList}
+                      shortList={shortList}
+                    />
+                  )}
+                />
+                <Route
+                  exact
+                  path="/company/shortlist"
+                  render={() => (
+                    <ShortList
+                      navigate={this.props.navigate}
                       shortList={shortList}
                     />
                   )}
