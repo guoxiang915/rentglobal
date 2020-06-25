@@ -114,7 +114,6 @@ class UnapprovedOfficeList extends PureComponent {
 
   /** Change tab value */
   handleChangeTab = (e, currentTab) => {
-    console.log(currentTab);
     this.setState({ currentTab });
   };
 

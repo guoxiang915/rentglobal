@@ -122,7 +122,6 @@ class VisitAvailabilityForm extends PureComponent {
           v.end = v.end.getHours() + (1 / 60.0) * v.end.getMinutes();
         });
       });
-      console.log(visitHours);
       this.props.onNext(visitHours);
     }
   };

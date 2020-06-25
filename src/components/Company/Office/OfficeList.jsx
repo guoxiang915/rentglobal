@@ -114,6 +114,8 @@ class OfficeList extends PureComponent {
   static propTypes = {
     navigate: PropTypes.func,
     classes: PropTypes.object,
+    shortList: PropTypes.array,
+    setOfficeShortList: PropTypes.func,
     t: PropTypes.func,
   };
 
@@ -200,11 +202,18 @@ class OfficeList extends PureComponent {
     this.setState({ page }, this.searchOffices);
   };
 
+  handleAddToShortList = (office) => {
+    const { shortList = [], setOfficeShortList } = this.props;
+    if (setOfficeShortList) {
+      setOfficeShortList([...shortList, office]);
+    }
+  }
+
   /**
    * Renderer function
    */
   render() {
-    const { classes: s, t, width } = this.props;
+    const { classes: s, t, width, shortList = [] } = this.props;
     const {
       offices,
       // currentTab,
@@ -298,6 +307,8 @@ class OfficeList extends PureComponent {
                       setFavorite
                       onClick={this.handleNavigateOfficeDetail(item, t)}
                       fullWidth
+                      addToShortList={this.handleAddToShortList}
+                      isShortListed={shortList.findIndex(shortListItem => shortListItem.id === item.id) >= 0}
                     />
                   </div>
                 </Grid>
@@ -319,6 +330,8 @@ class OfficeList extends PureComponent {
                               item.refId
                             }-${item.title}`.replace(/\s+/g, "-")
                           )}
+                          addToShortList={this.handleAddToShortList}
+                          isShortListed={shortList.findIndex(shortListItem => shortListItem.id === item.id) >= 0}
                         />
                       </Row>
                     </React.Fragment>

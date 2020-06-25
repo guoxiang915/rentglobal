@@ -133,7 +133,6 @@ class OfficeCalendar extends React.Component {
   editEvent = (event) => (newData) => {
     // TODO: add api of editing event
     this.handleCloseDialog();
-    console.log(event, newData);
   };
 
   handleCloseDialog = () => {

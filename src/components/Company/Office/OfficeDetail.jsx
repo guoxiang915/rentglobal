@@ -219,7 +219,6 @@ class OfficeDetail extends PureComponent {
 
   /** Share office */
   handleShare = () => {
-    console.log("Share dialog");
     this.setState({
       dialog: (
         <ShareOfficeDialog
@@ -232,7 +231,6 @@ class OfficeDetail extends PureComponent {
 
   /** Check visit availabilites */
   handleCheckVisit = () => {
-    console.log(this.state.office);
     this.setState({
       dialog: (
         <OfficeAvailabilityDialog

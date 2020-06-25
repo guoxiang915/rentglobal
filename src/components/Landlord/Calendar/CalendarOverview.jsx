@@ -161,13 +161,11 @@ class CalendarOverview extends PureComponent {
   addEvent = (event) => {
     // TODO: add api of adding event
     this.handleCloseDialog();
-    console.log(event);
   };
 
   editEvent = (event) => (newData) => {
     // TODO: add api of editing event
     this.handleCloseDialog();
-    console.log(event, newData);
   };
 
   handleCloseDialog = () => {

@@ -7,7 +7,6 @@ const sendRequest = async (token) => {
   try {
     resp = await api.post('/auth/validate-token', { token });
   } catch (error) {
-    console.log(error);
     resp = error.response;
   }
   return resp;

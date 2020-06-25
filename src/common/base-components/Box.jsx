@@ -258,7 +258,7 @@ export const Box = withStyles(styleSheet, { name: 'Box' })(
 
     render() {
       const {
-        children, style, classes, onClick, ...props
+        children, style, classes, onClick, onMouseEnter, onMouseLeave, ...props
       } = this.props;
       const propsClasses = {};
       Object.entries(props).forEach(
@@ -274,6 +274,8 @@ export const Box = withStyles(styleSheet, { name: 'Box' })(
             ...propsClasses,
           })}
           onClick={onClick}
+          onMouseEnter={onMouseEnter}
+          onMouseLeave={onMouseLeave}
         >
           {children}
         </div>

@@ -701,7 +701,6 @@ class Home extends PureComponent {
       []
     );
     const submitReceiveNewsLetter = React.useCallback(() => {
-      console.log("callback!");
       if (!emailValidation(news)) {
         setNewsError(t("invalidEmailAddress"));
       } else {
@@ -817,8 +816,6 @@ class Home extends PureComponent {
     const HelperBlock = this.renderHelperBlock;
     const RegisterBlock = this.renderRegisterBlock;
     const FollowingBlock = this.renderFollowingBlock;
-
-    console.log("rendering!");
 
     return (
       <Column classes={{ box: s.root }}>
