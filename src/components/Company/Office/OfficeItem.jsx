@@ -39,6 +39,36 @@ const styleSheet = theme => ({
     overflow: "hidden"
   },
 
+  shortListedBadge: {
+    position: "absolute",
+    left: 9,
+    top: 9,
+    zIndex: 10,
+    background: theme.colors.primary.mainColor,
+    color: theme.colors.primary.white,
+    borderRadius: 10,
+    fontSize: theme.fonts.size.fontSizeXXS.fontSize,
+    padding: "2px 16px",
+  },
+
+  addToShortListBadge: {
+    position: "absolute",
+    left: 9,
+    top: 9,
+    zIndex: 10,
+    background: theme.colors.primary.mainColor,
+    color: theme.colors.primary.white,
+    borderRadius: 10,
+    fontSize: theme.fonts.size.fontSizeXXS.fontSize,
+    padding: "2px 16px",
+    opacity: 0,
+    cursor: "pointer",
+  },
+
+  showAddToShortListBadge: {
+    opacity: 1,
+  },
+
   hoverWrapper: {
     position: "absolute",
     width: "100%",
@@ -190,11 +220,14 @@ const OfficeItem = React.memo(
     passLoginDialog,
     onClick,
     fullWidth,
-    className
+    className,
+    addToShortList,
+    isShortListed = false,
   }) => {
     /** Changing position of carousel */
     const [, setState] = useState();
     const [pos, setPos] = useState(0);
+    const [addBadgeStatus, setAddBadgeStatus] = useState(false);
 
     const prevImage = e => {
       e.stopPropagation();
@@ -247,6 +280,14 @@ const OfficeItem = React.memo(
         ? officeStatus.progress
         : null;
 
+    const onHover = (status) => {
+      setAddBadgeStatus(status);
+    };
+
+    const onAddToShortList = () => {
+      addToShortList(office);
+    };
+
     return (
       <Box
         classes={{
@@ -256,6 +297,8 @@ const OfficeItem = React.memo(
         row={!!horizontal}
         column={!horizontal}
         onClick={onClick}
+        onMouseEnter={() => onHover(true)}
+        onMouseLeave={() => onHover(false)}
       >
         <Box
           classes={{
@@ -263,6 +306,16 @@ const OfficeItem = React.memo(
           }}
           style={{ width: horizontal ? 235 : "100%" }}
         >
+          {isShortListed && (
+            <div className={s.shortListedBadge}>
+              {t("wantToVisit")}
+            </div>
+          )}
+          {!isShortListed && (
+            <div className={clsx(s.addToShortListBadge, addBadgeStatus && s.showAddToShortListBadge)} onClick={onAddToShortList}>
+              {t("addToShortList")}
+            </div>
+          )}
           <div className={s.hoverWrapper}>
             {/** favorite icon */}
             {setFavorite ? (

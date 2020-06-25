@@ -126,7 +126,6 @@ const ReviewPanel = withStyles(styleSheet)(
       onToggleExpand,
       isMobile,
     }) => {
-      console.log(review);
       return (
         <Card className={s.reviewCard}>
           <CardHeader

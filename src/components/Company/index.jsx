@@ -58,6 +58,7 @@ class Company extends PureComponent {
   render() {
     const { classes, location } = this.props;
     const { user, userRole, phoneCodeSent, verifiedPhoneNumber } = this.props.auth;
+    const { shortList } = this.props.appState;
 
     // TODO: requirements not specified when toggling roles
     if (
@@ -111,6 +112,8 @@ class Company extends PureComponent {
                     <OfficeList
                       getOffices={getRecentViewOffices}
                       navigate={this.props.navigate}
+                      setOfficeShortList={this.props.mappedSetOfficeShortList}
+                      shortList={shortList}
                     />
                   )}
                 />
@@ -121,6 +124,8 @@ class Company extends PureComponent {
                     <OfficeList
                       getOffices={getOfficesHistory}
                       navigate={this.props.navigate}
+                      setOfficeShortList={this.props.mappedSetOfficeShortList}
+                      shortList={shortList}
                     />
                   )}
                 />
@@ -131,6 +136,8 @@ class Company extends PureComponent {
                     <OfficeList
                       getOffices={getFavoriteOffices}
                       navigate={this.props.navigate}
+                      setOfficeShortList={this.props.mappedSetOfficeShortList}
+                      shortList={shortList}
                     />
                   )}
                 />

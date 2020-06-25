@@ -195,7 +195,6 @@ const EventDetailItem = React.memo(
 
     React.useEffect(() => {
       getOfficeByEvent(event).then((res) => {
-        console.log(res);
         if (res.status === 200) {
           setOffice(res.data);
         }

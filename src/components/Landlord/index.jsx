@@ -187,13 +187,11 @@ class Landlord extends PureComponent {
 
   approveVisitRequest = (visitRequest) => {
     /** Handle approve visit request by calling api */
-    console.log(visitRequest);
     this.closeDialog();
   };
 
   declineVisitRequest = (visitRequest) => (msg) => {
     /** Handle reject visit request by calling api */
-    console.log(visitRequest);
     this.closeDialog();
   };
 

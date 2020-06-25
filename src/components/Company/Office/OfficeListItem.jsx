@@ -1,4 +1,6 @@
-import React from 'react';
+import React, { useState } from 'react';
+import clsx from "clsx";
+import withWidth, { isWidthDown } from "@material-ui/core/withWidth";
 import { withStyles } from '@material-ui/core';
 import { Add as AddIcon } from '@material-ui/icons';
 import { withTranslation } from 'react-i18next';
@@ -43,6 +45,36 @@ const styleSheet = (theme) => ({
     [theme.breakpoints.down('sm')]: {
       width: '100%',
     },
+  },
+
+  shortListedBadge: {
+    position: "absolute",
+    left: 9,
+    top: 9,
+    zIndex: 10,
+    background: theme.colors.primary.mainColor,
+    color: theme.colors.primary.white,
+    borderRadius: 10,
+    fontSize: theme.fonts.size.fontSizeXXS.fontSize,
+    padding: "2px 16px",
+  },
+
+  addToShortListBadge: {
+    position: "absolute",
+    left: 9,
+    top: 9,
+    zIndex: 10,
+    background: theme.colors.primary.mainColor,
+    color: theme.colors.primary.white,
+    borderRadius: 10,
+    fontSize: theme.fonts.size.fontSizeXXS.fontSize,
+    padding: "2px 16px",
+    opacity: 0,
+    cursor: "pointer",
+  },
+
+  showAddToShortListBadge: {
+    opacity: 1,
   },
 
   officeGeneralInfo: {
@@ -130,26 +162,24 @@ const OfficeListItem = ({
   office,
   noMoreInfo,
   goDetail,
+  addToShortList,
+  isShortListed = false,
+  width,
 }) => {
   const [dialog, setDialog] = React.useState(null);
+  const [addBadgeStatus, setAddBadgeStatus] = useState(false);
 
   const handleCloseDialog = () => setDialog(null);
 
   const handleAddToShortList = (e) => {
     e.stopPropagation();
-    // setDialog(
-    //   <ContactInfoDialog
-    //     title={t('contactInfo')}
-    //     contact={{
-    //       username: 'Name Family',
-    //       type: 'Consultant',
-    //       phoneNumber: '(123) 123-4567',
-    //       email: 'consultantname@domainanme.com',
-    //     }}
-    //     onClose={handleCloseDialog}
-    //   />,
-    // );
+    addToShortList(office);
   };
+
+  const handleVisitRequest = (e) => {
+    e.stopPropagation();
+    // TODO: Handle visit request
+  }
 
   /** Share office */
   const handleShare = () => {
@@ -163,6 +193,10 @@ const OfficeListItem = ({
 
   const handleRemove = () => {
     // TODO: Handle remove
+  };
+
+  const onHover = (status) => {
+    setAddBadgeStatus(status);
   };
 
   const officeStatus = getOfficeStatus(office);
@@ -180,7 +214,21 @@ const OfficeListItem = ({
 
   return (
     <Row classes={{ box: s.officeWrapper }} wrap alignChildrenStretch>
-      <Box classes={{ box: s.officeCarousel }}>
+      <Box
+        classes={{ box: s.officeCarousel }}
+        onMouseEnter={() => onHover(true)}
+        onMouseLeave={() => onHover(false)}
+      >
+        {isShortListed && (
+          <div className={s.shortListedBadge}>
+            {t("wantToVisit")}
+          </div>
+        )}
+        {!isShortListed && (
+          <div className={clsx(s.addToShortListBadge, addBadgeStatus && s.showAddToShortListBadge)} onClick={handleAddToShortList}>
+            {t("addToShortList")}
+          </div>
+        )}
         {/** office images */}
         <div style={{ width: '100%', height: '100%' }}>
           {office.coverPhotos && (
@@ -310,11 +358,23 @@ const OfficeListItem = ({
             </Box>
           </Row>
 
-          <Box paddingTopHalf />
-          <Button variant="white" background="primary" onClick={handleAddToShortList} shadow>
-            <AddIcon />
-            <Typography paddingLeft fontSizeS fontWeightBold>{t('addToShortList')}</Typography>
-          </Button>
+          {!isWidthDown("sm", width) && (
+            <>
+              <Box paddingTopHalf />
+              {!isShortListed && (
+                <Button variant="white" background="primary" onClick={handleAddToShortList} shadow>
+                  <AddIcon />
+                  <Typography paddingLeft fontSizeS fontWeightBold>{t('addToShortList')}</Typography>
+                </Button>
+              )}
+              {isShortListed && (
+                <Button variant="white" background="primary" onClick={handleVisitRequest} shadow>
+                  <AddIcon />
+                  <Typography paddingLeft fontSizeS fontWeightBold>{t('wantToVisit')}</Typography>
+                </Button>
+              )}
+            </>
+          )}
         </Column>
       )}
 
@@ -334,6 +394,6 @@ OfficeListItem.propTypes = {
   goDetail: PropTypes.func,
 };
 
-export default withStyles(styleSheet, { name: 'OfficeListItem' })(
+export default withWidth()(withStyles(styleSheet, { name: 'OfficeListItem' })(
   withTranslation('common')(OfficeListItem),
-);
+));

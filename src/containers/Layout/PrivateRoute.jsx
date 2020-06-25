@@ -18,6 +18,8 @@ const mapDispatchToProps = (dispatch) => ({
   mappedlogout: () => dispatch(authActions.logout()),
   mappedToggleRole: (userRole, history, redirectPath) => dispatch(authActions.setUserRole(userRole, history, redirectPath)),
   mappedChangeLanguage: (language) => dispatch(appActions.changeLanguage(language)),
+  mappedShowBottomShortList: (visible) => dispatch(appActions.showBottomShortList(visible)),
+  mappedSetOfficeShortList: (list) => dispatch(appActions.setOfficeShortList(list)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(PrivateRoute);

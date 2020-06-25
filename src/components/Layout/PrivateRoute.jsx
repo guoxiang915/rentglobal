@@ -4,7 +4,7 @@ import PropTypes from "prop-types";
 import clsx from "clsx";
 import { withStyles } from "@material-ui/core";
 import Auth from "../../utils/auth";
-import { AppHeader, AppFooter, AppSidebar, HelpDialog } from ".";
+import { AppHeader, AppFooter, AppSidebar, BottomShortListPanel, HelpDialog } from ".";
 import { Column, SplashScreen } from "../../common/base-components";
 import { WelcomeRoleDialog, LandlordDialog } from "./Dialogs";
 import SendVerificationForm from "../Auth/SendVerificationForm";
@@ -312,6 +312,7 @@ class PrivateRoute extends React.Component {
       userRole: requiredRole = "",
       ...rest
     } = this.props;
+    const { showBottomShortList, shortList } = this.props.app;
     const { isLoggedIn, user, userRole, loaded } = this.props.auth;
     const { dialog } = this.state;
 
@@ -418,6 +419,16 @@ class PrivateRoute extends React.Component {
                         <div className={classes.footerWrapper}>
                           <AppFooter className={classes.footerWrapper} />
                         </div>
+                      )}
+                      {shortList.length > 0 && (
+                        <BottomShortListPanel
+                          shortList={shortList}
+                          showBottomShortList={showBottomShortList}
+                          setOfficeShortList={this.props.mappedSetOfficeShortList}
+                          onShowBottomShortList={
+                            () => this.props.mappedShowBottomShortList(!showBottomShortList)
+                          } 
+                        />
                       )}
                     </StickyContainer>
                   </div>

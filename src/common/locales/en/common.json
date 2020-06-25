@@ -632,5 +632,8 @@
   "startup": "Startup",
   "joined": "Joined",
   "verified": "Verified",
-  "see": "See"
+  "see": "See",
+  "wantToVisit": "I want to visit",
+  "shortList": "Short list",
+  "justOneMoreLeft": "Just one more left"
 }

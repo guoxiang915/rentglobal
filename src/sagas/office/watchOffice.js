@@ -14,7 +14,6 @@ const sendRequest = async (office) => {
 
 function* createOffice(action) {
   try {
-    console.log(action);
     const response = yield call(sendRequest, action.office);
     // let response = await api.post('/offices/', action.office);
     if (response.status === 200) {

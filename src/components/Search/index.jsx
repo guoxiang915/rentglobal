@@ -283,7 +283,6 @@ const Searchbox = ({
 };
 
 const OfficeTypeFilterPanel = ({ classes: s, t, types, onApply }) => {
-  console.log(types);
   const handleClickType = (type) => {
     if (!types) types = [];
     if (types.indexOf(type) !== -1) {
@@ -291,7 +290,6 @@ const OfficeTypeFilterPanel = ({ classes: s, t, types, onApply }) => {
     } else {
       types.push(type);
     }
-    console.log(types);
     onApply(types);
   };
 
