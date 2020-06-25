@@ -104,7 +104,7 @@ const styleSheet = (theme) => ({
     },
   },
 
-  deleteIcon: {
+  deleteIconButton: {
     position: "absolute",
     width: 17,
     height: 17,
@@ -113,6 +113,7 @@ const styleSheet = (theme) => ({
     [theme.breakpoints.down("sm")]: {
       left: -7,
       top: -8,
+      padding: 0,
     },
   },
 
@@ -226,7 +227,7 @@ class BottomShortListPanel extends PureComponent {
                       variant="icon"
                       link="secondary"
                       background="errorRed"
-                      classes={{ root: s.deleteIcon }}
+                      classes={{ root: s.deleteIconButton }}
                       onClick={() => this.handleRemoveFromShortList(office)}
                     >
                       <CloseIcon style={{ width: 8, height: 8, color: "white" }} />
