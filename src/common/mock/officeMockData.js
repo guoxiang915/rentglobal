@@ -264,25 +264,35 @@ export const report = {
 
 export const conditions = [
   {
-    day: "allDays",
-    startDate: new Date(2020, 3, 6),
-    endDate: new Date(2020, 9, 30),
-    startTime: new Date(0, 0, 0, 4, 30),
-    endTime: new Date(0, 0, 0, 11, 20),
-    officeFilter: "allOffices",
+    dayTypes: ["allDays"],
+    appliedDates: {
+      start: new Date(2020, 3, 6),
+      end: new Date(2020, 9, 30),
+    },
+    duration: {
+      start: new Date(0, 0, 0, 4, 30),
+      end: new Date(0, 0, 0, 11, 20),
+    },
+    officeType: "allOffices",
   },
   {
-    day: "weekends",
-    startTime: new Date(0, 0, 0, 12, 30),
-    endTime: new Date(0, 0, 0, 15, 0),
-    officeFilter: "allOffices",
+    dayTypes: ["weekends"],
+    duration: {
+      start: new Date(0, 0, 0, 12, 30),
+      end: new Date(0, 0, 0, 15, 0),
+    },
+    officeType: "allOffices",
   },
   {
-    day: "allDays",
-    startDate: new Date(2020, 5, 6),
-    startTime: new Date(0, 0, 0, 18, 0),
-    endTime: new Date(0, 0, 0, 10, 30),
-    officeFilter: "allOffices",
+    dayTypes: ["allDays"],
+    appliedDates: {
+      start: new Date(2020, 5, 6),
+    },
+    duration: {
+      start: new Date(0, 0, 0, 18, 0),
+      end: new Date(0, 0, 0, 10, 30),
+    },
+    officeType: "allOffices",
   },
 ];
 

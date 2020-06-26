@@ -15,7 +15,7 @@ import {
   ArrowRightIcon,
 } from "../../../../common/base-components";
 import { ImportCalendarSettingDialog } from "../../../Layout/Dialogs";
-import CalendarSettingForm from "../../../Layout/CalendarSettingForm";
+import CalendarWeekForm from "../../../Layout/CalendarWeekForm";
 
 const styleSheet = (theme) => ({
   root: {},
@@ -30,11 +30,9 @@ const styleSheet = (theme) => ({
     height: 13,
   },
 
-  addConditionButton: {
-    [theme.breakpoints.down("xs")]: {
-      width: "100%",
-      marginBottom: 28,
-    },
+  calendarWrapper: {
+    marginTop: 58,
+    width: "100%",
   },
 
   formButtons: {
@@ -58,32 +56,22 @@ class VisitAvailabilityForm extends PureComponent {
     t: PropTypes.func,
   };
 
-  // state = { isLoading: false, visitHours: this.props.office?.visitHours || [] };
-
   constructor(props) {
     super(props);
-    this.state = {
-      isLoading: false,
-      // visitHours: props.office?.visitHours || [],
-      visitHours: [],
-      newCondition: null,
-    };
-    // const visitHours = props.office?.visitHours;
-    // if (visitHours) {
-    //   Object.values(visitHours).forEach((day) => {
-    //     day.forEach((v) => {
-    //       v.start = new Date(0, 0, 0, Number(v.start), 60 * (v.start % 1));
-    //       v.end = new Date(0, 0, 0, Number(v.end), 60 * (v.end % 1));
-    //     });
-    //   });
-    //   this.state.visitHours = visitHours;
-    // }
+    this.state = { isLoading: false, visitHours: {} };
+    const visitHours = props.office?.visitHours;
+    if (visitHours) {
+      Object.values(visitHours).forEach((day) => {
+        day.forEach((v) => {
+          v.start = new Date(0, 0, 0, Number(v.start), 60 * (v.start % 1));
+          v.end = new Date(0, 0, 0, Number(v.end), 60 * (v.end % 1));
+        });
+      });
+      this.state.visitHours = visitHours;
+    }
   }
 
-  /** Return visit hrs with promise */
-  handleReturnVisitHours = () => {
-    return Promise.resolve({ status: 200, data: this.state.visitHours });
-  };
+  state = { isLoading: false, visitHours: this.props.office?.visitHours || [] };
 
   /**
    * Update state
@@ -120,51 +108,16 @@ class VisitAvailabilityForm extends PureComponent {
     });
   };
 
-  handleAddCondition = () => this.setState({ newCondition: {} });
-
-  handleSaveNewCondition = (condition) => {
-    let { visitHours } = this.state;
-    if (visitHours.indexOf(condition) !== -1) {
-      visitHours[visitHours.indexOf(condition)] = { ...condition };
-      this.setState({
-        visitHours: [...visitHours],
-        newCondition: null,
-      });
-    } else {
-      this.setState({
-        visitHours: [...visitHours, condition],
-        newCondition: null,
-      });
-    }
-
-    return Promise.resolve({ status: 200, data: visitHours });
-  };
-
-  handleCancelNewCondition = () => {
-    this.setState({ newCondition: null });
-  };
-
-  handleEditCondition = (condition) => {
-    this.setState({ newCondition: condition });
-  };
-
-  handleDeleteCondition = (condition) => {
-    const { visitHours } = this.state;
-    visitHours.splice(visitHours.indexOf(condition), 1);
-    this.setState({ visitHours: [...visitHours] });
-    return Promise.resolve({ status: 200, data: visitHours });
-  };
-
   /** Save visit-hours */
   handleNext = () => {
     if (this.props.onNext) {
       const visitHours = { ...this.state.visitHours };
-      // Object.values(visitHours).forEach((day) => {
-      //   day.forEach((v) => {
-      //     v.start = v.start.getHours() + (1 / 60.0) * v.start.getMinutes();
-      //     v.end = v.end.getHours() + (1 / 60.0) * v.end.getMinutes();
-      //   });
-      // });
+      Object.values(visitHours).forEach((day) => {
+        day.forEach((v) => {
+          v.start = v.start.getHours() + (1 / 60.0) * v.start.getMinutes();
+          v.end = v.end.getHours() + (1 / 60.0) * v.end.getMinutes();
+        });
+      });
       this.props.onNext(visitHours);
     }
   };
@@ -173,16 +126,8 @@ class VisitAvailabilityForm extends PureComponent {
    * Renderer function
    */
   render() {
-    const {
-      classes: s,
-      t,
-      width,
-      onCancel,
-      onNext,
-      isLoading,
-      office,
-    } = this.props;
-    const { newCondition, dialog } = this.state;
+    const { classes: s, t, width, onCancel, onNext, isLoading } = this.props;
+    const { visitHours, dialog } = this.state;
 
     return (
       <Column classes={{ box: s.root }} fullWidth alignChildrenStart>
@@ -202,32 +147,12 @@ class VisitAvailabilityForm extends PureComponent {
           </Button>
         </Row>
 
-        <Row
-          paddingTopDouble={!isWidthDown("xs", width)}
-          paddingTop={isWidthDown("xs", width)}
-          alignChildrenCenter
-          fullWidth
-          justifyChildrenEnd
-        >
-          {!newCondition && (
-            <Button
-              onClick={this.handleAddCondition}
-              className={s.addConditionButton}
-            >
-              {t("addAvailability")}
-            </Button>
-          )}
-        </Row>
-
-        <CalendarSettingForm
-          office={office}
-          newCondition={newCondition}
-          getConditions={this.handleReturnVisitHours}
-          onSave={this.handleSaveNewCondition}
-          onCancel={this.handleCancelNewCondition}
-          onEdit={this.handleEditCondition}
-          onDelete={this.handleDeleteCondition}
-        />
+        <div className={s.calendarWrapper}>
+          <CalendarWeekForm
+            visitHours={visitHours}
+            onChange={this.handleChangeVisitHours}
+          />
+        </div>
 
         {/** Show form buttons */}
         {(onCancel || onNext) && (
