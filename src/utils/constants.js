@@ -258,6 +258,9 @@ const notificationTypes = {
   VISIT_REQUEST_CHANGE: "visitRequestChange",
 };
 
+/** Calendar settings */
+const dayTypes = ["allDays", "businessDays", "weekends"];
+
 export {
   API,
   officeTypes,
@@ -274,4 +277,5 @@ export {
   reviewSortOptions,
   notificationTypes,
   searchSortOptions,
+  dayTypes,
 };

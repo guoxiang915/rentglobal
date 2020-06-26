@@ -2,7 +2,7 @@ import React, { PureComponent } from "react";
 import { withStyles } from "@material-ui/core/styles";
 import { withRouter } from "react-router-dom";
 import { withTranslation } from "react-i18next";
-import withWidth from "@material-ui/core/withWidth";
+import withWidth, { isWidthDown } from "@material-ui/core/withWidth";
 import PropTypes from "prop-types";
 import clsx from "clsx";
 import {
@@ -20,13 +20,15 @@ import {
   EditIcon,
   DeleteIcon,
   CloseIcon,
-  CheckIcon
+  CheckIcon,
+  HorizontalDivider,
 } from "../../../common/base-components";
+import { TabWrapper } from "../../../common/base-layouts";
 import {
-  getGeneralConditionsOfCalendar
-  // addConditionOfCalendar,
-  // updateConditionOfCalendar,
-  // deleteConditionOfCalendar
+  getLandlordCalendarSettings as getCalendarSettings,
+  addLandlordCalendarSetting as addCalendarSetting,
+  updateLandlordCalendarSetting as updateCalendarSetting,
+  deleteLandlordCalendarSetting as deleteCalendarSetting,
 } from "../../../api/endpoints";
 import {
   Table,
@@ -35,24 +37,42 @@ import {
   TableRow,
   TableCell,
   TableBody,
-  TablePagination
+  TablePagination,
 } from "@material-ui/core";
+import { conditions as conditionsMockData } from "../../../common/mock/officeMockData";
 
 import MomentUtils from "@date-io/moment";
 import {
   MuiPickersUtilsProvider,
   DatePicker,
-  TimePicker
+  TimePicker,
 } from "@material-ui/pickers";
 import { formatDate, formatHrMin } from "../../../utils/formatters";
+import { dayTypes, officeTypes } from "../../../utils/constants";
 
-const styleSheet = theme => ({
+const styleSheet = (theme) => ({
   root: {},
+
+  addConditionButton: {
+    [theme.breakpoints.down("xs")]: {
+      width: "100%",
+      marginBottom: 28,
+    },
+  },
+
+  newConditionWrapper: {
+    paddingTop: 40,
+    paddingBottom: 20,
+    [theme.breakpoints.down("xs")]: {
+      paddingTop: 16,
+      paddingBottom: 16,
+    },
+  },
 
   conditionDays: {
     width: 150,
     height: 34,
-    marginRight: 12
+    marginRight: 12,
   },
 
   datePicker: {
@@ -63,20 +83,30 @@ const styleSheet = theme => ({
     color: theme.colors.primary.darkGrey,
     "& input": {
       padding: 8,
-      ...theme.fonts.size.fontSizeXS
-    }
+      ...theme.fonts.size.fontSizeXS,
+    },
+    [theme.breakpoints.down("xs")]: {
+      width: "100%",
+      height: 47,
+    },
   },
 
   leftPicker: {
     borderBottomRightRadius: 0,
     borderTopRightRadius: 0,
-    borderRight: "none"
+    borderRight: "none",
+    "& > .MuiOutlinedInput-notchedOutline": {
+      borderRight: "none !important",
+    },
   },
 
   rightPicker: {
     borderBottomLeftRadius: 0,
     borderTopLeftRadius: 0,
-    borderLeft: "none"
+    borderLeft: "none",
+    "& > .MuiOutlinedInput-notchedOutline": {
+      borderLeft: "none !important",
+    },
   },
 
   timePicker: {
@@ -86,46 +116,54 @@ const styleSheet = theme => ({
     border: theme.colors.primary.borderGrey,
     color: theme.colors.primary.darkGrey,
     "& input": {
-      ...theme.fonts.size.fontSizeXS
-    }
+      ...theme.fonts.size.fontSizeXS,
+    },
+    [theme.breakpoints.down("xs")]: {
+      width: "100%",
+      marginBottom: 16,
+    },
   },
 
-  officeFilter: {
+  officeType: {
     height: 34,
     width: 240,
     [theme.breakpoints.down("xs")]: {
-      width: "auto"
-    }
+      height: 47,
+      width: "100%",
+    },
   },
 
   conditionsPanel: {
     background: theme.colors.primary.white,
     borderRadius: 8,
     marginTop: 35,
-    padding: "20px 30px"
+    padding: "20px 30px",
+    [theme.breakpoints.down("xs")]: {
+      padding: 0,
+    },
   },
 
   conditionsTable: {
-    width: "100%"
+    width: "100%",
   },
 
   tableHead: {
     "&> th": {
       color: theme.colors.primary.darkGrey,
-      fontWeight: "normal"
-    }
+      fontWeight: "normal",
+    },
   },
 
   tableBody: {
     "&> td": {
-      color: theme.colors.primary.grey
-    }
+      color: theme.colors.primary.grey,
+    },
   },
 
   tablePagination: {
     width: "100%",
-    color: theme.colors.primary.grey
-  }
+    color: theme.colors.primary.grey,
+  },
 });
 
 class CalendarSetting extends PureComponent {
@@ -133,7 +171,7 @@ class CalendarSetting extends PureComponent {
     navigate: PropTypes.func,
 
     classes: PropTypes.object,
-    t: PropTypes.func
+    t: PropTypes.func,
   };
 
   state = {
@@ -141,20 +179,28 @@ class CalendarSetting extends PureComponent {
     newCondition: null,
     page: 0,
     rowsPerPage: 5,
-    dialog: null
+    dialog: null,
   };
-
-  officeFilterOptions = ["allOffices"];
 
   getConditions = () => {
     const params = {
       page: this.state.page,
-      limit: this.state.rowsPerPage
+      limit: this.state.rowsPerPage,
     };
-    if (getGeneralConditionsOfCalendar) {
-      getGeneralConditionsOfCalendar(params).then(response => {
+    if (getCalendarSettings) {
+      getCalendarSettings(params).then((response) => {
         if (response.status === 200) {
-          this.setState({ conditions: response.data });
+          this.setState({
+            conditions: response.data.map((c) => ({
+              id: c.id,
+              officeType: c.officeType,
+              dayTypes: c.dayTypes?.[0],
+              startTime: c.duration ? new Date(c.duration.start) : "",
+              endTime: c.duration ? new Date(c.duration.end) : "",
+              startDate: c.appliedDates ? new Date(c.appliedDates.start) : "",
+              endDate: c.appliedDates ? new Date(c.appliedDates.end) : "",
+            })),
+          });
         }
       });
     }
@@ -166,82 +212,77 @@ class CalendarSetting extends PureComponent {
 
   handleAddCondition = () => this.setState({ newCondition: {} });
 
-  handleChangeConditionDay = day => () =>
-    this.setState(state => ({ newCondition: { ...state.newCondition, day } }));
-
-  handleChangeStartDate = startDate =>
-    this.setState(state => ({
-      newCondition: { ...state.newCondition, startDate }
+  handleChangeConditionField = (field) => (value) =>
+    this.setState((state) => ({
+      newCondition: { ...state.newCondition, [field]: value },
     }));
 
-  handleChangeEndDate = endDate =>
-    this.setState(state => ({
-      newCondition: { ...state.newCondition, endDate }
-    }));
-
-  handleChangeStartTime = startTime =>
-    this.setState(state => ({
-      newCondition: { ...state.newCondition, startTime }
-    }));
-
-  handleChangeEndTime = endTime =>
-    this.setState(state => ({
-      newCondition: { ...state.newCondition, endTime }
-    }));
-
-  handleChangeOfficeFilter = e => {
-    this.setState(state => ({
-      newCondition: { ...state.newCondition, officeFilter: e.target.value }
+  handleChangeOfficeType = (e) => {
+    this.setState((state) => ({
+      newCondition: { ...state.newCondition, officeType: e.target.value },
     }));
   };
 
   handleSaveNewCondition = () => {
-    // const saver = null;
-    // if (state.newCondition.id) {
-    //   saver = updateConditionOfCalendar(
-    //     state.newCondition.id,
-    //     state.newCondition
-    //   );
+    this.setState((state) => {
+      const condition = {
+        id: state.newCondition.id,
+        officeType: state.newCondition.officeType,
+        dayTypes: [state.newCondition.dayTypes],
+        duration: {
+          start: new Date(state.newCondition.startTime).getTime(),
+          end: new Date(state.newCondition.endTime).getTime(),
+        },
+        appliedDates: {
+          start: new Date(state.newCondition.startDate).getTime(),
+          end: new Date(state.newCondition.endDate).getTime(),
+        },
+      };
+      let saver = null;
+
+      if (condition.id) {
+        saver = updateCalendarSetting(condition.id, condition);
+      } else {
+        saver = addCalendarSetting(condition);
+      }
+      if (saver) {
+        saver.then((res) => {
+          if (res.status === 200) {
+            this.setState({ newCondition: null, page: 0 }, () => {
+              this.getConditions();
+            });
+          }
+        });
+      }
+    });
+    // let { conditions, newCondition } = this.state;
+    // if (conditions.indexOf(newCondition) !== -1) {
+    //   conditions[conditions.indexOf(newCondition)] = { ...newCondition };
+    //   this.setState({
+    //     conditions: [...conditions],
+    //     newCondition: null,
+    //   });
     // } else {
-    //   saver = addConditionOfCalendar(state.newCondition);
-    // }
-    // if (saver) {
-    //   saver.then(res => {
-    //     if (res.status === 200) {
-    //       this.setState({ newCondition: null, page: 0 }, () => {
-    //         this.getConditions();
-    //       });
-    //     }
+    //   this.setState({
+    //     conditions: [...conditions, newCondition],
+    //     newCondition: null,
     //   });
     // }
-    let { conditions, newCondition } = this.state;
-    if (conditions.indexOf(newCondition) !== -1) {
-      conditions[conditions.indexOf(newCondition)] = { ...newCondition };
-      this.setState({
-        conditions: [...conditions],
-        newCondition: null
-      });
-    } else {
-      this.setState({
-        conditions: [...conditions, newCondition],
-        newCondition: null
-      });
-    }
   };
 
   handleChangePage = (event, newPage) => {
     this.setState({ page: newPage });
   };
 
-  handleChangeRowsPerPage = event => {
+  handleChangeRowsPerPage = (event) => {
     this.setState({ rowsPerPage: parseInt(event.target.value, 10), page: 0 });
   };
 
-  handleEditCondition = condition => () => {
+  handleEditCondition = (condition) => () => {
     this.setState({
       dialog: (
         <ConfirmDialog
-          variant="primary"
+          variant='primary'
           text={this.props.t("confirmEdit")}
           closeLabel={
             <React.Fragment>
@@ -258,15 +299,15 @@ class CalendarSetting extends PureComponent {
           onConfirm={this.editCondition(condition)}
           onClose={this.handleCloseCondition}
         />
-      )
+      ),
     });
   };
 
-  handleDeleteCondition = condition => () => {
+  handleDeleteCondition = (condition) => () => {
     this.setState({
       dialog: (
         <ConfirmDialog
-          variant="error"
+          variant='error'
           text={this.props.t("confirmDelete")}
           closeLabel={
             <React.Fragment>
@@ -283,27 +324,29 @@ class CalendarSetting extends PureComponent {
           onConfirm={this.deleteCondition(condition)}
           onClose={this.handleCloseCondition}
         />
-      )
+      ),
     });
   };
 
-  editCondition = condition => () => {
+  editCondition = (condition) => () => {
     this.setState({ dialog: null });
     this.setState({ newCondition: condition });
   };
 
-  deleteCondition = condition => () => {
-    this.setState({ dialog: null });
-    // deleteConditionOfCalendar(condition).then(res => {
-    //   if (res.status === 200) {
-    //     this.setState({ page: 0 }, () => {
-    //       this.getConditions();
-    //     });
-    //   }
-    // });
-    const { conditions } = this.state;
-    conditions.splice(conditions.indexOf(condition), 1);
-    this.setState({ conditions: [...conditions] });
+  deleteCondition = (condition) => () => {
+    if (condition.id) {
+      this.setState({ dialog: null });
+      deleteCalendarSetting(condition.id).then((res) => {
+        if (res.status === 200) {
+          this.setState({ page: 0 }, () => {
+            this.getConditions();
+          });
+        }
+      });
+    }
+    // const { conditions } = this.state;
+    // conditions.splice(conditions.indexOf(condition), 1);
+    // this.setState({ conditions: [...conditions] });
   };
 
   handleCloseCondition = () => this.setState({ dialog: null });
@@ -312,7 +355,7 @@ class CalendarSetting extends PureComponent {
    * Renderer function
    */
   render() {
-    const { classes: s, t } = this.props;
+    const { classes: s, t, width } = this.props;
     const { conditions, newCondition, page, rowsPerPage, dialog } = this.state;
 
     return (
@@ -323,122 +366,197 @@ class CalendarSetting extends PureComponent {
               {t("calendarSettingHelp")}
             </Typography>
 
-            <Row paddingTopDouble alignChildrenCenter fullWidth>
+            <Row
+              paddingTopDouble={!isWidthDown("xs", width)}
+              paddingTop={isWidthDown("xs", width)}
+              alignChildrenCenter
+              fullWidth
+              rowReverse
+              wrap
+              justifyChildrenEnd
+            >
+              {!newCondition && (
+                <Button
+                  onClick={this.handleAddCondition}
+                  className={s.addConditionButton}
+                >
+                  {t("addAvailability")}
+                </Button>
+              )}
+              <Stretch />
               <Typography fontSizeM textSecondary>
                 {t("generalConditions")}
               </Typography>
-              <Stretch />
-              {!newCondition && (
-                <Button onClick={this.handleAddCondition}>
-                  {t("addACondition")}
-                </Button>
-              )}
             </Row>
 
             {newCondition && (
-              <Column style={{ paddingTop: 40, paddingBottom: 20 }} fullWidth>
-                <Row fullWidth alignChildrenCenter>
-                  {["allDays", "businessDays", "weekends"].map((day, index) => (
-                    <React.Fragment key={index}>
-                      <Checkbox
-                        variant="outlined"
-                        label={t(day)}
-                        classes={{ root: s.conditionDays }}
-                        isChecked={newCondition.day === day}
-                        onChange={this.handleChangeConditionDay(day)}
-                      />
-                    </React.Fragment>
-                  ))}
-                  <Stretch />
-                  <DatePicker
-                    value={newCondition.startDate || null}
-                    onChange={this.handleChangeStartDate}
-                    TextFieldComponent={({ InputProps, ...props }) => (
-                      <TextField
-                        {...props}
-                        variant="outlined"
-                        classes={{ root: clsx(s.datePicker, s.leftPicker) }}
-                        startAdornment={
-                          <Typography fontSizeXS textSecondary>
-                            {t("from")}
-                          </Typography>
-                        }
-                        placeholder="MM/DD"
-                      />
+              <Column
+                classes={{ box: s.newConditionWrapper }}
+                fullWidth
+                alignChildrenStart
+              >
+                <Row fullWidth>
+                  <Select
+                    options={["", ...officeTypes]}
+                    renderOption={(item) => (
+                      <Typography fontSizeXS textSecondary>
+                        {!item
+                          ? t("allOffices")
+                          : typeof item === "object"
+                          ? t(...item)
+                          : t(item)}
+                      </Typography>
                     )}
-                    format={"MM/DD"}
-                  />
-                  <DatePicker
-                    value={newCondition.endDate || null}
-                    onChange={this.handleChangeEndDate}
-                    TextFieldComponent={({ InputProps, ...props }) => (
-                      <TextField
-                        {...props}
-                        variant="outlined"
-                        classes={{ root: clsx(s.datePicker, s.rightPicker) }}
-                        startAdornment={
-                          <Typography fontSizeXS textSecondary>
-                            {t("to")}
-                          </Typography>
-                        }
-                        placeholder="MM/DD"
-                      />
-                    )}
-                    format={"MM/DD"}
+                    displayEmpty
+                    value={newCondition.officeType}
+                    onChange={this.handleChangeOfficeType}
+                    className={s.officeType}
                   />
                 </Row>
-                <Row paddingTopDouble fullWidth>
-                  <Column alignChildrenStart>
-                    <Typography fontSizeXS textSecondary>
-                      {t("chooseTimeDuration")}
-                    </Typography>
-                    <Row paddingTop>
-                      <TimePicker
-                        value={newCondition.startTime || null}
-                        onChange={this.handleChangeStartTime}
+                <Row fullWidth alignChildrenCenter paddingTopDouble wrap>
+                  {dayTypes.map((day, index) => (
+                    <React.Fragment key={index}>
+                      <Box paddingBottom>
+                        <Checkbox
+                          variant='outlined'
+                          label={t(day)}
+                          classes={{ root: s.conditionDays }}
+                          isChecked={newCondition.dayTypes === day}
+                          onChange={() =>
+                            this.handleChangeConditionField("dayTypes")(day)
+                          }
+                        />
+                      </Box>
+                    </React.Fragment>
+                  ))}
+                </Row>
+                {isWidthDown("xs", width) && (
+                  <Column fullWidth paddingTop paddingBottom>
+                    <HorizontalDivider text={t("OR")} light />
+                    <Row fullWidth paddingTop>
+                      <DatePicker
+                        value={newCondition.startDate || null}
+                        onChange={this.handleChangeConditionField("startDate")}
                         TextFieldComponent={({ InputProps, ...props }) => (
                           <TextField
                             {...props}
-                            variant="outlined"
-                            classes={{ root: clsx(s.timePicker) }}
+                            variant='outlined'
+                            classes={{ root: clsx(s.datePicker, s.leftPicker) }}
+                            startAdornment={
+                              <Typography fontSizeXS textSecondary>
+                                {t("from")}
+                              </Typography>
+                            }
+                            placeholder='MM/DD'
                           />
                         )}
+                        format={"MM/DD"}
                       />
-                      <Box paddingLeftDouble />
-                      <TimePicker
-                        value={newCondition.endTime || null}
-                        onChange={this.handleChangeEndTime}
+                      <DatePicker
+                        value={newCondition.endDate || null}
+                        onChange={this.handleChangeConditionField("endDate")}
                         TextFieldComponent={({ InputProps, ...props }) => (
                           <TextField
                             {...props}
-                            variant="outlined"
-                            classes={{ root: clsx(s.timePicker) }}
+                            variant='outlined'
+                            classes={{
+                              root: clsx(s.datePicker, s.rightPicker),
+                            }}
+                            startAdornment={
+                              <Typography fontSizeXS textSecondary>
+                                {t("to")}
+                              </Typography>
+                            }
+                            placeholder='MM/DD'
                           />
                         )}
+                        format={"MM/DD"}
                       />
                     </Row>
                   </Column>
-                  <Stretch />
-                  <Column alignChildrenStart>
-                    <Typography fontSizeXS textSecondary>
-                      {t("offices")}
-                    </Typography>
-                    <Box paddingTop>
-                      <Select
-                        options={this.officeFilterOptions}
-                        renderOption={item => (
-                          <Typography fontSizeXS textSecondary>
-                            {t(item)}
-                          </Typography>
-                        )}
-                        displayEmpty
-                        value={newCondition.officeFilter}
-                        onChange={this.handleChangeOfficeFilter}
-                        className={s.officeFilter}
+                )}
+                <Typography fontSizeXS textSecondary paddingTop>
+                  {t("chooseTimeDuration")}
+                </Typography>
+                <Row paddingTop fullWidth wrap>
+                  <TimePicker
+                    value={newCondition.startTime || null}
+                    onChange={this.handleChangeConditionField("startTime")}
+                    TextFieldComponent={({ InputProps, ...props }) => (
+                      <TextField
+                        {...props}
+                        variant='outlined'
+                        classes={{ root: clsx(s.timePicker) }}
                       />
-                    </Box>
-                  </Column>
+                    )}
+                  />
+                  <Box paddingLeftDouble />
+                  <TimePicker
+                    value={newCondition.endTime || null}
+                    onChange={this.handleChangeConditionField("endTime")}
+                    TextFieldComponent={({ InputProps, ...props }) => (
+                      <TextField
+                        {...props}
+                        variant='outlined'
+                        classes={{ root: clsx(s.timePicker) }}
+                      />
+                    )}
+                  />
                 </Row>
+                {!isWidthDown("xs", width) && (
+                  <Row fullWidth paddingTopDouble>
+                    <TabWrapper
+                      title={t("visitAvailabilityApplyToDateDuration")}
+                      open
+                      insideOpen
+                    >
+                      <Row fullWidth paddingTopHalf>
+                        <DatePicker
+                          value={newCondition.startDate || null}
+                          onChange={this.handleChangeConditionField(
+                            "startDate"
+                          )}
+                          TextFieldComponent={({ InputProps, ...props }) => (
+                            <TextField
+                              {...props}
+                              variant='outlined'
+                              classes={{
+                                root: clsx(s.datePicker, s.leftPicker),
+                              }}
+                              startAdornment={
+                                <Typography fontSizeXS textSecondary>
+                                  {t("from")}
+                                </Typography>
+                              }
+                              placeholder='MM/DD'
+                            />
+                          )}
+                          format={"MM/DD"}
+                        />
+                        <DatePicker
+                          value={newCondition.endDate || null}
+                          onChange={this.handleChangeConditionField("endDate")}
+                          TextFieldComponent={({ InputProps, ...props }) => (
+                            <TextField
+                              {...props}
+                              variant='outlined'
+                              classes={{
+                                root: clsx(s.datePicker, s.rightPicker),
+                              }}
+                              startAdornment={
+                                <Typography fontSizeXS textSecondary>
+                                  {t("to")}
+                                </Typography>
+                              }
+                              placeholder='MM/DD'
+                            />
+                          )}
+                          format={"MM/DD"}
+                        />
+                      </Row>
+                    </TabWrapper>
+                  </Row>
+                )}
                 <Row fullWidth paddingTopDouble justifyChildrenEnd>
                   <Button onClick={this.handleSaveNewCondition}>
                     {t("save")}
@@ -447,55 +565,93 @@ class CalendarSetting extends PureComponent {
               </Column>
             )}
 
-            {conditions?.length ? (
+            {conditionsMockData?.length ? (
               <Column fullWidth classes={{ box: s.conditionsPanel }}>
-                <TableContainer component="div">
+                <TableContainer component='div'>
                   <Table
                     className={s.conditionsTable}
-                    aria-label="simple table"
+                    aria-label='simple table'
                   >
                     <TableHead>
                       <TableRow className={s.tableHead}>
-                        <TableCell>Day</TableCell>
-                        <TableCell>Time</TableCell>
-                        <TableCell>Office</TableCell>
-                        <TableCell>Actions</TableCell>
+                        {isWidthDown("xs", width) ? (
+                          <TableCell>
+                            {[t("day"), t("time"), t("office")].join("/")}
+                          </TableCell>
+                        ) : (
+                          <>
+                            <TableCell>{t("day")}</TableCell>
+                            <TableCell>{t("time")}</TableCell>
+                            <TableCell>{t("office")}</TableCell>
+                          </>
+                        )}
+                        <TableCell>{t("actions")}</TableCell>
                       </TableRow>
                     </TableHead>
                     <TableBody>
-                      {conditions.map((c, index) => (
+                      {conditionsMockData.map((c, index) => (
                         <TableRow key={index} className={s.tableBody}>
-                          <TableCell>
-                            {c.startDate || c.endDate
-                              ? [
-                                c.startDate ? formatDate(c.startDate) : "",
-                                c.endDate ? formatDate(c.endDate) : ""
-                              ].join(" - ")
-                              : t(c.day)}
-                          </TableCell>
-                          <TableCell>
-                            {[
-                              c.startTime ? formatHrMin(c.startTime) : "",
-                              c.endTime ? formatHrMin(c.endTime) : ""
-                            ].join(" - ")}
-                          </TableCell>
-                          <TableCell>{t(c.officeFilter)}</TableCell>
+                          {isWidthDown("xs", width) ? (
+                            <TableCell>
+                              <Column alignChildrenStart>
+                                <Typography fontSizeXS textSecondary>
+                                  {c.startDate || c.endDate
+                                    ? [
+                                        c.startDate
+                                          ? formatDate(c.startDate)
+                                          : "",
+                                        c.endDate ? formatDate(c.endDate) : "",
+                                      ].join(" - ")
+                                    : t(c.day)}
+                                </Typography>
+                                <Typography textPrimary fontSizeXXS>
+                                  {[
+                                    c.startTime ? formatHrMin(c.startTime) : "",
+                                    c.endTime ? formatHrMin(c.endTime) : "",
+                                  ].join(" - ")}
+                                </Typography>
+                                <Typography fontSizeXXS textMediumGrey>
+                                  {t(c.officeType)}
+                                </Typography>
+                              </Column>
+                            </TableCell>
+                          ) : (
+                            <>
+                              <TableCell>
+                                {c.startDate || c.endDate
+                                  ? [
+                                      c.startDate
+                                        ? formatDate(c.startDate)
+                                        : "",
+                                      c.endDate ? formatDate(c.endDate) : "",
+                                    ].join(" - ")
+                                  : t(c.day)}
+                              </TableCell>
+                              <TableCell>
+                                {[
+                                  c.startTime ? formatHrMin(c.startTime) : "",
+                                  c.endTime ? formatHrMin(c.endTime) : "",
+                                ].join(" - ")}
+                              </TableCell>
+                              <TableCell>{t(c.officeType)}</TableCell>
+                            </>
+                          )}
                           <TableCell>
                             <Button
-                              link="primary"
-                              background="normalLight"
+                              link='primary'
+                              background='normalLight'
                               inverse
                               onClick={this.handleEditCondition(c)}
-                              variant="icon"
+                              variant='icon'
                             >
                               <EditIcon style={{ width: 20, height: 18 }} />
                             </Button>
                             <Button
-                              link="errorRedNormal"
-                              background="errorRedLight"
+                              link='errorRedNormal'
+                              background='errorRedLight'
                               inverse
                               onClick={this.handleDeleteCondition(c)}
-                              variant="icon"
+                              variant='icon'
                               style={{ marginLeft: 24 }}
                             >
                               <DeleteIcon style={{ width: 20, height: 18 }} />
@@ -508,7 +664,7 @@ class CalendarSetting extends PureComponent {
                 </TableContainer>
                 <TablePagination
                   rowsPerPageOptions={[5, 10, 25]}
-                  component="div"
+                  component='div'
                   count={conditions?.length}
                   rowsPerPage={rowsPerPage}
                   page={page}
