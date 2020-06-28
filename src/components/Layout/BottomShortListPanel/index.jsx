@@ -28,6 +28,7 @@ const styleSheet = (theme) => ({
     width: "100%",
     height: 36,
     flexGrow: 1,
+    zIndex: 1000,
 
     '&.opened': {
       height: 128,
@@ -227,7 +228,7 @@ class BottomShortListPanel extends PureComponent {
             >{t("shortList")}</Typography>
           </Row>
           {showBottomShortList && (
-            <>
+            <React.Fragment>
               <Row fullWidth classes={{ box: s.officesWrapper }}>
                 {shortList.map((office, index) => (
                   <Box key={index} classes={{ box: s.office }}>
@@ -249,13 +250,13 @@ class BottomShortListPanel extends PureComponent {
                       </Row>
                       <Row fontSizeXXS classes={{ box: s.officeTitle }}>{office.title}</Row>
                       {!isWidthDown("sm", width) && (
-                        <>
+                        <React.Fragment>
                           <Row fontSizeXXS classes={{ box: s.officeRating }}>
                             <StarIcon style={{ width: 8, height: 8, color: "#d7df23" }} />
                             3.5 {/** Rating should be calculated later */}
                           </Row>
                           <Row fontSizeXXS classes={{ box: s.officePrice }} textGrey>${office.priceMonthly} CAD/month</Row>
-                        </>
+                        </React.Fragment>
                       )}
                     </Column>
                   </Box>
@@ -275,7 +276,7 @@ class BottomShortListPanel extends PureComponent {
                   {t("nextStep")}
                 </Button>
               </Row>
-            </>
+            </React.Fragment>
           )}
         </Box>
       </div>

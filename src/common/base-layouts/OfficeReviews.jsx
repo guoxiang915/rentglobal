@@ -132,8 +132,8 @@ const ReviewPanel = withStyles(styleSheet)(
                   review.status === "approved"
                     ? "primary"
                     : review.status === "rejected"
-                    ? "error"
-                    : "secondary"
+                      ? "error"
+                      : "secondary"
                 }
                 badgeContent={
                   review.status === "approved" ? (
@@ -268,10 +268,10 @@ const ReviewPanel = withStyles(styleSheet)(
                         onChange={onChangeFeedback(review, "rating")}
                       />
                       {!isWidthDown("xs", width) && (
-                        <>
+                        <React.Fragment>
                           <Stretch />
                           <Button variant='primary'>{t("send")}</Button>
-                        </>
+                        </React.Fragment>
                       )}
                     </Row>
                     {isWidthDown("xs", width) && (

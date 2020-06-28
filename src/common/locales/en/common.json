@@ -641,5 +641,9 @@
   "two": "two",
   "three": "three",
   "four": "four",
-  "searchByNameLocation": "Search by name, location, etc."
+  "searchByNameLocation": "Search by name, location, etc.",
+  "visitingRequest": "Visiting request",
+  "sendRequests": "Send requests",
+  "visitRequestsSent": "The request have been sent successfuly",
+  "newVisitRequestHasBeenPlaced": "The new visit request have been placed on your calendar and landlords have been notified."
 }

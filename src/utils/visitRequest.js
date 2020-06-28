@@ -1,27 +1,27 @@
 class VisitRequest {
-  setCompanyVisitRequests = (visitRequests) => {
-    if (typeof localStorage !== 'undefined') localStorage.setItem('visitRequests', JSON.stringify(visitRequests));
+  setCompanyShortListedOffies = (shortListedOffices) => {
+    if (typeof localStorage !== 'undefined') localStorage.setItem('short-list', JSON.stringify(shortListedOffices));
   };
 
-  getCompanyVisitRequests = () => {
+  getCompanyShortListedOffies = () => {
     if (typeof localStorage !== 'undefined') {
-      const visitRequests = localStorage.getItem('visitRequests');
-      return visitRequests;
+      const shortListedOffices = localStorage.getItem('short-list');
+      return shortListedOffices;
     } else {
       return null;
     }
-  }
+  };
 
-  setShowVisitRequestsPanelStatus = (status) => {
+  setShowShortListPanelStatus = (status) => {
     if (typeof localStorage !== 'undefined') {
-      localStorage.setItem('showVisitRequestsPanelStatus', status);
+      localStorage.setItem('showShortListPanelStatus', status);
     }
-  }
+  };
 
-  getShowVisitRequestsPanelStatus = () => {
+  getShowShortListPanelStatus = () => {
     if (typeof localStorage !== 'undefined') {
-      const showVisitRequestsPanelStatus = localStorage.getItem('showVisitRequestsPanelStatus') || false;
-      return showVisitRequestsPanelStatus;
+      const showShortListPanelStatus = localStorage.getItem('showShortListPanelStatus') || false;
+      return showShortListPanelStatus;
     } else {
       return false;
     }

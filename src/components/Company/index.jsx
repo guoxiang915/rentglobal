@@ -149,6 +149,7 @@ class Company extends PureComponent {
                     <ShortList
                       navigate={this.props.navigate}
                       shortList={shortList}
+                      setOfficeShortList={this.props.mappedSetOfficeShortList}
                     />
                   )}
                 />

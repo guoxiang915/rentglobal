@@ -79,6 +79,10 @@ const styleSheet = (theme) => {
       flexWrap: 'nowrap',
     },
 
+    textNowrap: {
+      whiteSpace: "nowrap",
+    },
+
     /* size */
     fullWidth: {
       width: '100%',
@@ -112,6 +116,9 @@ const styleSheet = (theme) => {
     },
     paddingNone: {
       padding: 0,
+    },
+    paddingTopTwoDouble: {
+      paddingTop: 4 * padding,
     },
     paddingTopDouble: {
       paddingTop: 2 * padding,
@@ -163,6 +170,7 @@ const styleSheet = (theme) => {
     },
 
     /* font styles */
+    fontSizeXXXXS: { ...theme.fonts.size.fontSizeXXXXS },
     fontSizeXXXS: { ...theme.fonts.size.fontSizeXXXS },
     fontSizeXXS: { ...theme.fonts.size.fontSizeXXS },
     fontSizeXS: { ...theme.fonts.size.fontSizeXS },
@@ -237,6 +245,9 @@ const styleSheet = (theme) => {
     /* layout styles */
     noOverflow: {
       overflowY: 'hidden',
+    },
+    noOverflowX: {
+      overflowX: 'hidden',
     },
     inline: {
       display: 'inline-flex',

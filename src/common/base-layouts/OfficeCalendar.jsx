@@ -241,12 +241,12 @@ class OfficeCalendar extends React.Component {
             {t("month")}
           </Typography>
           {!isWidthDown("xs", width) && (
-            <>
+            <React.Fragment>
               <Stretch />
               <Button variant='primary' onClick={this.handleAddEvent}>
                 {t("addEvent")}
               </Button>
-            </>
+            </React.Fragment>
           )}
         </Row>
 
