@@ -55,6 +55,7 @@ import { styleSheet } from "./Search";
 import { OfficeItem } from "../../common/base-layouts";
 import { advancedSearchOffices, locationSummary } from "../../api/endpoints";
 import ServicesAmenitiesForm from "../Landlord/Office/Forms/ServicesAmenitiesForm";
+import OfficeListItem from "../Company/Office/OfficeListItem";
 
 const OFFICES_PER_PAGE = 8;
 
@@ -1349,9 +1350,16 @@ class Search extends PureComponent {
     this.setState({ page }, this.searchOffices);
   };
 
+  handleAddToShortList = (office) => {
+    const { shortList = [], setOfficeShortList } = this.props;
+    if (setOfficeShortList) {
+      setOfficeShortList([...shortList, office]);
+    }
+  };
+
   /** Render component */
   render() {
-    const { width, classes: s, t } = this.props;
+    const { width, classes: s, t, shortList = [] } = this.props;
     const {
       showOnMap,
       filters,
@@ -1364,6 +1372,8 @@ class Search extends PureComponent {
       page,
       dialog,
     } = this.state;
+
+    console.log(this.props);
     const pageCount = Math.ceil(totalLength / OFFICES_PER_PAGE);
 
     const filteredOffices = offices?.filter(
@@ -1625,6 +1635,8 @@ class Search extends PureComponent {
                                   t
                                 )}
                                 fullWidth
+                                addToShortList={this.handleAddToShortList}
+                                isShortListed={shortList.findIndex(shortListItem => shortListItem.id === office.id) >= 0}
                               />
                             </div>
                           </Grid>
@@ -1651,6 +1663,8 @@ class Search extends PureComponent {
                                       !isWidthDown("xs", width) &&
                                       !(isWidthDown("md", width) && showOnMap)
                                     }
+                                    addToShortList={this.handleAddToShortList}
+                                    isShortListed={shortList.findIndex(shortListItem => shortListItem.id === office.id) >= 0}
                                   />
                                 </Row>
                               </React.Fragment>

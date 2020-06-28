@@ -44,42 +44,6 @@ const styleSheet = (theme) => ({
     overflow: "hidden",
   },
 
-  hoverWrapper: {
-    position: "absolute",
-    width: "100%",
-    height: "100%",
-    top: 0,
-    left: 0,
-    zIndex: 1,
-    // visibility: "hidden",
-    opacity: 0,
-    "&::before": {
-      content: '" "',
-      background: `transparent linear-gradient(0deg, ${theme.colors.primary.whiteGrey}00 0%, ${theme.colors.primary.darkGrey} 100%) 0% 0% no-repeat padding-box`,
-      width: "100%",
-      height: 34,
-      position: "absolute",
-      top: 0,
-      left: 0,
-      opacity: 0.3,
-      zIndex: 1,
-    },
-    "&::after": {
-      content: '" "',
-      background: `transparent linear-gradient(180deg, ${theme.colors.primary.whiteGrey}00 0%, ${theme.colors.primary.darkGrey} 100%) 0% 0% no-repeat padding-box`,
-      width: "100%",
-      height: 34,
-      position: "absolute",
-      bottom: 0,
-      right: 0,
-      opacity: 0.3,
-      zIndex: 1,
-    },
-    "&:hover": {
-      opacity: 1,
-    },
-  },
-
   favorite: {
     position: "absolute",
     top: 8,
@@ -167,7 +131,73 @@ const styleSheet = (theme) => ({
   },
 
   dashedBuffer: {
-    background: "none",
+    background: "none"
+  },
+
+  shortListedBadge: {
+    position: "absolute",
+    left: 9,
+    top: 9,
+    zIndex: 10,
+    background: theme.colors.primary.mainColor,
+    color: theme.colors.primary.white,
+    borderRadius: 10,
+    fontSize: theme.fonts.size.fontSizeXXS.fontSize,
+    padding: "2px 16px",
+  },
+
+  addToShortListBadge: {
+    position: "absolute",
+    left: 9,
+    top: 9,
+    zIndex: 10,
+    background: theme.colors.primary.mainColor,
+    color: theme.colors.primary.white,
+    borderRadius: 10,
+    fontSize: theme.fonts.size.fontSizeXXS.fontSize,
+    padding: "2px 16px",
+    opacity: 0,
+    cursor: "pointer",
+  },
+
+  showAddToShortListBadge: {
+    opacity: 1,
+  },
+
+  hoverWrapper: {
+    position: "absolute",
+    width: "100%",
+    height: "100%",
+    top: 0,
+    left: 0,
+    zIndex: 1,
+    // visibility: "hidden",
+    opacity: 0,
+    "&::before": {
+      content: '" "',
+      background: `transparent linear-gradient(0deg, ${theme.colors.primary.whiteGrey}00 0%, ${theme.colors.primary.darkGrey} 100%) 0% 0% no-repeat padding-box`,
+      width: "100%",
+      height: 34,
+      position: "absolute",
+      top: 0,
+      left: 0,
+      opacity: 0.3,
+      zIndex: 1
+    },
+    "&::after": {
+      content: '" "',
+      background: `transparent linear-gradient(180deg, ${theme.colors.primary.whiteGrey}00 0%, ${theme.colors.primary.darkGrey} 100%) 0% 0% no-repeat padding-box`,
+      width: "100%",
+      height: 34,
+      position: "absolute",
+      bottom: 0,
+      right: 0,
+      opacity: 0.3,
+      zIndex: 1
+    },
+    "&:hover": {
+      opacity: 1
+    }
   },
 });
 
@@ -197,10 +227,13 @@ const OfficeItem = React.memo(
     fullWidth,
     width,
     className,
+    addToShortList,
+    isShortListed = false,
   }) => {
     /** Changing position of carousel */
     const [, setState] = useState();
     const [pos, setPos] = useState(0);
+    const [addBadgeStatus, setAddBadgeStatus] = useState(false);
 
     const prevImage = (e) => {
       e.stopPropagation();
@@ -228,10 +261,10 @@ const OfficeItem = React.memo(
     const dots = React.useMemo(() => {
       return office.coverPhotos
         ? office.coverPhotos.map((content, key) => (
-            <React.Fragment key={key}>
-              <Dot classes={s} />
-            </React.Fragment>
-          ))
+          <React.Fragment key={key}>
+            <Dot classes={s} />
+          </React.Fragment>
+        ))
         : [];
     }, [office, s]);
 
@@ -242,16 +275,24 @@ const OfficeItem = React.memo(
       status === "approved"
         ? null
         : status === "rejected"
-        ? "rejectedByConsultant"
-        : status === "unpublished"
-        ? "unpublished"
-        : status === "incomplete"
-        ? "mustCompleteData"
-        : null;
+          ? "rejectedByConsultant"
+          : status === "unpublished"
+            ? "unpublished"
+            : status === "incomplete"
+              ? "mustCompleteData"
+              : null;
     const progress =
       officeStatus && officeStatus.progress < 100
         ? officeStatus.progress
         : null;
+
+    const onAddToShortList = () => {
+      addToShortList(office);
+    };
+
+    const onHover = (status) => {
+      setAddBadgeStatus(status);
+    };
 
     return (
       <Box
@@ -261,7 +302,8 @@ const OfficeItem = React.memo(
         alignChildrenStart
         row={!!horizontal}
         column={!horizontal}
-        onClick={onClick}
+        onMouseEnter={() => onHover(true)}
+        onMouseLeave={() => onHover(false)}
       >
         <Box
           classes={{
@@ -269,7 +311,17 @@ const OfficeItem = React.memo(
           }}
           style={{ width: horizontal ? 235 : "100%" }}
         >
-          <div className={s.hoverWrapper}>
+          {addToShortList && isShortListed && (
+            <div className={s.shortListedBadge}>
+              {t("wantToVisit")}
+            </div>
+          )}
+          {addToShortList && !isShortListed && (
+            <div className={clsx(s.addToShortListBadge, addBadgeStatus && s.showAddToShortListBadge)} onClick={onAddToShortList}>
+              {t("addToShortList")}
+            </div>
+          )}
+          <div className={s.hoverWrapper} onClick={onClick}>
             {/** favorite icon */}
             {setFavorite ? (
               <Box classes={{ box: s.favorite }} onClick={handleSetFavorite}>
@@ -324,7 +376,7 @@ const OfficeItem = React.memo(
           </div>
 
           {/** office images */}
-          <div style={{ width: "100%", height: "100%" }}>
+          <div style={{ width: "100%", height: "100%" }} onClick={onClick}>
             {office.coverPhotos && (
               <Carousel
                 slidesPerPage={1}
@@ -369,6 +421,7 @@ const OfficeItem = React.memo(
           paddingTopHalf={!horizontal}
           paddingLeft={!!horizontal}
           alignChildrenStart
+          onClick={onClick}
         >
           {/** show office title */}
           <Row>

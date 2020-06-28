@@ -13,6 +13,7 @@ import { Storage } from "../../utils/storage";
 import HeaderImage from "../../assets/img/img_header@2x.jpg";
 import i18n from "../../i18n";
 import { StickyContainer } from "react-sticky";
+import OfficeList from "../Company/Office/OfficeList";
 
 /** Token-based auth object */
 const authObj = new Auth();
@@ -415,6 +416,8 @@ class PrivateRoute extends React.Component {
                             navigate={this.navigate}
                             {...props}
                             onToggleRole={this.handleToggleRole}
+                            setOfficeShortList={this.props.mappedSetOfficeShortList}
+                            shortList={shortList}
                           />
                         )}
                       </div>
