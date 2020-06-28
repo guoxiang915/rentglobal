@@ -253,7 +253,7 @@ class CalendarOverview extends PureComponent {
             </Column>
           )}
           {!isWidthDown("sm", width) && (
-            <>
+            <React.Fragment>
               <SearchbarWithSorter
                 query={query}
                 title={t("searchOnCalendar")}
@@ -263,7 +263,7 @@ class CalendarOverview extends PureComponent {
               <Button variant='primary' onClick={this.handleAddEvent}>
                 {t("addEvent")}
               </Button>
-            </>
+            </React.Fragment>
           )}
         </Row>
 

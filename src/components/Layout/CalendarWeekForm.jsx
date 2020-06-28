@@ -324,18 +324,18 @@ const DataCell = ({
       >
         {visitHours?.length
           ? visitHours.map((v, index) => (
-              <React.Fragment key={index}>
-                <VisitDateTime
-                  classes={s}
-                  // start={v.start}
-                  // end={v.end}
-                  // type={v.type}
-                  event={v}
-                  onEdit={onEdit ? () => onEdit(v, weekday) : null}
-                  onDelete={onDelete ? () => onDelete(v, weekday) : null}
-                  onClick={onClick ? () => onClick(v, weekday) : null}
-                  selected={
-                    selectedEvent &&
+            <React.Fragment key={index}>
+              <VisitDateTime
+                classes={s}
+                // start={v.start}
+                // end={v.end}
+                // type={v.type}
+                event={v}
+                onEdit={onEdit ? () => onEdit(v, weekday) : null}
+                onDelete={onDelete ? () => onDelete(v, weekday) : null}
+                onClick={onClick ? () => onClick(v, weekday) : null}
+                selected={
+                  selectedEvent &&
                     //  selectedEvent === v
                     new Date(selectedEvent.date).getTime() ===
                       new Date(v.date).getTime() &&
@@ -344,10 +344,10 @@ const DataCell = ({
                     new Date(selectedEvent.end).getTime() ===
                       new Date(v.end).getTime() &&
                     selectedEvent.type === v.type
-                  }
-                />
-              </React.Fragment>
-            ))
+                }
+              />
+            </React.Fragment>
+          ))
           : null}
         {onAdd && (
           <Column

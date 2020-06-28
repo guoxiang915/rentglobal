@@ -384,7 +384,7 @@ class OfficeDetail extends PureComponent {
 
             {/** Show share button */}
             {isWidthDown("xs", width) && (
-              <>
+              <React.Fragment>
                 <Button
                   link='primary'
                   background='normalLight'
@@ -396,7 +396,7 @@ class OfficeDetail extends PureComponent {
                   <Launch style={{ width: 18, height: 18 }} />
                 </Button>
                 <Box paddingLeft />
-              </>
+              </React.Fragment>
             )}
 
             {/** Show preview button */}
@@ -451,10 +451,10 @@ class OfficeDetail extends PureComponent {
                   (currentTab === "reviews"
                     ? -80
                     : currentTab === "calendar"
-                    ? -200
-                    : currentTab === "report"
-                    ? -200
-                    : 0)) ||
+                      ? -200
+                      : currentTab === "report"
+                        ? -200
+                        : 0)) ||
                 0,
               marginRight: isWidthDown("xs", width) && -27,
             }}

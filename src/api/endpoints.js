@@ -5,6 +5,7 @@ import {
   reviews as reviewsMockData,
   companyReviws as companyReviewsMockData,
   report as reportMockData,
+  conditions as conditionsMockData
 } from "../common/mock/officeMockData";
 
 /**
@@ -259,6 +260,12 @@ export const getVisitRequestsByLandlord = () =>
 export const getLandlordCalendarSettings = () => {
   return api.get(`/landlord/calendar-settings/`);
 };
+
+/**
+ * Call api to get conditions of landlord calendar
+ */
+export const getGeneralConditionsOfCalendar = () =>
+  Promise.resolve({ status: 200, data: conditionsMockData });
 
 /**
  * Call api to add new condition

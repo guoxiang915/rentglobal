@@ -28,6 +28,7 @@ const styleSheet = (theme) => ({
     width: "100%",
     height: 36,
     flexGrow: 1,
+    zIndex: 1000,
 
     "&.opened": {
       height: 128,
@@ -188,6 +189,12 @@ class BottomShortListPanel extends PureComponent {
     );
   };
 
+  handleVisitRequest = () => {
+    if (this.props.passLoginDialog()) {
+      this.props.navigate("shortlist");
+    }
+  };
+
   /** Renderer function */
   render() {
     const {
@@ -200,6 +207,8 @@ class BottomShortListPanel extends PureComponent {
     // const { isLoggedIn, user, userRole } = this.props.auth;
     // const { languageEl, accountInfoEl, dialog } = this.state;
     // const role = userRole || user?.role;
+
+    const digits = ["one", "two", "three", "four"];
 
     return (
       <div className={clsx(s.root, showBottomShortList && "opened")}>
@@ -230,7 +239,7 @@ class BottomShortListPanel extends PureComponent {
             </Typography>
           </Row>
           {showBottomShortList && (
-            <>
+            <React.Fragment>
               <Row fullWidth classes={{ box: s.officesWrapper }}>
                 {shortList.map((office, index) => (
                   <Box key={index} classes={{ box: s.office }}>
@@ -257,39 +266,35 @@ class BottomShortListPanel extends PureComponent {
                         {office.title}
                       </Row>
                       {!isWidthDown("sm", width) && (
-                        <>
+                        <React.Fragment>
                           <Row fontSizeXXS classes={{ box: s.officeRating }}>
                             <StarIcon
                               style={{ width: 8, height: 8, color: "#d7df23" }}
                             />
                             3.5 {/** Rating should be calculated later */}
                           </Row>
-                          <Row
-                            fontSizeXXS
-                            classes={{ box: s.officePrice }}
-                            textGrey
-                          >
-                            ${office.priceMonthly} CAD/month
-                          </Row>
-                        </>
+                          <Row fontSizeXXS classes={{ box: s.officePrice }} textGrey>${office.priceMonthly} CAD/month</Row>
+                        </React.Fragment>
                       )}
                     </Column>
                   </Box>
                 ))}
                 <Stretch />
-                {!isWidthDown("sm", width) && (
+                {shortList.length === 0 && !isWidthDown("sm", width) && <Typography fontSizeXXS textGrey>{t("addOfficesToYourShortListToSendVisitRequests")}</Typography>}
+                {!isWidthDown("sm", width) && shortList.length < 5 && (
                   <Typography fontSizeXXS textGrey>
-                    {t("justOneMoreLeft")}
+                    {t("justMoreLeft", {
+                      digit: t(digits[4 - shortList.length]),
+                    })}
                   </Typography>
                 )}
               </Row>
-              <Row
-                classes={{ box: s.buttonWrapper }}
-                fullWidth={isWidthDown("sm", width)}
-              >
-                <Button>{t("nextStep")}</Button>
+              <Row classes={{ box: s.buttonWrapper }} fullWidth={isWidthDown("sm", width)}>
+                <Button onClick={this.handleVisitRequest}>
+                  {t("nextStep")}
+                </Button>
               </Row>
-            </>
+            </React.Fragment>
           )}
         </Box>
       </div>

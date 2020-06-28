@@ -179,7 +179,7 @@ const OfficeListItem = ({
   const handleVisitRequest = (e) => {
     e.stopPropagation();
     // TODO: Handle visit request
-  }
+  };
 
   /** Share office */
   const handleShare = () => {
@@ -359,7 +359,7 @@ const OfficeListItem = ({
           </Row>
 
           {!isWidthDown("sm", width) && (
-            <>
+            <React.Fragment>
               <Box paddingTopHalf />
               {!isShortListed && (
                 <Button variant="white" background="primary" onClick={handleAddToShortList} shadow>
@@ -373,7 +373,7 @@ const OfficeListItem = ({
                   <Typography paddingLeft fontSizeS fontWeightBold>{t('wantToVisit')}</Typography>
                 </Button>
               )}
-            </>
+            </React.Fragment>
           )}
         </Column>
       )}

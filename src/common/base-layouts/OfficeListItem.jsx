@@ -165,12 +165,12 @@ const OfficeListItem = ({
     status === "rejected"
       ? "rejectedByConsultant"
       : status === "pendingForApprove"
-      ? "pendingForApprove"
-      : status === "unpublished"
-      ? "unpublish"
-      : status === "incomplete"
-      ? "mustCompleteData"
-      : null;
+        ? "pendingForApprove"
+        : status === "unpublished"
+          ? "unpublish"
+          : status === "incomplete"
+            ? "mustCompleteData"
+            : null;
   const progress =
     officeStatus && officeStatus.progress < 100 ? officeStatus.progress : null;
 
@@ -358,7 +358,7 @@ const OfficeListItem = ({
               {t("contactInfo")}
             </Button>
             {!noActions && (
-              <>
+              <React.Fragment>
                 <Box paddingLeftHalf />
                 {/** Show microphone button */}
                 <Button
@@ -384,7 +384,7 @@ const OfficeListItem = ({
                     <CalendarIcon style={{ width: 19, height: 19 }} />
                   </Button>
                 )}
-              </>
+              </React.Fragment>
             )}
           </Row>
         </Column>
