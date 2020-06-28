@@ -1,44 +1,46 @@
-import React, { PureComponent } from 'react';
-import PropTypes from 'prop-types';
-import clsx from 'clsx';
+import React, { PureComponent } from "react";
+import PropTypes from "prop-types";
+import clsx from "clsx";
 import {
   FormControlLabel,
   Checkbox as MUICheckbox,
   Radio as MUIRadio,
   withStyles,
-} from '@material-ui/core';
+} from "@material-ui/core";
 import {
   CheckCircle,
   RadioButtonChecked,
   RadioButtonUnchecked,
-} from '@material-ui/icons';
+} from "@material-ui/icons";
 
 const styleSheet = (theme) => ({
   root: {
-    position: 'relative',
+    position: "relative",
     color: theme.colors.primary.darkGrey,
     padding: 2,
     margin: 0,
-    border: 'none',
+    border: "none",
     borderRadius: 99999,
-    '&:hover': {
+    "&:hover": {
       color: theme.colors.primary.mainColor,
     },
   },
 
   outlined: {
-    background: 'none',
+    // background: "none",
+    background: theme.colors.primary.white,
+    // border: `1px solid rgba(0, 0, 0, .23)`,
     border: `1px solid ${theme.colors.primary.borderGrey}`,
-    '&:hover': {
-      border: `1px solid ${theme.colors.primary.mainColor}`,
+    "&:hover": {
+      border: `2px solid ${theme.colors.primary.mainColor}`,
     },
   },
 
   contained: {
     color: theme.colors.primary.white,
     background: `${theme.colors.primary.mainColor}`,
-    border: 'none',
-    '&:hover': {
+    border: "none",
+    "&:hover": {
       background: `${theme.colors.primary.darkColor}`,
       color: theme.colors.primary.white,
     },
@@ -57,10 +59,10 @@ const styleSheet = (theme) => ({
   },
 
   label: {
-    padding: '5px 28px',
-    fontSize: '13px',
-    lineHeight: '18px',
-    width: '200%',
+    padding: "5px 28px",
+    fontSize: "13px",
+    lineHeight: "18px",
+    width: "200%",
   },
 
   icon: {
@@ -82,7 +84,7 @@ const styleSheet = (theme) => ({
   controlStyle: {
     padding: 0,
     margin: 0,
-    position: 'absolute',
+    position: "absolute",
   },
 
   secondaryIcon: {
@@ -94,7 +96,7 @@ const styleSheet = (theme) => ({
   },
 });
 
-const Selection = withStyles(styleSheet, { name: 'Selection' })(
+const Selection = withStyles(styleSheet, { name: "Selection" })(
   class Selection extends PureComponent {
     static propTypes = {
       isChecked: PropTypes.bool,
@@ -129,7 +131,7 @@ const Selection = withStyles(styleSheet, { name: 'Selection' })(
                   classes={{
                     root: clsx(s.icon, {
                       [s.whiteIcon]:
-                        variant === 'outlined' || variant === 'contained',
+                        variant === "outlined" || variant === "contained",
                     }),
                   }}
                 />
@@ -139,8 +141,8 @@ const Selection = withStyles(styleSheet, { name: 'Selection' })(
                   classes={{
                     root: clsx(
                       s.checkedIcon,
-                      variant === 'outlined' && s.primaryIcon,
-                      variant === 'contained' && s.whiteIcon
+                      variant === "outlined" && s.primaryIcon,
+                      variant === "contained" && s.whiteIcon
                     ),
                   }}
                 />
@@ -153,10 +155,10 @@ const Selection = withStyles(styleSheet, { name: 'Selection' })(
           label={label}
           classes={{
             root: clsx(s.root, {
-              [s.outlined]: variant === 'outlined',
-              [s.checkedOutlined]: variant === 'outlined' && isChecked,
-              [s.contained]: variant === 'contained',
-              [s.checkedContained]: variant === 'contained' && isChecked,
+              [s.outlined]: variant === "outlined",
+              [s.checkedOutlined]: variant === "outlined" && isChecked,
+              [s.contained]: variant === "contained",
+              [s.checkedContained]: variant === "contained" && isChecked,
             }),
             label: s.label,
           }}
@@ -181,7 +183,7 @@ export const Checkbox = (props) => (
     control={MUICheckbox}
     icon={RadioButtonUnchecked}
     checkedIcon={CheckCircle}
-    style={{ textAlign: 'center' }}
+    style={{ textAlign: "center" }}
     {...props}
   />
 );

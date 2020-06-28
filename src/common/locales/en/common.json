@@ -35,6 +35,7 @@
   "placeToRent": "I have a place for RENT",
   "loginOrRegister": "Login / Register",
   "or": "or",
+  "OR": "OR",
   "facebook": "Facebook",
   "google": "Google",
   "loginWith": "Login with ",
@@ -559,6 +560,7 @@
   "calendarSettingHelp": "Set a default date and time availabilities for visiting your offices, This setting will be applied to all of your approved offices. You also have access to set different date and time availabilities for each of your offices.",
   "generalConditions": "General conditions",
   "addACondition": "Add a condition",
+  "addAvailability": "Add availability",
   "addConditionsDefault": "Add conditions to create default visiting availability.",
   "chooseTimeDuration": "Choose time duration",
   "allDays": "All days",
@@ -645,5 +647,10 @@
   "visitingRequest": "Visiting request",
   "sendRequests": "Send requests",
   "visitRequestsSent": "The request have been sent successfuly",
-  "newVisitRequestHasBeenPlaced": "The new visit request have been placed on your calendar and landlords have been notified."
+  "newVisitRequestHasBeenPlaced": "The new visit request have been placed on your calendar and landlords have been notified.",
+  "justOneMoreLeft": "Just one more left",
+  "visitAvailabilityApplyToDateDuration": "The visit availability will be applied for life time, If you want to apply for specific duration, Please choose your duration In below, Leave it empty if you want to apply the availability time repeatable.",
+  "time": "Time",
+  "actions": "Actions",
+  "duration": "Duration"
 }

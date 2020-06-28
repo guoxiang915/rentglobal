@@ -30,14 +30,14 @@ const styleSheet = (theme) => ({
     flexGrow: 1,
     zIndex: 1000,
 
-    '&.opened': {
+    "&.opened": {
       height: 128,
     },
 
     [theme.breakpoints.down("sm")]: {
       height: 47,
 
-      '&.opened': {
+      "&.opened": {
         height: 202,
       },
     },
@@ -54,9 +54,9 @@ const styleSheet = (theme) => ({
       alignItems: "flex-start",
       padding: "11px 25px 30px",
 
-      '&.opened': {
+      "&.opened": {
         padding: 21,
-      }
+      },
     },
   },
 
@@ -76,7 +76,7 @@ const styleSheet = (theme) => ({
     borderRadius: "50%",
     marginRight: 8,
 
-    '&.grey': {
+    "&.grey": {
       background: theme.colors.primary.grey,
     },
   },
@@ -87,7 +87,6 @@ const styleSheet = (theme) => ({
   },
 
   officesWrapper: {
-
     [theme.breakpoints.down("sm")]: {
       marginLeft: 7,
       width: "calc(100% - 7px)",
@@ -141,7 +140,7 @@ const styleSheet = (theme) => ({
     [theme.breakpoints.down("sm")]: {
       maxWidth: 88,
       marginLeft: 0,
-    }
+    },
   },
 
   officeRating: {
@@ -185,7 +184,9 @@ class BottomShortListPanel extends PureComponent {
   };
 
   handleRemoveFromShortList = (office) => {
-    this.props.setOfficeShortList(this.props.shortList.filter(item => item.id !== office.id));
+    this.props.setOfficeShortList(
+      this.props.shortList.filter((item) => item.id !== office.id)
+    );
   };
 
   handleVisitRequest = () => {
@@ -210,22 +211,32 @@ class BottomShortListPanel extends PureComponent {
     const digits = ["one", "two", "three", "four"];
 
     return (
-      <div className={clsx(s.root, showBottomShortList && 'opened')}>
+      <div className={clsx(s.root, showBottomShortList && "opened")}>
         <Box classes={{ box: s.contentWrapper }} row>
           <Row classes={{ box: s.titleContainer }}>
             <IconButton
-              classes={{ root: clsx(s.actionButton, showBottomShortList && 'grey') }}
-              variant="main"
+              classes={{
+                root: clsx(s.actionButton, showBottomShortList && "grey"),
+              }}
+              variant='main'
               onClick={this.handleToggleOpened}
             >
-              {!showBottomShortList && <ArrowUpIcon style={{ width: 9, height: 5, color: "white" }} />}
-              {showBottomShortList && <ArrowDownIcon style={{ width: 9, height: 5, color: "white" }} />}
+              {!showBottomShortList && (
+                <ArrowUpIcon style={{ width: 9, height: 5, color: "white" }} />
+              )}
+              {showBottomShortList && (
+                <ArrowDownIcon
+                  style={{ width: 9, height: 5, color: "white" }}
+                />
+              )}
             </IconButton>
             <Typography
               fontSizeL={showBottomShortList}
               fontSizeM={!showBottomShortList}
-              classes={{ box: clsx(s.title, showBottomShortList && 'opened') }}
-            >{t("shortList")}</Typography>
+              classes={{ box: clsx(s.title, showBottomShortList && "opened") }}
+            >
+              {t("shortList")}
+            </Typography>
           </Row>
           {showBottomShortList && (
             <React.Fragment>
@@ -233,26 +244,33 @@ class BottomShortListPanel extends PureComponent {
                 {shortList.map((office, index) => (
                   <Box key={index} classes={{ box: s.office }}>
                     <Button
-                      variant="icon"
-                      link="secondary"
-                      background="errorRed"
+                      variant='icon'
+                      link='secondary'
+                      background='errorRed'
                       classes={{ root: s.deleteIconButton }}
                       onClick={() => this.handleRemoveFromShortList(office)}
                     >
-                      <CloseIcon style={{ width: 8, height: 8, color: "white" }} />
+                      <CloseIcon
+                        style={{ width: 8, height: 8, color: "white" }}
+                      />
                     </Button>
                     <Column alignChildrenStart>
                       <Row>
                         <img
                           src={office.coverPhotos[0]?.mobile?.bucketPath}
                           className={s.officeImage}
+                          alt=''
                         />
                       </Row>
-                      <Row fontSizeXXS classes={{ box: s.officeTitle }}>{office.title}</Row>
+                      <Row fontSizeXXS classes={{ box: s.officeTitle }}>
+                        {office.title}
+                      </Row>
                       {!isWidthDown("sm", width) && (
                         <React.Fragment>
                           <Row fontSizeXXS classes={{ box: s.officeRating }}>
-                            <StarIcon style={{ width: 8, height: 8, color: "#d7df23" }} />
+                            <StarIcon
+                              style={{ width: 8, height: 8, color: "#d7df23" }}
+                            />
                             3.5 {/** Rating should be calculated later */}
                           </Row>
                           <Row fontSizeXXS classes={{ box: s.officePrice }} textGrey>${office.priceMonthly} CAD/month</Row>
@@ -284,6 +302,8 @@ class BottomShortListPanel extends PureComponent {
   }
 }
 
-export default withLogin(withWidth()(
-  withStyles(styleSheet)(withTranslation("common")(BottomShortListPanel))
-));
+export default withLogin(
+  withWidth()(
+    withStyles(styleSheet)(withTranslation("common")(BottomShortListPanel))
+  )
+);
