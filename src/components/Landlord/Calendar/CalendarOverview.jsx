@@ -269,7 +269,12 @@ class CalendarOverview extends PureComponent {
 
         {/** Show week/month view mode selector */}
         <Row fullWidth paddingBottomDouble>
-          <Grid container direction='row' spacing={2} justify='space-between'>
+          <Grid
+            container
+            direction='row'
+            spacing={2}
+            justify={isWidthDown("xs", width) ? "center" : "space-between"}
+          >
             <Grid item>
               <Row>
                 <Typography
@@ -294,19 +299,21 @@ class CalendarOverview extends PureComponent {
                 </Typography>
               </Row>
             </Grid>
-            <Grid item>
-              <Row>
-                <Typography textMediumGrey fontSizeS>
-                  {formatDate(new Date()) +
-                    " " +
-                    t(weekdays[new Date().getDay()])}
-                </Typography>
-                &nbsp;
-                <Typography textSecondary fontSizeS>
-                  {formatHrMin(new Date())}
-                </Typography>
-              </Row>
-            </Grid>
+            {!isWidthDown("xs", width) && (
+              <Grid item>
+                <Row>
+                  <Typography textMediumGrey fontSizeS>
+                    {formatDate(new Date()) +
+                      " " +
+                      t(weekdays[new Date().getDay()])}
+                  </Typography>
+                  &nbsp;
+                  <Typography textSecondary fontSizeS>
+                    {formatHrMin(new Date())}
+                  </Typography>
+                </Row>
+              </Grid>
+            )}
           </Grid>
         </Row>
 

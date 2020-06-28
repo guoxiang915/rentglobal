@@ -63,20 +63,22 @@ class VisitRequests extends PureComponent {
 
   visitRequests = [
     {
-      title: "Title",
-      shortDescription: "Short Description",
-      officeType: "privateOffice",
-      priceMonthly: 2000,
-      rating: 3.5,
-      refId: 0,
-      coverPhotos: [
-        {
-          desktop: {
-            bucketPath:
-              "https://rentglobal.s3.us-east-2.amazonaws.com/2020/3/22878a03e36d233e2a/blob",
+      office: {
+        title: "Title",
+        shortDescription: "Short Description",
+        officeType: "privateOffice",
+        priceMonthly: 2000,
+        rating: 3.5,
+        refId: 0,
+        coverPhotos: [
+          {
+            desktop: {
+              bucketPath:
+                "https://rentglobal.s3.us-east-2.amazonaws.com/2020/3/22878a03e36d233e2a/blob",
+            },
           },
-        },
-      ],
+        ],
+      },
       visitRequest: {
         start: new Date().setMonth(1),
         end: new Date().setMonth(2),
@@ -167,51 +169,51 @@ class VisitRequests extends PureComponent {
           />
         </Row>
 
-        {!isWidthDown("xs", width) && (
-          <React.Fragment>
-            <div
+        {/* {!isWidthDown("xs", width) && ( */}
+        <React.Fragment>
+          <div
+            className={s.visitRequests}
+            style={{
+              marginBottom: 40,
+              height: "auto",
+            }}
+          >
+            <Grid
+              container
+              direction='row'
+              spacing={2}
+              wrap='wrap'
               className={s.visitRequests}
-              style={{
-                marginBottom: 40,
-                height: "auto",
-              }}
             >
-              <Grid
-                container
-                direction='row'
-                spacing={2}
-                wrap='wrap'
-                className={s.visitRequests}
-              >
-                <Grid item xs={12}>
-                  <Column classes={{ box: s.visitRequestsList }} fullWidth>
-                    {this.visitRequests.map((visitRequest, index) => (
-                      <React.Fragment key={index}>
-                        {index > 0 && <Divider />}
-                        <Row
+              <Grid item xs={12}>
+                <Column classes={{ box: s.visitRequestsList }} fullWidth>
+                  {this.visitRequests.map((visitRequest, index) => (
+                    <React.Fragment key={index}>
+                      {index > 0 && <Divider />}
+                      <Row
+                        fullWidth
+                        classes={{ box: s.visitRequestsListItemWrapper }}
+                      >
+                        <VisitRequestItem
+                          visitRequest={visitRequest}
+                          onApprove={() =>
+                            this.handleClickApproveVisitRequest(visitRequest)
+                          }
+                          onReject={() =>
+                            this.handleClickRejectVisitRequest(visitRequest)
+                          }
                           fullWidth
-                          classes={{ box: s.visitRequestsListItemWrapper }}
-                        >
-                          <VisitRequestItem
-                            visitRequest={visitRequest}
-                            onApprove={() =>
-                              this.handleClickApproveVisitRequest(visitRequest)
-                            }
-                            onReject={() =>
-                              this.handleClickRejectVisitRequest(visitRequest)
-                            }
-                            fullWidth
-                            horizontal={!isWidthDown("xs", width)}
-                          />
-                        </Row>
-                      </React.Fragment>
-                    ))}
-                  </Column>
-                </Grid>
+                          horizontal={!isWidthDown("xs", width)}
+                        />
+                      </Row>
+                    </React.Fragment>
+                  ))}
+                </Column>
               </Grid>
-            </div>
-          </React.Fragment>
-        )}
+            </Grid>
+          </div>
+        </React.Fragment>
+        {/* )} */}
 
         <div className={s.visitRequests}>
           <Grid container>

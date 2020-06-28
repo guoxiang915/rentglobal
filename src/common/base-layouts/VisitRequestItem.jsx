@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { withStyles } from "@material-ui/core";
+import { withStyles, withWidth, isWidthDown } from "@material-ui/core";
 import { withTranslation } from "react-i18next";
 import clsx from "clsx";
 import { KeyboardArrowLeft, KeyboardArrowRight } from "@material-ui/icons";
@@ -16,8 +16,11 @@ import {
   CheckIcon,
   CloseIcon,
   MusicIcon,
+  FavoriteFilledIcon,
+  FavoriteIcon,
 } from "../base-components";
 import { numberWithSpaces } from "../../utils/formatters";
+import { favoriteOffice } from "../../api/endpoints";
 
 const styleSheet = (theme) => ({
   visitRequestWrapper: {
@@ -73,6 +76,36 @@ const styleSheet = (theme) => ({
       opacity: 1,
     },
   },
+  favorite: {
+    position: "absolute",
+    top: 8,
+    right: 16,
+    zIndex: 1,
+    width: 16,
+    height: 16,
+    cursor: "pointer",
+  },
+
+  favoriteIcon: {
+    width: 17,
+    height: 16,
+    color: theme.colors.primary.white,
+    opacity: 1,
+  },
+
+  favoriteSelectedIcon: {
+    fill: theme.colors.primary.errorRed,
+  },
+
+  officeLocation: {
+    position: "absolute",
+    left: 14,
+    right: 14,
+    bottom: 8,
+    whiteSpace: "nowrap",
+    overflow: "hidden",
+    zIndex: 1,
+  },
 
   officeImage: {
     width: "100%",
@@ -122,12 +155,21 @@ const styleSheet = (theme) => ({
     height: 175,
     width: "100%",
     position: "relative",
+    [theme.breakpoints.down("xs")]: {
+      marginTop: 20,
+      borderRadius: 4,
+    },
   },
 
   dateWrapper: {
     backgroundColor: theme.colors.primary.borderGrey,
     width: "100%",
     height: 158,
+    [theme.breakpoints.down("xs")]: {
+      padding: "8px 12px",
+      alignItems: "center",
+      height: "unset",
+    },
   },
 
   actionButtonsWrapper: {
@@ -167,7 +209,9 @@ const VisitRequestItem = React.memo(
   ({
     classes: s,
     t,
+    width,
     visitRequest,
+    setFavorite,
     autoPlay,
     horizontal,
     onApprove,
@@ -175,28 +219,45 @@ const VisitRequestItem = React.memo(
     fullWidth,
     className,
   }) => {
+    const isMobile = React.useMemo(() => isWidthDown("xs", width), [width]);
+    const { office, visitReq } = visitRequest;
+
+    /** Changing position of carousel */
+    const [, setState] = useState();
     const [pos, setPos] = useState(0);
 
     const prevImage = (e) => {
       e.stopPropagation();
-      setPos(pos === 0 ? visitRequest.coverPhotos.length - 1 : pos - 1);
+      setPos(pos === 0 ? office.coverPhotos.length - 1 : pos - 1);
     };
 
     const nextImage = (e) => {
       e.stopPropagation();
-      setPos(pos === visitRequest.coverPhotos.length - 1 ? 0 : pos + 1);
+      setPos(pos === office.coverPhotos.length - 1 ? 0 : pos + 1);
+    };
+
+    const handleSetFavorite = (e) => {
+      e.stopPropagation();
+      if (office?._id) {
+        favoriteOffice(office._id).then((response) => {
+          if (response.status === 200) {
+            office.favorite = response.data.favorite;
+            setState({});
+          }
+        });
+      }
     };
 
     /** Carousel dots */
     const dots = React.useMemo(() => {
-      return visitRequest.coverPhotos
-        ? visitRequest.coverPhotos.map((content, key) => (
-          <React.Fragment key={key}>
-            <Dot classes={s} />
-          </React.Fragment>
-        ))
+      return office.coverPhotos
+        ? office.coverPhotos.map((content, key) => (
+            <React.Fragment key={key}>
+              <Dot classes={s} />
+            </React.Fragment>
+          ))
         : [];
-    }, [visitRequest, s]);
+    }, [office, s]);
 
     return (
       <Box
@@ -214,20 +275,40 @@ const VisitRequestItem = React.memo(
           style={{ width: horizontal ? 235 : "100%" }}
         >
           <div className={s.hoverWrapper}>
+            {/** favorite icon */}
+            {setFavorite ? (
+              <Box classes={{ box: s.favorite }} onClick={handleSetFavorite}>
+                {office.favorite ? (
+                  <FavoriteFilledIcon className={s.favoriteIcon} />
+                ) : (
+                  <FavoriteIcon className={s.favoriteIcon} />
+                )}
+              </Box>
+            ) : null}
+
             {/** dots */}
-            {visitRequest.coverPhotos && visitRequest.coverPhotos.length !== 0 && (
+            {office.coverPhotos && office.coverPhotos.length !== 0 && (
               <Box classes={{ box: s.dots }} justifyChildrenCenter>
                 <Dots
                   value={pos}
                   onChange={setPos}
-                  number={visitRequest.coverPhotos.length}
+                  number={office.coverPhotos.length}
                   thumbnails={dots}
                 />
               </Box>
             )}
 
+            {/** office location */}
+            <Typography
+              fontSizeXS
+              textWhite
+              classes={{ box: s.officeLocation }}
+            >
+              {office.location?.fullAddress}
+            </Typography>
+
             {/** arrows */}
-            {visitRequest.coverPhotos && visitRequest.coverPhotos.length !== 0 && (
+            {office.coverPhotos && office.coverPhotos.length !== 0 && (
               <Box
                 classes={{ box: s.carouselArrow }}
                 style={{ left: 14 }}
@@ -236,7 +317,7 @@ const VisitRequestItem = React.memo(
                 <KeyboardArrowLeft />
               </Box>
             )}
-            {visitRequest.coverPhotos && visitRequest.coverPhotos.length !== 0 && (
+            {office.coverPhotos && office.coverPhotos.length !== 0 && (
               <Box
                 classes={{ box: s.carouselArrow }}
                 style={{ right: 14 }}
@@ -249,7 +330,7 @@ const VisitRequestItem = React.memo(
 
           {/** office images */}
           <div style={{ width: "100%", height: "100%" }}>
-            {visitRequest.coverPhotos && (
+            {office.coverPhotos && (
               <Carousel
                 slidesPerPage={1}
                 value={pos}
@@ -259,7 +340,7 @@ const VisitRequestItem = React.memo(
                 stopAutoPlayOnHover
                 keepDirectionWhenDragging
               >
-                {visitRequest.coverPhotos.map((photo, index) => (
+                {office.coverPhotos.map((photo, index) => (
                   <React.Fragment key={index}>
                     {/* <Box fullWidth> */}
                     {photo.mobile || photo.bucketPath ? (
@@ -294,47 +375,75 @@ const VisitRequestItem = React.memo(
           paddingLeft={!!horizontal}
           alignChildrenStart
         >
-          {/** show visit request title */}
+          {/** show office title */}
           <Row>
-            <Typography fontSizeM textBlackGrey fontWeightBold>
-              {visitRequest.title}
+            <Typography
+              fontSizeM={!isMobile}
+              fontSizeS={isMobile}
+              textBlackGrey
+              fontWeightBold
+            >
+              {office.title}
             </Typography>
           </Row>
 
-          {/** show visit request property */}
+          {/** show office property */}
           <Row paddingTopHalf>
-            <Typography fontSizeM textSecondary>
-              {t(visitRequest.officeType)}
+            <Typography
+              fontSizeM={!isMobile}
+              fontSizeXS={isMobile}
+              textSecondary
+            >
+              {t(office.officeType)}
             </Typography>
           </Row>
 
-          {/** show visit request price */}
+          {/** show office price */}
           <Row paddingTopHalf>
-            <Typography fontSizeS textPrimary>
-              {t("dollarPerMonth", { dollar: visitRequest.priceMonthly || 0 })}
+            <Typography
+              // fontSizeS={!isMobile}
+              fontSizeS
+              textPrimary
+            >
+              {t("dollarPerMonth", { dollar: office.priceMonthly || 0 })}
             </Typography>
           </Row>
 
-          {/** show visit request ratings */}
-          {visitRequest.rating && (
+          {/** show office ratings */}
+          {office.published && (
+            // office.rating &&
             <Row paddingTopHalf>
               <Typography textPrimary>
                 <StarIcon style={{ width: 12, height: 12 }} />
               </Typography>
-              <Typography fontSizeS textMediumGrey paddingLeftHalf>
-                {visitRequest.rating}
+              <Typography
+                // fontSizeS={!isMobile}
+                fontSizeS
+                textMediumGrey
+                paddingLeftHalf
+              >
+                3.5 {/* office.rating */}
               </Typography>
             </Row>
           )}
 
-          {/** show visit request ref id */}
+          {/** show office ref id */}
           <Row paddingTopHalf>
-            <Typography fontSizeS textSecondary>
+            <Typography
+              fontSizeS={!isMobile}
+              fontSizeXS={isMobile}
+              textSecondary
+            >
               {t("refID")}
               :&nbsp;
             </Typography>
-            <Typography fontSizeM fontWeightBold textSecondary>
-              #{numberWithSpaces(visitRequest.refId + 1, 3)}
+            <Typography
+              fontSizeM={!isMobile}
+              fontSizeS={isMobile}
+              fontWeightBold
+              textSecondary
+            >
+              #{numberWithSpaces(office.refId + 1, 3)}
             </Typography>
           </Row>
         </Column>
@@ -356,11 +465,17 @@ const VisitRequestItem = React.memo(
               <Column
                 padding
                 justifyChildrenCenter
-                alignChildrenCenter
+                alignChildrenCenter={!isWidthDown("xs", width)}
+                alignChildrenStart={isWidthDown("xs", width)}
                 fullWidth
               >
                 <Row>
-                  <Typography fontSizeM textBlackGrey fontWeightBold>
+                  <Typography
+                    fontSizeM={!isWidthDown("xs", width)}
+                    fontSizeS={isWidthDown("xs", width)}
+                    textBlackGrey
+                    fontWeightBold
+                  >
                     Wednesday
                   </Typography>
                 </Row>
@@ -370,39 +485,70 @@ const VisitRequestItem = React.memo(
                   </Typography>
                 </Row>
                 <Row>
-                  <Typography fontSizeS textBlackGrey>
+                  <Typography
+                    fontSizeS={!isWidthDown("xs", width)}
+                    fontSizeXS={isWidthDown("xs", width)}
+                    textBlackGrey
+                  >
                     09:30 AM - 10:00 AM
                   </Typography>
                 </Row>
               </Column>
+              {isWidthDown("xs", width) && (
+                <Row>
+                  <IconButton
+                    classes={{ root: clsx(s.actionButton) }}
+                    variant='red'
+                    onClick={onReject}
+                  >
+                    <CloseIcon className={s.actionButtonIcon} />
+                  </IconButton>
+                  <IconButton
+                    classes={{ root: clsx(s.actionButton) }}
+                    variant='grey'
+                    onClick={onReject}
+                  >
+                    <MusicIcon className={s.actionButtonIcon} />
+                  </IconButton>
+                  <IconButton
+                    classes={{ root: clsx(s.actionButton) }}
+                    variant='green'
+                    onClick={onApprove}
+                  >
+                    <CheckIcon className={s.actionButtonIcon} />
+                  </IconButton>
+                </Row>
+              )}
             </Row>
-            <Row
-              classes={{
-                box: s.actionButtonsWrapper,
-              }}
-            >
-              <IconButton
-                classes={{ root: clsx(s.actionButton) }}
-                variant='red'
-                onClick={onReject}
+            {!isWidthDown("xs", width) && (
+              <Row
+                classes={{
+                  box: s.actionButtonsWrapper,
+                }}
               >
-                <CloseIcon className={s.actionButtonIcon} />
-              </IconButton>
-              <IconButton
-                classes={{ root: clsx(s.actionButton) }}
-                variant='grey'
-                onClick={onReject}
-              >
-                <MusicIcon className={s.actionButtonIcon} />
-              </IconButton>
-              <IconButton
-                classes={{ root: clsx(s.actionButton) }}
-                variant='green'
-                onClick={onApprove}
-              >
-                <CheckIcon className={s.actionButtonIcon} />
-              </IconButton>
-            </Row>
+                <IconButton
+                  classes={{ root: clsx(s.actionButton) }}
+                  variant='red'
+                  onClick={onReject}
+                >
+                  <CloseIcon className={s.actionButtonIcon} />
+                </IconButton>
+                <IconButton
+                  classes={{ root: clsx(s.actionButton) }}
+                  variant='grey'
+                  onClick={onReject}
+                >
+                  <MusicIcon className={s.actionButtonIcon} />
+                </IconButton>
+                <IconButton
+                  classes={{ root: clsx(s.actionButton) }}
+                  variant='green'
+                  onClick={onApprove}
+                >
+                  <CheckIcon className={s.actionButtonIcon} />
+                </IconButton>
+              </Row>
+            )}
           </Column>
         </Box>
       </Box>
@@ -410,6 +556,8 @@ const VisitRequestItem = React.memo(
   }
 );
 
-export default withStyles(styleSheet, { name: "VisitRequestItem" })(
-  withTranslation("common")(VisitRequestItem)
+export default withWidth()(
+  withStyles(styleSheet, { name: "VisitRequestItem" })(
+    withTranslation("common")(VisitRequestItem)
+  )
 );

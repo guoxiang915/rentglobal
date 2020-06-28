@@ -1,5 +1,10 @@
 import React, { useState } from "react";
-import { LinearProgress, withStyles, withWidth, isWidthDown } from "@material-ui/core";
+import {
+  LinearProgress,
+  withStyles,
+  withWidth,
+  isWidthDown,
+} from "@material-ui/core";
 import { withTranslation } from "react-i18next";
 import clsx from "clsx";
 import { KeyboardArrowLeft, KeyboardArrowRight } from "@material-ui/icons";
@@ -13,21 +18,21 @@ import {
   StarIcon,
   ImageIcon,
   FavoriteFilledIcon,
-  FavoriteIcon
+  FavoriteIcon,
 } from "../base-components";
 import { getOfficeStatus } from "../../utils/validators";
 import { favoriteOffice } from "../../api/endpoints";
 
 import "./OfficeItem.scss";
 
-const styleSheet = theme => ({
+const styleSheet = (theme) => ({
   officeWrapper: {
-    width: 235
+    width: 235,
     // marginRight: 20,
   },
 
   fullWidth: {
-    width: "100%"
+    width: "100%",
   },
 
   officeCarousel: {
@@ -36,7 +41,7 @@ const styleSheet = theme => ({
     borderRadius: 8,
     border: `1px solid ${theme.colors.primary.borderGrey}`,
     position: "relative",
-    overflow: "hidden"
+    overflow: "hidden",
   },
 
   hoverWrapper: {
@@ -57,7 +62,7 @@ const styleSheet = theme => ({
       top: 0,
       left: 0,
       opacity: 0.3,
-      zIndex: 1
+      zIndex: 1,
     },
     "&::after": {
       content: '" "',
@@ -68,11 +73,11 @@ const styleSheet = theme => ({
       bottom: 0,
       right: 0,
       opacity: 0.3,
-      zIndex: 1
+      zIndex: 1,
     },
     "&:hover": {
-      opacity: 1
-    }
+      opacity: 1,
+    },
   },
 
   favorite: {
@@ -82,18 +87,18 @@ const styleSheet = theme => ({
     zIndex: 1,
     width: 16,
     height: 16,
-    cursor: "pointer"
+    cursor: "pointer",
   },
 
   favoriteIcon: {
     width: 17,
     height: 16,
     color: theme.colors.primary.white,
-    opacity: 1
+    opacity: 1,
   },
 
   favoriteSelectedIcon: {
-    fill: theme.colors.primary.errorRed
+    fill: theme.colors.primary.errorRed,
   },
 
   officeLocation: {
@@ -103,19 +108,19 @@ const styleSheet = theme => ({
     bottom: 8,
     whiteSpace: "nowrap",
     overflow: "hidden",
-    zIndex: 1
+    zIndex: 1,
   },
 
   officeImage: {
     width: "100%",
-    height: 175
+    height: 175,
   },
 
   officeEmptyImage: {
     background: theme.colors.primary.whiteGrey,
     color: theme.colors.primary.borderGrey,
     width: "100%",
-    height: 175
+    height: 175,
   },
 
   carouselArrow: {
@@ -130,8 +135,8 @@ const styleSheet = theme => ({
     opacity: 0.15,
     cursor: "pointer",
     "&:hover": {
-      opacity: 1
-    }
+      opacity: 1,
+    },
   },
 
   dots: {
@@ -139,7 +144,7 @@ const styleSheet = theme => ({
     left: 0,
     bottom: 25,
     width: "100%",
-    zIndex: 1
+    zIndex: 1,
   },
 
   dot: {
@@ -147,23 +152,23 @@ const styleSheet = theme => ({
     background: theme.colors.primary.white,
     width: 7,
     height: 7,
-    margin: -4
+    margin: -4,
   },
 
   progressbar: {
     width: "100%",
     background: theme.colors.primary.borderGrey,
-    marginBottom: 10
+    marginBottom: 10,
   },
 
   bar1Determinate: {
     color: theme.colors.primary.errorRed,
-    background: theme.colors.primary.errorRed
+    background: theme.colors.primary.errorRed,
   },
 
   dashedBuffer: {
-    background: "none"
-  }
+    background: "none",
+  },
 });
 
 /** Dot component */
@@ -191,26 +196,26 @@ const OfficeItem = React.memo(
     onClick,
     fullWidth,
     width,
-    className
+    className,
   }) => {
     /** Changing position of carousel */
     const [, setState] = useState();
     const [pos, setPos] = useState(0);
 
-    const prevImage = e => {
+    const prevImage = (e) => {
       e.stopPropagation();
       setPos(pos === 0 ? office.coverPhotos.length - 1 : pos - 1);
     };
 
-    const nextImage = e => {
+    const nextImage = (e) => {
       e.stopPropagation();
       setPos(pos === office.coverPhotos.length - 1 ? 0 : pos + 1);
     };
 
-    const handleSetFavorite = e => {
+    const handleSetFavorite = (e) => {
       e.stopPropagation();
       if (passLoginDialog()) {
-        favoriteOffice(office._id).then(response => {
+        favoriteOffice(office._id).then((response) => {
           if (response.status === 200) {
             office.favorite = response.data.favorite;
             setState({});
@@ -223,10 +228,10 @@ const OfficeItem = React.memo(
     const dots = React.useMemo(() => {
       return office.coverPhotos
         ? office.coverPhotos.map((content, key) => (
-          <React.Fragment key={key}>
-            <Dot classes={s} />
-          </React.Fragment>
-        ))
+            <React.Fragment key={key}>
+              <Dot classes={s} />
+            </React.Fragment>
+          ))
         : [];
     }, [office, s]);
 
@@ -237,12 +242,12 @@ const OfficeItem = React.memo(
       status === "approved"
         ? null
         : status === "rejected"
-          ? "rejectedByConsultant"
-          : status === "unpublished"
-            ? "unpublished"
-            : status === "incomplete"
-              ? "mustCompleteData"
-              : null;
+        ? "rejectedByConsultant"
+        : status === "unpublished"
+        ? "unpublished"
+        : status === "incomplete"
+        ? "mustCompleteData"
+        : null;
     const progress =
       officeStatus && officeStatus.progress < 100
         ? officeStatus.progress
@@ -251,7 +256,7 @@ const OfficeItem = React.memo(
     return (
       <Box
         classes={{
-          box: clsx(s.officeWrapper, className, fullWidth && s.fullWidth)
+          box: clsx(s.officeWrapper, className, fullWidth && s.fullWidth),
         }}
         alignChildrenStart
         row={!!horizontal}
@@ -260,7 +265,7 @@ const OfficeItem = React.memo(
       >
         <Box
           classes={{
-            box: clsx(s.officeCarousel)
+            box: clsx(s.officeCarousel),
           }}
           style={{ width: horizontal ? 235 : "100%" }}
         >
@@ -340,7 +345,7 @@ const OfficeItem = React.memo(
                             ? photo.mobile.bucketPath
                             : photo.bucketPath
                         }
-                        alt=""
+                        alt=''
                         className={s.officeImage}
                       />
                     ) : (
@@ -367,21 +372,34 @@ const OfficeItem = React.memo(
         >
           {/** show office title */}
           <Row>
-            <Typography fontSizeM={!isWidthDown("xs", width)} fontSizeXXS={isWidthDown("xs", width)} textBlackGrey fontWeightBold>
+            <Typography
+              fontSizeM={!isWidthDown("xs", width)}
+              fontSizeS={isWidthDown("xs", width)}
+              textBlackGrey
+              fontWeightBold
+            >
               {office.title}
             </Typography>
           </Row>
 
           {/** show office property */}
           <Row paddingTopHalf>
-            <Typography fontSizeM={!isWidthDown("xs", width)} fontSizeXXS={isWidthDown("xs", width)} textSecondary>
+            <Typography
+              fontSizeM={!isWidthDown("xs", width)}
+              fontSizeXS={isWidthDown("xs", width)}
+              textSecondary
+            >
               {t(office.officeType)}
             </Typography>
           </Row>
 
           {/** show office price */}
           <Row paddingTopHalf>
-            <Typography fontSizeS={!isWidthDown("xs", width)} fontSizeXXS={isWidthDown("xs", width)} textPrimary>
+            <Typography
+              fontSizeS
+              // fontSizeXXS={isWidthDown("xs", width)}
+              textPrimary
+            >
               {t("dollarPerMonth", { dollar: office.priceMonthly || 0 })}
             </Typography>
           </Row>
@@ -393,7 +411,7 @@ const OfficeItem = React.memo(
               <Typography textPrimary>
                 <StarIcon style={{ width: 12, height: 12 }} />
               </Typography>
-              <Typography fontSizeS={!isWidthDown("xs", width)} fontSizeXXS={isWidthDown("xs", width)}  textMediumGrey paddingLeftHalf>
+              <Typography fontSizeS textMediumGrey paddingLeftHalf>
                 3.5 {/* office.rating */}
               </Typography>
             </Row>
@@ -420,13 +438,13 @@ const OfficeItem = React.memo(
           {progress && (
             <Row paddingTopHalf fullWidth>
               <LinearProgress
-                color="primary"
-                variant="determinate"
+                color='primary'
+                variant='determinate'
                 value={progress}
                 classes={{
                   root: s.progressbar,
                   bar1Determinate: s.bar1Determinate,
-                  dashed: s.dashedBuffer
+                  dashed: s.dashedBuffer,
                 }}
               />
             </Row>
