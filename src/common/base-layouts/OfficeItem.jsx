@@ -311,12 +311,12 @@ const OfficeItem = React.memo(
           }}
           style={{ width: horizontal ? 235 : "100%" }}
         >
-          {isShortListed && (
+          {addToShortList && isShortListed && (
             <div className={s.shortListedBadge}>
               {t("wantToVisit")}
             </div>
           )}
-          {!isShortListed && (
+          {addToShortList && !isShortListed && (
             <div className={clsx(s.addToShortListBadge, addBadgeStatus && s.showAddToShortListBadge)} onClick={onAddToShortList}>
               {t("addToShortList")}
             </div>
