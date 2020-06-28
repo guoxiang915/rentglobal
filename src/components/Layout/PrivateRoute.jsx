@@ -235,7 +235,7 @@ class PrivateRoute extends React.Component {
           ? "company"
           : "landlord";
 
-    if (nextRole && user?.roles.indexOf(nextRole) === -1) {
+    if (nextRole && user?.roles?.indexOf(nextRole) === -1) {
       const hideGuidance = storage.getBoolean(`${nextRole}HideGuide`);
       if (hideGuidance) {
         if (nextRole === "landlord") {
