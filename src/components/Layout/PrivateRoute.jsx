@@ -188,6 +188,7 @@ class PrivateRoute extends React.Component {
     case "offices/add":
     case "offices/all":
     case "offices/unpublish":
+    case "offices/favorite":
     case "contracts":
     case "optimization":
     case "calendar":
