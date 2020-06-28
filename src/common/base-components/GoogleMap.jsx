@@ -21,13 +21,16 @@ const SimpleMap = ({
   markers = null,
   center: c = null,
   onClickMarker,
+  zoomLevel = 11,
 }) => {
   const classes = useStyles({ shadowWidth, borderRadius });
   const size = { width: 640, height: 640 };
 
+  console.log(coordinates, markers);
+
   /** get center of coordinates */
   let center = { lat: 0, lng: 0 };
-  let zoom = 11;
+  let zoom = zoomLevel;
   if (c) {
     center = c;
   } else if (coordinates) {
