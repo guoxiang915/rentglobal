@@ -207,7 +207,7 @@ class OfficeList extends PureComponent {
     if (setOfficeShortList) {
       setOfficeShortList([...shortList, office]);
     }
-  }
+  };
 
   /**
    * Renderer function
