@@ -10,11 +10,14 @@ import {
 const styleSheet = (theme) => ({
   root: {
     borderRadius: 27,
+    background: theme.colors.primary.white,
     "& >.MuiOutlinedInput-notchedOutline": {
-      border: `1px solid rgba(0, 0, 0, 0.23)`,
+      // border: `1px solid rgba(0, 0, 0, 0.23)`,
+      border: `1px solid ${theme.colors.primary.borderGrey}`,
     },
     "&:hover:not(:focus) >.MuiOutlinedInput-notchedOutline": {
-      border: `1px solid rgba(0, 0, 0, 0.23)`,
+      // border: `1px solid rgba(0, 0, 0, 0.23)`,
+      border: `1px solid ${theme.colors.primary.borderGrey}`,
     },
   },
 

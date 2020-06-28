@@ -13,7 +13,8 @@ import {
   ArrowUpIcon,
   ArrowDownIcon,
   Rating,
-  Select,
+  // Select,
+  DropDown,
 } from "../base-components";
 import { TabWrapper } from ".";
 import { getReviewsByCompany } from "../../api/endpoints";
@@ -48,8 +49,8 @@ const styleSheet = (theme) => ({
     [theme.breakpoints.down("xs")]: {
       marginLeft: 0,
       height: 36,
-      width: "100%"
-    }
+      width: "100%",
+    },
   },
 
   reviewCard: {
@@ -118,14 +119,7 @@ const styleSheet = (theme) => ({
 
 const ReviewPanel = withStyles(styleSheet)(
   withTranslation("common")(
-    ({
-      classes: s,
-      t,
-      review,
-      expanded,
-      onToggleExpand,
-      isMobile,
-    }) => {
+    ({ classes: s, t, review, expanded, onToggleExpand, isMobile }) => {
       return (
         <Card className={s.reviewCard}>
           <CardHeader
@@ -146,11 +140,18 @@ const ReviewPanel = withStyles(styleSheet)(
                 columnReverse={isMobile}
                 justifyChildrenEnd
               >
-                <Typography fontSizeXS paddingRightDouble={!isMobile} alignChildrenCenter>
+                <Typography
+                  fontSizeXS
+                  paddingRightDouble={!isMobile}
+                  alignChildrenCenter
+                >
                   {formatDate1(review.createdAt)}
                 </Typography>
                 {
-                  <IconButton className={s.toggleButton} onClick={onToggleExpand}>
+                  <IconButton
+                    className={s.toggleButton}
+                    onClick={onToggleExpand}
+                  >
                     {expanded ? (
                       <ArrowUpIcon style={{ width: 17, height: 7 }} />
                     ) : (
@@ -160,32 +161,45 @@ const ReviewPanel = withStyles(styleSheet)(
                 }
               </Typography>
             }
-            classes={{ root: s.reviewHeader, action: s.reviewToggler, title: s.reviewTitle }}
+            classes={{
+              root: s.reviewHeader,
+              action: s.reviewToggler,
+              title: s.reviewTitle,
+            }}
           />
           <CardContent
             className={clsx(s.reviewContent, !expanded && s.reviewMiniContent)}
           >
             <Column fullWidth alignChildrenStart>
               <Row>
-                <Rating
-                  rating={review.office?.rating}
-                  iconSize={11}
-                />
+                <Rating rating={review.office?.rating} iconSize={11} />
               </Row>
-              <Typography fontSizeM={!isMobile} fontSizeS={isMobile} textSecondary fullWidth paddingTop>
+              <Typography
+                fontSizeM={!isMobile}
+                fontSizeS={isMobile}
+                textSecondary
+                fullWidth
+                paddingTop
+              >
                 {review.content}
               </Typography>
               <Row fullWidth paddingTop>
                 <TabWrapper
                   title={
                     <Typography fontSizeXXS textGrey>
-                      {t("see")} {review.company?.generalInfo?.username} {t("review")}
+                      {t("see")} {review.company?.generalInfo?.username}{" "}
+                      {t("review")}
                     </Typography>
                   }
                   open
                   insideOpen
                 >
-                  <Typography fontSizeXS textSecondary padding classes={{ box: s.reviewMessage }}>
+                  <Typography
+                    fontSizeXS
+                    textSecondary
+                    padding
+                    classes={{ box: s.reviewMessage }}
+                  >
                     {review.review?.msg || ""}
                   </Typography>
                 </TabWrapper>
@@ -224,7 +238,9 @@ class CompanyReviews extends PureComponent {
 
   handleExpandReview = (expanded) => {
     if (this.state.expanded.includes(expanded)) {
-      this.setState({ expanded: [...this.state.expanded.filter(e => e !== expanded)] });
+      this.setState({
+        expanded: [...this.state.expanded.filter((e) => e !== expanded)],
+      });
     } else {
       this.setState({ expanded: [...this.state.expanded, expanded] });
     }
@@ -253,8 +269,8 @@ class CompanyReviews extends PureComponent {
     });
   };
 
-  handleChangeSort = e => {
-    console.log('Change sort: ', e.target.value);
+  handleChangeSort = (e) => {
+    console.log("Change sort: ", e.target.value);
   };
 
   /**
@@ -268,9 +284,9 @@ class CompanyReviews extends PureComponent {
       <Column classes={{ box: s.root }} fullWidth alignChildrenStart>
         <Row fullWidth classes={{ box: s.sortWrapper }}>
           {!isWidthDown("xs", width) && <Stretch />}
-          <Select
+          <DropDown
             options={reviewSortOptions}
-            renderOption={item => (
+            renderOption={(item) => (
               <Typography fontSizeS textGrey>
                 {t(item.title)}
               </Typography>
@@ -304,7 +320,7 @@ class CompanyReviews extends PureComponent {
         </Row>
 
         <Divider />
-        
+
         <Grid container>
           <Column paddingTop fullWidth textMediumGrey>
             <Pagination
@@ -322,4 +338,6 @@ class CompanyReviews extends PureComponent {
   }
 }
 
-export default withStyles(styleSheet)(withTranslation("common")(withWidth()(CompanyReviews)));
+export default withStyles(styleSheet)(
+  withTranslation("common")(withWidth()(CompanyReviews))
+);

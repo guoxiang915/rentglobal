@@ -13,6 +13,7 @@ import { ArrowDownIcon } from ".";
 
 const styleSheet = (theme) => ({
   root: {
+    background: theme.colors.primary.white,
     borderRadius: 23,
     "&>.MuiOutlinedInput-notchedOutline": {
       border: `1px solid ${theme.colors.primary.borderGrey} !important`,

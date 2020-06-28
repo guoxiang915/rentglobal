@@ -13,7 +13,7 @@ import {
   Button,
   Checkbox,
   TextField,
-  Select,
+  // Select,
   ConfirmDialog,
   CalendarIcon,
   EditIcon,
@@ -21,6 +21,7 @@ import {
   CloseIcon,
   CheckIcon,
   HorizontalDivider,
+  DropDown,
 } from "../../common/base-components";
 import { TabWrapper } from "../../common/base-layouts";
 import {
@@ -100,6 +101,12 @@ const styleSheet = (theme) => ({
     borderLeft: "none",
     "& > .MuiOutlinedInput-notchedOutline": {
       borderLeft: "none !important",
+    },
+  },
+
+  timePickerWrapper: {
+    [theme.breakpoints.down("xs")]: {
+      flex: 1,
     },
   },
 
@@ -195,7 +202,7 @@ const styleSheet = (theme) => ({
   },
 });
 
-const SplitTimePicker = ({ classes: s, t, value, onChange }) => {
+const SplitTimePicker = ({ classes: s, t, value, onChange, width }) => {
   const isAm = React.useMemo(() => value && new Date(value).getHours() < 12, [
     value,
   ]);
@@ -220,7 +227,7 @@ const SplitTimePicker = ({ classes: s, t, value, onChange }) => {
   );
 
   return (
-    <Row>
+    <Row alignChildrenStart fullWidth={isWidthDown("xs", width)}>
       <TimePicker
         value={value}
         onChange={onChange}
@@ -232,6 +239,7 @@ const SplitTimePicker = ({ classes: s, t, value, onChange }) => {
             classes={{ root: clsx(s.timePicker) }}
           />
         )}
+        className={s.timePickerWrapper}
       />
       <Box paddingLeft />
       <Button
@@ -468,7 +476,7 @@ class CalendarSettingForm extends PureComponent {
               >
                 {!office && (
                   <Row fullWidth paddingBottomDouble>
-                    <Select
+                    <DropDown
                       options={["", ...officeTypes]}
                       renderOption={(item) => (
                         <Typography fontSizeXS textSecondary>
@@ -488,7 +496,7 @@ class CalendarSettingForm extends PureComponent {
                 )}
                 <Row fullWidth alignChildrenCenter wrap>
                   <Box paddingBottom>
-                    <Select
+                    <DropDown
                       options={["", ...weekdays]}
                       renderOption={(item) => (
                         <Typography fontSizeXS textSecondary>
@@ -577,6 +585,7 @@ class CalendarSettingForm extends PureComponent {
                     onChange={this.handleChangeConditionField("startTime")}
                     classes={s}
                     t={t}
+                    width={width}
                   />
                   <Box classes={{ box: s.timePickerDivider }} />
                   <SplitTimePicker
@@ -584,6 +593,7 @@ class CalendarSettingForm extends PureComponent {
                     onChange={this.handleChangeConditionField("endTime")}
                     classes={s}
                     t={t}
+                    width={width}
                   />
                 </Row>
                 {!isWidthDown("xs", width) && (

@@ -1,14 +1,14 @@
-import React, { PureComponent } from 'react';
-import PropTypes from 'prop-types';
+import React, { PureComponent } from "react";
+import PropTypes from "prop-types";
 import {
   Dialog,
   DialogTitle,
   DialogContent,
   DialogActions,
   withStyles,
-} from '@material-ui/core';
-import clsx from 'clsx';
-import { withTranslation } from 'react-i18next';
+} from "@material-ui/core";
+import clsx from "clsx";
+import { withTranslation } from "react-i18next";
 import withWidth from "@material-ui/core/withWidth";
 import {
   Button,
@@ -17,10 +17,11 @@ import {
   Box,
   Column,
   Checkbox,
-  Select,
+  // Select,
   Stretch,
-} from '../../../common/base-components';
-import { CloseIcon, CheckIcon } from '../../../common/base-components/Icons';
+  DropDown,
+} from "../../../common/base-components";
+import { CloseIcon, CheckIcon } from "../../../common/base-components/Icons";
 
 const styleSheet = (theme) => ({
   root: {
@@ -31,11 +32,11 @@ const styleSheet = (theme) => ({
   },
 
   primary: {
-    background: theme.colors.primary.mainColor
+    background: theme.colors.primary.mainColor,
   },
 
   header: {
-    width: '100%',
+    width: "100%",
     height: 5,
     padding: 0,
   },
@@ -44,19 +45,19 @@ const styleSheet = (theme) => ({
     padding: "24px 42px 45px",
     [theme.breakpoints.down("sm")]: {
       padding: "20px 24px 35px",
-    }
+    },
   },
 
   optionWrapper: {
     marginRight: 10,
 
-    '&.last-of-type': {
+    "&.last-of-type": {
       marginRight: 0,
-    }
+    },
   },
 
   calendarSettingsSelectWrapper: {
-    width: '100%',
+    width: "100%",
     height: 34,
   },
 
@@ -67,9 +68,9 @@ const styleSheet = (theme) => ({
   footer: {
     padding: "0px 40px 27px 40px",
     [theme.breakpoints.down("xs")]: {
-      padding: "0px 40px 45px 40px"
-    }
-  }
+      padding: "0px 40px 45px 40px",
+    },
+  },
 });
 
 class ImportCalendarSettingDialog extends PureComponent {
@@ -78,13 +79,13 @@ class ImportCalendarSettingDialog extends PureComponent {
     open: PropTypes.bool,
     onClose: PropTypes.func,
   };
-  
+
   state = {
     isCheckedWeekends: false,
     isCheckedAllDays: false,
     isCheckedBusinessDays: false,
     condition: null,
-  }
+  };
 
   handleClose = () => {
     if (this.props.onClose) {
@@ -98,11 +99,15 @@ class ImportCalendarSettingDialog extends PureComponent {
 
   handleChangeCondition = (e) => {
     this.setState({ condition: e.target.value });
-  }
+  };
 
   render() {
     const { className, classes: s, t } = this.props;
-    const { isCheckedWeekends, isCheckedAllDays, isCheckedBusinessDays } = this.state;
+    const {
+      isCheckedWeekends,
+      isCheckedAllDays,
+      isCheckedBusinessDays,
+    } = this.state;
 
     const options = [];
 
@@ -110,11 +115,11 @@ class ImportCalendarSettingDialog extends PureComponent {
       <Dialog
         open
         onClose={this.handleClose}
-        aria-labelledby="import-calendar-setting-dialog"
+        aria-labelledby='import-calendar-setting-dialog'
         classes={{ paper: clsx(s.root, className) }}
       >
         <DialogTitle
-          id="import-calendar-setting-dialog-title"
+          id='import-calendar-setting-dialog-title'
           className={clsx(s.header, s.primary)}
         >
           <React.Fragment />
@@ -135,8 +140,8 @@ class ImportCalendarSettingDialog extends PureComponent {
             <Row fullWidth paddingBottom>
               <Box classes={{ box: s.optionWrapper }}>
                 <Checkbox
-                  variant="outlined"
-                  name="isCheckedWeekends"
+                  variant='outlined'
+                  name='isCheckedWeekends'
                   label={t("weekends")}
                   className={s.textField250Fixed}
                   isChecked={isCheckedWeekends}
@@ -145,8 +150,8 @@ class ImportCalendarSettingDialog extends PureComponent {
               </Box>
               <Box classes={{ box: s.optionWrapper }}>
                 <Checkbox
-                  variant="outlined"
-                  name="isCheckedAllDays"
+                  variant='outlined'
+                  name='isCheckedAllDays'
                   label={t("allDays")}
                   className={s.textField250Fixed}
                   isChecked={isCheckedAllDays}
@@ -155,8 +160,8 @@ class ImportCalendarSettingDialog extends PureComponent {
               </Box>
               <Box classes={{ box: s.optionWrapper }}>
                 <Checkbox
-                  variant="outlined"
-                  name="isCheckedBusinessDays"
+                  variant='outlined'
+                  name='isCheckedBusinessDays'
                   label={t("businessDays")}
                   className={s.textField250Fixed}
                   isChecked={isCheckedBusinessDays}
@@ -165,9 +170,9 @@ class ImportCalendarSettingDialog extends PureComponent {
               </Box>
             </Row>
             <Row fullWidth>
-              <Select
+              <DropDown
                 options={options}
-                renderOption={item => (
+                renderOption={(item) => (
                   <Typography fontSizeS textMediumGrey>
                     {item}
                   </Typography>
@@ -187,23 +192,23 @@ class ImportCalendarSettingDialog extends PureComponent {
           {/** close button */}
           <Row fullWidth>
             <Button
-              link="errorRed"
-              background="secondaryLight"
+              link='errorRed'
+              background='secondaryLight'
               onClick={this.handleClose}
             >
               <Typography fontSizeS alignChildrenCenter>
                 <CloseIcon style={{ width: 10, height: 10 }} />
-                <Typography paddingLeft>{t('cancel')}</Typography>
+                <Typography paddingLeft>{t("cancel")}</Typography>
               </Typography>
             </Button>
             <Stretch />
             <Button
-              variant="primary"
-              onClick={() => console.log('click')}
+              variant='primary'
+              onClick={() => console.log("click")}
               className={s.applyButton}
             >
               <Typography fontSizeS alignChildrenCenter>
-                <CheckIcon fontSize="small" />
+                <CheckIcon fontSize='small' />
                 <Typography paddingLeft>{t("apply")}</Typography>
               </Typography>
             </Button>
@@ -214,6 +219,6 @@ class ImportCalendarSettingDialog extends PureComponent {
   }
 }
 
-export default withStyles(styleSheet, { name: 'ImportCalendarSettingDialog' })(
-  withTranslation('common')(withWidth()(ImportCalendarSettingDialog)),
+export default withStyles(styleSheet, { name: "ImportCalendarSettingDialog" })(
+  withTranslation("common")(withWidth()(ImportCalendarSettingDialog))
 );

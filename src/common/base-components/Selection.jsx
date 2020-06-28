@@ -27,8 +27,10 @@ const styleSheet = (theme) => ({
   },
 
   outlined: {
-    background: "none",
-    border: `1px solid rgba(0, 0, 0, 0.23)`,
+    // background: "none",
+    background: theme.colors.primary.white,
+    // border: `1px solid rgba(0, 0, 0, .23)`,
+    border: `1px solid ${theme.colors.primary.borderGrey}`,
     "&:hover": {
       border: `2px solid ${theme.colors.primary.mainColor}`,
     },
