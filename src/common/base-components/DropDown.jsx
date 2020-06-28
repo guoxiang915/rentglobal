@@ -15,6 +15,7 @@ const styleSheet = (theme) => ({
   root: {
     background: theme.colors.primary.white,
     borderRadius: 23,
+    height: 47,
     "&>.MuiOutlinedInput-notchedOutline": {
       border: `1px solid ${theme.colors.primary.borderGrey} !important`,
     },
@@ -49,7 +50,9 @@ const styleSheet = (theme) => ({
 
   input: {
     ...theme.typography.primaryBody,
-    padding: "14px 16px",
+    padding: "0px 16px",
+    marginTop: "auto",
+    marginBottom: "auto",
     borderRadius: 23,
     "&:focus": {
       borderRadius: 23,
