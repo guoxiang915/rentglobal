@@ -908,7 +908,7 @@ class Dashboard extends PureComponent {
                 </TabWrapper>
               )}
             >
-              <Box classes={{ box: s.statisticBox }}>
+              <Box classes={{ box: s.statisticBox }} onClick={() => this.props.navigate("offices/favorite")}>
                 <StatisticIconBox
                   icon={
                     <FavoriteIcon
