@@ -126,6 +126,7 @@ const styleSheet = (theme) => ({
     background: theme.colors.primary.white,
     color: theme.colors.primary.darkGrey,
     width: 47,
+    fontWeight: "normal",
   },
 
   leftNoon: {
@@ -201,6 +202,22 @@ const SplitTimePicker = ({ classes: s, t, value, onChange }) => {
   const isPm = React.useMemo(() => value && new Date(value).getHours() >= 12, [
     value,
   ]);
+  const changeNoon = React.useCallback(
+    (noon) => {
+      if (value) {
+        if (isAm && noon === "pm") {
+          const updateValue = new Date(value);
+          updateValue.setHours(new Date(value).getHours() + 12);
+          onChange(updateValue);
+        } else if (isPm && noon === "am") {
+          const updateValue = new Date(value);
+          updateValue.setHours(new Date(value).getHours() - 12);
+          onChange(updateValue);
+        }
+      }
+    },
+    [value, isAm, isPm, onChange]
+  );
 
   return (
     <Row>
@@ -217,10 +234,16 @@ const SplitTimePicker = ({ classes: s, t, value, onChange }) => {
         )}
       />
       <Box paddingLeft />
-      <Button className={clsx(s.noonBtn, s.leftNoon, isAm && s.selectedNoon)}>
+      <Button
+        className={clsx(s.noonBtn, s.leftNoon, isAm && s.selectedNoon)}
+        onClick={() => changeNoon("am")}
+      >
         <Typography fontSizeXS>{t("am")}</Typography>
       </Button>
-      <Button className={clsx(s.noonBtn, s.rightNoon, isPm && s.selectedNoon)}>
+      <Button
+        className={clsx(s.noonBtn, s.rightNoon, isPm && s.selectedNoon)}
+        onClick={() => changeNoon("pm")}
+      >
         <Typography fontSizeXS>{t("pm")}</Typography>
       </Button>
     </Row>
