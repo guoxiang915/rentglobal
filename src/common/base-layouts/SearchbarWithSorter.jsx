@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import clsx from "clsx";
 import { withStyles } from "@material-ui/core";
 import { withTranslation } from "react-i18next";
 import {
@@ -44,7 +45,7 @@ const styleSheet = (theme) => ({
 
 export default withStyles(styleSheet, { name: "SearchbarWithSorter" })(
   withTranslation("common")(
-    ({ classes: s, t, title, query: q, sorter, sortOptions, onChange }) => {
+    ({ className, onClick, classes: s, t, title, query: q, sorter, sortOptions, onChange }) => {
       const [query, setQuery] = useState(q);
 
       const handleSearch = (sort) => {
@@ -82,8 +83,9 @@ export default withStyles(styleSheet, { name: "SearchbarWithSorter" })(
                   <SearchIcon style={{ width: 16, height: 16 }} />
                 </Typography>
               }
-              classes={{ root: s.searchbar }}
+              classes={{ root: clsx(s.searchbar, className) }}
               onKeyUp={handleSearchKeyUp}
+              onClick={onClick}
               fullWidth
             />
           </Column>

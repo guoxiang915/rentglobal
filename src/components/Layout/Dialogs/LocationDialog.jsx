@@ -407,6 +407,7 @@ class LocationDialog extends PureComponent {
                 coordinates={coordinates}
                 shadowWidth={50}
                 center={coordinates[0]}
+                zoomLevel={16}
               />
             </Box>
           </Grid>

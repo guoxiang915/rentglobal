@@ -7,7 +7,7 @@ const initialState = {
   showAppBar: true,
   showSearchBar: false,
   showBottomShortList: true,
-  shortList: JSON.parse(visitRequestObj.getCompanyVisitRequests()) || [],
+  shortList: JSON.parse(visitRequestObj.getCompanyShortListedOffies()) || [],
   appBarTitle: 'RENTGLOBAL Real Estate',
   language: typeof localStorage !== 'undefined' ? (localStorage.getItem('i18nextLng') || 'en') : 'en',
 };
@@ -43,7 +43,7 @@ const appReducer = (currentState = initialState, action) => {
     };
 
   case 'SET_OFFICE_SHORT_LIST':
-    visitRequestObj.setCompanyVisitRequests([...action.shortList]);
+    visitRequestObj.setCompanyShortListedOffies([...action.shortList]);
     return {
       ...currentState,
       shortList: [...action.shortList],
