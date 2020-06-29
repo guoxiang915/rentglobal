@@ -456,15 +456,42 @@ class OfficeDetail extends PureComponent {
     if (this.props.passLoginDialog()) {
       if (this.state.office.consultant && this.state.office.consultant.email) {
         const { user } = this.props.auth;
-        window.$zoho.salesiq.chat.agent(this.state.office.consultant.email);
-        if (user.generalInfo.username) {
-          window.$zoho.salesiq.visitor.name(user.generalInfo.username);
-        }
-        window.$zoho.salesiq.visitor.email(user.email);
-        window.$zoho.salesiq.floatwindow.visible("show");
-        window.$zoho.salesiq.chatwindow.visible("show");
+        window.zESettings = {
+          webWidget: {
+            chat: {
+              suppress: true,
+            },
+          },
+        };
+        window.zE.identify({
+          name: user.generalInfo.username,
+          email: user.email
+        });
+        window.zE.show();
+        window.zE.activate({ hideOnClose: true });
 
-        window.$zoho.salesiq.visitor.missed((visitid, data) => {});
+        window.zE('webWidget:on', 'chat:start', () => {
+          window.zE.show();
+        });
+
+        window.zE('webWidget:on', 'chat:unreadMessages', (messages) => {
+          if (messages > 0) {
+            window.zE.show();
+          }
+        });
+
+        window.zE('webWidget:on', 'chat:end', () => {
+          window.zE.hide();
+        });
+        // window.$zoho.salesiq.chat.agent(this.state.office.consultant.email);
+        // if (user.generalInfo.username) {
+        //   window.$zoho.salesiq.visitor.name(user.generalInfo.username);
+        // }
+        // window.$zoho.salesiq.visitor.email(user.email);
+        // window.$zoho.salesiq.floatwindow.visible("show");
+        // window.$zoho.salesiq.chatwindow.visible("show");
+        //
+        // window.$zoho.salesiq.visitor.missed((visitid, data) => {});
       } else {
         console.log("no consultant assigned");
       }
