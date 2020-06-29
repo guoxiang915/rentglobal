@@ -283,7 +283,7 @@ class Profile extends PureComponent {
     phoneNumber: "",
     phoneNumberVerified: false,
     address: {},
-    postalCode: "",
+    zipCode: "",
     companySize: 0,
     companyType: "",
     companyTypeError: "",
@@ -495,7 +495,7 @@ class Profile extends PureComponent {
       phoneNumber,
       phoneNumberVerified,
       address,
-      postalCode,
+      zipCode,
       companySize,
       companyType,
       shortDescription,
@@ -512,7 +512,7 @@ class Profile extends PureComponent {
       username !== user.generalInfo?.username ||
       phoneNumber !== user.generalInfo?.phoneNumber?.number ||
       address !== user.generalInfo?.address ||
-      postalCode !== user.generalInfo?.address?.postalCode ||
+      zipCode !== user.generalInfo?.address?.zipCode ||
       (userRole === "company" &&
         (companySize !== user.companyProfile?.companySize ||
           companyType !== user.companyProfile?.companyType ||
@@ -524,7 +524,7 @@ class Profile extends PureComponent {
           username,
           phoneNumber,
           phoneNumberVerified,
-          address: { ...address, postalCode },
+          address: { ...address, zipCode },
           companySize,
           companyType,
           shortDescription,
@@ -599,7 +599,7 @@ class Profile extends PureComponent {
       phoneNumber: user.generalInfo?.phoneNumber?.number || "",
       phoneNumberVerified: !!user.generalInfo?.phoneNumber?.verified,
       address: user.generalInfo?.address || {},
-      postalCode: user.generalInfo?.address?.postalCode || "",
+      zipCode: user.generalInfo?.address?.zipCode || "",
       avatar: user.avatar || null,
       companySize: user.companyProfile?.companySize || 0,
       companyType: user.companyProfile?.companyType || "",
@@ -732,8 +732,8 @@ class Profile extends PureComponent {
 
   handleSelectAddress = (value) => {
     const address = { ...this.state.address, ...value };
-    const postalCode = value.zipCode || "";
-    this.setState({ address, postalCode });
+    const zipCode = value.zipCode || "";
+    this.setState({ address, zipCode });
   };
 
   handleDeleteAccount = () => {
@@ -833,7 +833,7 @@ class Profile extends PureComponent {
       phoneNumber,
       phoneNumberVerified,
       address,
-      postalCode,
+      zipCode,
       oldPassword,
       password,
       passwordError,
@@ -1241,9 +1241,9 @@ class Profile extends PureComponent {
                     <Row paddingTopHalf>
                       <TextField
                         variant='outlined'
-                        placeholder={t("postalCode")}
-                        onChange={this.handleStateChangeByInput("postalCode")}
-                        value={postalCode}
+                        placeholder={t("zipCode")}
+                        onChange={this.handleStateChangeByInput("zipCode")}
+                        value={zipCode}
                         className={s.profileInput}
                         startAdornment={
                           <MapPointerIcon className={s.outlineIcon} />
