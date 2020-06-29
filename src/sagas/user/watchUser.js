@@ -79,18 +79,18 @@ function* setUserRole(action) {
   action.history.push(pathname);
 
   // adding userRole to user.roles if it is not already added
-  const response = yield call(updateUserRequest, {
-    field: "profile",
-    data: { profile: {}, userRole: action.userRole },
-  });
+  // const response = yield call(updateUserRequest, {
+  //   field: "profile",
+  //   data: { profile: {}, userRole: action.userRole },
+  // });
 
-  if (response.status === 200) {
-    yield put({
-      type: "UPDATE_USER_SUCCESS",
-      field: "profile",
-      resp: response.data,
-    });
-  }
+  // if (response.status === 200) {
+  //   yield put({
+  //     type: "UPDATE_USER_SUCCESS",
+  //     field: "profile",
+  //     resp: response.data,
+  //   });
+  // }
 
   yield call(flushMessage);
 }

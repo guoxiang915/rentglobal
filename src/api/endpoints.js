@@ -5,7 +5,7 @@ import {
   reviews as reviewsMockData,
   companyReviws as companyReviewsMockData,
   report as reportMockData,
-  conditions as conditionsMockData
+  conditions as conditionsMockData,
 } from "../common/mock/officeMockData";
 
 /**
@@ -51,6 +51,9 @@ export const getProfile = () => api.get("/users/me/");
 
 /** Call api to delete user avatar */
 export const deleteUserAvatar = () => api.delete(`/users/me/delete/avatar`);
+
+/** Call api to get user document */
+export const getUserDocument = () => api.get(`/users/me/documents/`);
 
 /** Call api to delete user document */
 export const deleteUserDocument = ({ userRole, docType, docFile }) =>

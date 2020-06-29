@@ -55,6 +55,7 @@ import { Alert } from "@material-ui/lab";
 import { maxFileSize } from "../../utils/constants";
 import MobileDetect from "mobile-detect";
 import { DeleteAccountDialog } from "./Dialogs";
+// import { getUserDocument } from "../../api/endpoints";
 
 let md;
 if (typeof window !== "undefined") {
@@ -304,6 +305,7 @@ class Profile extends PureComponent {
 
     dialog: null,
     phoneTooltip: false,
+    // documents: [],
   };
 
   /** landlord/company profile documents */
@@ -331,8 +333,18 @@ class Profile extends PureComponent {
     ],
   };
 
+  // getDocuments = () => {
+  //   getUserDocument().then((res) => {
+  //     if (res.status === 200) {
+  //       const { userRole } = this.props.auth;
+  //       this.setState({ documents: res.data.map((d) => d.role === userRole) });
+  //     }
+  //   });
+  // };
+
   componentDidMount() {
     this.handleResetProfileInfo(this.props.auth);
+    // this.getDocuments();
   }
 
   componentDidUpdate(prevProps) {
@@ -794,7 +806,13 @@ class Profile extends PureComponent {
       verifiedPhoneNumber,
     } = this.props;
     const { user, userRole, isUpdating: updatingTab, error } = this.props.auth;
-    const { openedTab, editTab, uploadingDocument, dialog } = this.state;
+    const {
+      openedTab,
+      // documents,
+      editTab,
+      uploadingDocument,
+      dialog,
+    } = this.state;
     const profile =
       userRole === "landlord" ? user.landlordProfile : user.companyProfile;
 
@@ -1360,7 +1378,11 @@ class Profile extends PureComponent {
                     <Box paddingRightHalf paddingBottomHalf>
                       <UploadDocument
                         title={item.title}
-                        documents={profile && profile[item.value]}
+                        // documents={profile && profile[item.value]}
+                        documents={user?.documents?.filter(
+                          (d) =>
+                            d.role === userRole && d.documentType === item.value
+                        )}
                         uploading={uploadingDocument === item.value}
                         onUpload={this.handleUploadDocument(item.value)}
                         onDownload={this.props.downloadFile}

@@ -1,12 +1,12 @@
-import React, { useState } from 'react';
-import { withStyles, Card, CircularProgress } from '@material-ui/core';
-import { withTranslation } from 'react-i18next';
+import React, { useState } from "react";
+import { withStyles, Card, CircularProgress } from "@material-ui/core";
+import { withTranslation } from "react-i18next";
 import {
   CheckCircle,
   KeyboardArrowLeft,
   KeyboardArrowRight,
-} from '@material-ui/icons';
-import Dropzone from 'react-dropzone';
+} from "@material-ui/icons";
+import Dropzone from "react-dropzone";
 import {
   Typography,
   Button,
@@ -19,8 +19,8 @@ import {
   UploadIcon,
   CloseIcon,
   DeleteIcon,
-} from '../base-components';
-import { maxFileSize } from '../../utils/constants';
+} from "../base-components";
+import { maxFileSize } from "../../utils/constants";
 
 const styleSheet = (theme) => ({
   root: {
@@ -29,10 +29,10 @@ const styleSheet = (theme) => ({
   },
 
   title: {
-    width: '100%',
-    overflow: 'hidden',
-    whiteSpace: 'nowrap',
-    textOverflow: 'ellipsis',
+    width: "100%",
+    overflow: "hidden",
+    whiteSpace: "nowrap",
+    textOverflow: "ellipsis",
     marginTop: 3,
   },
 
@@ -43,22 +43,22 @@ const styleSheet = (theme) => ({
   fileNameWrapper: {
     width: 110,
     height: 24,
-    overflow: 'hidden',
-    position: 'relative',
+    overflow: "hidden",
+    position: "relative",
   },
 
   fileName: {
-    transition: 'transform 1s linear',
-    overflow: 'hidden',
-    textOverflow: 'ellipsis',
-    whiteSpace: 'nowrap',
+    transition: "transform 1s linear",
+    overflow: "hidden",
+    textOverflow: "ellipsis",
+    whiteSpace: "nowrap",
     minWidth: 110,
-    textAlign: 'center',
-    '&:hover': {
-      width: 'fit-content',
-      overflow: 'visible',
-      position: 'absolute',
-      transform: 'translateX(calc(110px - 100%))',
+    textAlign: "center",
+    "&:hover": {
+      width: "fit-content",
+      overflow: "visible",
+      position: "absolute",
+      transform: "translateX(calc(110px - 100%))",
     },
   },
 });
@@ -89,35 +89,40 @@ const UploadDocument = ({
     closeDialog();
     onDelete(documents[current]);
   };
-  const downloadCurrent = () => onDownload(documents[current]._id, documents[current].fileName);
+  const downloadCurrent = () =>
+    onDownload(
+      documents[current]?.file?._id,
+      documents[current]?.file?.fileName
+    );
 
   const handleDelete = () => {
     setDialog(
       <ConfirmDialog
-        variant="error"
-        text={t('confirmDelete')}
-        closeLabel={(
+        variant='error'
+        text={t("confirmDelete")}
+        closeLabel={
           <React.Fragment>
             <CloseIcon style={{ width: 10, height: 10 }} />
-            <Typography paddingLeft>{t('cancel')}</Typography>
+            <Typography paddingLeft>{t("cancel")}</Typography>
           </React.Fragment>
-        )}
-        confirmLabel={(
+        }
+        confirmLabel={
           <React.Fragment>
             <DeleteIcon style={{ width: 15, height: 12 }} />
-            <Typography paddingLeft>{t('delete')}</Typography>
+            <Typography paddingLeft>{t("delete")}</Typography>
           </React.Fragment>
-        )}
+        }
         onConfirm={deleteCurrent}
         onClose={closeDialog}
-      />,
+      />
     );
   };
 
-  const approved = documents && documents.find((item) => item.approved === true);
+  const approved =
+    documents && documents.find((item) => item.approved === true);
 
   return (
-    <Card variant="outlined" className={classes.root}>
+    <Card variant='outlined' className={classes.root}>
       <Column fullWidth padding>
         <Typography
           classes={{ box: classes.title }}
@@ -128,7 +133,7 @@ const UploadDocument = ({
         >
           {title}
         </Typography>
-        {documents && documents.length ? (
+        {documents?.length ? (
           <React.Fragment>
             <Row
               paddingTopHalf
@@ -139,7 +144,7 @@ const UploadDocument = ({
             >
               <Box style={{ width: 24, height: 24 }}>
                 {current > 0 && (
-                  <Link to="#" variant="secondaryLight" onClick={prevCurrent}>
+                  <Link to='#' variant='secondaryLight' onClick={prevCurrent}>
                     <KeyboardArrowLeft />
                   </Link>
                 )}
@@ -150,31 +155,31 @@ const UploadDocument = ({
                 classes={{ box: classes.fileNameWrapper }}
               >
                 <Link
-                  to="#"
+                  to='#'
                   onClick={downloadCurrent}
-                  variant="normalLight"
+                  variant='normalLight'
                   styles={classes.fileName}
                 >
-                  {documents[current].fileName}
+                  {documents[current]?.file?.fileName}
                 </Link>
               </Box>
               <Stretch />
               <Box style={{ width: 24, height: 24 }}>
                 {current < documents.length - 1 && (
-                  <Link to="#" variant="secondaryLight" onClick={nextCurrent}>
+                  <Link to='#' variant='secondaryLight' onClick={nextCurrent}>
                     <KeyboardArrowRight disabled />
                   </Link>
                 )}
               </Box>
             </Row>
             {approved ? (
-              <CheckCircle color="primary" />
+              <CheckCircle color='primary' />
             ) : (
               <Button
-                variant="icon"
-                link="errorRed"
-                background="errorRedLight"
-                outline="transparent"
+                variant='icon'
+                link='errorRed'
+                background='errorRedLight'
+                outline='transparent'
                 inverse
                 onClick={handleDelete}
               >
@@ -192,28 +197,32 @@ const UploadDocument = ({
           <Dropzone
             multiple={false}
             onDrop={(files) => files.length > 0 && onUpload(files[0])}
-            accept="image/*, application/pdf"
+            accept='image/*, application/pdf'
             maxSize={maxFileSize}
           >
-            {({
-              getRootProps, getInputProps, isDragReject, rejectedFiles,
-            }) => {
-              const isFileTooLarge = rejectedFiles && rejectedFiles.length > 0 && rejectedFiles[0].size > maxFileSize;
-              let uploadMsg = <Typography>{t('upload')}</Typography>;
+            {({ getRootProps, getInputProps, isDragReject, rejectedFiles }) => {
+              const isFileTooLarge =
+                rejectedFiles &&
+                rejectedFiles.length > 0 &&
+                rejectedFiles[0].size > maxFileSize;
+              let uploadMsg = <Typography>{t("upload")}</Typography>;
               if (isFileTooLarge) {
                 uploadMsg = (
-                  <Typography textErrorRed>{t('uploadTooLarge')}</Typography>
+                  <Typography textErrorRed>{t("uploadTooLarge")}</Typography>
                 );
-              } else if (isDragReject || (rejectedFiles && rejectedFiles.length > 0)) {
+              } else if (
+                isDragReject ||
+                (rejectedFiles && rejectedFiles.length > 0)
+              ) {
                 uploadMsg = (
-                  <Typography textErrorRed>{t('uploadWrongType')}</Typography>
+                  <Typography textErrorRed>{t("uploadWrongType")}</Typography>
                 );
               }
               return (
                 <Button
-                  link="secondaryLight"
-                  background="transparent"
-                  outline="transparent"
+                  link='secondaryLight'
+                  background='transparent'
+                  outline='transparent'
                   {...getRootProps()}
                 >
                   <input {...getInputProps()} />
@@ -236,6 +245,6 @@ const UploadDocument = ({
   );
 };
 
-export default withStyles(styleSheet, { name: 'UploadDocument' })(
-  withTranslation('common')(UploadDocument),
+export default withStyles(styleSheet, { name: "UploadDocument" })(
+  withTranslation("common")(UploadDocument)
 );
