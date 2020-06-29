@@ -4,7 +4,13 @@ import PropTypes from "prop-types";
 import clsx from "clsx";
 import { withStyles } from "@material-ui/core";
 import Auth from "../../utils/auth";
-import { AppHeader, AppFooter, AppSidebar, BottomShortListPanel, HelpDialog } from ".";
+import {
+  AppHeader,
+  AppFooter,
+  AppSidebar,
+  BottomShortListPanel,
+  HelpDialog,
+} from ".";
 import { Column, SplashScreen } from "../../common/base-components";
 import { WelcomeRoleDialog, LandlordDialog } from "./Dialogs";
 import SendVerificationForm from "../Auth/SendVerificationForm";
@@ -146,83 +152,83 @@ class PrivateRoute extends React.Component {
     }
 
     switch (path) {
-    case "back":
-      this.props.history.goBack();
-      break;
+      case "back":
+        this.props.history.goBack();
+        break;
 
-    case "home":
-      this.props.history.push("/");
-      break;
+      case "home":
+        this.props.history.push("/");
+        break;
 
-    case "help":
-      this.showHelpDialog();
-      break;
+      case "help":
+        this.showHelpDialog();
+        break;
 
-    case "login":
-    case "register":
-    case "register/landlord":
-    case "register/company":
-    case "forgot-password":
-      this.props.history.push(`/auth/${path}`);
-      break;
-    case "logout":
-      authObj.removeToken();
-      authObj.removeRefreshToken();
-      this.props.mappedlogout();
-      this.props.history.push("/");
-      break;
-    case "profile":
-    case "notifications":
-      if (isLoggedIn) {
-        if (userRole === "") {
-          const { history } = this.props;
-          history.location.pathname = `/${user.roles[0]}/${path}`;
-          this.props.mappedToggleRole(user.roles[0], history);
-        } else {
-          this.props.history.push(`/${userRole}/${path}/${payload || ""}`);
+      case "login":
+      case "register":
+      case "register/landlord":
+      case "register/company":
+      case "forgot-password":
+        this.props.history.push(`/auth/${path}`);
+        break;
+      case "logout":
+        authObj.removeToken();
+        authObj.removeRefreshToken();
+        this.props.mappedlogout();
+        this.props.history.push("/");
+        break;
+      case "profile":
+      case "notifications":
+        if (isLoggedIn) {
+          if (userRole === "") {
+            const { history } = this.props;
+            history.location.pathname = `/${user.roles[0]}/${path}`;
+            this.props.mappedToggleRole(user.roles[0], history);
+          } else {
+            this.props.history.push(`/${userRole}/${path}/${payload || ""}`);
+          }
         }
-      }
-      break;
-
-    case "dashboard":
-    case "offices/add":
-    case "offices/all":
-    case "offices/unpublish":
-    case "offices/favorite":
-    case "contracts":
-    case "optimization":
-    case "calendar":
-      if (isLoggedIn) {
-        this.props.history.push(`/${userRole}/${path}/${payload || ""}`);
         break;
-      }
-      this.props.history.push("/");
-      break;
-    case "calendar/visit-requests":
-    case "calendar/personal-events":
-    case "calendar/accepted-visit-requests":
-      if (isLoggedIn) {
-        this.props.history.push(`/${userRole}/${path}/${payload || ""}`);
+
+      case "dashboard":
+      case "offices/add":
+      case "offices/all":
+      case "offices/unpublish":
+      case "offices/favorite":
+      case "contracts":
+      case "optimization":
+      case "calendar":
+        if (isLoggedIn) {
+          this.props.history.push(`/${userRole}/${path}/${payload || ""}`);
+          break;
+        }
+        this.props.history.push("/");
         break;
-      }
-      this.props.history.push("/");
-      break;
+      case "calendar/visit-requests":
+      case "calendar/personal-events":
+      case "calendar/accepted-visit-requests":
+        if (isLoggedIn) {
+          this.props.history.push(`/${userRole}/${path}/${payload || ""}`);
+          break;
+        }
+        this.props.history.push("/");
+        break;
 
-    case "offices":
-      this.props.history.push(
-        `${userRole ? `/${userRole}` : ""}/${path}/${payload || ""}`
-      );
-      break;
-    case "homeoffices":
-      this.props.history.push(`offices/${payload || ""}`);
-      break;
-    case "shortlist":
-      this.props.history.push(`/company/${path}`);
-      break;
+      case "offices":
+        this.props.history.push(
+          `${userRole ? `/${userRole}` : ""}/${path}/${payload || ""}`
+        );
+        break;
+      case "homeoffices":
+        this.props.history.push(`offices/${payload || ""}`);
+        break;
+      case "shortlist":
+        this.props.history.push(`/company/${path}`);
+        break;
 
-    default:
-      this.props.history.push(path);
-      break;
+      default:
+        this.props.history.push(path);
+        break;
     }
     this.handleToggleSidebar(false);
   };
@@ -234,8 +240,8 @@ class PrivateRoute extends React.Component {
       typeof setRole === "string"
         ? setRole
         : userRole === "landlord"
-          ? "company"
-          : "landlord";
+        ? "company"
+        : "landlord";
 
     if (nextRole && user?.roles?.indexOf(nextRole) === -1) {
       const hideGuidance = storage.getBoolean(`${nextRole}HideGuide`);
@@ -330,8 +336,10 @@ class PrivateRoute extends React.Component {
     }
 
     const { sidebarOpened } = this.state;
-    
-    const isShortListPath = this.props.history.location.pathname.includes("/shortlist");
+
+    const isShortListPath = this.props.history.location.pathname.includes(
+      "/shortlist"
+    );
 
     return (
       <Route
@@ -417,7 +425,9 @@ class PrivateRoute extends React.Component {
                             navigate={this.navigate}
                             {...props}
                             onToggleRole={this.handleToggleRole}
-                            setOfficeShortList={this.props.mappedSetOfficeShortList}
+                            setOfficeShortList={
+                              this.props.mappedSetOfficeShortList
+                            }
                             shortList={shortList}
                           />
                         )}
@@ -433,9 +443,13 @@ class PrivateRoute extends React.Component {
                         <BottomShortListPanel
                           shortList={shortList}
                           showBottomShortList={showBottomShortList}
-                          setOfficeShortList={this.props.mappedSetOfficeShortList}
-                          onShowBottomShortList={
-                            () => this.props.mappedShowBottomShortList(!showBottomShortList)
+                          setOfficeShortList={
+                            this.props.mappedSetOfficeShortList
+                          }
+                          onShowBottomShortList={() =>
+                            this.props.mappedShowBottomShortList(
+                              !showBottomShortList
+                            )
                           }
                           navigate={this.navigate}
                         />

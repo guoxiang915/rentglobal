@@ -18,7 +18,7 @@ import {
 const API =
   process.env.NODE_ENV === "production"
     ? "https://rentglobal-backend.herokuapp.com"
-    : "http://192.168.3.141:3001";
+    : "http://localhost:3001";
 
 /**
  * Office types
