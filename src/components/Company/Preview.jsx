@@ -275,7 +275,7 @@ class PreviewProfile extends PureComponent {
           </Column>
         </Row>
         <Row paddingTop>
-          <Typography textGrey>{t("howHelpFind1_content")}</Typography>
+          <Typography textGrey>{user.companyProfile?.shortDescription}</Typography>
         </Row>
 
         <Row fullWidth style={{ marginBottom: 24 }}>

@@ -552,7 +552,7 @@ class CalendarWeekForm extends PureComponent {
                     classes={s}
                     width={width}
                     weekday={d}
-                    visitHours={visitHours[d]}
+                    visitHours={visitHours && visitHours.length > 0 && visitHours[d]}
                     onAdd={onChange ? () => this.handleAdd(d) : null}
                     onEdit={onChange ? this.handleEdit : null}
                     onDelete={onChange ? this.handleDelete : null}
@@ -597,7 +597,7 @@ class CalendarWeekForm extends PureComponent {
                         classes={s}
                         weekday={d}
                         width={width}
-                        visitHours={visitHours[d]}
+                        visitHours={visitHours && visitHours.length > 0 && visitHours[d]}
                         onAdd={onChange ? () => this.handleAdd(d) : null}
                         onEdit={onChange ? this.handleEdit : null}
                         onDelete={onChange ? this.handleDelete : null}
