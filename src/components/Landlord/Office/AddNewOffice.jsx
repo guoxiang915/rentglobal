@@ -295,8 +295,12 @@ class AddNewOffice extends PureComponent {
       break;
     case 3:
       if (office) {
-        const visitHours = office;
-        result = this.props.saveVisibility(this.state.office._id, visitHours);
+        result = Promise.resolve({
+          data: {
+            ...this.state.office,
+            visitHours: office,
+          }
+        });
       }
       break;
     case 4:

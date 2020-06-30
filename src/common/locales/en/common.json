@@ -652,5 +652,7 @@
   "visitAvailabilityApplyToDateDuration": "The visit availability will be applied for life time, If you want to apply for specific duration, Please choose your duration In below, Leave it empty if you want to apply the availability time repeatable.",
   "time": "Time",
   "actions": "Actions",
-  "duration": "Duration"
+  "duration": "Duration",
+  "allOffices": "All offices",
+  "unlimited": "Unlimited"
 }

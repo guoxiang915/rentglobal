@@ -14,6 +14,11 @@ import {
   CheckIcon,
   ArrowRightIcon,
 } from "../../../../common/base-components";
+import {
+  addVisibility,
+  getVisibilities,
+  deleteVisibility, updateVisibility,
+} from "../../../../api/endpoints";
 import { ImportCalendarSettingDialog } from "../../../Layout/Dialogs";
 import CalendarSettingForm from "../../../Layout/CalendarSettingForm";
 
@@ -64,25 +69,15 @@ class VisitAvailabilityForm extends PureComponent {
     super(props);
     this.state = {
       isLoading: false,
-      // visitHours: props.office?.visitHours || [],
       visitHours: [],
       newCondition: null,
     };
-    // const visitHours = props.office?.visitHours;
-    // if (visitHours) {
-    //   Object.values(visitHours).forEach((day) => {
-    //     day.forEach((v) => {
-    //       v.start = new Date(0, 0, 0, Number(v.start), 60 * (v.start % 1));
-    //       v.end = new Date(0, 0, 0, Number(v.end), 60 * (v.end % 1));
-    //     });
-    //   });
-    //   this.state.visitHours = visitHours;
-    // }
   }
 
   /** Return visit hrs with promise */
-  handleReturnVisitHours = () => {
-    return Promise.resolve({ status: 200, data: this.state.visitHours });
+  handleReturnVisitHours = (params) => {
+    const { office } = this.props;
+    return getVisibilities(office.id, params);
   };
 
   /**
@@ -123,21 +118,9 @@ class VisitAvailabilityForm extends PureComponent {
   handleAddCondition = () => this.setState({ newCondition: {} });
 
   handleSaveNewCondition = (condition) => {
-    let { visitHours } = this.state;
-    if (visitHours.indexOf(condition) !== -1) {
-      visitHours[visitHours.indexOf(condition)] = { ...condition };
-      this.setState({
-        visitHours: [...visitHours],
-        newCondition: null,
-      });
-    } else {
-      this.setState({
-        visitHours: [...visitHours, condition],
-        newCondition: null,
-      });
-    }
-
-    return Promise.resolve({ status: 200, data: visitHours });
+    const { office } = this.props;
+    this.setState({ newCondition: null });
+    return addVisibility(office.id, condition);
   };
 
   handleCancelNewCondition = () => {
@@ -148,11 +131,15 @@ class VisitAvailabilityForm extends PureComponent {
     this.setState({ newCondition: condition });
   };
 
+  handleUpdateCondition = (visitHourId, condition) => {
+    const { office } = this.props;
+    this.setState({ newCondition: null });
+    return updateVisibility(office.id, visitHourId, condition);
+  };
+
   handleDeleteCondition = (condition) => {
-    const { visitHours } = this.state;
-    visitHours.splice(visitHours.indexOf(condition), 1);
-    this.setState({ visitHours: [...visitHours] });
-    return Promise.resolve({ status: 200, data: visitHours });
+    const { office } = this.props;
+    return deleteVisibility(office.id, condition.id);
   };
 
   /** Save visit-hours */
@@ -224,6 +211,7 @@ class VisitAvailabilityForm extends PureComponent {
           newCondition={newCondition}
           getConditions={this.handleReturnVisitHours}
           onSave={this.handleSaveNewCondition}
+          onUpdate={this.handleUpdateCondition}
           onCancel={this.handleCancelNewCondition}
           onEdit={this.handleEditCondition}
           onDelete={this.handleDeleteCondition}

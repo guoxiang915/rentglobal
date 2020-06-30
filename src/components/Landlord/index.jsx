@@ -29,7 +29,7 @@ import {
   createOffice,
   updateOffice,
   createOfficeServicesAmenities,
-  saveVisibility,
+  addVisibility,
   publishOffice,
   unpublishOffice,
   uploadOfficePhoto,
@@ -259,7 +259,7 @@ class Landlord extends PureComponent {
                       createOfficeServicesAmenities={
                         createOfficeServicesAmenities
                       }
-                      saveVisibility={saveVisibility}
+                      addVisibility={addVisibility}
                       publishOffice={publishOffice}
                       onDeleteOffice={this.handleDeleteOffice}
                       onEditOffice={this.handleEditOffice}
@@ -318,7 +318,7 @@ class Landlord extends PureComponent {
                       createOfficeServicesAmenities={
                         createOfficeServicesAmenities
                       }
-                      saveVisibility={saveVisibility}
+                      addVisibility={addVisibility}
                       publishOffice={publishOffice}
                       onDeleteOffice={this.handleDeleteOffice}
                       onEditOffice={this.handleEditOffice}

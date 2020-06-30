@@ -276,7 +276,7 @@ class CalendarSettingForm extends PureComponent {
   state = {
     conditions: [],
     newCondition: null,
-    page: 0,
+    page: 1,
     rowsPerPage: 5,
     dialog: null,
   };
@@ -290,14 +290,14 @@ class CalendarSettingForm extends PureComponent {
       this.props.getConditions(params).then((response) => {
         if (response.status === 200) {
           this.setState({
-            conditions: response.data.map((c) => ({
+            conditions: response.data.docs.map((c) => ({
               id: c.id,
               officeType: c.officeType,
-              dayTypes: c.dayTypes?.[0],
-              startTime: c.duration ? new Date(c.duration.start) : "",
-              endTime: c.duration ? new Date(c.duration.end) : "",
-              startDate: c.appliedDates ? new Date(c.appliedDates.start) : "",
-              endDate: c.appliedDates ? new Date(c.appliedDates.end) : "",
+              dayType: c.dayType,
+              startTime: c.timeRange ? new Date(c.timeRange.start) : "",
+              endTime: c.timeRange ? new Date(c.timeRange.end) : "",
+              startDate: (c.appliedDates && c.appliedDates.start) ? new Date(c.appliedDates.start) : "",
+              endDate: (c.appliedDates && c.appliedDates.end) ? new Date(c.appliedDates.end) : "",
             })),
           });
         }
@@ -328,21 +328,21 @@ class CalendarSettingForm extends PureComponent {
 
   handleSaveNewCondition = () => {
     this.setState((state) => {
+      const { newCondition } = state;
       const condition = {
-        id: state.newCondition.id,
-        officeType: state.newCondition.officeType,
-        dayTypes: [state.newCondition.dayTypes],
-        duration: {
-          start: new Date(state.newCondition.startTime).getTime(),
-          end: new Date(state.newCondition.endTime).getTime(),
-        },
+        dayType: (newCondition.weekdayType && newCondition.weekdayType !== "") ? newCondition.weekdayType : newCondition.dayType,
+        officeType: "allOffices",
         appliedDates: {
-          start: new Date(state.newCondition.startDate).getTime(),
-          end: new Date(state.newCondition.endDate).getTime(),
+          start: new Date(newCondition.startDate).getTime(),
+          end: new Date(newCondition.endDate).getTime(),
+        },
+        timeRange: {
+          start: new Date(newCondition.startTime).getTime(),
+          end: new Date(newCondition.endTime).getTime(),
         },
       };
 
-      if (this.props.onSave) {
+      if (!newCondition.id && this.props.onSave) {
         this.props.onSave(condition).then((res) => {
           if (res.status === 200) {
             this.setState({ newCondition: null, page: 0 }, () => {
@@ -351,20 +351,17 @@ class CalendarSettingForm extends PureComponent {
           }
         });
       }
+
+      if (newCondition.id && this.props.onUpdate) {
+        this.props.onUpdate(newCondition.id, condition).then((res) => {
+          if (res.status === 200) {
+            this.setState({ newCondition: null, page: 0 }, () => {
+              this.getConditions();
+            });
+          }
+        });
+      }
     });
-    // let { conditions, newCondition } = this.state;
-    // if (conditions.indexOf(newCondition) !== -1) {
-    //   conditions[conditions.indexOf(newCondition)] = { ...newCondition };
-    //   this.setState({
-    //     conditions: [...conditions],
-    //     newCondition: null,
-    //   });
-    // } else {
-    //   this.setState({
-    //     conditions: [...conditions, newCondition],
-    //     newCondition: null,
-    //   });
-    // }
   };
 
   handleCancelNewCondition = () => {
@@ -446,7 +443,7 @@ class CalendarSettingForm extends PureComponent {
       if (this.props.onDelete) {
         this.props.onDelete(condition).then((res) => {
           if (res.status === 200) {
-            this.setState({ newCondition: null, page: 0 }, () => {
+            this.setState({ newCondition: null, page: 1 }, () => {
               this.getConditions();
             });
           }
@@ -483,8 +480,8 @@ class CalendarSettingForm extends PureComponent {
                           {!item
                             ? t("allOffices")
                             : typeof item === "object"
-                            ? t(...item)
-                            : t(item)}
+                              ? t(...item)
+                              : t(item)}
                         </Typography>
                       )}
                       displayEmpty
@@ -503,14 +500,14 @@ class CalendarSettingForm extends PureComponent {
                           {!item
                             ? t("allDays")
                             : typeof item === "object"
-                            ? t(...item)
-                            : t(item)}
+                              ? t(...item)
+                              : t(item)}
                         </Typography>
                       )}
                       displayEmpty
-                      value={newCondition.dayTypes}
+                      value={newCondition.dayType}
                       onChange={(e) =>
-                        this.handleChangeConditionField()(e.target.value)
+                        this.handleChangeConditionField("weekdayType")(e.target.value)
                       }
                       className={s.conditionDays}
                     />
@@ -522,10 +519,11 @@ class CalendarSettingForm extends PureComponent {
                           variant='outlined'
                           label={t(day)}
                           classes={{ root: s.conditionDays }}
-                          isChecked={newCondition.dayTypes === day}
+                          isChecked={newCondition.dayType === day}
                           onChange={() =>
-                            this.handleChangeConditionField("dayTypes")(day)
+                            this.handleChangeConditionField("dayType")(day)
                           }
+                          disabled={newCondition.weekdayType && newCondition.weekdayType !== ""}
                         />
                       </Box>
                     </React.Fragment>
@@ -698,7 +696,7 @@ class CalendarSettingForm extends PureComponent {
                             <TableCell>
                               <Column alignChildrenStart>
                                 <Typography fontSizeXS textSecondary>
-                                  {t(c.dayTypes)}
+                                  {t(c.dayType)}
                                 </Typography>
                                 <Typography textMediumGrey fontSizeXXS>
                                   {[
@@ -713,7 +711,7 @@ class CalendarSettingForm extends PureComponent {
                             </TableCell>
                           ) : (
                             <>
-                              <TableCell>{t(c.dayTypes)}</TableCell>
+                              <TableCell>{t(c.dayType)}</TableCell>
                               <TableCell>
                                 {[
                                   c.startTime ? formatHrMin(c.startTime) : "",
@@ -721,10 +719,8 @@ class CalendarSettingForm extends PureComponent {
                                 ].join(" - ")}
                               </TableCell>
                               <TableCell>
-                                {[
-                                  c.startDate ? formatDate(c.startDate) : "",
-                                  c.endDate ? formatDate(c.endDate) : "",
-                                ].join(" - ")}
+                                {c.startDate && c.startDate !== "" && c.endDate && c.endDate !== "" && [formatDate(c.startDate), formatDate(c.endDate)].join(" - ")}
+                                {!(c.startDate && c.startDate !== "" && c.endDate && c.endDate !== "") && t("unlimited")}
                               </TableCell>
                               <TableCell>{t(c.officeType)}</TableCell>
                             </>

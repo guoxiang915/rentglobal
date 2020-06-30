@@ -88,14 +88,14 @@ export const getLandlordOffices = (params) =>
  * @deprecated
  */
 export const getLandlordApprovedOffices = (params) =>
-  getLandlordOffices(params);
+  getLandlordOffices({ ...params, approved: true });
 
 /**
  * Call api to get landlord's unapproved office list
  * @deprecated
  */
 export const getLandlordUnapprovedOffices = (params) =>
-  getLandlordOffices(params);
+  getLandlordOffices({ ...params, approved: false });
 
 /** Call api to get office from id */
 export const getOfficeById = (officeId) =>
@@ -112,17 +112,21 @@ export const updateOffice = (office) =>
 export const createOfficeServicesAmenities = (officeId, payload) =>
   api.put(`/offices/${officeId}/services-amenities/`, payload);
 
-/** Call api to save visibility */
-export const saveVisibility = (officeId, payload) =>
-  api.put(`/offices/${officeId}/visit-hours/`, payload);
-
 /** Call api to add visibility */
 export const addVisibility = (officeId, payload) =>
-  api.put(`/offices/${officeId}/visit-hours/add/`, payload);
+  api.post(`/offices/${officeId}/visit-hours/`, payload);
+
+/** Call api to get visibilities */
+export const getVisibilities = (officeId, params) =>
+  api.get(`/offices/${officeId}/visit-hours/`, { params });
+
+/** Call api to update visibility */
+export const updateVisibility = (officeId, visitHourId, payload) =>
+  api.put(`/offices/${officeId}/visit-hours/${visitHourId}/`, payload);
 
 /** Call api to delete visibility */
-export const deleteVisibility = (officeId, payload) =>
-  api.put(`/offices/${officeId}/visit-hours/delete/`, payload);
+export const deleteVisibility = (officeId, visitHourId, payload) =>
+  api.delete(`/offices/${officeId}/visit-hours/${visitHourId}/`, payload);
 
 /** Call api to publish office */
 export const publishOffice = (officeId) =>
